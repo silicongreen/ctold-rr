@@ -1,0 +1,15 @@
+<div id ="student_main_info">
+  <h3> <%= t('route_detail') %></h3>
+  <table>
+    <tr>
+      <td>
+      <div><%= t('destination') %> :  <%= @route.destination %></div>
+      <div><%= t('cost') %> : <%= precision_label @route.cost %></div>
+      <div><%= t('main_route') %> :  <%= @route.main_route %></div>
+      </td>
+    </tr>
+
+  </table>
+  <%= link_to "#{t('view_all')}", routes_path %>
+
+</div>

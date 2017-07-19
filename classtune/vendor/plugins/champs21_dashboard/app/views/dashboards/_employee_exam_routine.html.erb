@@ -1,0 +1,7 @@
+<div class="partial_homework" style="padding: 20px;">
+
+  <h2 class="f2">Exam Routine</h2>
+  <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div>
+  <%= render :partial=>@view_layout + "_exam_routine_list", :locals=>{:routines => homework['employee_exam_routine']} %>
+
+</div>

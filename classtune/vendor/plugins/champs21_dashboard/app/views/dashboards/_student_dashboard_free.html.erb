@@ -1,0 +1,229 @@
+<div id="palettes-main">
+<%# reminder_count = @current_user.reminder_count %>
+    <%
+      if @current_user.parent?
+      profile_id = @current_user.guardian_entry.current_ward_id 
+      else
+      profile_id = @current_user.student_record.id 
+      end
+    @conn = ActiveRecord::Base.connection
+
+     
+  %>
+    <div class="champs21_palette_container_1">
+        <div id='boxes' style="float:left;margin-right: 0px;width:69%;">
+            <div id="demo2" class="als-container" data-id="als-container_0">
+                <div class="good-read-box-scroll">
+                    <div class="als-viewport"  style="float:left;  overflow: hidden; width: auto;">
+                    <ul class="als-wrapper"  data-id="als-wrapper_0" style="width: 635px;  height: 135px;"> 
+                    
+                            
+                            <li class="als-item">
+                                <% 
+                                 
+                                sql = "SELECT COUNT( reminders.id ) AS total_count
+FROM reminders
+LEFT JOIN assignments  ON reminders.rid = assignments.id
+WHERE reminders.recipient = #{@current_user.id}
+AND reminders.is_read = 0
+AND reminders.rtype = 4
+AND assignments.assignment_type = 1
+AND assignments.duedate >= NOW()
+AND FIND_IN_SET(#{profile_id},student_list)"
+
+                                homework_count_data = @conn.execute(sql).all_hashes
+
+                              %>
+
+                                <%  
+                                hcount = "";
+                                unless homework_count_data[0]['total_count'].nil? || homework_count_data[0]['total_count'].to_i==0
+                                  hcount = "<span class='f2 reminder-count'>"+homework_count_data[0]['total_count'].to_s+"</span>"
+                                  end
+                              %>
+                                <%= link_to_remote "<div class='homework_box_icon active'>"+hcount+"<span class='f2'>HOMEWORK</span></div>",
+                                  :update => "dashboard-data",
+                                  :before => "Element.show('loader');j('.partial_homework').empty();",
+                                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .homework_box_icon').addClass('active');",
+                                  :url => {:controller=>"dashboards",:action => "homework_data"} %>
+                            </li>
+                         <li class="als-item">
+                            <%= link_to_remote "<div class='notice_box_icon'><span class='f2'>NOTICE</span></div>",
+                              :update => "dashboard-data",
+                              :before => "Element.show('loader');j('.partial_homework').empty();",
+                              :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .notice_box_icon').addClass('active');",
+                              :url => {:controller=>"dashboards",:action => "notice_data"} %>
+                          </li>
+                            
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>") %>
+                                <%=  link_to_echo %>
+                              
+                            </li>
+                          
+                            
+                            
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='rountine_box_icon'><span class='f2'>CLASS ROUTINE</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='report_box_icon'><span class='f2'>REPORT CARD</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='lessonplan_box_icon'><span class='f2'>LESSON PLAN</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='calendar_box_icon'><span class='f2'>CALENDAR</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                       
+                            
+                            
+                            <% if @current_user.student? %>
+                              <% 
+                              student_id = @current_user.student_entry.id
+                            %>
+                            <% end %>
+
+                            <% if @current_user.parent? %>
+                              <% student_id = @current_user.guardian_entry.current_ward_id  %>
+                              
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='fees_box_icon'><span class='f2'>FEES</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='leave_box_icon'><span class='f2'>LEAVE</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='meeting_box_icon'><span class='f2'>MEETING</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                            
+                             
+                              
+                            <% end %>
+                            
+                            <li class="als-item">
+                                <% link_to_echo = get_subscrived_link("<div class='transport_box_icon'><span class='f2'>Transport</span></div>") %>
+                                <%=  link_to_echo %>
+                            </li>
+                          
+                        </ul>
+                        
+                    </div>
+                    <span style="height: 149px; float:left; clear:none; position: static; margin-left:10px;" class="als-next" data-id="als-next_0"></span>
+                  
+                </div>
+            </div>
+            
+            <div style="clear:both;"></div>
+            <div class="loader-image" id="partial_page_loader">
+                <%= image_tag("loader2.gif",
+                  :align => "absmiddle",
+                  :border => 0,
+                  :id => "loader",
+                  :style =>"display: none;" ) %>
+            </div>
+            <div class="box_content" id="dashboard-data">
+                <%=   render :partial => "homework", :locals=>{:homework=>homework, :hw_data => false} %>
+            </div>      
+        </div>
+
+        <div class="school_feed_box">
+            <%= render :partial => "attendance" %>
+            <div style="clear:both;height: 20px;"></div>
+            <%= render :partial => "notice", :locals=>{:news=>@news, :type => 'all'} %>
+        </div>
+
+    </div>
+
+    <div style="clear:both;"></div>
+    
+
+    <div style="clear:both;"></div>
+
+</div>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/jquery.als-1.6.min" %>
+<% end %>
+<style type="text/css">
+
+    
+    
+    #boxes span.reminder-count
+    {
+        right: 20px;
+        top: 30px;
+        border: 0px solid black;
+        padding: 2px;
+        border-radius: 30px;
+        background: #CB232A;
+        position: absolute;
+        color: white;
+        height: 20px;
+        width: 20px;
+    }
+    .data-div select {
+        float: left;
+        width: 260px;
+    }
+    .data-div input[type="text"] {
+        float: left;
+    }
+    .data-div #loader-circle {
+        float: left;
+        margin-left: 5px;
+        margin-top: 5px;
+    }
+    .box_content .partial_homework   input
+    {
+        background: none repeat scroll 0 0 #eeeeee;
+        border: 1px solid #c6c6c6;
+        height: 18px;
+        margin: 0px;
+        padding: 2px;
+        width: 167px;
+    }
+    .box_content .partial_homework .text-input-bg select {
+        background-color: #eeeeee;
+        border: 1px solid #c6c6c6;
+        height: 24px;
+        padding: 2px 10px;
+        margin: 0px;
+        width: 175px;
+    }
+    .box_content .partial_homework .label-div
+    {
+        margin-top : 2px;
+    }
+    #filter-div .label-div {
+        width:18%;
+    }
+    #filter-div .calendar_date_select_popup_icon {
+        margin: 4px;
+    }
+    .clear-date {
+        color: #db3434;
+        cursor: pointer;
+        float: right;
+        font-size: 12px;
+        margin-right: 45px;
+        margin-top: 9px;
+        width: 0;
+    }
+</style>
+

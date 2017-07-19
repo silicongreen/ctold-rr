@@ -1,0 +1,177 @@
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/transport/transport.png', :html => {:alt => 'Transport'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "#{t('transport_text')}", :controller => "transport", :action => "student_transport_details", :id => @student.id %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text f2">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li><%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %></li>
+
+      <% if permitted_to? :reports, :student %>
+        <li><%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %></li>
+      <% end %>
+
+      <% if permitted_to? :guardians,:student %>
+        <li><%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %></li>
+      <% end %>
+
+      <% if permitted_to? :email, :student %>
+        <% if @config == 'Online'  %>
+          <li><%= link_to "#{t('send_email')}", {:controller => "student", :action => "email", :id => @student.id}, {:class => 'f2'} %></li>
+        <%  end %>
+      <%  end %>
+
+      <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+        <li><%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %></li>
+      <% end %>
+
+      <% if @available_modules.include?('Finance') and permitted_to? :fees, :student%>
+        <li><%= link_to "#{t('fees_text')}", {:controller => 'student',:action => 'fees', :id => @student.id}, {:class => 'f2'} %></li>
+      <% end %>
+
+      <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+        <%
+        class_name = ''
+        if mod[:destination][:controller] == 'transport'
+          class_name = 'active'
+        end
+      %>
+        <li class="<%= class_name%>"><%= link_to "#{t(mod[:title])}" , mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %></li>
+      <% end %>
+
+
+<%#*<li>%>
+<%#= link_to_remote "Project",
+:before => "Element.show('loader2');",
+:success => "Element.hide('loader2');",
+:update => 'data_div',
+:url=>{:controller=>"syllabus", :action=>"syllabus_by_term", :id => 2},
+:html => {:class => 'f2'}
+%>
+<%#*</li>%>
+    </ul>
+  </div>
+
+</div>
+
+<div class="loader-image">
+  <%= image_tag("loader2.gif",
+    :align => "absmiddle",
+    :border => 0,
+    :id => "loader2",
+    :style =>"display: none;" ) %>
+</div>
+
+<div class="clearfix"></div>
+
+<div id="page-yield" class="bg-disable" style="margin-top: 0px;">
+
+<%#= debug @transport %>
+
+  <% unless @transport.nil? %>
+    <div class="left-col">
+
+      <div class="pick-up row">
+        <div class="icon">
+          <%= image_tag '/images/icons/transport/pick-up.png' %>
+          <span>Pick up location</span>
+        </div>
+        <div class="data">
+          <%= @transport['location']['pickup'] %>
+        </div>
+      </div>
+
+      <div class="drop-off row">
+        <div class="icon">
+          <%= image_tag '/images/icons/transport/drop-off.png' %>
+          <span>Drop off location</span>
+        </div>
+        <div class="data">
+          <%= @transport['location']['drop'] %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right-col">
+
+      <div class="div-header-wrapper">
+        <div class="div-header">Transport Schedule</div>
+        <div class="div-sub-header">Last Update: <%= @transport['location']['last_updated'] %></div>
+      </div>
+
+      <div class="CSSTableGenerator">
+        <% unless @transport.nil? %>
+          <table class="table-design">
+            <thead>
+              <tr>
+                <th>
+                  Day
+                </th> 
+                <th>
+                  Home Pick up Time
+                </th>
+                <th>
+                  School Pick up Time
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @transport['schedule'].each do |t| %>
+                <tr>
+                  <td>
+                    <%= t['transport_weekday'] %>
+                  </td> 
+                  <td>
+                    <%= t['transport_home_pickup'] %>
+                  </td>
+                  <td>
+                    <%= t['transport_school_pickup'] %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+        <% else %>
+          <div style="background-color: #ffffff; width: 100%; height: 100px; color: #333333; padding: 25px;">
+            <%= t('student_did_not_avail_transport') %>
+          </div>
+        <% end %>
+      </div> 
+
+
+    </div>
+
+  </div>
+
+<% else %>
+  <div class="full-col no-data-available">
+    <div>
+      <%= t('student_did_not_avail_transport') %>
+    </div>
+  </div>
+<% end %>
+
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'transport/student_transport_details' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

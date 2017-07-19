@@ -1,0 +1,32 @@
+<div class="x_panel tile fixed_height_500">
+  <div class="x_title">
+    <h2>Today Summary</h2>
+    <ul class="nav navbar-right panel_toolbox">
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+    </ul>
+    <div class="clearfix"></div>
+  </div>
+  <div class="x_content">
+      <%
+        if MultiSchool.current_school.code == "chs" 
+            @total_lessonplan_all = 60
+            @lessonplan_summary_today_all = 33
+            @total_assignment_all = 91
+            @assignments_submitted_all = 8
+        end  
+      %>
+      <% if @total_lessonplan_all > 0 or @lessonplan_summary_today_all > 0 or @total_assignment_all > 0 or @assignments_submitted_all > 0 %>
+      <div class="col-md-12">
+          <div id="summary" style="height:350px;"></div>
+      </div> 
+    <% else %>  
+      <ul class="list-unstyled msg_list">
+        <li>
+          <span class="message">
+              <h5><%= "There are no summary for today" %></h5>
+          </span>
+        </li>
+      </ul>
+    <% end %>  
+  </div>
+</div>

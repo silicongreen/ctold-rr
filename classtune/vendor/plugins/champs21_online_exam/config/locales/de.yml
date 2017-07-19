@@ -1,0 +1,83 @@
+de: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "Online Exam Score Details"
+
+      online_exam_group:
+        name: "Name"
+        start_date: "Start Date"
+        end_date: "End Date"
+        maximum_time: "Maximum Time"
+        pass_percentage: "Pass Percentage"
+
+      online_exam_option:
+        option: "Option"
+
+      online_exam_question:
+        question: "Question"
+        mark: "Mark"
+        online_exam_options: "Online Exam Options"
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "At least one option must be answer"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+
+#common
+  online_exam_text: "Online Exam"
+  select_exam: "Select Exam"
+  exam_result_text: "Exam Result"
+  failed: "Failed"
+  passed: "Passed"
+  question: "Question"
+  options: "Options"
+  question_created_successfully: "Question Created Successfully"
+  exam_group_successfully_deleted: "Exam Group Successfully Deleted"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "Sorry ! Cannot publish an exam without questions. Please add minimum one question"
+  exam_reset_successful_for_selected_students: "Exam reset successful for selected students"
+  sorry_no_students_selected: "Sorry ! No Students Selected"
+  enter_options_here: "Enter options  here"
+  is_answer: "Is Answer"
+  edit_option: "Edit Option"
+  edit_question_text: "Edit Question"
+  delete_question: "Delete Question"
+  add_question: "Add Question"
+  new_online_exam_text: "New Online Exam"
+  maximum_time_minutes: "Maximum Time(Minutes)"
+  pass_percentage: "Pass Percentage(%)"
+  create_questions: "Create Questions"
+  reset_exam: "Reset Exam"
+  view_online_exams: "View Online Exams"
+  are_you_sure_to_delete_this_exam_group: "Are you sure to delete this exam group"
+  no_exam_created_for_selected_batch: "No exam created for selected batch"
+  view_result_text: "View Result"
+  select_student: "Select Student"
+  no_students_has_atended_the_selcted_exam_group: "No students has attended the selcted exam group"
+  add_questions: "Add Questions"
+  no_question_added_to_this_exam_group: "No question added to this exam group"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "This will delete the question and associated answers. Are you sure?"
+  no_student_attended_this_exam: "No student attended this exam"
+  online_examination_result: "Online Examination result"
+  create_new_online_exam: "Create new online exam"
+  view_existing_online_exam: "View existing online exam"
+  view_exam_results: "View Exam Results"
+  view_online_exam_results: "View online exam results"
+  reset_exam_for_a_student: "Reset exam for a student"
+  option_per_question: "Option per Question"
+  view_results: "View Results"
+  you_have_successfully_completed_the_exam: "You have Successfully completed the exam"
+  sorry_you_have_already_attended_this_exam: "Sorry ! You Have already attended this exam"
+  exam_name: "Exam Name"
+  minutes: "Minutes"
+  start_exam: "Start Exam"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "Sorry ! Your answers are not acepted as the maximum time exeeded. Please contact the exam admin"
+  total_score: "Total Score"
+  time_left: "Time Left"
+  manage_online_exam_system: "Manage Online Exam System"
+  exam_group_successfully_updated: "Exam Group Successfully Updated"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"

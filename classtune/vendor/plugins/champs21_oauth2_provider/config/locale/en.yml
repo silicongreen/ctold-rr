@@ -1,0 +1,23 @@
+en:
+  client_created_text: 'Client created successfully !'
+  client_updated_text: 'Client updated successfully !'
+  client_deleted_text: 'Client deleted successfully !'
+  not_authorized_text: 'You are not authorized to do the action !'
+  access_token_deleted_text: 'Access Token deleted successfully, Authorization is revoked !'
+  client_name: 'Client name'
+  redirect_uri: 'Redirect URI'
+  client_id: 'Client ID'
+  client_secret: 'Client secret'
+  verified: 'Verified?'
+  client_apps: 'Client Apps'
+  client_app: 'Client App'
+  confirm_text: 'Are you sure ?'
+  no_access_token_text: 'No access tokens present.'
+  no_client_text: 'No clients present.'
+  revoke_authorizations: 'Revoke Authorizations'
+  app_name: 'App Name'
+  apps: 'Apps'
+  tokens_privilege: "Client Authorizations"
+  oauth2_manage_privilege: "Client App Management"
+  manage_clients: "Manage Clients"
+  manage_clients_desc: "Manage Client Apps"

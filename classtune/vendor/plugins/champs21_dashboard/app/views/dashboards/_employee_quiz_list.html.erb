@@ -1,0 +1,20 @@
+<% unless quiz.nil? or quiz.empty? %>
+  <% quiz.each do |h| %>
+
+    <div class="portlet-subcontent">     
+      <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon'] %>" /></div>
+      <div class="timetable_right" style="margin-top:10px;">
+        <div class="subcontent-header themed_text"><%=  h['subject_name'] %></div>
+        <div class="subcontent-info">Start Date: <%= h['start_date'] %></div>
+        <div class="subcontent-info">Due Date: <%= h['due_date'] %></div>
+        <div class="subcontent-info">Maximum Time: <%= h['maximum_time'] %></div>
+        <div class="subcontent-info">Done By: <%= h['done'] %></div>
+      </div>       
+    </div>
+
+  <% end %>
+<% else %>
+  <div class="portlet-subcontent" style="margin-top: 20px;">    
+    No Quiz found
+  </div>  
+<% end  %>

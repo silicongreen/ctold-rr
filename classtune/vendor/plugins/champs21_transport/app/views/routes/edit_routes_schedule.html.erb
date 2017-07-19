@@ -1,0 +1,40 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transport_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= @route.destination %></div>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('edit_route_schedule') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_route')}", routes_path %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_route_schedule')}", :controller => "routes", :action => "route_schedule", :id=>@route.id %></li>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div id="vehicle_form">
+    <% form_for:route_schedule, :url=>{:controller=>"routes",:action=>"update_routes_schedule",:id=>@route.id,:schedule_id=>@route_schedule.id},:html=>{:class=>'form'} do |r| %>
+      <%= error_messages_for :route_schedule  %>
+      <% if @route_schedule.errors.any? %>
+      <% end %>
+
+      <div class="label-field-pair">
+        <label for="home_pickup_time"> <%= t('home_pickup_time') %><span class="necessary-field">*</span> </label>
+          <div class="time-select-field"><%= time_select :route_schedule, :home_pickup_time, {:minute_step => 15} %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="school_pickup_time"> <%= t('school_pickup_time') %><span class="necessary-field">*</span> </label>
+          <div class="time-select-field"><%= time_select :route_schedule, :school_pickup_time, {:minute_step => 15} %></div>
+      </div>
+      
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= t('weekday') %>   : </label>
+        <label ><%= WeekdaySet.weekday_name(@route_schedule.weekday_id).upcase %></div>
+      </div>
+
+     
+      <%= submit_tag "", :value => "► #{t('update')}", :class => "submit_button" %>
+    <% end %>
+  </div>
+</div>

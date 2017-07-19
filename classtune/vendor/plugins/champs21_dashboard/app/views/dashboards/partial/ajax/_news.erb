@@ -1,0 +1,25 @@
+<style>
+    .block_content p > img{
+        width: 100% !important;
+    }
+</style>    
+<% unless @news.nil? or @news.empty? %>  
+    <% @news.each do |news| %>
+      <li>
+          <div class="block">
+              <div class="block_content">
+                  <h2 class="title"><%=  link_to news.title, :controller => 'news', :action => 'view', :id => news.id%> </h2>
+                  <div class="byline">Post On : </b><%= time_ago_in_words(news.created_at) %> <%= t('ago') %></div>
+                  <p class="excerpt news">
+                    <% news_text = shorten_string(strip_tags(news.content), 180) %>  
+                    <% if news_text.length < 10 %>  
+                    <%= news.content %>
+                    <% else %>  
+                    <%= news_text  %>
+                    <% end %>
+                  </p>
+              </div>
+          </div>
+      </li>
+    <% end %>
+<% end %>

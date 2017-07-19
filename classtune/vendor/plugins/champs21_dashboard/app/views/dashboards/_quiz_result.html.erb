@@ -1,0 +1,70 @@
+<div style="margin-top: 20px;"></div>
+
+<div class="row-div">
+  <div class="label-div">
+    Your Score:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['total_score'] %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Total Time Taken:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['total_time_taken'] %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Passed:
+  </div>
+  <div class="data-div">
+    <%= (quiz_result['is_passed'].to_i == 1) ? "Yes" : "No" %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Participated:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['total_participated'] + '/' + quiz_result['total_student'] %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Exam Total Mark:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['total_mark'] %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Highest Score:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['max_score'] %>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row-div">
+  <div class="label-div">
+    Lowest Score:
+  </div>
+  <div class="data-div">
+    <%= quiz_result['min_score'] %>
+  </div>
+</div>

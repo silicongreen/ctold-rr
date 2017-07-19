@@ -1,0 +1,66 @@
+<% package_modules = [] %>
+<% menus = [] %>
+<% modules = [] %>
+<% @packages.each do |package| %>
+  <% menus = [] %>
+  <% modules = [] %>
+  <% package.package_menus.select{|pm| pm.menu_id > 0}.each do |package_menu|   %>
+      <% menus << package_menu.menu_id %>
+  <% end %>
+  <% package.package_menus.select{|pm| pm.menu_id == 0}.each do |package_menu|   %>
+      <% modules << package_menu.plugins_name %>
+  <% end %>
+  <% package_modules << {"name" => package.name, "id" => package.id, "modules" => modules.join(','), "menu" => menus.join(',')} %>
+<% end %>
+
+<% owner_object = @owner.class.name.underscore.to_sym %>
+<% form_path = ("#{owner_object}_available_plugin_path") %>
+<% later_path = ("#{owner_object}_path") %>
+<% form_for(@available_plugin, :url=>(send form_path, @owner),:html=>{:class=>'form'}) do |f| %>
+  <fieldset>
+    <th>Assign Packages</th>
+  </fieldset>
+  <% package_modules.each do |modules|  %>
+    <% @selected = false %>
+    <% @b_found = false %>
+    <% @class_name = "" %>
+    <% unless @package_id.empty? or @package_id.nil? or @package_id.blank? %>
+      <% @package_id.each do |pid| %>
+        <%  if pid.to_i == modules["id"].to_i and @b_found == false %>
+          <% @selected = true %>
+          <% @class_name = "red-border" %>
+          <% @b_found = true %>
+          <% break %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <div class="plugin-cell main-bg-color <%= @class_name  %> ">
+        <%= check_box_tag "package[]",modules["id"], @selected, :id=>"school_"+modules["id"].to_s, :class=>"select_package" %> <label for="school_<%= modules["name"] %>"><%= modules["name"].titleize %></label>
+        <input type="hidden" name="<%= modules["id"]  %>_menu" id="<%= modules["id"].to_s  %>_menu" value="<%= modules["menu"] %> " />
+        <input type="hidden" name="<%= modules["id"]  %>_modules" id="<%= modules["id"].to_s  %>_modules" value="<%= modules["modules"] %> " />
+    </div>
+  <% end %>
+  <input type="hidden" name="menu_data[]" id="menus" value="<%= @menu_datas  %> " />
+  
+  <div style="display: none;">
+    <fieldset class="float-left width-100-pc">
+      <div class="float-right margin-right-30 link-box-red"><a href="#" id="select_all_plugin">All</a><p class="vertical-line">|</p><a href="#" id="select_no_plugin">None</a></div>
+    </fieldset>
+    <div class="float-left width-100-pc" id="plugin_grid">
+      <% admin_user_session.allowed_plugins.each do |plugin| %>
+        <div class="plugin-cell main-bg-color">
+          <%= check_box_tag "available_plugin[plugins][]",plugin, @owner.available_plugin.plugins.include?(plugin), :id=>"school_"+plugin, :class=>"school_modules" %>
+          <label for="school_<%= plugin %>"><%= plugin.sub(/^champs21_/,'').titleize.titleize %></label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <fieldset class="float-left width-100-pc">
+    <% if action_name=='new' %>
+      <%= link_to 'Later', "#{(send later_path,@owner)}", {:class  => 'button-grey-large float-right-with-margin'}%>
+      <%= f.submit 'Finish', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+    <% else %>
+      <%= f.submit 'Save', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+    <% end %>
+  </fieldset>
+<% end %>

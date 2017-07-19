@@ -1,0 +1,817 @@
+<%= javascript_include_tag 'Chart_js/Chart.js'%>
+<%= javascript_include_tag 'chart/echarts.min.js' %>
+<%= javascript_include_tag 'chart/raphael.min.js' %>
+<%= javascript_include_tag 'chart/morris.min.js' %>
+<%= javascript_include_tag 'select2.full.min.js'%>
+<%= stylesheet_link_tag 'select2.min.css' %>
+<%= stylesheet_link_tag 'green.css' %>
+<%= stylesheet_link_tag 'calendar/legends.css' %>
+
+<script>
+    var timerrunning = []; 
+    var countdown = [];
+    var update_div = [];
+    var countdown_new = [];
+</script>    
+
+<style>
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+      border: 1px solid #ccc !important;
+    }
+</style>
+
+<div class="col-md-12">
+    <% if @current_user.admin? %>         
+    <%= render :partial => '/dashboards/partial/summary_strip' %>        
+    <% end %>
+            
+    <div class="row">
+        <div class="col-md-7" style="margin-right: 10px;">
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;"><%= render :partial => "/dashboards/partial/current_running" %></div>
+            <div class="clearfix"></div>
+            <% if @current_user.admin? or ( @current_user.employee? and @is_reporting_manager ) %>
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;"><%= render :partial => "/dashboards/partial/attendance_graph" %></div>
+            <div class="clearfix"></div>
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                <%= render :partial => "/dashboards/partial/own_summary" %> 
+            </div>
+            <div class="clearfix"></div>    
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                  <%= render :partial => "/dashboards/partial/routine" %>
+            </div>
+            <% elsif @current_user.employee? and @is_reporting_manager == false %>
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                <%= render :partial => "/dashboards/partial/routine" %>
+            </div>  
+            <div class="clearfix"></div>  
+            <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+              <%= render :partial => "/dashboards/partial/own_summary" %> 
+            </div>
+            <% end %>
+        </div>
+        <div class="col-md-4" style="margin-left: 10px;">
+            <% if @current_user.admin? or ( @current_user.employee? and @is_reporting_manager ) %>
+              <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                  <%#= render :partial => "/dashboards/partial/profile" %>  
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                  <%= render :partial => "/dashboards/partial/news" %>  
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                <%= render :partial => "/dashboards/partial/events" %>
+              </div>
+              <!--div class="clearfix"></div>
+              <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                <%#= render :partial => "/dashboards/partial/task" %>
+              </div-->
+              <div class="clearfix"></div>
+              <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                <%= render :partial => "/dashboards/partial/task" %>  
+              </div>
+            <% elsif @current_user.employee? and @is_reporting_manager == false %>
+                <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                    <%= render :partial => "/dashboards/partial/news" %>  
+                </div>  
+                <!--div class="clearfix"></div>
+                <div class="col-md-12" style="padding-left: 0; padding-right: 0;">
+                    <div class="col-md-12">
+                      <%#= render :partial => "/dashboards/partial/task" %>
+                    </div>
+                </div-->
+            <% end %>
+        </div>
+    </div>             
+</div>
+<%
+  if MultiSchool.current_school.code == "chs" 
+    @total_presents = [8,62, 198, 120, 170, 150, 150, 210]
+    @total_absents = [118,12, 22, 0, 50, 10, 10, 110]
+  end
+%>    
+<%
+  date_today = @local_tzone_time.to_date
+  last_week = @local_tzone_time.to_date - 7
+%>    
+
+<%= javascript_include_tag 'chart.js' %>
+
+<script>
+  var colors = ['#DB6946', '#C14543', '#445060', '#395953', '#6C8C80', '#829AB5', '#BF807A', '#BF0000', '#006BB7', '#EC732C', '#BF3D27', '#A6375F',
+			'#8C6D46', '#326149', '#802B35', '#8A3842', '#366D73', '#4D6173', '#4A4659', '#C9D65B', '#F45552', '#F3CC5E', '#F29B88', '#D96941',
+			'#484F73', '#C9AB81', '#F5655C', '#F0C480'];
+  var labels = []
+  var i = 0
+  <% (last_week..date_today).each do |d| %>
+    labels[i] = '<%= d.strftime("%-m/%-d/%Y") %>';
+    i++;
+  <% end %>  
+  var present = [], absent = [];
+</script>    
+<script>
+    var running = false;
+    function getCountdown(target_date, id){
+            // find the amount of "seconds" between now and target
+            var current_date = new Date().getTime();
+            var seconds_left = (target_date - current_date) / 1000;
+
+            seconds_left = seconds_left % 86400;
+
+            var hours = pad( parseInt(seconds_left / 3600) );
+            seconds_left = seconds_left % 3600;
+
+            var minutes = pad( parseInt(seconds_left / 60) );
+            var seconds = pad( parseInt( seconds_left % 60 ) );
+            if ( seconds >= 0 && minutes >= 0 && hours >= 0 )
+            {
+                j("#time_diff_" + id).html(hours + ":" + minutes + ":" + seconds);
+            }
+            else
+            {
+               
+                timerrunning[id] = false;
+                clearInterval(countdown[id]);
+                
+                
+                j("#time_table_change_" + id).removeClass("alert-danger");
+                j("#time_table_change_" + id).addClass("alert-info");
+                j("#time_table_change_" + id).html("Completed");
+                j("#expand_" + id).trigger("click");
+            }
+    }
+    
+    function getCountdownNew(target_date, id){
+            // find the amount of "seconds" between now and target
+            var current_date = new Date().getTime();
+            var seconds_left = (target_date - current_date) / 1000;
+
+            seconds_left = seconds_left % 86400;
+
+            var hours = pad( parseInt(seconds_left / 3600) );
+            seconds_left = seconds_left % 3600;
+
+            var minutes = pad( parseInt(seconds_left / 60) );
+            var seconds = pad( parseInt( seconds_left % 60 ) );
+            if ( seconds >= 0 && minutes >= 0 && hours >= 0 )
+            {
+                j("#time_diff_" + id).html(hours + ":" + minutes + ":" + seconds);
+            }
+            else
+            {
+               
+                timerrunning[id] = false;
+                clearInterval(countdown_new[id]);
+            }
+    }
+
+    function pad(n) {
+            return (n < 10 ? '0' : '') + n;
+    }
+    
+    function reloadGraph(present, absent)
+    {
+        var lineChartData = {
+              labels : labels,
+              datasets : [
+                      {
+                              label: "Present",
+                              fillColor : "rgba(122, 164, 78,0.1)",
+                              strokeColor : "rgba(122, 164, 78,1)",
+                              pointColor : "rgba(122, 164, 78,1)",
+                              pointStrokeColor : "#fff",
+                              pointHighlightFill : "#fff",
+                              pointHighlightStroke : "rgba(220,220,220,1)",
+                              data : present
+                      },
+                      {
+                              label: "Absents",
+                              fillColor : "rgba(231, 76, 60, 0.1)",
+                              strokeColor : "rgba(231, 76, 60, 1)",
+                              pointColor : "rgba(231, 76, 60, 1)",
+                              pointStrokeColor : "#fff",
+                              pointHighlightFill : "#fff",
+                              pointHighlightStroke : "rgba(151,187,205,1)",
+                              data : absent
+                      }
+              ]
+
+        }
+
+        if ( j("#attendance_chart")[0] )
+        {
+            var ctx = document.getElementById("attendance_chart").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                    responsive: true
+            });
+        }
+    }
+    
+    function changeGraph( val )
+    {
+        if ( val == "Line"  || val == "Bar")
+        {
+            j("#graph_div").html('<canvas id="attendance_chart"></canvas>');
+        }
+    
+        if ( val == "Line" )
+        {
+            var lineChartData = {
+                labels : labels,
+                datasets : [
+                        {
+                                label: "Present",
+                                fillColor : "rgba(122, 164, 78,0.2)",
+                                strokeColor : "rgba(122, 164, 78,1)",
+                                pointColor : "rgba(122, 164, 78,1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(220,220,220,1)",
+                                data : present
+                        },
+                        {
+                                label: "Absents",
+                                fillColor : "rgba(231, 76, 60, 0.2)",
+                                strokeColor : "rgba(231, 76, 60, 1)",
+                                pointColor : "rgba(231, 76, 60, 1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(151,187,205,1)",
+                                data : absent
+                        }
+                ]
+            };
+            var ctx = document.getElementById("attendance_chart").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                    responsive: true
+            });
+        }
+        else if ( val == "Bar" )
+        {
+          console.log(present);
+          console.log(absent);
+            var lineChartData = {
+                labels : labels,
+                datasets : [
+                        {
+                                label: "Present",
+                                fillColor : "rgba(122, 164, 78,0.2)",
+                                strokeColor : "rgba(122, 164, 78,1)",
+                                highlightFill : "rgba(122, 164, 78,1)",
+                                highlightStroke : "#fff",
+                                data : present
+                        },
+                        {
+                                label: "Absents",
+                                fillColor : "rgba(231, 76, 60, 0.2)",
+                                strokeColor : "rgba(231, 76, 60, 1)",
+                                highlightFill : "rgba(231, 76, 60, 1)",
+                                highlightStroke: "#fff",
+                                data : absent
+                        }
+                ]
+            };
+            var ctx = document.getElementById("attendance_chart").getContext("2d");
+            window.myLine = new Chart(ctx).Bar(lineChartData, {
+                    responsive: true
+            });
+        }
+        else if ( val == "Single" )
+        {
+            j("#department").removeAttr("multiple");
+            reload_select2();
+        }
+        else if ( val == "Multiple" )
+        {
+            j("#department").attr("multiple","true");
+            j("#department").select2({
+                maximumSelectionLength: 5,
+                placeholder: "",
+                allowClear: true
+            });
+            j("#department").select2("val", "");
+        }
+    }
+    
+    function getEmployeeData( val )
+    {
+        j.ajax({
+            url: '/dashboards/get_employee_data/',
+            data: {employee_id : val},
+            type: 'POST',
+            success: function(data){
+                if ( data == "Invalid Request" )
+                {
+                    alert("Invalid Request");
+                    return ;
+                }
+                j("#employee_graph_data").html('<div id="own_summary" style="height:300px;"></div>');
+                var a_data = data.split("++");
+                var data_own_summary = [
+                  {device: 'LessonPlan', geekbench : a_data[0]}, 
+                  {device: 'Assignments', geekbench : a_data[2]},
+                  {device: 'Submitted', geekbench : a_data[3]},
+                  {device: 'Classes', geekbench : a_data[4]}
+                ];
+
+                show_summary_own(data_own_summary);
+            }
+        });
+    }
+  
+    function getCourses( batch_id )
+    {
+        j.ajax({
+              url: '/dashboards/get_courses/',
+              data: {batch_id : batch_id},
+              type: 'POST',
+              success: function(data){
+                  j("#courses_dashboard").html(data);
+                  //j("#report_type").html('<option value="Single">Single</option><option value="Multiple">Multiple</option>')
+                  reload_select2();
+              }
+          });
+    }
+  
+    function getCoursesRoutine( batch_id )
+    {
+        j.ajax({
+              url: '/dashboards/get_courses/',
+              data: {batch_id : batch_id},
+              type: 'POST',
+              success: function(data){
+                  j("#courses_routine").html(data);
+                  //j("#report_type").html('<option value="Single">Single</option><option value="Multiple">Multiple</option>')
+                  reload_select2();
+              }
+          });
+    }
+  
+    function getSections( course_name )
+    {
+        j.ajax({
+              url: '/dashboards/get_sections/',
+              data: {class_name: course_name },
+              type: 'POST',
+              success: function(data){
+                  j("#sections_dashboard").html(data);
+                  //j("#report_type").html('<option value="Single">Single</option><option value="Multiple">Multiple</option>')
+                  reload_select2();
+              }
+          });
+    }
+    
+    function getSectionsRoutine( course_name )
+    {
+        j.ajax({
+              url: '/dashboards/get_sections/',
+              data: {class_name: course_name },
+              type: 'POST',
+              success: function(data){
+                  j("#sections_routine").html(data);
+                  //j("#report_type").html('<option value="Single">Single</option><option value="Multiple">Multiple</option>')
+                  reload_select2();
+              }
+          });
+    }
+  
+    function getData( val )
+    {
+      if ( val == "0" )
+      {
+          j.ajax({
+              url: '/dashboards/get_course_report/',
+              type: 'POST',
+              success: function(data){
+                  j("#report_by").css("width", "100%");
+                  j("#department-subject").html(data);
+                  j("#report_type_container").hide();
+                  reload_select2();
+              }
+          });
+      }
+      else if ( val == "" )
+      {
+          j("#report_by").css("width", "50%");
+          j("#report_type_container").show();
+          j("#department-subject").html("");
+          j("#report_type").html('<option value="">Report Type</option><option value="Line">Line</option><option value="Bar">Bar</option>')
+          reload_select2();
+          
+          j("#graph_div").html('<canvas id="attendance_chart"></canvas>');
+            var lineChartData = {
+                labels : labels,
+                datasets : [
+                        {
+                                label: "Present",
+                                fillColor : "rgba(122, 164, 78,0.2)",
+                                strokeColor : "rgba(122, 164, 78,1)",
+                                pointColor : "rgba(122, 164, 78,1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(220,220,220,1)",
+                                data : present
+                        },
+                        {
+                                label: "Absents",
+                                fillColor : "rgba(231, 76, 60, 0.2)",
+                                strokeColor : "rgba(231, 76, 60, 1)",
+                                pointColor : "rgba(231, 76, 60, 1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(151,187,205,1)",
+                                data : absent
+                        }
+                ]
+            };
+            var ctx = document.getElementById("attendance_chart").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                    responsive: true
+            });
+      }
+    }
+  
+  
+    function loadRoutine( )
+    {
+        var type = "filter";
+        var val = j("#sections_routine").val();
+        var routine_for_section = 1;
+        var val_courses = j("#courses_routine").val();
+        if ( val == "" || typeof(val) == "undefind" ||  typeof(val) == 'null' || val == null)
+        {
+            return "";
+        }
+        if ( val == "0")
+        {
+            routine_for_section = 0;
+        }
+        j("#routine_div").html('<img alt="Loading_spinner" id="loading_routine_all" src="/images/loading_spinner.gif?1489298285" style="padding-left: 35%; padding-top: 10%; padding-bottom:10%;" border="0" align="absmiddle">');
+        j.ajax({
+          url: '/dashboards/get_all_routines/',
+          data: {section_id : val, routine_for_section: routine_for_section, course_id: val_courses, filter_enable: 1},
+          type: 'POST',
+          success: function(data){
+              j("#routine_div").html(data);
+          }
+      });
+    }
+  
+    function graphModify( )
+    {
+      var type = "filter";
+      var val = j("#sections_dashboard").val();
+      var graph_for_section = 1;
+      var val_courses = j("#courses_dashboard").val();
+      if ( val == "" || typeof(val) == "undefind" ||  typeof(val) == 'null' || val == null)
+      {
+          return "";
+      }
+      if ( val == "0")
+      {
+          graph_for_section = 0;
+      }
+      j.ajax({
+          url: '/dashboards/get_graph_class/',
+          data: {section_id : val, graph_for_section: graph_for_section, course_id: val_courses},
+          type: 'POST',
+          success: function(data){
+              if ( data.indexOf('~~~') != -1 )
+              {
+                var values = [];
+                var dataset_for_graph = {};
+                var dataset = [];
+                var n = new Object();
+                var a_chart_data = data.split('~~~');
+                if ( a_chart_data.length == 2 )
+                {
+                  var present = a_chart_data[0];
+                  var absent = a_chart_data[1];
+                  if ( present.indexOf("+++") != -1 && absent.indexOf("+++") != -1 )
+                  {
+                      var a_present = present.split("---");
+                      var a_absent = absent.split("---");
+                      var i = 0;
+                      var html = '<div id="calendar-legend">';
+                      for( var l = 0; l<a_present.length; l++ )
+                      {
+                            var a_present_info = a_present[l].split("+++");
+                            var color_present = getRandomElementFromArray(colors);
+                            var color_absent = getRandomElementFromArray(colors);
+                            html += '<div id="legend-entry">';
+                            html += '<div id="legend-text" style="font: 400 14px/1.2 \'Sansita one\', serif; padding-bottom: 4px;">' + type.capitalizeFirstLetter() + ': ' + a_present_info[0] + '</div>';
+                            html += '<div id="legend-symbol"> <div style="background:' + color_present +';" class="legend-icon"></div></div>';
+                            html += '<div id="legend-text" style="padding-left: 15px;">Present</div>';
+                            html += '<div id="legend-symbol"> <div style="background:' + color_absent +';" class="legend-icon"></div></div>';
+                            html += '<div id="legend-text" style="padding-left: 15px;">Absent</div>';
+                            html += '</div>';
+                            html += '<div style="clear: both; height: 10px;"></div>';
+                            var a_absent_info = a_absent[l].split("+++");
+                            var present_data = a_present_info[1].split(",,,");
+                            var absent_data = a_absent_info[1].split(",,,");
+                            var present_rgb = hexToRgb(color_present);
+                            var absent_rgb = hexToRgb(color_absent);
+                            dataset_for_graph = {
+                                label: "Present",
+                                fillColor : "rgba(" + present_rgb.r + ", " + present_rgb.g + ", " + present_rgb.b + ",0.2)",
+                                strokeColor : "rgba(" + present_rgb.r + ", " + present_rgb.g + ", " + present_rgb.b + ",1)",
+                                pointColor : "rgba(" + present_rgb.r + ", " + present_rgb.g + ", " + present_rgb.b + ",1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(" + present_rgb.r + "," + present_rgb.g + "," + present_rgb.b + ",1)",
+                                data : present_data
+                            };
+                            dataset[i] = dataset_for_graph
+                            i++;
+                            dataset_for_graph = {
+                                label: "Absent",
+                                fillColor : "rgba(" + absent_rgb.r + ", " + absent_rgb.g + ", " + absent_rgb.b + ",0.2)",
+                                strokeColor : "rgba(" + absent_rgb.r + ", " + absent_rgb.g + ", " + absent_rgb.b + ",1)",
+                                pointColor : "rgba(" + absent_rgb.r + ", " + absent_rgb.g + ", " + absent_rgb.b + ",1)",
+                                pointStrokeColor : "#fff",
+                                pointHighlightFill : "#fff",
+                                pointHighlightStroke : "rgba(" + absent_rgb.r + "," + absent_rgb.g + "," + absent_rgb.b + ",1)",
+                                data : absent_data
+                            };
+                            dataset[i] = dataset_for_graph
+                            i++
+                      }
+                      html += '</div>';
+                      j("#graph_div").html('<canvas id="attendance_chart"></canvas>');
+                      j("#graph_div").append(html);
+                      
+                      var lineChartData = {
+                              labels : labels,
+                              datasets : dataset
+                      }
+                      var ctx = document.getElementById("attendance_chart").getContext("2d");
+                      window.myLine = new Chart(ctx).Line(lineChartData, {
+                              responsive: true
+                      });
+                  }
+                  else
+                  {
+                      alert("No Data found to show");
+                  }
+                }
+                else
+                {
+                    alert("No Data found to show");
+                }
+              }
+              else
+              {
+                alert("No Data found to show");
+              }
+          }
+      });
+  }
+  
+    function getRandomElementFromArray(array){
+            var ranIndex = Math.floor(Math.random() * array.length);
+            return array[ranIndex];
+    }
+
+    function hexToRgb(hex) {
+        // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    String.prototype.capitalizeFirstLetter = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+    
+    j(document).ready(function(){
+        j(document).off('keyup', '#filter_dashboard').on('keyup', '#filter_dashboard', function(e){
+            var val = this.value;
+            if ( j.trim(val).length < 3 )
+            {
+                j("ul#list_to_assign li").each(function(){
+                    j(this).hide();
+                });
+            }
+            else
+            {
+                j("ul#list_to_assign li").each(function(){
+                    j(this).hide();
+                });
+                var k = 0;
+                j("ul#list_to_assign li").each(function(){
+                    var data = j.trim(j(this).find('p.' + j("#search_by").val()).html());
+                    if ( data.toLowerCase().indexOf(val.toLowerCase()) != -1 )
+                    {
+                        if ( k < 10 )
+                        {
+                          j(this).show();
+                        }
+                        k++;
+                    }
+                });
+            }
+        });
+        
+        j(document).off('change', '#search_by').on('change', '#search_by', function(e){
+            var val = j("#filter_dashboard").val();
+            if ( j.trim(val).length < 3 )
+            {
+                j("ul#list_to_assign li").each(function(){
+                    j(this).hide();
+                });
+            }
+            else
+            {
+                j("ul#list_to_assign li").each(function(){
+                    j(this).hide();
+                });
+                j("ul#list_to_assign li").each(function(){
+                    var data = j.trim(j(this).find('p.' + j("#search_by").val()).html());
+                    if ( data.toLowerCase().indexOf(val.toLowerCase()) != -1 )
+                    {
+                        j(this).show();
+                    }
+                });
+            }
+        });
+        
+        j(".r2").each(function(){
+            var this_height = j(this).outerHeight();
+            var tt_id = this.id.replace("tte_r2_","");
+            var tt1_height = j("#tte_r1_" + tt_id).outerHeight();
+            var tt3_height = j("#tte_r3_" + tt_id).outerHeight();
+            var height_to_use = this_height;
+            var change_height = false;
+            if ( height_to_use < tt1_height )
+            {
+                change_height = true;
+                height_to_use = tt1_height;
+            }
+            if ( height_to_use < tt3_height )
+            {
+                change_height = true;
+                height_to_use = tt3_height;
+            }
+            if ( change_height )
+            {
+              j(this).height(height_to_use);
+            }
+        });
+        
+        j(document).off("click",".lplan").on("click",".lplan", function(){
+            var id = this.id.replace("expand_", "");
+            ICON = j(this).children('i'),
+            BOX_CONTENT = j("#lesson_plan_" + id);
+        
+            // fix for some div with hardcoded fix class
+            BOX_CONTENT.slideToggle(200); 
+
+            ICON.toggleClass('fa-chevron-up fa-chevron-down');
+        });
+        
+        
+        j(document).off("click",".add_lesson_plan_a").on("click",".add_lesson_plan_a", function(){
+            var id = this.id.replace("add_lesson_plan_a_", "");
+            BOX_CONTENT = j("#add_lesson_plan_div_" + id);
+            
+            var text = j(this).text();
+            j(this).text(
+                text == "(Add Lesson Plan for this class)" ? "(Cancel)" : "(Add Lesson Plan for this class)");
+            // fix for some div with hardcoded fix class
+            BOX_CONTENT.slideToggle(200); 
+        });
+        
+        j(document).off("click",".add_lesson_plan_a").on("click",".add_lesson_plan_a", function(){
+            var id = this.id.replace("add_lesson_plan_a_", "");
+            BOX_CONTENT = j("#add_lesson_plan_div_" + id);
+            
+            var text = j(this).text();
+            j(this).text(
+                text == "(Add Lesson Plan for this class)" ? "(Cancel)" : "(Add Lesson Plan for this class)");
+            // fix for some div with hardcoded fix class
+            BOX_CONTENT.slideToggle(200); 
+        });
+        
+        j(document).off("click",".lesson_plan_add").on("click",".lesson_plan_add", function(){
+           var id = this.id.replace("add_lesson_plan_", "");
+            j.ajax({
+                url: '/dashboards/save_lessonplan/',
+                data: { 
+                  tte_id : id,
+                  title : j('#lesson_title_' + id).val(),
+                  subject_id : j('#subject_id_' + id).val(),
+                  content : j('#lesson_content_' + id).val(),
+                  author_id : '<%= @current_user.id %>',
+                  publish_date : j('#publish_date_' + id).val(),
+                  is_show : 1,
+                  lessonplan_type : j('#lesson_plan_type_' + id).val()
+                },
+                type: 'POST',
+                success: function(data){
+                    if ( data.indexOf("errors") != -1 )
+                    {
+                        alert(data.replace("errors:",""));
+                    }
+                    else
+                    {
+                        window.postMessage(id + "++" + j("#is_running_" + id).val() + "++" + data, window.location.protocol + "//" + window.location.hostname);
+                        
+
+                        if ( j("#is_running_" + id).val() == "0" )
+                        {
+                            alert("Save Successfully");
+                            var BOX_CONTENT = j("#add_lesson_plan_div_" + id);
+                            BOX_CONTENT.slideToggle(200); 
+                        }
+                    }
+                }
+            });
+        });
+    });
+    
+    window.addEventListener("message", receiveMessage, false);
+    
+    	if (window.addEventListener){
+          addEventListener("message", receiveMessage, false)
+        } else {
+          attachEvent("onmessage", receiveMessage)
+        }
+
+    
+    function receiveMessage(event)
+    {
+        var data = event.data;
+        var a_data = data.split("++");
+        var id = a_data[0];
+        var is_running = a_data[1];
+        var html = a_data[2];
+        
+        if ( is_running == "1" )
+        {
+            j("#lesson_list_" + id).prepend(html);
+            j('#lesson_title_' + id).val("");
+            j('#lesson_content_' + id).val("");
+        }
+        else
+        {
+            j("#lesson_list_" + id).prepend(html);
+            j("#add_lesson_plan_a_" + id).text("(Add Lesson Plan for this class)");
+            j('#lesson_title_' + id).val("");
+            j('#lesson_content_' + id).val("");
+        }
+    }
+    
+    function getRoomData(val)
+    {
+        if ( parseInt(val) > 0 )
+        {
+            j("#loading_room_info").show();
+            j.ajax({
+                url: '/dashboards/get_room_information/',
+                data: { 
+                  room_id : val
+                },
+                type: 'POST',
+                success: function(data){
+                    j("#loading_room_info").hide();
+                    if ( data.indexOf("errors") != -1 )
+                    {
+                        alert(data.replace("errors:",""));
+                    }
+                    else
+                    {
+                        j("#room_div").html(data);
+                    }
+                }
+            });
+      }
+      else
+      {
+        j("#loading_room_info").show();
+        j.ajax({
+              url: '/dashboards/get_rooms_info/',
+              data: { },
+              type: 'POST',
+              cache: true,
+              success: function(data){
+                  j("#loading_room_info").hide();
+                  j("#room_info").html(data);
+                  reload_select2();
+              }
+        });
+      }
+  }
+</script>
+
+<% if @current_user.admin? %>  
+  <%= javascript_include_tag 'admin_dashboards.js' %>
+<% end %>
+

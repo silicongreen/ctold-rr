@@ -1,0 +1,53 @@
+<div class="content-div  bg-light grey-border shadow">
+  <% form_for @additional_setting,:url=>additional_setting_path(@owner_type,@owner_id,@additional_setting.class.name.underscore),:html=>{:class=>'form'}  do |f| %>
+    <% setting_fields = @additional_setting.class::SETTING_FIELDS %>
+    <% if setting_fields.is_a? Array %>
+      <% setting_fields.each do|s| %>
+        <fieldset>
+          <%= f.label s %>
+          <% if s.to_s=="password" %>
+            <%= password_field_tag "#{child_class}[settings][#{s}]", @additional_setting.settings.nil? ? "" : @additional_setting.settings["#{s}"] %>
+          <% else %>
+            <%= text_field_tag "#{child_class}[settings][#{s}]", @additional_setting.settings.nil? ? "" : @additional_setting.settings["#{s}"] %>
+          <% end %>
+        </fieldset>
+      <% end %>
+    <% elsif setting_fields.is_a? Hash %>
+      <% setting_fields.each do|k,val| %>
+        <% if val.count > 0 %>
+          <% unless k.to_s == "select" or k.to_s == "text" %>
+            <fieldset>
+              <%= k.to_s.titleize %>
+            </fieldset>
+          <% end %>
+          <% val.each do|v| %>
+            <% if k.to_s == "select" %>
+              <fieldset>
+                <%= f.label v %>
+                <%= select_tag "#{child_class}[settings][#{k}][#{v}]", options_for_select([["Select a #{v.to_s.humanize}",""]]+@additional_setting.send("fetch_#{v.to_s}"),(@additional_setting.settings.nil? ? nil : @additional_setting.settings["#{k}"]["#{v}"])) %>
+              </fieldset>
+            <% else %>
+              <fieldset>
+                <%= f.label v %>
+                <% if v.to_s=="password" %>
+                <%= password_field_tag "#{child_class}[settings][#{k}][#{v}]", @additional_setting.settings.nil? ? "" : @additional_setting.settings["#{k}"]["#{v}"] %>
+                <% else %>
+                <%= text_field_tag "#{child_class}[settings][#{k}][#{v}]", @additional_setting.settings.nil? ? "" : @additional_setting.settings["#{k}"]["#{v}"] %>
+              <% end %>
+              </fieldset>
+            <% end %>
+          <% end %>
+        <% else %>
+          <fieldset>
+            <%= f.label k %>
+            <%= text_field_tag "#{child_class}[settings][#{k}]", @additional_setting.settings.nil? ? "" : @additional_setting.settings["#{k}"] %>
+          </fieldset>
+        <% end %>
+      <% end %>
+    <% end %>
+    <fieldset>
+      <%= f.submit 'Save', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+    </fieldset>
+  <% end %>
+</div>
+

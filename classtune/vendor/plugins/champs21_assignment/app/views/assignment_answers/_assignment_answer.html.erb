@@ -1,0 +1,9 @@
+  <br/>
+  <br/>
+  <% if @assignment_answer.status == "REJECTED" %>
+    <b>Status : <%= "#{t('rejected')}"%></b>
+  <% elsif @assignment_answer.status=="ACCEPTED" %>
+    <b>Status : <%= "#{t('hostel_accepted')}"%></b>
+  <% else  %>
+    <b>Status : Pending</b>
+  <% end %>

@@ -1,0 +1,19 @@
+ subject:
+    overrides:
+      batch_id: "Batch Name"
+      elective_group_id: "Elective Group Name"
+    associations:
+     - :batch
+     - :elective_group
+    associated_columns:
+      elective_group: "name"
+    filters:
+     - :is_deleted
+     - :credit_hours
+     - :prefer_consecutive
+     - :amount
+     - :school_id
+    map_combination:
+     batch: "modified_full_name"
+
+# Please refer to employee.yml for basic concept

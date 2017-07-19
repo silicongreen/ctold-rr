@@ -1,0 +1,93 @@
+fr:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "Utilisateur"
+        title: "Titre"
+        description: "Description"
+        status: "État"
+        due_date: "Date d'échéance"
+
+      task_assignee:
+        assignee_id: "Cessionnaire"
+
+      task_comment:
+        user_id: "Utilisateur"
+        description: "Description"
+        task_id: "Tâche"
+    errors:
+      messages:
+        invalid_status: "Etat non valide"
+        should_be_less_than: "doit être inférieur à 500 kb"
+        should_be_assigned_only_once: "devrait être attibué qu'une seule fois."
+        cannot_be_before_start_date: "Ne peut pas être avant la date du début"
+        should_be_in_the_future: "devrait être à l'avenir"
+  
+  required_fields: "Champs obligatoires."
+  edit_privileges: "Modifier les privilèges"
+  master_admin: "Administrateur principal"
+  tasks_label: "Tâches"
+  TaskManagement: "Gestion des tâches"
+  download_attachment: "Télécharger une pièce jointe"
+  new_task: "Nouvelle tâche"
+  new_task_description: "Description de la nouvelle tâche"
+  task_status_changed: "Etat de la tâche changé"
+  task_status_changed_to: "Etat de la tâche changé à"
+  task_updated: "Tâche mise à jour"
+  task_comment_deleted_successfully: "Le commentaire de la tâche a été supprimé avec succès"
+  task_management: "Gestion des tâches"
+  
+  tasks:
+    
+    max_size: "500KB max"
+    tasks_assigned_to_me: "Les tâches attribuées par moi"
+    deleted_user: "Utilisateur supprimé"
+    assigned: "Attribué"
+    completed: "Terminé"
+    tasks_assigned_by_me: "Tâches attribuées par moi"
+    attach_a_file: "Joindre un fichier (max 500KB)"
+    select_principals: "Sélectionner des directeurs"
+    select_master_app_users: "Sélectionner des utilisateurs d'application principale"
+    select_school: "Sélectionner une école"
+    select_course: "Sélectionner un cours"
+    select_members: "Sélectionner des membres"
+    members: "Membres"
+    select_employees: "Sélectionner des employés"
+    task_status: "Etat de la tâche"
+    task_text: "Tâche"
+    task_creation_successful: "La tâche a été créée avec succès"
+    task_updation_successful: "La tâche a été mise à jour avec succès"
+    no_permission_to_view_task: "Vous n'avez pas la permission de voir cette tâche"
+    task_deletion_successful: "La tâche a été supprimée avec succès"
+    no_permission_to_delete_task: "Vous n'avez pas la permission de supprimer cette tâche"
+    no_permission_to_download_file: "Vous n'avez pas la permission de télécharger ce fichier"
+    status_updated_successfully: "L'etat de cette tâche a été mis à jour avec succès."
+    all_tasks: "Toutes les tâches"
+    filter_by: "Filtrer par "  
+    create_new_task: "Créer une nouvelle tâche"
+    edit_task: "Modifier cette tâche"
+    view_task: "Voir les tâches"
+    delete_confirmation: "Êtes-vous sûr que vous voulez supprimer cette tâche?"
+    mark_as_completed: "Marquer comme terminée"
+    mark_as_assigned: "Marquer comme attribuée"
+    by: "par "
+    no_file_attached: "Aucun fichier attaché."
+    post_an_update: "Poster une mise à jour"
+    created_on: "Créée le "
+    attach_a_file: "Attacher un fichier "
+    updates: "Mises à jour"
+    no_updates: "Aucune mise à jour."
+    assigned_to: "Assignée à"
+    listing_assignees: "Liste des cessionnaires"
+    emp_code_admssn_no: "code Emp / N° d'Admission."
+    dept_name_course_name: "Nom de Dépt / Nom du cours"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "Supprimer des utilisateurs"
+    delete_comment_confirmation: "Êtes-vous sûr que vous voulez supprimer cette mise à jour?"
+    posted: "posté "
+    no_permission_to_download_file: "Vous n'avez pas la permission de télécharger ce fichier"
+    update_creation_successful: "La mise à jour a été postée avec succès"
+

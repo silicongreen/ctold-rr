@@ -1,0 +1,168 @@
+fr: # locale
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "Route"
+        vehicle_id: "Véhicule"
+
+      transport_fee_collection:
+        name: "Nom"
+        start_date: "Date du début"
+        end_date: "Date fin"
+        due_date: "Date d'échéance"
+
+      route:
+        destination: "Destination"
+        cost: "Prix"
+
+      vehicle:
+        vehicle_no: "Numéro de véhicule"
+        main_route: "Route principale"
+        no_of_seats: "Nombre de sièges"
+    errors:
+      messages:
+         travellers_exist_cannot_delete_vehicle: "Des voyageurs existent. On ne peut pas supprimer le véhicule."
+         travellers_exist_in_the_main_route: "Des voyageurs existent pour cette route principale. On ne peut pas modifier le véhicule."
+         main_route_contains_travellers: "La route principale contient des voyageurs. On ne peut pas modifier."
+         end_date_before_start_date: "Date fin avant date de début"
+         due_date_before_start_date: "Date d'échéance avant date de début"
+         due_date_before_end_date: "Date d'échéance avant date fin"
+
+         
+#common
+  transport_text: "Transport"
+  transport_fee_text: "Frais de Transport"
+  destination: "Destination"
+  route: "Route"
+  vehicle_details: "Détails de véhicule"
+  select_main_route: "Sélectionner la route principale"
+  main_route: "Route principale"
+  vehicle_no: "Numéro de véhicule"
+  fare: "Prix de billet"
+  student_did_not_avail_transport: "L'élève n'a pas recouru à la facilité de transport"
+  employee_did_not_avail_transport: "L'employé n'est pas recouru à la facilité de transport"
+  transport_label: "Transport"
+  transport_account: "Compte de transport"
+  manage_transport: "Gérer le Transport"
+  TransportAdmin: "Admin du transport"
+  available_seats: "Sièges disponibles"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "Véhicules"
+  
+  #transport controller translation
+  transport:
+    total_no_of_seats: "Nombre total des sièges"
+    available_seats: "Sièges disponibles"
+    all_seats_filled_in_vehicle: "Tous les sièges occupés dans le véhicule"
+    select_destination: "Sélectionner une destination"
+    select_vehicle: "Sélectionner un véhicule"
+    add_transport_text: "Ajouter un transport"
+    vehicle: "Véhicule"
+    user_details: "Détails sur l'utilisateur"
+    add_transport_details: "Ajouter des détails sur le transport"
+    set_routes: "Configurer les routes"
+    set_routes_for_vehicle: "Configurer les routes pour les véhicules"
+    vehicles: "Véhicules"
+    transport_details_text: "Détails sur le transport"
+    transport_fee_details: "Détails du frais de transport"
+    transport_details: "Détails sur le transport"
+    transportation_details: "Détails sur la transportation"
+    select_a_vehicle: "Sélectionner un véhicule"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "occupation du siège"
+
+    flash1: "Bus attribué avec succès"
+    flash2: "Le transport a été supprimé"
+    flash3: "Bus modifé avec succès"
+
+ #transport controller translation
+  transport_fee:
+    select_batch: "Sélectionner un lot"
+    create_fee_collection_dates: "Créer une date de collection de frais"
+    select_details_for: "Sélectionner des détails pour"
+    bus_fare: "PRIX DE BILLET DE BUS"
+    fine_paid: "Amende payée"
+    transport_fee_name: "Nom du frais de transport"
+    include_employee: "Inclure les employés?"
+    no_students_in_selected_batch: " Nombre d'étudiants dans le lot sélectionné"
+    edit_transport_fee_collection: "Modifier la collection de frais de transport"
+    select_fee_collection_date: "Sélectionner la date de collection de frais"
+    transport_fee_submission: "Soumission des frais de transport"
+    manage_fee_collection: "Gérer les collections de frais"
+    student_defaulters: "élèves défaillants"
+    employee_defaulters: "Employé défaillants"
+    select_class: "Sélectionner une classe"
+    fee_collection: "Collection de frais"
+    please_select_a_batch_or_emp: "SVP, sélectionner un lot ou un employé"
+    name_cant_be_blank: "Le nom ne peut pas être vide"
+    create_new_fee_collection_dates: "Crée des nouvelles dates de collection de frais"
+    display_fee_collection_dates: "Affiche les dates de collection de frais"
+    set_transport_fee_collection_date: "Configurer la date de collection de frais de transport"
+    employee_transport_fee_collection: "Collection de frais de transport de l'employé"
+    employee_fees_report: "Rapport des frais des employés"
+    employee_transaction_report: "RAPPORT DE TRANSACTION DES EMPLOYÉS "
+    transport_fee: "Frais de transport"
+    transaction_report: "Rapport de transaction"
+    create_and_view_fee_collection: "Créer et voir les collections de frais"
+    search_for_users_to_pay: "Chercher des utilisateurs pour payer le frais de transport"
+    users_with_fees_due: "Les utilisateurs avec droit de greffe "
+    view_transport_fee_collection_dates: "Voir les dates de collection de frais de transport"
+    select_a_user_type: "Sélectionner un type d'utilisateur"
+    select_one: "Sélectionner Un"
+    transport_fees_report: "RAPPORT DE FRAIS DE TRANSPORT"
+
+    flash1: "Date de collection de frais de transport mise à jour avec succès"
+    flash2: "Collection de frais de transport mise à jour avec succès"
+    flash3: "Le frais de transport a été supprimé"
+    flash4: "Supprimée avec succès"
+    flash5: "Désolé! Vous ne pouvez pas supprimer une date de collection avec transactions."
+     
+#routes controller translation
+
+  routes:
+    cost: "Prix"
+    new_main_route: "Nouvelle itinéraire principale"
+    edit_route_details: "Modifier les détails sur l'itinéraire"
+    route_details: "Détails sur l'itinéraire"
+    add_route: "Ajouter une itinéraire"
+    add_new_route: "Ajouter une nouvelle itinéraire"
+    view_route: "Voir l'itinéraire"
+    route_detail: "Détail sur l'initéraire"
+
+    flash1: "Itinéraire ajoutée avec succès."
+    flash2: "Itinéraire mise à jour avec succès."
+    flash3: "Itinéraire supprimée avec succès."
+    flash4: "On ne peut pas supprimer l'initéraie. SVP, supprimez d'abord toutes les transportations."
+    flash5: "On ne peut pas supprimer l'itinéraire. SVP, supprimez d'abord tous les véhicules."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "Nombre de sièges"
+    add_new_vehicle: "Ajouter un nouveau véhicule"
+    select_main_route: "Sélectionner l'itinéraire principale"
+    add_vehicle: "Ajouter un véhicule"
+    edit_vehicle_details: "Modifier les détails sur le véhicule"
+    deleted_route: "supprimer l'itinéraire"
+
+    flash1: "Véhicule ajouté avec succès."
+    flash2: "Détails sur le véhicule mis à jour avec succès."
+    flash3: "Véhicule supprimé avec succès"
+
+  autosuggest_menu:
+    transport_text: "Transport"
+    set_routes: "Configurer les itinéraires"
+    add_routes: "Ajouter des itinéraires"
+    vehicles: "Véhicules"
+    add_vehicle: "Ajouter un véhicule"
+    search_transport_details: "Rechercher des détails sur le transport"
+    transportation_details: "Détails sur la transportation"
+    transport_fee: "Frais de transport"
+    transport_fee_collections: "Collections de frais de transport"
+    view_transport_fee_collection: "Voir la collection de frais de transport"
+    transport_fee_search: "Recherche de frais de transport"
+    transport_fee_student_defaulters: "Frais de transport des élèves défaillants"
+    transport_fee_employee_defaulters: "Frais de transport des employés défaillants"

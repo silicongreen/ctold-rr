@@ -1,0 +1,49 @@
+<% unless event.nil? %>
+  <div class="partial_event">
+
+    <%= link_to "<h2 class='f'>EVENT</h2>", :controller => "calendar", :action => "list_events" %>
+
+    <div class="notice_data_box">     
+      <div class="portlet-subcontent">           
+        <div class="timetable_left" style="margin-bottom:20px;">
+          <!--<img src="http://kinderland.champs21.com/images/icons/subjects/it.png" width="30">-->
+          <%
+          #event_category = EventCategory.find(event.event_category_id) 
+
+        %>
+
+          <% unless event.event_image_file_name.nil? %>
+            <%= image_tag event.event_image.url(:dashboard), :alt => event.title %>
+          <% end %>
+
+
+        </div>
+        <a href="/event/event_details/<%= event.id %>">
+          <div class="timetable_right">
+            <div class="subcontent-header themed_text"><%= event.title %></div>
+            <div class="subcontent-date">Start at : <%= event.start_date.strftime("%A, %d %B %Y %l:%M %p") %></div>  
+            <% if event.start_date != event.end_date %>
+              <div class="subcontent-date">End at : <%= event.end_date.strftime("%A, %d %B %Y %l:%M %p") %> </div>   
+            <% end %>              
+            <div class="subcontent-info" style="margin-top:15px; max-height: 105px; overflow: hidden;">
+              <%= event.description %>
+              <% if event.is_holiday == 1  %>
+                <p>Its a Holiday</p>
+              <% end %>              
+            </div>           
+          </div>
+        </a>
+      </div> 
+      <div class="viewmore">
+        <%= link_to "View More", :controller => "calendar", :action => "list_events" %>
+      </div>
+    </div> 
+  </div>
+<% end %>
+
+<style type="text/css">
+  .partial_event a
+  {
+    text-decoration: none;
+  }
+</style>  

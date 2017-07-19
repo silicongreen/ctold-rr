@@ -1,0 +1,142 @@
+<%= stylesheet_link_tag 'jquery-ui.css' %>
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">Feeds Category</h1>
+  <input type="button" name="arrange_category" id="arrange_category" disable_with="Please wait..." class="arrange_category button-red float-right" value="Save Priority" />
+</fieldset>
+<div class="content-div container-width">
+  <div class='content-list'>
+    <% form_for @feed_category,:url=>{:action=>:save_priorities},:method=>:post,:html=>{:class=>"form"} do |f| %>
+    <fieldset>
+      <div class="ajax_msg">
+        Successfully Saved
+      </div>  
+    </fieldset>
+    <div id="main_container" class="main_container container_16 clearfix">
+      
+      <div class="flat_area grid_16">
+
+          <div class="column">
+              <% @feeds_category.each do |feed_category| %>
+              <div class="portlet">
+                  <div class="portlet-header" style="background:#FFF" id="category_<%=  feed_category.id %>">
+                      <span class='cat' id="category_<%=  feed_category.id %>"></span>
+                      <%=  feed_category.name %>
+                  </div>
+                  <div class="portlet-content"></div>
+              </div>
+              <% end %>
+          </div>
+     </div>
+    </div>
+    <% end %>
+    
+  </div>
+</div>
+
+
+ <style>
+    .form {margin:0px !important;}
+    .column { width:100%; float: left; }
+    .portlet { margin: 0 1em 1em 0; }
+    .portlet-header { margin: 0.3em;padding-top: 4px; padding-bottom: 8px; padding-left: 0.2em; }
+    .portlet-header .ui-icon { float: right; cursor: pointer; }
+    .portlet-content { padding: 0.4em; }
+    .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+    .ui-sortable-placeholder * { visibility: hidden; }
+    #button_div { width: 470px; clear: both; float: left; padding-bottom: 100px; }
+    #button_div input{ cursor: pointer; }
+    .ui-dialog-titlebar-close{
+        display: none;
+    }
+    fieldset input.button-red
+    {
+      background-color: #9a0000;
+      color: white;
+      display: block;
+      height: 27px;
+      margin-right: 17px;
+      padding: 5px 10px 26px !important;
+      text-decoration: none;
+      
+    }
+    .ajax_msg
+    {
+        display:none;
+        clear:both;
+        padding:5px 0px;
+        color:#006d29;
+        
+    }
+</style>
+<script>
+    var j = jQuery.noConflict();
+    j(function() {
+       
+        
+        j( ".column" ).sortable({
+            connectWith: ".column"
+        });
+
+       j( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+                       .find( ".portlet-header" )
+                       .addClass( "ui-widget-header ui-corner-all" )
+                       .end()
+                       .find( ".portlet-content" )
+                       .css("display","none");
+                       
+        j( ".portlet-header .ui-icon" ).click(function() 
+        {
+            if ( j(this).hasClass('opened-once') )
+            {
+                var obj = this;
+                j( obj ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                j( obj ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+            }
+            else
+            {
+                var id = this.id.replace("category_","");
+                var obj = this;
+                j( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                j.post('<?php echo base_url();?>admin/categories/sub_categories', {category_id: id,tds_csrf: $('input[name$="tds_csrf"]').val()}, function(data){
+                    j( obj ).parents( ".portlet:first" ).find( ".portlet-content" ).html(data);
+                    j( obj ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+                    j( obj ).addClass("opened-once");
+                    j( ".sortable" ).sortable({
+                         placeholder: "ui-state-highlight"
+                    });
+                    j( ".sortable" ).disableSelection();
+                });
+            }
+        });
+        
+        j("#arrange_category").on("click", function(){
+            var category_ids = "";
+            j( ".portlet-header .cat" ).each(function(){
+                var id = this.id.replace("category_","");
+                if ( id.length > 0 )
+                {
+                    category_ids += id + ",";
+                }
+            });
+        
+            var obj = j(this);
+            var current_value = obj.val();
+            
+            category_ids = category_ids.substr(0, category_ids.length - 1);
+            j('body').addClass('waiting');
+            obj.val("Please wait...");
+            j.post('/feeds/save_priorities', {category_ids: category_ids,authenticity_token: j('input[name="authenticity_token"]').val()}, function(data){
+                    j('body').removeClass('waiting');
+                    j(".ajax_msg").show("slow");
+                    obj.val(current_value);
+                    setTimeout(function() {
+                        j(".ajax_msg").hide("slow");
+                    }, 1000);
+                    
+            });
+        });
+        
+        j( ".column" ).disableSelection();
+    });
+</script>
+

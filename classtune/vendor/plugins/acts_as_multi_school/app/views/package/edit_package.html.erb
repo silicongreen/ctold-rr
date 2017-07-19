@@ -1,0 +1,103 @@
+
+<fieldset class="margin-bottom-20">
+    <h1 class="content-head">Edit Package</h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+  <% form_for @package,:url=>{:action=>:edit_package_data,:id=>@package_modules_data.id},:method=>:post,:html=>{:class=>"form"} do |f| %>
+    <fieldset>
+      <%= error_string_for(f) %>
+      <%= f.error_message_on :base %>
+    </fieldset>
+    
+    <fieldset>
+      <%= f.label :name %>
+      <%= f.text_field :name, :value => @package_modules_data.name %>
+    </fieldset>
+    
+    <fieldset>
+      <th>Available Modules</th>
+      <div class="float-right margin-right-30 link-box-red"><a href="#" id="select_all_modules">All</a><p class="vertical-line">|</p><a href="#" id="select_no_modules">None</a></div>
+    </fieldset>
+    <% @menu_links_main.each do |menu_link_main| %>
+      <% b_checked = false %>
+      <% @package_modules_data.package_menus.each do |package_menu| %>
+        <%if package_menu.menu_id == menu_link_main.id %>
+          <% b_checked = true %>
+        <% end %>  
+      <% end %> 
+      <div class="plugin-cell main-bg-color">
+        <%= check_box_tag "package[available_menu_link_main][menu_link][]",menu_link_main.name, b_checked,:id=>"package_"+menu_link_main.id.to_s, :class=>"available_modules"  %> <label for="school_<%= menu_link_main.name %>"><%= t(menu_link_main.name).titleize %></label>  
+      </div>
+    <% end %>
+    <%= (hidden_field_tag "school[available_plugin_attributes][id]", @school.available_plugin.id) unless @school.available_plugin.new_record?%>
+    <% @school_group.allowed_plugins.each do |plugin| %>
+      <% @selected = false %>
+      <% @class_name = "available_modules" %>
+      <% b_checked = false %>
+      <% @package_modules_data.package_menus.each do |package_menu| %>
+        <%if package_menu.plugins_name == plugin %>
+          <% @selected = true %>
+        <% end %>  
+      <% end %> 
+      <% not_required_plugins = @not_required_plugins.select{|n| n == plugin} %>
+      <% required_plugins = @required_plugins.select{|n| n == plugin} %>
+      <% if not_required_plugins[0] == plugin %>
+      <div class="plugin-cell main-bg-color" style="display: none;">
+      <% @class_name = "available_modules_not" %>    
+      <% else %>
+          <% if required_plugins[0] == plugin %>
+            <% @selected = true %>
+            <div class="plugin-cell main-bg-color" style="display: none;">
+          <% else %>      
+            <div class="plugin-cell main-bg-color">
+          <% end %>      
+      <% end %>        
+        <%= check_box_tag "school[available_plugin_attributes][plugins][]",plugin, @selected, :id=>"school_"+plugin, :class=>@class_name  %> <label for="school_<%= plugin %>"><%= plugin.sub(/^champs21_/,'').titleize.titleize %></label>
+      </div>
+
+    <% end %>
+
+    <% @menu_links_childs.each do |menu_links_child| %>
+      <fieldset>
+      <th><%= t(menu_links_child['name'])  %></th>
+      <div class="float-right margin-right-30 link-box-red"><a href="javascript:;" class="select_all" id="select_all_<%= menu_links_child['name']  %>">All</a><p class="vertical-line">|</p><a href="javascript:;" class="select_none" id="select_no_<%= menu_links_child['name']  %>">None</a></div>
+      </fieldset>
+      <% menu_links_child['permission_menus'].each do |permission_menus| %>
+        <% b_checked = false %>
+        <% @package_modules_data.package_menus.each do |package_menu| %>
+          <%if package_menu.menu_id == permission_menus.id %>
+            <% b_checked = true %>
+          <% end %>  
+        <% end %>         
+        <div class="plugin-cell main-bg-color">  
+            <%= check_box_tag "package[available_permission_menus][menu_link][]",permission_menus.name, b_checked,:id=>"package_"+permission_menus.id.to_s, :class => menu_links_child['name'] %> <label for="school_<%= permission_menus.name %>"><%= t(permission_menus.name).titleize %></label>  
+        </div>
+      <% end %>
+    <% end %>
+
+
+    <fieldset>
+      <%= f.submit 'Update', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+    </fieldset>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  j("#select_all_modules").click(function(){
+    j('.available_modules').attr("checked","true");
+  });
+  
+  j("#select_no_modules").click(function(){
+    j('.available_modules').removeAttr("checked");
+  });
+  
+  j(".select_all").click(function(){
+    var id = this.id.replace("select_all_","");
+    j('.' + id).attr("checked","true");
+  });
+  
+  j(".select_none").click(function(){
+    var id = this.id.replace("select_no_","");
+    j('.' + id).removeAttr("checked");
+  });
+</script>

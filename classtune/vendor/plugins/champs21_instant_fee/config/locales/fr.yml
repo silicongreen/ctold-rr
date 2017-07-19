@@ -1,0 +1,62 @@
+fr:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "Montant"
+        pay_date: "Date de paiement"
+
+      instant_fee_category:
+        name: "Nom"
+        description: "Description"
+
+      instant_fee_particular:
+        name: "Nom"
+        description: "Description"
+        amount: "Montant"
+        instant_fee_category_id: "Catégorie de frais instantané"
+
+
+  payee: "Bénéficiaire"
+  reciept: "Reçu"
+  guest: "Invité"
+  guest_name: "Nom de l'invité"
+  payee_name: "Nom du bénéficiaire"
+  net_amount: "Montant Net"
+  custom: "Clientèle"
+  add_category: "Ajouter une catégorie"
+  instant_fee_text: "Frais instantané"
+  instant_fees_text: "Frains Instantanés"
+  particular_name: "Nom Particulier"
+  particular_list: "Liste Particulière"
+  pay_instant_fees: "Payer les frais instantanés"
+  select_payee: "Sélectionner un bénéficiaire"
+  create_instant_fee: "Créer un frais instantané"
+  instant_fee_reciept: "Reçu de frais instantané"
+  manage_instant_fees: "Gérer les frais instantanés"
+  category_description: "Description de la catégorie"
+  select_category_type: "Sélectionner le type de catégorie"
+  instant_fee_management: "Gestion de frais d'instance"
+  saving_problem_occured: "Enregistrer le problème survenu"
+  view_created_instant_fee: "Voir le frais instantané créé"
+  no_default_category_exist: "Aucune catégorie par défaut n'existe"
+  instant_fee_saved_succesfully: "Frais instantané enregistré avec succès"
+  instant_fees_transaction_report: "Rapport de transaction de Frais instantanés"
+  edit_instant_category_for_fees: "Modifier la catégorie pour frais instantanée"
+  create_instant_category_for_fee: "Créer une catégorie pour les frais instantanée"
+  create_instant_particular_for_fee: "Créer une particularité pour les frais instantanée"
+  update_instant_particular_for_fees: "Mettre à jour la particularité pour les frais instantanée"
+  no_default_particular_exist: " Aucune particularité par défaut n'existe sous cette catégorie"
+  are_you_want_to_delete_category: "Êtes-vous sûr de vouloir supprimer cette catégorie?"
+  are_you_want_to_delete_particular: "Êtes-vous sûr de vouloir supprimer cette particularité?"
+  instant_fee_category_created_successfully: "Catégorie de frais instantané créée avec succès"
+  instant_fee_category_updated_successfully: "Catégorie de frais instantané mise à jour avec succès"
+  instant_fee_particular_created_successfully: "Particularité de frais instantané créée avec succès"
+  instant_fee_particular_deleted_successfully: "Particularité de frais instantané supprimée avec succès"
+  instant_fee_particular_updated_successfully: "Particularité de frais instantané mise à jour avec succès"
+  InstantFee_account: "Compte de frais instantané"
+  champs21_instant_fee_module: "Module de Frais Instantané de Champs21"
+  manage_and_pay_instant_fees: "Gérer et payer les frais instantanés"
+  instant_fee_reciept: "Instant fee rciept"
+  net_amount: "Total"
+  instant_fee_payed: "Instant Fee payed successfully"

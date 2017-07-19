@@ -1,0 +1,72 @@
+gl:
+  activerecord:
+    attributes:
+
+       poll_option:
+        option: "Option"
+
+       poll_question:
+         title: "Title"
+         description: "Description"
+         poll_options: "Poll options"
+
+       poll_vote:
+         user_id: "User"
+    errors:
+      messages:
+        has_already_voted : "has already voted"
+        you_havent_selected_an_option_yet: "you haven't selected an option yet"
+        options_cant_blank : "Option can't be blank"
+
+  poll_label: "Poll"
+  poll_control_privilege: "Poll Control"
+  new_poll_created: "New Poll has been created"
+  poll_msg: "A new poll has been created at hr.champs21.com.Click the following link to go to the poll:"
+  regards: "Regards"
+  question: "Question"
+  answers: "Answers"
+  add_another: "Add another"
+  allow_other_answer: "Allow other answer"
+  open_for_polling: "Open for polling"
+  members: "Members"
+  post_poll: "Post Poll"
+  answer: "Answer"
+  online_poll: "Online Poll"
+  edit_poll: "Edit poll"
+  new_poll: "New poll"
+  view_all_polls: "View all polls"
+  listing_all_polls: "Listing all polls"
+  poll: "Poll"
+  posted_on: "Posted On"
+  votes: "Votes"
+  results: "Results"
+  vote: "Vote"
+  close: "Close"
+  no_polls_are_active: "No polls are active"
+  closed: "Closed"
+  open: "Open"
+  closed_polls_are_not_present: "Closed polls are not present."
+  create_new_poll: "Create new poll"
+  view_all_polls: "View all polls"
+  view_poll: "View poll"
+  others: "Others"
+  votting_page: "Votting page"
+  poll_option: "poll_option"
+  write_own_answer: "write own answer"
+  view_results: "View results"
+
+  flash_poll1: "You dont have permission to view this poll question"
+  flash_poll2: "You dont have permission to edit this poll question"
+  flash_poll3: "Poll Question created successfully"
+  flash_poll4: "Poll editing successful."
+  flash_poll5: "You dont have permission to edit this task"
+  flash_poll6: "Poll question has been deleted sucessfully"
+  flash_poll7: "You do not have permission to delete the poll question"
+  flash_poll8: "voting successful."
+  flash_poll9: "You dont have permission to vote in this poll"
+  flash_poll10: "Poll has been closed successfully"
+  flash_poll11: "You do not have permission to close this pole"
+  flash_poll12: "Poll has been opened successfully"
+  flash_poll13: "You do not have permission to open this pole"
+  flash_poll14: "Voting is closed"
+  flash_poll15: "Requested poll was not found"

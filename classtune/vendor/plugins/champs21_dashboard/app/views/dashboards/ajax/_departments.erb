@@ -1,0 +1,14 @@
+<div style="display: inline-block; width: 89%; float: left;">
+<select class="custom-combo form-control" tabindex="-1" id="department" name="department" style="width: 100%; margin-top: -10px;" autocomplete="off">
+  <option value="">Choose a Department</option>
+  <% unless @departments.nil? or @departments.blank? %>
+    <% @departments.each do |department| %>
+        <option value="<%= department.id %>"><%= department.name %></option>
+    <% end %>
+  <% end %>
+</select>  
+</div>    
+<div style="display: inline-block; padding: 1px 5px; width: 9%; float: left;">
+    <button class="btn btn-default" onclick="graphModify('department', 'department');">Show</button>
+</div>
+<div class="clearfix"></div>

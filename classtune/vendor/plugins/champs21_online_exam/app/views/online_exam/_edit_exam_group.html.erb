@@ -1,0 +1,81 @@
+<div id="page-yield">
+  <div id="box">
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <div id="form-errors"></div>
+    <%remote_form_for :exam_group, :url=>{:action=>'update_exam_group', :id=>@exam_group.id} do |form| %>
+
+      <div class="label-field-pair">
+        <label><%= t('name') %></label>
+        <div class="text-input-bg"><%= form.text_field :name %></div>
+      </div>
+      <div class="label-field-pair">
+        <label><%= t('start_date') %></label>
+        <div class="text-input-bg"><%= calendar_date_select_tag "exam_group[start_date]",I18n.l(@exam_group.start_date),:readonly=>true,:popup=>:force%></div>
+      </div>
+      <div class="label-field-pair">
+        <label><%= t('end_date') %></label>
+        <div class="text-input-bg"><%= calendar_date_select_tag "exam_group[end_date]",I18n.l(@exam_group.end_date),:readonly=>true,:popup=>:force%></div>
+      </div>
+      <div class="label-field-pair">
+        <label><%= t('maximum_time_minutes') %></label>
+        <div class="text-input-bg"><%= form.text_field :maximum_time %></div>
+      </div>
+      <div class="label-field-pair">
+        <label><%= t('pass_percentage') %></label>
+        <div class="text-input-bg"><%= form.text_field :pass_percentage %></div>
+      </div>
+
+      <div class="label-field-pair" style="display: none;">
+        <label><%= t('shift_label') %></label>
+        <div class="text-input-bg">
+          <%= select :student, :batch_name, options_for_select(@batches.map {|b| [b.name, b.id]}, @batch_no.to_i),
+            {:prompt => "#{t('select')}"},
+            {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment&section_page=section_assingment&section_partial=student/sections_assignment_view'" ,:before => "$('loading_2').show();",
+            :success => "$('loading_2').hide();")}"} %>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+        </div>
+      </div>
+
+      <div class="label-field-pair" style="display: none;">
+        <label><%= t('class_label') %></label>
+        <div class="text-input-bg">
+          <div id="course_assingment">
+            <%= render :partial => 'student/courses_assingment', :object => @courses %>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: none;">
+        <div class="label-field-pair" id="sections_div">
+          <label><%= t('section_label') %></label>
+          <div class="text-input-bg">
+            <div id="section_assingment">
+              <%= render :partial => 'student/sections_assignment_view', :object => @classes %>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div id="syllabus" class="news_label_field">
+        <div class="label-field-pair" style="margin: 0px auto;">
+          <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+          <div class="text-input-bg">
+            <% unless @subjects.nil? %>
+              <%= select :assignment, :subject,
+                #"#{s.name}  - #{s.batch.full_name}"
+              @subjects.map {|s| [s.name,s.id]},
+                {:prompt => "#{t('select_a_subject')}", :selected => @exam_group.subject_id.nil? ? '' : @exam_group.subject_id} %>
+            <% end %>
+          </div>
+          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+        </div>  
+      </div>
+
+      <div id="submit-button">
+        <%=form.submit("► #{t('update')}") %>
+      </div>
+    <% end %>
+  </div>
+</div>

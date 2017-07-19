@@ -1,0 +1,317 @@
+<% if @time_table_found %>
+  <% if @assign_to_class %>
+    <% unless @tts.nil? or @tts.empty? %>
+      <span class="message">
+          <h5>My Classes: </h5> 
+      </span>  
+
+      <% tts = @tts.reject{ |t| @running_class.include?(t.id) } %>
+
+      <% unless tts.nil? or tts.empty? %>
+      <% tts.each do |tt| %>
+          <% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+          <% #register = AttendanceRegister.find_by_attendance_date_and_timetable_entry_id_and_batch_id(@next_class_date.strftime("%Y-%m-%d"), tt.id, tt.batch_id)  %>
+          <% register = AttendanceRegister.find_by_attendance_date_and_batch_id(@next_class_date.strftime("%Y-%m-%d"), tt.batch_id)  %>
+          <div class="tile-stats col-md-12" style="padding-bottom: 0; display: table; background: #f5f5f5;">
+              <div class="col-md-5 r1" id="tte_r1_<%= tt.id %>" style="padding-bottom: 5px; padding-left: 0px; padding-right: 0px; display: cell; height: 100%">
+                <% if register.present? %>  
+                  <% if register.employee.photo_file_name? %>
+                    <% @emp_profile_image = register.employee.photo_file_name %>
+                  <% else %>
+                    <% @emp_profile_image = "HR/default_employee.png" %>
+                  <% end %>  
+                  <div class="col-md-12">
+                      <div class="col-md-4" style="padding-top: 10px; ">
+                          <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                      </div>
+                      <div class="col-md-8" style="padding-top: 8px;">
+                          <% unless register.employee_id == tt.employee_id %>
+                          <span class="tag" style="font-size: 10px; border-radius: 6px;">Attendance Taken By</span><br />
+                          <% end %>
+                          <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{register.employee.short_code} - " unless register.employee.short_code.nil? or register.employee.short_code.empty? %> <%= register.employee.full_name %></b></p>
+                          <p><%= register.employee.employee_position.name %></p>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <% unless register.employee_id == tt.employee_id %>
+                    <hr />
+                    <% if tt.employee.photo_file_name? %>
+                      <% @emp_profile_image = tt.employee.photo_file_name %>
+                    <% else %>
+                      <% @emp_profile_image = "HR/default_employee.png" %>
+                    <% end %>  
+                    <div class="col-md-12">
+                        <div class="col-md-4" style="padding-top: 10px; ">
+                            <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                        </div>
+                        <div class="col-md-8" style="padding-top: 8px;">
+                            <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{tt.employee.short_code} - " unless tt.employee.short_code.nil? or tt.employee.short_code.empty? %> <%= tt.employee.full_name %></b></p>
+                            <p><%= tt.employee.employee_position.name %></p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  <% end %>
+                <% else %>  
+                  <% if tt.employee.photo_file_name? %>
+                    <% @emp_profile_image = tt.employee.photo_file_name %>
+                  <% else %>
+                    <% @emp_profile_image = "HR/default_employee.png" %>
+                  <% end %>  
+                  <div class="col-md-12">
+                      <div class="col-md-4" style="padding-top: 10px; ">
+                          <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                      </div>
+                      <div class="col-md-8" style="padding-top: 8px;">
+                          <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{tt.employee.short_code} - " unless tt.employee.short_code.nil? or tt.employee.short_code.empty? %> <%= tt.employee.full_name %></b></p>
+                          <p><%= tt.employee.employee_position.name %></p>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>  
+              </div>
+              <div class="col-md-4 r1" id="tte_r1_<%= tt.id %>" style="padding-bottom: 5px; padding-left: 0px; padding-right: 0px; display: cell; height: 100%">
+                <% 
+                  course = []
+                  subject = []
+                  batch = Batch.find(tt.batch_id)
+                  unless batch.nil? or batch.blank?
+                    course = Course.find(:first, :conditions => ["id = ?", batch.course_id])
+                  end
+                  subject = Subject.find(tt.subject_id)
+                %>  
+                
+                <% unless course.nil? or course.blank? %>  
+                  <p>
+                    <h2>Class: <%=  course.course_name.gsub("Class ","").gsub("class ","") %></h2>
+                    <b>Section: <%=  course.section_name %></b>
+                  </p>
+                <% end %>  
+                 
+                <% unless subject.nil? or subject.blank? %>  
+                  <p><h2>Subject: <%=  subject.name %></h2></p>
+                <% end %>    
+              </div>
+              <div class="col-md-2 r3 text-center padding-top-10" id="tte_r3_<%= tt.id %>" style="padding-top: 10px;">
+                  <div class="count" style="font-size: 14px; margin: 0;">Status</div>
+                  <% if @completed_class.present? and @completed_class.include?(tt.id) %>
+                  <div role="alert" class="alert alert-info" style="padding: 2px; position: relative; margin-bottom: 10px;">
+                      Completed
+                  </div>
+                  <p><h2>
+                  Class Time: <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+                  <%= time_class.strftime("%I:%M %p") %>
+                  <% else %>
+                  <%= time_class.strftime("%A %I:%M %p") %>
+                  <% end %>
+                  </h2></p>
+                  <% elsif @running_class.present? and @running_class.include?(tt.id) %>
+                  <div role="alert" id="time_table_change_<%= tt.id %>" class="alert alert-danger" style="padding: 2px; margin-bottom: 10px; position: relative;">
+                      Running.... 
+                      <div style="clear: both; height: 10px;"></div>
+                      <i class="fa fa-clock-o" style="font-size: 20px;"></i>
+                      <div style="clear: both; height: 10px;"></div>
+                      <span id="time_diff_<%= tt.id %>"><%= @time_difference[tt.id] %></span>
+                      <script>
+                        var target_date<%= tt.id %> = new Date();
+
+                        target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours[tt.id] %>);
+                        target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes[tt.id] %>);
+                        target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds[tt.id] %>);
+                        timerrunning[<%= tt.id %>] = true;
+                        countdown[<%= tt.id %>] = setInterval(function () { getCountdown(target_date<%= tt.id %>, <%= tt.id %>); }, 1000);
+                      </script>  
+                  </div>
+                  <% else %>
+                  <% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+                  <div role="alert" class="alert alert-danger" style="padding: 2px; margin-bottom: 10px; position: relative; background: #fff; border: 1px solid #ccc; color: #666;">
+                      <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+                      <%= time_class.strftime("%I:%M %p") %>
+                      <% else %>
+                      <%= time_class.strftime("%A %I:%M %p") %>
+                      <% end %>
+                  </div>
+                  <% end %>
+                  <% if @current_user.employee_record.id == tt.employee_id %>
+                  <%=  link_to "<b>Take Attendance</b>", :controller => 'attendances', :id => tt.id %>
+                  <div style="clear: both; height: 10px;"></div>
+                  <% end %>
+              </div>  
+              <div class="clearfix"></div>
+          </div>
+      <% end %>
+      <% end %>
+      <div class="clearfix"></div>
+      <div style="clear: both; height: 10px;"></div>
+      <hr />
+    <% end %>
+  <% else %>    
+      <ul class="list-unstyled msg_list">
+        <li>
+          <span class="message">
+              <h5><%= "Today you have No Class" %></h5>
+          </span>
+        </li>
+      </ul>
+  <% end %>
+  <% if @invalid_weekdays  %>
+    <ul class="list-unstyled msg_list">
+      <li>
+        <span class="message">
+            <% if @current_user.admin? %>
+            <h5><%= "No Class Found, Some error occur Please check <a href='/timetable/new_timetable'>Click Here</a>" %></h5>
+            <% else %>
+            <h5><%= "No Class Found, Some error occur" %></h5>
+            <% end %>
+        </span>
+      </li>
+    </ul>
+  <% else %>
+    <% unless @tts_all.nil? or @tts_all.empty? %>
+      <span class="message">
+          <h5>Others Classes: </h5>
+      </span>  
+      <% tts_all = @tts_all.reject{|t| @running_class_all.include?(t.id) } %>
+      <% unless tts_all.nil? or tts_all.empty? %>
+      <% tts_all.each do |tt| %>
+        <% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+        <% #register = AttendanceRegister.find_by_attendance_date_and_timetable_entry_id_and_batch_id(@next_class_date.strftime("%Y-%m-%d"), tt.id, tt.batch_id)  %>
+        <% register = AttendanceRegister.find_by_attendance_date_and_batch_id(@next_class_date.strftime("%Y-%m-%d"), tt.batch_id)  %>
+        <% if tt.employee_id != @current_user.employee_record.id %>
+            <div class="tile-stats col-md-12" style="padding-bottom: 0; padding-left: 0px; display: table;">
+              <div class="col-md-5 r1" id="tte_r1_<%= tt.id %>" style="padding-bottom: 5px; padding-left: 0px; padding-right: 0px; display: cell; height: 100%">
+                <% if register.present? %>  
+                  <% if register.employee.photo_file_name? %>
+                    <% @emp_profile_image = register.employee.photo_file_name %>
+                  <% else %>
+                    <% @emp_profile_image = "HR/default_employee.png" %>
+                  <% end %>  
+                  <div class="col-md-12">
+                      <div class="col-md-5" style="padding-top: 10px; ">
+                          <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                      </div>
+                      <div class="col-md-7" style="padding-top: 8px;">
+                          <% unless register.employee_id == tt.employee_id %>
+                          <span class="tag" style="font-size: 10px; border-radius: 6px;">Attendance Taken By</span><br />
+                          <% end %>
+                          <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{register.employee.short_code} - " unless register.employee.short_code.nil? or register.employee.short_code.empty? %> <%= register.employee.full_name %></b></p>
+                          <p><%= register.employee.employee_position.name %></p>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <% unless register.employee_id == tt.employee_id %>
+                    <hr />
+                    <% if tt.employee.photo_file_name? %>
+                      <% @emp_profile_image = tt.employee.photo_file_name %>
+                    <% else %>
+                      <% @emp_profile_image = "HR/default_employee.png" %>
+                    <% end %>  
+                    <div class="col-md-12">
+                        <div class="col-md-5" style="padding-top: 10px; ">
+                            <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                        </div>
+                        <div class="col-md-7" style="padding-top: 8px;">
+                            <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{tt.employee.short_code} - " unless tt.employee.short_code.nil? or tt.employee.short_code.empty? %> <%= tt.employee.full_name %></b></p>
+                            <p><%= tt.employee.employee_position.name %></p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  <% end %>
+                <% else %>  
+                  <% if tt.employee.photo_file_name? %>
+                    <% @emp_profile_image = tt.employee.photo_file_name %>
+                  <% else %>
+                    <% @emp_profile_image = "HR/default_employee.png" %>
+                  <% end %>  
+                  <div class="col-md-12">
+                      <div class="col-md-4" style="padding-top: 10px; ">
+                          <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                      </div>
+                      <div class="col-md-8" style="padding-top: 8px;">
+                          <p style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= "#{tt.employee.short_code} - " unless tt.employee.short_code.nil? or tt.employee.short_code.empty? %> <%= tt.employee.full_name %></b></p>
+                          <p><%= tt.employee.employee_position.name %></p>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>  
+              </div>
+              <div class="col-md-4 r1" id="tte_r1_<%= tt.id %>" style="padding-bottom: 5px; padding-left: 0px; padding-right: 0px; display: cell; height: 100%">
+                <% 
+                  course = []
+                  subject = []
+                  batch = Batch.find(tt.batch_id)
+                  unless batch.nil? or batch.blank?
+                    course = Course.find(:first, :conditions => ["id = ?", batch.course_id])
+                  end
+                  subject = Subject.find(tt.subject_id)
+                %>  
+                
+                <% unless course.nil? or course.blank? %>  
+                  <p>
+                    <h2>Class: <%=  course.course_name.gsub("Class ","").gsub("class ","") %></h2>
+                    <b>Section: <%=  course.section_name %></b>
+                  </p>
+                <% end %>  
+                 
+                <% unless subject.nil? or subject.blank? %>  
+                  <p><h2>Subject: <%=  subject.name %></h2></p>
+                <% end %>    
+              </div>  
+              <div class="col-md-2 r3 text-center padding-top-10" id="tte_r3_<%= tt.id %>" style="padding-top: 10px;">
+                  <div class="count" style="font-size: 14px; margin: 0;">Status</div>
+                  <% if @completed_class_all.present? and @completed_class_all.include?(tt.id) %>
+                  <div role="alert"  id="time_table_change_<%= tt.id %>"  class="alert alert-info" style="padding: 2px; position: relative; margin-bottom: 10px;">
+                      Completed
+                  </div>
+                  <p><h2>
+                  Class Time: <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+                  <%= time_class.strftime("%I:%M %p") %>
+                  <% else %>
+                  <%= time_class.strftime("%A %I:%M %p") %>
+                  <% end %>
+                  </h2></p>
+                  <% elsif @running_class_all.present? and @running_class_all.include?(tt.id) %>
+                  <div role="alert"  id="time_table_change_<%= tt.id %>"  class="alert alert-danger" style="padding: 2px; margin-bottom: 10px; position: relative;">
+                      Running.... 
+                      <div style="clear: both; height: 10px;"></div>
+                      <i class="fa fa-clock-o" style="font-size: 20px;"></i>
+                      <div style="clear: both; height: 10px;"></div>
+                      <span id="time_diff_<%= tt.id %>"><%= @time_difference_all[tt.id] %></span>
+                      <script>
+                        var target_date<%= tt.id %> = new Date();
+
+                        target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours_all[tt.id] %>);
+                        target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes_all[tt.id] %>);
+                        target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds_all[tt.id] %>);
+
+                        timerrunning[<%= tt.id %>] = true;
+                        countdown[<%= tt.id %>] = setInterval(function () { getCountdown(target_date<%= tt.id %>, <%= tt.id %>); }, 1000);
+                      </script> 
+                  </div>
+                  <% else %>
+                  <div role="alert" class="alert alert-danger" style="padding: 2px; margin-bottom: 10px; position: relative; background: #fff; border: 1px solid #ccc; color: #666;">
+                      <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+                      <%= time_class.strftime("%I:%M %p") %>
+                      <% else %>
+                      <%= time_class.strftime("%A %I:%M %p") %>
+                      <% end %>
+                  </div>
+                  <% end %>
+                  <% if @current_user.employee_record.id == tt.employee_id %>
+                  <%=  link_to "<b>Take Attendance</b>", :controller => 'attendances', :id => tt.id %>
+                  <div style="clear: both; height: 10px;"></div>
+                  <% end %>
+              </div>  
+              <div class="clearfix"></div>
+          </div>
+        <% end %>    
+      <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>  
+  <% if @current_user.admin? %>
+  <p class="flash-msg"><%= "No Time Table Found, Please setup one <a href='/timetable/new_timetable'>Click Here</a>" %></p>
+  <% elsif @current_user.employee? %>
+  <p class="flash-msg"><%= "No Routine Active for this university, Please contact Admin" %></p>
+  <% end %>
+<% end %>

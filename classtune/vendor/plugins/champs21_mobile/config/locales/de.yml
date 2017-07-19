@@ -1,0 +1,10 @@
+de: # locale
+  class_timings_empty:  "Keine Klasse Timings wurden ausgewählt."
+  no_subjects_to_show:  "Keine Untertanen"
+  no_tte_entries:  "Keine Zeitplan Einträge für den ausgewählten Zeitpunkt"
+  show_more_entries:  "Zeige mehr"
+  select_weekday:  "Wählen Sie einen Wochentag"
+  no_events:  "Keine Termine"
+  mark_absent:  "Mark, wie abwesend"
+  no_reminders: "Keine Mahnungen"
+  attendance_marked_for:  "Der Besuch markiert für"

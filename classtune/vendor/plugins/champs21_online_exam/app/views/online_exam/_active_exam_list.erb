@@ -1,0 +1,45 @@
+<div class="partial_homework">
+  <% unless @exams.blank? %>
+    <% @exams.each do |e| %>
+  <% subject = Subject.find_by_id(e['subject_id']) %>
+  <% unless subject.nil? %>
+
+      <div class="portlet-subcontent">     
+        <div class="timetable_left">
+          <img width="30" src="/images/icons/subjects/<%= subject.icon_number %>" ALT="<%= subject.name %>" />             
+          
+        </div>
+        <div class="timetable_right">
+          <div class="subcontent-header themed_text"><%= link_to "#{subject.name} - #{e['name']}",:action=>"exam_details" ,:id=>e.id %></div>            
+          <div class="subcontent-info">
+            Maximum Time : <%= e['maximum_time']%> Min <br />
+            <% unless e.is_published %>
+              <%= "Not Publish" %>
+            <% else %>
+              <%= t('published') %>
+            <%  end  %>
+          </div>              
+        </div>
+        <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+          <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= e.start_date.strftime("%d-%m-%Y") %></div>  
+          <div class="subcontent-date"><b style="color:#000;">End date : </b><%= e.end_date.strftime("%d-%m-%Y") %></div>
+        </div>
+        <div class='timetable_last'>
+          <%= link_to_remote "#{t('edit_text')}",:url=>{:action=>"edit_exam_group" ,:id=>e.id } unless e.has_attendence%> <%= link_to_remote "| #{t('delete_text')}",:url=>{:action=>"delete_exam_group" ,:id=>e.id}, :confirm=>"#{t('are_you_sure_to_delete_this_exam_group')}" unless e.is_published%> 
+          <% unless e.is_published %>
+            <%= link_to_remote "| #{t('publish_t')}",:url=>{:action=>"publish_exam" ,:id=>e.id} %>          
+          <%  end  %>
+        </div>
+      </div>
+      <div style="float: left; margin: 7px; width: 95%;"></div> 
+        <% end %>
+    <% end %>
+    <%= will_paginate @exams,:renderer => 'RemoteLinkRenderer', :params => {:action=>'show_active_exam',:batch_id=>@exams.first.batch_id},:remote=>{:update=>'exam-list'}%>
+  <% else %>
+    <div class="portlet-subcontent">    
+      <%= t('no_exam_created_for_selected_batch') %>
+    </div>  
+
+  <% end %>
+  
+</div>

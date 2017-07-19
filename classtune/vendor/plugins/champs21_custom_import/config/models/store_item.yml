@@ -1,0 +1,12 @@
+ store_item:
+    overrides:
+      store_id: "Store Code"
+      
+    associations:
+     - :store 
+    associated_columns:
+      store: "code"
+    filters:
+     - :school_id
+     - :is_deleted
+    

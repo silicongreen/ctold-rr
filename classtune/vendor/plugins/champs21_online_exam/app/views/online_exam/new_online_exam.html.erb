@@ -1,0 +1,210 @@
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/quiz.png', :html => {:alt => 'Online Quiz'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <a href="/online_exam/view_online_exam"> ONLINE QUIZ | <%= t('new_online_exam_text') %></a>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>    
+
+  <div class="header-form-wrapper">
+    <div class='header-right-button'>
+      <%= link_to "#{t('view')}", :action=>'view_online_exam' %>
+    </div>
+  </div>
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div class="wrapper">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <%= error_messages_for 'online_exam_group' %>
+
+    <%form_for :online_exam_group, :html => {:id => 'new_student'} do |form| %>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('name') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= form.text_field :name, :placeholder => "Quiz Title" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('start_date') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= form.calendar_date_select :start_date, :readonly=> true, :popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('end_date') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= form.calendar_date_select :end_date, :readonly=>true, :popup=>:force, :placeholder => 'End Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('maximum_time_minutes') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= form.text_field :maximum_time, :placeholder => t('maximum_time_minutes')  %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('pass_percentage') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= form.text_field :pass_percentage, :placeholder => t('pass_percentage') %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('option_per_question') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+              <%= form.select :option_count, [2,3,4,5,6], {} %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('shift_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div>
+              <%= select :student, :batch_name, options_for_select(@batches.map {|b| [b.name, b.id]}, @batch_no.to_i), 
+                {:prompt => "#{t('select')}"},
+                {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment&section_page=section_assingment&section_partial=student/sections_assignment_view'" ,:before => "$('loading_2').show();", :success => "$('loading_2').hide();")}"}
+            %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('class_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="course_assingment" class="custom_drop_wrapper">
+              <%= render :partial => 'student/courses_assingment', :object => @courses %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('section_label') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div id="section_assingment" class="custom_drop_wrapper">
+              <%= render :partial => 'student/sections_assignment_view', :object => @classes %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="subjects_drops" style="display: none;">
+        <div class="row_label">
+          <div></div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="syllabus" class="news_label_field" style="display: none;"></div>
+
+      <div id="submit-button">
+        <%=form.submit("#{t('create_text')}", :disable_with => "► #{t('please_wait')}" )%>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'droppify' %>
+
+<style type="text/css">
+  .header-wrapper .header-title {
+    width: 70%;
+  }
+  .header-wrapper .header-form-wrapper {
+    width: 15%;
+  }
+  .header-wrapper .header-icon {
+    width: 11.65%;
+  }
+  .header-wrapper .header-title-text-wrapper {
+    width: 70%;
+  }
+  .header-right-button {
+    margin-top: 20px;
+  }
+</style>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/dropdown" %>
+  <%= javascript_include_tag "droppify" %>
+<% end %>

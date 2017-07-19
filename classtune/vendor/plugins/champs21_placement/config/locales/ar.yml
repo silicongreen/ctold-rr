@@ -1,0 +1,90 @@
+ar: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "طالب"
+
+      placementevent:
+        title: "لقب"
+        date: "تاريخ"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+        
+  placed: "وضعت"
+  attended: "حضر"
+  placements: "المواضع"
+  registrations: "التسجيلات"
+  placement: "توظيف"
+  PlacementActivities: "التنسيب الأنشطة"
+  resubmitted_application: "إعادة الطلب المقدم"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "الطالب قد"
+    the_recruitment_process: "عملية التوظيف."
+    the_placement_is: "الموضع هو"
+    registration: "تسجيل"
+    placement_status: "وضع موضع"
+    approve_registration: "الموافقة على تسجيل"
+    reject_registration: "رفض تسجيل"
+    awaiting_response: "في انتظار استجابة من الطلاب"
+    not_attended: "لم يحضر"
+    disapprove_placement: "نستهجن الموضع"
+    approve_placement: "الموافقة على تنسيب"
+    no_students_were_invited: "لم تتم دعوة أي الطلاب."
+    company_name: "اسم الشركة"
+    your_application_is_waiting_approval: "التطبيق الخاص بك في انتظار الموافقة"
+    your_registration_is_approved: "تمت الموافقة على تسجيلك"
+    your_registration_is_rejected: "تم رفض تسجيلك"
+
+    flash1: "بنجاح تسجيل لهذا الحدث الموضع."
+    flash2: "فشل في التسجيل"
+    flash3: "لا يمكنك التسجيل باستخدام هذه الدعوة."
+    flash4: "وقد تم أرشفة الحدث الموضع. يتم إغلاق التسجيلات."
+    flash5: "تسجيل الموضع"
+
+#placement registration controller
+  placementevents:
+    no_students_added_yet: "وأضاف أي طالب بعد"
+    company: "شركة"
+    are_you_sure: "هل أنت متأكد أنك تريد حذف هذا الموضع ، وجميع التسجيلات والخمسين؟"
+    no_placement_events_has_been_anounced: "وقد تم الإعلان عن أي أحداث الموضع"
+    no_batch_selected: "أي دفعة مختارة"
+    archived_placements: "أرشفة المواقع"
+    no_students_selected: "أي الطلاب الذين يختارون"
+    no: "لا"
+    placement_report: "تقرير التنسيب"
+    invite_students: "دعوة الطلاب"
+    placement: "توظيف"
+    on: "في"
+    you_have_invited_the_placement_event: "وقد وجهت الدعوة لك لهذا الحدث على تنسيب"
+    confirm_your_registration: "تأكيد التسجيل الخاص بك من صفحة المواضع"
+    all_placements: "جميع المواضع"
+    announce_new_placements: "يعلن التعيين الجديد"
+    edit_placement_event: "تحرير الحدث التنسيب"
+    update_placement_event: "التحديث موضع الحدث"
+    select_recipient: "حدد المستلم"
+    students_to_invite: "دعوة لطلاب"
+    invite: "دعوة"
+    new_placement_event: "جديد موضع الحدث"
+    create_placement_event: "خلق الحدث التنسيب"
+    placement_events: "التنسيب الحدث"
+    archive_this_event: "أرشفة هذا الحدث"
+    are_you_sure_to_archive: "هل أنت متأكد أنك تريد أرشفة هذا الموضع؟"
+    view_invitation: "عرض دعوة"
+    generate_report: "توليد تقرير"
+    invited: "دعوة"
+    applied: "تطبيق"
+    select_type: "حدد نوع"
+
+    flash1: "لم يتم دعوتك لهذا الحدث التنسيب"
+    flash2: "الحدث موضع تحديثها بنجاح"
+    flash3: "حدث جديد موضع إنشاء بنجاح"
+    flash4: "تم حذف موضع الحدث والتسجيلات والخمسين"
+    flash5: "تم إلغاء تنشيط الحدث التنسيب وأرشفتها"
+    flash6: "دعوة الطلاب لهذا الحدث بنجاح التنسيب"
+    flash7: "الرجاء اختيار نوع"
+    flash8: "Please select atleast one student"

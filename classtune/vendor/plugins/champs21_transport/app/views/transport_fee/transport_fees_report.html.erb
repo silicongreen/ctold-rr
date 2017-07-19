@@ -1,0 +1,45 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('finance_transactions') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('fees_report') %></div>
+
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to t('finance_text'), :controller => "finance", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('finance_reports')}", :controller => "finance", :action => "finance_reports" %><div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('monthly_transactions')}", :controller => "finance", :action => "monthly_report" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('finance_transactions_view')}", :controller => "finance", :action => "update_monthly_report", :start_date=>@start_date, :end_date=>@end_date %> <div class = "bread-crumb-separator"> > </div>
+    <%= t('fees_report') %>
+  </div>
+  <% total =0 %>
+
+  <b id="fee-report-title"> <%= t('transport_fees_report') %> </b>
+  <div id="fees-table">
+    <div class="fees-th">
+      <div class="fees-table-description"><%= t('description') %></div>
+      <div class="fees-table-expenses"><%= t('amount') %></div>
+    </div>
+    <% @student_collection.each do |collection| %>
+      <div class="fees-tr">
+        <div class="fees-table-description"><%= link_to collection.batch.full_name + "&#x200E; (  " + collection.name + " ) &#x200E; ", :action => 'batch_transport_fees_report',:id =>collection.id,:start_date => @start_date,:end_date => @end_date %></div>
+        <div class="fees-table-income"> <%= precision_label collection.transaction_amount(@start_date,@end_date) %> </div>
+      </div>
+      <% total += collection.transaction_amount(@start_date,@end_date) %>
+    <% end %>
+    <% @employee_collection.each do |collection| %>
+      <div class="fees-tr">
+        <div class="fees-table-description"><%= link_to "#{t('employees')} &#x200E; (  "+FinanceFeeCollection.shorten_string(collection.name,27)+" )&#x200E; ", :action => 'employee_transport_fees_report',:id =>collection.id,:start_date => @start_date,:end_date => @end_date %></div>
+        <div class="fees-table-income"> <%= precision_label collection.transaction_amount(@start_date,@end_date) %> </div>
+      </div>
+      <% total += collection.transaction_amount(@start_date,@end_date) %>
+    <% end %>
+    <br/>
+    <div class="fees-th">
+      <div class="fees-table-description"><%= t('total_fees') %></div>
+      <div class="fees-table-expenses"><%= precision_label total %></div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title><%= @title %></title>
+    <%= stylesheet_link_tag(['application', '_styles/ui.all'])%>
+    <%= stylesheet_link_tag(*get_stylesheets) %>
+    <%= javascript_include_tag :defaults, :cache => 'cache/javascripts/all' %>
+<%#= init_tinymce_hammer_if_required %>
+<%#= javascript_include_tag 'tiny_mce/plugins/asciimath/js/ASCIIMathMLwFallback.js' %>
+<%#= javascript_include_tag 'tiny_mce/plugins/asciisvg/js/ASCIIsvgPI.js' %>
+    <%= javascript_include_tag 'jquery/jquery.min.js' %>
+
+    <script type="text/javascript">
+      var AScgiloc = 'http://www.imathas.com/imathas/filter/graph/svgimg.php';
+      var AMTcgiloc = "http://www.imathas.com/cgi-bin/mimetex.cgi";
+    </script>
+    <script type='text/x-mathjax-config'>MathJax.Hub.Config({tex2jax: {inlineMath: [['~~','~~'], ['\\(','\\)']]}});</script>
+    <script type='text/javascript'  src='http://latex.uzity.com/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+    <script language="JavaScript" type="text/javascript">
+      
+      <!-- Copyright 2006, Sandeep Gangadharan -->
+      <!-- For more free scripts go to http://www.sivamdesign.com/scripts/ -->
+
+      <!--
+      var sec = 1;   // set the seconds
+      var min = <%=@exam.maximum_time%>;   // set the minutes
+
+      function countDown() {
+        sec--;
+        if (sec == -01) {
+          sec = 59;
+          min = min - 1; }
+        else {
+          min = min; }
+
+        if (sec<=9) { sec = "0" + sec; }
+
+        time = (min<=9 ? "0" + min : min) + " min : " + sec + " sec ";
+
+        if (document.getElementById) { document.getElementById('theTime').innerHTML = time; }
+
+        SD=window.setTimeout("countDown();", 1000);
+        if (min == '00' && sec == '00') { sec = "00"; window.clearTimeout(SD); }
+      }
+      window.onload = countDown;
+      // -->
+    </script>
+
+  </head>
+  <body>
+    <table width="100%">
+      <tr><td width="100%" align="center"></td></tr>
+    </table>
+
+
+    <div id="page-yield" class="themed_text">
+      <h3><%= @exam_attendance.online_exam_group.name %>-<%= @exam_attendance.online_exam_group.batch.full_name %></h3>
+      <h4><%= t('max_mark') %> : <%= @exam_attendance.online_exam_group.online_exam_questions.sum('mark') %></h4>
+
+      <div class="time"><%= t('time_left') %>
+        <p id="theTime" class="timeClass"></p>
+      </div>
+      <div id="questions">
+        <%= render :partial=>'exam_questions' %>
+      </div>
+    </div>
+
+    <%= periodically_call_remote(:frequency => @exam.maximum_time.minutes.to_i+7,:before => "j('form').submit()" ) %>
+    
+  </body>
+
+</html>

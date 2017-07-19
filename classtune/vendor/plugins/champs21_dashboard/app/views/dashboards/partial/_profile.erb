@@ -1,0 +1,76 @@
+<% students = Student.all %>
+<div class="x_panel tile">
+  <div class="x_title">
+    <h2>Search Profile</h2>
+    <ul class="nav navbar-right panel_toolbox">
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+    </ul>
+    <div class="clearfix"></div>
+  </div>
+  <div class="x_content"> 
+      <div class="col-md-12">
+          <select id='search_by' name='search_by' class="no-seacrh-custom-combo" style="width: 100%;" autocomplete='off'>
+              <option value="searchable">All</option>
+              <option value="students">Search Student Profile</option>
+              <option value="employees">Search Employee Profile</option>
+          </select>
+      </div>
+      <div style="clear: both; height: 5px;"></div>
+      <div class="col-md-12">
+        <div class="input-group">
+          <input id="filter_dashboard" name="filter_dashboard" value="" class="form-control" autocomplete="off" />
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-search"></span>
+          </span>
+        </div>
+      </div>
+      <div class="col-md-12">
+          <ul id="list_to_assign" style="list-style: none; width: 100%; float: left; padding: 0;">
+          <% unless students.nil? or students.empty? %>
+            <% students.each do |student| %>
+                <% if student.photo_file_name? %>
+                  <% @profile_image = student.photo_file_name %>
+                <% else %>
+                  <% @profile_image = "HR/default_employee.png" %>
+                <% end %>  
+                <li style="border: 1px solid #ccc; display: none; float: left; margin-bottom: 2px; border-radius: 5px;">
+                    <div class="col-md-12">
+                        <div class="col-md-4" style="padding-top: 10px; ">
+                            <%= image_tag "#{@profile_image}", :style=> "width: 100%;" %>
+                        </div>
+                        <div class="col-md-8" style="padding-top: 8px;">
+                            <p class="searchable students" style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= link_to student.full_name, {:controller => "student", :action => "profile", :id => student.id} %></b></p>
+                            <p><%= student.semester_section.program_info %></p>
+                            <span class="tag" style="font-size: 10px; border-radius: 6px;">Student</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            <% end %>
+          <% end %>
+          <% unless @employees.nil? or @employees.empty? %> 
+              <% @employees.each do |employee| %> 
+              <% if employee.photo_file_name? %>
+                  <% @profile_image = employee.photo_file_name %>
+                <% else %>
+                  <% @profile_image = "HR/default_employee.png" %>
+                <% end %>  
+                <li style="border: 1px solid #ccc; display: none; float: left; margin-bottom: 2px; border-radius: 5px;">
+                    <div class="col-md-12">
+                        <div class="col-md-4" style="padding-top: 10px; ">
+                            <%= image_tag "#{@profile_image}", :style=> "width: 100%;" %>
+                        </div>
+                        <div class="col-md-8" style="padding-top: 8px;">
+                            <p class="searchable employees" style="padding-top: 5px;"><b><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;<%= link_to employee.full_name, {:controller => "employee", :action => "profile", :id => employee.id} %></b></p>
+                            <p><%= employee.employee_position.name %></p>
+                            <span class="tag" style="font-size: 10px; border-radius: 6px; background: #E96152;">Employee</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+              <% end %>
+          <% end %>
+          </ul>
+      </div> 
+  </div>
+</div> 

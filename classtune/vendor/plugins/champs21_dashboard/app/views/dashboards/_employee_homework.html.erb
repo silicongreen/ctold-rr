@@ -1,0 +1,12 @@
+<div class="partial_homework employee" style="padding: 20px;">
+
+  <h2 class="f2">Homework</h2>
+  <% if @current_user.admin? %>
+    <%= link_to('<div class="button-link button-link-homework">All Homework</div>', {:controller => 'assignments', :action => 'index'}) %>
+  <% else %>
+    <%= link_to('<div class="button-link button-link-homework">Add Homework</div>', {:controller => 'assignments', :action => 'new'}) %>
+  <% end %>
+
+  <%= render :partial=>@view_layout + "_homework_list", :locals=>{:homeworks => homework['employee_homework']} %>
+
+</div>

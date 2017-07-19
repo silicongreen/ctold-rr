@@ -1,0 +1,55 @@
+es:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "Nombre"
+
+      gallery_photo:
+        name: "Nombre"
+        gallery_category_id: "Categoría de Galería"
+        photo_file_name: "Nombre de la Foto"
+
+      gallery_tag:
+        gallery_photo_id: "Galería de Fotos"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+# controller
+  successfully_updated: "Actualizado correctamente"
+  successfully_deleted: "Eliminado correctamente"
+  photo_uploaded: "Foto Subida"
+  photo_updated: "Photo Actualizada"
+# view
+  photo_text: "Galería"
+  categoriess: "Categorías"
+  gallery: "Galería"
+  add_photo: "Añadir Foto"
+  neew: "Nuevo"
+  photos: "Fotos"
+  gallery_category: "Categoría de Galería"
+  name: "Nombre"
+  savee: "► Guardar"
+  pictures: "Imágenes"
+  editt: "Editar"
+  delete: "Eliminar"
+  are_you_sure: "¿Está Seguro?"
+  edit_photo: "Editar Foto"
+  delete_photo: "Eliminar Foto"
+  upload_photo: "Subir Foto"
+  select_category: "Seleccionar Categoría"
+  select_photo: "Seleccionar Foto (5MB)"
+  photo_name: "Nombre de la Foto"
+  updatee: "► Actualizar"
+  employees: "Empleados"
+  students: "Estudiantes"
+  department: "Departamento"
+  batchess: "Grupos"
+  select_employees: "Seleccionar Empleados"
+  select_students: "Seleccionar Estudiantes"
+  select_department: "Seleccionar Departamento"
+  select_course: "Seleccionar Curso"
+  select_all: "Seleccionar Todo"
+  add: "Agregar"
+  no_category: "Sin Categoría"
+  photo_uploaded: "Foto Subida"
+  category_created: "Categoría Creada"

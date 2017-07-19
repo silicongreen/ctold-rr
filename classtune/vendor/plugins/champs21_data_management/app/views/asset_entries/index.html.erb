@@ -1,0 +1,25 @@
+<div id="content-header">
+  <%= show_header_icon %>
+  <h1><%= @school_asset.asset_name %></h1>
+  <% unless @school_asset.asset_description.blank? %>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= @school_asset.asset_description %></div>
+  <% end %>
+  <div id="inner-tab-menu">
+    <ul>
+      <% if permitted_to? :new, :school_assets %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('new_entry')}", new_school_asset_asset_entry_path(:school_asset_id=>@school_asset.id) %></li>
+      <% end %>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('data_management')}", school_assets_path %></li>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('print')}", {:action=>:assets_pdf,:school_asset_id=>@school_asset.id},:target=>'_blank' %></li>
+    </ul>
+  </div>
+</div>
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% @asset_entries.each_with_index do |asset,count| %>
+    <%= render :partial=>"asset_entries",:locals=>{:asset_entry=>asset,:count=>count} %>
+  <% end %>
+</div>

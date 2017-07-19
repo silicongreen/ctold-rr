@@ -1,0 +1,19 @@
+en:
+ time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+      normal: "%B %e, %Y"
+ champs21_custom_export_label: "Data Exports"
+ data_exports_text: "Data Exports"
+ format: "Format"
+ select_a_format: "Select a format"
+ export: "Export"
+ download_file: "Download File"
+ status: "Success"
+ exports: "Exports"
+ please_note: "Please Note:"
+ export_warning: "The selected export option will be available again for export only after <b>30</b> days."
+ 

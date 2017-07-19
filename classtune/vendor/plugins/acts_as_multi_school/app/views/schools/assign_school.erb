@@ -1,0 +1,130 @@
+<h1><%= t('assign_school') %></h1>
+
+<div class="content-div  bg-light grey-border shadow">
+  <% if @assigned %>
+  <div id="assigned">  
+    <div class="content-div  bg-light " style="padding: 20px; width: 80%; margin-bottom: 40px; clear: both;">
+        <span style="font-size: 18px;">Already Assign to free school <b><%= @assigned_name %></b></span> <%=  link_to "Change", 'javascript:;', :onclick=>"assign_school()",:class => "user_button", :style => "float: right; margin-top: -5px;" %>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+  <% end %>
+  <% @shown = @assigned ? 'display: none;' : '' %>
+  <div id="form-content" style="<%=  @shown %>">
+    <h1 style="padding: 20px;"><%= @school_name %></h1> 
+    <% form_for @school,:url=>{:action=>:assign_free_school, :id => @school_id},:html=>{:class=>"form"} do |e| %>
+      <%= hidden_field_tag("assign_free", "1", :autocomplete => 'off') %>
+      <div class="free_school">
+        <div id="free_school-selected"><%= t('free_school_selected') %>:</div>
+        <div id="free_school-name" class="themed_text"><span class="not-selected">(<%= t('not_selected') %>)</span></div>
+        <div id="update-button" style="clear: both; ">
+            <%=submit_tag  ("► #{t('save_and_proceed')}"),  :class => "user_button", :style => "margin-left: 120px;"%>
+            <% if @view_skip %>
+              <%=link_to ("► #{t('skip')}"),{:action=>"skip_redirect",:id=>params[:id]},:class => "user_button"%>
+              <%= hidden_field_tag("step_2", "1", :autocomplete => 'off') %>
+            <% else %>
+              <%= hidden_field_tag("step_2", "0", :autocomplete => 'off') %>
+            <% end %>
+            <% if @assigned %>
+            <%=link_to ("► Cancel"),'javascript:;', :onclick=>"cancel_assign_school()",:class => "user_button"%>
+            <% end %>
+            <%= hidden_field_tag("school_id", params['school_id'], :autocomplete => 'off') %>
+        </div>
+      </div>
+      <div class="extender"></div>
+    <%end%>
+  </div>
+
+  <div id="search_box_bg" style="<%=  @shown %>">
+      <form id="free_school-form" name="search_form" action="" style="display:inline;">
+        <label for="user_name"><%= t('search_text') %>:
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+        </label> 
+        <div id="search_textbox">
+          <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
+        </div>
+
+        <div class="extender"></div>
+
+      </form>
+  </div>
+  <div id="view_all"></div>
+  <div id="information"></div>
+</div> 
+
+  <script type="text/javascript">
+    j(window).load(function(){
+      var school_name = '<%= @school_name %>';
+      var school_id = '<%= @school_id %>';
+      var show_save = '<%= @show_save_message %>';
+      var assign_already = '<%= @assigned  %>';
+      var view_skip = '<%= @view_skip  %>';
+      
+      if ( j.trim(school_name).length > 0 )
+      {
+        if (  assign_already != "true" )
+        {
+          <%="#{remote_function(:url => {:action => "search_ajax"},
+            :with => "'query='+school_name+'&load_on_startup=1&school_id=' + school_id + '&show_save=' + show_save + '&view_skip=' + view_skip",
+            :before => "Element.show('loader')",
+            :success => "javascript:success_search_load();",
+            :update=>"information"
+          )}"%>
+        }
+      }
+    });
+    
+    function assign_school()
+    {
+      j("#assigned").hide();
+      j("#form-content").show();
+      j("#search_box_bg").show();
+    }
+    
+    function cancel_assign_school()
+    {
+      j("#assigned").show();
+      j("#form-content").hide();
+      j("#search_box_bg").hide();
+    }
+    
+    function update_school_selected( id, name)
+    {
+       j('.not-selected')[0].innerHTML = name;
+       j("#school_id").val(id)
+    }
+    
+    function success_search_load()
+    {
+      j('#loader').hide();
+      j('#information').css("display","block");
+    }
+    
+    function success_search()
+    {
+      j('#loader').hide();
+      j('#information').css("display","block");
+    }
+    
+    function search_ajax(){
+      var view_skip = '<%= @view_skip  %>';
+      if ($('query').value.include("%")) return;
+      <%="#{remote_function(:url => {:action => "search_ajax"},
+        :with => "'query='+$('query').value + '&view_skip=' + view_skip",
+        :before => "Element.show('loader')",
+        :success => "javascript:success_search();",
+        :update=>"information"
+      )}"%>
+  }
+
+  document.observe("dom:loaded", function() {
+    new Form.Element.Observer('query', 1, search_ajax);
+    new Form.Element.Observer('option', 0.5, search_ajax);
+  });
+
+  </script>
+

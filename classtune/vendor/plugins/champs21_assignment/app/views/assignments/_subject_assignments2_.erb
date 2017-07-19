@@ -1,0 +1,47 @@
+<% unless @assignments.empty? %>
+        <ul class="ch_homework">
+        <% @assignments.each_with_index do |assignment,i| %>
+          <%#= debug @assignments %>
+          <li>
+            <div class="ch_homework_content">
+              <div style="float:left;width:100%;">
+                <div style="float:left;width:35%;">
+                  <% if assignment.subject.icon_number? %>
+                    <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>
+                  <% else %>
+                    <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> assignment.subject.name) %>
+                  <% end %>
+                </div>
+                <div style="float:right;width:65%;">
+                  <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                    <%  if assignment.assignment_type==1 %>
+                        Homework
+                    <%  end %>
+                    <%  if  assignment.assignment_type==2 %>
+                        Project
+                    <%  end %>
+                    </span>
+                    <br />
+                    <span style="color:#000;font-size:12px;line-height: 20px;">
+                      <%= assignment.subject.name.to_s unless assignment.subject.nil?%>
+                    </span>
+                </div>
+              </div>
+              
+              <div style="float:left;width:100%;margin:20px 0px;">
+                <%=  link_to assignment.title, assignment%>
+              </div>
+              <div style="width:100%;text-align: right;">
+                <span style="color:#aaa;font-size:12px;line-height: 20px;">
+                  <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                </span>
+              </div>
+            </div>
+          </li>
+        <% end %>
+        </ul>
+      <% else %>
+        <div class="tr-odd" style="clear: both;"><h2><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></h2></div>
+      <% end %>
+        
+     

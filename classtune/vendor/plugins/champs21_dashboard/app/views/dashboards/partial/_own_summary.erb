@@ -1,0 +1,16 @@
+<% if @current_user.admin? %> 
+<div class="x_panel tile fixed_height_500" style="height: 600px;">
+<% else %>    
+<div class="x_panel tile fixed_height_500" style="height: 630px;">
+<% end %>
+  <div class="x_title">
+    <h2>Class Activity Summary</h2>
+    <ul class="nav navbar-right panel_toolbox">
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+    </ul>
+    <div class="clearfix"></div>
+  </div>
+  <div id="own_summary_div" class="x_content">
+      <%= image_tag("loading_spinner.gif", :align => "absmiddle", :border => 0, :id => "loading_summary", :style =>"display: none; padding-left: 20%; padding-top: 10%; padding-bottom:10%;" ) %>  
+  </div>
+</div> 

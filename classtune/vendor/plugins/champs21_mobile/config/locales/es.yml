@@ -1,0 +1,10 @@
+es: # locale
+  class_timings_empty:  "No hay horarios de clase han sido seleccionados"
+  no_subjects_to_show:  "No temas"
+  no_tte_entries:  "No hay entradas calendario para la fecha seleccionada"
+  show_more_entries:  "mostrar más"
+  select_weekday:  "Seleccione un día de semana"
+  no_events:  "No hay eventos"
+  mark_absent:  "Marcar como ausente"
+  no_reminders: "No hay avisos"
+  attendance_marked_for:  "La asistencia marcado para"

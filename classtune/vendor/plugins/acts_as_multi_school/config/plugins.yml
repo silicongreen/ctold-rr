@@ -1,0 +1,28 @@
+---
+not_required_plugins:
+- champs21_applicant_registration
+- champs21_blog
+- champs21_discipline
+- champs21_discussion
+- champs21_gallery
+- champs21_google_doc
+- champs21_mobile
+- champs21_placement
+- champs21_poll
+- champs21_theme
+- champs21_bigbluebutton
+
+required_plugins:
+- champs21_custom_import
+- champs21_custom_report
+- champs21_data_palette
+- champs21_email_alert
+- champs21_instant_fee
+- champs21_oauth
+- champs21_oauth2_provider
+- champs21_moodle
+- champs21_pay
+- champs21_data_export
+- champs21_data_management
+- champs21_fee_import
+- champs21_dashboard

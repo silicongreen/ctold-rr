@@ -1,0 +1,58 @@
+
+<% target_id = 0 %>
+<% target_id = @current_user.student_record.id if @current_user.student? %>
+<% target_id = @current_user.employee_record.id if @current_user.employee? %>
+<% target_id = @current_user.guardian_entry.current_ward_id if @current_user.parent? %>
+<% if palette.menu_id>0 %>
+<% link = MenuLink.find_by_id palette.menu_id %>
+<% pallate_name = t("data_palettes.#{palette.name}") %>
+  <% if (@current_user.student? || @current_user.parent?)  && link.target_controller=="exam"  %>
+    <% link.target_action="student_exam_schedule" %>
+  <% end %>
+
+  <% if (@current_user.student? || @current_user.parent?)  && link.target_controller=="timetable"  %>
+    <%  link.target_action="student_view" %>
+    <%  link.link_type = "own" %>
+  <% end %>
+
+  <% if (@current_user.student? || @current_user.parent?)  && link.target_controller=="finance"  %>
+    <%  link.target_controller="student" %>
+    <%  link.target_action="fees" %>
+    <%  link.link_type = "own" %>
+  <% end %>
+
+  <% if (@current_user.student? || @current_user.parent?)  && link.target_controller=="event"  %>
+    <%  link.target_controller="calendar" %>
+    <%  link.target_action="event_list" %>
+  <% end %>
+
+  <% if link.link_type == "own" %>
+    <% unless link.target_action=="index" %>
+      
+      <%= link_to "<div class='extended_icon'><img  border='0'  src='/images/dashpallete/#{palette.icon_name}' /></div><span style='color:#FFFFFF' class='name-span'>#{pallate_name}</span>", {:controller=>link.target_controller,:action=>link.target_action,:id=>target_id} %>
+    <% else %>
+      <%= link_to "<div class='extended_icon'><img  border='0'  src='/images/dashpallete/#{palette.icon_name}' /></div><span style='color:#FFFFFF' class='name-span'>#{pallate_name}</span>", {:controller=>link.target_controller} %>
+    <% end %>
+  <% else %>
+    <% unless link.target_action=="index" %>
+      <%= link_to "<div class='extended_icon'><img  border='0'  src='/images/dashpallete/#{palette.icon_name}' /></div><span style='color:#FFFFFF' class='name-span'>#{pallate_name}</span>", {:controller=>link.target_controller,:action=>link.target_action} %>
+    <% else %>
+      <%= link_to "<div class='extended_icon'><img  border='0'  src='/images/dashpallete/#{palette.icon_name}' /></div><span style='color:#FFFFFF' class='name-span'>#{pallate_name}</span>", {:controller=>link.target_controller} %>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="extended_icon"><img  border='0'  src='/images/dashpallete/<%=palette.icon_name%>' /></div><span style='color:#FFFFFF' class="name-span"><%=  t("data_palettes.#{palette.name}") %></span>
+<% end %>
+  <style>
+    .extended_icon
+    {
+      height: 40px;
+      width: 40px;
+      float: left;
+      margin-right: 10px;
+      margin-top: -12px;
+    }
+ </style>   
+
+  
+  

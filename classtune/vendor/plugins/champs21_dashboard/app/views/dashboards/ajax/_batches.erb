@@ -1,0 +1,30 @@
+<div class="row" style="padding-left: 10px;">  
+  <p>Filter by Class</p>  
+  <select class="no-seacrh-custom-combo form-control" tabindex="-1" id="batches_dashboard" name="batches_dashboard" style="width: 32%; margin-top: -10px; margin-right: 1%;" autocomplete="off"  onchange="getCourses(this.value);">
+      <option value="">Shift</option>
+      <% @batches = Batch.active.find(:all, :group => "name") %>
+      <% unless @batches.nil? or @batches.blank? %>
+        <% @batches.each do |batch| %>
+            <option value="<%= batch.id %>"><%= batch.name %></option>
+        <% end %>
+      <% end %>
+  </select>
+  <select class="custom-combo form-control" tabindex="-1" id="courses_dashboard" name="courses_dashboard" style="width: 32%; margin-top: -10px; margin-right: 1%;" autocomplete="off"  onchange="getSections(this.value);">
+      <option value="">Class</option>
+      <% unless @courses.nil? or @courses.blank? %>
+        <% @courses.each do |course| %>
+            <option value="<%= course.course_name %>"><%= course.course_name %></option>
+        <% end %>
+      <% end %>
+  </select>
+  <select class="custom-combo form-control" tabindex="-1" id="sections_dashboard" name="sections_dashboard" style="width: 32%; margin-top: -10px; margin-right: 1%;" autocomplete="off" onchange="graphModify();">
+      <option value="">Section</option>
+      <% unless @classes.nil? or @classes.blank? %>
+        <% @classes.each do |classes| %>
+            <option value="<%= classes.id %>"><%= classes.section_name %></option>
+        <% end %>
+      <% end %>
+  </select>
+</div>
+
+<div class="clearfix"></div>

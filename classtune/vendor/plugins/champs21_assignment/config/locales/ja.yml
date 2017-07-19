@@ -1,0 +1,82 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ja:
+  activerecord:
+    attributes:
+      assignment:
+        title: "表題"
+        content: "内容"
+        student_list: "生徒リスト"
+        duedate: "締切日"
+
+      assignment_answer:
+        title: "表題"
+        content: "内容"
+
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+
+  new_assignment_sucessfuly_created: "新規課題の作成は成功しました。"
+  assignment_details_updated: "課題の詳細はアップデートされました。"
+  assignment_sucessfully_deleted: "課題の削除は成功しました。"
+  you_do_not_have_permission_to_delete_this_assignment: "この課題を削除する権限がありません。"
+  you_are_not_allowed_to_download_that_file: "このファイルをダウンロードする権限がありません。"
+  assignment_text: "課題"
+  assignments_text: "課題"
+  submit_answer: "解答を提出する。"
+  attach_a_file: "ファイルを添付"
+  on: "オン"
+  deleted_student: "Deleted Student"
+
+  assignments:
+    max_size: "最大500KBまで"
+    on_text: "オン"
+    change_subject: "教科を変更"
+    create_new_assignment: "新規課題を作成"
+    all_assignments: "すべての課題"
+    there_are_no_subjects_assigned_to_this_employee: "この職員には教科が割当られていません。"
+    you_have_not_been_assigned_any_assignments: "課題に割り当てられていません。"
+    create_a_new_assignment: "新規課題を作成"
+    assignment_already_due: "課題は既に期限を過ぎています。"
+    due_in: "米期限"
+    delete_assignment: "課題を削除"
+    delete_this_assignment: "本当にこの課題を削除しますか？課題を削除すると、提出されているすべての解答も削除されます。"
+    assigned: "課題済"
+    answered: "解答済"
+    resubmit: "再提出"
+    answer_this_assignment: "この課題を実施してください。"
+    rejected: "拒否"
+    hostel_accepted: "受付済"
+    update_assignment: "課題をアップデート"
+    edit_assignment: "課題を編集"
+    no_assignments_for_this_subject_have_been_created: "この教科への課題はまだ作られていません。"
+    no_students: "生徒はいません。"
+    you_cannot_edit_this_assignment: "この課題を編集することはできません。"
+
+  assignment_answers:
+    assignment_submitted: "課題提出済"
+    you_are_not_allowed_to_view_that_page: "このページを見ることはできません。"
+    you_cannot_edit_the_assignment_once_it_is_accepted: "一旦受付済となった課題は編集できません。"
+    you_cannot_edit_this_assignment: "この課題を編集することはできません。"
+    assignment_successfuly_updated: "課題のアップデートは成功しました。"
+    failed_to_update_assignment: "課題のアップデートは失敗しました。"
+    failed_to_set_status_of_assignment: "課題状況の設定は失敗しました。"
+    you_cannot_approve_or_reject_this_assignment: "課題の承認や拒否はできません。"
+    assignment_text: "課題"
+    edit_answer: "解答を編集"
+    submit_an_answer: "解答を提出"
+    reject_answer: "解答を拒否"
+    accept_answer: "解答を受付"
+    the_assignment_is: "本課題は"
+    resubmit_answer: "解答を再提出"
+    this_answer_yet_to_be_evaluated: "この解答はまだ評価されていません。"
+    submitted_on: "提出先"
+    submitted_by: "提出者"
+    answer: "解答"
+    already_answered: "あなたはすでに答えている"
+    this_answer_is_not_for_the_assignment: "This is not the answer for this assignment"
+

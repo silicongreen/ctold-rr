@@ -1,0 +1,13 @@
+<% unless @events.nil? or @events.empty? %>  
+    <% @events.each do |event| %>
+      <li>
+          <div class="block">
+              <div class="block_content">
+                  <h2 class="title_new"><%=  link_to event.title, :controller => 'event', :action => 'event_details', :id => event.id%> </h2>
+                  <div class="byline">Start Date : </b><%= event.start_date.strftime("%Y-%m-%d") %></div>
+                  <p class="excerpt"><%= shorten_string(strip_tags(event.description), 120)  %></p>
+              </div>
+          </div>
+      </li>
+    <% end %>
+<% end %>  

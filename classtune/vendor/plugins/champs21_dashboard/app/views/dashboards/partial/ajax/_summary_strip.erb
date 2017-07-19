@@ -1,0 +1,35 @@
+<% 
+  if MultiSchool.current_school.code == "chs" 
+    @user_login = 120
+    
+    @user_login_web = 80
+    
+    @user_login_mobile = 40
+     
+    @user_attendance = 110
+    
+    @hr_attendances_count = 20
+  end  
+%>
+<!-- Percent Calculator ( ( small Number / Big Number ) * 100 ) -->
+
+<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i> Users Login Today</span>
+    <div class="count"><%= @user_login %></div>
+</div>
+<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i> Users From Web</span>
+    <div class="count"><%= @user_login_web %></div>
+</div>
+<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i> Users From App</span>
+    <div class="count"><%= @user_login_mobile %></div>
+</div>
+<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-university"></i> Student Present Today</span>
+    <div class="count green"><%= @user_attendance %></div>
+</div>
+<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-graduation-cap"></i> Campus Attendance</span>
+    <div class="count"><%= @campus_attendances_count %></div>
+</div>

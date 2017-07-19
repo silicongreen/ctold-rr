@@ -1,0 +1,194 @@
+<%= image_tag("loading_spinner.gif", :align => "absmiddle", :border => 0, :id => "loading_room_info", :style =>"display: none; padding-left: 20%; padding-top: 10%; padding-bottom:10%;" ) %>    
+<span class="message">
+    <h5>Room: <%= @room.building.name %> - <%= @room.room_number %> </h5>
+</span>
+<div style="clear: both; height: 10px;"></div>
+<% unless @tts_all.nil? or @tts_all.empty? %>
+<% tts_all_count = @tts_all.select{ |tt| @completed_class_all.include?(tt.id) } %>
+<% tts_all_count += @tts_all.select{ |tt| @running_class_all.include?(tt.id) } %>
+<% tts_all_count += @tts_all.select{ |tt| @next_class_all.include?(tt.id) } %>
+
+<% tts_all = @tts_all.select{ |tt| @completed_class_all.include?(tt.id) } %>
+<table border="1" bordercolor="#e6e6e6" class="table table-striped projects list_view_table" id="student_list" style="width: 100%;" data-paginate="true" data-length="true" data-sort="true">
+    <thead><th colspan="2"><h2>Summary</h2></th></thead>
+    <tbody>
+        <tr><td class='summary' style="width: 50%;">Total Class</td><td class='summary' style="width: 50%; text-align: center;"><%= tts_all_count.length unless tts_all_count.nil? or tts_all_count.empty?  %></td></tr>
+        <tr><td class='summary' style="width: 50%;">Completed Class</td><td class='summary' style="width: 50%; text-align: center;"><%= @completed_class_all.length unless @completed_class_all.nil? or @completed_class_all.empty?  %></td></tr>
+        <tr><td class='summary' style="width: 50%;">Running Class</td><td class='summary' style="width: 50%; text-align: center;"><%= @running_class_all.length unless @running_class_all.nil? or @running_class_all.empty?  %></td></tr>
+        <tr><td class='summary' style="width: 50%;">Next Class</td><td class='summary' style="width: 50%; text-align: center;"><%= @next_class_all.length unless @next_class_all.nil? or @next_class_all.empty?  %></td></tr>
+    </tbody>
+</table>
+
+<% unless tts_all.nil? or tts_all.empty? %>
+<span class="message">
+    <h5>Completed Classes </h5>
+</span>
+<% tts_all.each do |tt| %>
+<% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+<div class="ui-ribbon-container" style="border: 1px solid #ccc; float: left; padding: 5px; width: 100%; border-radius: 7px;">
+    <% if @completed_class_all.present? and @completed_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-done">Completed</div></div>
+    <% elsif @running_class_all.present? and @running_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon"><span id="time_diff_room_<%= tt.id %>"><%= @time_difference_all[tt.id] %></span></div></div>
+    <script>
+      var target_date<%= tt.id %> = new Date();
+
+      target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours_all[tt.id] %>);
+      target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes_all[tt.id] %>);
+      target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds_all[tt.id] %>);
+      var timerrunning = [];
+      var countdown = [];
+      var update_div = [];
+      timerrunning[<%= tt.id %>] = true;
+      countdown[<%= tt.id %>] = setInterval(function () { getCountdown(target_date<%= tt.id %>, '<%= "room_#{tt.id}" %>'); }, 1000);
+    </script>
+    <% else %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-upcoming">
+          <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+          <%= time_class.strftime("%I:%M %p") %>
+          <% else %>
+          <%= time_class.strftime("%A %I:%M %p") %>
+          <% end %>
+    </div></div>
+    <% end %>
+    <div class="count" style="font-size: 14px; padding-top: 7px; font-weight: bold; padding-bottom: 7px;"><%= tt.room.building.name %>, <%= tt.room.room_number %></div>
+    <p><%= tt.subject.name %></p>
+    <div class="col-md-4" style="padding-bottom: 5px; display: cell; height: 100%">
+            <% if tt.employee.photo_file_name? %>
+              <% @emp_profile_image = tt.employee.photo_file_name %>
+            <% else %>
+              <% @emp_profile_image = "HR/default_employee.png" %>
+            <% end %>  
+            <div style="width: 60px; height: 60px; margin-top: 10px;">
+              <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+            </div>  
+    </div>  
+    <div class="col-md-8">
+      <p style="padding-top: 5px;"><b><%= tt.employee.short_code %> - <%= tt.employee.full_name %></b></p>
+      <p><%= tt.employee.employee_position.name %></p>
+    </div>
+</div>
+<div style="clear: both; height: 4px;"></div>
+<% end %>
+<hr />
+<% end %>
+
+
+<% tts_all = @tts_all.select{ |tt| @running_class_all.include?(tt.id) } %>
+<% unless tts_all.nil? or tts_all.empty? %>
+<span class="message">
+    <h5>Running Classes </h5>
+</span>
+<% tts_all.each do |tt| %>
+<% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+<div class="ui-ribbon-container" style="border: 1px solid #ccc; float: left; padding: 5px; width: 100%; border-radius: 7px;">
+    <% if @completed_class_all.present? and @completed_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-done">Completed</div></div>
+    <% elsif @running_class_all.present? and @running_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon"><span id="time_diff_room_<%= tt.id %>"><%= @time_difference_all[tt.id] %></span></div></div>
+    <script>
+      var target_date<%= tt.id %> = new Date();
+
+      target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours_all[tt.id] %>);
+      target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes_all[tt.id] %>);
+      target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds_all[tt.id] %>);
+      var timerrunning = [];
+      var countdown = [];
+      var update_div = [];
+      timerrunning[<%= tt.id %>] = true;
+      countdown[<%= tt.id %>] = setInterval(function () { getCountdown(target_date<%= tt.id %>, '<%= "room_#{tt.id}" %>'); }, 1000);
+    </script>
+    <% else %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-upcoming">
+          <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+          <%= time_class.strftime("%I:%M %p") %>
+          <% else %>
+          <%= time_class.strftime("%A %I:%M %p") %>
+          <% end %>
+    </div></div>
+    <% end %>
+    <div class="count" style="font-size: 14px; padding-top: 7px; font-weight: bold; padding-bottom: 7px;"><%= tt.room.building.name %>, <%= tt.room.room_number %></div>
+    <p><%= tt.subject.name %></p>
+    <div class="col-md-4" style="padding-bottom: 5px; display: cell; height: 100%">
+            <% if tt.employee.photo_file_name? %>
+              <% @emp_profile_image = tt.employee.photo_file_name %>
+            <% else %>
+              <% @emp_profile_image = "HR/default_employee.png" %>
+            <% end %>  
+            <div style="width: 60px; height: 60px; margin-top: 10px;">
+              <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+            </div>  
+    </div>  
+    <div class="col-md-8">
+      <p style="padding-top: 5px;"><b><%= tt.employee.short_code %> - <%= tt.employee.full_name %></b></p>
+      <p><%= tt.employee.employee_position.name %></p>
+    </div>
+</div>
+<div style="clear: both; height: 4px;"></div>
+<% end %>
+<hr />
+<% end %>
+
+<% tts_all = @tts_all.select{ |tt| @next_class_all.include?(tt.id) } %>
+<% unless tts_all.nil? or tts_all.empty? %>
+<span class="message">
+    <h5>Next Classes </h5>
+</span>
+<% tts_all.each do |tt| %>
+<% time_class = tt.class_timing.start_time.change(:year => @next_class_date.strftime("%Y").to_i, :day => @next_class_date.strftime("%d").to_i, :month => @next_class_date.strftime("%m").to_i).to_time %>
+<div class="ui-ribbon-container" style="border: 1px solid #ccc; float: left; padding: 5px; width: 100%; border-radius: 7px;">
+    <% if @completed_class_all.present? and @completed_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-done">Completed</div></div>
+    <% elsif @running_class_all.present? and @running_class_all.include?(tt.id) %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon"><span id="time_diff_room_<%= tt.id %>"><%= @time_difference_all[tt.id] %></span></div></div>
+    <script>
+      var target_date<%= tt.id %> = new Date();
+
+      target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours_all[tt.id] %>);
+      target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes_all[tt.id] %>);
+      target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds_all[tt.id] %>);
+      var timerrunning = [];
+      var countdown = [];
+      var update_div = [];
+      timerrunning[<%= tt.id %>] = true;
+      countdown[<%= tt.id %>] = setInterval(function () { getCountdown(target_date<%= tt.id %>, '<%= "room_#{tt.id}" %>'); }, 1000);
+    </script>
+    <% else %>
+    <div class="ui-ribbon-wrapper"><div class="ui-ribbon-upcoming">
+          <% if time_class.strftime("%A") == @local_tzone_time.strftime("%A") %>
+          <%= time_class.strftime("%I:%M %p") %>
+          <% else %>
+          <%= time_class.strftime("%A %I:%M %p") %>
+          <% end %>
+    </div></div>
+    <% end %>
+    <div class="count" style="font-size: 14px; padding-top: 7px; font-weight: bold; padding-bottom: 7px;"><%= tt.room.building.name %>, <%= tt.room.room_number %></div>
+    <p><%= tt.subject.name %></p>
+    <div class="col-md-4" style="padding-bottom: 5px; display: cell; height: 100%">
+            <% if tt.employee.photo_file_name? %>
+              <% @emp_profile_image = tt.employee.photo_file_name %>
+            <% else %>
+              <% @emp_profile_image = "HR/default_employee.png" %>
+            <% end %>  
+            <div style="width: 60px; height: 60px; margin-top: 10px;">
+              <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+            </div>  
+    </div>  
+    <div class="col-md-8">
+      <p style="padding-top: 5px;"><b><%= tt.employee.short_code %> - <%= tt.employee.full_name %></b></p>
+      <p><%= tt.employee.employee_position.name %></p>
+    </div>
+</div>
+<div style="clear: both; height: 4px;"></div>
+<% end %>
+<hr />
+<% end %>
+<% else %>
+<ul class="list-unstyled msg_list">
+  <li>
+    <span class="message">
+        <b><%= "No History Found for this room" %></b>
+    </span>
+  </li>
+</ul>   
+<% end %>

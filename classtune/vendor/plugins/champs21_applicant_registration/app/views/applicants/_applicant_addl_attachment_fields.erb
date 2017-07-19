@@ -1,0 +1,16 @@
+<div class="fields">
+  <div class="label-field-pair-attachment">
+    <label for="student_image_file"><%= t('attachment') %></label>
+    <% if @applicant.new_record? %>
+      <div class="text-input-bg"><%= f.file_field :attachment, :size=>12 %></div>
+    <% else %>
+      <% if f.object.attachment_file_name.nil? %>
+        <div class="text-input-bg"><%= f.file_field :attachment, :size=>12 %></div>
+      <% else %>
+        <div class="text-input-bg themed_text" style="margin-top: 2px"><%= truncate(f.object.attachment_file_name, :length => 15,:ommision => '...') %></div>
+        <div class="remove_link"><%= link_to_remove_fields image_tag('buttons/delete_2.png') ,f %></div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

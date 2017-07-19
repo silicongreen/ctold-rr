@@ -1,0 +1,2 @@
+page.replace_html 'modal-box', :partial => 'quiz_result', :locals=>{:quiz_result => @data['quiz_result']}
+page << "Modalbox.show($('modal-box'), {title: '<div><img src=\"/images/dashpallete/online_quiz.png\"></div><div>Quiz</div>', width: 350});"

@@ -1,0 +1,149 @@
+<% unless @assignments.nil? %>
+                    <% total_homework = @assignments.count %>
+                    <% i = 1 %>
+                    <% @assignments.each_with_index do |assignment,j| %>
+                      <% unless assignment.subject.nil? %>
+                        <div class="portlet-subcontent"  style="width:100%">     
+                          <div class="timetable_left">
+                            <% if assignment.subject.icon_number? %>
+                                  <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>
+                                <% else %>
+                                  <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> assignment.subject.name) %>
+                            <% end %>
+
+                          </div>
+                          <%
+                                    unless assignment.subject.employees.nil?
+                                      emp_name = assignment.subject.employees[0].first_name
+                                      unless assignment.subject.employees[0].middle_name.nil?
+                                        emp_name += ' ' + assignment.subject.employees[0].middle_name
+                                      end
+                                      unless assignment.subject.employees[0].last_name.nil?
+                                        emp_name += ' ' + assignment.subject.employees[0].last_name
+                                      end
+                                    end
+                                  %>
+                          <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+                            <div class="subcontent-header themed_text">
+                                <%=  link_to assignment.subject.name.to_s+' - '+assignment.title, assignment%>
+
+                            </div>                           
+                            <div class="subcontent-info"><%= emp_name %> </div>              
+                          </div>
+                          <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+                            <div class="subcontent-date"><b style="color:#000;">Assign Date &nbsp;:&nbsp; </b><%= I18n.l(assignment.created_at,:format=>"%A, %d %B, %Y") %></div>  
+                            <div class="subcontent-date"><b style="color:#000;">Due Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </b><%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %></div>                                    
+                          </div>  
+                          
+                          <% if @current_user.student? %>
+                            <%  @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(@current_user.student_record.id,assignment.id) if @current_user.student? %>
+                              <% if Date.today <= Date.parse(assignment.duedate.to_s) %>
+                         
+                               
+                                <% if @assignment_answers.empty? %>
+                                  <div class="answer" id="done_<%= assignment.id %>" >
+                                    <%= link_to_remote "#{t('done_this_assignment')}" , :url => {:controller => 'assignment_answers', :action => "done", :assignment_id => assignment.id } , :update=> 'done_'+assignment.id.to_s, :html => { :class  => "user_button",:style=>"margin-left:0px" }%>
+                                  </div>
+                                <%  else %>
+                                  <div class="answer">
+                                      <% unless @assignment_answers.empty? %>
+                                        <% @assignment_answers.each do |answer| %>
+                                        <% if answer.status == "REJECTED" %>
+                                          <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+                                          <% elsif answer.status=="ACCEPTED" %>
+                                           <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+                                          <% else  %>
+                                           <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+                                          <% end %>
+                                          <% break %>
+                                        <% end %>
+                                      <% else %>
+                                         <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+                                      <% end %>
+                                  </div>
+                                <% end %>
+                             <% else %>
+                                  <div class="answer" >
+                                      <% unless @assignment_answers.empty? %>
+                                        <% @assignment_answers.each do |answer| %>
+                                        <% if answer.status == "REJECTED" %>
+                                          <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+                                          <% elsif answer.status=="ACCEPTED" %>
+                                           <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+                                          <% else  %>
+                                           <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+                                          <% end %>
+                                          <% break %>
+                                        <% end %>
+                                      <% else %>
+                                         <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+                                      <% end %>
+                                  </div>
+                             <% end %>
+                           <% end %>
+                          <% if @current_user.parent? %>
+                            <% std_id = @current_user.guardian_entry.current_ward_id %>
+                            <%  @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(std_id,assignment.id) %>
+                            <div class="answer">
+                                <% unless @assignment_answers.empty? %>
+                                  <% @assignment_answers.each do |answer| %>
+                                  <% if answer.status == "REJECTED" %>
+                                    <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">REJECTED </a>
+                                    <% elsif answer.status=="ACCEPTED" %>
+                                     <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> ACCEPTED</a>
+                                    <% else  %>
+                                     <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)"> PENDING</a>
+                                    <% end %>
+                                    <% break %>
+                                  <% end %>
+                                <% else %>
+                                   <a class="user_button" style="background:#cccccc !important; margin-left:0px;" href="javascript:void(0)">NOT DONE</a> 
+                                <% end %>
+                              </div>
+                          <% end %>
+                        </div>
+                        <% if i<total_homework %>
+                           <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div> 
+                        <% else %>
+                          <div style=" margin: 15px;float: left; width: 95%;"></div> 
+                        <% end %>
+                        <% i = i+1 %>
+                      <% end %>
+                    <% end %>
+                 <% else %>
+                 <div class="portlet-subcontent">    
+                   No Homework Submitted
+                 </div>  
+            <% end  %>
+                          <div class="pagination_div"><div class="div1"><%= will_paginate @assignments, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  }, :params => {:controller=>:assignments,:action => "subject_assignments2",:due_date => @due_date,:subject_id => @subject_id} %></div><div class="div2"><%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_paginate",
+          :style =>"display: none;" ) %></div></div>
+                          
+                          <style type="text/css">
+            .calendar_date_select_popup_icon{
+              margin: 12px 1px 0;
+            }
+            .attachment {
+              background: url("/images/assignment/paperclip.png") no-repeat left;
+              padding-left: 11px;
+              height: 35px;
+            }
+            .clear-date {
+              color: #db3434;
+              cursor: pointer;
+              float: left;
+              margin-left: 23px;
+              margin-top: -22px;
+              text-decoration: underline;
+              width: 0;
+            }
+            div h2.routine
+            {
+             
+              width: 60%;
+            }
+          </style>
+            
+        

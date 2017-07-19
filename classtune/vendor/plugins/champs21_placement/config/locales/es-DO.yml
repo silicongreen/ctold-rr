@@ -1,0 +1,86 @@
+es-DO:
+  activerecord:
+     attributes:
+      placement_registration:
+        student_id: "Estudiante"
+
+      placementevent:
+        title: "Título"
+        date: "Fecha"
+
+  placed: "Puesto"
+  attended: "Asistieron"
+  placements: "Colocaciones"
+  registrations: "Inscripciones"
+  placement: "Colocación"
+  PlacementActivities: "Actividades de Colocación"
+  resubmitted_application: "Re-solicitud Presentada"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "El estudiante tiene"
+    the_recruitment_process: "El Proceso de Contratación."
+    the_placement_is: "La Colocación es"
+    registration: "Registro"
+    placement_status: "Estado de Colocación"
+    approve_registration: "Aprobar Registro"
+    reject_registration: "Rechazar Registro"
+    awaiting_response: "En Espera de Respuesta de los Estudiantes"
+    not_attended: "No Asistió"
+    disapprove_placement: "Desaprobar Colocación"
+    approve_placement: "Aprobar Colocación"
+    no_students_were_invited: "No Fue Invitado Ningún Estudiantes."
+    company_name: "Nombre de Compañía"
+    your_application_is_waiting_approval: "Su solicitud está pendiente de aprobación"
+    your_registration_is_approved: "Registro Aprobado"
+    your_registration_is_rejected: "Inscripción Rechazada"
+
+    flash1: "Éxito Registrado para el Evento de Colocación."
+    flash2: "No se pudo registrar"
+    flash3: "No se puede registrar con esta invitación."
+    flash4: "El acto de colocación ha sido archivado. Las inscripciones están cerradas."
+    flash5: "El registro es la colocación de"
+
+#placement registration controller
+  placementevents:
+    no_students_added_yet: "Ningún Estudiante Añadido Aún"
+    company: "Empresa"
+    are_you_sure: "¿Está seguro que desea eliminar esta colocación y todos sus registros?"
+    no_placement_events_has_been_anounced: "No hay eventos de colocación anunciados"
+    no_batch_selected: "No hay grupos seleccionados"
+    archived_placements: "Colocaciones Archivados"
+    no_students_selected: "No se seleccionaron estudiantes"
+    no: "No"
+    placement_report: "Informe de Colocación"
+    invite_students: "Invite Estudiantes"
+    placement: "Colocación"
+    on: "En"
+    you_have_invited_the_placement_event: "Usted ha sido invitado al evento de colocación de"
+    confirm_your_registration: "Confirmar su Registro"
+    all_placements: "Todas las Colocaciones"
+    announce_new_placements: "Anunciar Nueva Colocación"
+    edit_placement_event: "Editar Evento de Colocación"
+    update_placement_event: "Actualización de Colocación de Eventos"
+    select_recipient: "Seleccionar Destinatario"
+    students_to_invite: "Estudiantes a Invitar"
+    invite: "Invitar"
+    new_placement_event: "Nuevo Evento de Colocación"
+    create_placement_event: "Crear Evento de Colocación"
+    placement_events: "Colocación de Eventos"
+    archive_this_event: "Archivar Este Evento"
+    are_you_sure_to_archive: "¿Está seguro que desea archivar esta colocación?"
+    view_invitation: "Ver Invitación"
+    generate_report: "Generar Informe"
+    invited: "Invitado"
+    applied: "Aplicado"
+    select_type: "Seleccionar Tipo"
+
+    flash1: "No están invitados a este evento de colocación"
+    flash2: "Evento de colocación actualizado exitosamente"
+    flash3: "Caso de la colocación de nuevo creado con éxito"
+    flash4: "El evento de colocación y sus registros han sido eliminados"
+    flash5: "El acto de colocación ha sido desactivado y archivado"
+    flash6: "La invitación de estudiantes para el evento de colocación ha sido exitosa"
+    flash7: "Por favor, elija un tipo de"
+
+  

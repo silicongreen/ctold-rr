@@ -1,0 +1,7 @@
+<option value="">Section</option>
+<option value="0">All Sections</option>
+<% unless @classes.nil? or @classes.blank? %>
+  <% @classes.each do |classes| %>
+      <option value="<%= classes.id %>"><%= classes.section_name %></option>
+  <% end %>
+<% end %>

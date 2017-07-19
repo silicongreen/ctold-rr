@@ -1,0 +1,91 @@
+it: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "Student"
+
+      placementevent:
+        title: "Title"
+        date:  "Date"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+
+  placed: "Placed"
+  attended: "Attended"
+  placements: "Placements"
+  registrations: "Registrations"
+  placement: "Placement"
+  PlacementActivities: "Placement Activities"
+  resubmitted_application: "Re submitted application"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "The student has"
+    the_recruitment_process: "the recruitment process."
+    the_placement_is: "The Placement is"
+    registration: "Registration"
+    placement_status: "Placement status"
+    approve_registration: "Approve registration"
+    reject_registration: "Reject registration"
+    awaiting_response: "Awaiting response from student"
+    not_attended: "Not attended"
+    disapprove_placement: "Disapprove Placement"
+    approve_placement: "Approve Placement"
+    no_students_were_invited: "No  Students were invited ."
+    company_name: "Company Name"
+    your_application_is_waiting_approval: "Your application is awaiting approval"
+    your_registration_is_approved: "Your registration is Approved"
+    your_registration_is_rejected: "Your registration is rejected"
+
+    flash1: "Successfully registered for the placement event."
+    flash2: "Failed to register"
+    flash3: "You cannot register using this invitation."
+    flash4: "The placement event has been archived. Registrations are closed."
+    flash5: "The placement registration is"
+
+#placement registration controller
+  placementevents:
+    placement_cell: "Placement Cell"
+    no_students_added_yet: "No students added yet"
+    company: "Company"
+    are_you_sure: "Are you sure you want to delete this placement and all its registrations ?"
+    no_placement_events_has_been_anounced: "No  Placement Events have been announced"
+    no_batch_selected: "No Batch selected"
+    archived_placements: "Archived placements"
+    no_students_selected: "No Students Selected"
+    no: "No"
+    placement_report: "Placement Report"
+    invite_students: "Invite Students"
+    placement: "Placement"
+    on: "On"
+    you_have_invited_the_placement_event: "You have been invited to the placement event on"
+    confirm_your_registration: "confirm your registration from placements page"
+    all_placements: "All Placements"
+    announce_new_placements: "Announce new placement"
+    edit_placement_event: "Edit placement event"
+    update_placement_event: "Update placement Event"
+    select_recipient: "Select recipient"
+    students_to_invite: "Students To Invite"
+    invite: "Invite"
+    new_placement_event: "New placement event"
+    create_placement_event: "Create placement Event"
+    placement_events: "Placement Event"
+    archive_this_event: "Archive this event"
+    are_you_sure_to_archive: "Are you sure you want to archive this placement?"
+    view_invitation: "View Invitation"
+    generate_report: "Generate Report"
+    invited: "Invited"
+    applied: "Applied"
+    select_type: "Select Type"
+
+    flash1: "You are not invited to this placement event"
+    flash2: "Placement event successfully updated"
+    flash3: "New placement event successfully created"
+    flash4: "Placement event and its registrations have been deleted"
+    flash5: "The placement event has been deactivated and archived"
+    flash6: "Invited students successfully for placement event"
+    flash7: "Please choose a type"
+    flash8: "Please select atleast one student"
+

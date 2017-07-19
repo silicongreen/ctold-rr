@@ -1,0 +1,93 @@
+pt:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "Usuário"
+        title: "Título"
+        description: "Descrição"
+        status: "Estado"
+        due_date: "Data de Entrega"
+
+      task_assignee:
+        assignee_id: "Delegado"
+
+      task_comment:
+        user_id: "Usuário"
+        description: "Descrição"
+        task_id: "Tarefa"
+
+    errors:
+      messages:
+        invalid_status: "Estado inválido"
+        should_be_less_than: "Deve ser inferior a 500 kb"
+        should_be_assigned_only_once: "Deve ser atribuída somente uma vez."
+        cannot_be_before_start_date: "Não pode ser antes da data de início"
+        should_be_in_the_future: "deve estar no futuro"
+
+  required_fields: "Campos Obrigatórios."
+  edit_privileges: "Editar Privilégios"
+  master_admin: "Mestre Admin"
+  tasks_label: "Tarefas"
+  TaskManagement: "Gestão de Tarefas"
+  download_attachment: "Baixar anexo"
+  new_task: "Tarefas Novas"
+  new_task_description: "Descrição da tarefa Nova"
+  task_status_changed: "Estado da tarefa mudou"
+  task_status_changed_to: "Estado da tarefa mudou para"
+  task_updated: "Tarefa Atualizada"
+  task_comment_deleted_successfully: "Comentário de tarefa foi APAGADO com êxito"
+  task_management: "Gestão de Tarefas"
+  
+  tasks:
+
+    max_size: "500KB max"
+    tasks_assigned_to_me: "Tarefas atribuídas a mim"
+    deleted_user: "Usuário APAGADO"
+    assigned: "Atribuídp"
+    completed: "Concluída"
+    tasks_assigned_by_me: "Tarefas atribuídas por mim"
+    attach_a_file: "Anexar um ficheiro (500KB max)"
+    select_principals: "Selecione Diretores"
+    select_master_app_users: "Selecione usuários da Aplic. Mestre"
+    select_school: "Selecione Escola"
+    select_course: "Selecione Curso"
+    select_members: "Selecione Membros"
+    members: "Membros"
+    select_employees: "Selecione Funcionário"
+    task_status: "Estado da Tarefa"
+    task_text: "Tarefa"
+    task_creation_successful: "Tarefa foi criado com sucesso"
+    task_updation_successful: "Tarefa foi atualizado com sucesso"
+    no_permission_to_view_task: "Você não tem permissão para visualizar esta tarefa"
+    task_deletion_successful: "Tarefa foi APAGADO com sucesso"
+    no_permission_to_delete_task: "Voçê não tem permissão para APAGAR esta tarefa"
+    no_permission_to_download_file: "Você não tem permissão para baixar este arquivo"
+    status_updated_successfully: "Estado dessa tarefa foi atualizado com sucesso."
+    all_tasks: "Todas Tarefas"
+    filter_by: "Filtar por "
+    create_new_task: "Criar nova tarefa"
+    edit_task: "Editar Tarefa"
+    view_task: "Ver Tarefa"
+    delete_confirmation: "Tem a certeza de que pretende eliminar esta tarefa?"
+    mark_as_completed: "Marcar como concluída"
+    mark_as_assigned: "Marcar como Atribuído"
+    by: "by "
+    no_file_attached: "Nenhum ficheiro anexado."
+    post_an_update: "Publicar uma actualização"
+    created_on: "Criado em "
+    attach_a_file: "Anexar arquivo "
+    updates: "Atualizações"
+    no_updates: "Não há atualizações ainda."
+    assigned_to: "Atribuído A"
+    listing_assignees: "Listagem de Delegados"
+    emp_code_admssn_no: "Código Fun/Admissão No."
+    dept_name_course_name: "Nome do Dept/Curso"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "APAGAR Usúario"
+    delete_comment_confirmation: "Tem certeza que quer APAGAR esta atualização?"
+    posted: "Publicado "
+    no_permission_to_download_file: "Você não tem permissão para baixar este arquivo"
+    update_creation_successful: "Atualização foi publicado com sucesso"

@@ -1,0 +1,46 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('finance_transactions') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%=@batch.full_name%> <%= t('fees_report') %></div>
+
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to t('finance_text'), :controller => "finance", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('finance_reports')}", :controller => "finance", :action => "finance_reports" %><div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('monthly_transactions')}", :controller => "finance", :action => "monthly_report" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('finance_transactions_view')}", :controller => "finance", :action => "update_monthly_report", :start_date=>@start_date, :end_date=>@end_date %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "#{t('fees_report')}", :controller => "transport_fee", :action => "transport_fees_report", :start=>@start_date, :end=>@end_date %> <div class = "bread-crumb-separator"> > </div>
+    <%= t('report') %>
+  </div>
+  <% total =0 %>
+
+  <b id="transaction-report-title"><%= @batch.full_name%> <%= t('transaction_report') %></b>
+  <div id="fees-table">
+    <div class="fees-th">
+      <div class="fees-table-description"><p><%= "#{t('student_name')}"%></p></div>
+      <div class="fees-table-income"><%= "#{t('amount')}"%></div>
+      <div class="fees-table-receipt-no"><%= t('receipt_no') %></div>
+      <div class="fees-table-date"><%= "#{t('date_text')}"%></div>
+      <div class="fees-table-payment_mode"> <%= t('payment_mode') %> </div>
+      <div class="fees-table-payment_note"><p> <%= t('payment_notes') %></p> </div>
+    </div>
+    <% @transaction.each do |t| %>
+    <div class="list<%=cycle('odd', 'even')%>">
+        <div class="fees-table-description"><p><%= t.transport_student %> </p></div>
+        <div class="fees-table-income"><%= precision_label t.amount %> </div>
+        <div class="fees-table-receipt-no"><%= t.receipt_no %></div>
+        <div class="fees-table-date"><%= I18n.l(t.created_at,:format=>"%m-%d-%Y") %> </div>
+        <div class="fees-table-payment_mode"> <%= t.payment_mode %></div>
+        <div class="fees-table-payment_note"><p> <%= t.payment_note %></p> </div>
+      </div>
+      <% total += t.amount %>
+    <% end %>
+    <br/>
+    <div class="fees-th">
+      <div class="fees-table-description"><%= t('total_fees') %></div>
+      <div class="fees-table-income"><%=precision_label total %></div>
+    </div>
+  </div>
+</div>

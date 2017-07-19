@@ -1,0 +1,73 @@
+<div class="box_content">
+    <div class="partial_homework" style="padding: 20px;">
+     <h2 class="f2">HOMEWORK</h2>
+     <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div>  
+     
+     <div style="float: left;clear:both; margin:15px; width: 98%;">
+       <div style="float: left; clear:both;  width: 40%;">
+       
+         <div class="timetable_left"><%= "#{t('subject')}"%></div>
+         <div class="timetable_right"  style="margin-top:0px;">
+              <% unless @subjects.nil? %>
+                  <%= select :assignment, :subject,
+                    @subjects.map {|s| ["#{s.name}",s.id]},
+                    {:prompt => "#{t('select_a_subject')}"},
+                    {:onChange => "#{remote_function(:url => {:action => "subject_assignments2"},
+                    :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value",
+                    :before => "Element.show('loader')",
+                    :success => "Element.hide('loader')"
+                    )}"} %>
+                <% end %>
+          </div> 
+        </div>
+       
+        <div style="float: left;  width: 40%;">
+
+          <div class="timetable_left" style="width:20%;"><%= "#{t('due_date')}"%></div>
+          <div class="timetable_right"  style="margin-top:-13px; float:left;width:55%;">
+               <%= calendar_date_select_tag "assignment_duedate", '' ,
+                      :class=>"",
+                      :readonly=>true,
+                      :popup=>:force,
+                      :onchange => "#{remote_function(:url => {:action => "subject_assignments2"},
+                        :with => "'due_date='+ value +'&subject_id='+ $('assignment_subject').value",
+                        :before => "Element.show('loader')",
+                        :success => "Element.hide('loader')"
+                      )}"
+                    %>
+               
+           </div> 
+          <div class="clear-date">Clear</div>
+         </div> 
+       
+     </div>
+     
+     <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 95%;"></div> 
+            
+           
+                
+           
+             
+       <%=   render :partial => "homework_data", :locals=>{:homework=>homework} %>        
+     </div>
+ </div>
+
+<style type="text/css">
+    .calendar_date_select_popup_icon{
+      margin: 12px 1px 0;
+    }
+    .attachment {
+      background: url("/images/assignment/paperclip.png") no-repeat left;
+      padding-left: 11px;
+      height: 35px;
+    }
+    .clear-date {
+      color: #db3434;
+      cursor: pointer;
+      float: left;
+      text-decoration: underline;
+      width: 10%;
+    }
+  </style>
+
+

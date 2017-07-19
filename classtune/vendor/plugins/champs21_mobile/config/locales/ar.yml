@@ -1,0 +1,10 @@
+ar: # locale
+  class_timings_empty:  "وقد تم اختيار توقيت أي فئة"
+  no_subjects_to_show:  "لا مواضيع"
+  no_tte_entries:  "لا توجد إدخالات جدول زمني للتاريخ المحدد"
+  show_more_entries:  "وتظهر أكث"
+  select_weekday:  "تحديد يوم من أيام الأسبوع"
+  no_events:  "لا أحداث"
+  mark_absent:  "احتفال كما تغيب"
+  no_reminders: "لا تذكر"
+  attendance_marked_for:  "حضور ملحوظ لل"

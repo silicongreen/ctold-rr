@@ -1,0 +1,41 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transport_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= @route.destination %></div>
+<div class='header-sep'>|</div>
+
+<div class='sub-header'><%= t('route_schedule_details') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_route')}", routes_path %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('add_route_schedule')}", :controller => "routes", :action => "add_routes_schedules", :id=>@route.id %></li>
+  </ul>
+</div>
+
+</div>
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+    <% unless flash[:warn_notice].nil? %>
+    <div id="errorExplanation" class="errorExplanation"> <%= flash[:warn_notice] %> </div>
+  <% end %>
+  <table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
+    <tr class="tr-head"><td><%= t('weekday') %></td>  <td><%= t('home_pickup_time') %></td>  <td><%= t('school_pickup_time') %></td>  <td></td> </tr>
+    <% @routes_schedule.each do |r| %>
+    <tr class="tr-<%= cycle('odd', 'even')%>">
+     
+      <td class="col-1"><%= WeekdaySet.weekday_name(r.weekday_id).upcase %></td>
+      <td class="col-2"><%= r.home_pickup_time.strftime("%I:%M %p") unless r.home_pickup_time.nil? %></td>
+      <td class="col-3"><%= r.school_pickup_time.strftime("%I:%M %p") unless r.school_pickup_time.nil? %></td>
+      <td class="col-4"><%= link_to "#{t('edit_text')}",:action => "edit_routes_schedule", :id=>@route.id, :schedule_id=>r.id %>
+          &nbsp;&nbsp;
+          <%= link_to "#{t('delete_text')}", { :action => 'destroy_schedule', :id =>r.id}, :confirm => "#{t('delete_confirm_msg')}" %>
+         
+        </td>
+    </tr>
+    <% end %>
+    
+  </table>
+</div>

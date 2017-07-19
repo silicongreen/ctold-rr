@@ -1,0 +1,89 @@
+en:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Group name"
+        members: "Members"
+        
+      group_file:
+        doc_file_name: "Doc file name"
+
+      group_post:
+        post_title: "Post title"
+        post_body: "Post body"
+
+      group_post_comment:
+        comment_body: "Comment body"
+
+    errors:
+      messages :
+        required : "is required"
+        member_required : " are required. (atleast 1) "
+        cant_be_blank: " can't be blank "
+        is_empty: "is empty"
+        
+  discuss: "Discuss"
+  confirm_comment: "Do you really want to delete this comment?"
+  confirm_post: "Do you really want to delete this post?"
+  confirm_group: "Do you really want to delete this group?"
+  deleted_user: "Deleted User "
+  discussion: "Clubing"
+  my_group: "My Group"
+  no_group: "No group(s)"
+  by: "by "
+  posted_by: "Posted by "
+  on_text: "on"
+  member: "Members"
+  comments: "Comments"
+  no_comment: "No Recent Comments Found."
+  group_created_successfully: "Group Created Successfully"
+  group_updated_successfully: "Group Updated Successfully"
+  group_delete: "Group Deleted Successfully"
+  no_permission: "You dont have permission to access that page"
+  post_created: "Post Created Successfully"
+  post_deleted: "Post Deleted Successfully"
+  see_all_members: "See all members"
+  data_not_found: "Data Not Found"
+  group_create: "Group Create"
+  select_course: "Select course"
+  share: "Share"
+  new_group: "New Group"
+  congrats: "Congrats!"
+  you_have_been_added_to_this_group: "You have been added to this group."
+  new_post: "New post"
+  under: "Under"
+  group: "Group"
+
+  groups:
+    add_admin: "Add as Admin"
+    select_member: "Select Member"
+    delete_from_group: "Delete from Group"
+    emp_no: "Emp No./Admission no"
+    dept_name: "Dept name/Course name"
+    delete_from_admin: "Delete from Admin"
+    select_school: "Select school"
+    admins: "Admins"
+    select_principals: "Select Principal"
+    select_master_app_users: "Select Master App Users"
+    create_group: "Create Group"
+    comment: "Comment"
+    activity: "Activity"
+    all_discussion: "All discussions"
+    no_discussion: " No recent discussions"
+    groups_text: "Clubs"
+    group_name: "Group Name"
+    all_posts: "View All Posts"
+    post: "Post"
+    view_recent_activities: "View Recent Activities"
+    image_docu: "Upload image or a document (5MB)"
+    create_new_group: "Create New Club"
+    filter_by: "Filter by"
+    group_members: "Group Members"
+    add_member: "Add New Member"
+  
+  group_posts:
+     view_post: "View Post"
+     posted_by_deleted_member: "Posted by Deleted Member on"
+     add_comment: "Add your comments"

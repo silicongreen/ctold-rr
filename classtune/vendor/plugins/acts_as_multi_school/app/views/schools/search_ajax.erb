@@ -1,0 +1,48 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<table id="listing" align="center" width="100%" cellpadding="10" cellspacing="1">
+  <% unless @free_schools.nil? or @free_schools.blank? %>
+    <tr class="tr-head">
+      <td style="border-right: 2px solid #eee;"><%= t('sl_no') %></td>
+      <td><%= t('school_name') %></td>
+    </tr>
+    
+    <tr class="tr-blank"></tr>
+    
+    <% @free_schools.each_with_index do |school, i| %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-1"><%= i+1 %></td>
+          <td class="col-4"><%=  link_to school["name"], 'javascript:;', :onclick=>"update_school_selected('#{school["id"]}','#{school["name"]}')" %></td>
+        </tr>
+    <% end %>
+  <% else %>
+    <tr class="tr-<%= cycle('odd', 'even') %>">
+        <% if @load_on_startup == "1" %>
+          <% if @view_skip %>
+          <td class="col-2"><%= t('no_school_found_with_school_name') %><b><%= @school_name %></b>, <%= link_to "Create and Assign", {:controller=>"schools", :action=>"assign_free_school", :id=>@school_id, :assign_free_school => "1", :step_2 => "1"}, :style => 'text-decoration: underline;' %> or search from existing school manually</td>
+          <% else %>
+          <td class="col-2"><%= t('no_school_found_with_school_name') %><b><%= @school_name %></b>, <%= link_to "Create and Assign", {:controller=>"schools", :action=>"assign_free_school", :id=>@school_id, :assign_free_school => "0", :step_2 => "0"}, :style => 'text-decoration: underline;' %> or search from existing school manually</td>
+          <% end %>
+        <% else %>  
+          <td class="col-2"><%= t('no_school_found') %></td>
+        <% end %>
+    </tr>
+  <% end %>
+</table>

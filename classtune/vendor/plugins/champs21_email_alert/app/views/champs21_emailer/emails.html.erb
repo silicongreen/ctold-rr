@@ -1,0 +1,32 @@
+
+<html>
+  <body >
+    <%if @rtl%>
+
+      <div class="yut" style=" width:100%; float:right; height:0px;"><p style="float:right;direction:rtl;"><%=@message.gsub("URL","#{@hostname}")%> </p></div>
+
+      <%  if Champs21Setting.company_details[:company_name]=="Champs21"%>
+        <div class="yut" style=" width:100%; float:right;display:block;direction:rtl;">   <p style="float:right"> --</p>
+          <p style="float:right">  <%=@footer.gsub("URL","#{@hostname}")%></p></div>
+        <%end%>
+      <%else%>
+
+      <p ><%=@message.gsub("URL","#{@hostname}")%> </p>
+
+      <p> 
+          --<br/>
+          <%@em=Digest::SHA1.hexdigest( "#{@email}#{Time.now.to_s.split(//).sort_by {rand}.join}" )%>
+          <%user=User.active.find_by_email_and_first_name(@email,@message[5..@message.index(",<p/>")-1])%>
+          <%user.reset_password_code=@em%>
+          <%user.save(false)%>
+          <%if Champs21Setting.company_details[:company_name].present?%>
+          <%="#{t('powered_by')}#{" "}#{link_to "#{Champs21Setting.company_details[:company_name]}","#{Champs21Setting.company_details[:company_url]}"}"%>
+          <%end%>
+          <br/><%="#{@footer.gsub("URL","#{@hostname}")}#{" "}"%>
+          <%if user.student%>
+          <font size="1"><%=link_to "#{t('unsubscribe')}","#{@hostname}/email_alerts/email_subscription/#{@em}" %></font>
+          <%end%>
+        </p>
+    <%end%>
+  </body>
+</html>

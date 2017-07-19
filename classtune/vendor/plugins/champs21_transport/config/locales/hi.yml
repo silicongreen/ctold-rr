@@ -1,0 +1,171 @@
+hi:
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "सड़क"
+        vehicle_id: "वाहन"
+
+      transport_fee_collection:
+        name: "नाम"
+        start_date: "प्रारंभ दिनांक"
+        end_date: "अन्त तिथि"
+        due_date: "नियत तारीख"
+
+      route:
+        destination: "गंतव्य"
+        cost: "लागत"
+
+      vehicle:
+        vehicle_no: "वाहन संख्या"
+        main_route: "मुख्य सड़क"
+        no_of_seats: "सीटों की संख्या"
+    errors:
+      messages:
+        travellers_exist_cannot_delete_vehicle: ". यात्री मौजूद वाहन नहीं हटा सकते हैं."
+        travellers_exist_in_the_main_route: "ट्रैवलर कि मुख्य मार्ग में मौजूद वाहन संपादित करें नहीं कर सकता."
+        main_route_contains_travellers: "मुख्य मार्ग के यात्री हैं. संपादित नहीं कर सकते"
+        end_date_before_start_date: "समाप्ति तिथि प्रारंभ तिथि से पहले"
+        due_date_before_start_date: प्रारंभ तिथि से पहले नियत दिनांक "
+        due_date_before_end_date: "समाप्ति तिथि से पहले नियत दिनांक"
+
+        
+#common
+  transport_text: "परिवहन"
+  transport_fee_text: "परिवहन शुल्क"
+  destination: "गंतव्य"
+  route: "सड़क"
+  vehicle_details: "वाहन का विवरण"
+  select_main_route: "मेन रोड चुनें"
+  main_route: "मेन रोड"
+  vehicle_no: "वाहन संख्या"
+  fare: "किराया"
+  student_did_not_avail_transport: "छात्र परिवहन सुविधा उपलब्ध नहीं है लाभ उठाने के लिए क्या"
+  employee_did_not_avail_transport: "कर्मचारी परिवहन सुविधा का लाभ उठाने नहीं किया"
+  transport_label: "परिवहन"
+  transport_account: "परिवहन खाता"
+  manage_transport: "परिवहन प्रबंधित"
+  TransportAdmin: "परिवहन व्यवस्थापक"
+  available_seats: "उपलब्ध सीटें"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "वाहन"
+  
+  #transport controller translation
+  transport:
+    total_no_of_seats: "कोई कुल. सीटों की संख्या"
+    available_seats: "उपलब्ध सीटें"
+    all_seats_filled_in_vehicle: "सभी वाहन में भर सीटें"
+    select_destination: "गंतव्य चुनें"
+    select_vehicle: "वाहन का चयन करें"
+    add_transport_text: "परिवहन जोड़ें"
+    vehicle: "वाहन"
+    user_details: "उपयोक्ता विवरण"
+    add_transport_details: "परिवहन विवरण जोड़ें"
+    set_routes: "सेट रूट"
+    set_routes_for_vehicle: "वाहनों के लिए सड़कों का सेट"
+    vehicles: "वाहन"
+    transport_details_text: "परिवहन विवरण"
+    transport_fee_details: "परिवहन शुल्क विवरण"
+    transport_details: "परिवहन विवरण"
+    transportation_details: "परिवहन विवरण"
+    select_a_vehicle: "एक वाहन का चयन करें"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "सीटों की रिहाइश"
+
+    flash1: "बस सफलतापूर्वक निरुपित"
+    flash2: "परिवहन ने हटा दिया गया"
+    flash3: "बस सफलतापूर्वक संपादित"
+
+ #transport controller translation
+  transport_fee:
+    select_details_for: "विवरण के लिए चयन"
+    bus_fare: "बस का किराया"
+    fine_paid: "ठीक भुगतान"
+    transport_fee_name: "परिवहन शुल्क के नाम"
+    include_employee: "कर्मचारी शामिल करें?"
+    no_students_in_selected_batch: "चयनित बैच में नंबर छात्र"
+    edit_transport_fee_collection: "संपादित परिवहन शुल्क संग्रह"
+    select_fee_collection_date: "तिथि शुल्क संग्रह का चयन करें"
+    transport_fee_submission: "परिवहन प्रस्तुत शुल्क"
+    manage_fee_collection: "शुल्क संग्रह प्रबंधित करना"
+    student_defaulters: "छात्र बकाएदारों"
+    employee_defaulters: "कर्मचारी बकाएदारों"
+    select_class: "कक्षा का चयन करें"
+    fee_collection: "शुल्क संग्रह"
+    please_select_a_batch_or_emp: "एक बैच या कर्मचारी कृपया चुनें"
+    name_cant_be_blank: "नाम रिक्त नहीं हो सकता"
+    create_new_fee_collection_dates: "नई शुल्क एकत्रित तिथी को बनाता है"
+    display_fee_collection_dates: "शुल्क संग्रह के तिथी को दिखाता है"
+    set_transport_fee_collection_date: "परिवहन शुल्क संग्रह तिथि निर्धारित"
+    employee_transport_fee_collection: "कर्मचारी परिवहन शुल्क संग्रह"
+    employee_fees_report: "कर्मचारी शुल्क रिपोर्ट"
+    employee_transaction_report: "लेनदेन की रिपोर्ट कर्मचारी"
+    transport_fee: "परिवहन शुल्क"
+    transaction_report: "ट्रांजैक्शन रिपोर्ट"
+    create_and_view_fee_collection: "बनाएँ और शुल्क संग्रह को देखने के लिए"
+    search_for_users_to_pay: "उपयोगकर्ताओं के लिए खोज करने के लिए परिवहन शुल्क का भुगतान"
+    users_with_fees_due: "कारण फीस के साथ उपयोगकर्ता"
+    view_transport_fee_collection_dates: "देखें परिवहन शुल्क संग्रह तिथियाँ"
+    select_a_user_type: "एक प्रयोक्ता प्रकार का चयन करें"
+    select_one: "एक चुनें"
+    transport_fees_report: "परिवहन शुल्क की रिपोर्ट"
+
+    flash1: "परिवहन शुल्क संग्रह दिनांक सफलतापूर्वक अद्यतन"
+    flash2: "परिवहन शुल्क संग्रह सफलतापूर्वक अद्यतन"
+    flash3: "परिवहन शुल्क कर दिया गया है नष्ट कर दिया"
+    flash4: "सफलतापूर्वक हटाए गए"
+    flash5: "क्षमा करें! आप लेनदेन के साथ एक संग्रह की तारीख नहीं हटा सकते."
+     
+#routes controller translation
+
+  routes:
+    cost: "लागत"
+    new_main_route: "न्यू मेन रोड"
+    edit_route_details: "मार्ग विवरण संपादित करें"
+    route_details: "मार्ग विवरण"
+    add_route: "रूट जोड़ें"
+    add_new_route: "नई रूट जोड़ें"
+    view_route: "देखें मार्ग"
+    route_detail: "मार्ग विस्तार से"
+
+    flash1: "मार्ग सफलतापूर्वक जोड़ा गया."
+    flash2: "अद्यतित सफलतापूर्वक सड़क."
+    flash3: "मार्ग को सफलतापूर्वक नष्ट कर दिया."
+    flash4: "मार्ग को हटा नहीं सकते. सभी Transportations first को हटा दें."
+    flash5: "मार्ग को हटा नहीं सकते. सभी वाहन first को हटा दें."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "सीटों की संख्या"
+    add_new_vehicle: "नई गाड़ी में जोड़ें"
+    select_main_route: "मुख्य सड़क का चयन करें"
+    add_vehicle: "गाड़ी में जोड़ें"
+    edit_vehicle_details: "वाहन विवरण संपादित करें"
+
+    flash1: "वाहन सफलतापूर्वक जोड़ा गया."
+    flash2: "वाहन विवरण सफलतापूर्वक नवीनीकृत."
+    flash3: "वाहन सफलतापूर्वक नष्ट कर दिया"
+
+
+  autosuggest_menu:
+    transport_text: "परिवहन"
+    set_routes: "सेट रूट"
+    add_routes: "रूट जोड़ें"
+    vehicles: "वाहन"
+    add_vehicle: "गाड़ी में जोड़ें"
+    search_transport_details: "खोज परिवहन विवरण"
+    transportation_details: "परिवहन विवरण"
+    transport_fee: "परिवहन शुल्क"
+    transport_fee_collections: "परिवहन शुल्क संग्रह"
+    view_transport_fee_collection: "देखें परिवहन शुल्क संग्रह"
+    transport_fee_search: "परिवहन शुल्क खोजें"
+    transport_fee_student_defaulters: "छात्र परिवहन शुल्क बकाएदारों"
+    transport_fee_employee_defaulters: "कर्मचारी परिवहन शुल्क बकाएदारों"
+  
+        
+        
+
+

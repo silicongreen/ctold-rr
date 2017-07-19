@@ -1,0 +1,78 @@
+
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t("pin_group") %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('new_pin_group') %></div>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div id="applicant_form">
+    <% form_for @pin_group do |f| %>
+      <%= f.error_messages %>
+
+      <div class="label-field-pair">
+        <%= f.label :valid_from,t('valid_from') %>
+        <%= f.calendar_date_select :valid_from,:value => Date.today,:popup => :force %>
+      </div>
+      <div class="label-field-pair">
+        <%= f.label :valid_till,t('valid_till') %>
+        <%= f.calendar_date_select :valid_till,:value => Date.today + 1.month,:popup => :force %>
+      </div>
+      <div class="label-field-pair">
+        <%= f.label :name,t('name') %>
+        <%= f.text_field :name %>
+      </div>
+      <div class="label-field-pair">
+        <%= f.label :pin_count,t('pin_count') %>
+        <%= f.text_field :pin_count %>
+      </div>
+      <div class="label-field-pair">
+        <%= f.label :is_active,t('is_active') %>
+        <%= f.check_box :is_active %>
+      </div>
+      <div class="label-field-pair">
+        <%= f.label :course_ids,t('course_ids') %>
+        <div class="batches">
+          <div class="sel-list">
+            <%= t('select') %>: <%= link_to_function t('all'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %>,
+            <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+          </div>
+          <% @courses.each do |c| %>
+            <div class="each_batch">
+              <%= check_box_tag "pin_group[course_ids][]", c.id,true,:class => "batches_box" %> <label><%= c.course.full_name %></label>
+            </div>
+          <% end %></div>
+      </div>
+      <%= f.submit 'Save',:class => 'submit_button', :disable_with => "#{t('please_wait')}"%>
+    <% end %>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

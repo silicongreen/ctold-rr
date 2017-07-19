@@ -1,0 +1,69 @@
+<% if @running_class_all.present? %>
+<% unless @buildings.nil? or @buildings.empty? %> 
+  <select class="custom-combo form-control" tabindex="-1" id="search_by_room" name="search_by_room" style="width: 100%;" onchange="getRoomData(this.value);" autocomplete="off">
+      <option value="">Search By Room</option>
+      <% @buildings.each do |building| %>  
+      <optgroup label="<%= building.name %>">
+      <% building.rooms.each do |room| %>    
+        <option value="<%= room.id %>"><%= room.room_number %></option>
+      <% end %>
+      </optgroup>
+      <% end %>
+  </select>
+  <hr />  
+<% end %>
+<% end %>  
+<div id="room_div">
+  <%= image_tag("loading_spinner.gif", :align => "absmiddle", :border => 0, :id => "loading_room_info", :style =>"display: none; padding-left: 20%; padding-top: 10%; padding-bottom:10%;" ) %>    
+  <% if @running_class_all.present? %>
+    <% unless @tts_all.nil? or @tts_all.empty? %>
+      <span class="message">
+          <h5>Running Class: </h5>
+      </span>
+      <% tts_all = @tts_all.select{ |tt| @running_class_all.include?(tt.id) } %>
+      <% tts_all.each do |tt| %>
+      <div class="ui-ribbon-container" style="border: 1px solid #ccc; float: left; padding: 5px; width: 100%; border-radius: 7px;">
+          <div class="ui-ribbon-wrapper"><div class="ui-ribbon"><span id="time_diff_room_<%= tt.id %>"><%= @time_difference_all[tt.id] %></span></div></div>
+          <script>
+            var target_date<%= tt.id %> = new Date();
+
+            target_date<%= tt.id %>.setHours(target_date<%= tt.id %>.getHours() + <%= @hours_all[tt.id] %>);
+            target_date<%= tt.id %>.setMinutes(target_date<%= tt.id %>.getMinutes() + <%= @minutes_all[tt.id] %>);
+            target_date<%= tt.id %>.setSeconds(target_date<%= tt.id %>.getSeconds() + <%= @seconds_all[tt.id] %>);
+            var timerrunning = [];
+
+            var update_div = [];
+            timerrunning[<%= tt.id %>] = true;
+            countdown_new[<%= tt.id %>] = setInterval(function () { getCountdownNew(target_date<%= tt.id %>, '<%= "room_#{tt.id}" %>'); }, 1000);
+          </script> 
+          <div class="count" style="font-size: 14px; padding-top: 7px; font-weight: bold; padding-bottom: 7px;"><%= tt.room.building.name %>, <%= tt.room.room_number %></div>
+          <p><%= tt.subject.name %></p>
+          <div class="col-md-4" style="padding-bottom: 5px; display: cell; height: 100%">
+                  <% if tt.employee.photo_file_name? %>
+                    <% @emp_profile_image = tt.employee.photo_file_name %>
+                  <% else %>
+                    <% @emp_profile_image = "HR/default_employee.png" %>
+                  <% end %>  
+                  <div style="width: 60px; height: 60px; margin-top: 10px;">
+                    <%= image_tag "#{@emp_profile_image}", :style=> "width: 100%;", :class => "img-circle" %>
+                  </div>  
+          </div>  
+          <div class="col-md-8">
+            <p style="padding-top: 5px;"><b><%= tt.employee.short_code %> - <%= tt.employee.full_name %></b></p>
+            <p><%= tt.employee.employee_position.name %></p>
+          </div>
+        </div>
+        <div style="clear: both; height: 1px;"></div>
+        <hr />
+      <% end %>
+    <% end %>
+  <% else %>
+     <ul class="list-unstyled msg_list">
+      <li>
+        <span class="message">
+            <b><%= "Currently No Class running" %></b>
+        </span>
+      </li>
+    </ul>   
+  <% end %>
+</div>

@@ -1,0 +1,89 @@
+ar:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "اسم المجموعة"
+        members: "أعضاء"
+
+      group_file:
+        doc_file_name: "ثيقة اسم الملف"
+
+      group_post:
+        post_title: "عنوان آخر"
+        post_body: "آخر الجسم"
+
+      group_post_comment:
+        comment_body: "تعليق الجسم"
+
+    errors:
+      messages :
+        member_required: "مطلوبة. (أتلست 1)"
+        required: "هو مطلوب."
+        cant_be_blank: "لا يمكن أن تكون فارغة"
+        is_empty: "فارغ"
+
+  discuss: "بحث"
+  confirm_comment: "هل تريد حقا حذف هذا التعليق؟"
+  confirm_post: "هل تريد حقا حذف هذه المشاركة؟"
+  confirm_group: "هل تريد حقا حذف هذه المجموعة؟"
+  deleted_user: "حذف المستخدم"
+  discussion: "مناقشة"
+  my_group: "مجموعتي"
+  no_group: "لا توجد مجموعة (ق)"
+  by: "من قبل"
+  posted_by: "أرفق"
+  on_text: "في"
+  member: "أعضاء"
+  comments: "تعليقات"
+  no_comment: "لم يتم العثور على التعليقات الأخيرة."
+  group_created_successfully: "أنشاء مجموعة بنجاح"
+  group_updated_successfully: "حدثت في المجموعة بنجاح"
+  group_delete: "المجموعة المحذوفة بنجاح"
+  no_permission: "أنت لا تملك الصلاحيات للوصول إلى هذه الصفحة"
+  post_created: "ابتدعت آخر بنجاح"
+  post_deleted: "آخر المحذوفة بنجاح"
+  see_all_members: "انظر جميع الأعضاء"
+  data_not_found: "لم يتم العثور على البيانات"
+  group_create: "المجموعة إنشاء"
+  select_course: "حدد البرنامج الدراسي"
+  share: "حصة"
+  new_group: "مجموعة جديدة"
+  congrats: "مبروك!"
+  you_have_been_added_to_this_group: "وقد أضيفت إلى هذه المجموعة."
+  new_post: "مشاركة جديدة"
+  under: "تحت"
+  group: "مجموعة"
+
+  groups:
+    add_admin: "إضافة إلى المسؤول"
+    select_member: "حدد الأعضاء"
+    delete_from_group: "حذف من المجموعة"
+    emp_no: "EMP رقم / قبول أي"
+    dept_name: "قسم اسم / اسم الدورة"
+    delete_from_admin: "حذف من المسؤول"
+    select_school: "حدد المدرسة"
+    admins: "المشرفون"
+    select_principals: "حدد الرئيسية"
+    select_master_app_users: "ماجستير للمستخدمين اختيار التطبيق"
+    create_group: "إنشاء مجموعة"
+    comment: "تعليق"
+    activity: "نشاط"
+    all_discussion: "كل المناقشات"
+    no_discussion: "أي المناقشات التي جرت مؤخرا"
+    groups_text: "المجموعات"
+    group_name: "اسم المجموعة"
+    all_posts: "عرض جميع المشاركات"
+    post: "بعد"
+    view_recent_activities: "عرض الأنشطة الأخيرة"
+    image_docu: "تحميل صورة أو وثيقة (5MB)"
+    create_new_group: "إنشاء مجموعة جديدة"
+    filter_by: "التصفية حسب"
+    group_members: "مجموعة الأعضاء"
+    add_member: "إضافة عضو جديد"
+
+  group_posts:
+     view_post: "رأي آخر"
+     posted_by_deleted_member: "أرسلت بواسطة عضو محذوف في"
+     add_comment: "إضافة تعليقاتك"

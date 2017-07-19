@@ -1,0 +1,59 @@
+<% form_for @package,:url=>{:action=>:create_package},:method=>:post,:html=>{:class=>"form"} do |f| %>
+  <fieldset>
+    <%= error_string_for(f) %>
+    <%= f.error_message_on :base %>
+  </fieldset>
+
+  <fieldset>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </fieldset>
+
+  <fieldset>
+    <th>Available Modules</th>
+    <div class="float-right margin-right-30 link-box-red"><a href="#" id="select_all_modules">All</a><p class="vertical-line">|</p><a href="#" id="select_no_modules">None</a></div>
+  </fieldset>
+  <% @menu_links_main.each do |menu_link_main| %>
+    <div class="plugin-cell main-bg-color">
+      <%= check_box_tag "package[available_menu_link_main][menu_link][]",menu_link_main.name, false,:id=>"package_"+menu_link_main.id.to_s, :class=>"available_modules" %> <label for="school_<%= menu_link_main.name %>"><%= t(menu_link_main.name).titleize %></label>  
+    </div>
+  <% end %>
+  <%= (hidden_field_tag "school[available_plugin_attributes][id]", @school.available_plugin.id) unless @school.available_plugin.new_record?%>
+  <% @school_group.allowed_plugins.each do |plugin| %>
+    <% @selected = false %>
+    <% @class_name = "available_modules" %>
+    <% not_required_plugins = @not_required_plugins.select{|n| n == plugin} %>
+    <% required_plugins = @required_plugins.select{|n| n == plugin} %>
+    <% if not_required_plugins[0] == plugin %>
+    <div class="plugin-cell main-bg-color" style="display: none;">
+    <% @class_name = "available_modules_not" %>    
+    <% else %>
+        <% if required_plugins[0] == plugin %>
+          <% @selected = true %>
+          <div class="plugin-cell main-bg-color" style="display: none;">
+        <% else %>      
+          <div class="plugin-cell main-bg-color">
+        <% end %>      
+    <% end %>        
+      <%= check_box_tag "school[available_plugin_attributes][plugins][]",plugin, @selected, :id=>"school_"+plugin, :class=>@class_name %> <label for="school_<%= plugin %>"><%= plugin.sub(/^champs21_/,'').titleize.titleize %></label>
+    </div>
+
+  <% end %>
+
+  <% @menu_links_childs.each do |menu_links_child| %>
+    <fieldset>
+    <th><%= t(menu_links_child['name'])  %></th>
+    <div class="float-right margin-right-30 link-box-red"><a href="javascript:;" class="select_all" id="select_all_<%= menu_links_child['name']  %>">All</a><p class="vertical-line">|</p><a href="javascript:;" class="select_none" id="select_no_<%= menu_links_child['name']  %>">None</a></div>
+    </fieldset>
+    <% menu_links_child['permission_menus'].each do |permission_menus| %>
+      <div class="plugin-cell main-bg-color">  
+          <%= check_box_tag "package[available_permission_menus][menu_link][]",permission_menus.name, false,:id=>"package_"+permission_menus.id.to_s, :class => menu_links_child['name'] %> <label for="school_<%= permission_menus.name %>"><%= t(permission_menus.name).titleize %></label>  
+      </div>
+    <% end %>
+  <% end %>
+
+  
+  <fieldset>
+    <%= f.submit 'Save', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+  </fieldset>
+<% end %>

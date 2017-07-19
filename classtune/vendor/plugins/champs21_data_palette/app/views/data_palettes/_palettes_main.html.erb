@@ -1,0 +1,42 @@
+<%
+  free_palettes = ['homework','timetable','news']
+%>
+<%  if !check_free_school? %>
+  <% unless user_palettes.empty? %>
+    <div class="column" id="col-1">
+      <% user_palettes.select{|p| p.user_palette_column(@current_user)==1}.sort_by{|s| s.user_palette_position(@current_user)}.each do|palette| %>
+        <div class="portlet" id="<%= palette.id %>-palette">
+          <%= render :partial=>"user_palette", :locals=>{:palette=>palette, :cur_date=>cur_date} %>
+        </div>
+      <% end %>
+    </div>
+    <div class="column" id="col-2">
+      <% user_palettes.select{|p| p.user_palette_column(@current_user)==2}.sort_by{|s| s.user_palette_position(@current_user)}.each do|palette| %>
+        <div class="portlet" id="<%= palette.id %>-palette">
+          <%= render :partial=>"user_palette", :locals=>{:palette=>palette, :cur_date=>cur_date} %>
+        </div>
+      <% end %>
+    </div>
+    <div class="column" id="col-3">
+      <% user_palettes.select{|p| p.user_palette_column(@current_user)==3}.sort_by{|s| s.user_palette_position(@current_user)}.each do|palette| %>
+        <div class="portlet" id="<%= palette.id %>-palette">
+          <%= render :partial=>"user_palette", :locals=>{:palette=>palette, :cur_date=>cur_date} %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-palettes"><%= t('no_palettes_selected') %></div>
+  <% end %>
+<% else %> 
+    <% i = 1 %>
+    <% user_palettes.each do|palette| %>
+      <% if free_palettes.include? palette.name %>
+      <div class="column" id="col-<%=i%>">
+          <div class="portlet" id="<%= palette.id %>-palette">
+            <%= render :partial=>"user_palette", :locals=>{:palette=>palette, :cur_date=>cur_date} %>
+          </div>
+      </div>
+      <% i = i+1 %>
+      <% end %>
+    <% end %>
+<% end %>   

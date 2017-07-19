@@ -1,0 +1,36 @@
+<div class="partial_homework" style="padding: 20px;">
+ <h2 class="f2 etitle">EXAM ROUTINE</h2>
+ <div class="subcontent-info" style="padding:0px;">Click Exam To See the Routine</div>
+ <div style="float: left; margin:15px; width: 98%;"></div> 
+ <% unless routine.empty? %>
+    <% routine.each do |h| %>      
+        <div class="portlet-subcontent">               
+          <div class="timetable_right" style="width:100%">
+            <div class="subcontent-header themed_text">
+              <% @is_new = "" %>
+              <% if  h['is_new'] == 1 %>
+                <% @is_new = "<span style='color:red;'>( New )</span>" %>
+              <% end %>
+              <%= link_to h['name']+" "+@is_new, :controller => "exam", :action => "student_exam_schedule_view", :id => h['id'] %>
+            </div>
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+          </div>       
+        </div>
+        <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 
+      
+    <% end %>
+ <% else %>
+ <div class="portlet-subcontent">    
+   No Exam Routine Publish
+ </div>  
+ <% end  %>  
+ </div>
+<style>
+  
+  div h2.etitle
+  {
+     color:#94CA7C;
+  }
+ </style>  
+
+

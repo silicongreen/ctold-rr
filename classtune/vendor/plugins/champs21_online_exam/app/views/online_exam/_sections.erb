@@ -1,0 +1,36 @@
+<% if @classes.length == 1 %>
+<script type="text/javascript">
+  j("#section_label_underline").hide();
+  j("#section_label").hide();
+  j.ajax({
+    type: "POST",
+    url: "/online_exam/show_active_exam",
+    data: j('#new_student').serialize() + "&course_id=" + <%= @classes[0].id %>,
+    success: function(response) {
+      j('#exam-list').html('');
+      j('#exam-list').html(response);
+    }
+  })
+  .done(function( msg ) {
+    j("#section_label_underline").hide();
+    j("#section_label").hide();
+  });
+</script>  
+<% else %>
+  <script type="text/javascript">
+    j("#section_label_underline").show();
+    j("#section_label").show();
+  </script>  
+  <% if @selected_section.to_i > 0 %>
+  <%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+      {:prompt => "#{t('select')}"},
+      {:onChange => "#{remote_function(:url => {:controller => "online_exam", :action => "show_active_exam"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" , :update =>'exam-list', :before => "$('loading_1').show();",
+      :success => "$('loading_1').hide();")}", :class => 'custom_drop'} %>  
+  <% else %>    
+  <%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+      {:prompt => "#{t('select')}"},
+      {:onChange => "#{remote_function(:url => {:controller => "online_exam", :action => "show_active_exam"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" , :update =>'exam-list', :before => "$('loading_1').show();",
+      :success => "$('loading_1').hide();")}", :class => 'custom_drop'} %>  
+  <% end %>
+  <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_1", :style =>"display: none;" ) %>
+<% end %>

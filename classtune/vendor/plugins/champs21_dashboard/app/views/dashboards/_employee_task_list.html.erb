@@ -1,0 +1,156 @@
+<div class="suhheader-div">
+  <div>
+    Today's Tasks
+  </div>
+</div>
+
+<div class="title-div">
+  Assigned By Me
+</div>
+<% unless tasks['employee_task_by_me'].nil? %>
+  <% tasks['employee_task_by_me'].each do |h| %>
+
+    <% if h['start_date'] == (Date.today).strftime('%Y-%m-%d') %>
+      <div class="portlet-subcontent">     
+        <div class="timetable_left">
+          <img width="30" src="/images/icons/task/task_yellow.png" />
+        </div>
+        <div class="timetable_right"  style="margin-top:5px;">
+          <div class="subcontent-date">Assign: <%= h['start_date'] %></div>
+          <div class="subcontent-header themed_text">
+            <%= h['title'] %>
+          </div>
+          <div class="subcontent-date">Due: <%= h['due_date'] %></div>
+        </div>
+      </div>
+      <% tasks['employee_task_by_me'].delete_if {|h| h['start_date'] == (Date.today).strftime('%Y-%m-%d') } %>
+    <% end %>
+    <!--div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div-->
+  <% end %>
+<% else %>
+  <div class="portlet-subcontent">    
+    No Task Found
+  </div>
+<% end  %>
+
+
+<div class="title-div" style="margin-top: 100px;">
+  Assigned To Me
+</div>
+<% unless tasks['employee_task_for_me'].nil? %>
+
+  <% tasks['employee_task_for_me'].each do |h| %>
+
+    <% if h['start_date'] == (Date.today).strftime('%Y-%m-%d') %>
+      <div class="portlet-subcontent">     
+        <div class="timetable_left">
+          <img width="30" src="/images/icons/task/task_yellow.png" />
+        </div>
+        <div class="timetable_right"  style="margin-top:5px;">
+          <div class="subcontent-date">Assign: <%= h['start_date'] %></div>
+          <div class="subcontent-header themed_text">
+            <%= h['title'] %>
+          </div>
+          <div class="subcontent-date">Due: <%= h['due_date'] %></div>
+        </div>
+      </div>
+      <% tasks['employee_task_for_me'].delete_if {|h| h['start_date'] == (Date.today).strftime('%Y-%m-%d') } %>
+    <% end %>
+    <!--div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div-->
+  <% end %>
+<% else %>
+  <div class="portlet-subcontent">
+    No Task Found
+  </div>
+<% end  %>
+
+<div class="suhheader-div" style="margin-top: 60px;">
+  <div>
+    General Tasks
+  </div>
+</div>
+
+<div class="title-div">
+  Assigned By Me
+  
+</div>
+<% unless tasks['employee_task_by_me'].nil? or tasks['employee_task_by_me'].empty? %>
+  <% tasks['employee_task_by_me'].each do |h| %>
+    <div class="portlet-subcontent">     
+      <div class="timetable_left">
+        <img width="30" src="/images/icons/task/task_yellow.png" />
+      </div>
+      <div class="timetable_right"  style="margin-top:5px;">
+        <div class="subcontent-date">Assign: <%= h['start_date'] %></div>
+        <div class="subcontent-header themed_text">
+          <%= h['title'] %>
+        </div>
+        <div class="subcontent-date">Due: <%= h['due_date'] %></div>
+      </div>
+    </div>
+    <!--div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div-->
+  <% end %>
+<% else %>
+  <div class="portlet-subcontent">    
+    No Task Found
+  </div>
+<% end  %>
+
+
+<div class="title-div" style="margin-top: 10px;">
+  Assigned To Me
+</div>
+<% unless tasks['employee_task_for_me'].nil? %>
+
+  <% tasks['employee_task_for_me'].each do |h| %>
+    <div class="portlet-subcontent">     
+      <div class="timetable_left">
+        <img width="30" src="/images/icons/task/task_yellow.png" />
+      </div>
+      <div class="timetable_right"  style="margin-top:5px;">
+        <div class="subcontent-date">Assign: <%= h['start_date'] %></div>
+        <div class="subcontent-header themed_text">
+          <%= h['title'] %>
+        </div>
+        <div class="subcontent-date">Due: <%= h['due_date'] %></div>
+      </div>
+    </div>
+    <!--div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div-->
+  <% end %>
+<% else %>
+  <div class="portlet-subcontent">
+    No Task Found
+  </div>
+<% end  %>
+
+<style type="text/css">
+  .suhheader-div {
+    clear: both;
+    background-color: #f5f5f5;
+    margin: 40px auto 20px;
+    padding: 10px;
+    width: 97%;
+  }
+  .suhheader-div div {
+    color: #bebebe;
+    font-size: 13px;
+    text-align: left;
+    width: 100%;
+  }
+  .title-div {
+    clear: both;
+    color: #cdcdcd;
+    font-size: 15px;
+    margin-bottom: 10px;
+    width: 97%;
+  }
+  .partial_homework .timetable_right {
+    float: left;
+  }
+  .partial_homework .subcontent-date {
+    padding: 1px 0;
+  }
+  .partial_homework .subcontent-header {
+    padding: 1px 0;
+  }
+</style>

@@ -1,0 +1,12 @@
+<% unless @lessonplans.nil? or @lessonplans.empty? %>
+    <% @lessonplans.each do |lessonplan| %>
+      <li>
+          <div class="block">
+              <div class="block_content">
+                  <h2 class="title_new"><%=  link_to lessonplan.title, :controller => 'lessonplan', :action => 'view', :id => lessonplan.id%> </h2>
+                  <p class="excerpt"><%= shorten_string(strip_tags(lessonplan.content), 120)  %></p>
+              </div>
+          </div>
+      </li> 
+    <% end %>
+<% end %><%= "---#{@lessonplans.length}" %>

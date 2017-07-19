@@ -1,0 +1,12 @@
+settings:
+ max_school_count: 3
+ tld_sizes:
+   development: 1
+   test: 0
+   production: 1
+ domain: lvh.me
+ organization_details:
+   name: Champs21
+   whitelabel: false
+ disabled_plugins: []
+ enabled_plugins: []

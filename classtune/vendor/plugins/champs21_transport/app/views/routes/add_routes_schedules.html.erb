@@ -1,0 +1,57 @@
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transport_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= @route.destination %></div>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('add_route_schedule') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_route')}", routes_path %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('view_route_schedule')}", :controller => "routes", :action => "route_schedule", :id=>@route.id %></li>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div id="vehicle_form">
+    <% form_for:route_schedule, :url=>{:controller=>"routes",:action=>"create_routes_schedule",:id=>@route.id},:html=>{:class=>'form'} do |r| %>
+      <%= error_messages_for :route_schedule  %>
+      <% if @route_schedule.errors.any? %>
+      <% end %>
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+
+      <div class="label-field-pair">
+        <label for="home_pickup_time"> <%= t('home_pickup_time') %><span class="necessary-field">*</span> </label>
+          <div class="time-select-field"><%= time_select :route_schedule, :home_pickup_time, {:minute_step => 5} %></div>
+      </div>
+      <div class="label-field-pair">
+        <label for="school_pickup_time"> <%= t('school_pickup_time') %><span class="necessary-field">*</span> </label>
+          <div class="time-select-field"><%= time_select :route_schedule, :school_pickup_time, {:minute_step => 5} %></div>
+      </div>
+      
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= t('weekday') %></label>
+        
+      </div>
+      <div class="sel-list">
+            <%= link_to_function t('all'), "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" %>,
+            <%= link_to_function t('none'), "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" %>
+      </div>
+        
+      <% weekdays = WeekdaySet.default_weekdays() %>
+      <ul id="category-list">
+        <% weekdays.each do |key,value| %>
+        <li class="list<%=cycle('odd', 'even')%>">
+          
+          <div class="category-name"><%=value%></div>
+          <div class="category-edit"><%= check_box_tag 'route_schedule_week[weekday][]', key, false,:class=>"right" %></div>
+        </li>
+        <% end %>
+      </ul>
+     
+      <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button",:disable_with => "#{t('please_wait')}"  %>
+    <% end %>
+  </div>
+</div>

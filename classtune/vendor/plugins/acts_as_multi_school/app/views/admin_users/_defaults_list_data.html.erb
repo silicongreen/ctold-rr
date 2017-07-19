@@ -1,0 +1,50 @@
+<% unless @defaults.empty? %>
+  <div style="width: 80%;">
+      <table style="width:100%; overflow: hidden;" class="table table-bordered table-striped">
+          <thead>
+              <tr>
+                  <th>Available Setting</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% @defaults.each do |default| %>
+                <tr>
+                    <td><%= default.value %></td>
+                    <td>
+                        <label><%= link_to 'Edit', {:controller=>"admin_users", :action=>"edit_default", :id=>default.id} %></label>
+                        <p class="seperator">|</p>
+                        <label><%= link_to "Delete", {:controller=>"admin_users", :action=>"delete_default", :id=>default.id}, :confirm => 'Are you sure?' %></label>
+                    </td>
+                </tr>
+              <% end %>
+          </tbody>
+
+      </table>
+
+      <% posted_params = params %>
+      <% posted_params.delete(:page) %>
+      <% posted_params.delete(:authenticity_token) %>
+      <% posted_params.delete(:controller) %>
+      <% posted_params.delete(:action) %>
+      <%  @url_params = "" %>
+      <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"} %>
+      <%= will_paginate @defaults,:params => {:id =>key} , :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'detail_list' }%>
+    <% else %>
+      No Default Setting found
+  </div>
+
+<% end %>
+
+
+<style type="text/css">
+    td label, td p {
+        float: left;
+    }
+    td label {
+        width: 15%;
+    }
+    td p.seperator {
+        width: 7%;
+    }
+</style>

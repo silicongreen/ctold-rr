@@ -1,0 +1,131 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">New School</h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+  <%= render "form" %>
+</div>
+<script type="text/javascript">
+  j('#school_school_domains_attributes_0_domain').attr("readonly","readonly");
+  j("#school_code").keyup(function(){
+    //h = window.location.hostname;
+    //ho = h.slice(h.indexOf('.')+1);
+    ho = "<%= set_domain(@school_group,request.host) %>"
+    fd = j("#school_code").val() + "." + ho;
+    fd = fd.replace("plus.","");
+    j('#school_school_domains_attributes_0_domain').val(fd)
+  });
+  
+  j("#default_class").click(function(){
+    if ( j(this).prop("checked") )
+    {
+      j("#school_class_file").attr("disabled",true);
+    }
+    else
+    {
+      j("#school_class_file").removeAttr("disabled");
+    }
+  });
+  
+  j("#default_employee_category").click(function(){
+    if ( j(this).prop("checked") )
+    {
+      j("#school_emp_cat_file").attr("disabled",true);
+    }
+    else
+    {
+      j("#school_emp_cat_file").removeAttr("disabled");
+    }
+  });
+  
+  j("#default_employee_department").click(function(){
+    if ( j(this).prop("checked") )
+    {
+      j("#school_emp_dept_file").attr("disabled",true);
+    }
+    else
+    {
+      j("#school_emp_dept_file").removeAttr("disabled");
+    }
+  });
+  
+  j("#default_employee_grade").click(function(){
+    if ( j(this).prop("checked") )
+    {
+      j("#school_emp_grade_file").attr("disabled",true);
+    }
+    else
+    {
+      j("#school_emp_grade_file").removeAttr("disabled");
+    }
+  });
+  
+  j("#default_exam_grade").click(function(){
+    if ( j(this).prop("checked") )
+    {
+      j("#school_exam_grade_file").attr("disabled",true);
+    }
+    else
+    {
+      j("#school_exam_grade_file").removeAttr("disabled");
+    }
+  });
+  
+  j("#school_code").blur(function(){
+    //h = window.location.hostname;
+    //ho = h.slice(h.indexOf('.')+1);
+    ho = "<%= set_domain(@school_group,request.host) %>"
+    fd = j("#school_code").val() + "." + ho;
+    fd = fd.replace("plus.","");
+    j('#school_school_domains_attributes_0_domain').val(fd)
+  });
+  
+  j("#select_all_import").click(function(){
+      j(".all_imports").attr("checked",true);
+  });
+  
+  j("#select_no_import").click(function(){
+      j(".all_imports").removeAttr("checked");
+  });
+  
+  j(".create_n_assign").click(function(){
+    //
+    if ( j(this).prop('checked') )
+    {
+      j(".create_n_assign").parent().removeClass('red-border');
+      j(".create_n_assign").removeAttr('checked');
+      j(this).attr('checked',true);
+      j(this).parent().addClass('red-border');
+    }
+  });
+  
+  
+  j(".select_package").click(function(){
+    j(".school_modules").removeAttr('checked');
+    var modules_id = this.id.replace('school_','');
+    var modules_name = j("#" + modules_id + "_modules").val();
+    var menu_name = j("#" + modules_id + "_menu").val();
+    var ar_modules_name = modules_name.split(",");
+    if ( j(this).prop('checked') )
+    {
+      j("#menus").val(menu_name);
+      for( var i=0; i< ar_modules_name.length; i++)
+      {
+        j("#school_" + ar_modules_name[i]).attr("checked",true);
+      }
+      
+      j(".select_package").removeAttr('checked');
+      j(".select_package").parent().removeClass('red-border');
+      j(this).attr('checked',true);
+      j(this).parent().addClass('red-border');
+    }
+    else
+    {
+      j("#menus").val("");
+      for( var i=0; i< ar_modules_name.length; i++)
+      {
+        j("#school_" + ar_modules_name[i]).removeAttr("checked");
+      }
+    }
+  });
+  
+</script>

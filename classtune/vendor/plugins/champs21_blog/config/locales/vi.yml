@@ -1,0 +1,135 @@
+vi:
+#model
+  activerecord:
+    attributes:
+       applicant:
+          first_name: "Tên"
+          date_of_birth: "Ngày sinh"
+
+  date:
+    formats:
+      default: "%e-%m-%Y"
+      normal: "%B %e, %Y"
+      short: "%e. %b"
+      month_year: "%B %Y"
+      long: "%A, %e %B, %Y"
+      only_day: "%e"
+      month: "%B"
+      day: "%a"
+      mont: "%d"
+      day_mon: "%a %d"
+
+
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thur, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order: [ :day, :month, :year ]
+
+  time:
+    formats:
+      default: "%A, %d. %B %Y, %H:%M Uhr"
+      short: "%d. %B, %H:%M Uhr"
+      long: "%A, %d. %B %Y, %H:%M Uhr"
+      time: "%H:%M"
+
+    am: "AM"
+    pm: "PM"
+
+#general translation
+  blog_text: "Blog"
+  blog_admin_privilege: "Quản trị Blog"
+  manage_blog: "Đăng blog và xem blog bằng user người khác"
+
+#controller specific
+  blogs:
+    error_prohibited: "bị lỗi nên không lưu được"
+    problem_fields: "có vấn đề với các lĩnh vực sau:"
+    flash1: "Xin vui lòng tạo blog cá nhân trước"
+    not_authorized: "Bạn không được phép xem nội dung này"
+    blogs_text: "Blog"
+    register: "Đăng ký"
+    my_blogs: "Blog của tôi"
+    no_post: "Bạn không đăng bài nào."
+    my_blog: "Blog của tôi"
+    commented: " đã nhận xét về bài của bạn"
+    on_text: " về"
+    activities: "Các hoạt động"
+    flash_admin: "Quản trị viên không thể tham gia vào blog."
+    no_notification: "Không tìm thấy các hoạt động gần đây"
+    deleted_user: "User đã bị xóa"
+    flash_update: "Blog đã được cập nhật thành công"
+    notifications: "Các hoạt động"
+    search: "Tìm kiếm"
+    flash_blog_status: "Tình trạng Blog đã được cập nhật thành công"
+    blog_activated: "User's blog is activated successfully"
+    blog_deactivated: "User's blog is deactivated successfully"
+
+  blog_posts:
+    flash_no_blog: "Không tìm thấy blog cho user này"
+    flash_no_user: "Không tìm thấy User này"
+    not_authorized: "Bạn không được phép xem nội dung này"
+    admin_deactivated:
+    flash_edit: "Bài của bạn đã được chỉnh sửa thành công"
+    flash_not_available: "Nội dung này hiện không có"
+    flash2: "Your blog post has been saved successfully."
+    flash3: "Your blog post has been posted successfully."
+    home: 'Trang chủ'
+    new_post: "+ Bài mới"
+    my_blog: "Blog của tôi"
+    edit_blog: "Chỉnh sửa blog"
+    by: "Bởi"
+    date_text: "Ngày"
+    blogs_text: "Blog"
+    comments: "Các nhận xét"
+    unpublish: "Chưa được đăng"
+    publish: "Đăng"
+    no_post: "Bạn không đăng bài nào."
+    search: "Tìm kiếm"
+    search_blogs: "Tìm kiếm các Blog"
+    blog_name: "Tên Blog"
+    not_created_yet: "Chưa được tạo"
+    activate: "Kích hoạt"
+    deactivate: "Làm ngừng hoạt động"
+    notifications: "Các hoạt động"
+    like: "Thích"
+    likes: "Thích"
+    you_have_liked: "Bạn đã thích"
+    post: "Bài"
+    flash_inactive: "Bạn không được phép thích bài này"
+    flash_not_published: "Bài này hiện không có để thích và nhận xét"
+    flash_deleted: "Bài này đã bị xóa."
+    blog_directory: "Sách hướng dẫn Blog"
+    save_as_draft: "Lưu bản nháp"
+    posted_by: "Đăng bởi"
+    on_text: "về"
+    favourites: "Ưa thích"
+    flash_admin: "Quản trị viên không thể tham gia vào blog."
+    posts: "Các bài"
+    prev_page: "< Trang trước"
+    next_page: "Trang sau >"
+    deleted_user: "User đã bị xóa "
+    create_post: "Tạo bài"
+    deleted_blog: "Blog đã bị xóa"
+    latest_posts: "Mới nhất"
+    popular_posts: "Được nhiều người ưa thích"
+    no_blog_found: "Không tìm thấy blog nào"
+    flash_blog_ban: "Tình trạng bài đã được cập nhật thành công"
+    delete_post: "Bạn có chắc chắn muốn xóa bài này không?"
+    ban_post: "Cấm đăng bài"
+    un_ban: "Hủy bỏ cấm"
+    published_successfully: "Published Successfully"
+    unpublished_successfully: "Unpublished Successfully"
+    blog_post_deleted_successfully: "Post deleted successfully"
+    no_blog_posts: "No blog posts"
+    ban_blog_post: "Blog post is banned successfully"
+    unban_blog_post: "Blog post is un-banned successfully"
+
+  blog_comments:
+    post_a_comment: "Đăng nhận xét"
+    flash1: "Nhận xét của bạn đã được đăng thành công"
+    commented: "đã nhận xét"
+    ago: "trước đó"
+    delete_comment_confirmation: "Bạn có chắc chắn muốn xóa nhận xét này không?"
+    flash_admin: "Quản trị viên không thể tham gia vào blog."
+    deleted_user: "User đã bị xóa"

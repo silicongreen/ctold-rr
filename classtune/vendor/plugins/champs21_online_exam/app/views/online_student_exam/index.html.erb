@@ -1,0 +1,61 @@
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <a href="/online_student_exam"> ONLINE QUIZ</a>
+      </div>
+      <div class="header-title-sub-text f5">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>    
+
+  <div class="header-form-wrapper">
+    <div class='header-right-button'>
+      <%= link_to_remote "<div class='all-quiz-btn'>All Quiz</div>",
+        {:update => "quiz_data",
+        :before => "Element.show('loader');",
+        :success => "Element.hide('loader');",
+        :url => {:action => "exam_list"}}, {:id => 'all_quiz'}
+    %>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="page-yield"  class="bg-disable" style="margin-top: 0px;">
+
+  <div id="loader" style="display: none; background-color: rgb(255, 255, 255); width: 100%; padding:30px 0px;">
+    <%= image_tag("/images/loader2.gif", :align => "absmiddle", :border => 0,:id => "add-loader", :class=>"add-palette-loader" ) %>
+  </div>
+  <div id="quiz_data">    
+    <div id="box" style="float:left; display:none;background-color: rgb(255, 255, 255); padding: 30px; width: 94%;">
+      <div id ="errors"></div>
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+
+      <% remote_form_for :exam do |form|  %>
+        <div class="label-field-pair">
+          <label> <%= t('select_exam') %>:</label>
+          <div class="text-input-bg">
+            <%= form.select :exam_id, @exams.map{|c|[c.name + ' - ' + c.subject.name,c.id]}, {:prompt => " ► #{t('select_exam')}" }%>
+          </div>
+        </div>
+        <div id="submit-button">
+          <%=form.submit(" ► #{t('go')}") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+
+<% if @current_user.parent? or @current_user.student? %>
+  <% content_for :head do %>
+    <%= javascript_include_tag "custom/parent_online_exam" %>
+  <% end %>
+<% end %>

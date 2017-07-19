@@ -1,0 +1,72 @@
+ar:
+  activerecord:
+    attributes:
+
+       poll_option:
+        option: "خيار"
+
+       poll_question:
+         title: "لقب"
+         description: "وصف"
+         poll_options: "استطلاع الخيارات"
+
+       poll_vote:
+         user_id: "المستخدم"
+    errors:
+      messages:
+        has_already_voted : "وقد صوتت بالفعل"
+        you_havent_selected_an_option_yet: "لم تقم بتحديد خيار بعد"
+        options_cant_blank : "Option can't be blank"
+
+  poll_label: "استطلاع"
+  poll_control_privilege: "دراسة عن السيطرة"
+  new_poll_created: "لقد تم إنشاء استطلاع جديد"
+  poll_msg: "لقد تم إنشاء استطلاع جديد للرأي في hr.champs21.com.Click الرابط التالي للذهاب إلى الانتخابات :"
+  regards: "التحيات"
+  question: "سؤال"
+  answers: "الأجوبة"
+  add_another: "إضافة آخر"
+  allow_other_answer: "تسمح الإجابة الأخرى"
+  open_for_polling: "فتح باب الاقتراع"
+  members: "أعضاء"
+  post_poll: "آخر استطلاع"
+  answer: "إجابة"
+  online_poll: "استطلاع على الانترنت"
+  edit_poll: "استطلاع للتحرير"
+  new_poll: "استطلاع جديد"
+  view_all_polls: "عرض كل الاستطلاعات"
+  listing_all_polls: "سرد جميع استطلاعات الرأي"
+  poll: "استطلاع"
+  posted_on: "تم نشره يوم"
+  votes: "الأصوات"
+  results: "النتائج"
+  vote: "تصويت"
+  close: "قريب"
+  no_polls_are_active: "لا استطلاعات نشطة"
+  closed: "مغلق"
+  open: "فتح"
+  closed_polls_are_not_present: "اغلاق صناديق الاقتراع ليست موجودة."
+  create_new_poll: "إنشاء استطلاع جديد للرأي"
+  view_all_polls: "عرض كل الاستطلاعات"
+  view_poll: "استطلاع رأي"
+  others: "آخرون"
+  votting_page: "Votting الصفحة"
+  poll_option: "poll_option"
+  write_own_answer: "كتابة الإجابة الخاصة"
+  view_results : "نتائج عرض"
+
+  flash_poll1: "أنت لا تملك الصلاحيات لعرض هذه المسألة استطلاع"
+  flash_poll2: "أنت لا تملك الصلاحيات لتعديل هذه المسألة استطلاع"
+  flash_poll3: "إنشاء سؤال الاستطلاع بنجاح"
+  flash_poll4: "استطلاع التحرير الناجحة."
+  flash_poll5: "أنت لا تملك الصلاحيات لتعديل هذه المهمة"
+  flash_poll6: "تم حذف سؤال الاستطلاع بنجاح"
+  flash_poll7: "ليس لديك إذن لحذف السؤال استطلاع"
+  flash_poll8: "التصويت ناجحة."
+  flash_poll9: "أنت لا تملك الصلاحيات للتصويت في هذا الاستطلاع"
+  flash_poll10: "تم إغلاق استطلاع بنجاح"
+  flash_poll11: "أنت لا تملك الصلاحيات لإغلاق هذا القطب"
+  flash_poll12: "تم فتح الاستطلاع بنجاح"
+  flash_poll13: "ليس لديك إذن لفتح هذا القطب"
+  flash_poll14: "إغلاق التصويت"
+  flash_poll15: "لم يتم العثور على طلب الاستطلاع"

@@ -1,0 +1,91 @@
+ku: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "فێرخواز"
+
+      placementevent:
+        title: "ناونیشان"
+        date:  "ڕێکەوت"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+        
+  placed: "شوێن"
+  attended: "بەشداربوو"
+  placements: "جێگاکان"
+  registrations: "تۆمارکردن"
+  placement: "جێگا"
+  PlacementActivities: "چالاکیەکانی شوێنەکان"
+  resubmitted_application: "دیسان داوانامەکە بنیرەوە"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "فێرخوازەکە "
+    the_recruitment_process: "پرۆسەی دامەزراندنەکە"
+    the_placement_is: "شوێن بریتە لە"
+    registration: "تۆمارکردن"
+    placement_status: "دۆخی جێکردنەوە"
+    approve_registration: "قبوڵ کردنی تۆمارکردنەکە"
+    reject_registration: "ڕەت کردنەوەی تۆمارکردنەکە"
+    awaiting_response: "چاوەڕوانی وەڵآمی فێرخوازە"
+    not_attended: "بەشدارنەبوو"
+    disapprove_placement: "پاشگەزبوون لە جێکردنەوە"
+    approve_placement: "ڕەزامەندی لەسەر جێکردنەوە"
+    no_students_were_invited: "هیچ فێرخوازێک بانگهێشت نەکراوە"
+    company_name: "ناوی کۆمپانیا"
+    your_application_is_waiting_approval: "داوانامەکەت چاوەڕوانی وەڵامدانەوەیە"
+    your_registration_is_approved: "تۆمارکردنەکەت بە وەرگرتن وەڵامدرایەوە"
+    your_registration_is_rejected: "تۆمارکردنەکەت ڕەت کرایەوەخززخ"
+
+    flash1: "سەرکەوتووانە تۆمار کرا، بۆ جێگرتن"
+    flash2: "تۆمارکردن سەرکەوتوو نەبوو"
+    flash3: "تۆ ناتوانیت تۆمارکردن ئەنجام بدەیت"
+    flash4: "ڕوودانی جێگرتن کۆتایی هات، تۆمارکردن داخرا"
+    flash5: "تۆمار بۆ جێگرتنی"
+
+#placement registration controller
+  placementevents:
+    placement_cell: "خانەی جێگرتن"
+    no_students_added_yet: "ژمارەی فێرخوازانی زۆر کراو"
+    company: "کۆمپانیا"
+    are_you_sure: "دڵنیایت کە جێگرتنەکە دەسڕیتەوە؟"
+    no_placement_events_has_been_anounced: "هیچ ڕووداوێک بۆ جێگرتن نەردەست نیە"
+    no_batch_selected: "هیچ قۆناغێک دیاری نەکراوە"
+    archived_placements: "جێگرتنە ئەرشیف کراوەکان"
+    no_students_selected: "هیچ فێرخوازێک دەستنیشان نەکراوە"
+    no: "نە"
+    placement_report: "ڕاپۆرتی جێگرتن"
+    invite_students: "بانگهێشتنی فێرخوازان"
+    placement: "شوێن"
+    on: "لە"
+    you_have_invited_the_placement_event: "تۆ بانگهێشت کراویت لە بۆنەی جێگرتن"
+    confirm_your_registration: "خۆتۆمارکردنەکەت پشتڕاست بکە لە پەرەی جێگرتنەوە"
+    all_placements: "هەموو جێگرتنەکان"
+    announce_new_placements: "ڕاگەیاندنی شوێن گرتنی نوێ"
+    edit_placement_event: "دەستکاریی ڕووداوی جێ گرتنەکە بکە"
+    update_placement_event: "جێگرتنەکە نوێ بکەرەوە"
+    select_recipient: "وەرگر دەستنیشان بکە"
+    students_to_invite: "بانگهێشتی فرخوازان"
+    invite: "بانگهێشت"
+    new_placement_event: "شوێنی نوێی ڕووداو"
+    create_placement_event: "ڕوودانی شوێن گرتن دروست بکە"
+    placement_events: "ڕووداوی جێگرتن"
+    archive_this_event: "ئەرشیف کردنی ڕووداو"
+    are_you_sure_to_archive: "دڵنیایت کە ئەم ڕووداوە دەخەیتە ئەرشیفەوە؟"
+    view_invitation: "بانگهێشت نیشان بدە"
+    generate_report: "ڕاپۆرتێک دروست بکە"
+    invited: "بانگهێشت کرا"
+    applied: "داواکرا"
+    select_type: "جۆر دیاری بکە"
+
+    flash1: "تۆ بانگهێشت نەکراوی بۆ جێگرتن"
+    flash2: "ڕووداوی جێگرتن نوێ کرایەوە"
+    flash3: "ڕووداوی جێگرتنی نوێ دروست بکە"
+    flash4: "ڕووداوی جێگرتن و خۆتۆمارکردنەکەی سڕایەوە"
+    flash5: "ڕووداوی جێگرتن سەرکەوتووانە ئەرشیف کرا و ناچالاک بوو"
+    flash6: "سەرکەوتووانە فێرخوازان بانگهێشت کران بۆ ڕووداوەکە"
+    flash7: "جۆرێک دەستنیشان بکە"
+    flash8: "Please select atleast one student"
+

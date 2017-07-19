@@ -1,0 +1,93 @@
+mn:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "Хэрэглэгч"
+        title: "Гарчиг"
+        description: "Тодорхойлолт"
+        status: "Статус"
+        due_date: "Сүүлийн хугацаа"
+
+      task_assignee:
+        assignee_id: "Эрх хүлээн авагч/ төлөөгч"
+
+      task_comment:
+        user_id: "Хэрэглэгч"
+        description: "Тодорхойлолт"
+        task_id: "Зорилт"
+    errors:
+      messages:
+        invalid_status: "Хүчингүй статус"
+        should_be_less_than: "500 килобайтаас бага байх хэрэгтэй"
+        should_be_assigned_only_once: "should be assigned only once."
+        cannot_be_before_start_date: "Хугацааг эхлэхээс өмнө байх ёсгүй"
+        should_be_in_the_future: "цаашдаа байх нь зүгээр"
+
+  required_fields: "Шаардлагатай талбарууд."
+  edit_privileges: "Давуу эрхийг засварлах"
+  master_admin: "Тэргүүлэгч админ"
+  tasks_label: "Зорилтууд"
+  TaskManagement: "Зорилтын үүрэг даалгаварын менежмент"
+  download_attachment: "хавсаргасан материалыг татаж авах"
+  new_task: "Шинэ зорилт / даалгавар"
+  new_task_description: "NШинэ зорилтын тодорхойлолт"
+  task_status_changed: "Зорилтын статус өөрчлөгдсөн"
+  task_status_changed_to: "Зорилтын статус ,,,гэж өөрчлөгдсөн"
+  task_updated: "Зорилт шинэчлэгдлээ"
+  task_comment_deleted_successfully: "Зорилтын шүүмж/дүгнэлт/тайлбар амжилттай усталаа"
+  task_management: "Зорилтын удирдлага"
+
+  tasks:
+
+    max_size: "500KB max"
+    tasks_assigned_to_me: "Даалгавар зорилт надад олгогдсон"
+    deleted_user: "Хэрэглэгчийг устгах"
+    assigned: "Assigned"
+    completed: "Дууссан"
+    tasks_assigned_by_me: "Даалгавар зорилт надад олгогдсон"
+    attach_a_file: "Материал хавсаргах (500KB)"
+    select_principals: "Эрхлэгчийг сонгох"
+    select_master_app_users: "Үндсэн хэрэглэгчийг сонгох"
+    select_school: "Сургууль сонгох"
+    select_course: "Курс сонгох"
+    select_members: "Гишүүдийг сонгох"
+    members: "Гишүүд"
+    select_employees: "Албан хаагчидыг сонгох"
+    task_status: "Зорилт үүрэг даалгаварын статус"
+    task_text: "Зорилт үүрэг даалгавар"
+    task_creation_successful: "Зорилт амжилттай үүслээ"
+    task_updation_successful: "Зорилт амжилттай шинэчлэгдлээ"
+    no_permission_to_view_task: "Танд энэ зорилт даалгаварыг харах зөвшөөрөл байхгүй байна"
+    task_deletion_successful: "Зорилт амжилттай усталаа"
+    no_permission_to_delete_task: "Танд энэ зорилт даалгаварыг устгах зөвшөөрөл байхгүй байна"
+    no_permission_to_download_file: "Танд энэ зорилт даалгаварыг татаж авах зөвшөөрөл байхгүй байна"
+    status_updated_successfully: "Энэ зорилтын статус амжилттай шинэчлэгдлээ."
+    all_tasks: "Бүх зорилтууд"
+    filter_by: "... -р шүүгдсэн "
+    create_new_task: "Шинэ зорилт үүсгэх"
+    edit_task: "Зорилт засварлах"
+    view_task: "Зорилт харах"
+    delete_confirmation: "Та энэ зорилт даалгаварийг устгахдаа итгэлтэй байна уу?"
+    mark_as_completed: "Mark as Completed"
+    mark_as_assigned: "Mark as Assigned"
+    by: "by "
+    no_file_attached: "Хавсаргасан материал байхгүй байна."
+    post_an_update: "Шинэчлэлийг зарлах / мэдээллэх"
+    created_on: "Үүсгэх "
+    attach_a_file: "Материал хавсаргах"
+    updates: "Шинэ хувилбарууд"
+    no_updates: "Шинэ хувилбарууд хараахан байхгүй байна."
+    assigned_to: "Assigned To"
+    listing_assignees: "Эрх хүлээн авагчидыг/ төлөөгчидийг жагсаах"
+    emp_code_admssn_no: "Ажилтаны код / Элсэлтийн дугаар."
+    dept_name_course_name: "Хэлтэсийн нэр / Курсын нэр"
+    discription_cant_be_blank : "Тодорхойлолт хоосон байж болохгүй"
+
+  task_comments:
+    deleted_user: "Хэрэглэгч устасан "
+    delete_comment_confirmation: "Та энэ шинэ хувилбарыг устгахдаа итгэлтэй байна уу?"
+    posted: "Зарлагдсан "
+    no_permission_to_download_file: "Танд энэ материалыг татаж авах зөвшөөрөл байхгүй байна"
+    update_creation_successful: "Шинэ хувилбар амжилттай мэдээлэгдлээ"
+    

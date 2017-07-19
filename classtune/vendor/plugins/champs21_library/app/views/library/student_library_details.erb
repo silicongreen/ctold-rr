@@ -1,0 +1,169 @@
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "Student Library", :controller => "library", :action => "student_library_details", :id => @student.id %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <% if permitted_to? :profile,:student %>
+        <li>
+          <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+
+      <% if permitted_to? :reports,:student %>
+        <li>
+          <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+        </li>
+      <%end%>
+
+      <% if permitted_to? :guardians,:student %>
+        <li>
+          <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% if permitted_to? :email,:student %>
+        <% if @student.is_email_enabled %>
+          <li>
+            <%= link_to "#{t('send_email')}", {:controller => "student", :action => "email", :id => @student.id}, {:class => 'f2'} %>
+          </li>
+        <%  end %>
+      <%  end %>
+
+      <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+        <li>
+          <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% if @sms_module.include?('Finance') and permitted_to? :fees, :student%>
+        <li>
+          <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
+
+      <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+        <%
+        str_class = ''
+        if mod[:destination][:controller] == params[:controller]
+          str_class = 'active'
+        end
+      %>
+        <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+          <li class="<%= str_class %>">
+            <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+  <div class="wrapper">
+    <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+
+    <div id="personal_detail">
+
+      <div id="student_profile_heading">
+
+        <div id="profile_picture_display">
+          <% if @student.photo.file? %>
+            <%= image_tag @student.photo.url %>
+          <% else %>
+            <%= image_tag "master_student/profile/default_student.png" %>
+          <% end %>
+        </div>
+
+        <div id ="student_main_info">
+          <div id="student_name"><%= @student.full_name %></div>
+          <div id="student_class"><%= @student.batch.course.course_name %></div>
+        </div>
+
+      </div>
+
+      <div id="personal_info_wrapper">
+
+        <div id="class_info">
+          <% if Batch.active.find(:all, :group => "name").length > 1  %>
+            <div class="infos">
+              <div><%= @student.batch.name %></div>
+              <div><%= t('batch_text') %></div>
+            </div>
+          <% end %>
+          <div class="infos">
+            <div><%= @student.admission_no %></div>
+            <div><%= t('adm_no') %></div>
+          </div>
+          <div class="infos last">
+            <div><%= @student.batch.course.section_name %></div>
+            <div><%= t('profile_section_label') %></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="personal_info" class="row_wrapper">
+
+        <% unless flash[:message].nil? %>
+          <p class="flash-msg"> <%= flash[:message] %> </p>
+        <% end %>
+        <div class="extender"></div>
+        <% unless @borrowed.blank? and @reserved.blank? %>
+          <div id="profile-infos">
+            <ul class="item-list">
+              <% unless @borrowed.blank? %>
+                <li class="heading1"><%= "#{t('books_borrowed')}"%></li>
+                <% @borrowed.each do |borrowed| %>
+                  <li class="list<%=cycle('odd', 'even')%>">
+                    <div class="item-name">
+                      <%= borrowed.book.title.capitalize + "(#{t('due_date')} :- " + I18n.l(borrowed.due_date,:format=>"%d %B, %Y") + ")"%>
+                    </div>
+                  </li>
+                <% end %>
+                <br/>
+              <% end %>
+              <% unless @reserved.blank? %>
+                <li class="heading1"><%= "#{t('books_reserved')}"%></li>
+                <% @reserved.each do |reserved| %>
+                  <li class="list<%=cycle('odd', 'even')%>">
+                    <div class="item-name">
+                      <%= reserved.book.title.capitalize + "(#{t('due_date')} :- " + I18n.l(reserved.reserved_on,:format=>"%d %B, %Y") + ")"%>
+                    </div>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        <% else %>
+          <p class="flash-msg"><%= "#{t('no_library_active_record_present')}" %></p>
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

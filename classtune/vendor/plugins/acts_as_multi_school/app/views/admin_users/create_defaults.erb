@@ -1,0 +1,22 @@
+<fieldset class="margin-bottom-20">
+    <h1 class="content-head">New Default Settings</h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+    <% form_tag({}, {:class => 'form'}) do %>
+    
+      <fieldset>
+          <%= label_tag 'key', 'Default Key' %>
+          <%= select_tag 'key', options_for_select(@default.get_default_keys.map{|k,v| [v,k]}), {} %>
+      </fieldset>
+
+      <fieldset>
+          <%= label_tag 'Value' %>
+          <%= text_field_tag 'value', nil, :placeholder => 'Enter value...' %>
+      </fieldset>
+
+      <fieldset>
+          <%= submit_tag "Save", {:class => 'button-red float-right-with-margin',:disable_with => "Please wait..."} %>
+      </fieldset>
+
+    <% end %>
+</div>

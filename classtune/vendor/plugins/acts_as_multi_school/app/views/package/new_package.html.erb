@@ -1,0 +1,25 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">New Package</h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+  <%= render "form" %>
+</div>
+<script type="text/javascript">
+  j("#select_all_modules").click(function(){
+    j('.available_modules').attr("checked","true");
+  });
+  
+  j("#select_no_modules").click(function(){
+    j('.available_modules').removeAttr("checked");
+  });
+  
+  j(".select_all").click(function(){
+    var id = this.id.replace("select_all_","");
+    j('.' + id).attr("checked","true");
+  });
+  
+  j(".select_none").click(function(){
+    var id = this.id.replace("select_no_","");
+    j('.' + id).removeAttr("checked");
+  });
+</script>

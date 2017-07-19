@@ -1,0 +1,60 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "table_sort" %>
+  <%= stylesheet_link_tag 'custom_reports/print_show',:media => :print %>
+<% end %>
+<div id="content-header">
+  <%= show_header_icon %>
+  <h1><%= t('custom_reports') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= @report.name %></div>
+  <div id="inner-tab-menu">
+    <ul>
+      <% if permitted_to? :index, :custom_reports %>
+        <li class='themed_bg themed-dark-hover-background'>
+          <%=link_to t('show_all_reports') ,:controller=>:custom_reports,:action=>:index%>
+        </li>
+      <% end %>
+      <li class='themed_bg themed-dark-hover-background'>
+        <%= link_to t('export_csv'),:controller=>:custom_reports, :action=>:to_csv,:id=>@report.id %>
+      </li>
+      <li class='themed_bg themed-dark-hover-background'>
+        <%= link_to t('print'),{:controller=>:custom_reports,:action=>:custom_report_pdf, :id=>params[:id],:page_height=>600} ,:target=>'_blank' %>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+<div id="page-yield">
+<div class="scroll">
+  <div class="tables">    
+    <div >
+      <table class="report-table sortable" id="sortable_example">
+        <tr class="report-header">
+          <th class="sinumber unsortable" nowrap="nowrap">SL No.</th>
+          <%@report_columns.each do |rc| %>
+            <th data-type="<%=@column_type[rc.method]%>" nowrap="nowrap">
+              <%= t(rc.title) %>
+            </th>
+          <% end %>
+        </tr>
+        <% @search_results.each_with_index do |obj,serial_no| %>
+          <tr class="report-row">
+            <td class="sinumber slcol"><%= ((@search_results.current_page-1)*@search_results.per_page)+serial_no+=1 %></td>
+            <% @report_columns.each do |col| %>
+              <td>
+                <% if col.method.to_s == 'batch' %>
+                  <%= obj.batch.modified_full_name %>
+                <% else %> 
+                  <%=  obj.send(col.method) %> 
+                <% end %>  
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <%= will_paginate @search_results %>
+  </div>
+</div>
+</div>

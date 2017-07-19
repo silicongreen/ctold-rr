@@ -1,0 +1,43 @@
+<% form_for :transport,  :url=>{:action => 'add_transport_all', :user=>'student' } do |f|  %>
+<table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
+  <% if @students.blank? %>
+    <tr class="tr-<%= cycle('odd', 'even')%>">
+      <td class ="col-1"><div><%= t('no_users') %></div></td>
+    </tr>
+  <% else %>
+    <tr class="tr-head">
+      <td><div class="select_all">
+        <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+        <%= link_to_function "#{t('none')}", "$$('input.right').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %>
+      </div></td>
+      <td><%= t('sl_no') %></td>
+      <td class="col-2"><%= t('student_name') %></td>
+      <td><%= t('course_and_batch') %></td>
+      <td><%= t('adm_no') %></td>
+      <td></td>
+    </tr>
+    <% @students.each_with_index do |r, i| %>
+      <tr class="tr-<%= cycle('odd', 'even')%>">
+        <td class="col-1 check_box"><%= check_box_tag "transportuser[user_ids][]", r.id,"",:class=>"right" %></div>
+        <td class="col-1"><%= i+1 %></td>
+        <td class="col-1"><%= r.full_name %></td>
+        <td class="col-2"><%= "#{r.batch.full_name}" %></td>
+        <td class="col-3"><%= r.admission_no %></td>
+        <td class="col-4"> 
+          <% if r.transport.nil?%>
+            <%= link_to "#{t('assign')}", :controller => "transport", :action => "add_transport", :id => r.id ,:user=>'student'%><br/>
+          <%else%>
+            <%= link_to "#{t('assign')}", :controller => "transport", :action => "edit_transport", :id => r.transport.id %><br/>
+          <%end%></td>
+      </tr>
+    <% end %>
+      <tr><td colspan="6" class="col-1">
+          <%= f.submit "#{t('assign')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+          </td>
+       </tr>   
+    </div>
+  <% end %>
+</table>
+
+<% end %>
+

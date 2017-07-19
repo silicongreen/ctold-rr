@@ -1,0 +1,24 @@
+<input type="hidden" name="total_presents" id="total_presents" value="<%= @total_presents.join(",") %>" />
+<input type="hidden" name="total_absents" id="total_absents" value="<%= @total_absents.join(",") %>" />
+<div class="x_panel" style="width: 90%;">
+    <div class="x_content">
+        <p>Report filter</p>
+        <select class="no-seacrh-custom-combo form-control" tabindex="-1" id="report_by" name="report_by" style="width: 50%;" onchange="getData(this.value);" autocomplete="off">
+            <option value="">Report By</option>
+            <option value="0">Class</option>
+        </select>
+        <span id="report_type_container">
+          <select class="no-seacrh-custom-combo form-control" tabindex="-1" id="report_type" name="report_type" style="width: 49%;" onchange="changeGraph(this.value);" autocomplete="off">
+              <option value="">Report Type</option>
+              <option value="Line">Line</option>
+              <option value="Bar">Bar</option>
+          </select>
+        </span>
+        <div style="clear: both; height: 10px;"></div>
+        <div id="department-subject"></div>    
+    </div>
+</div>
+
+<div id="graph_div">
+  <canvas id="attendance_chart"></canvas>
+</div>

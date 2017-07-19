@@ -1,0 +1,85 @@
+<%= load_latex_preview %>
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <a href="/online_exam/view_online_exam"><h1><%#= t('online_exam_text') %></h1></a>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%#= t('view_details') %></div>
+  <%# unless @exam_questions.blank? %>
+    <%# unless @attendance  %>
+      <div id="inner-tab-menu">
+        <ul>
+          <li class='themed_bg themed-dark-hover-background'><%#= link_to "#{t('add_question')}", :action=>'add_extra_question', :id=>@exam_group.id %></li>
+        </ul>
+      </div>
+    <%# end  %>
+  <%# else %>
+    <div id="inner-tab-menu">
+      <ul>
+        <li><%#= link_to "#{t('add_question')}", {:action=>'add_extra_question', :id=>@exam_group.id} %></li>
+      </ul>
+    </div>
+  <%# end %>
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <a href="/online_exam/view_online_exam"> ONLINE QUIZ</a>
+      </div>
+      <div class="header-title-sub-text f5">
+
+        </div>
+      </div>
+    </div>    
+
+  <div class="header-form-wrapper">
+      <div class='header-right-button'>
+        <% unless @exam_questions.blank? %>
+          <% unless @attendance  %>
+            <%= link_to "#{t('add_question')}", :action=>'add_extra_question', :id=>@exam_group.id %>
+          <% end  %>
+        <% else %>
+          <%= link_to "#{t('add_question')}", {:action=>'add_extra_question', :id=>@exam_group.id} %>
+        <% end %>
+      </div>
+  </div>
+</div>
+<% unless @exam_questions.blank? %>
+<div id="page-yield" style="margin-top: 0px;">
+    <h4><%= @exam_group.subject.name %> | <%= @exam_group.name %></h4>
+    <% @exam_questions.each_with_index do |e,i|%>
+      <div class="q-table">
+        <div id="q-no"><%= i+1 %>) <%= t('question') %> :</div>
+        <div id="question"> <%= e.question %></div>
+        <div id="mark" class="themed_text"><%= t('mark') %>: <%= e.mark %></div>
+        <% unless @attendance  %>
+          <div id="link" class="themed_text"><%= link_to "#{t('edit_question_text')}", {:action=>'edit_question', :id=>e.id},:class=>"themed_text" %> | <%= link_to "#{t('delete_question')}", {:action=>'delete_question', :id=>e.id},:class=>"themed_text", :confirm=>"#{t('this_will_delete_the_question_and_associated_answers_are_you_sure')}" %> </div>
+        <% end %>
+      </div>
+      <div class="option">
+        <div id="option-label"><%= t('options') %><span>&nbsp;&nbsp;:</span></div>
+        <% e.online_exam_options.each do |o| %>
+          <div id="option-content">
+            <div class="answer">
+              <% if o.is_answer %>
+                <div class="is-answer"><%= o.option %></div>
+              <% else  %>
+                <div class="not-answer"><%= o.option %></div>
+              <% end %>
+              <div class="option-edit"><%= link_to "#{t('edit_option')}",{:action=>"edit_exam_option" ,:id=>o.id},:class=>"themed_text" unless @attendance  %></div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <hr width="100%" size="3"  noshade class ="horizontal-line"></hr>
+    <% end %>
+  </div>
+<% else %>
+  <div id="page-yield">
+    <p class="flash-msg"> <%= t('no_question_added_to_this_exam_group') %> </p>
+  </div>
+<% end %>
+<%= stylesheet_link_tag 'tadded-header' %>

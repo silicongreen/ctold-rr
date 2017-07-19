@@ -1,0 +1,73 @@
+pt:
+  activerecord:
+    attributes:
+
+       poll_option:
+        option: "Opção"
+
+       poll_question:
+         title: "Título"
+         description: "Descrição"
+         poll_options: "Opções de Sondagem"
+
+       poll_vote:
+         user_id: "Usuário"
+    errors:
+      messages:
+        has_already_voted : "já votou"
+        you_havent_selected_an_option_yet: "você não tiver selecionado uma opção ainda"
+        options_cant_blank : "Option can't be blank"
+
+
+  poll_label: "Poll"
+  poll_control_privilege: "Controlo de Sondagem"
+  new_poll_created: "Nova sondagem foi criado"
+  poll_msg: "Uma nova sondagem foi criada. Clique no link abaixo para ir para a votação:"
+  regards: "Atenciosamente"
+  question: "Perguntas"
+  answers: "Respostas"
+  add_another: "Adicionar outro"
+  allow_other_answer: "Permitir outra resposta"
+  open_for_polling: "Aberto para Sondagem"
+  members: "Membros"
+  post_poll: "Publicar Sondagem"
+  answer: "Resposta"
+  online_poll: "Sondagem Online"
+  edit_poll: "Editar sondagem"
+  new_poll: "Nova sondagem"
+  view_all_polls: "Ver todas sondagem"
+  listing_all_polls: "Alistar todas sondagem"
+  poll: "Sondagem"
+  posted_on: "Publicado em"
+  votes: "Votos"
+  results: "Resultados"
+  vote: "Voto"
+  close: "Fechar"
+  no_polls_are_active: "Não ha sondagems ativas"
+  closed: "Fechado"
+  open: "Aberto"
+  closed_polls_are_not_present: "Sondagem fechadas não estão presentes."
+  create_new_poll: "Criar nova sondagem"
+  view_all_polls: "Ver todas sondagem"
+  view_poll: "Ver sondagem"
+  others: "Outros"
+  votting_page: "Página de Voto"
+  poll_option: "Opções de Voto"
+  write_own_answer: "Escrever resposta própria"
+  view_results: "Ver resultados"
+
+  flash_poll1: "Você não tem permissão para ver a pergunta desta Sondagem"
+  flash_poll2: "Você não tem permissão para editar a pergunta desta Sondagem"
+  flash_poll3: "Pergunta da Sondagem criada com sucesso"
+  flash_poll4: "Sondagem editado com sucesso."
+  flash_poll5: "Você não tem permissão para editar esta tarefa"
+  flash_poll6: "Sondagem foi APAGADO com sucesso"
+  flash_poll7: "Você não tem permissão para apagar a pergunta desta sondagem"
+  flash_poll8: "Votação teve sucesso."
+  flash_poll9: "Você não tem permissão para votar nesta sondagem"
+  flash_poll10: "Sondagem já foi encerrado com sucesso"
+  flash_poll11: "Você não tem permissão para fechar esta sondagem"
+  flash_poll12: "Sondagem foi aberto com sucesso"
+  flash_poll13: "Você não tem permissão para abrir esta sondagem"
+  flash_poll14: "Votação está fechada"
+  flash_poll15: "A sondagem solicitada não foi encontrada"

@@ -1,0 +1,10 @@
+mn: # locale
+  class_timings_empty:  "Ямар ч ангийн цагийн тов сонгогдоогүй байна."
+  no_subjects_to_show:  "Хичээлүүд байхгүй"
+  no_tte_entries:  "Сонгогдсон сар өдөрт орох цагийн хүснэгт байхгүй"
+  show_more_entries:  "Илүүг үзэх"
+  select_weekday:  "Ажлын өдрийн сонгох"
+  no_events:  "Үйл ажиллагаа байхгүй "
+  mark_absent:  "Байхгүй эзгүй байна гэж тэмдэглэх"
+  no_reminders: "Сануулга байхгүй"
+  attendance_marked_for:  "Мрц тэмдэглэхдэх "

@@ -1,0 +1,85 @@
+ku: # locale
+  activerecord:
+    attributes:
+    #validation errors
+
+      online_exam_attendance:
+        online_exam_score_detail: "درێژەی نمرەی تاقیکردنەوەی سەرهێڵ"
+
+      online_exam_group:
+        name: "ناو"
+        start_date: "ڕۆژی دەستپێکردن"
+        end_date: "ڕۆژی تەواوکردن"
+        maximum_time: "ماوەی دانراو"
+        pass_percentage: "ڕێژەی دەرچوون"
+
+      online_exam_option:
+        option: "هەڵبژاردن"
+
+      online_exam_question:
+        question: "پرسیار"
+        mark: "نیشان"
+        online_exam_options: "هەڵبژاردنەکانی تاقیکردنەوەی سەرهێڵ"
+
+    errors:
+      messages:
+        atleast_one_option_must_be_answer: "At least one option must be answer"
+        end_date_should_be_after_start_date: "End date should be after Start date"
+        should_not_be_less_than_today: "Date should not be less than today's date"
+
+#common
+  online_exam_text: "تاقیکردنەوەی سەرهێڵ"
+  select_exam: "تاقیکردنەوە دیاری بکە"
+  exam_result_text: "ئەنجامی تاقیکردنەوە"
+  failed: "دەرنەچوو"
+  passed: "دەرچوو"
+  question: "پرسیار"
+  options: "هەڵبژاردنەکان"
+  question_created_successfully: "پرسیار سەرکەوتووانە دروست کرا"
+  exam_group_successfully_deleted: "کۆمەڵە پرسیار بەسەرکەوتوویی سڕانەوە"
+  sorry_cannot_publish_an_exam_without_questions_please_add_minimum_one_question: "ببورە! ناتوانیت تاقیکردنەوە بێ پرسیار بڵاوبکەیتەوە. تکایە لانی کەم یەک پرسیار بنووسە."
+  exam_reset_successful_for_selected_students: "تاقیکردنەوەکە سفر کرایەوە"
+  sorry_no_students_selected: "هیچ فێرخوازێک هەڵنەبژێرراوە؟"
+  enter_options_here: "هەڵبژاردەکان لێرە بنووسە"
+  is_answer: "وەڵامەکەی"
+  edit_option: "دەستکاری هەڵبژاردن"
+  edit_question_text: "دەستکاری کردنی پرسیار"
+  delete_question: "سڕینەوەی پرسیار"
+  add_question: "زۆرکردنی پرسیار"
+  new_online_exam_text: "تاقیکردنەوەی سەرهێڵ - نوێ"
+  maximum_time_minutes: "زۆرترین کات (خولەک)"
+  pass_percentage: "ڕێژە دەرچووان(%)"
+  create_questions: "پرسیارەکان دروست بکە"
+  reset_exam: "سفر کردنەوەی تاقیکردنەوە"
+  view_online_exams: "تاقیکردنەوەکانی سەرهێڵ نیشان بدە"
+  are_you_sure_to_delete_this_exam_group: "دڵنیایت لە سڕینەوەی ئەم گروپە تاقیکردنەوەیە"
+  no_exam_created_for_selected_batch: "هیچ تاقیکردنەوەیەک بۆ ئەو قۆناغە دانەنراوە"
+  view_result_text: "ئەنجامەکان نیشانبدە"
+  select_student: "فێرخواز هەڵبژێرە"
+  no_students_has_atended_the_selcted_exam_group: "هیچ فێرخوازێک لەو گروپەدا دانەنراوە"
+  add_questions: "پرسیارەکان زۆر بکە"
+  no_question_added_to_this_exam_group: "هیچ پرسیارێک دانەنراوە بۆ ئەو گروپەی تاقی کردنەوە ئەنجام ئەدەن"
+  this_will_delete_the_question_and_associated_answers_are_you_sure: "ئەم کارە پرسیارەکان و وەڵامەکانیان دەسڕێتەوە، دڵنیایت لەو کارە؟"
+  no_student_attended_this_exam: "هیچ فێرخوازێک بۆ ئەم تاقیکردنەوەیە ڕێکنەخراوە"
+  online_examination_result: "ئەنجامی تاقیکردنەوەی سەرهێڵ"
+  create_new_online_exam: "تاقیکردنەوەی سەرهێل دروست"
+  view_existing_online_exam: "تاقیکردنەوە سەرهێڵە بەردەستەکان نیشان بدە"
+  view_exam_results: "ئەنجامەکانی تاقیکردنەوە نیشان بدە"
+  view_online_exam_results: "ئەنجامی تاقیکردنەوە سەرهێڵەکان نیشان بدە"
+  reset_exam_for_a_student: "خاڵی کردنەوەی تاقیکردنەوە بۆ فێرخواز"
+  option_per_question: "هەڵبژاردن بە گوێرەی پرسیار"
+  view_results: "ئەنجامەکان نیشان بدە"
+  you_have_successfully_completed_the_exam: "سەرکەوتووانە تاقیکردنەوەکەت تەواو کرد"
+  sorry_you_have_already_attended_this_exam: "ببورە، تۆ بەشداری ئەم تاقیکردنەوەیەت کردوە"
+  exam_name: "ناوی تاقیکردنەوەکان"
+  minutes: "خولەکەکان"
+  start_exam: "تاقیکردنەوە دەست پێ بکە"
+  sorry_your_answers_are_not_acepted_as_the_maximum_time_exeeded_please_contact_the_exam_admin: "ببورە، وەڵامەکانت وەرناگیرێن، لەبەرئەوەی کاتی خایەنراو بۆ وەڵامدانەوە تێپەڕیوە. تکایە لەگەڵ چاودێری تاقیکردنەوە قسە بکە"
+  total_score: "کۆی نمرە"
+  time_left: "کاتی خایەنراو"
+  manage_online_exam_system: "سیستەمی تاقی کردنەوە سەرهێڵ"
+  exam_group_successfully_updated: "گروپی تاقیکردنەوە سەرکەوتووانە نوێکرایەوە"
+  atleast_one_option_must_be_answer: "لانی کەم، وەڵامی هەڵبژاردەیەک بدەرەوە"
+  exam_published: "Exam Published"
+  finsih_exam_confirm : "You are finshing exam, once finsihed you cannot redo"
+  please_select_one_exam : "Please select one exam"

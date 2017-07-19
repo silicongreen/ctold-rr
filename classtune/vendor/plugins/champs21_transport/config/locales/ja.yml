@@ -1,0 +1,178 @@
+ja: # locale
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "Route"
+        vehicle_id: "Vehicle"
+
+      transport_fee_collection:
+        name: "Name"
+        start_date: "Start Date"
+        end_date: "End Date"
+        due_date: "Due date"
+
+      route:
+        destination: "Destination"
+        cost: "Cost"
+
+      vehicle:
+        vehicle_no: "Vehicle number"
+        main_route: "Main route"
+        no_of_seats: "No of seats"
+    errors:
+      messages:
+        main_route_contains_travellers: "The main route contains Travellers. Cannot edit."
+        travellers_exist_cannot_delete_vehicle: "Travellers Exist. Cannot Delete Vehicle."
+        travellers_exist_in_the_main_route: "Travellers Exist in that main route. Cannot Edit Vehicle."
+        end_date_before_start_date: "End Date before Start Date"
+        due_date_before_start_date: "Due Date before Start Date"
+        due_date_before_end_date: "Due Date before End Date"
+
+
+
+#common
+  transport_text: "Transport"
+  transport_fee_text: "Transport Fee"
+  destination: "Destination"
+  route: "Route"
+  vehicle_details: "Vehicle Details"
+  select_main_route: "Select Main Route"
+  main_route: "Main Route"
+  vehicle_no: "Vehicle Number"
+  fare: "Fare"
+  student_did_not_avail_transport: "Student did not avail transport facility"
+  employee_did_not_avail_transport: "Employee did not avail transport facility"
+  transport_label: "Transport"
+  transport_account: "Transport Account"
+  manage_transport: "Manage Transport"
+  TransportAdmin: "Transport Admin"
+  available_seats: "Available Seats"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "Vehicles"
+
+  #transport controller translation
+  transport:
+    total_no_of_seats: "Total no. of seats"
+    available_seats: "Available seats"
+    all_seats_filled_in_vehicle: "All seats filled in vehicle"
+    select_destination: "Select Destination"
+    select_vehicle: "Select vehicle"
+    add_transport_text: "Add Transport"
+    vehicle: "Vehicle"
+    user_details: "User Details"
+    add_transport_details: "Add Transport Details"
+    set_routes: "Set Routes"
+    set_routes_for_vehicle: "Set the routes for vehicles"
+    vehicles: "Vehicles"
+    transport_details_text: "Transport Details"
+    transport_fee_details: "Transport Fee Details"
+    transport_details: "Transport Details"
+    transportation_details: "Transportation Details"
+    select_a_vehicle: "Select a Vehicle"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "Seat Occupancy"
+
+    flash1: "Bus assigned successfully"
+    flash2: "Transport has been deleted"
+    flash3: "Bus edited successfully"
+
+ #transport controller translation
+  transport_fee:
+    select_batch: "Select Batch"
+    create_fee_collection_dates: "Create Fee Collection date"
+    select_details_for: "Select details for"
+    bus_fare: "BUS FARE"
+    fine_paid: "Fine Paid"
+    transport_fee_name: "Transport Fee Name"
+    include_employee: "Include Employee?"
+    no_students_in_selected_batch: " No Students in selected batch"
+    edit_transport_fee_collection: "Edit transport fee collection"
+    select_fee_collection_date: "Select Fee Collection Date"
+    transport_fee_submission: "Transport Fees Submission"
+    manage_fee_collection: "Manage Fee Collections"
+    student_defaulters: "Student Defaulters"
+    employee_defaulters: "Employee Defaulters"
+    select_class: "Select Class"
+    fee_collection: "Fee Collection"
+    please_select_a_batch_or_emp: "Please Select a batch or employee"
+    name_cant_be_blank: "Name can't be blank"
+    create_new_fee_collection_dates: "Creates new fee collecting dates"
+    display_fee_collection_dates: "Displays fee collection dates"
+    set_transport_fee_collection_date: "Set transport fee collection date"
+    employee_transport_fee_collection: "Employee transport fee collection"
+    employee_fees_report: "Employees Fees Report"
+    employee_transaction_report: "EMPLOYEES TRANSACTION REPORT "
+    transport_fee: "Transport Fee"
+    transaction_report: "Transaction Report"
+    create_and_view_fee_collection: "Create and view fee collections"
+    search_for_users_to_pay: "Search for users to pay transport fee"
+    users_with_fees_due: "Users with fees dues "
+    view_transport_fee_collection_dates: "View transport fee collection dates"
+    select_a_user_type: "Select a user type"
+    select_one: "Select One"
+    transport_fees_report: "TRANSPORT FEES REPORT"
+
+    flash1: "Transportation Fee Collection date updated successfully"
+    flash2: "Transportation Fee Collection updated successfully"
+    flash3: "Transport fee has been deleted"
+    flash4: "Deleted successfully"
+    flash5: "Sorry! You can't delete a collection date with transactions."
+
+#routes controller translation
+
+  routes:
+    cost: "Cost"
+    new_main_route: "New Main Route"
+    edit_route_details: "Edit Route details"
+    route_details: "Route Details"
+    add_route: "Add Route"
+    add_new_route: "Add New Route"
+    view_route: "View Route"
+    route_detail: "Route Detail"
+
+    flash1: "Route added successfully."
+    flash2: "Route Updated successfully."
+    flash3: "Route deleted successfully."
+    flash4: "Cannot delete Route. Please delete all Transportations first."
+    flash5: "Cannot delete Route. Please delete all Vehicles first."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "No of seats"
+    add_new_vehicle: "Add new Vehicle"
+    select_main_route: "Select main route"
+    add_vehicle: "Add Vehicle"
+    edit_vehicle_details: "Edit vehicle details"
+    deleted_route: "Deleted Route"
+
+    flash1: "Vehicle added successfully."
+    flash2: "Vehicle details updated successfully."
+    flash3: "Vehicle deleted Successfully"
+
+  autosuggest_menu:
+    transport_text: "Transport"
+    set_routes: "Set Routes"
+    add_routes: "Add Routes"
+    vehicles: "Vehicles"
+    add_vehicle: "Add Vehicle"
+    search_transport_details: "Search Transport Details"
+    transportation_details: "Transportation Details"
+    transport_fee: "Transport Fee"
+    transport_fee_collections: "Transport Fee Collections"
+    view_transport_fee_collection: "View Transport Fee Collection"
+    transport_fee_search: "Transport Fee Search"
+    transport_fee_student_defaulters: "Transport Fee Student Defaulters"
+    transport_fee_employee_defaulters: "Transport Fee Employee Defaulters"
+
+
+
+
+
+
+
+
+

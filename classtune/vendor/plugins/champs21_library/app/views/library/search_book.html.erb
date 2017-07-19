@@ -1,0 +1,117 @@
+<%-#
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Library'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= link_to "#{t('library_text')} | #{t('book_search')}", {:controller => 'library', :action => 'search_book'} %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li class="active">
+        <%= link_to "#{t('search_book_text')}", {:controller => 'library', :action => 'search_book'}, {:class => 'f2'} %>
+      </li>
+
+      <li>
+        <%= link_to "#{t('manage_books')}", {:controller => 'books', :action => 'index'}, {:class => 'f2'} %>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+
+  <div class="wrapper">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+    <% unless flash[:warn_notice].nil? %>
+      <div id="errorExplanation" class="errorExplanation"><span><%= flash[:warn_notice] %> </span></div>
+    <% end %>
+
+    <% remote_form_for :search, :url=>{:controller=>'library', :action=>'search_result'} do |f| %>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= "#{t('search_text')}"%>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <%= f.text_field :name, :placeholder => "Search" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row_label">
+          <div>
+            <%= t('search_by') %>
+          </div>
+        </div>
+        <div class="row_data">
+          <div>
+            <div class="custom_drop_wrapper">
+              <%= f.select :search_by, [["#{t('book_number')}",'Book Number'],["#{t('title')}",'title'], ["#{t('tag')}",'tag'], ["#{t('author')}",'author']],{}, {:class => 'droppify'} %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="submit-button">
+        <%= f.submit "#{t('search_text')}",  :class => "submit_button"  %>
+      </div>
+    <% end %>
+
+    <div class="clearfix"></div>
+
+    <div id="book-list"></div>
+
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'online_exam/new_online_exam' %>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'droppify' %>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "droppify" %>
+<% end %>
+
+<style type="text/css">
+  .header-wrapper .header-title-text-wrapper {
+    width: 74%;
+  }
+</style>

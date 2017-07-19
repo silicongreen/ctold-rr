@@ -1,0 +1,13 @@
+<div class="partial_homework task" style="padding: 20px;">
+
+  <h2 class="f2">Your Task</h2>  
+  <%= link_to('<div class="button-link button-link-task">Add Task</div>', {:controller => 'tasks', :action => 'new'}) %>
+  
+  
+  <%= render :partial=>@view_layout + "_task_list", :locals=>{:tasks => homework} %>
+
+</div>
+
+<style type="text/css">
+  
+</style>

@@ -1,0 +1,10 @@
+hi: # locale
+  class_timings_empty:  "कोई वर्ग समय चयनित किया गया है"
+  no_subjects_to_show:  "नहीं विषयों"
+  no_tte_entries:  "चुनी गई तिथि के लिए कोई समय सारिणी प्रविष्टियों"
+  show_more_entries:  "अधिक दिखाएँ"
+  select_weekday:  "एक दिन का चयन करें"
+  no_events:  "कोई इवेंट नहीं"
+  mark_absent:  "अनुपस्थित रूप में चिह्नित करें"
+  no_reminders: "कोई अनुस्मारक"
+  attendance_marked_for:  "चिह्नित के लिए उपस्थिति"

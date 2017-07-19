@@ -1,0 +1,94 @@
+es:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Nombre del Grupo"
+        members: "Miembros"
+
+      group_file:
+        doc_file_name: "Nombre del Documento"
+
+      group_post:
+        post_title: "Título de la Publicación"
+        post_body: "Contenido de la Publicación"
+
+      group_post_comment:
+        comment_body: "Comentarios"
+
+    errors:
+      messages :
+        required: "es requerido"
+        member_required: " son requeridos. (Al menos 1)"
+        cant_be_blank: " no puede estar en blanco"
+        is_empty: "está vacío"
+
+  discuss: "Discutir"
+  confirm_comment: "¿Realmente desea eliminar este comentario?"
+  confirm_post: "¿De verdad quieres eliminar esta publicación?"
+  confirm_group: "¿Realmente desea eliminar este grupo?"
+  deleted_user: "Usuario Eliminado"
+  discussion: "Foros"
+  my_group: "Mi Grupo"
+  no_group: "Ningún Grupo"
+  by: "por"
+  posted_by: "Publicado por"
+  on_text: "en"
+  member: "Miembros"
+  comments: "Comentarios"
+  no_comment: "No hay comentarios recientes."
+  group_created_successfully: "Grupo creado correctamente"
+  group_updated_successfully: "Grupo actualizado correctamente"
+  group_delete: "Grupo eliminado correctamente"
+  no_permission: "Usted no tiene permiso para acceder a esa página"
+  post_created: "Publicación creada correctamente"
+  post_deleted: "Publicación eliminada correctamente"
+  see_all_members: "Ver todos los miembros"
+  data_not_found: "No hay datos"
+  group_create: "Crear Grupo"
+  select_course: "Seleccionar Curso"
+  share: "Compartir"
+  new_group: "Nuevo Grupo"
+  congrats: "¡Felicidades!"
+  you_have_been_added_to_this_group: "Usted se ha añadido a este grupo."
+  new_post: "Nueva Publicación"
+  under: "Bajo"
+  group: "Grupo"
+  group_create: "Creación de Grupos"
+
+  groups:
+    add_admin: "Añadir como admin"
+    select_member: "Seleccionar Miembro"
+    delete_from_group: "Eliminar del Grupo"
+    emp_no: "Emp No. / admisión No."
+    dept_name: "Nombre del Dep. / Nombre del Curso"
+    delete_from_admin: "Eliminar del Admin"
+    select_school: "Seleccionar Institución"
+    admins: "Admins"
+    select_principals: "Seleccionar Directores"
+    select_master_app_users: "Seleccionar Masters de la aplicación"
+    create_group: "Crear Grupo"
+    comment: "Comentario"
+    activity: "Actividad"
+    all_discussion: "Todos los foros"
+    no_discussion: "No hay foros recientes"
+    groups_text: "Grupos"
+    group_name: "Nombre del Grupo"
+    all_posts: "Ver todas las publicaciones"
+    post: "Publicación"
+    view_recent_activities: "Ver Actividades Recientes"
+    image_docu: "Subir Imagen o Documento"
+    create_new_group: "Crear Grupo Nuevo"
+    filter_by: "Filtrar por"
+    group_members: "Miembros del Grupo"
+    add_member: "Añadir Nuevo Miembro"
+
+  group_posts:
+     view_post: "Ver Publicación"
+     posted_by_deleted_member: "Publicado por un miembro eliminado el"
+     add_comment: "Agregar sus comentarios"
+
+
+
+     

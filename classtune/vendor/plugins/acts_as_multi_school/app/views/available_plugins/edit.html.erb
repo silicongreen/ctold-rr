@@ -1,0 +1,37 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">Edit Package for <%= @owner.name  %> </h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+  <%= render "form" %>
+</div>
+<script type="text/javascript">
+  j(".select_package").click(function(){
+    j(".school_modules").removeAttr('checked');
+    var modules_id = this.id.replace('school_','');
+    var modules_name = j("#" + modules_id + "_modules").val();
+    var menu_name = j("#" + modules_id + "_menu").val();
+    var ar_modules_name = modules_name.split(",");
+    if ( j(this).prop('checked') )
+    {
+      j("#menus").val(menu_name);
+      for( var i=0; i< ar_modules_name.length; i++)
+      {
+        j("#school_" + ar_modules_name[i]).attr("checked",true);
+      }
+      
+      j(".select_package").removeAttr('checked');
+      j(".select_package").parent().removeClass('red-border');
+      j(this).attr('checked',true);
+      j(this).parent().addClass('red-border');
+    }
+    else
+    {
+      j("#menus").val("");
+      for( var i=0; i< ar_modules_name.length; i++)
+      {
+        j("#school_" + ar_modules_name[i]).removeAttr("checked");
+      }
+    }
+  });
+  
+</script>

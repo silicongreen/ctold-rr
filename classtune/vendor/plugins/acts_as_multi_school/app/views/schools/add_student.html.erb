@@ -1,0 +1,13 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">Add Student <%= @school.name %></h1>
+</fieldset>
+<div class="content-div  bg-light grey-border shadow">
+<% form_for :add_student,:url=>{:action=>"add_student",:id=>@school.id},:html => {:class => 'form'} do |f| %>
+    <fieldset>
+       <%= label :"student","number_of_student" %>
+       <%= text_field :"student","number_of_student" %>
+
+      <%= f.submit "Add", :class=>"button-grey-small float-right-with-margin margin-top-5",:disable_with => "Please wait..." %>
+    </fieldset>
+ <% end %>
+</div>  

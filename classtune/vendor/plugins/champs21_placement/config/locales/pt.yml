@@ -1,0 +1,92 @@
+pt: # locale
+  activerecord:
+    attributes:
+      placement_registration:
+        student_id: "ALuno"
+
+      placementevent:
+        title: "Título"
+        date:  "Data"
+
+    errors:
+      messages:
+        date_cant_be_past_date : "Date can't be past date"
+        
+  placed: "Colocado"
+  attended: "Participaram"
+  placements: "Vagas/Anúncios"
+  registrations: "Registros"
+  placement: "Vagas/Anúncios"
+  PlacementActivities: "Atividades da Vagas/Anúncios"
+  resubmitted_application: "Re-submeter a aplicação"
+
+#placement registration controller
+  placement_registrations:
+    the_student_has: "O aluno tem"
+    the_recruitment_process: "O processo de recrutamento."
+    the_placement_is: "O posicionamento é"
+    registration: "Registro"
+    placement_status: "Estado da Vagas/Anúncios"
+    approve_registration: "Aprovar registo"
+    reject_registration: "Rejeitar registo"
+    awaiting_response: "Aguarda resposta do aluno"
+    not_attended: "Não compareceu"
+    disapprove_placement: "Reprovar Vaga/Anúncio"
+    approve_placement: "Aprova Vaga/Anúncio"
+    no_students_were_invited: "Nenhum Aluno foi convidado."
+    company_name: "Nome da empresa"
+    your_application_is_waiting_approval: "Seu pedido está aguardando aprovação"
+    your_registration_is_approved: "O seu registro foi Aprovado"
+    your_registration_is_rejected: "O seu registro é Rejeitado"
+
+    flash1: "Registrado com sucesso para Vaga/Anúncio"
+    flash2: "Falha ao registrar"
+    flash3: "Você não pode registrar usando este convite."
+    flash4: "A Vaga/Anúncio foi arquivado. As inscrições estão fechadas."
+    flash5: "O registro para Vaga/Anúncio esta"
+
+#placement registration controller
+  placementevents:
+    placement_cell: "Células de posicionamento"
+    no_students_added_yet: "Não há alunos adicionados ainda"
+    company: "Empresa"
+    are_you_sure: "Tem certeza que deseja APAGAR a Vaga/Anúncio e todos os seus registros?"
+    no_placement_events_has_been_anounced: "Não há eventos Vaga/Anúncio anunciados"
+    no_batch_selected: "Nenhum Lote selecionado"
+    archived_placements: "Vaga/Anúncio arquivados"
+    no_students_selected: "Nenhum estudante selecionado"
+    no: "Não"
+    placement_report: "Relactório de Vaga/Anúncio"
+    invite_students: "Convidar Aluno"
+    placement: "Vaga/Anúncio"
+    on: "No"
+    you_have_invited_the_placement_event: "Você foi convidado para Vaga/Evento no"
+    confirm_your_registration: "Confirme a sua inscrição a partir de página de Vaga/Anúncio"
+    all_placements: "Todas Vaga/Anúncio"
+    announce_new_placements: "Anunciar nova Vaga"
+    edit_placement_event: "Editar evento"
+    update_placement_event: "Atualizar Vaga/Anúncio"
+    select_recipient: "Selecione o destinatário"
+    students_to_invite: "Alunos A convidar"
+    invite: "Convidar"
+    new_placement_event: "Novo evento de posicionamento"
+    create_placement_event: "Criar Evento"
+    placement_events: "Evento de Vaga/Anúncio"
+    archive_this_event: "Arquivar este evento"
+    are_you_sure_to_archive: "Tem a certeza que pretende arquivar estA Vaga/Anúncio?"
+    view_invitation: "Ver Convites"
+    generate_report: "Gerar Relatório"
+    invited: "Convidado"
+    applied: "Aplicado"
+    select_type: "Selecionar Tipo"
+
+    flash1: "Você não está convidado para esta Vaga/Anúncio"
+    flash2: "Vaga/Anúncio atualizado com sucesso"
+    flash3: "Vaga/Anúncio criado com sucesso"
+    flash4: "Vaga/Anúncio e seus registros foram apagados"
+    flash5: "Vaga/Anúncio foi desativado e arquivados"
+    flash6: "Alunos convidados com sucesso para Vaga/Anúncio"
+    flash7: "Por favor escolha um tipo"
+    flash8: "Please select atleast one student"
+
+  

@@ -1,0 +1,89 @@
+vi:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Tên nhóm"
+        members: "Các thành viên"
+
+      group_file:
+        doc_file_name: "Tên file Doc"
+
+      group_post:
+        post_title: "Đăng chủ đề"
+        post_body: "Đăng nội dung"
+
+      group_post_comment:
+        comment_body: "Nhận xét nội dung"
+
+    errors:
+        messages :
+          member_required: " được yêu cầu. (ít nhất 1) "
+          required: " được yêu cầu."
+          cant_be_blank: " không thể trống "
+          is_empty: "trống"
+  
+  discuss: "Thảo luận"
+  confirm_comment: "Bạn có thực sự muốn xóa nhận xét này không?"
+  confirm_post: "Bạn có thực sự muốn xóa bài này không?"
+  confirm_group: "Bạn có thực sự muốn xóa nhóm này không?"
+  deleted_user: "Người sử dụng đã bị xóa "
+  discussion: "Cuộc thảo luận"
+  my_group: "Nhóm của tôi"
+  no_group: "Không nhóm nào"
+  by: "bởi "
+  posted_by: "Đăng bởi "
+  on_text: "về"
+  member: "Các thành viên"
+  comments: "Các nhận xét"
+  no_comment: "Không tìm thấy nhận xét nào gần đây."
+  group_created_successfully: "Nhóm đã được tạo thành công"
+  group_updated_successfully: "Nhóm đã được cập nhật thành công"
+  group_delete: "Nhóm đã được xóa thành công"
+  no_permission: "Bạn không được phép xem trang đó"
+  post_created: "Bài đã được tạo thành công"
+  post_deleted: "Bài đã được xóa thành công"
+  see_all_members: "Xem tất cả các thành viên"
+  data_not_found: "Không tìm thấy dữ liệu"
+  GroupCreate: "Tạo nhóm"
+  select_course: "Chọn khóa học"
+  share: "Chia sẻ"
+  new_group: "Nhóm mới"
+  congrats: "Xin chúc mừng!"
+  you_have_been_added_to_this_group: "Bạn đã được thêm vào nhóm này."
+  new_post: "Bài mới"
+  under: "Dưới"
+  group: "Nhóm"
+
+  groups:
+    add_admin: "Thêm vào với tư cách là quản trị viên"
+    select_member: "Chọn thành viên"
+    delete_from_group: "Xóa khỏi nhóm"
+    emp_no: "Mã số học sinh/Mã số nhân viên"
+    dept_name: "Tên Bộ phận/Tên khóa học"
+    delete_from_admin: "Xóa khỏi quản trị viên"
+    select_school: "Chọn trường"
+    admins: "Quản trị viên"
+    select_principals: "Lựa chọn người đứng đầu"
+    select_master_app_users: "Chọn trưởng nhóm sử dụng chương trình ứng dụng"
+    create_group: "Tạo nhóm"
+    comment: "Nhận xét"
+    activity: "Hoạt động"
+    all_discussion: "Tất cả các cuộc thảo luận"
+    no_discussion: " Không có cuộc thảo luận gần đây"
+    groups_text: "Các nhóm"
+    group_name: "Tên nhóm"
+    all_posts: "Xem tất cả các bài"
+    post: "Bài"
+    view_recent_activities: "Xem các hoạt động gần đây"
+    image_docu: "Tải hình ảnh hoặc tài liệu lên (5MB)"
+    create_new_group: "Tạo nhóm mới"
+    filter_by: "Lọc theo"
+    group_members: "Các thành viên trong nhóm"
+    add_member: "Thêm thành viên mới"
+
+  group_posts:
+     view_post: "Xem bài"
+     posted_by_deleted_member: "Đăng bởi thành viên đã bị xóa vào"
+     add_comment: "Thêm nhận xét của bạn"

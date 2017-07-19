@@ -1,0 +1,23 @@
+<fieldset class="margin-bottom-20">
+    <h1 class="content-head">Update Default Setting</h1>
+</fieldset>
+<div class="content-div bg-light grey-border shadow">
+    <% form_tag({:action=>'update_default'}, {:class => 'form'}) do %>
+      <%= hidden_field_tag 'id', @default.id %>
+    
+      <fieldset>
+          <%= label_tag 'key', 'Default Key' %>
+          <%= select_tag 'key', options_for_select(@default.get_default_keys.map{|k,v| [v,k]}, @default.key), {} %>
+      </fieldset>
+
+      <fieldset>
+          <%= label_tag 'Value' %>
+          <%= text_field_tag 'value', @default.value, :placeholder => 'Enter value...' %>
+      </fieldset>
+
+      <fieldset>
+          <%= submit_tag "Save", {:class => 'button-red float-right-with-margin',:disable_with => "Please wait..."} %>
+      </fieldset>
+
+    <% end %>
+</div>

@@ -1,0 +1,91 @@
+pt:
+  activerecord:
+    attributes:
+
+    #validation errors
+      group:
+        group_name: "Nome do Grupo"
+        members: "Membros"
+
+      group_file:
+        doc_file_name: "Nome do arquivo do doc."
+
+      group_post:
+        post_title: "Título da Publicação"
+        post_body: "Corpo da Publicação"
+
+      group_post_comment:
+        comment_body: "Corpo do Comentário"
+
+    errors:
+      messages :
+        member_required: "São necessários.(Pelo menos 1)"
+        required: " é necessário."
+        cant_be_blank: " Não pode estar em branco "
+        is_empty: "está vazio"
+
+  discuss: "Discutir"
+  confirm_comment: "Você realmente quer apagar este comentário?"
+  confirm_post: "Você realmente deseja excluir esta publicação?"
+  confirm_group: "Você realmente deseja excluir este grupo?"
+  deleted_user: "APAGAR Usuário "
+  discussion: "Discussão"
+  my_group: "Meu Grupo"
+  no_group: "Sem Grupo(s)"
+  by: "Por "
+  posted_by: "Publicado por "
+  on_text: "Em"
+  member: "Membros"
+  comments: "Comentários"
+  no_comment: "Nenhum Comentário Recente Encontrado."
+  group_created_successfully: "Grupo Criado com Sucesso"
+  group_updated_successfully: "Grupo Atualizado com Sucesso"
+  group_delete: "Grupo Eliminado com Sucesso"
+  no_permission: "Você não tem permissão para acessar essa página"
+  post_created: "Publicação Criado com sucesso"
+  post_deleted: "Publicação APAGADO com sucesso"
+  see_all_members: "Ver Todos Membros"
+  data_not_found: "Dados Não Encontrados"
+  GroupCreate: "Criar Grupo"
+  select_course: "Selecionar curso"
+  share: "Compartilhar"
+  new_group: "Novo Grupo"
+  congrats: "Parabéns!"
+  you_have_been_added_to_this_group: "Você foi adicionado a esse grupo."
+  new_post: "Nova Publicação"
+  under: "Sob"
+  group: "Grupo"
+
+  groups:
+    add_admin: "Adic. como Admin"
+    select_member: "Selecionar Membro"
+    delete_from_group: "Apagar do Grupo"
+    emp_no: "No. do Func./Admissão No."
+    dept_name: "Nome do Dept/Nome do Curso"
+    delete_from_admin: "APAGAR de Admin"
+    select_school: "Selecionar escola"
+    admins: "Admnitradores"
+    select_principals: "Selecionar Diretor"
+    select_master_app_users: "Selecionar Usuários de Aplica. Mestre"
+    create_group: "Criar Grupo"
+    comment: "Comentário"
+    activity: "Atividade"
+    all_discussion: "Todos os debates"
+    no_discussion: " Não há debates recentes"
+    groups_text: "Grupos"
+    group_name: "Nome do Grupo"
+    all_posts: "Ver todas as Publicações"
+    post: "Post"
+    view_recent_activities: "Ver Actividades Recentes"
+    image_docu: "Carregar imagem ou um documento (5MB)"
+    create_new_group: "Criar Novo Grupo"
+    filter_by: "Filtrar por"
+    group_members: "Membros do Grupo"
+    add_member: "Adicionar novo Membro"
+
+  group_posts:
+     view_post: "Ver Publicações"
+     posted_by_deleted_member: "Postado por membro excluído em"
+     add_comment: "Adicionar seus comentários"
+
+

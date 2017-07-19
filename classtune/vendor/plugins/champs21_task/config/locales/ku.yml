@@ -1,0 +1,91 @@
+ku:
+  activerecord:
+    attributes:
+
+      task:
+        user_id: "بەکارهێنەر"
+        title: "ناونیشان"
+        description: "ڕاڤەکردن"
+        status: "دۆخ"
+        due_date: "ڕێکەوتی تەواوبوون"
+
+      task_assignee:
+        assignee_id: "پێدراو"
+
+      task_comment:
+        user_id: "بەکارهێنەر"
+        description: "ڕاڤەکردن"
+        task_id: "ئەرک"
+    errors:
+      messages:
+        invalid_status: "دۆخێکی ناتەواووە"
+        should_be_less_than: "پێویستە لە ٥٠٠کیلۆبایت کەمتر بێت"
+        should_be_assigned_only_once: "دەبێت یەکجار دابنرێت"
+        cannot_be_before_start_date: "ناکرێت کۆتایی لە پێش دەسست پێ کردنەوە بێت"
+        should_be_in_the_future: "پێویستە لە داهاتوودا بێت"
+
+  required_fields: "خانە ویستراوەکان"
+  edit_privileges: "دەستکاریکردنی دەسەڵاتەکان"
+  master_admin: "بەڕێوەبەری گشتی"
+  tasks_label: "ئەرکەکان"
+  TaskManagement: "ڕێکخەری ئەرکەکان"
+  download_attachment: "داگرتنی هاوپێچ"
+  new_task: "ئەرکێکی نوێ"
+  new_task_description: "باسی ئەرکە نوێیەکە"
+  task_status_changed: "ئاستی ئەرکەکە گۆڕا"
+  task_status_changed_to: "ئاستی ئەرکەکە گۆڕا بە"
+  task_updated: "ئەرکەکە نوێ کرایەوە"
+  task_comment_deleted_successfully: "لێدوانی ئەرکەکە سڕرایەوە"
+  task_management: "بەڕێوەبردنی ئەرکەکان"
+  
+  tasks:
+
+    tasks_assigned_to_me: "ئەرکەکە بە من سپێررا"
+    deleted_user: "بەکارهێنەری سڕاوە"
+    assigned: "دانراوە"
+    completed: "تەواوبوو"
+    tasks_assigned_by_me: "ئەرکەکە لەلایەن منەوە داومە"
+    attach_a_file: "پەڕگەیەک واژۆ بکە (500KB max)"
+    select_principals: "دیاریکردنی بنەڕەتەکان"
+    select_master_app_users: "دیاری کردنی داوانامەی سەرەکی بەکارهێنەران"
+    select_school: "قوتابخانەیەک دیاری بکە"
+    select_course: "وەرزێک دیاری بکە"
+    select_members: "ئەندامەکان دیاری بکە"
+    members: "ئەندامەکان"
+    select_employees: "دیاری کردنی فەرمانبەران"
+    task_status: "ئاستی ئەرکێک"
+    task_text: "ئەرک"
+    task_creation_successful: "ئەرکێک سەرکەوتوانە دروست کرا"
+    task_updation_successful: "ئەرکەکە سەرکەوتووانە نوێکرایەوە"
+    no_permission_to_view_task: "ڕێت پێ نەدراوە ئەو ئەرکە تەماشا بکەیت"
+    task_deletion_successful: "ئەرکەکە سەرکەوتووانە سڕایەوە"
+    no_permission_to_delete_task: "ڕێت پێ نەدراوە ئەم ئەرکە بسڕیتەوە"
+    no_permission_to_download_file: "ڕێت پێ نەدراوە ئەم پەڕگەیە دابگریت"
+    status_updated_successfully: "ئاستی ئەم ئەرکە سەرکەوتووانە نوێکرایەوە"
+    all_tasks: "هەموو ئەرکەکان"
+    filter_by: "بیپاڵێوە بە "
+    create_new_task: "ئەرکی نوێ دروست بکە"
+    edit_task: "دەستکاری ئەرک"
+    view_task: "نیشاندانی ئەرک"
+    delete_confirmation: "دڵنیایت لە سڕینەوەی ئەم ئەرکە؟"
+    mark_as_completed: "وەکو تەواوبوو نیشانەی بکە"
+    mark_as_assigned: "وەکو پێدراو نیشانەی بکە"
+    by: "لە "
+    no_file_attached: "هیچ پەڕگەیەک نەلکێنراوە"
+    post_an_update: "نوێکردنەوەیەک بنێرە"
+    created_on: "دروستکرا لە "
+    attach_a_file: "پەڕگەیەک بلکێنە "
+    updates: "نوێکردنەوەکان"
+    no_updates: "هیچ نوێ بوونەیەوەیەک نیە"
+    assigned_to: "دراوە بە "
+    listing_assignees: "لیستەی سوودمەندەکان"
+    emp_code_admssn_no: "کۆدی فەرمانبەر / کۆدی وەرگرتن"
+    dept_name_course_name: "ڕێکەوتی بەش / ناوی وەرز"
+    discription_cant_be_blank : "Discription can't be blank"
+
+  task_comments:
+    deleted_user: "بەکارهێنەرە سڕاوەکان"
+    delete_comment_confirmation: "دڵنیایت لە سڕینەوەی ئەم وەشانە بەتاڵە؟"
+    posted: "نێررا "
+    no_permission_to_download_file: "دەسەڵاتی داگرتنی ئەم بەڕگەیەت نیە"
+    update_creation_successful: "نوێبوونەوەکە سەرکەوتووانە دروست کرا"

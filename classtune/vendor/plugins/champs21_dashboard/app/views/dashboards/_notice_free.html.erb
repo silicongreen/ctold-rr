@@ -1,0 +1,32 @@
+<div class="partial_homework" style="padding: 20px;">
+ <h2 class="f2 etitle" style="margin-left:10px;"><%= link_to "<h2 class='f2'>Notice</h2>", :controller => "news", :action => "all" %></h2>
+ <div style="float: left; margin:15px; width: 98%;"></div> 
+ <% unless news.empty? %>
+    <% news.each do |n| %>      
+        <div class="portlet-subcontent">               
+          <div class="timetable_right" style="width:100%">
+            <div class="subcontent-header themed_text">
+              <%=  link_to n.title, :controller => 'news', :action => 'view', :id => n.id%>
+            </div>
+            <div class="subcontent-info">Posted at : <%= n.created_at.strftime("%A, %d %B %Y %l:%M %p") %></div> 
+            <% if n.created_at != n.updated_at %>
+            <div class="subcontent-info">Updated at : <%= n.updated_at.strftime("%A, %d %B %Y %l:%M %p") %></div>  
+            <% end %>
+          </div>       
+        </div>
+        <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 
+      
+    <% end %>
+ <% else %>
+ <div class="portlet-subcontent">    
+    No Notice Found
+ </div>  
+ <% end  %>  
+ </div>
+
+<style>
+  .partial_homework a:hover h2
+  {
+     color:#C8575D;
+  }
+</style>  

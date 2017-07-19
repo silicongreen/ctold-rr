@@ -1,0 +1,173 @@
+pt: # locale
+  activerecord:
+    attributes:
+            #validation errors
+      transport:
+        route_id: "Rota"
+        vehicle_id: "Veículo"
+
+      transport_fee_collection:
+        name: "Nome"
+        start_date: "Início"
+        end_date: "Término"
+        due_date: "Data de a pagar"
+
+      route:
+        destination: "Destino"
+        cost: "Custo"
+
+      vehicle:
+        vehicle_no: "Número do veículo"
+        main_route: "Rota principal"
+        no_of_seats: "Nº de lugares"
+    errors:
+      messages:
+        travellers_exist_cannot_delete_vehicle: "Existem viajantes. Não pode eliminar o Veículo."
+        travellers_exist_in_the_main_route: "Existem viajantes nesta rota principal. Não é possível editar o veículo."
+        main_route_contains_travellers: "A rota principal contém Viajantes. Não é possível editar."
+        end_date_before_start_date: "Data de término antes da data de início"
+        due_date_before_start_date: "Data de vencimento antes da data de início"
+        due_date_before_end_date: "Data de vencimento antes do término"
+
+#common
+  transport_text: "Transporte"
+  transport_fee_text: "Tarifa de Transporte"
+  destination: "Destino"
+  route: "Rota"
+  vehicle_details: "Detalhes do Veículo"
+  select_main_route: "Seleccione Rota Principal"
+  main_route: "Rota principal"
+  vehicle_no: "Número do veículo"
+  fare: "Taxa"
+  student_did_not_avail_transport: "Estudante não usa a facilidade de transporte"
+  employee_did_not_avail_transport: "Funcionário não usa a facilidade de transporte"
+  transport_label: "Transporte"
+  transport_account: "Conta de Transporte"
+  manage_transport: "Gerir Transportes"
+  TransportAdmin: "Administração de transportes"
+  available_seats: "Lugares Disponíveis"
+  no_users: "No users"
+  no_students: "No students found"
+  no_of_seats: "No of seats"
+  vehicles_text: "Veículos"
+
+  #transport controller translation
+  transport:
+    total_no_of_seats: "Total n. º de lugares"
+    available_seats: "Lugares Disponíveis"
+    all_seats_filled_in_vehicle: "Todos os lugares ocupados no veículo"
+    select_destination: "Seleccionar Destino"
+    select_vehicle: "Selecione o veículo"
+    add_transport_text: "Adicionar Transporte"
+    vehicle: "Veículo"
+    user_details: "Detalhes de Usuário"
+    add_transport_details: "Adicionar detalhes de transporte"
+    set_routes: "Definição de Rotas"
+    set_routes_for_vehicle: "Set the routes for vehicles"
+    vehicles: "Veículos"
+    transport_details_text: "Detalhes de transporte"
+    transport_fee_details: "Detalhes do custo de transporte"
+    transport_details: "Detalhes de transporte"
+    transportation_details: "Detalhes de Transporte"
+    select_a_vehicle: "Selecione um veículo"
+    out_of: "%{start_value} / %{end_value}"
+    seat_occupancy: "Ocupação sede"
+
+    flash1: "Veículo atribuído com sucesso"
+    flash2: "Transporte foi excluído"
+    flash3: "Veículo editado com sucesso"
+
+ #transport controller translation
+  transport_fee:
+    select_details_for: "Selecione detalhes para"
+    bus_fare: "TARIFA DO TRANSPORTE"
+    fine_paid: "Multa paga"
+    transport_fee_name: "Nome da tarifa de transporte"
+    include_employee: "Incluir Funcionário?"
+    no_students_in_selected_batch: " Nenhum estudante no lote selecionado"
+    edit_transport_fee_collection: "Editar a cobrança de transporte"
+    select_fee_collection_date: "Escolha a data de cobrança"
+    transport_fee_submission: "Submissão das tarifas de Transporte"
+    manage_fee_collection: "Gerenciar coleções de Cobranças"
+    student_defaulters: "Estudante Predefinição"
+    employee_defaulters: "Funcionário Padrão"
+    select_class: "Selecione Sala"
+    fee_collection: "Coleção de Tarifa"
+    please_select_a_batch_or_emp: "Por favor selecione um grupo ou Funcionário"
+    name_cant_be_blank: "Nome não pode estar em branco"
+    create_new_fee_collection_dates: "Cria nova taxa datas de cobranças"
+    display_fee_collection_dates: "Mostrar datas de cobranças"
+    set_transport_fee_collection_date: "Definir data de cobrança transporte"
+    employee_transport_fee_collection: "Cobrança do transportes dos trabalhadores"
+    employee_fees_report: "Relatório de Tarifas de Funcionários"
+    employee_transaction_report: "RELATÓRIO DE TRANSAÇÃO DE Funcionários"
+    transport_fee: "Tarifa de Transporte"
+    transaction_report: "Relatório de Transação"
+    create_and_view_fee_collection: "Criar e visualizar tarifa de recolha"
+    search_for_users_to_pay: "Pesquisar os usuários a pagar tarifa de transporte"
+    users_with_fees_due: "Usuários com pagamentos em dívidas "
+    view_transport_fee_collection_dates: "Veja as datas de transporte de cobrança"
+    select_a_user_type: "Selecione um tipo de usuário"
+    select_one: "Selecione Um"
+    transport_fees_report: "RELATÓRIO DAS TARIFAS DE TRANSPORTE"
+
+    flash1: "Data de cobrança de transporte atualizada com sucesso"
+    flash2: "Cobrança de transporte atualizada com sucesso"
+    flash3: "A tarifa de transporte foi APAGADA"
+    flash4: "Apagado com sucesso"
+    flash5: "Lamentamos! Você não pode APAGAR uma data com transações de recolha"
+
+#routes controller translation
+
+  routes:
+    cost: "Custo"
+    new_main_route: "Nova Rota Principal"
+    edit_route_details: "Editar detalhes da rota"
+    route_details: "Detalhes da Rota"
+    add_route: "Adicionar Rota"
+    add_new_route: "Adicionar Nova Rota"
+    view_route: "Ver Rota"
+    route_detail: "Detalhes da Rota"
+
+    flash1: "Rota adicionada com sucesso."
+    flash2: "Rota atualizada com sucesso."
+    flash3: "Rota APAGADA com sucesso."
+    flash4: "Não podemos APAGAR Rota. Elimine primeiro todos os transportes primeiro."
+    flash5: "Não é possível apagar rota. Por favor, apague todos os veículos primeiro."
+
+#routes controller translation
+
+  vehicles:
+    no_of_seats: "Nº de lugares"
+    add_new_vehicle: "Adicionar novo Veículo"
+    select_main_route: "Seleccione rota principal"
+    add_vehicle: "Adicionar Veículo"
+    edit_vehicle_details: "Editar detalhes do veículo"
+    deleted_route: "Rota APAGADA"
+
+    flash1: "Veículo adicionado com sucesso."
+    flash2: "Detalhes do veículo atualizados com sucesso."
+    flash3: "Veículo APAGADO com Sucesso"
+
+  autosuggest_menu:
+    transport_text: "Transporte"
+    set_routes: "Definir Rotas"
+    add_routes: "Adicionar Rotas"
+    vehicles: "Veículos"
+    add_vehicle: "Adicionar Veículo"
+    search_transport_details: "Procurar Informações de Transporte"
+    transportation_details: "Detalhes de Transporte"
+    transport_fee: "Tarifa de Transporte"
+    transport_fee_collections: "Cobranças de tarifa de transporte"
+    view_transport_fee_collection: "Ver cobranças de tarifa de transporte"
+    transport_fee_search: "Procurar tarifa de transporte"
+    transport_fee_student_defaulters: "Tarifa de transporte Padrão de aluno"
+    transport_fee_employee_defaulters: "Tarifa de transporte Padrão de Funcionários"
+
+
+
+
+
+
+
+

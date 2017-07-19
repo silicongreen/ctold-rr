@@ -1,0 +1,368 @@
+<div id="content-header">
+  <%= show_header_icon %>
+  <a href="/assignments"><h1><%= "#{t('assignments_text')}"%></h1></a>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%= "#{t('all_assignments')}"%></div>
+  <% if @current_user.admin? %>
+
+  <% else %>
+    <div id="inner-tab-menu">
+      <ul>
+        <% if  permitted_to? :new,:assignments %>
+          <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('create_new_assignment')}" , {:controller=>:assignments,:action=>:new}%></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<%#= debug @current_user %>
+</div>
+<div id="page-yield" class="bg-disable">
+  <!--<% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% if @current_user.employee?  %>
+      <div class="label-field-pair">
+        <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+        <div class="text-input-bg">
+    <% unless @subjects.nil? %>
+      <%= select :assignment, :subject,
+        @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+        {:prompt => "#{t('select_a_subject')}"},
+        {:onChange => "#{remote_function(:url => {:action => "subject_assignments"},
+        :with => "'subject_id='+ value",
+        :before => "Element.show('loader')",
+        :success => "Element.hide('loader')"
+        )}"} %>
+            </div>
+      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+          </div>
+
+
+          <div id="subject_assignments_list" ></div>
+    <% else %>
+          <p class="flash-msg"> <%= "#{t('there_are_no_subjects_assigned_to_this_employee')}"%> </p>
+    <% end %>
+  <% elsif @current_user.student? %>
+      <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <% unless @assignments.empty? %>
+            <tr class="tr-head">
+              <td>   <%= "#{t('sl_no')}."%>  </td>   <td>    <%= "#{t('subject')}"%>    </td>  <td> Type </td>  <td>    <%= "#{t('assignments_text')}"%>    </td>    <td>    <%= "#{t('due_date')}"%>     </td>
+            </tr>
+      <% @assignments.each_with_index do |assignment,i| %>
+                <tr class="tr-<%= cycle('odd', 'even') %>">
+                  <td class="col-1">
+        <%= i+1 %>
+                  </td>
+                  <td class="col-3">
+        <%=  assignment.subject.name.to_s unless assignment.subject.nil?%>
+                  </td>
+                  <td class="col-3">
+        <%  if assignment.assignment_type==1 %>
+                        Homework
+        <%  end %>
+        <%  if  assignment.assignment_type==2 %>
+                        Assignment
+        <%  end %>
+                </td>
+                  <td class="col-3">
+        <%=  link_to assignment.title, assignment%>
+                  </td>
+                  <td class="col-3">
+        <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                  </td>
+                </tr>
+      <% end %>
+    <% else %>
+            <tr class="tr-odd"><td class="col-3"><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></td></tr>
+    <% end %>
+      </table>
+  <% end %>
+
+</div>
+
+<div class="likhon">LIKHON</div>-->
+  <% if @current_user.employee?  %>
+    <div id="page-yield">
+    <% elsif @current_user.student? %>
+      <div id="page-yield" class="bg-disable">
+      <% elsif @current_user.parent? %>
+        <div id="page-yield" class="bg-disable">
+        <% elsif @current_user.admin? %>
+          <div id="page-yield">
+          <% end %>
+
+          <% unless flash[:notice].nil? %>
+            <p class="flash-msg"> <%= flash[:notice] %> </p>
+          <% end %>
+
+          <% if @current_user.employee?  %>
+            
+            <div class="label-field-pair">
+              <label for="assignment_subject"><%= "#{t('subject_and_class')}"%></label>
+              <div class="text-input-bg">
+                <% unless @subjects.nil? %>
+                  <%= select :assignment, :subject,
+                    @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+                    {:prompt => "#{t('select_subject_and_class')}"},
+                    {:onChange => "#{remote_function(:url => {:action => "subject_assignments"},
+                    :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value",
+                    :before => "Element.show('loader')",
+                    :success => "Element.hide('loader')"
+                    )}"} %>
+                </div>
+                <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+              </div>
+            
+              <div class="label-field-pair"  style="float:left; clear:both;">
+                <label for="duedate"><%= "#{t('due_date')}"%></label>
+                <div  class="text-input-bg">
+                  <%= calendar_date_select_tag "assignment_duedate", '' ,
+                    :class=>"text-input-bg",
+                    :readonly=>true,
+                    :popup=>:force,
+                    :onchange => "#{remote_function(:url => {:action => "subject_assignments"},
+                      :with => "'due_date='+ value +'&subject_id='+ $('assignment_subject').value",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader')"
+                    )}"
+                  %>
+                  <div class="clear-date">Clear</div>
+                </div>
+                <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+              </div>
+
+              <div id="subject_assignments_list" style="clear: both"></div>
+            <% else %>
+              <p class="flash-msg"> <%= "#{t('there_are_no_subjects_assigned_to_this_employee')}"%> </p>
+            <% end %>
+
+          <% elsif @current_user.student? %>
+              
+              <div class="label-field-pair">
+                <label for="assignment_subject"><%= "#{t('subject')}"%></label>
+                <div class="text-input-bg">
+                  <% unless @subjects.nil? %>
+                    <%= select :assignment, :subject,
+                      @subjects.map {|s| ["#{s.name}",s.id]},
+                      {:prompt => "#{t('select_a_subject')}"},
+                      {:onChange => "#{remote_function(:url => {:action => "subject_assignments2"},
+                      :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader')"
+                      )}"} %>
+                  </div>
+                  <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                </div>
+              
+                <div class="label-field-pair"  style="float:left; clear:both;">
+                  <label for="duedate"><%= "#{t('due_date')}"%></label>
+                  <div  class="text-input-bg">
+                    <%= calendar_date_select_tag "assignment_duedate", '' ,
+                      :class=>"text-input-bg",
+                      :readonly=>true,
+                      :popup=>:force,
+                      :onchange => "#{remote_function(:url => {:action => "subject_assignments2"},
+                        :with => "'due_date='+ value +'&subject_id='+ $('assignment_subject').value",
+                        :before => "Element.show('loader')",
+                        :success => "Element.hide('loader')"
+                      )}"
+                    %>
+                    <div class="clear-date">Clear</div>
+                  </div>
+                  <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                </div>
+              
+            <% else %>
+              <p class="flash-msg"> <%= "#{t('there_are_no_subjects_assigned_to_this_employee')}"%> </p>
+            <% end %>
+              
+            <div id="listing">
+              <% unless @assignments.empty? %>
+                <ul class="ch_homework">
+                  <% @assignments.each_with_index do |assignment,i| %>
+      <%#= debug @assignments %>
+                    <li>
+                      <div class="ch_homework_content" style="position: relative;">
+                        <div style="float:left;width:100%;">
+                          <div style="float:left;width:35%;">
+                            <% if assignment.subject.icon_number? %>
+                              <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>
+                            <% else %>
+                              <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> assignment.subject.name) %>
+                            <% end %>
+                          </div>
+                          <div style="float:right;width:65%;">
+                            <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                              <%  if assignment.assignment_type==1 %>
+                                Homework
+                              <%  end %>
+                              <%  if  assignment.assignment_type==2 %>
+                                Project
+                              <%  end %>
+                            </span>
+                            <br />
+                            <span style="color:#000;font-size:12px;line-height: 20px;">
+                              <%= assignment.subject.name.to_s unless assignment.subject.nil?%>
+                            </span>
+                            <br />
+                            <span style="color:#000;font-size:12px;line-height: 20px;">
+                              <%
+                                unless assignment.subject.employees.nil?
+                                  emp_name = assignment.subject.employees[0].first_name
+                                  unless assignment.subject.employees[0].middle_name.nil?
+                                    emp_name += ' ' + assignment.subject.employees[0].middle_name
+                                  end
+                                  unless assignment.subject.employees[0].last_name.nil?
+                                    emp_name += ' ' + assignment.subject.employees[0].last_name
+                                  end
+                                end
+                              %>
+                              <%= emp_name %>
+                            </span>
+                          </div>
+                        </div>
+
+                        <% unless assignment.attachment_file_name.nil? %><div style="width: 5%; position: absolute; top: 10px; right: 10px;" class="attachment"></div><% end %>
+                        
+                        <div style="float:left; width:100%; margin:20px 0px;">
+                          <%=  link_to assignment.title, assignment%>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div style="width:100%;">
+                          <div style="text-align: left; color:#aaa; font-size:12px; line-height: 20px; width: 33%;float: left;">
+                            <%= "#{t('assigned_date')}"%> : 
+                          </div>
+                          <div style="text-align: right; color:#aaa; font-size:12px; line-height: 20px; width: 65%;float: right;">
+                            <%= I18n.l(assignment.created_at,:format=>"%A, %d %B, %Y") %>
+                          </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div style="width:100%;">
+                          <div style="text-align: left; color:#aaa; font-size:12px; line-height: 20px; width: 33%;float: left;">
+                            <%= "#{t('due_date')}"%> : 
+                          </div>
+                          <div style="text-align: right; color:#aaa; font-size:12px; line-height: 20px; width: 65%;float: right;">
+                            <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                          </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <div class="tr-odd"><h2><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></h2></div>
+              <% end %>
+            </div>
+          <% elsif @current_user.parent? %>
+            <div id="listing">
+              <% unless @assignments.empty? %>
+                <ul class="ch_homework">
+                  <% @assignments.each_with_index do |assignment,i| %>
+      <%#= debug @assignments %>
+                    <li>
+                      <div class="ch_homework_content">
+                        <div style="float:left;width:100%;">
+                          <div style="float:left;width:35%;">
+                            <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>                  
+                          </div>
+                          <div style="float:right;width:65%;">
+                            <span style="color:#999;font-size:15px;line-height: 20px;font-weight:bold;">
+                              <%  if assignment.assignment_type==1 %>
+                                Homework
+                              <%  end %>
+                              <%  if  assignment.assignment_type==2 %>
+                                Assignment
+                              <%  end %>
+                            </span>
+                            <br />
+                            <span style="color:#000;font-size:12px;line-height: 20px;">
+                              <%=  assignment.subject.name.to_s unless assignment.subject.nil?%>
+                            </span>
+                          </div>
+                        </div>
+
+                        <div style="float:left;width:100%;margin:20px 0px;">
+                          <%=  link_to assignment.title, assignment%>
+                        </div>
+                        <div style="width:100%;text-align: right;">
+                          <span style="color:#aaa;font-size:12px;line-height: 20px;">
+                            <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <div class="tr-odd"><h2><%= "#{t('you_have_not_been_assigned_any_assignments')}"%></h2></div>
+              <% end %>
+            </div>
+          <% elsif @current_user.admin? %>
+            <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>    
+              <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+                <div class="label-field-pair" style="margin: 0px auto;">
+                  <label for="student_grade"><%= t('shift_label') %></label>
+                  <div class="text-input-bg">
+                    <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+                      {:prompt => "#{t('select')}"},
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment&section_page=section_assingment&section_partial=student/sections_assignment_view'" ,:before => "$('loading_2').show();",
+                      :success => "$('loading_2').hide();")}"} %>
+                    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
+                </div>
+              <% end %>
+              <div class="label-field-pair" style="margin: 0px auto;">
+                <label for="student_grade"><%= t('class_label') %></label>
+                <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_assingment', :object => @courses %></div></div>
+              </div>        
+              <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
+                <label for="student_grade"><%= t('section_label') %></label>
+                <div class="text-input-bg"><div id="section_assingment"> <%= render :partial => 'student/sections_assignment_view', :object => @classes %></div></div>
+              </div>             
+            <% end %><%# FORM END%>  
+
+            <!--<div class="label-field-pair" style="margin: 0px auto;">      
+              <label for="student_course"><%#= t('student_batch') %>:
+  <%#= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+              </label>
+              <div class="text-input-bg">
+  <%#= select :assignment, :batch_id,
+  @batches.map {|b| [b.full_name, b.id] },
+  {:prompt => t('select_a_batch')},
+  {:onchange => "#{remote_function(
+  :url => { :action => 'showsubjects' },
+  :with => "'batch_id='+value",
+  :before => "Element.show('loader')",
+  :success => "Element.hide('loader')"  )}"} %>
+              </div>      
+            </div>-->
+            <div id="syllabus" class="news_label_field"></div>
+            <br />
+            <div id="listing"></div>
+          <% end %>
+
+        </div>
+
+          <style type="text/css">
+            .calendar_date_select_popup_icon{
+              margin: 12px 1px 0;
+            }
+            .attachment {
+              background: url("/images/assignment/paperclip.png") no-repeat left;
+              padding-left: 11px;
+              height: 35px;
+            }
+            .clear-date {
+              color: #db3434;
+              cursor: pointer;
+              float: left;
+              margin-left: 23px;
+              margin-top: -22px;
+              text-decoration: underline;
+              width: 0;
+            }
+          </style>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/assignment" %>
+<% end %>

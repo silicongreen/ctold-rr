@@ -1,0 +1,19 @@
+event:
+    overrides: 
+      event_category_id: "Event Category Name"
+    booleans:
+     - :is_common
+     - :is_holiday
+    associations:
+     - :event_category
+    associated_columns:
+      event_category: "name"
+    filters:
+     - :fees
+     - :is_exam
+     - :is_due
+     - :origin_id
+     - :origin_type
+     - :is_club
+     - :school_id
+    

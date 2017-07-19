@@ -1,0 +1,6 @@
+<option value="">Class</option>
+<% unless @courses.nil? or @courses.blank? %>
+  <% @courses.each do |course| %>
+      <option value="<%= course.course_name %>"><%= course.course_name %></option>
+  <% end %>
+<% end %>

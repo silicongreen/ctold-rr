@@ -1,0 +1,99 @@
+<div class="partial_homework" style="padding: 20px;">
+ <h2 class="f2 etitle">REPORT CARD</h2>
+ <%= link_to "<div class='button-link button-link-report'>See All Report</div>", :controller => "student", :action => "reports",  :id => student_id %>
+ <div class="subcontent-info" style="padding:0px;">Click Exam To See the Report Card</div>
+ <div class="box-text">Term Exam Report</div> 
+ <% unless routine.empty? %>
+    <% total_routine = routine.count %>
+    <% i = 1 %>
+    <% routine.each do |h| %>
+        
+        <div class="portlet-subcontent">     
+          
+          <div class="timetable_right" style="width:100%">
+            <div class="subcontent-header themed_text">
+              <% @is_new = "" %>
+              <% if  h['is_new'] == 1 %>
+                <% @is_new = "<span style='color:red;'>( New )</span>" %>
+              <% end %>
+              <%= link_to h['name']+" "+@is_new, :controller => "exam", :action => "generated_report", :exam_group => h['id'], :student => student_id %>
+            </div>
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+          </div>       
+        </div>
+         <% if i<total_routine %>
+            <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 97.5%;"></div> 
+          <% else %>
+            <div style=" margin: 5px;float: left; width: 97.5%;"></div> 
+         <% end %>
+         <% i = i+1 %>
+        
+    
+    <% end %>
+ <% else %>
+ <div class="portlet-subcontent">    
+   No Term Exam Result Publish
+ </div>  
+ <% end  %>  
+        
+ <div class="box-text">Class Test Report</div> 
+ <% unless class_test.empty? %>
+    <% total_routine = class_test.count %>
+    <% i = 1 %>
+    <% class_test.each do |h| %>
+        
+        <div class="portlet-subcontent">     
+          
+          <div class="timetable_right" style="width:100%">
+            <div class="subcontent-header themed_text">
+              <% @is_new = "" %>
+              <% if  h['is_new'] == 1 %>
+                <% @is_new = "<span style='color:red;'>( New )</span>" %>
+              <% end %>
+              <%= link_to h['name']+" "+@is_new, :controller => "student", :action => "class_test_report" %>
+              <%#= link_to h['name'], :controller => "student", :action => "class_test_report", :exam_group => h['id'] %>
+            </div>
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+          </div>       
+        </div>
+        <% if i<total_routine %>
+            <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 97.5%;"></div> 
+          <% else %>
+            <div style=" margin: 15px;float: left; width: 97.5%;"></div> 
+         <% end %>
+         <% i = i+1 %> 
+    
+    <% end %>
+ <% else %>
+ <div class="portlet-subcontent">    
+   No Class Test Result Publish
+ </div>  
+ <% end  %>
+ </div>
+
+<style>
+  
+  div h2.etitle
+  {
+     color:#BC5A83;
+  }
+   div.button-link-report
+  {
+    
+    background: #A05A8E;
+    color:white;
+    
+  }
+  .box-text
+  {
+    float: left; 
+    clear:both; 
+    background: #F5F5F5; 
+    padding:10px 20px; 
+    margin:15px 0px;
+    width: 96%;
+    color:#B9B9B9;
+  }
+ </style>
+
+

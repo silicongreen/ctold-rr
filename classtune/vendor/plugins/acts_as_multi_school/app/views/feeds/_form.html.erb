@@ -1,0 +1,37 @@
+<% form_for @feed_category,:url=>{:action=>:new_category},:method=>:post,:html=>{:multipart=>true,:class=>"form"} do |f| %>
+<fieldset>
+    <fieldset>
+      <%= error_string_for(f) %>
+      <%= f.error_message_on :base %>
+    </fieldset>
+  </fieldset>
+
+  <fieldset>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </fieldset>
+  <fieldset>
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </fieldset>
+
+  <% if @feed_category.logo.file? %>
+    <%= image_tag @feed_category.logo.url %>      
+  <% end %>
+  <fieldset>
+    <label for="configuration_currency_type"><%= t('upload_logo') %> (<%= t('max_size') %>, <%= t('height_width') %>).</label>
+    
+      <%= file_field 'feed_category','logo', :size=>12 %>
+    
+  </fieldset>
+
+  <fieldset>
+        <%= f.label :columns %>
+        <%= select :feed_category,:columns, [['One',1],['Two',2],['Three',3]] %>
+  </fieldset>
+
+  
+  <fieldset>
+    <%= f.submit 'Save', :class  => 'button-red float-right-with-margin',:disable_with => "Please wait..." %>
+  </fieldset>
+<% end %>

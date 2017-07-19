@@ -1,0 +1,52 @@
+<fieldset class="margin-bottom-20">
+  <h1 class="content-head">Feeds Category</h1>
+  <%= link_to("New Category",{:controller=>'feeds',:action=>'new_category'}, :class  => 'button-red float-right')  %>
+ <%= link_to("Arrange Category",{:controller=>'feeds',:action=>'arrange_category'},:style=>'margin-right:10px;', :class  => 'button-red float-right')  %>
+</fieldset>
+<div class="content-div container-width">
+ 
+  <br/>
+  <div class='content-list'>
+     
+    <table class="table table-bordered table-striped">
+      <tr class="tr-head">
+        <td>Name</td>
+        <td>Description</td>
+        <td>Action</td>
+       
+      </tr>
+      
+      <% @feeds_category.each do |feed_category| %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-2">
+            <%=  feed_category.name %>
+          </td>
+          <td class="col-2">
+            <%=  feed_category.description %>
+          </td>
+          
+          
+            <td class="col-2"><small>
+                 
+                  <%= link_to "Edit", {:controller=>'feeds',:action=>'edit_category',:id=>feed_category.id}  %> &nbsp;|&nbsp;
+                  <%= link_to "Delete", {:controller=>'feeds',:action=>'delete_category',:id=>feed_category.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete"  %>&nbsp;|&nbsp;
+
+              </small> </td>
+          
+        </tr>
+      <% end %>
+      
+    </table>
+    
+    <%= will_paginate @feeds_category %>
+    </br>
+    </br>
+  </div>
+</div>
+<style>
+  fieldset a.button-red
+    {
+      padding: 1px 10px 5px !important;
+    }
+</style>  
+

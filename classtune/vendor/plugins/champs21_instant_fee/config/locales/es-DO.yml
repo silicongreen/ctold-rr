@@ -1,0 +1,61 @@
+es-DO:
+  activerecord:
+    attributes:
+
+      instant_fee:
+        amount: "Cantidad"
+        pay_date: "Fecha de Pago"
+
+      instant_fee_category:
+        name: "Nombre"
+        description: "Descripción"
+
+      instant_fee_particular:
+        name: "Nombre"
+        description: "Descripción"
+        amount: "Cantidad"
+        instant_fee_category_id: "Categoría de Tarifa Instantánea"
+
+
+  payee: "Beneficiario"
+  reciept: "Recibo"
+  guest: "Invitado"
+  guest_name: "Nombre del Invitado"
+  payee_name: "Nombre del Beneficiario"
+  net_amount: "Cantidad Neta"
+  custom: "Personalizado"
+  add_category: "Añadir Categoría"
+  instant_fee_text: "Tarifa Instantánea"
+  instant_fees_text: "Tarifas Instantáneas"
+  particular_name: "Nombre del Particular"
+  particular_list: "Lista de Particulares"
+  pay_instant_fees: "Pagar Tarifas Instantáneas"
+  select_payee: "Seleccionar Beneficiario"
+  create_instant_fee: "Crear Tarifa Instantánea"
+  instant_fee_reciept: "Recibo de Tarifa Instantánea"
+  manage_instant_fees: "Administrar Tarifa Instantánea"
+  category_description: "Descripción de Categoría"
+  select_category_type: "Seleccionar Tipo de Categoría"
+  instant_fee_management: "Administarción de Tarifas Instantáneas"
+  saving_problem_occured: "Ocurrió un Problema al Intentar Guardar"
+  view_created_instant_fee: "Ver Tarifa Instantánea"
+  no_default_category_exist: "No Existen Categorías por Defecto"
+  instant_fee_saved_succesfully: "Tarifa Instantánea Guardada Exitosamente"
+  instant_fees_transaction_report: "Reporte de Transacciones de Tarifas Instantáneas"
+  edit_instant_category_for_fees: "Editar Categoría para Tarifa Instantánea"
+  create_instant_category_for_fee: "Crear Categoría para Tarifa Instantánea"
+  create_instant_particular_for_fee: "Crear Particular para Tarifa Instantánea"
+  update_instant_particular_for_fees: "Actualizar Particular para Tarifa Instantánea"
+  no_default_particular_exist: "No existen datos por defecto para particulares"
+  are_you_want_to_delete_category: "¿Está seguro que desea eliminar esta categoría?"
+  are_you_want_to_delete_particular: "¿Está seguro que desea eliminar este particular?"
+  instant_fee_category_created_successfully: "Categoría de Tarifas Instantáneas Creada Exitosamente"
+  instant_fee_category_updated_successfully: "Categoría de Tarifas Instantáneas Actualizada Exitosamente"
+  instant_fee_particular_created_successfully: "Particular de Tarifa Instantánea Creado Exitosamente"
+  instant_fee_particular_deleted_successfully: "Particular de Tarifa Instantánea Eliminado Exitosamente"
+  instant_fee_particular_updated_successfully: "Particular de Tarifa Instantánea Actualizado Exitosamente"
+  InstantFee_account: "Cuenta Tarifa Instantanea"
+  champs21_instant_fee_module: "Módulo Tarifas Instantáneas"
+  manage_and_pay_instant_fees: "Administrar y Pagar al Instante"
+  instant_fee_reciept: "Recibo Instantáneo"
+  net_amount: "Total Neto"

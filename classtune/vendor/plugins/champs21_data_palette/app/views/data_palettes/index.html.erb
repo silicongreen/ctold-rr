@@ -1,0 +1,465 @@
+<%= include_i18n_calendar_javascript %>
+<%= stylesheet_link_tag 'jquery-ui.css' %>
+<script>
+  var q = jQuery.noConflict();
+  q(function() {
+    q( ".column" ).sortable({
+      placeholder: "holder",
+      connectWith: ".column",
+      update: function( event, ui ) {
+        if (this === ui.item.parent()[0]) {
+          column_number = ui.item.parent().attr("id").replace("col-","");
+          position = ui.item.prevAll('.portlet').length + 1;
+          palette_id = ui.item.attr("id").replace("-palette","");
+          q.ajax({
+            type: 'POST' ,
+            url: "data_palettes/sort_palettes",
+            data : {
+              palette : {
+                id : palette_id,
+                column_number : column_number,
+                position : position
+              }
+            }
+          })
+        }
+      }
+    });
+    q( ".column" ).sortable( "option", "handle", ".portlet-header" );
+    q( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+    .find( ".portlet-header" )
+    .addClass( "ui-widget-header ui-corner-all" )
+    .prepend('<span class="remove-icon"></span>')
+    .end()
+    .find( ".portlet-content" );
+    q( ".portlet-header .ui-icon" ).click(function() {
+      q( this ).parent().find(".ui-icon").toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+      q( this ).parents( ".portlet:first" ).find( ".portlet-content" ).slideToggle();
+      palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+      q.ajax({
+        type: 'POST' ,
+        url: "data_palettes/toggle_minimize",
+        data : {
+          palette : {
+            id : palette_id
+          }
+        }
+      })
+    });
+
+    q( ".column" ).disableSelection();
+    q(".portlet-header .remove-icon").click(function() {
+      q(this).parents(".portlet:first").remove();
+      palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+      q.ajax({
+        type: 'POST' ,
+        url: "data_palettes/remove_palette",
+        data : {
+          palette : {
+            id : palette_id
+          }
+        }
+      })
+    });
+    q(".portlet-header .refresh-icon").click(function() {
+      palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+      palette_name = q(this).parents(".portlet:first").find( ".portlet-content" ).attr('id').replace("-palette-content","")
+      q.ajax({
+        type: 'POST' ,
+        url: "data_palettes/refresh_palette",
+        data : {
+          palette : {
+            id : palette_id
+          }
+        },
+        beforeSend : function() {
+          q("#"+palette_name+"-palette-content").slideUp();
+          q("#"+palette_name+"-refresh").css("background","none");
+          q("#"+palette_name+"-refresh").prepend('<img class="palette-loader" border="0" align="absmiddle" src="/images/Loader-transparant.gif">')
+          q("#"+palette_name+"-refresh").css("width","20px");
+        },
+        success : function(data) {
+          q("#"+palette_name+"-palette-content").html(data);
+          q( ".datepicker" ).datepicker({
+            showOn: "button",
+            buttonImage: "images/transparent.png",
+            buttonImageOnly: true,
+            changeMonth: true,
+            changeYear: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            buttonText: 'Select Date',
+            dateFormat: "d MM yy"
+          });
+          q("#"+palette_name+"-refresh").find('img').remove();
+          q("#"+palette_name+"-refresh").removeAttr('style');
+          q("#"+palette_name+"-palette-content").slideDown();
+        }
+      })
+    });
+  });
+
+  q(function() {
+    q( ".datepicker" ).datepicker({
+      showOn: "button",
+      buttonImage: "images/transparent.png",
+      buttonImageOnly: true,
+      changeMonth: true,
+      changeYear: true,
+      showOtherMonths: true,
+      selectOtherMonths: true,
+      buttonText: 'Select Date',
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+  function set_date(th_is)
+  {
+    curr_date = th_is.value;
+    disp_date = q.datepicker.formatDate('dd MM yy', (q.datepicker.parseDate("yy-mm-dd",curr_date)));
+    palette_name = th_is.id.replace("-date","");
+    today=q.datepicker.formatDate('yy-mm-dd', new Date());
+    if(curr_date==today)
+    {
+      disp_date = disp_date+" "+q("#today").val();
+    }
+    q("#"+palette_name).html(disp_date);
+    q.ajax({
+      type: 'POST' ,
+      url: "data_palettes/update_palette",
+      data : {
+        palette : {
+          cur_date : curr_date ,
+          palette_name : palette_name
+        }
+      },
+      beforeSend : function() {
+        q("#"+palette_name+"-loader").show();
+        q("#"+palette_name+"-subcontent").slideUp();
+      },
+      success : function(data) {
+        q("#"+palette_name+"-subcontent").html(data);
+        q("#"+palette_name+"-loader").hide();
+        q("#"+palette_name+"-subcontent").slideDown();
+
+      }
+
+    });
+  }
+
+  function show_more_results(th_is)
+  {
+    palette_name = th_is.id.replace("-view-more","");
+    offset_field = q("#"+palette_name+"-count")
+    offset = offset_field.html();
+    cur_date = q("#"+palette_name+"-date").val();
+    q.ajax({
+      type: 'POST' ,
+      url: "data_palettes/view_more",
+      data : {
+        palette : {
+          palette_name : palette_name,
+          offset : offset,
+          cur_date : cur_date
+        }
+      },
+      beforeSend : function() {
+        q("#"+palette_name+"-more-loader").show();
+      },
+      success : function(data) {
+        q("#"+palette_name+"-more-div").remove();
+        q("#"+palette_name+"-subcontent").append(data);
+        offset_field = q("#"+palette_name+"-count")
+        offset_field.html(parseInt(offset) + 3);
+        q("#"+palette_name+"-more-loader").hide();
+
+      }
+
+    });
+  }
+
+  function get_prev_date(th_is)
+  {
+    palette_name = th_is.id.replace("-prev","");
+    date_field = q("#"+palette_name+"-date");
+    curr_date = q.datepicker.parseDate("yy-mm-dd", date_field.val());
+    prev_date = curr_date.setDate(curr_date.getDate()-1);
+    date_field.val(q.datepicker.formatDate('yy-mm-dd', new Date(prev_date)));
+    set_date(date_field.get(0));
+  }
+
+  function get_next_date(th_is)
+  {
+    palette_name = th_is.id.replace("-next","");
+    date_field = q("#"+palette_name+"-date");
+    curr_date = q.datepicker.parseDate("yy-mm-dd", date_field.val());
+    next_date = curr_date.setDate(curr_date.getDate()+1);
+    date_field.val(q.datepicker.formatDate('yy-mm-dd', new Date(next_date)));
+    set_date(date_field.get(0));
+  }
+
+  function show_list()
+  {
+    q.ajax({
+      type: 'POST' ,
+      url: "data_palettes/show_palette_list",
+      data : {
+        palette : {
+        }
+      },
+      beforeSend : function() {
+        q("#add-loader").show();
+      },
+      success : function(data) {
+        q("#palette-list").html(data);
+        q("#add-loader").hide();
+        q("#add-buttons-div").hide();
+        q("#palette-list").slideDown();
+
+      }
+
+    });
+  }
+
+  function hide_list()
+  {
+    q("#palette-list").slideUp();
+    q("#add-buttons-div").show();
+  }
+
+  function submit_palette(){
+    querystring = q('#palette-form').serialize();
+    q.ajax({
+      type: 'POST' ,
+      url: "data_palettes/modify_user_palettes",
+      data : querystring,
+      beforeSend : function() {
+        q("#list-loader").show();
+        q("#palettes-main").slideUp();
+      },
+      success : function(data) {
+        q("#palettes-main").html(data);
+        q( ".column" ).sortable({
+          placeholder: "holder",
+          connectWith: ".column",
+          update: function( event, ui ) {
+            if (this === ui.item.parent()[0]) {
+              column_number = ui.item.parent().attr("id").replace("col-","");
+              position = ui.item.prevAll('.portlet').length + 1;
+              palette_id = ui.item.attr("id").replace("-palette","");
+              q.ajax({
+                type: 'POST' ,
+                url: "data_palettes/sort_palettes",
+                data : {
+                  palette : {
+                    id : palette_id,
+                    column_number : column_number,
+                    position : position
+                  }
+                }
+              })
+            }
+          }
+        });
+        q( ".column" ).sortable( "option", "handle", ".portlet-header" );
+        q( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+        .find( ".portlet-header" )
+        .addClass( "ui-widget-header ui-corner-all" )
+        .prepend('<span class="remove-icon"></span>')
+        .end()
+        .find( ".portlet-content" );
+        q( ".portlet-header .ui-icon" ).click(function() {
+          q( this ).parent().find(".ui-icon").toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+          q( this ).parents( ".portlet:first" ).find( ".portlet-content" ).slideToggle();
+          palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+          q.ajax({
+            type: 'POST' ,
+            url: "data_palettes/toggle_minimize",
+            data : {
+              palette : {
+                id : palette_id
+              }
+            }
+          })
+        });
+        q( ".column" ).disableSelection();
+        q(".portlet-header .remove-icon").click(function() {
+          q(this).parents(".portlet:first").remove();
+          palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+          q.ajax({
+            type: 'POST' ,
+            url: "data_palettes/remove_palette",
+            data : {
+              palette : {
+                id : palette_id
+              }
+            }
+          })
+        });
+        q(".portlet-header .refresh-icon").click(function() {
+          palette_id = q(this).parents(".portlet:first").attr('id').replace("-palette","");
+          palette_name = q(this).parents(".portlet:first").find( ".portlet-content" ).attr('id').replace("-palette-content","")
+          q.ajax({
+            type: 'POST' ,
+            url: "data_palettes/refresh_palette",
+            data : {
+              palette : {
+                id : palette_id
+              }
+            },
+            beforeSend : function() {
+              q("#"+palette_name+"-palette-content").slideUp();
+              q("#"+palette_name+"-refresh").css("background","none");
+              q("#"+palette_name+"-refresh").prepend('<img class="palette-loader" border="0" align="absmiddle" src="/images/Loader-transparant.gif">')
+              q("#"+palette_name+"-refresh").css("width","20px");
+            },
+            success : function(data) {
+              q("#"+palette_name+"-palette-content").html(data);
+              q( ".datepicker" ).datepicker({
+                showOn: "button",
+                buttonImage: "images/transparent.png",
+                buttonImageOnly: true,
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                buttonText: 'Select Date',
+                dateFormat: "d MM yy"
+              });
+              q("#"+palette_name+"-refresh").find('img').remove();
+              q("#"+palette_name+"-refresh").removeAttr('style');
+              q("#"+palette_name+"-palette-content").slideDown();
+            }
+          })
+        });
+        q( ".datepicker" ).datepicker({
+          showOn: "button",
+          buttonImage: "images/transparent.png",
+          buttonImageOnly: true,
+          changeMonth: true,
+          changeYear: true,
+          showOtherMonths: true,
+          selectOtherMonths: true,
+          buttonText: 'Select Date',
+          dateFormat: "yy-mm-dd"
+        });
+        q("#list-loader").hide();
+        q("#palettes-main").slideDown();
+        q("#palette-list").slideUp();
+        q("#add-buttons-div").show();
+      }
+    });
+  }
+
+
+
+</script>
+
+<% unless flash[:notice].nil? %>
+  <p class="flash-msg"> <%= flash[:notice] %> </p>
+<% end %>
+
+<%# if @current_user.admin? %>
+  <div id="add-palette-main">
+    <div id="palette-list" style="display:none;">
+    </div>
+    <div id="add-buttons-div">
+      <% unless check_free_school? %>
+      <%= link_to t('data_palettes.manage_dashlets'), "#", {:id=>"add-palette-button", :class=>"grey-button-large themed_hover_text", :onClick=>"show_list(); return false;"} %>
+      <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
+      <% end %>
+    </div>
+  </div>
+<%# end %> 
+<%= hidden_field_tag "today_text", t('today_text'), :id=>"today", :autocomplete=>:off %>
+<div id="palettes-main">
+  <%= render :partial=>"palettes_main", :locals=>{:user_palettes=>@user_palettes, :cur_date=>@cur_date} %>
+</div>
+  <!--<div class="school_feed_box">
+    <div class="champs21_feed_title">School Feeds</div>
+    <%# unless @events.nil? %>
+
+      <ul class="champs21_feed">
+        <%# @events.each_with_index do |event,i| %>        
+          <li>
+            <div class="champs21_feed_item_box">
+              <div class="timetable_left">
+                <%#  if event['images'].empty? %>  
+                  <%#= image_tag("/images/application/c.png" , :alt=> event['title']) %>
+                <%# else %>
+                  <%#= image_tag("#{event['images'][0]}" , :alt=> event['title']) %>
+                <%# end %>
+              </div>
+              <div class="timetable_right" style="font-size: 12px;">
+                <div style=""><a href="<%#= event['share_link']['link'] %>" target="_blank"><%#= event['title'] %></a></div>
+                <div class="champs21_summery"><%#= truncate(event['summary'], :length => 100) %></div>
+                <div class="champs_view_wow_box">
+                  <div class="champs_seen"><%#= event['view_count'] %></div>       
+                  <div class="champs_wow"><%#= event['wow_count'] %></div>              
+                </div>              
+                
+              </div>
+            </div>
+          </li>
+        <%# end  %>
+      </ul>
+    <%# else %>
+      <h2>NO DATA</h2>
+    <%# end  %>
+      <div class="champs21_feed_title"><a href="http://www.champs21.com/" target="_blank">VIEW MORE</a></div>
+  </div> --> 
+<%#= debug  @events %>
+<% if @current_user.employee?  %>
+  <% is_show = Configuration.get_config_value('FreeFeedForTeacher'); %>
+<% elsif @current_user.student? %>
+  <% is_show = Configuration.get_config_value('FreeFeedForStudent'); %>
+<% elsif @current_user.parent? %>
+  <% is_show = Configuration.get_config_value('FreeFeedForStudent'); %>
+<% elsif @current_user.admin? %>
+  <% is_show = Configuration.get_config_value('FreeFeedForAdmin'); %>
+<% end %> 
+
+<% if is_show == "1" && is_show != "1"  %>
+  <div style="height:2px; float:left; margin-bottom: 6px; clear: both; width:99.8%; background: #A5A5A5;"></div>
+  <div style="float:left; margin: 10px 0px; clear: both; width:99.8%;"><h1 style="font-size: 1.6rem;">Your School Feeds</h1></div>
+  
+  <div id="popopo" style="clear:both;float:left;width: 105%;margin-left: -27px;">
+    <iframe frameborder="0" id="sizetracker" src="http://www.champs21.com/front/home/school_feed_for_paid" scrolling="no" width="1200" height="1000"></iframe>
+
+  <script type="text/javascript">
+  if (window.addEventListener)
+  {
+    window.addEventListener('message', OnLoadPage, false);
+  }
+  else if (window.attachEvent)
+  {
+    window.attachEvent('message', OnLoadPage);
+  }
+
+  function OnLoadPage(event)
+  {
+    var iframe = document.getElementById('sizetracker');
+    if (event.data.indexOf(",") > 0)
+    {
+      console.log(event.data.split(",")[0]);
+    var height = event.data.split(",")[0];
+    //var width = event.data.split(",")[1];
+
+    iframe.height = parseInt(height);
+    //iframe.width = parseInt(width);
+    }
+
+    window.scrollTo(0, 0);
+  }
+  </script>
+  
+</div>
+  
+<% end %> 
+<style>
+    .portlet-header a
+    {
+      text-decoration: none;
+    }
+    
+</style>  

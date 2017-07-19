@@ -1,0 +1,56 @@
+mn:
+  activerecord:
+    attributes:
+      gallery_category:
+        name: "Нэр"
+
+      gallery_photo: 
+        name: "Нэр"
+        gallery_category_id: "галарейн ангилал "
+        photo_file_name: "Фото зургийн хавтасын нэр"
+
+      gallery_tag:
+        gallery_photo_id: "галарей зураг"
+    errors:
+      messages:
+        must_be_less_than_5_mb : "must be less than 5 MB"
+#controller
+  successfully_updated: "Амжилттай шинэчлэгдлээ"
+  successfully_deleted: "Амжилттай устгагдлаа"
+  photo_uploaded: "Зураг байршуулах"
+  photo_updated: "Зураг шинэчлэх"
+#view
+  photo_text: "Галарей"
+  categoriess: "Ангилалууд"
+  gallery: "Галарей"
+  add_photo: "Зураг оруулах"
+  neew: "Шинэ"
+  photos: " Зурагнууд"
+  gallery_category: "Галарейнын ангилал"
+  name: "Нэр"
+  savee: "► Хадгалах"
+  pictures: "Зурагууд"
+  editt: "Хянан засварлах"
+  delete: "Устгах"
+  are_you_sure: "Та итгэлтэй байна уу?"
+  edit_photo: "Зураг засварлах"
+  delete_photo: "Зураг устгах"
+  upload_photo: "Зураг байршуулах"
+  select_category: "Ангилалыг сонгох"
+  select_photo: "Зураг сонгох (5MB)"
+  photo_name: "Зурагийн нэр"
+  updatee: "► Шинэчлэх"
+  employees: "Албан хаагчид"
+  students: "Оюутанууд"
+  department: "Хэлтэс"
+  batchess: "Бүлэг / салбар"
+  select_employees: "Албан хаагчидыг сонгох"
+  select_students: "Оюутануудыг сонгох"
+  select_department: "Хэлтэсийг сонгох"
+  select_course: "Курсыг сонгох"
+  select_all: "бүгдийг сонгох"
+  add: "Нэмэх оруулах"
+  no_category: "Ангилалын бус"
+  photo_uploaded: "Зураг байршуулсан"
+  category_created: "Ангилалыг үүсгэсэн"
+  gallery_privilege: "Галарейн зохицуулагч"

@@ -212,7 +212,7 @@ class DelayedBatchTranfer
     parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/student_wise_generated_report?exam_group='+exam_group.to_s+'&for_save=true&student='+student.to_s
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
-    auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable })
+    auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>''})
     http.request(auth_req)
   end
   def save_combained_pdf(connect_exam,student,user_cookie_variable,batch_id)
@@ -222,7 +222,7 @@ class DelayedBatchTranfer
     parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/generated_report5_pdf?batch_id='+batch_id.to_s+'&connect_exam='+connect_exam.to_s+'&for_save=true&student='+student.to_s
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
-    auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable })
+    auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>'' })
     http.request(auth_req)
    
   end

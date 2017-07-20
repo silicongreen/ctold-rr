@@ -1,5 +1,5 @@
 <% theme = 'classtune' %>
-<% if @current_user.admin? and MultiSchool.current_school.code == "chs" %>
-<% theme = 'coursemate' %>
-<% end %>
+<%# if @current_user.admin? and MultiSchool.current_school.code == "chs" %>
+<%# theme = 'coursemate' %>
+<%# end %>
 <%= render "layouts/theme/application." + theme.downcase + ".html" %>

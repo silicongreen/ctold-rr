@@ -48,6 +48,13 @@ class StudentController < ApplicationController
     end  
       
   end
+  def save_roll_no
+    params[:student].each_pair do |student_id, details|
+      @std = Student.find(student_id)
+      @std.update_attribute("class_roll_no",details[:class_roll_no])
+    end
+    render :text=> "Save Succesfully"
+  end
   
   def previous_report
     @previous_batch = BatchStudent.find_all_by_student_id(@student.id)

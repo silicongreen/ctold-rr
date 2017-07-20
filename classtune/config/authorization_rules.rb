@@ -2519,7 +2519,7 @@ authorization do
       :previous_years_marks_overview_pdf,
       :remove,
       :reports,
-      :previous_report,:get_previous_exam,
+      :previous_report,:get_previous_exam,:save_roll_no,
       :search_ajax,
       :student_annual_overview,
       :subject_wise_report,

@@ -36,20 +36,20 @@
   <% end %>
   <% form_remote_for :campus_report, :url => {:action=> 'campus_report_show'}, :html=> {:id=>'campus_report_show'} do |s| %>
   <div class="box">
-      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
-          <label for="attandence_date"><%= "Report Type" %></label>
+      <div class="label-field-pair" style="display:none;">
+          <label for="attandence_date"><%= t('report_type') %></label>
           <div class="text-input-bg">
-              <%= select :campus_report, :report_type, [["All",1],["Absent",2],["Present",3],["Late",4]] %>
+              <%= select :campus_report, :report_type, [["Daily",1],["Monthly",2],["Month Range",3],["Date Range",4]], {}, :class=>"no-seacrh-custom-combo", :onchange => "j('.date_report').hide(); var val = this.value; j('#report_date_' + val).css('display', 'inline-block');" %>
           </div>
       </div>
-      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
        <label for="duedate">Select date</label>
        <div  class="text-input-bg">
          <%= calendar_date_select_tag "campus_report[attandence_date]",@date_today,
            :class=>"text-input-bg" ,:readonly=>true,:popup=>:force%>
        </div>
      </div>
-     <%= submit_tag "", :value => "► Proceed", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>  
+     <%= submit_tag "", :value => "► #{t('proceed')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>  
   </div>
   <% end %>
   <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
@@ -59,87 +59,37 @@
 <script>
   var jq = jQuery.noConflict();
   var oDataTable;
-  function generate_datatable(report_type, report_date)
+  function generate_datatable(report_type, report_date, start_month, end_month, month, all_record)
   {
-      
       jq(document).ready(function() {
-         if (report_type!=4)
-         {
-            oDataTable = jq('#hr_report').DataTable( {
-                processing: true,
-                serverSide: true,
-                columnDefs: [
-                    {
-                        targets: [ 0, 1, 2 ],
-                        className: 'mdl-data-table__cell--non-numeric'
-                    }
-                ],
-                ajax: {
-                    url: "/empattendance/campus_report_view",
-                    type: 'POST',
-                    data: {
-                        report_type: report_type, 
-                        report_date: report_date,
-                        all_record: 1, 
-                        employee_department_id: jq("#dept_id").val(),
-                        category_id: jq("#cate_id").val(),
-                        position_id: jq("#pos_id").val(),
-                        grade_id: jq("#grade").val(),
-                    }
-                },
-                columns: [
-                    { "data": "employee_image" },
-                    { "data": "employee_info" },
-                    { "data": "department" },
-                    { "data": "in_time", "sClass" : "ofc_time" },
-                    { "data": "out_time", "sClass" : "ofc_time" },
-                    { "data": "status", "sClass" : "ofc_time" },
-                    { "data": "late" }
-                ]
-            });
-        }
-        else
-        {
           oDataTable = jq('#hr_report').DataTable( {
-                processing: true,
-                serverSide: true,
-                bPaginate: false,
-                language: {
-                  info:  "Total Number Of Late _END_",
-                  infoEmpty: "No Late Found"
-                },
-                columnDefs: [
-                    {
-                        targets: [ 0, 1, 2 ],
-                        className: 'mdl-data-table__cell--non-numeric'
-                    }
-                ],
-                ajax: {
-                    url: "/empattendance/campus_report_view",
-                    type: 'POST',
-                    data: {
-                        report_type: report_type, 
-                        report_date: report_date,
-                        all_record: 1, 
-                        employee_department_id: jq("#dept_id").val(),
-                        category_id: jq("#cate_id").val(),
-                        position_id: jq("#pos_id").val(),
-                        grade_id: jq("#grade").val(),
-                    }
-                },
-                columns: [
-                    { "data": "employee_image" },
-                    { "data": "employee_info" },
-                    { "data": "department" },
-                    { "data": "in_time", "sClass" : "ofc_time" },
-                    { "data": "out_time", "sClass" : "ofc_time" },
-                    { "data": "status", "sClass" : "ofc_time" },
-                    { "data": "late" }
-                ]
-            });
-        }  
+              processing: true,
+              serverSide: true,
+              ajax: {
+                  url: "/attendance_reports/campus_report_view",
+                  type: 'POST',
+                  data: {
+                      report_type: report_type, 
+                      report_date: report_date, 
+                      start_month: start_month, 
+                      end_month: end_month, 
+                      month: month, 
+                      all_record: all_record, 
+                      employee_department_id: jq("#dept_id").val(),
+                      category_id: jq("#cate_id").val(),
+                      position_id: jq("#pos_id").val(),
+                      grade_id: jq("#grade").val(),
+                  }
+              },
+              columns: [
+                  { "data": "employee_info" },
+                  { "data": "department" },
+                  { "data": "in_time", "sClass" : "ofc_time" },
+                  { "data": "out_time", "sClass" : "ofc_time" },
+                  { "data": "status", "sClass" : "ofc_time" }
+              ]
+          });
       });
-    
   }
   function add_filter()
 {
@@ -170,33 +120,6 @@
         jq("#grade_id").val(jq("#grade").val()).trigger('change');
     }
 }
-
-function filterEmployeeDatatableByDepartment(data)
-{
-    var value = jq("#department_id").val();
-    oDataTable.column( 1 ).search( value ).draw(); 
-  
-}
-
-function filterEmployeeDatatableByCategory(data)
-{
-    var value = jq("#category_id").val();
-    oDataTable.column( 2 ).search( value ).draw(); 
-   
-}
-
-function filterEmployeeDatatableByPosition(data)
-{
-    var value = jq("#position_id").val();
-    oDataTable.column( 3 ).search( value ).draw();
-   
-}
-
-function filterEmployeeDatatableByGrade(data)
-{
-    var value = jq("#grade_id").val();
-    oDataTable.column( 4 ).search( value ).draw();
-}
 </script>
 <style>
   table tr td a
@@ -219,24 +142,5 @@ body, html
 {
     line-height: normal;
     font-family: initial;
-}
-.calendar_date_select_popup_icon
-{
-    margin-top: 10px;
-    margin-left: 7px;
-}
-.submit_button
-{
-  padding: 5px 5px;
-  float:left;
-  clear:both;
-  cursor: pointer;
-  margin-left: 15px;
-  margin-bottom: 10px;
-  background-color: white !important;
-}
-.submit_button:hover
-{
-  background-color: #CCC !important;
 }
 </style>

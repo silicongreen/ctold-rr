@@ -26,8 +26,12 @@
                         <% if no_exams!=1 %>
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
-
-                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].empty? %>
+                            <%  begin %>
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].blank? %>
+                            <%
+                            rescue ArgumentError
+                            end
+                            %>
                           </div> 
                           
                           <div class="subcontent-header themed_text" style="margin-top:20px;">
@@ -82,7 +86,12 @@
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
 
-                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].empty? %>
+                             <%  begin %>
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].blank? %>
+                            <%
+                            rescue ArgumentError
+                            end
+                            %>
                           </div> 
 
                           <div class="subcontent-header themed_text" style="margin-top:20px;">

@@ -87,6 +87,11 @@
       <div class="text-input-bg"><div id="batches_data"> <%= render :partial => 'student/batches_transfer', :object => @batch_id %></div></div>
     </div>
     
+    <div class="label-field-pair">
+      <label for="student_grade"><%= "Tranfer All" %></label>
+      <div class="text-input-bg"><input type="text" name="transfer_all" value="Yes" /></div>
+    </div>
+    <p>Note: Write "No" if you are doing partial transfer. </p>
     <% unless @batch.students.empty? %>
       <p><%= t('uncheck_message') %>. </p>
 

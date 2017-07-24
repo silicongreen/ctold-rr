@@ -24,7 +24,7 @@ require 'translator'
 class DelayedBatchTranfer
   attr_accessor :students, :from, :to,:session,:graduation, :status_description, :leaving_date, :local_tzone_time,:current_user,:request,:prev_start,:prev_end,:next_start,:next_end
 
-  def initialize(students, from, to, session, graduation, status_description, leaving_date, local_tzone_time,current_user,request,prev_start,prev_end,next_start,next_end)
+  def initialize(students, from, to, session, graduation, status_description, leaving_date, local_tzone_time,current_user,request,prev_start,prev_end,next_start,next_end,transfer_all)
     @students = students.split(",")
     @from = from
     @to = to
@@ -38,6 +38,7 @@ class DelayedBatchTranfer
     @prev_end = prev_end
     @next_start = next_start
     @next_end = next_end
+    @transfer_all = transfer_all
     @request = request
     
     
@@ -109,7 +110,7 @@ class DelayedBatchTranfer
       
       
       @stu = Student.find_all_by_batch_id(@batch.id)
-      unless @stu.empty?
+      unless @stu.empty? && @transfer_all == "Yes"
           
         @stu.each do |s|
           if s.batch.id.to_i == @batch.id.to_i
@@ -139,34 +140,36 @@ class DelayedBatchTranfer
         
       end
 
-      unless @exam_groups.blank?
-        @exam_groups.each do |eg|
-          eg.update_attribute(:is_deleted,true)
+      if @transfer_all == "Yes"
+        unless @exam_groups.blank?
+          @exam_groups.each do |eg|
+            eg.update_attribute(:is_deleted,true)
+          end
         end
-      end
 
-      unless @connect_exam.blank?
-        @connect_exam.each do |ec|
-          ec.update_attribute(:is_deleted,true)
+        unless @connect_exam.blank?
+          @connect_exam.each do |ec|
+            ec.update_attribute(:is_deleted,true)
+          end
+        end 
+
+        @batch.update_attribute(:start_date,@next_start+" 00:00:00")
+        @batch.update_attribute(:end_date,@next_end+" 00:00:00")
+
+        @attendance = AttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
+        unless @attendance.blank?
+          @attendance.each do |att|
+            att.update_attribute(:previous,@batch_tranfer_id)
+          end
         end
-      end 
-      
-      @batch.update_attribute(:start_date,@next_start+" 00:00:00")
-      @batch.update_attribute(:end_date,@next_end+" 00:00:00")
-      
-      @attendance = AttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
-      unless @attendance.blank?
-        @attendance.each do |att|
-          att.update_attribute(:previous,@batch_tranfer_id)
+
+        @attendance = SubjectAttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
+        unless @attendance.blank?
+          @attendance.each do |att|
+            att.update_attribute(:previous,@batch_tranfer_id)
+          end
         end
-      end
-      
-      @attendance = SubjectAttendanceRegister.find_all_by_batch_id_and_previous(@batch.id,0)
-      unless @attendance.blank?
-        @attendance.each do |att|
-          att.update_attribute(:previous,@batch_tranfer_id)
-        end
-      end
+      end  
       
       
     end

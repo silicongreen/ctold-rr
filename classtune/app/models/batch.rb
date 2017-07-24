@@ -56,7 +56,7 @@ class Batch < ActiveRecord::Base
   has_many :finance_fee_categories,:through=>:category_batches
   has_many :category_batches
   has_many :finance_fee_particulars
-  has_many :finance_fee_collections,:through=>:fee_collection_batches, :conditions => { :is_deleted => false }
+  has_many :finance_fee_collections,:through=>:fee_collection_batches, :conditions => { :is_deleted => false,"fee_collection_batches.is_deleted" => false }
   has_many :fee_collection_batches
   has_many :fee_discounts
   accepts_nested_attributes_for :subjects

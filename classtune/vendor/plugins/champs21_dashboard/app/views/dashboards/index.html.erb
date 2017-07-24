@@ -1,4 +1,4 @@
-<% if @school_code == "chs" && @current_user.admin? %>
+<% if @school_code == "chs" && @current_user.admin? && @school_code != "chs" %>
   <%= render 'dashboards/classtune/index.html' %>
 <% else %>
 <%= include_i18n_calendar_javascript %>

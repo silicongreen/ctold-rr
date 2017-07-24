@@ -81,7 +81,7 @@ class Student < ActiveRecord::Base
 
   before_save :save_biometric_info
 
-  after_create :set_sibling
+  after_create :set_sibling, :add_fee_collection
   
 
   #  after_create :create_default_menu_links
@@ -157,6 +157,19 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def add_fee_collection
+    
+      @student = Student.find(id)
+      @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)
+        unless @fee_collection_batch.blank?
+          @fee_collection_batch.each do |fb|
+            @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
+            FinanceFee.new_student_fee(@finance_fee_collection,@student)
+          end
+      end
+   
+  end
+  
   def create_user_and_validate
     unless self.pass.blank?
       if self.pass == "1"

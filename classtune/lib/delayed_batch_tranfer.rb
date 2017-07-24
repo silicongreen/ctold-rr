@@ -169,6 +169,15 @@ class DelayedBatchTranfer
             att.update_attribute(:previous,@batch_tranfer_id)
           end
         end
+        
+        @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@batch.id,false)
+        
+        unless @fee_collection_batch.blank?
+          @fee_collection_batch.each do |ec|
+            ec.update_attribute(:is_deleted,true)
+          end
+        end
+        
       end  
       
       

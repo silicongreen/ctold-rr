@@ -607,6 +607,9 @@ class UserController < ApplicationController
     require 'uri'
     require "yaml"
   
+    if params[:run_delay_job] == "true"
+      Delayed::Worker.new.run(Delayed::Job.last)
+    end
     @institute = Configuration.find_by_config_key("LogoName")
     available_login_authes = Champs21Plugin::AVAILABLE_MODULES.select{|m| m[:name].camelize.constantize.respond_to?("login_hook")}
     selected_login_hook = available_login_authes.first if available_login_authes.count>=1
@@ -663,7 +666,6 @@ class UserController < ApplicationController
     
       ar_user_cookie = auth_res.response['set-cookie'].split('; ');
       #abort ar_user_cookie.inspect
-      
       if api_from == "local"
         user_info = [ 
           "user_secret" => auth_response['data']['paid_user']['secret'],

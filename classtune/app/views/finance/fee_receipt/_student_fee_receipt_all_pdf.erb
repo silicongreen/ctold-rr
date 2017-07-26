@@ -17,6 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <%
+    @std_count = 0
     @students.each do |std|
       @student = std
       @financefee = @student.finance_fee_by_date @date
@@ -40,10 +41,13 @@
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         end
         @fine_amount=0 if @financefee.is_paid
-        %>    
+        %> 
+        <% @std_count = @std_count+1 %>
         <%=  render  :partial=>"finance/fee_receipt/student_fee_receipt_pdf" %>
-
+        <% if @std_count == 2 %>
         <div class="page-break"></div>
+        <% @std_count = 0 %>
+        <% end %>
         <%
       end  
     end  

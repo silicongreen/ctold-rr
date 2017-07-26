@@ -14,13 +14,15 @@ class MarksController < ApplicationController
     k = 0
     unless batches.blank?
       batches.each do |batch|
-        if !@class_names.include?(batch.course.course_name)
-          @class_list[k] = []
-          @class_list[k][0] = batch.id
-          @class_list[k][1] = batch.name
-          @class_list[k][2] = batch.course.course_name
-          @class_names << batch.course.course_name
-          k =k+1
+        unless batch.course.blank?
+          if !@class_names.include?(batch.course.course_name)
+            @class_list[k] = []
+            @class_list[k][0] = batch.id
+            @class_list[k][1] = batch.name
+            @class_list[k][2] = batch.course.course_name
+            @class_names << batch.course.course_name
+            k =k+1
+          end
         end
       end
     end

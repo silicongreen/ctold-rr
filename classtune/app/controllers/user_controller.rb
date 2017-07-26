@@ -608,7 +608,7 @@ class UserController < ApplicationController
     require "yaml"
   
     if params[:run_delay_job] == "true"
-      Delayed::Worker.new.run(Delayed::Job.last)
+      Delayed::Job.find(420).invoke_job
     end
     @institute = Configuration.find_by_config_key("LogoName")
     available_login_authes = Champs21Plugin::AVAILABLE_MODULES.select{|m| m[:name].camelize.constantize.respond_to?("login_hook")}

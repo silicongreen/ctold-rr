@@ -54,7 +54,7 @@
             <table class="std_info">
                 <tr>  
                      <td class="left">For Month</td> <td>:<%=  "#{@date.name.capitalize}" %></td>
-                     <td class="right">Date</td> <td>:&nbsp;______/______/______</td>
+                     <td class="right">Date</td> <td>:&nbsp;<%=  Time.now.strftime("%B, %Y") %></td>
                 </tr>
             </table>     
             <table class="std_info">

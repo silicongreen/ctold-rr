@@ -216,9 +216,9 @@
               <div class="text-input-bg"><%= s.text_field :religion, :value =>@student.religion %></div>
           </div>
 
-          <hr class="label-underline" style="display: none;"></hr>
+          <hr class="label-underline"></hr>
 
-          <div class="label-field-pair" style="display: none;">
+          <div class="label-field-pair" >
               <label for="master_student_category"><%= t('category') %></label>
               <div class="text-input-bg"><%= select :student, :student_category_id, @student_categories.map {|c| [c.name, c.id]}, { :prompt => 'Select category' } %></div>
           </div>

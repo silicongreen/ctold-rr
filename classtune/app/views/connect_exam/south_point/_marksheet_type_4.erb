@@ -92,10 +92,11 @@
         <% extender = 0 %>
         <% std_count = 0 %>
         <% colspan = stcount+ctcount+4 %>
+        <% unless @report_data['result']['students'].blank? %>
         <% @report_data['result']['students'].each do |std| %>
           <%  std_count = std_count+1; %>
           
-          <% if std_count>15 && extender ==0 %>
+          <% if std_count>13 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -176,6 +177,7 @@
             <td class="col-2"><b>N/A</b></td>
           <% end %>
         </tr>
+        <% end %>
         <% end %>
         <tr class="page-last-element">
           <td colspan="<%= colspan %>">&nbsp;</td>

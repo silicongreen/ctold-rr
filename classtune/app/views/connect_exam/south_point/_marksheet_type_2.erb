@@ -59,7 +59,7 @@
         
         <% extender = 0 %>
         <% std_count = 0 %>
-      
+        <% unless @report_data['result']['al_students'].blank? %>
         <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
           <% if std_count>15 && extender ==0 %>
@@ -250,6 +250,7 @@
                 <td><b>N/A</b></td>
             <% end %>
         </tr>
+        <% end %>
         <% end %>
       </table>
       <% end %>

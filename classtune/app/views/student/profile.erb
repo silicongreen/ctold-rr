@@ -452,7 +452,7 @@
                     </div>
                     <div class="clearfix"></div>
                   <% end %>
-                <% else %>
+                <% end %>
                   <% unless @additional_fields_count == 0 %>
                     <% if permitted_to? :admission4,:student %>
 
@@ -469,7 +469,7 @@
                       <div class="clearfix"></div>
                     <% end %>
                   <% end %>
-                <% end %>
+           
 
                 <% unless @previous_data.nil? %>
                   <div class="row">
@@ -626,13 +626,11 @@
 
         <% end %>
         
-        <% @siblings = Student.find_all_student %>
+      
         <div class="clearfix"></div>
         <div id="guardian_detail" class="row_wrapper">
 
-        <div class="row">
-            <div class="guardian_header_txt">Siblings</div>
-        </div>
+       
         <div class="clearfix"></div>
 
     </div>

@@ -1710,8 +1710,8 @@ class FinanceController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else
         render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :page_size => 'A4',
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'A5',
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,

@@ -135,10 +135,8 @@
                     <% unless d.is_amount == true %>
                     <%  @vat_discount += vat_amount * d.discount.to_f/100 %>
                     <% end %>
-                    
-                    
-                    <% end %>
                   <% end %>
+                  
                   <% vat_amount = vat_amount-@vat_discount %>
                     
                   <% @discounts.each do |d| %>

@@ -155,15 +155,15 @@
 
                   <%#*<tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">%>
                       <%#k+=1%>
-                      <%#*<td class="mark-td" colspan="2" ><%= t('total_discount') %></td>%>
-                      <%#*<td class="mark-td" ><%= "#{precision_label(@total_discount)}" %></td>%>
+                      <%#*<td class="mark-td" colspan="2" ><%= t('total_discount') %><%#*</td>%>
+                      <%#*<td class="mark-td" ><%= "#{precision_label(@total_discount)}" %><%#*</td>%>
                   <%#*</tr>%>
 
                   <% total_fees = (@total_payable-@discount_without_vat) %>
                   <%#*<tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">%>
                       <%#k+=1%>
-                      <%#*<td class="mark-td" colspan="2" ><%= t('total_fees') %></td>%>
-                      <%#*<td class="mark-td" ><%=  precision_label(total_fees) %></td>%>
+                      <%#*<td class="mark-td" colspan="2" ><%= t('total_fees') %><%#*</td>%>
+                      <%#*<td class="mark-td" ><%=  precision_label(total_fees) %><%#*</td>%>
                   <%#*</tr>%>
 
 

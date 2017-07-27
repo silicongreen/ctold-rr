@@ -1,8 +1,8 @@
 <?php
 
 $servername = "localhost";
-$username = "champs21";
-$password = "079366";
+$username = "champs21_champ";
+$password = "1_84T~vADp2$";
 $dbname_source = "champs21_school";
 
 // Create connection

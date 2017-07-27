@@ -1701,7 +1701,7 @@ class StudentController < ApplicationController
     else
       @batch_id = params[:batch_id]
     end
-    @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'cast(class_roll_no as unsigned) ASC,first_name ASC')
+    @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
     render(:update) { |page| page.replace_html 'students', :partial => 'students_by_course' }
   end
   

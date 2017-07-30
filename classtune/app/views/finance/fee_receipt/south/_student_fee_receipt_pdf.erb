@@ -230,10 +230,10 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b>Total Payable Amount Including VAT <br/>(if paid within <%= @date.due_date.to_date.strftime("%d-%m-%Y") %> )</b></td>
-                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in words :<b><%= in_words(balance.to_i).titleize  %></b></td>
+                      <td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %></b></td>
                   </tr>
 
 

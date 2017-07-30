@@ -140,7 +140,7 @@
                   <% vat_amount = vat_amount-@vat_discount %>
                     
                   <% @discounts.each do |d| %>
-                    <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount})%" %>
+                    <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount.to_i})%" %>
                     <% if d.name.index("Tuition").blank? or d.name.index("Laboratory").blank?  %>
                     <%k+=1%>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">   
@@ -283,7 +283,8 @@
 
                     <% end %>
                 </table>
-              
+              <h3>&nbsp;</h3>
+              <h3>&nbsp;</h3>
               <table class="signature">
                   <tr>
                       <td>Parent/Student</td>

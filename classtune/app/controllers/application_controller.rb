@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
     string +=" and " if tens != 0 || ones != 0 
     string = string + set1[tens*10+ones] if tens < 2
     string += set2[tens]
-    string = string + " " + set1[ones] if ones != 0     
+    string = string + " " + set1[ones] if ones != 0 and tens > 1    
     string << 'zero' if int == 0  
     
     return string+" Taka Only"

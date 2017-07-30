@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
-  def in_words()
+  def in_words(int)
     numbers_to_name = {
       1000000 => "million",
       1000 => "thousand",

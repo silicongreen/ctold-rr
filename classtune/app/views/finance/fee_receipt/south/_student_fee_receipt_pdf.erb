@@ -42,7 +42,7 @@
        
             <center>
                 <div id="pdf-header-south" class="general-header">
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '16%' %></h4>
+                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '16%' %></h4>
                   <h3 align="center"><%=Configuration.get_config_value('InstitutionName').upcase %></h3>
                  
                     <h5 align="center">House#02, Road#02, Banani, Dhaka-1213</h5>

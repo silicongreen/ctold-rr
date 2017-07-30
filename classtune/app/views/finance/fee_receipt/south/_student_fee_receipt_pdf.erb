@@ -115,7 +115,7 @@
                           <% end %>
                           <%k+=1%>
                           <td class="name-td" colspan="2"><%= fee.name %></td>
-                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_i)}" %><% else %>-<% end %></td>
+                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_f.round())}" %><% else %>-<% end %></td>
                       </tr>
                       <% total_fees += fee.amount %>
                   <% else %>
@@ -134,10 +134,11 @@
                   <% @discounts.each do |d| %>
                     <% unless d.is_amount == true %>
                     <%  @vat_discount += vat_amount * d.discount.to_f/100 %>
+                    <% @vat_discount = @vat_discount.round() %>
                     <% end %>
                   <% end %>
                   
-                  <% vat_amount = vat_amount-@vat_discount %>
+                  <% vat_amount = vat_amount.to_f.round()-@vat_discount %>
                     
                   <% @discounts.each do |d| %>
                     <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount.to_i}%)" %>
@@ -145,8 +146,10 @@
                     <%k+=1%>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">   
                         <td class="name-td"  colspan="2"><%= discount_text %></td>
-                        <td class="mark-td"><%= precision_label(total_fees * d.discount.to_f/ (d.is_amount?? total_fees : 100)) %></td>
+                        <%  dis = total_fees * d.discount.to_f/ (d.is_amount?? total_fees : 100) %>
+                        <td class="mark-td"><%= precision_label(dis.to_f.round()) %></td>
                         <%  @discount_without_vat += total_fees * d.discount.to_f/ (d.is_amount?? total_fees : 100) %>
+                        <% @discount_without_vat = @discount_without_vat.to_f.round() %>
                     </tr>
                     
                     <% end %>
@@ -200,7 +203,7 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <%k+=1%>
                           <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
-                          <td class="col-6" ><%= precision_label(paid) %></td>
+                          <td class="col-6" ><%= precision_label(paid.round()) %></td>
                       </tr>
                     <% end %>
                   
@@ -210,7 +213,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b><%= "Total(Without VAT)" %></b></td>
-                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
                   </tr>
                   <% @fee_particulars.each do |fee| %>
                       <%  if !fee.name.index("VAT").blank? %>
@@ -225,7 +228,7 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b>Total Payable Amount Including VAT <br/>(if paid within <%= @date.due_date.to_date.strftime("%d-%m-%Y") %> )</b></td>
-                      <td class="col-pdf"><%= "#{precision_label(balance)}" %></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td colspan="3">Amount in words :<b><%= in_words(balance.to_i).titleize  %></b></td>

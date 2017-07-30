@@ -211,7 +211,7 @@
                   
                 <% end %>
                 <% if paid.to_i<=0 %> 
-                  <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount%>
+                  <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount.round()%>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b><%= "Total(Without VAT)" %></b></td>

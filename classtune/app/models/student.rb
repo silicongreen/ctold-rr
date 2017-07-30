@@ -214,7 +214,8 @@ class Student < ActiveRecord::Base
         student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
         if student_fees.present?
           student_fees.each do |stfees|
-            stfees.destroy
+            f_fees_std = finance_fees.find(stfees.id)
+            f_fees_std.destroy
           end
           @student = Student.find(self.id)
           @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)

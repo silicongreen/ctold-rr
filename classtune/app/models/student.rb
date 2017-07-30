@@ -210,8 +210,23 @@ class Student < ActiveRecord::Base
       return false unless errors.blank?
     else
       if student_category_id_changed?
+#        student_fees2=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance ='#{0}'")
         student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
-        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees.present?
+        if student_fees.present? and !student_fees2.present?
+          student_fees.each do |stfees|
+            stfees.destroy
+          end
+          @student = Student.find(self.id)
+          @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)
+            unless @fee_collection_batch.blank?
+              @fee_collection_batch.each do |fb|
+                @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
+                FinanceFee.new_student_fee(@finance_fee_collection,@student)
+              end
+          end
+        end
+        
+        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees2.present?
       end
       self.user.role = "Student"
       changes_to_be_checked = ['admission_no','first_name','last_name','email','immediate_contact_id']

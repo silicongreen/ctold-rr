@@ -82,7 +82,7 @@ class Student < ActiveRecord::Base
   before_save :save_biometric_info
 
   after_create :set_sibling, :add_fee_collection
-  
+  after_update :check_std_category
 
   #  after_create :create_default_menu_links
 
@@ -170,6 +170,26 @@ class Student < ActiveRecord::Base
    
   end
   
+  def check_std_category
+    if student_category_id_changed?
+      student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
+      if student_fees.present?
+        student_fees.each do |stfees|
+          f_fees_std = finance_fees.find(stfees.id)
+          f_fees_std.destroy
+        end
+        @student = Student.find(id)
+        @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)
+          unless @fee_collection_batch.blank?
+            @fee_collection_batch.each do |fb|
+              @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
+              FinanceFee.new_student_fee(@finance_fee_collection,@student)
+            end
+        end
+      end
+    end
+  end
+  
   def create_user_and_validate
     unless self.pass.blank?
       if self.pass == "1"
@@ -211,21 +231,7 @@ class Student < ActiveRecord::Base
     else
       if student_category_id_changed?
 #        student_fees2=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance ='#{0}'")
-        student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
-        if student_fees.present?
-          student_fees.each do |stfees|
-            f_fees_std = finance_fees.find(stfees.id)
-            f_fees_std.destroy
-          end
-          @student = Student.find(self.id)
-          @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)
-            unless @fee_collection_batch.blank?
-              @fee_collection_batch.each do |fb|
-                @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
-                FinanceFee.new_student_fee(@finance_fee_collection,@student)
-              end
-          end
-        end
+        
         
 #        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees2.present?
       end

@@ -120,6 +120,7 @@
                       <% total_fees += fee.amount %>
                   <% else %>
                       <% vat_amount = vat_amount+fee.amount %>
+                      <% vat_amount = vat_amount.round() %>
                   <% end %>    
                 <% end %>
                  

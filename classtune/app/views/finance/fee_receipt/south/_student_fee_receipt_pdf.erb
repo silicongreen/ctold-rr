@@ -115,7 +115,7 @@
                           <% end %>
                           <%k+=1%>
                           <td class="name-td" colspan="2"><%= fee.name %></td>
-                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                          <td class="mark-td"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_i)}" %><% else %>-<% end %></td>
                       </tr>
                       <% total_fees += fee.amount %>
                   <% else %>

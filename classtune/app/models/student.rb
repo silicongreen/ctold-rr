@@ -212,7 +212,7 @@ class Student < ActiveRecord::Base
       if student_category_id_changed?
 #        student_fees2=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance ='#{0}'")
         student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
-        if student_fees.present? and !student_fees2.present?
+        if student_fees.present?
           student_fees.each do |stfees|
             stfees.destroy
           end
@@ -226,7 +226,7 @@ class Student < ActiveRecord::Base
           end
         end
         
-        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees2.present?
+#        errors.add_to_base(t('cant_change_category_when_unpaid_fees_exists'))   if student_fees2.present?
       end
       self.user.role = "Student"
       changes_to_be_checked = ['admission_no','first_name','last_name','email','immediate_contact_id']

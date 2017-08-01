@@ -26,9 +26,7 @@
   <% end %>
     
     <% unless @batches.blank? %>
-        <div class="box">
-            <%= select :batch, :batch_id,@batches.map {|b| [b.full_name, b.full_name] },{:prompt => "Select a Class"} %>
-        </div>
+        <%= render  :partial=>"/marks/class_box" %>
         
     <% end %>
     <% unless @exams_data.blank? %>
@@ -62,9 +60,10 @@
 </div>
 <script>
   var jj = jQuery.noConflict();
+  var oDataTable;
   jj(document).ready(function () {
       <%#*PDFObject.embed("http://chs.classtune.dev/exam/tabulation/91", "#pdf_file");%>
-      var oDataTable = jj('#exam_data').DataTable( {
+     oDataTable = jj('#exam_data').DataTable( {
         "ajax": "/marks/data_connect_exam_report",
         "deferRender": true,
         "order": [],
@@ -109,25 +108,28 @@
       
     });
     
-    jj("#batch_batch_id").change(function(){
-      if(jj("#batch_batch_id").val())
+    jj(".section_id").change(function(){
+      if(jj(this).val())
       {
-        oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
-        jj.get( "/marks/examgroup", { batch_name: jj("#batch_batch_id").val() } )
+        oDataTable.column( 1 ).search("").column( 0 ).search( jj(this).val(),false,false).draw();
+        jj.get( "/marks/examgroup", { batch_name: jj(this).val() } )
         .done(function( data ) {
           jj("#examgroup").html(data);
         });
+        
       }
       else
       {
-        oDataTable.column( 0 ).search("").draw();
+        oDataTable.column( 1 ).search("").column( 0 ).search(class_id_current.replace(/\_/g, ' '),false,false).draw(); 
         jj.get( "/marks/examgroup", { batch_name: "0" } )
         .done(function( data ) {
           jj("#examgroup").html(data);
         });
         
-      } 
+      }   
     });
+    
+    
   });
 </script>
 <style>

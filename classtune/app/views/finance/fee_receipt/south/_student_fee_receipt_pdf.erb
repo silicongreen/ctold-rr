@@ -266,18 +266,20 @@
 
                       <td class="col-pdf"><%= "#{precision_label(balance2.round())}" %></td>
                   </tr>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                  <% if params[:show_two].blank? %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
-                      <%
-                        fine_vat = (1000*7.5)/100
-                        fine_vat = fine_vat.ceil
-                        total_fine = 1000+fine_vat.to_i
-                        balance3 = balance+total_fine
-                      %>
+                        <td colspan="2" class="col-8"><b>Payable Amount with fine 1000 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
+                        <%
+                          fine_vat = (1000*7.5)/100
+                          fine_vat = fine_vat.ceil
+                          total_fine = 1000+fine_vat.to_i
+                          balance3 = balance+total_fine
+                        %>
 
-                      <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
-                  </tr>
+                        <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
+                    </tr>
+                  <% end %>
                 
                 
                 <% end %>

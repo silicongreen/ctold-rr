@@ -22,7 +22,38 @@
 
 <%#*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>%>
 <%#*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>%>
-
+<script>
+  var jj = jQuery.noConflict();
+  var oDataTable;
+  jj(document).ready(function () {
+    oDataTable = jj('#exam_data').DataTable( {
+        "ajax": "/marks/data",
+        "deferRender": true,
+        "order": [],
+        "oSearch": { "bSmart": false },
+        columnDefs: [
+            {
+                targets: [ 0, 1, 2 ],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ]
+    } );
+    
+    jj(".section_id").change(function(){
+      if(jj(this).val())
+      {
+        oDataTable.column( 0 ).search( jj(this).val(),false,false).draw();
+        
+      }
+      else
+      {
+        oDataTable.column( 0 ).search(class_id_current.replace(/\_/g, ' '),false,false).draw(); 
+        
+      }   
+    });
+    
+ });
+</script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
@@ -44,9 +75,8 @@
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-  <div class="box">
-      <%= select :batch, :batch_id,@batches.map {|b| [b.full_name, b.full_name] },{:prompt => "Select a Class"} %>
-  </div>
+  <%= render  :partial=>"/marks/class_box" %>
+  
   <div class="box">
     <table id="exam_data"  class="mdl-data-table" cellspacing="0" width="100%">
         <thead>
@@ -65,34 +95,7 @@
   </div>
     
 </div>
-<script>
-  var jj = jQuery.noConflict();
-  jj(document).ready(function () {
-      var oDataTable = jj('#exam_data').DataTable( {
-        "ajax": "/marks/data",
-        "deferRender": true,
-        "order": [],
-        "oSearch": { "bSmart": false },
-        columnDefs: [
-            {
-                targets: [ 0, 1, 2 ],
-                className: 'mdl-data-table__cell--non-numeric'
-            }
-        ]
-    } );
-    jj("#batch_batch_id").change(function(){
-      if(jj("#batch_batch_id").val())
-      {
-        oDataTable.column( 0 ).search( jj("#batch_batch_id").val(),false,false).draw();
-      }
-      else
-      {
-        oDataTable.column( 0 ).search("").draw();
-        //oDataTable.column( 0 ).search("").val(),false,false).draw();
-      }   
-    });
-  });
-</script>
+
 <style>
   table tr td a
   {

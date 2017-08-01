@@ -294,7 +294,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance1.round())}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s%></b> to <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b>  ) </td>
+                      <td colspan="2" class="col-8"><b>Payable Amount with fine 400 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s%></b> ) </td>
                       <%
                         fine_vat = (400*7.5)/100
                         fine_vat = fine_vat.ceil

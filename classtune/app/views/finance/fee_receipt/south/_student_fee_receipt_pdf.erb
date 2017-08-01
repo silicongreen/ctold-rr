@@ -55,14 +55,14 @@
             <% total_fees = 0 %>
             <table class="std_info">
                 <tr>  
-                    <td class="left">For Month:</td> <td><b><%=  "#{@date.name.capitalize}" %></b></td>
+                    <td class="left">For Month:</td> <td><b><%=  "#{@date.name}" %></b></td>
                     <td class="right">Date:</td> <td><b>&nbsp;______/______/______</b></td>
                 </tr>
             </table>     
             <table class="std_info">
                
                 <tr>
-                    <td colspan="1"><%= "#{t('name')}" %>:</td> <td colspan="11"><b> <%=  "#{@student.full_name}" %></b></td>
+                    <td colspan="1"><%= "Name of student" %>:</td> <td colspan="11"><b> <%=  "#{@student.full_name}" %></b></td>
                 </tr>
                 <tr>
                     <td colspan="1"><%= "Shift" %>:</td> <td colspan="5"><b> <%=  "#{@student.batch.name}" %></b></td>
@@ -104,6 +104,7 @@
                 <% i = 0  %>
                 <% c= 'even' %>
                 <% vat_amount = 0 %>
+                <% vat_amount_main = 0 %>
                 <% @fee_particulars.each do |fee| %>
                    <%  if fee.name.index("VAT").blank? %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -119,8 +120,8 @@
                       </tr>
                       <% total_fees += fee.amount %>
                   <% else %>
-                      <% vat_amount = vat_amount+fee.amount %>
-                      <% vat_amount = vat_amount.round() %>
+                      <% vat_amount_main = vat_amount_main+fee.amount %>
+                      <% vat_amount = vat_amount_main.round() %>
                   <% end %>    
                 <% end %>
                  
@@ -134,13 +135,14 @@
 
                   <% @discounts.each do |d| %>
                     <% unless d.is_amount == true %>
-                    <%  @vat_discount += vat_amount * d.discount.to_f/100 %>
+                    <%  @vat_discount += vat_amount_main * d.discount.to_f/100 %>
                     
                     <% end %>
                   <% end %>
-                  <% @vat_discount = @vat_discount.round() %>
                   
-                  <% vat_amount = vat_amount.to_f.round()-@vat_discount %>
+                  
+                  <% vat_amount = vat_amount_main-@vat_discount %>
+                  <% vat_amount = vat_amount.round() %>
                     
                   <% @discounts.each do |d| %>
                     <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}(#{d.discount.to_i}%)" %>

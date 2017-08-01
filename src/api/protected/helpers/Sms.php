@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 class Sms {
-    public static $sms_attendence_school = [2,296,319];
+    public static $sms_attendence_school = [2,296,319,312];
     public static $sms_all_guardian = [319];
     public static $sms_subject_attendence_school = [2,319];
     //296
     
-    public static $sms_school_host = array(2=>"host_ssd", 296=>"host_ssd", 319=>"host_ssd");
-    public static $sms_school_param = array(2=>"param_ssd", 296=>"param_ssd", 319=>"param_ssd");
-    public static $sms_school_hosts_return = array(2=>"host_return_ssd", 296=>"host_return_ssd", 319=>"host_return_ssd");
+    public static $sms_school_host = array(2=>"host_ssd", 296=>"host_ssd", 319=>"host_ssd", 312=>"host_ssd");
+    public static $sms_school_param = array(2=>"param_ssd", 296=>"param_ssd", 319=>"param_ssd", 312=>"param_ssd");
+    public static $sms_school_hosts_return = array(2=>"host_return_ssd", 296=>"host_return_ssd", 319=>"host_return_ssd", 312=>"host_return_ssd");
     
     
    

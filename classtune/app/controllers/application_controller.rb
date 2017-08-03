@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
     set1 = ["","one","two","three","four","five","six","seven",
       "eight","nine","ten","eleven","twelve","thirteen",
       "fourteen","fifteen","sixteen","seventeen","eighteen",
-      "nineteen"]
+      "nineteen","twenty","twenty one","twenty two","twenty three","twenty four","twenty five","twenty six","twenty seven","twenty eight","twenty nine","thirty","thirty one","thirty two","thirty three"]
 
     set2 = ["","","twenty","thirty","forty","fifty","sixty",
       "seventy","eighty","ninety"]
@@ -77,6 +77,8 @@ class ApplicationController < ActionController::Base
     tens = ((int % 100) / 10)
     ones = int % 10
     string = ""
+    
+    
 
     string += set1[thousands] + " thousand " if thousands != 0 if thousands > 0
     string += set1[hundreds] + " hundred" if hundreds != 0

@@ -415,6 +415,7 @@ en: # locale
   course_batch_details: "Class Details"
   import_batch_course: "Import Class and Subjects"
   proceed_anyway: "Proceed Anyway"
+  proceed: "Proceed"
   student_activation_code: "Student Activation Code"
   roll_number: "Roll No."
   shift_label: "Select Shift"

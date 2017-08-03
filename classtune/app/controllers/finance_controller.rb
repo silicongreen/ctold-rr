@@ -1790,7 +1790,7 @@ class FinanceController < ApplicationController
 
   def fees_student_dates
     @student = Student.find(params[:id])
-    @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fee_collections.is_deleted=#{false}").uniq
+    @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fee_collections.is_deleted=#{false} and fee_collection_batches.is_deleted=#{false}").uniq
   end
 
   def fees_submission_student

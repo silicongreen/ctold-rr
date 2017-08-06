@@ -32,7 +32,7 @@ module TimetablesHelper
     ## Produces view for one particular timetable entry cell
     unless tt.blank?
       unless tt.batch.blank?
-        "#{shorten_string(tt.batch.full_name,15)}"
+        "#{tt.batch.full_name}"
       end
     end
   end

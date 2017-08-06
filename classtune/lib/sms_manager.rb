@@ -59,19 +59,54 @@ class SmsManager
       message_log = SmsMessage.new(:body=> @message)
       message_log.save
       encoded_message = @message
-#      request = "#{@sms_url}?#{@username_mapping}=#{@username}&#{@password_mapping}=#{@password}&#{@sender_mapping}=#{@sendername}&#{@message_mapping}=#{encoded_message}#{@additional_param}&#{@phone_mapping}="
+      @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
+     
+      @i_sms_loop = 0
       @recipients.each do |recipient|
-        api_uri = URI.parse(@sms_url)
-        http = Net::HTTP.new(api_uri.host, api_uri.port)
-        request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-        request.set_form_data({"user"=>@username,"pass"=>@password,"sms[0][0]"=>recipient,"sms[0][1]"=>@message_without_encode,"sid" =>@sendername})
-        response = http.request(request)
-        if response.body.present?
-          message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>response.body)
-          sms_count = Configuration.find_by_config_key("TotalSmsCount")
-          new_count = sms_count.config_value.to_i + 1
-          sms_count.update_attributes(:config_value=>new_count)   
-        end
+       if @i_sms_loop == 3
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+        
+         api_uri = URI.parse(@sms_url)
+         http = Net::HTTP.new(api_uri.host, api_uri.port)
+         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+         request.set_form_data(@sms_hash)
+         
+         http.request(request)
+        
+         sms_count = Configuration.find_by_config_key("TotalSmsCount")
+         new_count = sms_count.config_value.to_i + 4
+         sms_count.update_attributes(:config_value=>new_count)
+         
+         @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
+       
+         @i_sms_loop = 0
+       elsif recipient.equal? @recipients.last
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+         
+         api_uri = URI.parse(@sms_url)
+         http = Net::HTTP.new(api_uri.host, api_uri.port)
+         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+         request.set_form_data(@sms_hash)
+         http.request(request)
+        
+         sms_count = Configuration.find_by_config_key("TotalSmsCount")
+         new_count = sms_count.config_value.to_i + 1+@i_sms_loop
+         sms_count.update_attributes(:config_value=>new_count)
+       else
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @i_sms_loop = @i_sms_loop+1
+       end   
+       
+       
       end
     end
   end

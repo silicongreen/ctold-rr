@@ -29,9 +29,7 @@
 </script>
 <div id="page-yield">
   <div class="box">
-    <% remote_form_for :send_sms,
-      :before => "Element.show('loader2'), $('submit_button').disable()",
-      :success => "Element.hide('loader2'), setTimeout(function(){$('submit_button').enable();},5000)" do |x| %>
+    <% form_for :send_sms do |x| %>
       <div class="label-field-pair">
         <div class="label-container"><label><%= t('select_a_department') %>:</label> </div>
         <div class="text-input-bg text-input-bg2" style="height: 320px;">
@@ -48,6 +46,13 @@
             :border => 0,
             :id => "loader",
             :style =>"display: none;" ) %>
+        </div>
+        <div class="label-container"><label>Only Download?</label></div>
+        <div class="text-input-bg">
+          <select name="send_sms[download]">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
         </div>
       </div>
 

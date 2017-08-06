@@ -109,26 +109,38 @@ class SmsController < ApplicationController
             
           end
         end
+        
         unless @recipients.empty?
-          message = params[:send_sms][:message]
-          sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
-          # raise @recipients.inspect
-          render(:update) do |page|
-            page.replace_html 'status-message',:text=>"<p class=\"flash-msg\">#{t('sms_sending_intiated', :log_url => url_for(:controller => "sms", :action => "show_sms_messages"))}</p>"
-            page.visual_effect(:highlight, 'status-message')
-            page.replace_html 'student-list',:text=>""
+          @recipients = @recipients.uniq
+          if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
+            
+            message = params[:send_sms][:message]
+            sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+            flash[:notice]="Succesffully Send"
+          else
+           
+            csv_string = FasterCSV.generate do |csv|
+              rows = []
+              rows << "Mobile No"
+              csv << rows
+              @recipients.each do |number|
+                rows = []
+                rows << "#{number}"
+                csv << rows
+              end
+            end
+            
+            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+            send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
           end
+          
         else
-          error=true
+          flash[:notice]="No Number Selected"
         end
       else
-        error=true
+        flash[:notice]="No Student Selected"
       end
-      if error
-        render(:update) do |page|
-          page.replace_html 'status-message',:text=>"<p class=\"flash-msg\">#{t('select_valid_students')}</p>"
-        end
-      end
+      
     end
   end
   
@@ -262,24 +274,36 @@ class SmsController < ApplicationController
           end
         end
         unless @recipients.empty?
-          message = params[:send_sms][:message]
-          Delayed::Job.enqueue(SmsManager.new(message,@recipients))
-          render(:update) do |page|
-            page.replace_html 'employee-list',:text=>""
-            page.replace_html 'status-message',:text=>"<p class=\"flash-msg\">#{t('sms_sending_intiated', :log_url => url_for(:controller => "sms", :action => "show_sms_messages"))}</p>"
-            page.visual_effect(:highlight, 'status-message')
+          @recipients = @recipients.uniq
+          if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
+            
+            message = params[:send_sms][:message]
+            sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+            flash[:notice]="Succesffully Send"
+          else
+           
+            csv_string = FasterCSV.generate do |csv|
+              rows = []
+              rows << "Mobile No"
+              csv << rows
+              @recipients.each do |number|
+                rows = []
+                rows << "#{number}"
+                csv << rows
+              end
+            end
+            
+            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+            send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
           end
+          
         else
-          error = true
+         flash[:notice]="No Number Selected"
         end
       else
-        error = true
+        flash[:notice]="No Employee Selected"
       end
-      if error
-        render(:update) do |page|
-          page.replace_html 'status-message',:text=>"<p class=\"flash-msg\">#{t('select_valid_employees')}</p>"
-        end
-      end
+      
     end
   end
 

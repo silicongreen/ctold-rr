@@ -28,10 +28,11 @@
   var jj = jQuery.noConflict();
 </script>  
 <div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
   <div class="box">
-<% remote_form_for :send_sms,
-        :before => "Element.show('loader2'), $('submit_button').disable()",
-        :success => "Element.hide('loader2'), setTimeout(function(){$('submit_button').enable();},5000)" do |x| %>
+<% form_for :send_sms do |x| %>
    <div class="label-field-pair">
     <div class="label-container"><label><%= t('select_a_batch') %>:</label> </div>
     <div class="text-input-bg text-input-bg2" style="height: 320px;"><%= select :send_sms, :batch_id,
@@ -57,6 +58,13 @@
             <option value="4">Both Parent/Guardian</option>
             <option value="5">Student Both Parent/Guardian</option>
             <option value="6">Student Both Parent/Guardian (Only For Test)</option>
+          </select>
+        </div>
+    <div class="label-container"><label>Only Download?</label></div>
+        <div class="text-input-bg">
+          <select name="send_sms[download]">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
           </select>
         </div>
    </div>

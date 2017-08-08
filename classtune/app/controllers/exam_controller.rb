@@ -72,11 +72,16 @@ class ExamController < ApplicationController
   
   def split_pdf_and_save
     @id = params[:id]  
+    @batch_id_if_send = params[:batch_id]
 
     @connect_exam_obj = ExamConnect.find(@id)
     @connect_exam = @id
 
-    @batch = Batch.find(@connect_exam_obj.batch_id)
+    if(@batch_id_if_send)
+      @batch = Batch.find(@batch_id_if_send)
+    else
+      @batch = Batch.find(@connect_exam_obj.batch_id)
+    end
     get_continues(@id,@batch.id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200

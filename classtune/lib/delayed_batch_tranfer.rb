@@ -45,7 +45,7 @@ class DelayedBatchTranfer
   end
 
   def perform
-    @stu = Student.find_all_by_batch_id(@batch.id)
+    
     unless @students.blank?
       
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"

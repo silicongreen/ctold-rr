@@ -91,6 +91,10 @@
       <label for="student_grade"><%= "Tranfer All" %></label>
       <div class="text-input-bg"><input type="text" name="transfer_all" value="Yes" /></div>
     </div>
+    <div class="label-field-pair">
+      <label for="generate_combined"><%= "Generate Combined Report" %></label>
+      <div class="text-input-bg"><input type="text" name="generate_combined" value="Yes" /></div>
+    </div>
     <p>Note: Write "No" if you are doing partial transfer. </p>
     <% unless @batch.students.empty? %>
       <p><%= t('uncheck_message') %>. </p>

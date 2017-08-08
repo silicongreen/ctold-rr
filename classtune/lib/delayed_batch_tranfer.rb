@@ -76,10 +76,7 @@ class DelayedBatchTranfer
           end
         end
       end 
-      
-      @connect_exam.each do |ec|
-        save_combained_pdf(ec.id,@user_cookie_variable)
-      end
+
 
      
       

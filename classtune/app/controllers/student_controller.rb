@@ -59,13 +59,55 @@ class StudentController < ApplicationController
   def previous_report
     @previous_batches = BatchStudent.find_all_by_student_id(@student.id)
     @previous_batch = []
+    @batch_ids = []
+    @group_exam_count = {}
+    @position = {}
+    @connect_exam_count = {}
+    @iloop = 0
     unless @previous_batches.blank?
       @previous_batches.each do |pv|
-        unless @previous_batches.batch_id == @student.batch_id
+        unless pv.batch_id == @student.batch_id
           @previous_exam = ExamConnectStudent.find_all_by_batch_student_id(pv.id)
           @previous_group_exam = GroupExamStudent.find_all_by_batch_student_id(pv.id)
           if !@previous_exam.blank? or !@previous_group_exam.blank?
-            @previous_batch << pv
+            
+            unless @batch_ids.include?(pv.batch_id)
+              @batch_ids << pv.batch_id
+
+              if !@previous_exam.blank?
+                @group_exam_count[pv.batch_id.to_s] = @previous_exam.count
+              else
+                @group_exam_count[pv.batch_id.to_s] = 0
+              end  
+
+              if !@previous_group_exam.blank?
+                @connect_exam_count[pv.batch_id.to_s] = @previous_group_exam.count
+              else
+                @connect_exam_count[pv.batch_id.to_s] = 0
+              end  
+              @position[pv.batch_id.to_s] = @iloop
+              @previous_batch << pv
+              @iloop = @iloop+1
+            else
+              if @previous_exam.count > @group_exam_count[pv.batch_id.to_s] or @previous_group_exam.count > @connect_exam_count[pv.batch_id.to_s]
+                if !@previous_exam.blank?
+                  @group_exam_count[pv.batch_id.to_s] = @previous_exam.count
+                else
+                  @group_exam_count[pv.batch_id.to_s] = 0
+                end  
+
+                if !@previous_group_exam.blank?
+                  @connect_exam_count[pv.batch_id.to_s] = @previous_group_exam.count
+                else
+                  @connect_exam_count[pv.batch_id.to_s] = 0
+                end 
+                @previous_batch.delete(@position[pv.batch_id.to_s].to_i)
+                @position[pv.batch_id.to_s] = @iloop
+                @previous_batch << pv
+                @iloop = @iloop+1
+                
+              end
+            end  
           end
         end
       end
@@ -106,9 +148,9 @@ class StudentController < ApplicationController
     school_id = MultiSchool.current_school.id
     batch_name = ""
     if batch_id.to_i > 0
-        batch = Batch.find batch_id
-        batch_name = batch.name
-        @batch_name = batch_name
+      batch = Batch.find batch_id
+      batch_name = batch.name
+      @batch_name = batch_name
     end
     
     unless batch_name.blank?    
@@ -119,8 +161,8 @@ class StudentController < ApplicationController
       }     
     else    
       @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{school_id}"){
-          tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
-          tmp_class_data
+        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
+        tmp_class_data
       }
     end
     @selected_section = 0
@@ -130,8 +172,8 @@ class StudentController < ApplicationController
     
     @class_name = params[:class_name]
     if batch_id.to_i > 0
-        batch = Batch.find batch_id
-        @batch_name = batch.name
+      batch = Batch.find batch_id
+      @batch_name = batch.name
     end
     
     render :update do |page|
@@ -170,18 +212,18 @@ class StudentController < ApplicationController
     school_id = MultiSchool.current_school.id
     @batch_name = false
     unless params[:batch_id].empty?
-        batch_data = Batch.find params[:batch_id]
-        batch_name = batch_data.name
+      batch_data = Batch.find params[:batch_id]
+      batch_name = batch_data.name
     end 
     @courses = []
     unless batch_name.blank?
-    @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
-      @batch_name = batch_name;
-      batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-      tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-      class_data = tmp_classes
-      class_data
-    }
+      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+        @batch_name = batch_name;
+        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+        class_data = tmp_classes
+        class_data
+      }
     end
     
     @classes = []
@@ -283,10 +325,10 @@ class StudentController < ApplicationController
     
     school_id = MultiSchool.current_school.id
     if batch_name.length == 0
-        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
-          batches = Batch.find_by_course_id(course_id)
-          batches
-        }
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+        batches = Batch.find_by_course_id(course_id)
+        batches
+      }
     else
       @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
         batches = Batch.find_by_course_id_and_name(course_id, batch_name)
@@ -529,21 +571,21 @@ class StudentController < ApplicationController
     @categories = StudentCategory.active
     if request.post?
       #abort(params[:student_activation_code].inspect)      
-#      @activation_code_no_error = true
-#      @activation_code_free = params[:student][:student_activation_code]
-#      if @user.is_visible and @user.admin
-#        if params[:student][:student_activation_code]==""
-#          @activation_code_no_error = false
-#          @student.errors.add("Activation Code", "must not be empty")
-#        else
-#          @activation_code = StudentActivationCode.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id,:code=> @activation_code_free,:is_active=>1}) 
-#          #abort(@activation_code.inspect) 
-#          if @activation_code.nil?
-#            @activation_code_no_error = false
-#            @student.errors.add("Invalid", "Activation Code"+MultiSchool.current_school.id.to_s+" ="+@activation_code_free+"=")
-#          end
-#        end
-#      end
+      #      @activation_code_no_error = true
+      #      @activation_code_free = params[:student][:student_activation_code]
+      #      if @user.is_visible and @user.admin
+      #        if params[:student][:student_activation_code]==""
+      #          @activation_code_no_error = false
+      #          @student.errors.add("Activation Code", "must not be empty")
+      #        else
+      #          @activation_code = StudentActivationCode.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id,:code=> @activation_code_free,:is_active=>1}) 
+      #          #abort(@activation_code.inspect) 
+      #          if @activation_code.nil?
+      #            @activation_code_no_error = false
+      #            @student.errors.add("Invalid", "Activation Code"+MultiSchool.current_school.id.to_s+" ="+@activation_code_free+"=")
+      #          end
+      #        end
+      #      end
       
       #Huffas: Save to Free and Student Guardian Log
       @student.save_log = true
@@ -732,8 +774,8 @@ class StudentController < ApplicationController
       sms_setting = SmsSetting.new()
       #abort(params[:immediate_contact][:contact])
       @student = Student.update(@student.id, :immediate_contact_id => params[:immediate_contact][:contact])
-#      @student.update_attribute(:immediate_contact_id,params[:immediate_contact][:contact])
-#      
+      #      @student.update_attribute(:immediate_contact_id,params[:immediate_contact][:contact])
+      #      
       @guardian = Guardian.find(params[:immediate_contact][:contact])      
       usernamep = @guardian.user.username
       champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
@@ -1016,42 +1058,42 @@ class StudentController < ApplicationController
   def destroy
     student = Student.find(params[:id])
     #unless student.check_dependency
-      unless student.all_siblings.present?
-        student.guardians.each do|guardian|
+    unless student.all_siblings.present?
+      student.guardians.each do|guardian|
           
-          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
-          api_endpoint = champs21_api_config['api_url']
-          uri = URI(api_endpoint + "api/user/delete_by_paid_id")
-          http = Net::HTTP.new(uri.host, uri.port)
-          auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-          auth_req.set_form_data({"paid_id" => guardian.user.id, "paid_school_id" => MultiSchool.current_school.id})
-          auth_res = http.request(auth_req)
-          @auth_response = JSON::parse(auth_res.body)
+        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+        api_endpoint = champs21_api_config['api_url']
+        uri = URI(api_endpoint + "api/user/delete_by_paid_id")
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"paid_id" => guardian.user.id, "paid_school_id" => MultiSchool.current_school.id})
+        auth_res = http.request(auth_req)
+        @auth_response = JSON::parse(auth_res.body)
 
-          guardian.user.destroy if guardian.user.present?
-          guardian.destroy
+        guardian.user.destroy if guardian.user.present?
+        guardian.destroy
           
-        end
       end
+    end
       
-      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
-      api_endpoint = champs21_api_config['api_url']
-      uri = URI(api_endpoint + "api/user/delete_by_paid_id")
-      http = Net::HTTP.new(uri.host, uri.port)
-      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-      auth_req.set_form_data({"paid_id" => student.user.id, "paid_school_id" => MultiSchool.current_school.id})
-      auth_res = http.request(auth_req)
-      @auth_response = JSON::parse(auth_res.body)
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    uri = URI(api_endpoint + "api/user/delete_by_paid_id")
+    http = Net::HTTP.new(uri.host, uri.port)
+    auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+    auth_req.set_form_data({"paid_id" => student.user.id, "paid_school_id" => MultiSchool.current_school.id})
+    auth_res = http.request(auth_req)
+    @auth_response = JSON::parse(auth_res.body)
 
-      session[:student_id]=nil if student.id==session[:student_id]
-      student.user.destroy
-      student.destroy
-      dec_student_count_subscription
-      flash[:notice] = "#{t('flash10')}. #{student.admission_no}."
-      redirect_to :controller => 'user', :action => 'dashboard'
+    session[:student_id]=nil if student.id==session[:student_id]
+    student.user.destroy
+    student.destroy
+    dec_student_count_subscription
+    flash[:notice] = "#{t('flash10')}. #{student.admission_no}."
+    redirect_to :controller => 'user', :action => 'dashboard'
     #else
-      #flash[:warn_notice] = "#{t('flash15')}"
-      #redirect_to  :action => 'remove', :id=>student.id
+    #flash[:warn_notice] = "#{t('flash15')}"
+    #redirect_to  :action => 'remove', :id=>student.id
     #end
   end
   
@@ -1402,7 +1444,7 @@ class StudentController < ApplicationController
   #def class_test_report
     
   #end
-   def combined_exam
+  def combined_exam
     if current_user.student
       @student = Student.find(current_user.student_record.id)
     end
@@ -1436,7 +1478,7 @@ class StudentController < ApplicationController
           @all_connect_exam<<examconnect
         end
       end
-   end
+    end
     render :partial=>"combined_exam"
   end
   
@@ -1839,14 +1881,14 @@ class StudentController < ApplicationController
     @schoolData = MultiSchool.current_school
     
     render :pdf=>'view_pdf_letter',
-           :margin => {
-              :top=> 40,
-              :bottom => 20,
-              :left=> 20,
-              :right => 20 
-            },            
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :margin => {
+      :top=> 40,
+      :bottom => 20,
+      :left=> 20,
+      :right => 20 
+    },            
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def form_to_apply    
@@ -1873,7 +1915,7 @@ class StudentController < ApplicationController
     @studentForm.school_id = MultiSchool.current_school.id    
     
     if @studentForm.save
-        @error = true
+      @error = true
     end
     render :update do |page|
       if @studentForm.save
@@ -1904,7 +1946,7 @@ class StudentController < ApplicationController
     @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
-        @error = true
+      @error = true
     end
     render :update do |page|
       if @studentForm.save
@@ -1935,7 +1977,7 @@ class StudentController < ApplicationController
     @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
-        @error = true
+      @error = true
     end
     render :update do |page|
       if @studentForm.save
@@ -1967,7 +2009,7 @@ class StudentController < ApplicationController
     @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
-        @error = true
+      @error = true
     end
     render :update do |page|
       if @studentForm.save
@@ -1999,7 +2041,7 @@ class StudentController < ApplicationController
     @studentForm.school_id = MultiSchool.current_school.id  
     
     if @studentForm.save
-        @error = true
+      @error = true
     end
     render :update do |page|
       if @studentForm.save

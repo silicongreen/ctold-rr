@@ -53,22 +53,11 @@ class BatchTransfersController < ApplicationController
     if request.post? 
       @batch = Batch.find params[:id], :include => [:students], :order => "students.first_name ASC"
       if params[:transfer][:to].present? and params[:session].present?
-        if params[:generate_combined] == "Yes"
-          @request = request.domain
-          create_user_cookie()
-          @connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id) 
-          @connect_exam.each do |ec|
-              save_combained_pdf(ec.id,@user_cookie_variable)
-          end
-          flash[:notice] = "Report Generated"
-          redirect_to :action=>"show", :id=> params[:id]
-        else 
-          unless params[:transfer][:students].nil?         
-            Delayed::Job.enqueue(DelayedBatchTranfer.new(params[:transfer][:students].join(","),params[:id],params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user,request.domain,params[:start_previous],params[:end_previous],params[:start_next],params[:end_next],params[:transfer_all]))
-          end
-          flash[:notice] = "#{t('flash1')}"
-          redirect_to :controller => 'batch_transfers'
+        unless params[:transfer][:students].nil?         
+          Delayed::Job.enqueue(DelayedBatchTranfer.new(params[:transfer][:students].join(","),params[:id],params[:transfer][:to],params[:session],false,"","",@local_tzone_time,current_user,request.domain,params[:start_previous],params[:end_previous],params[:start_next],params[:end_next],params[:transfer_all]))
         end
+        flash[:notice] = "#{t('flash1')}"
+        redirect_to :controller => 'batch_transfers'
       else
         @batches = Batch.active - @batch.to_a
         @batch.errors.add_to_base("#{t('select_a_batch_to_continue')}")
@@ -265,36 +254,6 @@ class BatchTransfersController < ApplicationController
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>'' })
     http.request(auth_req)
-  end
-  
-  def create_user_cookie
-    require 'net/http'
-    require 'uri'
-    require "yaml"
-    @user_name = @current_user.username
-    @free_user_obj = TdsFreeUser.find_by_paid_id(@current_user.id)
-    @password = @free_user_obj.paid_password
-
-
-    o = [('a'..'z'), ('A'..'Z'), (0..9)].map { |i| i.to_a }.flatten
-    rand_val = (0...16).map { o[rand(o.length)] }.join
-
-    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    t_10 = now.to_datetime + 10*60 
-
-    @tds_user_auth = TdsUserAuth.new
-    @tds_user_auth.user_id = @current_user.id
-    @tds_user_auth.auth_id = rand_val
-    @tds_user_auth.expire = t_10
-    @tds_user_auth.save
-
-    uri = URI('http://'+MultiSchool.current_school.code+'.'+@request+'/user/login?username='+@user_name+'&password='+@password+'&auth_id='+rand_val.to_s+'&user_id='+@current_user.id.to_s)
-    http = Net::HTTP.new(uri.host, uri.port)
-    auth_req = Net::HTTP::Get.new('http://'+MultiSchool.current_school.code+'.'+@request+'/user/login?username='+@user_name+'&password='+@password+'&auth_id='+rand_val.to_s+'&user_id='+@current_user.id.to_s)
-    auth_res = http.request(auth_req)
-    ar_user_cookie = auth_res.response['set-cookie'].split('; ')
-    @user_cookie_variable = ar_user_cookie[2].split(", ")[2]
-    
   end
 
 end

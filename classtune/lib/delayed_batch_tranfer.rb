@@ -45,7 +45,7 @@ class DelayedBatchTranfer
   end
 
   def perform
-    
+   
     unless @students.blank?
       
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"
@@ -76,7 +76,10 @@ class DelayedBatchTranfer
           end
         end
       end 
-
+      
+      @connect_exam.each do |ec|
+        save_combained_pdf(ec.id,@user_cookie_variable)
+      end
 
      
       
@@ -109,7 +112,7 @@ class DelayedBatchTranfer
         students.each { |s| s.archive_student(@status_description,@leaving_date) }
       end
       
-     
+
       if @transfer_all == "Yes"
         unless @exam_groups.blank?
           @exam_groups.each do |eg|

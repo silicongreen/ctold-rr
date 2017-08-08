@@ -477,7 +477,7 @@ class Students extends CActiveRecord
         }
         else
         {
-            $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+            $criteria->order = "if(t.class_roll_no = '' or t.class_roll_no is null,0,cast(t.class_roll_no as unsigned)),t.first_name ASC";
         }
         $students = $this->findAll($criteria);
 

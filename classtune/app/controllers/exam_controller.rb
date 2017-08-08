@@ -72,13 +72,84 @@ class ExamController < ApplicationController
   
   def split_pdf_and_save
     @id = params[:id]  
-    @connect_exam_obj = ExamConnect.active.find(@id)
+
+    @connect_exam_obj = ExamConnect.find(@id)
+    @connect_exam = @id
+
     @batch = Batch.find(@connect_exam_obj.batch_id)
     get_continues(@id,@batch.id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
+
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    if !@report_data.blank?
+      @all_subject_exam = @report_data['report']['subjects'] 
+      @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+      @report_data['report']['students'].each do |std|
+        
+        subjects_new = []
+        subjects_ids = []
+        unless @all_subject_exam.blank? 
+          @all_subject_exam.each do |subjects|
+            if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
+              @all_student_subject.each do |sub_std|
+                if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id and !subjects_ids.include?(subjects['id'].to_i)
+                  subjects_new << subjects
+                  subjects_ids << subjects['id'].to_i
+                end 
+              end 
+            elsif !subjects_ids.include?(subjects['id'].to_i)
+              subjects_new << subjects 
+              subjects_ids << subjects['id'].to_i
+            end 
+          end
+        end
+        @report_data['report']['subjects'] = subjects_new
+        @student = Student.find_by_id(std['id'].to_i)
+        
+        unless @student.blank?
+          @report_data['report']['no_exam_subject_resutl'] = []
+          @report_data['report']['exams'] = []
+          @report_data['report']['comments'] = []
+          @report_data['present'] = 0;
+          if !@report_data['report']['all_result'][std['id']]['exams'].blank?
+            
+            
+            @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+            
+            if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
+              @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
+            end
+            if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
+              @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
+            end 
+            
+            if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
+              @report_data['present'] = @report_data['present_all'][std['id']]
+            end  
+            
+            @exam_comment = {}
+            @exam_comment_all.each do |ec|
+              if ec.student_id.to_i == std['id'].to_i
+                @exam_comment = ec
+                break
+              end
+            end
+            pdf_name = "connect_exam_"+@connect_exam.to_s+"_"+@student.id.to_s+".pdf"
+            dirname = Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
+            unless File.directory?(dirname)
+              FileUtils.mkdir_p(dirname)
+              FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s))
+            end
+            file_name = Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
+            render_connect_exam("split_pdf_and_save",true,file_name)
+          end
+        end
+      end
+    end  
+    render :text=>"Saved"  
   end
 
   def update_exam_form
@@ -2388,49 +2459,8 @@ class ExamController < ApplicationController
         end
         report_data
       }
-
-
-
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-      if MultiSchool.current_school.id == 246
-            render :pdf => 'continues',
-              :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
-      elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-        if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324 ) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
-          render :pdf => 'continues',
-          :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name,
-          :margin => {    :top=> 10,
-          :bottom => 10,
-          :left=> 10,
-          :right => 10},
-          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-        else  
-          render :pdf => 'continues',
-            :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name
-        end
-      elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2
-        if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
-          render :pdf => 'continues',
-          :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name
-        else
-          render :pdf => 'continues',
-            :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
-        end
-      elsif  MultiSchool.current_school.id == 340          
-            render :pdf => 'continues',
-            :orientation => 'Portrait', :zoom => 1.00,
-            :save_to_file => file_name,
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
-      else 
-        render :pdf => 'continues',
-          :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name
-      end
+      render_connect_exam("continues",false,file_name)  
     end
   end
   
@@ -2890,8 +2920,7 @@ class ExamController < ApplicationController
   
   def generated_report5_pdf
     
-    #grouped-exam-report-for-batch
-    @for_save = params[:for_save]
+
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
         flash[:notice] = "Select A Combined Exam Please"
@@ -2944,122 +2973,7 @@ class ExamController < ApplicationController
     end
     
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
-    if @for_save.blank?
-        if MultiSchool.current_school.id == 246
-          render :pdf => 'generated_report5_pdf',
-            :orientation => 'Landscape', :zoom => 1.00
-        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'Portrait', :zoom => 1.00,
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          else  
-            render :pdf => 'generated_report5_pdf',
-              :orientation => 'Portrait', :zoom => 1.00
-          end
-        elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
-          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'Portrait', :zoom => 1.00
-          else
-            render :pdf => 'generated_report5_pdf',
-              :orientation => 'Landscape', :zoom => 1.00
-          end
-        elsif  MultiSchool.current_school.id == 340  
-            if @connect_exam_obj.result_type == 13
-              render :pdf => 'generated_report5_pdf',
-              :orientation => 'Landscape', :zoom => 1.00,
-              :page_size=>'A5',
-              :margin => {    :top=> 10,
-              :bottom => 10,
-              :left=> 10,
-              :right => 10},
-              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
-            else
-              render :pdf => 'generated_report5_pdf',
-              :orientation => 'Portrait', :zoom => 1.00,
-              :margin => {    :top=> 10,
-              :bottom => 10,
-              :left=> 10,
-              :right => 10},
-              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
-            end
-        else 
-          render :pdf => 'generated_report5_pdf',
-            :orientation => 'Landscape', :zoom => 1.00
-        end
-    else
-        pdf_name = "connect_exam_"+@connect_exam.to_s+"_"+@student.id.to_s+".pdf"
-        dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
-        unless File.directory?(dirname)
-          FileUtils.mkdir_p(dirname)
-          FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
-        end
-        file_name = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
-        
-        if MultiSchool.current_school.id == 246
-        render :pdf => 'generated_report5_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,
-        :save_to_file => file_name,
-        :save_only    => true
-        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
-          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 3)
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'Portrait', :zoom => 1.00,
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}},
-            :save_to_file => file_name,
-            :save_only    => true
-          else  
-            render :pdf => 'generated_report5_pdf',
-              :orientation => 'Portrait', :zoom => 1.00,
-              :save_to_file => file_name,
-              :save_only    => true
-          end
-        elsif  MultiSchool.current_school.id == 312 
-          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'Portrait', :zoom => 1.00,
-            :save_to_file => file_name,
-            :save_only    => true
-          else
-            render :pdf => 'generated_report5_pdf',
-              :orientation => 'Landscape', :zoom => 1.00,
-              :save_to_file => file_name,
-              :save_only    => true
-          end
-        elsif  MultiSchool.current_school.id == 340          
-            render :pdf => 'generated_report5_pdf',
-            :orientation => 'Portrait', :zoom => 1.00,
-            :save_to_file => file_name,
-            :save_only    => true,
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
-        else 
-          render :pdf => 'generated_report5_pdf',
-            :orientation => 'Landscape', :zoom => 1.00,
-            :save_to_file => file_name,
-            :save_only    => true
-        end
-     
-    end
-    
-   
+    render_connect_exam("generated_report5_pdf")
 
   end
   
@@ -3826,6 +3740,76 @@ class ExamController < ApplicationController
   end
   
   private
+  
+  def render_connect_exam(template,for_save=false,file_name="")
+        if MultiSchool.current_school.id == 246
+          render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Landscape'
+        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 324
+          if (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 324) and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Portrait',
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          else  
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Portrait'
+          end
+        elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
+          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Portrait'
+          else
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Landscape'
+          end
+        elsif  MultiSchool.current_school.id == 340  
+            if @connect_exam_obj.result_type == 13
+              render :pdf => template,
+              :save_to_file => file_name,
+              :save_only    => for_save,
+              :orientation => 'Landscape',
+              :page_size=>'A5',
+              :margin => {    :top=> 10,
+              :bottom => 10,
+              :left=> 10,
+              :right => 10},
+              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+            else
+              render :pdf => template,
+              :save_to_file => file_name,
+              :save_only    => for_save,
+              :orientation => 'Portrait',
+              :margin => {    :top=> 10,
+              :bottom => 10,
+              :left=> 10,
+              :right => 10},
+              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
+            end
+        else 
+          render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Landscape'
+        end
+    
+  end
   
   def get_exam_report(connect_exam_id,student_id,batch_id)
     require 'net/http'

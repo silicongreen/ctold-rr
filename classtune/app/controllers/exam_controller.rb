@@ -71,17 +71,14 @@ class ExamController < ApplicationController
   end
   
   def split_pdf_and_save
-    @id = params[:id]  
-    @batch_id_if_send = params[:batch_id]
+    @id = params[:id] 
 
     @connect_exam_obj = ExamConnect.find(@id)
     @connect_exam = @id
 
-    if(@batch_id_if_send)
-      @batch = Batch.find(@batch_id_if_send)
-    else
-      @batch = Batch.find(@connect_exam_obj.batch_id)
-    end
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+   
+    
     get_continues(@id,@batch.id)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
@@ -143,12 +140,12 @@ class ExamController < ApplicationController
               end
             end
             pdf_name = "connect_exam_"+@connect_exam.to_s+"_"+@student.id.to_s+".pdf"
-            dirname = Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
+            dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s)
             unless File.directory?(dirname)
               FileUtils.mkdir_p(dirname)
               FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s))
             end
-            file_name = Rails.root.join('public','result_pdf_archive2',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
+            file_name = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"connectexam","0"+@connect_exam.to_s,pdf_name)
             render_connect_exam("split_pdf_and_save",true,file_name)
           end
         end

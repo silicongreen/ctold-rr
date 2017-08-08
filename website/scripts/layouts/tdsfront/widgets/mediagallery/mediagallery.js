@@ -1,5 +1,0 @@
-$(function(){
-        
-    $(".video-gallery").fitVids();
-
-});

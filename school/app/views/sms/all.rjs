@@ -1,4 +1,0 @@
-# TODO Operate on the page object
-page.replace_html 'modal-box', :partial => 'all_sms_box'
-page << "Modalbox.show($('modal-box'), {title: ''});"
-

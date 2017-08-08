@@ -1,5 +1,0 @@
-
-#page.visual_effect(:highlight, 'student-category-list')
-page.replace_html 'event-category-list', :partial => 'event_category_list'
-page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('event_category_deleted_succesfully')}</p>"
-

@@ -1,2 +1,0 @@
-page.replace_html 'modal-box', :partial => 'edit_elective_subject'
-page << "Modalbox.show($('modal-box'), {title: '#{t('edit_subject')}', width: 500});"

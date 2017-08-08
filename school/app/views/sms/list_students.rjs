@@ -1,3 +1,0 @@
-# TODO Operate on the page object
-page.replace_html 'status-message',:text=>""
-page.replace_html 'student-list', :partial=>'list_students'

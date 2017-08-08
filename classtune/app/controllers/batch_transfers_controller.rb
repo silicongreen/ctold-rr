@@ -54,6 +54,7 @@ class BatchTransfersController < ApplicationController
       @batch = Batch.find params[:id], :include => [:students], :order => "students.first_name ASC"
       if params[:transfer][:to].present? and params[:session].present?
         if params[:generate_combined] == "Yes"
+          @request = request.domain
           create_user_cookie()
           @connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id) 
           @connect_exam.each do |ec|

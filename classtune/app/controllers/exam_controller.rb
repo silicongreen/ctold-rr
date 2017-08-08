@@ -69,6 +69,17 @@ class ExamController < ApplicationController
     @exam_modules = permitted_modules
     
   end
+  
+  def split_pdf_and_save
+    @id = params[:id]  
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_continues(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+  end
 
   def update_exam_form
     @from = 'exam'

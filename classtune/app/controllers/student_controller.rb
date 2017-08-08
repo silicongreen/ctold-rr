@@ -57,7 +57,20 @@ class StudentController < ApplicationController
   end
   
   def previous_report
-    @previous_batch = BatchStudent.find_all_by_student_id(@student.id)
+    @previous_batches = BatchStudent.find_all_by_student_id(@student.id)
+    @previous_batch = []
+    unless @previous_batches.blank?
+      @previous_batches.each do |pv|
+        unless @previous_batches.batch_id == @student.batch_id
+          @previous_exam = ExamConnectStudent.find_all_by_batch_student_id(pv.id)
+          @previous_group_exam = GroupExamStudent.find_all_by_batch_student_id(pv.id)
+          if !@previous_exam.blank? or !@previous_group_exam.blank?
+            @previous_batch << pv
+          end
+        end
+      end
+    end
+    
     @sms_module = Configuration.available_modules
   end
   

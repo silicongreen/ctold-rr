@@ -70,11 +70,14 @@ class DelayedBatchTranfer
         batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
         unless @connect_exam.blank?
           @connect_exam.each do |ec|
-            save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
             create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
           end
         end
-      end  
+      end 
+      
+      @connect_exam.each do |ec|
+        save_combained_pdf(ec.id,@user_cookie_variable)
+      end
 
      
       
@@ -130,13 +133,12 @@ class DelayedBatchTranfer
             batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
             unless @connect_exam.blank?
               @connect_exam.each do |ec|
-
-                save_combained_pdf(ec.id,s.id,@user_cookie_variable,@batch.id)
                 create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
               end
             end
           end
         end 
+        
         
       end
 
@@ -227,11 +229,11 @@ class DelayedBatchTranfer
     auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>''})
     http.request(auth_req)
   end
-  def save_combained_pdf(connect_exam,student,user_cookie_variable,batch_id)
+  def save_combained_pdf(connect_exam,user_cookie_variable)
     require 'net/http'
     require 'uri'
     require "yaml"
-    parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/generated_report5_pdf?batch_id='+batch_id.to_s+'&connect_exam='+connect_exam.to_s+'&for_save=true&student='+student.to_s
+    parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/split_pdf_and_save/'+connect_exam.to_s
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
     auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>'' })

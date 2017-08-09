@@ -20,11 +20,11 @@ class NoticeController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'getnotice', 'getsinglenotice', 'acknowledge', 'downloadnoticeattachment'),
+                'actions' => array('index', 'getnotice', 'getsinglenotice', 'acknowledge', 'downloadnoticeattachment','pushnotification'),
                 'users' => array('@'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('downloadnoticeattachment','getnoticeschool','getteacher'),
+                'actions' => array('downloadnoticeattachment','getnoticeschool','getteacher','pushnotification'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -32,6 +32,12 @@ class NoticeController extends Controller {
             ),
         );
     }
+    public function actionPushNotification()
+    {
+        $notification_id = Yii::app()->request->getPost('notification_id');
+        $user_id = Yii::app()->request->getPost('user_id');
+        shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+    }        
 
     public function actionGetSingleNotice() {
         $user_secret = Yii::app()->request->getPost('user_secret');

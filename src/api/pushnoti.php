@@ -1,5 +1,6 @@
 <?php
 
+require 'phpmailer/PHPMailerAutoload.php';
 $servername = "localhost";
 $username = "champs21_champ";
 $password = "1_84T~vADp2$";
@@ -12,6 +13,51 @@ if ($conn_source->connect_error)
 {
     die("Connection failed: " . $conn_source->connect_error);
 }
+
+function send_smtp_mail($to,$name,$subject, $body)
+{
+
+    $mail = new PHPMailer;
+
+    $mail->isSMTP();
+
+    $mail->SMTPDebug = 0;
+
+    $mail->Debugoutput = 'html';
+
+    $mail->Host = "mail.classtune.com";
+
+    $mail->Port = 25;
+
+    $mail->SMTPAuth = true;
+
+    $mail->Username = "no-replay@classtune.com";
+
+    $mail->Password = "cHamps2125896321";
+
+    $mail->setFrom('no-replay@classtune.com', 'Classtune');
+//Set an alternative reply-to address
+    $mail->addReplyTo('no-replay@classtune.com', 'Classtune');
+//Set who the message is to be sent to
+    $mail->addAddress($to,$name);
+//Set the subject line
+    $mail->Subject = $subject;
+//Read an HTML message body from an external file, convert referenced images to embedded,
+//convert HTML into a basic plain-text alternative body
+    $mail->msgHTML($body);
+//Replace the plain text body with one created manually
+    $mail->AltBody = $body;
+
+//send the message, check for errors
+    if (!$mail->send())
+    {
+        echo "Mailer Error: " . $mail->ErrorInfo;
+    } else
+    {
+        echo "Message sent!";
+    }
+}
+
 $notification_ids = $argv[1];
 $user_ids = $argv[2];
 
@@ -76,6 +122,11 @@ if (count($user_ids) > 0 && count($user_ids) == count($notification_ids))
                 $all_gcm_user[] = $gcm_ids->gcmid;
             }
         }
+        if(count($notification) > 0 && $user->email_alert == 1)
+        {
+            send_smtp_mail($user->email, $user->first_name." ".$user->last_name, $notification->subject, $notification->body);
+        }    
+        
         if ($user_type && $total_unread && count($all_gcm_user) > 0 && count($notification) > 0)
         {
             // API access key from Google API's Console
@@ -116,7 +167,6 @@ if (count($user_ids) > 0 && count($user_ids) == count($notification_ids))
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
             $result = curl_exec($ch);
             curl_close($ch);
-            
         }
     }
     echo $notification_ids;

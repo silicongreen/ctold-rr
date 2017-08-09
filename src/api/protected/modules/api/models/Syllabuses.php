@@ -113,7 +113,7 @@ class Syllabuses extends CActiveRecord {
     public function getSingleSyllabus($id) {
         $criteria = new CDbCriteria;
 
-        $criteria->select = 't.id, t.content, t.subject_id, t.updated_at';
+        $criteria->select = 't.id, t.content,t.title, t.subject_id, t.updated_at';
         $criteria->compare('t.id', $id);
         
         $data = $this->with('subjectDetails')->findAll($criteria);
@@ -133,7 +133,7 @@ class Syllabuses extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->select = 't.id, t.content, t.subject_id, t.updated_at';
+        $criteria->select = 't.id, t.content,t.title, t.subject_id, t.updated_at';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.exam_group_id', $term_id);
      
@@ -154,7 +154,7 @@ class Syllabuses extends CActiveRecord {
             
             $_data['id'] = $row->id;
             $_data['subject_id'] = $row->subject_id;
-            $_data['subject_name'] = $row['subjectDetails']->name;
+            $_data['subject_name'] = $row['subjectDetails']->name." (".$row->title.") ";
             $_data['subject_icon_name'] = $row['subjectDetails']->icon_number;
             $_data['subject_icon_path'] = (!empty($row['subjectDetails']->icon_number)) ? Settings::$domain_name . '/images/icons/subjects/' . $row['subjectDetails']->icon_number : null;
             

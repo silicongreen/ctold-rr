@@ -295,7 +295,7 @@ class News extends CActiveRecord {
         else if (Yii::app()->user->isParent && $batch_id)
         {
             $with[] = 'newsBatch';
-            $criteria->addCondition("(newsBatch.batch_id = '" . Yii::app()->user->batchId  . "' or t.is_common=1)");
+            $criteria->addCondition("(newsBatch.batch_id = '" . $batch_id  . "' or t.is_common=1)");
         }
         else 
         {

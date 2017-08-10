@@ -201,7 +201,10 @@ class UserController extends Controller {
                 if (isset(Yii::app()->user->free_id)) {
                     $error_log->user_id = Yii::app()->user->free_id;
                 }
-                $error_log->save();
+                if($error_log->is_paid == 1)
+                {
+                    $error_log->save();
+                }
 
                 
             }

@@ -111,9 +111,9 @@ class SyllabusController < ApplicationController
     @t_syllabus = []
     @x_syllabus = []
     @tmp_syllabus.each do |t|
-      if !e_name.include?(t.title+"_"+t.exam_group_id.to_s) and t.related_syllabus_id.to_i == 0
+      if !e_name.include?(t.title+"_"+t.exam_group_id.to_s+"_"+t.subject_id.to_s) and t.related_syllabus_id.to_i == 0
         @t_syllabus << t
-        e_name << t.title+"_"+t.exam_group_id.to_s
+        e_name << t.title+"_"+t.exam_group_id.to_s+"_"+t.subject_id.to_s
       else
         @x_syllabus << t
       end   

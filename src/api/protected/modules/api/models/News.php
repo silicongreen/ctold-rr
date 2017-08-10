@@ -312,16 +312,16 @@ class News extends CActiveRecord {
         {
             $user = new Users;
             $std_list = $user->studentList(Yii::app()->user->profileId);
-            if(isset($std_list[0]['batch_id']))
-            {
-                $with[] = 'newsBatch';
-                $batch_id = $std_list[0]['batch_id'];
-                $criteria->addCondition("(newsBatch.batch_id = '" . $batch_id  . "' or t.is_common=1)");
-            }
-            else
-            {    
+//            if(isset($std_list[0]['batch_id']))
+//            {
+//                $with[] = 'newsBatch';
+//                $batch_id = $std_list[0]['batch_id'];
+//                $criteria->addCondition("(newsBatch.batch_id = '" . $batch_id  . "' or t.is_common=1)");
+//            }
+//            else
+//            {    
                 $criteria->compare('t.is_common', 1);
-            }
+//            }
         }
 
         /**

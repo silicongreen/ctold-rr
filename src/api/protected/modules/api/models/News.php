@@ -236,7 +236,17 @@ class News extends CActiveRecord {
         }
         else 
         {
-            $criteria->compare('t.is_common', 1);
+            $user = new Users;
+            $std_list = $user->studentList(Yii::app()->user->profileId);
+            if(isset($std_list[0]['batch_id']))
+            {
+                $batch_id = $std_list[0]['batch_id'];
+                $criteria->addCondition("(newsBatch.batch_id = '" . $batch_id  . "' or t.is_common=1)");
+            }
+            else
+            {    
+                $criteria->compare('t.is_common', 1);
+            }
         }   
 
         /**
@@ -299,7 +309,17 @@ class News extends CActiveRecord {
         }
         else 
         {
-            $criteria->compare('t.is_common', 1);
+            $user = new Users;
+            $std_list = $user->studentList(Yii::app()->user->profileId);
+            if(isset($std_list[0]['batch_id']))
+            {
+                $batch_id = $std_list[0]['batch_id'];
+                $criteria->addCondition("(newsBatch.batch_id = '" . $batch_id  . "' or t.is_common=1)");
+            }
+            else
+            {    
+                $criteria->compare('t.is_common', 1);
+            }
         }
 
         /**

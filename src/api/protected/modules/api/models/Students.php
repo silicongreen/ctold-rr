@@ -444,7 +444,19 @@ class Students extends CActiveRecord
         $criteria = new CDbCriteria();
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
         $criteria->compare('batch_id', $batch_id);
-        $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+        if(Yii::app()->user->schoolId == 319)
+        {
+            $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
+        }
+        else if(Yii::app()->user->schoolId == 342)
+        {
+            $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+        }    
+        else
+        {
+            $criteria->order = "if(t.class_roll_no = '' or t.class_roll_no is null,0,cast(t.class_roll_no as unsigned)),t.first_name ASC";
+        }
+        
         $students = $this->findAll($criteria); 
         $return_array = array();
 
@@ -475,6 +487,10 @@ class Students extends CActiveRecord
         {
             $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
         }
+        else if(Yii::app()->user->schoolId == 342)
+        {
+            $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
+        }    
         else
         {
             $criteria->order = "if(t.class_roll_no = '' or t.class_roll_no is null,0,cast(t.class_roll_no as unsigned)),t.first_name ASC";

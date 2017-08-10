@@ -1350,7 +1350,11 @@ class CalenderController extends Controller
             }
             $current_date = date("Y-m-d");
             
-            $p_parcentize = round(($present/$total)*100,2);
+            $p_parcentize = 0;
+            if($total>0)
+            {
+                $p_parcentize = round(($present/$total)*100,2);
+            }
             $att_graph = $attendence->getStudentAttendenceGraph($number_of_day, $type, $report_type, $batch_name, $class_name, $batch_id);
 
             $response['data']['day_type'] = $day_type;

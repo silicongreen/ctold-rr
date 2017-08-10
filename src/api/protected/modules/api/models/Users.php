@@ -372,15 +372,15 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.employee=1 )");
+         $criteria->addCondition("( (t.first_name like '%".mysqli_real_escape_string($term)."%' or t.last_name like '%".mysqli_real_escape_string($term)."%') and t.employee=1 )");
          $criteria->compare('t.is_deleted', 0);
          $criteria->order = "CASE 
-               WHEN t.first_name like '".$term."%' THEN 0
-               WHEN t.first_name like '% %".$term."% %' THEN 1
-               WHEN t.first_name like '%".$term."' THEN 2
-               WHEN t.last_name like '".$term."%' THEN 3
-               WHEN t.last_name like '% %".$term."% %' THEN 4
-               WHEN t.last_name like '%".$term."' THEN 5
+               WHEN t.first_name like '". mysqli_real_escape_string($term)."%' THEN 0
+               WHEN t.first_name like '% %".mysqli_real_escape_string($term)."% %' THEN 1
+               WHEN t.first_name like '%".mysqli_real_escape_string($term)."' THEN 2
+               WHEN t.last_name like '".mysqli_real_escape_string($term)."%' THEN 3
+               WHEN t.last_name like '% %".mysqli_real_escape_string($term)."% %' THEN 4
+               WHEN t.last_name like '%".mysqli_real_escape_string($term)."' THEN 5
                ELSE 6 END, t.first_name";
          $data = $this->with('employeeDetails')->findAll($criteria);
          if (!empty($data)) {
@@ -398,18 +398,18 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.student=1  )");
+         $criteria->addCondition("( (t.first_name like '%".mysqli_real_escape_string($term)."%' or t.last_name like '%".mysqli_real_escape_string($term)."%') and t.student=1  )");
          $criteria->compare('t.is_deleted', 0);
          $criteria->order = "CASE 
-               WHEN t.first_name like '".$term."%' THEN 0
-               WHEN t.first_name like '% %".$term."% %' THEN 1
-               WHEN t.first_name like '%".$term."' THEN 2
-               WHEN t.last_name like '".$term."%' THEN 3
-               WHEN t.last_name like '% %".$term."% %' THEN 4
-               WHEN t.last_name like '%".$term."' THEN 5
+               WHEN t.first_name like '".mysqli_real_escape_string($term)."%' THEN 0
+               WHEN t.first_name like '% %".mysqli_real_escape_string($term)."% %' THEN 1
+               WHEN t.first_name like '%".mysqli_real_escape_string($term)."' THEN 2
+               WHEN t.last_name like '".mysqli_real_escape_string($term)."%' THEN 3
+               WHEN t.last_name like '% %".mysqli_real_escape_string($term)."% %' THEN 4
+               WHEN t.last_name like '%".mysqli_real_escape_string($term)."' THEN 5
                ELSE 6 END, t.first_name";
          $data = $this->with('studentDetails')->findAll($criteria);
-         if (!empty($data)) {
+         if ($data) {
           
             return $formatted_data = $this->formatDataStdEmp($data);
          }
@@ -475,22 +475,28 @@ class Users extends CActiveRecord {
     }
     public function formatDataStdEmp($obj_data) {
         $ar_formatted_data = array();
-        foreach ($obj_data as $row) 
+        if($obj_data)
         {
-            
+            foreach ($obj_data as $row) 
+            {
+                
 
-            if ($row->student == 1) {
-                $ar_key = 'studentDetails';
-            }
+                if ($row->student == 1) {
+                    $ar_key = 'studentDetails';
+                }
 
-            if ($row->employee == 1) {
-                $ar_key = 'employeeDetails';
+                if ($row->employee == 1) {
+                    $ar_key = 'employeeDetails';
+                }
+                if(isset($row[$ar_key]->id))
+                {
+                    $middle_name = (!empty($row[$ar_key]->middle_name)) ? $row[$ar_key]->middle_name . ' ' : '';
+                    $_data['profile_id'] = $row[$ar_key]->id;
+                    $_data['full_name'] = $row[$ar_key]->first_name . ' ' . $middle_name. $row[$ar_key]->last_name;
+                    $ar_formatted_data[] = $_data;
+                }
+
             }
-            $middle_name = (!empty($row[$ar_key]->middle_name)) ? $row[$ar_key]->middle_name . ' ' : '';
-            $_data['profile_id'] = $row[$ar_key]->id;
-            $_data['full_name'] = $row[$ar_key]->first_name . ' ' . $middle_name. $row[$ar_key]->last_name;
-            $ar_formatted_data[] = $_data;
-            
         }
         return $ar_formatted_data;
     }

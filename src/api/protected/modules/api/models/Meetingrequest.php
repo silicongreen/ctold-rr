@@ -232,34 +232,37 @@ class Meetingrequest extends CActiveRecord
                 $i = 0;
                 foreach($obj_metting as $value)
                 {
-                    if($type2==1)
-                    {                           
-                        $student_model = new Students();
-                        $student_batch = $student_model->getStudentById($value['students']->id);                    
-                        $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
-                        $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
-                        $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";                       
-                        $meeting[$i]['name'] = $full_name;
-                        $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;
-                    }
-                    else
+                    if(isset($value['students']->id) || isset($value['employee']))
                     {
-                        $full_name = ($value['employee']->first_name)?$value['employee']->first_name." ":"";
-                        $full_name.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
-                        $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
-                        $meeting[$i]['name'] = $full_name;
-                        $meeting[$i]['batch'] = "";
-                    } 
-                    $meeting[$i]['id'] = $value->id;
-                    $meeting[$i]['date'] = $value->datetime;
-                    $datevalue = date("Y-m-d",  strtotime($value->datetime));
-                    $meeting[$i]['timeover']  = 0;
-                    if($today>$datevalue)
-                    {
-                        $meeting[$i]['timeover'] = 1;
+                        if($type2==1)
+                        {                           
+                            $student_model = new Students();
+                            $student_batch = $student_model->getStudentById($value['students']->id);                    
+                            $full_name = ($value['students']->first_name)?$value['students']->first_name." ":"";
+                            $full_name.= ($value['students']->middle_name)?$value['students']->middle_name." ":"";
+                            $full_name.= ($value['students']->last_name)?$value['students']->last_name:"";                       
+                            $meeting[$i]['name'] = $full_name;
+                            $meeting[$i]['batch'] = $student_batch['batchDetails']['courseDetails']->course_name." ".$student_batch['batchDetails']->name;
+                        }
+                        else
+                        {
+                            $full_name = ($value['employee']->first_name)?$value['employee']->first_name." ":"";
+                            $full_name.= ($value['employee']->middle_name)?$value['employee']->middle_name." ":"";
+                            $full_name.= ($value['employee']->last_name)?$value['employee']->last_name:"";
+                            $meeting[$i]['name'] = $full_name;
+                            $meeting[$i]['batch'] = "";
+                        } 
+                        $meeting[$i]['id'] = $value->id;
+                        $meeting[$i]['date'] = $value->datetime;
+                        $datevalue = date("Y-m-d",  strtotime($value->datetime));
+                        $meeting[$i]['timeover']  = 0;
+                        if($today>$datevalue)
+                        {
+                            $meeting[$i]['timeover'] = 1;
+                        }
+                        $meeting[$i]['status'] = $value->status;
+                        $i++;
                     }
-                    $meeting[$i]['status'] = $value->status;
-                    $i++;
                 }    
             }
             

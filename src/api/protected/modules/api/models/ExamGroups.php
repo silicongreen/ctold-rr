@@ -341,7 +341,7 @@ class ExamGroups extends CActiveRecord
                 {
                     foreach($examresult['Scores'] as $score)
                     {
-                        if( isset($score->remarks))
+                        if( isset($score->remarks) && isset($score['Students']->id))
                         {
                             $return_comments[$score['Students']->id] = $score->remarks;
                         }

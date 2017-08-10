@@ -151,7 +151,7 @@ class HomeworkController extends Controller
                 if ($total_class > 0)
                 {
                     $frequency = $homework_given / $total_class;
-                    $frequency = number_format((float)$frequency, 2, '.', '');
+                    $frequency = number_format((float) $frequency, 2, '.', '');
                 }
             }
 
@@ -682,11 +682,11 @@ class HomeworkController extends Controller
                     $duedate = date('Y-m-d', strtotime($duedate));
                 }
 
-                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0, $duedate,$call_from_web);
+                $homework_data = $assignment->getAssignment($batch_id, $student_id, "", $page_number, $subject_id, $page_size, 1, 0, $duedate, $call_from_web);
                 if ($homework_data)
                 {
 
-                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1, $duedate,$call_from_web);
+                    $response['data']['total'] = $assignment->getAssignmentTotal($batch_id, $student_id, "", $subject_id, 1, $duedate, $call_from_web);
                     $has_next = false;
                     if ($response['data']['total'] > $page_number * $page_size)
                     {
@@ -867,7 +867,7 @@ class HomeworkController extends Controller
                     {
                         foreach ($all_g as $value)
                         {
-                            
+
                             $gr = new Guardians();
                             if (isset($value['guardian']) && isset($value['guardian']->id))
                             {
@@ -898,7 +898,7 @@ class HomeworkController extends Controller
                     $reminder->updated_at = date("Y-m-d H:i:s");
                     $reminder->save();
                     $notification_ids[] = $reminder->id;
-                   // Settings::sendCurlNotification($value, $reminder->id);
+                    // Settings::sendCurlNotification($value, $reminder->id);
                 }
 //                foreach ($students as $value)
 //                {
@@ -1028,136 +1028,139 @@ class HomeworkController extends Controller
             {
                 foreach ($subject_id_array as $subject_id)
                 {
-                    if ($id)
+                    if ($subject_id)
                     {
-                        $objhomework = new Assignments();
-                        $homework = $objhomework->findByPk($id);
-                    } else
-                    {
-                        $homework = new Assignments();
-                    }
-
-                    $homework->subject_id = $subject_id;
-                    $homework->content = $content;
-                    $homework->title = $title;
-                    $homework->duedate = $duedate;
-                    $homework->school_id = Yii::app()->user->schoolId;
-                    $homework->employee_id = Yii::app()->user->profileId;
-                    $homework->assignment_type = $assignment_type;
-
-
-
-
-
-
-
-                    if ($is_draft)
-                    {
-                        $homework->is_published = 0;
-                    }
-
-
-                    $homework->created_at = date("Y-m-d H:i:s");
-                    if (!$id)
-                    {
-                        $homework->updated_at = date("Y-m-d H:i:s");
-                    }
-
-
-
-
-                    $studentsubjectobj = new StudentsSubjects();
-
-                    $subobj = new Subjects();
-                    $subject_details = $subobj->findByPk($subject_id);
-
-
-
-                    $stdobj = new Students();
-
-                    $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
-                    $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
-
-                    $students = array_unique(array_merge($students1, $students2));
-                    $homework->student_list = implode(",", $students);
-                    $homework->save();
-
-                    if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
-                    {
-                        if (!isset($file_name_main) && !isset($origin))
+                        if ($id)
                         {
-                            $file_name_main = $_FILES['attachment_file_name']['name'];
-
-                            $homework->updated_at = date("Y-m-d H:i:s");
-                            $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
-                            $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
-                            $origin = $this->upload_homework($_FILES, $homework);
+                            $objhomework = new Assignments();
+                            $homework = $objhomework->findByPk($id);
                         } else
                         {
-                            $homework->updated_at = date("Y-m-d H:i:s");
-                            $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
-                            $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
-                            $origin = $this->copy_homework($origin, $file_name_main, $homework);
+                            $homework = new Assignments();
                         }
-                    }
+
+                        $homework->subject_id = $subject_id;
+                        $homework->content = $content;
+                        $homework->title = $title;
+                        $homework->duedate = $duedate;
+                        $homework->school_id = Yii::app()->user->schoolId;
+                        $homework->employee_id = Yii::app()->user->profileId;
+                        $homework->assignment_type = $assignment_type;
 
 
 
-                    if (!$is_draft)
-                    {
-                        $notification_ids = array();
-                        $reminderrecipients = array();
-                        foreach ($students as $value)
+
+
+
+
+                        if ($is_draft)
                         {
-                            $studentsobj = $stdobj->findByPk($value);
-                            $reminderrecipients[] = $studentsobj->user_id;
-                            $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
-                            $student_ids[$studentsobj->user_id] = $studentsobj->id;
+                            $homework->is_published = 0;
+                        }
 
-                            $gstudent = new GuardianStudent();
-                            $all_g = $gstudent->getGuardians($studentsobj->id);
 
-                            if ($all_g)
+                        $homework->created_at = date("Y-m-d H:i:s");
+                        if (!$id)
+                        {
+                            $homework->updated_at = date("Y-m-d H:i:s");
+                        }
+
+
+
+
+                        $studentsubjectobj = new StudentsSubjects();
+
+                        $subobj = new Subjects();
+                        $subject_details = $subobj->findByPk($subject_id);
+
+
+
+                        $stdobj = new Students();
+
+                        $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
+                        $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
+
+                        $students = array_unique(array_merge($students1, $students2));
+                        $homework->student_list = implode(",", $students);
+                        $homework->save();
+
+                        if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))
+                        {
+                            if (!isset($file_name_main) && !isset($origin))
                             {
-                                foreach ($all_g as $value)
+                                $file_name_main = $_FILES['attachment_file_name']['name'];
+
+                                $homework->updated_at = date("Y-m-d H:i:s");
+                                $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                                $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
+                                $origin = $this->upload_homework($_FILES, $homework);
+                            } else
+                            {
+                                $homework->updated_at = date("Y-m-d H:i:s");
+                                $homework->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                                $homework->attachment_file_size = Yii::app()->request->getPost('file_size');
+                                $origin = $this->copy_homework($origin, $file_name_main, $homework);
+                            }
+                        }
+
+
+
+                        if (!$is_draft)
+                        {
+                            $notification_ids = array();
+                            $reminderrecipients = array();
+                            foreach ($students as $value)
+                            {
+                                $studentsobj = $stdobj->findByPk($value);
+                                $reminderrecipients[] = $studentsobj->user_id;
+                                $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
+                                $student_ids[$studentsobj->user_id] = $studentsobj->id;
+
+                                $gstudent = new GuardianStudent();
+                                $all_g = $gstudent->getGuardians($studentsobj->id);
+
+                                if ($all_g)
                                 {
-                                    $gr = new Guardians();
-                                    if (isset($value['guardian']) && isset($value['guardian']->id))
+                                    foreach ($all_g as $value)
                                     {
-                                        $grdata = $gr->findByPk($value['guardian']->id);
-                                        if ($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                        $gr = new Guardians();
+                                        if (isset($value['guardian']) && isset($value['guardian']->id))
                                         {
-                                            $reminderrecipients[] = $grdata->user_id;
-                                            $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
-                                            $student_ids[$grdata->user_id] = $studentsobj->id;
+                                            $grdata = $gr->findByPk($value['guardian']->id);
+                                            if ($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients))
+                                            {
+                                                $reminderrecipients[] = $grdata->user_id;
+                                                $batch_ids[$grdata->user_id] = $studentsobj->batch_id;
+                                                $student_ids[$grdata->user_id] = $studentsobj->id;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        foreach ($reminderrecipients as $value)
-                        {
-                            $reminder = new Reminders();
-                            $reminder->sender = Yii::app()->user->id;
-                            $reminder->subject = Settings::$HomeworkText . ":" . $title;
-                            $reminder->body = Settings::$HomeworkText . " Added for " . $subject_details->name . " Please check the homework For details";
-                            $reminder->recipient = $value;
-                            $reminder->school_id = Yii::app()->user->schoolId;
-                            $reminder->rid = $homework->id;
-                            $reminder->rtype = 4;
-                            $reminder->batch_id = $batch_ids[$value];
-                            $reminder->student_id = $student_ids[$value];
-                            $reminder->created_at = date("Y-m-d H:i:s");
-                            $reminder->updated_at = date("Y-m-d H:i:s");
-                            $reminder->save();
-                            $notification_ids[] = $reminder->id;
+                            foreach ($reminderrecipients as $value)
+                            {
+                                $reminder = new Reminders();
+                                $reminder->sender = Yii::app()->user->id;
+                                $reminder->subject = Settings::$HomeworkText . ":" . $title;
+                                $reminder->body = Settings::$HomeworkText . " Added for " . $subject_details->name . " Please check the homework For details";
+                                $reminder->recipient = $value;
+                                $reminder->school_id = Yii::app()->user->schoolId;
+                                $reminder->rid = $homework->id;
+                                $reminder->rtype = 4;
+                                $reminder->batch_id = $batch_ids[$value];
+                                $reminder->student_id = $student_ids[$value];
+                                $reminder->created_at = date("Y-m-d H:i:s");
+                                $reminder->updated_at = date("Y-m-d H:i:s");
+                                $reminder->save();
+                                $notification_ids[] = $reminder->id;
 //                          Settings::sendCurlNotification($value, $reminder->id);
-                        }
-                        if($notification_ids)
-                        {
-                            $notification_id = implode("*", $notification_ids);
-                            $user_id = implode("*", $reminderrecipients);
-                            shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+                            }
+                            if ($notification_ids)
+                            {
+                                $notification_id = implode("*", $notification_ids);
+                                $user_id = implode("*", $reminderrecipients);
+                                shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+                            }
                         }
                     }
                 }

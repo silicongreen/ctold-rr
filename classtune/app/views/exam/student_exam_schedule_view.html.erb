@@ -109,7 +109,7 @@
               <td class="col-2"><center><img src="/images/icons/subjects/<%= exam.subject.icon_number %>" width="60" alt="<%= exam.subject.name %>" /></center></td>
               <td class="col-2"><%= exam.subject.name %></td>
               <td class="col-2">
-              <% if !no_exams %>
+              <% if !no_exams and exam.no_date.blank? %>
                 <%= I18n.l(exam.end_time.to_date,:format =>:long) %>
               <% else %>
                   N/A

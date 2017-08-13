@@ -1756,12 +1756,20 @@ class StudentController < ApplicationController
     else
       @batch_id = params[:batch_id]
     end
-    @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
+    if MultiSchool.current_school.id == 319
+      @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
+    else
+      @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
+    end
     render(:update) { |page| page.replace_html 'students', :partial => 'students_by_course' }
   end
   
   def list_all_students
-    @students = Student.active.find(:all, :order => 'first_name ASC')        
+    if MultiSchool.current_school.id == 319
+      @students = Student.active.find(:all, :order => 'first_name ASC, middle_name ASC, last_name ASC') 
+    else
+      @students = Student.active.find(:all,:order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
+    end        
   end
   
   def profile

@@ -28,15 +28,18 @@
       <td><%= "Published" %></td>
       <td><%= "Action" %></td>
     </tr>
-    
+    <% p_exam = [] %>
     <% @previous_exam.each do |p| %>
-    
+      
+      <% unless p_exam.include?(p.exam_connect_id.to_i) %>
+      <% p_exam << p.exam_connect_id.to_i %>
       <% if File.file?(Rails.root.join('public','result_pdf_archive',"0"+p.school_id.to_s,"0"+p.batch_id.to_s,"connectexam","0"+p.exam_connect_id.to_s,"connect_exam_"+p.exam_connect_id.to_s+"_"+p.student_id.to_s+".pdf")) %>
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <td class="col-1"><%= p.exam_connect.name %></td>
         <td class="col-1"><%= p.exam_connect.published_date %></td>
         <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/connectexam/0<%= p.exam_connect_id.to_s %>/connect_exam_<%= p.exam_connect_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
       </tr>
+      <% end %>
       <% end %>
     <% end %>
   </table> 
@@ -51,15 +54,17 @@
       <td><%= "Date" %></td>
       <td><%= "Action" %></td>
     </tr>
-    
+    <% p_exam2 = [] %>
     <% @previous_group_exam.each do |p| %>
-    
+      <% unless p_exam2.include?(p.exam_group_id.to_i) %>
+      <% p_exam2 << p.exam_group_id.to_i %>
       <% if File.file?(Rails.root.join('public','result_pdf_archive',"0"+p.school_id.to_s,"0"+p.batch_id.to_s,"examgroup","0"+p.exam_group_id.to_s,"group_exam_"+p.exam_group_id.to_s+"_"+p.student_id.to_s+".pdf")) %>
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <td class="col-1"><%= p.exam_group.name %></td>
         <td class="col-1"><%= p.exam_group.exam_date %></td>
         <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/examgroup/0<%= p.exam_group_id.to_s %>/group_exam_<%= p.exam_group_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
       </tr>
+      <% end %>
       <% end %>
     <% end %>
   </table> 

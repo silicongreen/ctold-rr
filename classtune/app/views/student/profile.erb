@@ -46,7 +46,7 @@
               <li>
                 <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
               </li>
-            <%  end %>  
+            <%  end %> 
 
             <% if permitted_to? :guardians,:student %>
               <li>

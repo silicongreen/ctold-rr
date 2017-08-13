@@ -33,11 +33,11 @@
       
       <% BatchStudent.find_all_by_student_id(@student.id) %>  
        
-      <% unless BatchStudent.blank? %>
-        <li>
-          <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
-        </li>
-      <%  end %>
+      <% if !BatchStudent.blank? and MultiSchool.current_school.id!=323 %>
+              <li>
+                <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+      <%  end %> 
 
       <% if permitted_to? :guardians,:student %>
         <li class="active">

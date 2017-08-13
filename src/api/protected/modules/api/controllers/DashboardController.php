@@ -496,7 +496,7 @@ class DashboardController extends Controller
                     $formated_feed[$i]['rid'] = $value['rid'];
                     $i++;
                 }
-                else if($value['rtype']==160 or $value['rtype']==159)
+                else if($value['rtype']==160 || $value['rtype']==159)
                 {
                     
                     $formated_feed[$i]['title'] = "<b>Birthday</b>";

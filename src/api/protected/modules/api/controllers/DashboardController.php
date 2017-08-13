@@ -496,21 +496,21 @@ class DashboardController extends Controller
                     $formated_feed[$i]['rid'] = $value['rid'];
                     $i++;
                 }
-                else if($value['rtype']==160 || $value['rtype']==159)
-                {
-                    
-                    $formated_feed[$i]['title'] = "<b>Birthday</b>";
-                    $formated_feed[$i]['created'] = date("Y-m-d", strtotime($value['created_at']));
-                    $formated_feed[$i]['body1'] = $value['subject'];
-                    $formated_feed[$i]['body2'] = strip_tags($value['body']);
-                    $formated_feed[$i]['body3'] = "";
-                    $formated_feed[$i]['attachment_file_name'] = "";
-
-                    $formated_feed[$i]['is_read'] = $value['is_read']; 
-                    $formated_feed[$i]['rtype'] = $value['rtype'];
-                    $formated_feed[$i]['rid'] = $value['rid'];
-                    $i++;
-                }
+//                else if($value['rtype']==160 || $value['rtype']==159)
+//                {
+//                    
+//                    $formated_feed[$i]['title'] = "<b>Birthday</b>";
+//                    $formated_feed[$i]['created'] = date("Y-m-d", strtotime($value['created_at']));
+//                    $formated_feed[$i]['body1'] = $value['subject'];
+//                    $formated_feed[$i]['body2'] = strip_tags($value['body']);
+//                    $formated_feed[$i]['body3'] = "";
+//                    $formated_feed[$i]['attachment_file_name'] = "";
+//
+//                    $formated_feed[$i]['is_read'] = $value['is_read']; 
+//                    $formated_feed[$i]['rtype'] = $value['rtype'];
+//                    $formated_feed[$i]['rid'] = $value['rid'];
+//                    $i++;
+//                }
                 
                 
                 

@@ -197,6 +197,7 @@ class DelayedBatchTranfer
     parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/student_wise_generated_report?exam_group='+exam_group.to_s+'&for_save=true&student='+student.to_s
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
+    http.read_timeout = 3600
     auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>''})
     http.request(auth_req)
   end
@@ -207,6 +208,7 @@ class DelayedBatchTranfer
     parsed_url = 'http://'+MultiSchool.current_school.code+'.'+@request+'/exam/split_pdf_and_save/'+connect_exam.to_s
     uri = URI(parsed_url)
     http = Net::HTTP.new(uri.host, uri.port)
+    http.read_timeout = 3600
     auth_req = Net::HTTP::Get.new(parsed_url, initheader ={'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => user_cookie_variable, "Origin"=>'' })
     http.request(auth_req)
    

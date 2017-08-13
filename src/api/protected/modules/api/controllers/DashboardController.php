@@ -221,7 +221,7 @@ class DashboardController extends Controller
         if($feeds)
         foreach($feeds as $value)
         {
-            if($value['rtype'] && $value['rid'])
+            if($value['rtype'])
             {
                 $id = $value['rid'];
                 if($value['rtype']==4)
@@ -496,10 +496,10 @@ class DashboardController extends Controller
                     $formated_feed[$i]['rid'] = $value['rid'];
                     $i++;
                 }
-                else
+                else if($value['rtype']==160 || $value['rtype']==159)
                 {
                     
-                    $formated_feed[$i]['title'] = "<b>".$value['subject']."</b>";
+                    $formated_feed[$i]['title'] = "<b>Birthday</b>";
                     $formated_feed[$i]['created'] = date("Y-m-d", strtotime($value['created_at']));
                     $formated_feed[$i]['body1'] = $value['subject'];
                     $formated_feed[$i]['body2'] = strip_tags($value['body']);

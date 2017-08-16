@@ -591,6 +591,7 @@ class ExamController < ApplicationController
   end
   
   def connect_exam_subject_comments
+ 
     @employee_subjects=[]
     
     exam_subject_id = params[:id]

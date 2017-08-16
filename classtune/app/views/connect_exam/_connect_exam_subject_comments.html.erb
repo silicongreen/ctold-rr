@@ -21,7 +21,7 @@
 <%= show_header_icon %>
   <h1><%= t('exams_text') %></h1>
 <div class='header-sep'>|</div>
-<div class='sub-header'>Connect Exam Subjects Comments</div>
+<div class='sub-header'>Connect Exam Marks</div>
 <div id="inner-tab-menu">
   <ul>
     <% if permitted_to? :previous_batch_exams, :exam %>
@@ -51,8 +51,8 @@
   </div>
     
  
-
-  <h3>EXAM COMMENTS  >> <%= @exam_subject.name %></h3>
+ 
+  <h3><%= @exam_subject.name %></h3>
 
   <% unless @students.empty? %>
       <% form_for :exams do |f| %>
@@ -63,7 +63,7 @@
           <tr class="tr-head fixed-position">
             <td  class="zui-sticky-col"><b><%= "Roll" %></b></td>
             <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
-            <td><b><%= t('remarks') %></b></td>
+            
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
               <td>
@@ -71,18 +71,41 @@
                   <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
                    <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
                   <% else %>
-                   <p>&nbsp;</p>
+                   <p>(<%= exam.maximum_marks.to_i %>)</p>
                   <% end %> 
               </td>
             <% end %>
-            <% end %>  
+            <% end %> 
+            <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
             
           </tr>
           <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
               <td class="col-2 zui-sticky-col" style="padding: 13px 10px"><%= student.class_roll_no %> </td>
               <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
-              <%
+             
+              
+              <% unless @exams.blank? %>
+              <% @exams.each do |exam| %>
+                <% @exam_score = exam.score_for(student) %>
+                <% if @updated_at.blank? %>
+                  <% @updated_at = @exam_score.updated_at.to_s %>
+                <% elsif @updated_at < @exam_score.updated_at.to_s %>
+                  <% @updated_at = @exam_score.updated_at.to_s %>
+                <% end %>
+                <td class="col-2 td-mark">
+
+                    <div class="label-field-pair2">
+
+                      <div class="text-input-bg2">
+                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
+                       </div>
+                    </div>
+                    <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
+                </td>
+              <% end %>
+              <% end %> 
+               <%
                 exam_comment = ""
                 @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
                 if !@exam_comments.blank?
@@ -98,21 +121,6 @@
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td>
-              <% unless @exams.blank? %>
-              <% @exams.each do |exam| %>
-                <% @exam_score = exam.score_for(student) %>
-                <td class="col-2 td-mark">
-
-                    <div class="label-field-pair2">
-
-                      <div class="text-input-bg2">
-                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
-                       </div>
-                    </div>
-                    <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
-                </td>
-              <% end %>
-              <% end %>  
               
             <tr>
           <% end %>      
@@ -120,12 +128,39 @@
         </div> 
         </div>    
         <br/>
+        <% unless @updated_at.blank? %>
+        <% time_updated = @updated_at.to_time + 6*60*60 %>
+        <h3> Last Updated : <%= I18n.l(time_updated, :format=>'%A, %d %B %Y %l:%M %p') %> </h3>
+        <% end %>
         <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
       <% end %> 
         
     <% end %>
 
      </div>
+<script>
+  var jj = jQuery.noConflict();
+   jj(document).ready(function () {
+ 
+      jj('input').keyup(function (e) {
+        if (e.which == 39) { // right arrow
+          jj(this).closest('td').next().find('input').focus();
+ 
+        } else if (e.which == 37) { // left arrow
+          jj(this).closest('td').prev().find('input').focus();
+ 
+        } else if (e.which == 40) { // down arrow
+         
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
+ 
+        } else if (e.which == 38) { // up arrow
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
+        }
+     });
+   });  
+</script>  
 <style>
   #sub-button .submit_button
   {

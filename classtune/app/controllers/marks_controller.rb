@@ -123,6 +123,15 @@ class MarksController < ApplicationController
   def data
     if current_user.employee
       @subjects = current_user.employee_record.subjects.active
+      @batches= current_user.employee_record.batches
+      unless @batches.blank?
+        @batches.each do |batch|
+          @subjects += batch.subjects
+        end
+      end
+    
+    @subjects = @subjects.uniq unless @batches.empty?
+    
     elsif current_user.admin
       @subjects = Subject.active
     end  
@@ -170,7 +179,16 @@ class MarksController < ApplicationController
   end
   
   def data_connect_exam
+#    @employee_subjects = current_user.employee_record.subjects.active
+    
     @employee_subjects = current_user.employee_record.subjects.active
+    @batches= current_user.employee_record.batches
+    unless @batches.blank?
+      @batches.each do |batch|
+        @employee_subjects += batch.subjects
+      end
+    end
+    @employee_subjects = @employee_subjects.uniq unless @batches.empty?
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
@@ -193,6 +211,7 @@ class MarksController < ApplicationController
               data[k][0] = @template.link_to(exam_connect_batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
               data[k][1] = @template.link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
               data[k][2] = @template.link_to(exam_subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
+              data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
               k = k+1
             end
           end    
@@ -207,6 +226,14 @@ class MarksController < ApplicationController
   
  def data_connect_exam_report
     @employee_subjects = current_user.employee_record.subjects.active
+    @batches= current_user.employee_record.batches
+    unless @batches.blank?
+      @batches.each do |batch|
+        @employee_subjects += batch.subjects
+      end
+    end
+    
+    @employee_subjects = @employee_subjects.uniq unless @batches.empty?
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
@@ -331,15 +358,9 @@ class MarksController < ApplicationController
   
   def index
     if current_user.employee
-      @batches = []
-      @employee_subjects = current_user.employee_record.subjects.active
-      unless @employee_subjects.nil?
-        @employee_subjects.each do |esub|
-          unless @batches.include?(esub.batch)
-            @batches << esub.batch
-          end
-        end  
-      end
+      @batches = @current_user.employee_record.batches
+      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches = @batches.uniq unless @batches.empty?
     elsif current_user.admin
       @batches = Batch.active
     end  
@@ -348,15 +369,10 @@ class MarksController < ApplicationController
   def connect_exam
     @exams_data = ExamConnect.active.find(:all,:group=>"name")
     if current_user.employee
-      @batches = []
-      @employee_subjects = current_user.employee_record.subjects.active
-      unless @employee_subjects.nil?
-        @employee_subjects.each do |esub|
-          unless @batches.include?(esub.batch)
-            @batches << esub.batch
-          end
-        end  
-      end
+      @batches = @current_user.employee_record.batches
+      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches = @batches.uniq unless @batches.empty?
+      
     elsif current_user.admin
       @batches = Batch.active
     end 
@@ -385,15 +401,9 @@ class MarksController < ApplicationController
   def connect_exam_report
     @exams_data = ExamConnect.active.find(:all,:group=>"name")
     if current_user.employee
-      @batches = []
-      @employee_subjects = current_user.employee_record.subjects.active
-      unless @employee_subjects.nil?
-        @employee_subjects.each do |esub|
-          unless @batches.include?(esub.batch)
-            @batches << esub.batch
-          end
-        end  
-      end
+      @batches = @current_user.employee_record.batches
+      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches = @batches.uniq unless @batches.empty?
     elsif current_user.admin
       @batches = Batch.active
     end 

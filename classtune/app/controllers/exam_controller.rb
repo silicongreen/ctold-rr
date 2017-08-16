@@ -2976,7 +2976,7 @@ class ExamController < ApplicationController
     end
     
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
-    render_connect_exam("generated_report5_pdf")
+    render_connect_exam("generated_report5_pdf",false,"")
 
   end
   

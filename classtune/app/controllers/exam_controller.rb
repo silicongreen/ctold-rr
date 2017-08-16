@@ -3742,7 +3742,6 @@ class ExamController < ApplicationController
     render :text => chart.to_s
   end
   
-  private
   
   def render_connect_exam(template,for_save=false,file_name="")
         if MultiSchool.current_school.id == 246
@@ -3813,6 +3812,10 @@ class ExamController < ApplicationController
         end
     
   end
+  
+  private
+  
+  
   
   def get_exam_report(connect_exam_id,student_id,batch_id)
     require 'net/http'

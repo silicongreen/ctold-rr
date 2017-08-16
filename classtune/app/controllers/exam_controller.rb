@@ -2975,8 +2975,16 @@ class ExamController < ApplicationController
       
     end
     
+    pdf_name = "continues_connect_exam_"+@student.id.to_s+"_"+@connect_exam_obj.id.to_s+".pdf"
+    dirname = Rails.root.join('public','all_result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+    FileUtils.chmod_R(0777, Rails.root.join('public','all_result_pdf',"0"+MultiSchool.current_school.id.to_s))
+    file_name = Rails.root.join('public','all_result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s,pdf_name)
+    
     @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
-    render_connect_exam("generated_report5_pdf",false,"")
+    render_connect_exam("generated_report5_pdf",false,file_name)
 
   end
   

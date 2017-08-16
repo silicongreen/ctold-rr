@@ -79,11 +79,14 @@ class ExamController < ApplicationController
     @batch = Batch.find(@connect_exam_obj.batch_id)
    
     
-    get_continues(@id,@batch.id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+    @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
+        get_continues(@id,@batch.id)
+        report_data = []
+        if @student_response['status']['code'].to_i == 200
+          report_data = @student_response['data']
+        end
+        report_data
+    }
 
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     if !@report_data.blank?

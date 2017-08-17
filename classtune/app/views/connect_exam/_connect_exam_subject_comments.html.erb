@@ -98,7 +98,7 @@
                     <div class="label-field-pair2">
 
                       <div class="text-input-bg2">
-                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
+                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
                        </div>
                     </div>
                     <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
@@ -145,21 +145,38 @@
       jj('input').keyup(function (e) {
         if (e.which == 39) { // right arrow
           jj(this).closest('td').next().find('input').focus();
+          
  
         } else if (e.which == 37) { // left arrow
           jj(this).closest('td').prev().find('input').focus();
+         
  
         } else if (e.which == 40) { // down arrow
          
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
+          
  
         } else if (e.which == 38) { // up arrow
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
+          
         }
      });
-   });  
+   }); 
+   function checkValueMax(maxvalue,th_is)
+   {
+     if(jj(th_is).val()>maxvalue)
+     {
+       jj(th_is).css( "color", "red" );
+     }
+     else
+     {
+       jj(th_is).css( "color", "black" );
+     }  
+     
+     
+   }
 </script>  
 <style>
   #sub-button .submit_button

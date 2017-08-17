@@ -192,16 +192,16 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all)
+    @exam_connect =ExamConnect.active.find(:all,:include=>[:batch])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
       exam_connect_batch =  exam_connect.batch
       @subjects = []
       @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)
-      @group_exams.each do |group_exam|
-        exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
-          
+      @exam_group_ids = @group_exams.map(&:exam_group_id)
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:include=>[:subject])
+      unless exams.blank?   
         exams.each do |exam|
           exam_subject = exam.subject
           if !exam_subject.blank? and !@subjects.include?(exam_subject) 
@@ -215,8 +215,9 @@ class MarksController < ApplicationController
               k = k+1
             end
           end    
-        end       
-      end          
+        end
+      end
+                
         
     end
     json_data = {:data => data}

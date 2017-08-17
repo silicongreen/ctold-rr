@@ -38,7 +38,7 @@ class Settings {
     );
     
     public static $version_update = array(
-      "version"         => 19,
+      "version"         => 18,
       "toast_update"    => FALSE,
       "must_update"     => TRUE
     );

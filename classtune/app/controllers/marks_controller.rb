@@ -192,7 +192,7 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "id,name,batch_id",:include=>[:batch])
+    @exam_connect =ExamConnect.active.find(:all,:select => "id,name,batch_id",:include=>[:batch],:conditions =>["school_id = ?",MultiSchool.current_school.id])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
@@ -242,7 +242,7 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect = ExamConnect.active.find(:all)
+    @exam_connect = ExamConnect.active.find(:all,:conditions =>["school_id = ?",MultiSchool.current_school.id])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
@@ -372,7 +372,7 @@ class MarksController < ApplicationController
     
   end
   def connect_exam
-    @exams_data = ExamConnect.active.find(:all,:group=>"name")
+    @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
     if current_user.employee
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
@@ -384,7 +384,7 @@ class MarksController < ApplicationController
   end
   def examgroup
     if params[:batch_name] == "0"
-      @exams_data = ExamConnect.active.find(:all,:group=>"name")
+      @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
     else
       @batches = Batch.active
       @batch_id = 0
@@ -395,7 +395,7 @@ class MarksController < ApplicationController
         end
       end
       if @batch_id.blank?
-        @exams_data = ExamConnect.active.find(:all,:group=>"name")
+        @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
       else
         @exams_data = ExamConnect.active.find_all_by_batch_id(@batch_id)
       end  
@@ -404,7 +404,7 @@ class MarksController < ApplicationController
   end
   
   def connect_exam_report
-    @exams_data = ExamConnect.active.find(:all,:group=>"name")
+    @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
     if current_user.employee
       @batches = @current_user.employee_record.batches
       @batches += @current_user.employee_record.subjects.collect{|b| b.batch}

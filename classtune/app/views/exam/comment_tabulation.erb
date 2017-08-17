@@ -83,3 +83,56 @@
       });
   });
 </script>
+
+<% if (MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2) and (!param[:blank_page].blank? and param[:blank_page]==1)  %>
+<style>
+ .school_feed_box
+{
+    width:0px;
+    display:none;
+}
+.champs21_palette_container_1 #boxes
+{
+    
+    display:none;
+    height: 0px;
+}
+#header_bg
+{
+    display:none;
+    height: 0px;
+}
+#content-header
+{
+    display:none;
+    height: 0px;
+}
+#content_wrapper
+{
+    margin-top:-100px !important;
+    width:auto;
+    padding:0px;
+    
+}
+.zui-scroller {
+   
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-height: none;
+}
+#footer
+{
+    display:none;
+}
+#content
+{
+    padding-bottom: 0px !important;
+    width: auto !important;
+}
+#page-yield
+{
+    margin:0px 0px;
+}
+</style>    
+<% end %>

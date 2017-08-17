@@ -84,7 +84,7 @@
   });
 </script>
 
-<% if (MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2) and (!params[:blank_page].blank? and params[:blank_page]==1)  %>
+<% if (MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2) and (!params[:blank_page].blank? and params[:blank_page].to_i==1)  %>
 <style>
  .school_feed_box
 {

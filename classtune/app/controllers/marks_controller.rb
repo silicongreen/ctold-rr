@@ -192,7 +192,7 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:include=>[:batch])
+    @exam_connect =ExamConnect.active.find(:all,:select => "id,name,batch_id",:include=>[:batch])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
@@ -200,7 +200,7 @@ class MarksController < ApplicationController
       @subjects = []
       @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)
       @exam_group_ids = @group_exams.map(&:exam_group_id)
-      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:include=>[:subject])
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "id,subject_id",:include=>[:subject])
       unless exams.blank?   
         exams.each do |exam|
           exam_subject = exam.subject

@@ -559,7 +559,7 @@ class TimetableController < ApplicationController
         flash[:notice] = t('updated_with_errors')
       end
     end
-    @batches = Batch.active.scoped :include=>[{:subjects=>:employees},:course]
+    @batches = Batch.active :include=>[{:subjects=>:employees},:course]
     @subjects = @batches.collect(&:subjects).flatten
   end
 

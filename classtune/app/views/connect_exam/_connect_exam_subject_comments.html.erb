@@ -46,7 +46,7 @@
   
   <div id="flash-box">   
     <% unless flash[:notice].nil? %>
-      <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <p class="flash-msg" style="text-align:left; padding-left:10px;"> <%= flash[:notice] %> </p>
     <% end %>
   </div>
     
@@ -71,7 +71,8 @@
                   <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
                    <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
                   <% else %>
-                   <p>(<%= exam.maximum_marks.to_i %>)</p>
+                   <p> <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %></p>
+                   
                   <% end %> 
               </td>
             <% end %>
@@ -96,9 +97,12 @@
                 <td class="col-2 td-mark">
 
                     <div class="label-field-pair2">
-
-                      <div class="text-input-bg2">
-                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
+                      <% extra_class="" %>
+                      <% if !@exam_score.marks.blank? and @exam_score.marks >  exam.maximum_marks.to_f %>
+                        <% extra_class="red_class" %>
+                      <% end %>  
+                        <div class="text-input-bg2">
+                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                        </div>
                     </div>
                     <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
@@ -179,6 +183,10 @@
    }
 </script>  
 <style>
+    .red_class
+    {
+      color:red;
+    }
   #sub-button .submit_button
   {
     cursor: pointer;

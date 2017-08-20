@@ -610,6 +610,82 @@ class ExamController < ApplicationController
       redirect_to :controller=>"user", :action=>"dashboard"
     end
     
+    if request.post?
+        @exam_marks_error = false
+        unless params[:exam_marks].blank?
+         params[:exam_marks].each_pair do |exam_id, max_mark|
+           @exam = Exam.find_by_id(exam_id)
+           unless @exam.nil?
+             max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
+             
+             if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
+                @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
+                
+             elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
+                @exam_marks_error = true
+             end 
+           end
+         end
+       end 
+     
+      unless params[:exam_score].blank?
+        params[:exam_score].each_pair do |exam_id, stdetails|
+          @exam = Exam.find_by_id(exam_id)
+          stdetails.each_pair do |student_id, details|
+            @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
+            if @exam_score.nil?
+              unless details[:marks].nil? 
+                if details[:marks].to_f <= @exam.maximum_marks.to_f
+                  ExamScore.create do |score|
+                    score.exam_id          = @exam.id
+                    score.student_id       = student_id
+                    score.marks            = details[:marks]
+                  end
+                else
+                  @error = true
+                end
+              end
+            else
+              if details[:marks].to_f <= @exam.maximum_marks.to_f
+                
+                  if @exam_score.update_attributes(details)
+                  else
+                    flash[:warn_notice] = "#{t('flash4')}"
+                    @error = nil
+                  end
+                 
+              else
+                @error = true
+              end
+            end
+          end
+        end
+      end
+      
+        
+      
+      params[:exam].each_pair do |student_id, details|
+        @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
+        if @exam_comments.nil?
+          ExamConnectSubjectComment.create do |score|
+            score.subject_id       = @exam_subject.id
+            score.student_id       = student_id
+            score.exam_connect_id  = exam_subject_id_array[0]
+            score.employee_id      = current_user.employee_record.id
+            score.comments         = details[:comments]
+            score.effort         = details[:effort] # For Sir John Wilson School
+          end
+        else
+          @exam_comments.update_attributes(details)
+        end
+      end
+      unless @exam_marks_error == true
+        flash[:notice] = "Successfully Saved"
+      else
+        flash[:notice] = "Exam score is greter the exam maximum marks"
+      end
+    end
+    
     @exams = []
     
     if @exam_subject.no_exams.blank?
@@ -663,58 +739,7 @@ class ExamController < ApplicationController
     @config = Configuration.get_config_value('ExamResultType') || 'Marks'
     @grades = @batch.grading_level_list
     
-    if request.post?
-      unless params[:exam_score].blank?
-        params[:exam_score].each_pair do |exam_id, stdetails|
-          @exam = Exam.find_by_id(exam_id)
-          stdetails.each_pair do |student_id, details|
-            @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
-            if @exam_score.nil?
-              unless details[:marks].nil? 
-                if details[:marks].to_f <= @exam.maximum_marks.to_f
-                  ExamScore.create do |score|
-                    score.exam_id          = @exam.id
-                    score.student_id       = student_id
-                    score.marks            = details[:marks]
-                  end
-                else
-                  @error = true
-                end
-              end
-            else
-              if details[:marks].to_f <= @exam.maximum_marks.to_f
-                if details[:marks].to_f != @exam_score.marks.to_f
-                  if @exam_score.update_attributes(details)
-                  else
-                    flash[:warn_notice] = "#{t('flash4')}"
-                    @error = nil
-                  end
-                end  
-              else
-                @error = true
-              end
-            end
-          end
-        end
-      end
-      
-      params[:exam].each_pair do |student_id, details|
-        @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
-        if @exam_comments.nil?
-          ExamConnectSubjectComment.create do |score|
-            score.subject_id       = @exam_subject.id
-            score.student_id       = student_id
-            score.exam_connect_id  = exam_subject_id_array[0]
-            score.employee_id      = current_user.employee_record.id
-            score.comments         = details[:comments]
-            score.effort         = details[:effort] # For Sir John Wilson School
-          end
-        else
-          @exam_comments.update_attributes(details)
-        end
-      end
-      flash[:notice] = "Successfully Saved"
-    end
+    
     
   end
   

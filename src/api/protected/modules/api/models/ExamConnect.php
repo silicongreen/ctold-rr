@@ -175,6 +175,7 @@ class ExamConnect extends CActiveRecord
                 )
             )
         );
+        $criteria->order = "groupedexam.priority ASC,examgroup.created_at ASC";
         $criteria->compare('Exams.subject_id', $subject_id);
         
         $examresult = $this->find($criteria);

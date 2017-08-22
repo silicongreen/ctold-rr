@@ -137,8 +137,10 @@ class MarksController < ApplicationController
     end  
     @subjects.reject! {|s| !s.batch.is_active}
     @exams = []
-    @subjects.each do |sub|
-      exams =  Exam.find_all_by_subject_id(sub.id)
+    all_sub_id = @subjects.map(&:exam_group_id)
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id)
+    all_exams.each do |exams|
+      
       
       unless exams.blank?
         exams.each do |exam|  

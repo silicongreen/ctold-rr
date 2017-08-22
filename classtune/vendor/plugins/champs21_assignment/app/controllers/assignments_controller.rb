@@ -12,6 +12,7 @@ class AssignmentsController < ApplicationController
     if    @current_user.employee?
       @subjects = current_user.employee_record.subjects.active
       @subjects.reject! {|s| !s.batch.is_active}
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
     elsif    @current_user.student?
       student=current_user.student_record
       
@@ -188,6 +189,9 @@ class AssignmentsController < ApplicationController
       @subjects = current_user.employee_record.subjects
       
       @subjects.reject! {|s| !s.batch.is_active}
+      
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
+      
       @assignment= Assignment.new
       unless params[:id].nil?
         subject = Subject.find_by_id(params[:id])

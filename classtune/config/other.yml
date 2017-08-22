@@ -1,15 +1,17 @@
 resulttype:
- numbers: "323,2,325,340"
+ numbers: "323,2,325,340,342"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
+ type_342: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_340: "TERM (FIRST HALF) ,TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM (SECOND HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM (SECOND HALF) EFFORT/GRADE SHEET (CLASS 10-12),MOCK EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT CARD(CLASS 5-9),TERM REPORT CARD(CLASS 10-12),ASSESMENT(KG 1-CLASS 4),REPORT CARD(KG 1-KG 2),REPORT CARD(CLASS 1-CLASS 4)"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6"
 resulttype2:
- numbers: "323,2,325,340"
+ numbers: "323,2,325,340,342"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment"
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
  type_323: "1_Class Test,2_Project,3_Term,5_Mock Test"
+ type_342: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_2: "1_Class Test,2_Project,3_Term,4_Surprise Test,5_Mock Test" 
  default: "6_N/A,5_Practical,4_Surprise Test,3_Term,2_Project,1_Class Test"
 quarter:
@@ -18,6 +20,6 @@ quarter:
  type_340: "1_TERM 1 (FIRST HALF),2_TERM 1 (SECOND HALF),3_HALF YEARLY,4_TERM 2 (FIRST HALF),5_TERM 2 (SECOND HALF),6_FINAL"
  default: "0_N/A,1_1st Quarter,2_2nd Quarter,3_3rd Quarter,4_4th Quarter,5_First Term,6_Final Term"
 mocktest:
- numbers: "2,323"
+ numbers: "2,323,342"
 formapply:
  numbers: "2,340"

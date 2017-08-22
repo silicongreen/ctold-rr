@@ -51,6 +51,8 @@
   <% else %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
   <% end %>
+<% else if File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_group_report.erb")) %>
+    <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/group_report" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/general_pdf" %>
 <% end %>

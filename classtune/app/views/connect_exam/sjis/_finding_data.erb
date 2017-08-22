@@ -1,0 +1,224 @@
+
+<% if @student_position.blank? %>
+  <% if @grading_levels.blank? %>
+  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+  <% if @grading_levels.blank? %>
+    <% @grading_levels = GradingLevel.default %>
+  <% end %>
+  <% end %>
+  <%
+  @student_list = []
+  @subject_highest = {}
+  @student_avg_mark = {}
+  unless @tabulation_data.blank?
+    connect_exam = 0
+    batch_loop = 0
+    @tabulation_data['report'].each do |tab|
+      batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      batch_subject_id = batch_subject.map(&:id)
+      batch_loop = batch_loop+1
+      connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+      connect_exam = connect_exam+1
+      
+      tab['students'].each do |std| 
+        subject_count_std = 0
+        total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+        std_subject_id = total_std_subject.map(&:subject_id)
+        std_marks_full = 0
+        std_marks_core_subject = 0
+        total_subject = 0
+        u_grade = 0
+        tab['subjects'].each do |sub|
+          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+            
+            subject_count_std = subject_count_std+1
+            std_subject_marks = 0
+            full_marks = 0
+            i = 0
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                std_subject_marks = std_subject_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f  
+              end
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                full_marks = full_marks+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f  
+              end
+            end
+            std_subject_marks = std_subject_marks.round()
+            
+            std_marks_full = std_marks_full+std_subject_marks
+
+            marks_on_100 = ((std_subject_marks.to_f/full_marks)*100)
+            subject_grade = ""
+            grade = GradingLevel.percentage_to_grade(marks_on_100, @batch.id)
+            if !grade.blank? and !grade.name.blank?
+              subject_grade = grade.name
+            end   
+            
+
+
+
+            if subject_grade == "U"
+              u_grade = u_grade+1
+            end  
+
+            if @subject_highest[sub['id'].to_i].blank?
+              @subject_highest[sub['id'].to_i] = std_subject_marks
+            elsif std_subject_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+               @subject_highest[sub['id'].to_i] = std_subject_marks.to_f
+            end
+            if subject_count_std<4
+               std_marks_core_subject = std_marks_core_subject+std_subject_marks.round()
+            end 
+            
+          end  
+        end
+
+        @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+        result = ""
+        promotion_status = ""
+        merit_position = ""
+        new_roll = ""
+        new_section = ""
+        if !@exam_comment.blank?
+          all_comments = @exam_comment.comments
+          if !all_comments.blank?
+            all_comments_array = all_comments.split("|")
+            result = all_comments_array[0]
+            if !all_comments_array[1].nil?
+              promotion_status = all_comments_array[1]
+              if !all_comments_array[2].nil?
+                merit_position = all_comments_array[2]
+                if !all_comments_array[3].nil?
+                  new_roll = all_comments_array[3]
+                  if !all_comments_array[4].nil?
+                    new_section = all_comments_array[4]
+                  end
+                end
+
+              end
+
+            end
+          end
+        end
+        
+        
+        
+        if subject_count_std>0 and (u_grade==0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  u_grade<2))            
+          std_marks_full_new = std_marks_full.to_f/subject_count_std.to_f
+          std_marks_full_new = 5000.00-std_marks_full_new.to_f
+          std_marks_core_subject = 5000-std_marks_core_subject.round()
+          subject_count_std = 5000-subject_count_std
+          @student_avg_mark[std['id'].to_i] = u_grade
+          @student_list << [std_marks_full_new.to_f,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
+        else
+          @student_avg_mark[std['id'].to_i] = u_grade
+        end  
+
+      end
+    end
+   end
+
+    @student_position = {}
+    @student_section = {}
+    @student_roll = {}
+
+    @sections = ["A","B","C"]
+    student_classes = ["KG","I","II","III","IV","V","VI","VII","VIII","IX","X"]
+    @promoted_to = "";
+    if student_classes.include?(@batch.course.course_name)
+      array_index = student_classes.index @batch.course.course_name
+      if array_index < student_classes.count
+          @promoted_to = student_classes[array_index+1]
+          if @promoted_to == "I"
+            @sections = ["Camellia","Marigold","Cosmos"]
+          end
+          if @promoted_to == "II"
+            @sections = ["Rose","Sunflower","Gardenia"]
+          end
+          if @promoted_to == "III"
+            @sections = ["Orchid","Tulip","Jasmine"]
+          end
+          if @promoted_to == "IV"
+            @sections = ["Daisy","Daffodil"]
+          end
+          if @promoted_to == "V"
+            @sections = ["Bluebell","Lavender"]
+          end
+          if @promoted_to == "VI"
+            @sections = ["Primrose","Snowdrop"]
+          end
+          if @promoted_to == "VII"
+            @sections = ["Parrot","Swift"]
+          end
+          if @promoted_to == "VIII"
+            @sections = ["Kingfisher","Nightingale"]
+          end
+          if @promoted_to == "IX"
+            @sections = ["Robin","Seagull"]
+          end
+          if @promoted_to == "X"
+            @sections = ["Penguin","Pelican"]
+          end
+
+
+      else
+          @promoted_to = "0"
+      end
+    end  
+
+    unless @student_list.blank?
+      @sorted_students = @student_list.sort
+      position = 0
+      @sorted_students.each do|s|
+          position = position+1
+          @student_position[s[4].to_i] = position
+      end
+
+      @iloop = 0
+      @jloop = 0
+
+      @sloop = 0
+
+      @s_a_loop = 1
+      @s_b_loop = 1
+      @s_c_loop = 1
+      @new_sections = @sections
+      while @iloop < @sorted_students.count do
+          if @jloop > (@new_sections.count-1)
+            @jloop = 0
+            @new_sections = @new_sections.reverse
+          end
+          @iloop +=1
+
+          if @sorted_students[@sloop][4].to_i == 9998344 || @sorted_students[@sloop][4].to_i == 99911700 || @sorted_students[@sloop][4].to_i == 9998058 || @sorted_students[@sloop][4].to_i == 9998051
+            @student_section[@iloop] = @sections[0]
+            @student_roll[@iloop] = @s_a_loop
+            @s_a_loop +=1
+          else
+            @student_section[@iloop] = @new_sections[@jloop]
+            if @new_sections[@jloop] == @sections[0]
+              @student_roll[@iloop] = @s_a_loop
+              @s_a_loop +=1
+            end
+
+            if @new_sections[@jloop] == @sections[1]
+              @student_roll[@iloop] = @s_b_loop
+              @s_b_loop +=1
+            end
+
+            if @sections.count>2
+              if @new_sections[@jloop] == @sections[2]
+                @student_roll[@iloop] = @s_c_loop
+                @s_c_loop +=1
+              end
+            end
+          end
+
+          @jloop +=1
+          @sloop +=1
+      end
+
+    end
+  end
+
+%> 

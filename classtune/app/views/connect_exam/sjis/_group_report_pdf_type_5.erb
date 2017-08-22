@@ -1,0 +1,276 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+ <p>&nbsp;<p>
+ <p>&nbsp;<p>
+ <h2>&nbsp;&nbsp;&nbsp;</h2>
+  <div id="page-yield"  class="available_sections1 baf_shaheen">
+
+      
+      <div class="student_information">
+      <h4><b>Student's Information</b></h4>
+      
+      <table class="std_info_table" width="100%" cellspacing="0">
+          <tr>
+              <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
+          </tr>
+          <tr>
+              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
+          </tr>
+          <tr>
+              <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
+              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") unless @student.gender.blank? %></td>
+          </tr> 
+           <tr>
+              
+              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+                 
+                  <% if month_number.to_i>6 %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
+                  <% else %>
+                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+                  <% end %> 
+              
+             
+              <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
+          </tr> 
+          <tr>
+              <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+              <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+              
+          </tr>
+          <tr>
+              <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
+              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;December-2016</td>
+          </tr>
+      </table>
+      <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
+      </div>
+      <div class="grade_information">
+        <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
+        
+      </div>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+              <h4 class="h4-evaluation result-in-details"><b>Result in Details</b></h4>
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                        
+                          <td class="col-pdf">
+                              <%= report['exam_name'].upcase %>
+                              <hr/>
+                              Score Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>
+                              
+                          </td> 
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf">
+                          TOTAL MARKS
+                          <hr/>
+                          Score Out of <%= total_mark_of_allexam %>
+                      </td>
+                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf border-right-none">HIGHEST MARKS</td>
+                      
+                  </tr>
+
+                  <% total_parcent = 0 %>
+                  <% total_subject = 0 %>
+                  <% total_mark_all_subject = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% weightage_mark = 0 %>
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <td class="col-pdf no-warp">
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% else %>
+                                    N/A
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% else %>
+
+                                  <% end %>  
+
+
+
+                              </td>
+
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['weightage_mark'].blank? %>
+                                <% weightage_mark = weightage_mark+report['result'][report['exam_id']][subjects['id']]['weightage_mark'] %>
+                              <% end %>
+
+                            <% end %>
+                          <% end %>
+
+
+
+
+
+                          <% 
+                          highest_mark = 0
+                          if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
+                            highest_mark = @report_data['report']['max_mark'][subjects['id']].to_f
+                            end  
+
+                          if total_mark.to_f>0 and full_mark.to_f>0
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                            main_mark = 0
+                            end 
+                          total_mark = total_mark.round()
+                        %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= total_mark %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">N/A</td>
+                            <% end %>
+                            <td class="col-pdf border-right-none"><%= sprintf( "%0.02f", highest_mark)%> </td>
+                            
+
+                            <% total_parcent= total_parcent+main_mark %>
+                            <% total_subject = total_subject+1 %>
+                            <%  total_mark_all_subject = total_mark_all_subject+total_mark %>
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf border-right-none">N/A</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
+                     <%  
+                    
+                          group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+
+                          @all_subjects = []
+                          group_exams.each do |group_exam|
+                            allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                            allexams.each do |exam|
+                              if !@all_subjects.include?(exam.subject.id)
+                                @all_subjects << exam.subject.id
+                              end
+                            end
+                          end 
+                      %>  
+                    <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                      <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                      <%  if @all_subjects.include?(report['id'].to_i) %>
+
+                          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                          <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report1| %>
+                                  <td></td>
+                              <% end %>
+                           <% end %> 
+                          <td class="col-pdf"></td>
+                          <td class="col-pdf"><%= report['subject_comment'] %></td>
+                          <td class="col-pdf border-right-none"></td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                        
+                        
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none"><b>Total Mark</b></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                                <td></td>
+                            <% end %>
+                          <% end %> 
+                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
+                          
+                         <td class="col-pdf"></td>
+                         <td class="col-pdf border-right-none"></td>
+                      </tr>   
+
+              </table>
+
+
+                <% 
+                  result = ""
+                  if !@exam_comment.blank?
+                    all_comments = @exam_comment.comments
+                    if !all_comments.blank?
+                      all_comments_array = all_comments.split("|")
+                      result = all_comments_array[0]
+                      promotion_status = 0
+                      if !all_comments_array[1].nil?
+                        promotion_status = all_comments_array[1]
+                      end
+                    end
+                  end
+                %>
+              
+              
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+            html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>)
+    var page = new Element('div', {'class': 'page1'});
+    var pageBreak = new Element('div', {'class': 'page-break1'});
+    var insertPageBreak = function () {
+        body.appendChild(pageBreak.cloneNode(true))
+    };
+    var insertPage = function () {
+        body.appendChild(page.cloneNode(true));
+    };
+    var currPage = function () {
+        return $$('.page1').last()
+    };
+    var current_page_height = 0
+    var i = 0
+    $$('.available_sections1 .section1').each(function (el) {
+        a = parseInt(el.getHeight());
+        c = current_page_height + a;
+        current_page_height = c;
+        if (c > pg_height) {
+            current_page_height = a
+            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+            i += 1
+            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+            insertPageBreak();
+            insertPage();
+        }
+        currPage().appendChild(el);
+    });
+  </script>
+<% end %>

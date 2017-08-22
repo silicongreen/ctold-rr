@@ -143,8 +143,10 @@ class MarksController < ApplicationController
       unless exams.blank?
         exams.each do |exam|  
           exam_group =  exam.exam_group
-          exam_group_batch = exam_group.batch
-          @exams.push exam unless exam.nil? or exam_group.result_published == true or exam_group.is_deleted == true
+          unless exam_group.blank?
+            exam_group_batch = exam_group.batch
+            @exams.push exam unless exam.nil? or exam_group.result_published == true or exam_group.is_deleted == true
+          end
           
         end
       end
@@ -163,13 +165,7 @@ class MarksController < ApplicationController
         data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
         data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
         data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
-        if exam.subject.no_exams.blank? and exam.no_date.to_i == 0
-          data[k][3] = I18n.l(exam.start_time,:format=>"%d %b,%Y %I:%M %p")
-          data[k][4] = I18n.l(exam.end_time,:format=>"%d %b,%y %I:%M %p")
-        else
-          data[k][3] = "N/A"
-          data[k][4] = "N/A"
-        end
+        
         k = k+1
       end
     end

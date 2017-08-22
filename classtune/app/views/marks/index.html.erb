@@ -84,8 +84,6 @@
                 <th>Class</th>
                 <th>Exam Name</th>
                 <th>Subject</th>
-                <th>Start</th>
-                <th>End</th>
             </tr>
         </thead>
        
@@ -93,8 +91,147 @@
     </table>   
     <div class="extender"></div>
   </div>
-    
+  <% if MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 %>
+    <div id="marks_entry" style="float: left; width:60%; margin-top:0px; margin-left: 10px;background-position: center;"></div> 
+    <div id="pdf_file" style="float: left; width:60%; margin-top:0px; margin-left: 10px;background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;"></div> 
+  <% end %>
 </div>
+
+<% if MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 %>
+
+<%= javascript_include_tag 'pdfobject' %>
+
+<script>
+  
+  jj( document ).on( "click", "a", function(event) {
+      
+      jj("#pdf_file").hide();
+      if(jj(this).attr("href").indexOf("exam_groups")!=-1 )
+      {
+        jj("#marks_entry").hide();
+         event.preventDefault();
+         jj("#marks_entry").html("<iframe src='"+jj(this).attr("href")+"' height='700' width='100%' ></iframe> ");
+         jj("#marks_entry").show();
+        
+         
+      }
+      
+    });
+</script>  
+<style>
+ #pdf_file
+ {
+     display:none;
+     min-height: 50px;
+ }
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+      margin-top: 0px;
+    margin-right: -18px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
+}
+.sub-header3
+{
+    float: right;
+    padding-top: 38px;
+    margin-right: 10px;
+}
+.sub-header3 a
+{
+    float: left;
+    margin-left: 0px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    width: 73px;
+    
+}
+.sub-header2
+{
+    float: right;
+    padding-top: 38px;
+    
+}
+.sub-header2 a
+{
+    float: left;
+    
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    
+}
+a:hover
+{
+  text-decoration: underline;
+}
+.mdl-data-table
+{
+   white-space: normal;
+}
+#content_wrapper
+{
+    width:96%;
+}
+.champs21_palette_container_1 #boxes
+{
+    width:100% !important;
+    display:none;
+    height: 0px;
+}
+.champs21_palette_container_1 #boxes .als-viewport
+{
+    width:100% !important
+}
+.champs21_palette_container_1 #boxes .als-next
+{
+    display:none;
+}
+.school_feed_box
+{
+    width:0px;
+    display:none;
+}
+#page-yield
+{
+    width: 97%;
+}
+#page-yield .box
+{
+    width: 38%;
+    float:left;
+    clear:both;
+}
+
+
+
+</style>
+<style>
+.pdfobject-container { height: 700px;}
+.pdfobject { border: 1px solid #666; }
+</style>
+<% else %>
 
 <style>
   table tr td a
@@ -164,3 +301,4 @@ a:hover
    white-space: normal;
 }
 </style>
+<% end %>

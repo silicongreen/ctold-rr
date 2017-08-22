@@ -110,7 +110,7 @@
             <td><%= "Roll" %></td>
             <td><%= t('name') %></td>
             <% unless @exam_group.exam_type == 'Grades' %>
-              <td  <%=styletext%>><%= t('marks') %></td>
+              <td  <%=styletext%>><%= t('marks') %> (<%= @exam.maximum_marks %>)</td>
             <% else %>
               <td  <%=styletext%>><%= t('grades') %></td>
             <% end %>
@@ -136,7 +136,7 @@
               <% end %>
                   
             <% else %>  
-              <td><%= t('remarks') %><%= @exam.subject.id %></td>
+              <td><%= t('remarks') %></td>
             <% end %>
               
             <% unless @exam_group.exam_type == 'Marks' %>
@@ -153,9 +153,9 @@
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg">
                       <% if markexam==1 %>
-                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam, :size => '4', :class=>"marks-box" %>
+                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
                       <% else %>
-                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
+                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
                       <% end %>   
                     </div></div></td>
               <% else %>
@@ -181,20 +181,25 @@
                                     
                                   
                                   <% subject_subgroup = get_subject_sub_group(@exam.subject.id,iloop) %>
-                                  <% unless subject_subgroup.blank? %>                                       
+                                  <% unless subject_subgroup.blank? %>
+                                       
                                       <% subject_subgroup.each do |sub_group_name| %>
-                                        <% exam_group_remarks = "" %>
-                                        <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
-                                          <% unless exam_score_split[@group_loop.to_i].blank? %>
-                                            <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
-                                          <% end %>
-                                        <% end %>
-                                        <td  class="col-2 td-mark" style="text-align:center;">
-                                            <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
-                                            <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name+">>"+sub_group_name %></div></span></div>
-                                        </td>
-                                        <% @group_loop = @group_loop+1 %>                                            
-                                      <% end %>  
+                                            <% exam_group_remarks = "" %>
+                                            <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
+
+                                              <% unless exam_score_split[@group_loop.to_i].blank? %>
+
+                                                <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
+                                              <% end %>
+                                            <% end %>
+                                            <td  class="col-2 td-mark" style="text-align:center;">
+                                                <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
+                                                <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name+">>"+sub_group_name %></div></span></div>
+                                            </td>
+                                            <% @group_loop = @group_loop+1 %>
+                                            
+                                      <% end %>      
+                                      
                                   <% else %>
                                      <% exam_group_remarks = "" %>
                                       <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
@@ -292,4 +297,99 @@
     color:#990A10;
     font-size: 12px;
 }
+</style>  
+
+<% if MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
+<style>
+ .school_feed_box
+{
+    width:0px;
+    display:none;
+}
+.champs21_palette_container_1 #boxes
+{
+    
+    display:none;
+    height: 0px;
+}
+#header_bg
+{
+    display:none;
+    height: 0px;
+}
+#content-header
+{
+    display:none;
+    height: 0px;
+}
+#content_wrapper
+{
+    margin-top:-100px !important;
+    width:auto;
+    padding:0px;
+    
+}
+.zui-scroller {
+   
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-height: none;
+}
+#footer
+{
+    display:none;
+}
+#content
+{
+    padding-bottom: 0px !important;
+    width: auto !important;
+}
+#page-yield
+{
+    margin:0px 0px;
+}
 </style>    
+<% end %>
+<script>
+  var jj = jQuery.noConflict();
+   jj(document).ready(function () {
+ 
+      jj('input').keyup(function (e) {
+        if (e.which == 39) { // right arrow
+          jj(this).closest('td').next().find('input').focus();
+          
+ 
+        } else if (e.which == 37) { // left arrow
+          jj(this).closest('td').prev().find('input').focus();
+         
+ 
+        } else if (e.which == 40) { // down arrow
+         
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').next().find('td:nth-child('+child_number+')').find('input').focus();
+          
+ 
+        } else if (e.which == 38) { // up arrow
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').prev().find('td:nth-child('+child_number+')').find('input').focus();
+          
+        }
+     });
+   });
+   
+   function checkValueMax(maxvalue,th_is)
+   {
+     if(jj(th_is).val()>maxvalue)
+     {
+       jj(th_is).css( "color", "red" );
+     }
+     else
+     {
+       jj(th_is).css( "color", "black" );
+     }  
+     
+     
+   }
+   
+ </script>  

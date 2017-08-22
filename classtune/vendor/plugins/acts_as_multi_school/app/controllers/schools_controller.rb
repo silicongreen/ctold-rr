@@ -553,7 +553,11 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
         
           rows = []
           rows << "Student"
-          rows << "#{b['first_name']} #{b['last_name']}"
+          unless b['middle_name'].blank?
+            rows << "#{b['first_name']} #{b['middle_name']} #{b['last_name']}"
+          else
+            rows << "#{b['first_name']} #{b['last_name']}"
+          end
           csv << rows
         
           rows = []

@@ -1,33 +1,28 @@
 <?php
-$url = "http://api.champs21.com/api/cardatt/attsync";
-$fields = array(
-    'school_id' => 319,
-    'card_number' => $card_number,
-    'add_att' => 1
-);
+ini_set('max_execution_time',0);
+$servername = "192.168.0.117";
+$username = "champs21";
+$password = "079366";
+$dbname_source = "company";
 
-$fields_string = "";
-
-foreach ($fields as $key => $value) {
-    $fields_string .= $key . '=' . $value . '&';
+// Create connection
+global $conn_source;
+$conn_source = new mysqli($servername, $username, $password, $dbname_source);
+// Check connection
+if ($conn_source->connect_error)
+{
+    die("Connection failed: " . $conn_source->connect_error);
 }
 
-rtrim($fields_string, '&');
-$ch = curl_init();
+include('simplehtmldom_1_5/simple_html_dom.php');
+for($i = 1;$i<31;$i++)
+{
+$html = file_get_html('http://www.crn.com/slide-shows/managed-services/300079672/2016-msp-500-elite-150.htm/pgno/0/'.$i);
 
-//set the url, number of POST vars, POST data
-curl_setopt($ch, CURLOPT_URL, $url);
-
-curl_setopt($ch, CURLOPT_POST, count($fields));
-curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    'Accept: application/json',
-    'Content-Length: ' . strlen($fields_string)
-        )
-);
-
-$result = curl_exec($ch);
-
-curl_close($ch);
+echo $company =  $html->find('div.slideCopy p',0)->plaintext; 
+echo $website =  $html->find('div.slideCopy p',3)->plaintext;
+//echo $link->href;
+echo $service =  str_replace("Services: ","",$html->find('div.slideCopy p',5)->plaintext);
+$sql = "insert into company_data (company,website,service) values ('".$company."','".$website."','".$service."')";
+$conn_source->query($sql);
+}

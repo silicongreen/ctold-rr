@@ -370,6 +370,7 @@ class EmployeesSubjects extends CActiveRecord
 
             $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
+            $criteria->order = "ABS(courseDetails.code)";
             
             $obj_subject = $this->findAll($criteria);
         

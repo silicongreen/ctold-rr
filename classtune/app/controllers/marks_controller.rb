@@ -139,18 +139,11 @@ class MarksController < ApplicationController
     @exams = []
     all_sub_id = @subjects.map(&:id)
     all_exams =  Exam.find_all_by_subject_id(all_sub_id)
-    all_exams.each do |exams|
-      
-      
-      unless exams.blank?
-        exams.each do |exam|  
-          exam_group =  exam.exam_group
-          unless exam_group.blank?
-            exam_group_batch = exam_group.batch
-            @exams.push exam unless exam.nil? or exam_group.result_published == true or exam_group.is_deleted == true
-          end
-          
-        end
+    all_exams.each do |exam|
+      exam_group =  exam.exam_group
+      unless exam_group.blank?
+        exam_group_batch = exam_group.batch
+        @exams.push exam unless exam.nil? or exam_group.result_published == true or exam_group.is_deleted == true
       end
     end 
    

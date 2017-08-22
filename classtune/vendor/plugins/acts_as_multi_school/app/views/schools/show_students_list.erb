@@ -72,7 +72,7 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
             <% end %>
           </td>
           <td>
-            <%= list['first_name'] %>&nbsp;<%= list['last_name'] %><br/>
+            <%= list['first_name'] %><% unless list['middle_name'].blank? %>&nbsp;<%= list['middle_name'] %><% end %>&nbsp;<%= list['last_name'] %><br/>
           </td>
           
             <td><%= list['paid_username'] %><br/></td>
@@ -82,7 +82,7 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
                 <table style="width:100%;overflow: hidden; "  class="table table-striped">
                   <% guardian_data.each_with_index do |glist,i| %>
                     <tr>
-                        <td width="27.7%" style="border-radius:0px 0px 0px 0px;" ><%= glist['first_name'] %><% unless glist['middle_name'].blank? %>&nbsp;<%= glist['middle_name'] %><% end %>&nbsp;<%= glist['last_name'] %><br/></td>
+                        <td width="27.7%" style="border-radius:0px 0px 0px 0px;" ><%= glist['first_name'] %>&nbsp;<%= glist['last_name'] %><br/></td>
                         <td width="25.8%"  style="border-radius:0px 0px 0px 0px;"><%= glist['paid_username'] %><br/></td>
                         <td width="25.4%"  style="border-radius:0px 0px 0px 0px;"><%= glist['paid_password'] %><br/></td>        
                         <td  style="border-radius:0px 0px 0px 0px;"><%= glist['office_phone1'] %>|<%= glist['mobile_phone'] %><br/></td>

@@ -128,10 +128,7 @@
                 <% @discount_without_vat = 0 %>
                 <% @vat_discount = 0 %>
                 <% unless @total_discount == 0 %>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <%k+=1%>
-                      <td class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
-                  </tr>
+                 
 
                   <% @discounts.each do |d| %>
                     <% unless d.is_amount == true %>

@@ -71,7 +71,18 @@
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr> 
-          <% end %>    
+          <% end %> 
+              
+           <% if @subject.no_exams.to_i == 1 %>
+           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="no-warp"><%= std['name'] %></td> 
+            <td class="col-pdf">N/A</td>
+            <% @comment_std = ExamConnectSubjectComment.find_by_student_id_and_exam_connect_id_and_subject_id(std['id'].to_i,@connect_exam_obj.id,@subject.id) %>
+            
+            <td class="col-pdf"><%= @comment_std.comments unless @comment_std.blank? %></td>
+           </tr> 
+          <% else %>
         
         
           <% total_mark = 0 %>
@@ -106,6 +117,8 @@
             <td class="col-2"><b>N/A</b></td>
           <% end %>
         </tr>
+        
+          <% end %>
         <% end %>
         <% end %>
       </table>

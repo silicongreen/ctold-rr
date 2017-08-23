@@ -66,6 +66,7 @@
         <% j = 0 %>
       
         <% @report_data['report']['students'].each do |std| %>
+          <% unless std['first_name'].blank?  %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
           <% if std_count>12 && extender ==0 %>
@@ -216,6 +217,7 @@
               
            
         </tr>
+          <% end %>
         <% end %>
       </table>
       <% end %>

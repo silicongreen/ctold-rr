@@ -2666,7 +2666,7 @@ class StudentController < ApplicationController
           @subject_tmp = Subject.find(:all, :conditions => ["batch_id = ? and code = ? and elective_group_id = ?", b, @subjects_code, elective_group_id])
           
           unless @subject_tmp.nil? or @subject_tmp.empty?
-            @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_batch.students}
+            @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_batch.students.all(:order=>"first_name ASC")}
           else
             @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => nil, "message" => "<b style='color: #f00;'>This Elective Group Subject is not assigned to this Section</b>"}
           end
@@ -2763,7 +2763,7 @@ class StudentController < ApplicationController
         appropriate_elective_subject_id = 0
         @tmp_batch = Batch.find(b)
         @tmp_course = @tmp_batch.course
-        @tmp_students = @tmp_batch.students
+        @tmp_students = @tmp_batch.students.all(:order=>"first_name ASC")
         if @batch_data[@tmp_batch.name].nil?
           @batch_data[@tmp_batch.name] = []
         end
@@ -2873,7 +2873,7 @@ class StudentController < ApplicationController
         appropriate_elective_subject_id = 0
         @tmp_batch = Batch.find(b)
         @tmp_course = @tmp_batch.course
-        @tmp_students = @tmp_batch.students
+        @tmp_students = @tmp_batch.students.all(:order=>"first_name ASC")
         if @batch_data[@tmp_batch.name].nil?
           @batch_data[@tmp_batch.name] = []
         end

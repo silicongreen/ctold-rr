@@ -138,7 +138,7 @@ class MarksController < ApplicationController
     @subjects.reject! {|s| !s.batch.is_active}
     @exams = []
     all_sub_id = @subjects.map(&:id)
-    all_exams =  Exam.find_all_by_subject_id(all_sub_id)
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject])
     all_exams.each do |exam|
         @exams.push exam unless exam.nil?
     end 
@@ -148,16 +148,19 @@ class MarksController < ApplicationController
     data = []
     @exams.each do |exam|
       @exam_group = exam.exam_group
-      exam_group_batch = @exam_group.batch
-      exam_subject = exam.subject
-      unless exam_subject.blank? or @exam_group.result_published == true or @exam_group.is_deleted == true
-        data[k] = []
+      unless @exam_group.blank?
+        exam_group_batch = @exam_group.batch
 
-        data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
-        data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
-        data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
-        
-        k = k+1
+        exam_subject = exam.subject
+        unless exam_subject.blank? or @exam_group.result_published == true or @exam_group.is_deleted == true
+          data[k] = []
+
+          data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
+          data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
+          data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
+
+          k = k+1
+        end
       end
     end
     json_data = {:data => data}

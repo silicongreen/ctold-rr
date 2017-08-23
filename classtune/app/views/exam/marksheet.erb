@@ -21,7 +21,7 @@
   <%= render  :partial=>"/connect_exam/south_point/marksheet" %>  
 <% elsif MultiSchool.current_school.id == 340 %>
   <%= render  :partial=>"/connect_exam/sir_john_wilson_school/marksheet" %>  
-<% else if File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_marksheet.erb")) %>
+<% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_marksheet.erb")) %>
     <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/marksheet" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/marksheet" %>

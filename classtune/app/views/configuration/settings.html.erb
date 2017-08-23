@@ -192,6 +192,17 @@
               </div>
           </div>
           
+          <div class="label-field-pair">
+              <label for="notice_comment">Disable Notice Comment</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:notice_comment] == '1' %>
+                    <%= check_box :configuration, :notice_comment, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :notice_comment, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
            <div class="label-field-pair">
               <label for="routine_view_teacher_short_code"><%= t('routine_view_teacher_short_code') %></label>
               <div class="checkbox-input-bg">

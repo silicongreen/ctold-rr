@@ -18,7 +18,7 @@
 #under the License. -%>
 
 <div class="box">
-  <% form_for :event_category, :url => {:action => 'categories'}, :html => {:class => "new_event_category"} do |f| %>
+  <% form_for :event_category, :url => {:action => 'categories'}, :html => {:class => "new_event_category",:multipart=>true} do |f| %>
     <%= error_messages_for 'event_category', :header_message => nil %>
     <div class="label-field-pair">
       <label><%= t('enter_new_category') %> : </label>
@@ -36,6 +36,13 @@
         <% end %>
       </ul>
     </div>
+    
+    <%#*<div class="label-field-pair">%>
+        <%#*<label for="event_category_image">Category Icon Upload (500KB, 100w*100h).</label>%>
+        <%#*<div class="text-input-bg">%>
+            <%#= file_field :event_category,:event_category_image %>
+        <%#*</div>%>
+    <%#*</div>%>
     <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>
 
   <% end %>

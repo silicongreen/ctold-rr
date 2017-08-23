@@ -117,7 +117,18 @@
           <% end %>
       </div>
       <% end %>
+      <div class="news_label_field" style="float: left;clear: both;width: 100%;" >
+          <label>Can Comment</label>
+          <div class="text-input-bg">
+              <select name="news[can_comment]" style="margin:0px;">
+                <option value="1" <% if @news.can_comment.to_i==1 %> selected="selected"<% end %>>Yes</option>
+                <option value="0" <% if @news.can_comment.to_i==0 %> selected="selected"<% end %>>No</option>
+              </select>
+          </div>
+      </div>
+      
     </div>
+  
     </div>
 
     <%= submit_tag "", :value => "► #{t('update')}", :class => "news_publish_button" %>

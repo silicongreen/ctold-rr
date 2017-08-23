@@ -97,30 +97,36 @@
     </div>
   </div>  
   <% end %>
+  <%  @config = Configuration.find_by_config_key('NoticeComment') %>
+  <% if @config.blank? or @config.config_value.blank? or @config.config_value.to_i == 0 %>
+    <% if @news.can_comment.to_i == 1 %>
+    <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader",
+        :style =>"display: none;" ) %></h4>
 
-  <h4 id="leave-a-comment"><%= t('leave_comment') %>   <%= image_tag("loader.gif",
-      :align => "absmiddle",
-      :border => 0,
-      :id => "loader",
-      :style =>"display: none;" ) %></h4>
-
-  <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
-    <div class="comment-content"> <%= f.text_area :content %> </div>
-    <%= f.hidden_field :news_id, :value => @news.id %>
-    <div id="submit-button"><%= submit_tag '', {:value =>"► #{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
+    <% form_remote_for :comment, :id => 'comments-form', :url => { :action => 'add_comment' },  :loading => "$('loader').show();$('mysubmit').disable();", :loaded => "$('loader').hide();$('mysubmit').enable();" do |f| %>
+      <div class="comment-content"> <%= f.text_area :content %> </div>
+      <%= f.hidden_field :news_id, :value => @news.id %>
+      <div id="submit-button"><%= submit_tag '', {:value =>"► #{t('submit')}",:onClick => "return validate()",:id => "mysubmit"} %></div>
+    <% end %>
+    <div class="extender"></div>
+    <% else %>
+      <p style="color:red">Comment section is off by "<%= @news.author.first_name %> <%= @news.author.last_name %>" for this notice</p>
+    <% end %>
+    
+    <h3 id="comments-heading"><%= t('comments') %>
+     <%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader2",
+        :style =>"display: none;" ) %></h3>
+    <span id="comments-count"><% if @comments.empty? %><%= t('no_comments') %><% end %></span>
+    <ul id="comments-list">
+      <%= render :partial => "comment" %>
+    </ul>
   <% end %>
-  <div class="extender"></div>
-  <h3 id="comments-heading"><%= t('comments') %>
-   <%= image_tag("loader.gif",
-      :align => "absmiddle",
-      :border => 0,
-      :id => "loader2",
-      :style =>"display: none;" ) %></h3>
-  <span id="comments-count"><% if @comments.empty? %><%= t('no_comments') %><% end %></span>
-  <ul id="comments-list">
-    <%= render :partial => "comment" %>
-  </ul>
-
 
 </div>
 <script type="text/javascript">

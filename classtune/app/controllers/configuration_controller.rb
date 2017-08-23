@@ -29,7 +29,7 @@ class ConfigurationController < ApplicationController
         'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
         'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry',\
         'TimeZone','FirstTimeLoginEnable','FeeReceiptNo','EnableSibling','PrecisionCount',\
-        'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace']
+        'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace','NoticeComment']
     @grading_types = Course::GRADINGTYPES
     @enabled_grading_types = Configuration.get_grading_types
     @time_zones = TimeZone.all
@@ -50,7 +50,7 @@ class ConfigurationController < ApplicationController
         @config = Configuration.get_multiple_configs_as_hash ['InstitutionName', 'InstitutionAddress', 'InstitutionPhoneNo', \
             'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
             'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry','TimeZone',\
-            'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace']
+            'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace','NoticeComment']
         return
       end
       @current_user.clear_menu_cache

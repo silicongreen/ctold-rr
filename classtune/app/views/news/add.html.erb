@@ -117,6 +117,7 @@
       </div>
       <% end %>
       
+      
       <% if @current_user.admin? %>
       <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;display:none;margin: 10px 0px;" >
           <label >Select Employee Department</label>
@@ -127,6 +128,15 @@
           <% end %>
       </div>
       <% end %>
+      <div class="news_label_field" >
+          <label>Can Comment</label>
+          <div class="text-input-bg">
+              <select name="news[can_comment]" style="margin:0px;">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+          </div>
+      </div>
     </div>
     <%= hidden_field :news,"is_published", :value =>1 %>
 

@@ -37,7 +37,7 @@
               
               <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
                   <%= render  :partial=>"/connect_exam/south_point/group_marks" %>
-              <% else if File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_group_marks.erb")) %>
+              <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_group_marks.erb")) %>
                   <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/group_marks" %>
                <% else %>
                   <%= render  :partial=>"/connect_exam/group_marks" %>
@@ -88,7 +88,7 @@
               <%= render  :partial=>"/connect_exam/sfx/exam_comments" %>
           <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
               <%= render  :partial=>"/connect_exam/south_point/exam_comments" %>
-          <% else if File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_exam_comments.erb")) %>
+          <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_exam_comments.erb")) %>
              <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/exam_comments" %>
           <% else %> 
               <%= render  :partial=>"/connect_exam/exam_comments" %>  

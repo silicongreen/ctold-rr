@@ -24,6 +24,9 @@ class EventCategory < ActiveRecord::Base
 
   named_scope :active_for_event, :conditions => { :status => 1,:is_club => 0}
   named_scope :active_for_club, :conditions => { :status => 1,:is_club => 1}
+  
+  VALID_IMAGE_TYPES = ['image/gif', 'image/png','image/jpeg', 'image/jpg']
+
 
 
   def check_dependence

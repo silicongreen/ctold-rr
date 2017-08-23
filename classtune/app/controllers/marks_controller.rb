@@ -150,7 +150,6 @@ class MarksController < ApplicationController
       @exam_group = exam.exam_group
       unless @exam_group.blank?
         exam_group_batch = @exam_group.batch
-
         exam_subject = exam.subject
         unless exam_subject.blank? or @exam_group.result_published == true or @exam_group.is_deleted == true
           data[k] = []

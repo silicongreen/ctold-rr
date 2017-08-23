@@ -66,7 +66,7 @@
         <% j = 0 %>
       
         <% @report_data['report']['students'].each do |std| %>
-          <% unless std['first_name'].blank?  %>
+          
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
           <% if std_count>12 && extender ==0 %>
@@ -88,7 +88,7 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+            <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
             <% grades = [] %>
             <% grade_count = {} %>
@@ -217,7 +217,7 @@
               
            
         </tr>
-          <% end %>
+         
         <% end %>
       </table>
       <% end %>

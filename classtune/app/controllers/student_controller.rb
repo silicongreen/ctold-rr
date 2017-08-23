@@ -2611,7 +2611,7 @@ class StudentController < ApplicationController
     if @show_batch_subject
       @batch = Batch.find(params[:id])
       @elective_subject = Subject.find(params[:id2])
-      @students = @batch.students
+      @students = @batch.students.all(:order=>"first_name ASC")
       @elective_group = ElectiveGroup.find(@elective_subject.elective_group_id)
     else
       @batch_only = false
@@ -2727,7 +2727,7 @@ class StudentController < ApplicationController
     
     if @show_batch_subject
       @batch = Batch.find(params[:id])
-      @students = @batch.students
+      @students = @batch.students.all(:order=>"first_name ASC")
       @students.each do |s|
         @assigned = StudentsSubject.find_by_student_id_and_subject_id(s.id,params[:id2])
         StudentsSubject.create(:student_id=>s.id,:subject_id=>params[:id2],:batch_id=>@batch.id) if @assigned.nil?
@@ -2836,7 +2836,7 @@ class StudentController < ApplicationController
     
     if @show_batch_subject
       @batch = Batch.find(params[:id])
-      @students = @batch.students
+      @students = @batch.students.all(:order=>"first_name ASC")
       @students.each do |s|
         @assigned = StudentsSubject.find_by_student_id_and_subject_id(s.id,params[:id2])
         @assigned.delete unless @assigned.nil?

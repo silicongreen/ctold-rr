@@ -110,7 +110,7 @@
               </tr> 
           <% end %>
           
-          <% if @subject.no_exams.to_i == 1 %>
+          <% if @subject.no_exams == true %>
            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="no-warp"><%= std['name'] %></td> 

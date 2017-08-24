@@ -61,8 +61,7 @@
                         
                           <td class="col-pdf">
                               <%= report['exam_name'].upcase %>
-                              <hr/>
-                              Score Out of <% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %><%= @exam_marks[report['exam_id'].to_s] %><% end %>
+                             
                               
                           </td> 
                         <% end %>

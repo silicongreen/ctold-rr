@@ -2,7 +2,7 @@
 .sjis table td
 {
     font-size:12px;
-    padding: 0px 0px 0px 0px;   
+    padding: 1px 1px 1px 1px;   
 }
 .sjis table tr td.t-left
 {
@@ -21,7 +21,7 @@
  .sjis table.evaluation td
  {
      text-align: left;
-     padding: 0px 0px 0px 0px !important; 
+     padding: 1px 1px 1px 1px !important; 
      font-size: 12px;
  }
  .sjis td.align-center
@@ -55,13 +55,13 @@
 
 .sjis tr.odd td
 {
-    padding: 0px 0px 0px 0px;  
+    padding: 1px 1px 1px 1px;  
     border: 1px solid #000000;
     font-size:12px;
 }
 .sjis tr.even td
 {
-    padding: 0px 0px 0px 0px;
+    padding: 1px 1px 1px 1px;
     border: 1px solid #000000;
     font-size:12px;
 }
@@ -150,6 +150,7 @@ div.sjis
 {
     border: 1px solid #000000;
 }
+
 .akmis .CSSTableGenerator td{
 
     padding: 12px 12px 12px 15px;

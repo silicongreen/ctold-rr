@@ -40,8 +40,8 @@ class Event < ActiveRecord::Base
   
   validates_attachment_content_type :icon, :content_type =>VALID_IMAGE_TYPES,
     :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.icon_file_name.blank? }
-  validates_attachment_size :icon, :less_than => 5120000,
-    :message=>'must be less than 5000 KB.',:if=> Proc.new { |p| p.icon_file_name_changed? }
+  validates_attachment_size :icon, :less_than => 512000,
+    :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.icon_file_name_changed? }
    
   def update_attributes(attributes)
     self.attributes = attributes

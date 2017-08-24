@@ -1385,8 +1385,8 @@ td.checkbox_inline p
 ///sjis
 .sjis table td
 {
-    font-size:15px;
-    padding: 8px 8px 8px 11px;   
+    font-size:11px;
+    padding: 2px 2px 2px 4px;   
 }
 .sjis table tr td.t-left
 {
@@ -1406,7 +1406,7 @@ td.checkbox_inline p
  {
      text-align: left;
      padding: 2px 2px 2px 4px !important; 
-     font-size: 21px;
+     font-size: 11px;
  }
  .sjis td.align-center
  {
@@ -1428,7 +1428,7 @@ td.checkbox_inline p
     background: #ffffff;
     font-weight: bold;
     text-align: center;
-    font-size:14px;
+    font-size:11px;
 }
 
 .sjis tr.odd td.align-left-baf, .sjis tr.even td.align-left-baf
@@ -1441,13 +1441,13 @@ td.checkbox_inline p
 {
     padding: 2px 2px 2px 4px;  
     border: 1px solid #000000;
-    font-size:21px;
+    font-size:11px;
 }
 .sjis tr.even td
 {
      padding: 2px 2px 2px 4px;
     border: 1px solid #000000;
-    font-size:21px;
+    font-size:11px;
 }
 
 .sjis table#pdf-table{
@@ -1463,16 +1463,16 @@ td.checkbox_inline p
 }
 .sjis h4.h4-evaluation
 {
-   margin: 5px 0px 5px 5px; 
+   margin: 2px 2px 2px 2px; 
 }
 .sjis #grouped_exam_report h4.result-in-details
 {
-   margin: 5px 0px 5px 5px; 
+   margin: 2px 2px 2px 2px; 
 }
 .sjis h4
 {
     border-bottom: 2px solid black;
-    font-size: 15px;
+    font-size: 11px;
     padding: 0px;
     width: auto;
     float:left;
@@ -1484,7 +1484,7 @@ td.checkbox_inline p
 {
     float:left;
     clear:both;
-    font-size: 13px;
+    font-size: 11px;
     width: 75%;
     margin: 5px 5px;
     
@@ -1492,13 +1492,13 @@ td.checkbox_inline p
 }
 .sjis div.student_information table
 {
-    margin: 10px 0px;
+    margin: 5px 0px;
     float:left;
     clear:both;
 }
 .sjis div.student_information table tr td
 {
-    padding: 3px 3px 3px 2px;  
+    padding: 2px 2px 2px 2px;  
 }
 .sjis div.student_information table tr td.font-dark
 {
@@ -1513,21 +1513,21 @@ td.checkbox_inline p
     margin-left:102px;
     float:left;
     width: 13.5%;
-    font-size: 14px;
+    font-size: 10px;
    
 }
 .sjis div.grade_information table tr.odd td
 {
-    padding: 3px 3px 3px 5px;
+    padding: 2px 2px 2px 2px;
 }
 .sjis div.grade_information table tr.even td
 {
-    padding: 3px 3px 3px 5px;
+    padding: 2px 2px 2px 2px;
 }
 .sjis div.grade_information p
 {
-    font-size: 12px;
-    margin-left: 14px;
+    font-size: 10px;
+    margin-left: 12px;
     margin-bottom: 3px;
 }
 div.sjis

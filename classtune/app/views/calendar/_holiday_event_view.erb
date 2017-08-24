@@ -23,7 +23,12 @@
   <% @events.each do |h| %>
     <div class="events">
       <div class="holiday_title">
-        <div class="legend-icon" style='background:#01B169;'></div>
+        
+        <% if h.icon.file? %>
+           <%= image_tag h.icon.url, :alt => "e", :width => "10"  %>      
+        <% else %>
+          <div class='legend-icon' style='background:#01B169;'></div>
+        <% end %>
         <%=  link_to h.title, {:controller => 'event', :action => 'event_details', :id => h.id},:style=>"color:#01B169" %>
       </div>
       <div class="extender"></div>

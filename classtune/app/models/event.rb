@@ -32,6 +32,16 @@ class Event < ActiveRecord::Base
   
   has_attached_file :event_image, :styles => { :large => "100%", :dashboard => "300x180#", :thumb => "320x240#", :small => "120x80#" }, :default_style => :thumb,
     :url => '/uploads/:class/event_image/:id/:style/:basename_:timestamp.:extension'
+  
+  VALID_IMAGE_TYPES = ['image/gif', 'image/png','image/jpeg', 'image/jpg']
+  has_attached_file :icon,
+    :styles => { :original=> "50x50"},
+    :url => "/uploads/:class/icon/:id/:style/:attachment_fullname"
+  
+  validates_attachment_content_type :icon, :content_type =>VALID_IMAGE_TYPES,
+    :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.icon_file_name.blank? }
+  validates_attachment_size :icon, :less_than => 5120000,
+    :message=>'must be less than 5000 KB.',:if=> Proc.new { |p| p.icon_file_name_changed? }
    
   def update_attributes(attributes)
     self.attributes = attributes

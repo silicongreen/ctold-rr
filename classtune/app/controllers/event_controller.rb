@@ -210,9 +210,11 @@ class EventController < ApplicationController
         elsif u.parent == true
           guardian = Guardian.find_by_user_id(u.id)
           unless guardian.nil?
-            student = Student.find guardian.ward_id
-            batch_ids[u.id] = student.batch_id
-            student_ids[u.id] = student.id
+            student = Student.find_by_id(guardian.ward_id)
+            unless student.blank? 
+              batch_ids[u.id] = student.batch_id
+              student_ids[u.id] = student.id
+            end
           else
             batch_ids[u.id] = 0
             student_ids[u.id] =  0

@@ -89,6 +89,11 @@
       <label >Upload Image (<%= t('max_size') %>)</label>
       <div class="text-input-bg" id="event-image"><%= f.file_field :event_image %></div>
     </div>
+    
+    <div class="label-field-pair">
+      <label >Upload Icon (500 KB, 100w*100h)</label>
+      <div class="text-input-bg" id="event-image"><%= f.file_field :icon %></div>
+    </div>
 
     <div class="label-field-pair">
       <label for="description"><%= t('description') %>:</label>

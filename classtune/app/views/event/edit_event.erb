@@ -48,6 +48,14 @@
       <label for="title"><%= "Pointing Color" %>:</label>
       <div class="text-input-bg"><input type="text" id="text-field" name="event[pointing_color]" class="demo" value="<%= @event.pointing_color %>"></div>
     </div>
+    
+    <div class="label-field-pair">
+      <label >Upload Icon (500 KB, 50w*50h)</label>
+      <div class="text-input-bg" id="event-image"><%= f.file_field :icon %></div>
+      <% if @event.icon.file? %>
+         <%= image_tag @event.icon.url %>      
+      <% end %>
+    </div>
     <div class="label-field-pair">
       <label for="description"><%= t('description') %>:</label>
     </div>

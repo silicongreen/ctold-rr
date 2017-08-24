@@ -29,6 +29,16 @@ class News < ActiveRecord::Base
   
   has_attached_file :attachment,
     :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp"
+  
+  VALID_IMAGE_TYPES = ['image/gif', 'image/png','image/jpeg', 'image/jpg']
+  has_attached_file :icon,
+    :styles => { :original=> "50x50"},
+    :url => "/uploads/:class/icon/:id/:style/:attachment_fullname"
+  
+  validates_attachment_content_type :icon, :content_type =>VALID_IMAGE_TYPES,
+    :message=>'Image can only be GIF, PNG, JPG',:if=> Proc.new { |p| !p.icon_file_name.blank? }
+  validates_attachment_size :icon, :less_than => 512000,
+    :message=>'must be less than 500 KB.',:if=> Proc.new { |p| p.icon_file_name_changed? }
 
   validates_presence_of :title, :content
 

@@ -13,7 +13,12 @@
         <% link_value = r.title %>
         <div class="portlet-subcontent">
           <div class="timetable_left">
-            <img width="30" src="/images/icons/notice.png" ALT="<%= link_value %>" />
+            <% if r.icon.file? %>
+              <%= image_tag r.icon.url, :alt => "#{link_value}"  %>      
+            <% else %>
+              <img width="30" src="/images/icons/notice.png" ALT="<%= link_value %>" />
+            <% end %>
+            
           </div>
           <div class="timetable_right">
             <div class="subcontent-header themed_text"><%=  link_to link_value, :controller => 'news', :action => 'view', :id => r.id%></div>            
@@ -70,3 +75,14 @@
   </div>
 
 </div>
+
+<style>
+    .partial_homework .portlet-subcontent .timetable_last a:hover
+    {
+            background-color: #145214 !important;
+    }
+    .partial_homework .portlet-subcontent .timetable_last a
+    {
+        background-color: #49BB4B !important;
+    }
+</style>    

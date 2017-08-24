@@ -78,6 +78,12 @@
           <label >Attach a File</label>
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
       </div>
+      
+      <div class="news_label_field">
+        <label >Upload Icon (500 KB, 100w*100h)</label>
+        <div class="text-input-bg" id="event-image"><%= f.file_field :icon %></div>
+      </div>
+      
       <% if @current_user.admin? %>
       <div class="news_label_field" >
           <label>Common</label>

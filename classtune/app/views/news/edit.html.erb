@@ -27,7 +27,11 @@
 <div class="header-wrapper">
   <div class="header-title">
     <div class="header-icon">
-      <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+      <% if @news.icon.file? %>
+         <%= image_tag @news.icon.url, :alt => 'Notice',:style=>"width:70px; height:70px;"  %>      
+      <% else %>
+         <%= image_tag '/images/icons/notice.png', :html => {:alt => 'Notice'} %>
+      <% end %>
     </div>
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
@@ -73,6 +77,15 @@
       <div class="news_label_field" >
           <label >Attach a File</label>
           <div  class="text-input-bg" id="assignment-attachment"><%= f.file_field  :attachment %></div>
+      </div>
+      
+      <div class="news_label_field">
+        
+        <label >Upload Icon (500 KB, 50w*50h)</label>
+        <div class="text-input-bg" id="event-image"><%= f.file_field :icon %></div>
+        <% if @news.icon.file? %>
+         <%= image_tag @news.icon.url %>      
+        <% end %>
       </div>
       <% if @current_user.admin? %>
        <div class="news_label_field" >

@@ -57,7 +57,12 @@
     <% link_value = truncate(event.title, :length => 50) %>
     <% event_category = EventCategory.find(event.event_category_id) %>
           <div class="timetable_left">
-            <img width="30" src="/images/icons/event.png" ALT="<%= link_value %>" />
+            <% if event.icon.file? %>
+              <%= image_tag event.icon.url, :alt => "#{link_value}"  %>      
+            <% else %>
+              <img width="30" src="/images/icons/event.png" ALT="<%= link_value %>" />
+            <% end %>
+            
           </div>
           <div class="timetable_right">
             <div class="subcontent-header themed_text"><%=  link_to link_value, :controller => 'event', :action => 'event_details', :id => event.id%></div>            

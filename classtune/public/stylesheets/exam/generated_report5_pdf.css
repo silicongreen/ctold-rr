@@ -1,8 +1,8 @@
 
 .sjis table td
 {
-    font-size:11px;
-    padding: 2px 2px 2px 4px;   
+    font-size:12px;
+    padding: 0px 0px 0px 0px;   
 }
 .sjis table tr td.t-left
 {
@@ -21,8 +21,8 @@
  .sjis table.evaluation td
  {
      text-align: left;
-     padding: 2px 2px 2px 4px !important; 
-     font-size: 11px;
+     padding: 0px 0px 0px 0px !important; 
+     font-size: 12px;
  }
  .sjis td.align-center
  {
@@ -44,7 +44,7 @@
     background: #ffffff;
     font-weight: bold;
     text-align: center;
-    font-size:11px;
+    font-size:12px;
 }
 
 .sjis tr.odd td.align-left-baf, .sjis tr.even td.align-left-baf
@@ -55,15 +55,15 @@
 
 .sjis tr.odd td
 {
-    padding: 2px 2px 2px 4px;  
+    padding: 0px 0px 0px 0px;  
     border: 1px solid #000000;
-    font-size:11px;
+    font-size:12px;
 }
 .sjis tr.even td
 {
-     padding: 2px 2px 2px 4px;
+    padding: 0px 0px 0px 0px;
     border: 1px solid #000000;
-    font-size:11px;
+    font-size:12px;
 }
 
 .sjis table#pdf-table{
@@ -79,11 +79,11 @@
 }
 .sjis h4.h4-evaluation
 {
-   margin: 2px 2px 2px 2px; 
+   margin: 5px 2px 2px 2px; 
 }
 .sjis #grouped_exam_report h4.result-in-details
 {
-   margin: 2px 2px 2px 2px; 
+   margin: 5px 2px 2px 2px; 
 }
 .sjis h4
 {
@@ -100,9 +100,9 @@
 {
     float:left;
     clear:both;
-    font-size: 11px;
+    font-size: 14px;
     width: 75%;
-    margin: 5px 5px;
+    margin: 5px 2px;
     
     
 }
@@ -129,21 +129,21 @@
     margin-left:102px;
     float:left;
     width: 13.5%;
-    font-size: 10px;
+    font-size: 8px;
    
 }
 .sjis div.grade_information table tr.odd td
 {
-    padding: 2px 2px 2px 2px;
+    padding: 1px 1px 1px 1px;
 }
 .sjis div.grade_information table tr.even td
 {
-    padding: 2px 2px 2px 2px;
+    padding: 1px 1px 1px 1px;
 }
 .sjis div.grade_information p
 {
-    font-size: 10px;
-    margin-left: 12px;
+    font-size: 9px;
+    margin-left: 20px;
     margin-bottom: 3px;
 }
 div.sjis

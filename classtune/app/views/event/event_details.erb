@@ -25,7 +25,8 @@
   <div class="header-wrapper">
     <div class="header-title">
       <div class="header-icon">
-        <%= image_tag '/images/icons/event.png', :html => {:alt => 'Notice'} %>
+        <%= image_tag '/images/icons/event.png', :html => {:alt => 'Event'} %>
+        
       </div>
       <div class="header-title-text-wrapper">
         <div class="header-title-main-text f2">
@@ -44,7 +45,12 @@
   
   
   <div class="portlet-subcontent" style="width:100%">     
-    <div class="timetable_left">    
+    <div class="timetable_left">
+       <% if @event.icon.file? %>
+          <%= image_tag @event.icon.url, :alt => "Event"  %>      
+        <% else %>
+          <%= image_tag '/images/icons/event.png', :html => {:alt => 'Event'} %>
+        <% end %>
       <img width="30" src="/images/icons/event.png" ALT="<%= @event.title %>" />
     </div>
     <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">

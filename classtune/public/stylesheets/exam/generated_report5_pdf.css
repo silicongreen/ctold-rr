@@ -1222,7 +1222,7 @@ margin:10px;
 .subject-result-landscape .sjws_table_head
 {
     font-size: 22px;
-    line-height: 35px;
+    line-height: 40px;
 }
 
 
@@ -1230,13 +1230,6 @@ margin:10px;
 .sjws .container_body
 {
     margin-top: 10px;
-    height:1620px;
-    position:relative;
-    
-}
-.sjws .grouped_exam_report
-{
-   
 }
 
 .sjws .grad_list_right
@@ -1252,18 +1245,14 @@ margin:10px;
 }
 .sjws_table_head
 {
-    width: 100% !important;
     font-size: 22px;
     line-height: 34px;
 }
 
 .sjws_table_intro .table-header td
 {
-    width: auto !important;
-    margin: 0 auto; 
-    font-size: 20px;
-    line-height: 34px;
-    padding: 0px;
+    font-size: 22px;
+    text-align: left!important;
     
 }
 .sjws_table_intro .col-pdf
@@ -1329,11 +1318,11 @@ margin:10px;
 }
 .sjws_table_intro .t_head
 {
-    background: #000!IMPORTANT;font-size: 22px;
+    background: #000!IMPORTANT;
 }
 .sjws_table_intro .term_remark
 {
-    font-size: 22px;
+    font-size: 18px;
 }
 .sjws_table_intro .col-pdf
 {
@@ -1347,11 +1336,10 @@ margin:10px;
 }
 
 .sjws .footer {
-    clear: both;    
-    position:fixed;   
-    bottom:0px; 
-    width: 1250px !important;
-    background:#fff;
+   position:fixed;   
+   bottom:0px; 
+   width: 1240px !important;
+   background:#fff;
 }
 
 .page-break td{
@@ -1387,4 +1375,163 @@ td.checkbox_inline p
     border-top:1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
     border-left:1px solid #ADACAB;
+
 }
+
+
+
+
+
+///sjis
+.sjis table td
+{
+    font-size:15px;
+    padding: 8px 8px 8px 11px;   
+}
+.sjis table tr td.t-left
+{
+    text-align: left;
+}
+.sjis table td.border-left-none{
+   border-left: none !important; 
+} 
+.sjis table td.border-right-none{
+   border-right: none !important;  
+}
+ .sjis table td.no-border
+ {
+    border: none !important;  
+ }
+ .sjis table.evaluation td
+ {
+     text-align: left;
+     padding: 2px 2px 2px 4px !important; 
+     font-size: 21px;
+ }
+ .sjis td.align-center
+ {
+     text-align:center !important;
+ }
+ .sjis #pdf-table
+ {
+     margin-left:1px;
+ }
+ 
+ 
+
+.sjis .table-header td{
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size:14px;
+}
+
+.sjis tr.odd td.align-left-baf, .sjis tr.even td.align-left-baf
+{
+    text-align: left;
+}
+
+
+.sjis tr.odd td
+{
+    padding: 2px 2px 2px 4px;  
+    border: 1px solid #000000;
+    font-size:21px;
+}
+.sjis tr.even td
+{
+     padding: 2px 2px 2px 4px;
+    border: 1px solid #000000;
+    font-size:21px;
+}
+
+.sjis table#pdf-table{
+    border-top: none;
+    border-collapse:collapse
+}
+.sjis tr.even{
+    border: none;
+}
+
+.sjis tr.odd{
+    border: none;
+}
+.sjis h4.h4-evaluation
+{
+   margin: 5px 0px 5px 5px; 
+}
+.sjis #grouped_exam_report h4.result-in-details
+{
+   margin: 5px 0px 5px 5px; 
+}
+.sjis h4
+{
+    border-bottom: 2px solid black;
+    font-size: 15px;
+    padding: 0px;
+    width: auto;
+    float:left;
+    clear:both;
+    margin-bottom: 9px;
+}
+
+.sjis div.student_information
+{
+    float:left;
+    clear:both;
+    font-size: 13px;
+    width: 75%;
+    margin: 5px 5px;
+    
+    
+}
+.sjis div.student_information table
+{
+    margin: 10px 0px;
+    float:left;
+    clear:both;
+}
+.sjis div.student_information table tr td
+{
+    padding: 3px 3px 3px 2px;  
+}
+.sjis div.student_information table tr td.font-dark
+{
+    font-weight: 500;
+}
+.sjis div.student_information table tr td.font-light
+{
+   color: #333333; 
+}
+.sjis div.grade_information
+{
+    margin-left:102px;
+    float:left;
+    width: 13.5%;
+    font-size: 14px;
+   
+}
+.sjis div.grade_information table tr.odd td
+{
+    padding: 3px 3px 3px 5px;
+}
+.sjis div.grade_information table tr.even td
+{
+    padding: 3px 3px 3px 5px;
+}
+.sjis div.grade_information p
+{
+    font-size: 12px;
+    margin-left: 14px;
+    margin-bottom: 3px;
+}
+div.sjis
+{
+    border: 1px solid #000000;
+}
+

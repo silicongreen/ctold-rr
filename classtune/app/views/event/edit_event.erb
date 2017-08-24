@@ -26,7 +26,7 @@
 </div>
 <div id="page-yield">
   <%= flash[:notice] %>
-  <% form_for :event do |f| %>
+  <% form_for :event, :html => { :multipart => true } do |f| %>
     <%= error_messages_for 'event' %>
     <div class="label-field-pair">
       <label for="start-date"><%= t('start_date') %>:</label>

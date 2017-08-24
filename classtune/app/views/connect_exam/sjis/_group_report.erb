@@ -1,4 +1,4 @@
-<% if @connect_exam_obj.result_type.to_i == 4 or @connect_exam_obj.result_type.to_i == 2  %> 
+ 
 <%
       if @tabulation_data.nil?
         student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
@@ -10,5 +10,4 @@
 %>
 
 <%= render  :partial=>"/connect_exam/sjis/finding_data" %>
-<% end %>
 <%= render  :partial=>"/connect_exam/sjis/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

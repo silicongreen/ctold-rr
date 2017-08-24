@@ -210,7 +210,6 @@
 
               </table>
 
-
                 <% 
                   result = ""
                   if !@exam_comment.blank?
@@ -226,7 +225,58 @@
                   end
                 %>
               
-              
+              <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Result
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <b> <%= result %> </b>
+                          </td>
+                      </tr>
+                      
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              94
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center  border-right-none" width="50%">
+                              <%#= @report_data['present'] %>
+                              <%= promotion_status %>
+                          </td>
+                      </tr>
+                     
+                      
+              </table>
+              <h5><b>&nbsp;</b></h5>
+              <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
+
+                      <tr class="even">
+                          <td class="col-pdf  border-left-none" width="33%">
+                              Class Teacher's Signature
+                          </td> 
+                          <td class="col-pdf  border-right-none" width="67%">
+                              <br/><br/>
+                          </td>
+                      </tr>
+                      <tr class="even">
+                          <td class="col-pdf  border-left-none" width="33%">
+                              Principal's Signature
+                          </td> 
+                          <td class="col-pdf  border-right-none" width="67%">
+                              <br/><br/>
+                          </td>
+                      </tr>
+
+              </table> 
 
           </div>
       </div>

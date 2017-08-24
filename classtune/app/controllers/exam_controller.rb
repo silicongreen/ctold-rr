@@ -3820,7 +3820,6 @@ class ExamController < ApplicationController
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,
-            :show_as_html => true,
             :orientation => 'Landscape' 
         elsif  MultiSchool.current_school.id == 340  
             if @connect_exam_obj.result_type == 13

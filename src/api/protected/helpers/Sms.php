@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 class Sms {
-    public static $sms_attendence_school = [2,296,319,312];
+    public static $sms_attendence_school = [2,296,319];
     public static $sms_all_guardian = [319];
     public static $sms_subject_attendence_school = [2,319];
     //296

@@ -210,7 +210,7 @@ class Events extends CActiveRecord {
     public function getSingleEvents($id) {
 
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id, t.title,t.is_holiday,t.school_id,t.created_at, t.description, t.start_date, t.end_date, t.is_common, t.event_category_id,t.fees';
+        $criteria->select = 't.id, t.title,t.is_holiday,t.icon_file_name,t.school_id,t.created_at, t.description, t.start_date, t.end_date, t.is_common, t.event_category_id,t.fees';
         $criteria->compare('t.id',$id);
         //$criteria->compare('t.is_published', 1);
         
@@ -237,6 +237,14 @@ class Events extends CActiveRecord {
             $_data['event_icon_name'] = $row['eventCategory']->icon_number;
             $_data['event_icon_path'] = (!empty($row['eventCategory']->icon_number)) ? Settings::$domain_name . '/images/icons/events/' . $row['eventCategory']->icon_number : null;
         }
+        $_data['event_icon'] = "";
+        if(!empty($row->icon_file_name))
+        {
+            $sd = new SchoolDomains();
+            $domains = $sd->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+            $_data['event_icon']  = "http://".$domains->domain."/events/icon/".$row->id."/original/".$row->icon_file_name;
+        }
+        
         $_data['event_start_date'] = $row->start_date;
         $_data['event_end_date'] = $row->end_date;
         $_data['event_description'] = $row->description;
@@ -306,7 +314,7 @@ class Events extends CActiveRecord {
     public function getEvents($school_id, $from_date, $to_date = NULL, $page = 1, $page_size = 10, $category_id = null, $b_is_club = false, $b_count = false, $b_archive = false, $student_id = NULL) {
 
         $criteria = new CDbCriteria;
-        $criteria->select = 't.id, t.title,t.is_holiday, t.description, t.start_date, t.end_date, t.is_common, t.event_category_id';
+        $criteria->select = 't.id, t.title,t.is_holiday,t.icon_file_name, t.description, t.start_date, t.end_date, t.is_common, t.event_category_id';
         $criteria->compare('t.is_published', 1);
 
         if ($b_count) {
@@ -407,6 +415,14 @@ class Events extends CActiveRecord {
                 $_data['event_category_name'] = $row['eventCategory']->name;
                 $_data['event_icon_name'] = $row['eventCategory']->icon_number;
                 $_data['event_icon_path'] = (!empty($row['eventCategory']->icon_number)) ? Settings::$domain_name . '/images/icons/events/' . $row['eventCategory']->icon_number : null;
+                $_data['event_icon'] = "";
+                if(!empty($row->icon_file_name))
+                {
+                    $sd = new SchoolDomains();
+                    $domains = $sd->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+                    $_data['event_icon']  = "http://".$domains->domain."/events/icon/".$row->id."/original/".$row->icon_file_name;
+                }
+                
                 $_data['event_start_date'] = $row->start_date;
                 $_data['event_end_date'] = $row->end_date;
                 $_data['event_description'] = $row->description;

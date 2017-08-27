@@ -130,7 +130,7 @@ class News extends CActiveRecord {
     public function getSingleNews($id) {
         $criteria = new CDbCriteria;
 
-        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at,t.icon_file_name, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
         $criteria->compare('t.id', $id);
 
         $data = $this->with('authorDetails', 'newsAcknowledge')->find($criteria);
@@ -144,6 +144,13 @@ class News extends CActiveRecord {
         $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
         $_data['notice_title'] = $row->title;
         $_data['notice_content'] = $row->content;
+        $_data['notice_icon'] = "";
+        if(!empty($row->icon_file_name))
+        {
+            $sd = new SchoolDomains();
+            $domains = $sd->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+            $_data['notice_icon']  = "http://".$domains->domain."/news/icon/".$row->id."/original/".$row->icon_file_name;
+        }     
         $_data['file_name'] = (!empty($row->attachment_file_name)) ? $row->attachment_file_name : '';
         $_data['file_type'] = (!empty($row->attachment_content_type)) ? $row->attachment_content_type : '';
         $_data['file_size'] = (!empty($row->attachment_file_size)) ? $row->attachment_file_size : '';
@@ -278,7 +285,7 @@ class News extends CActiveRecord {
         $school_id = Yii::app()->user->schoolId;
         $criteria = new CDbCriteria;
         $criteria->together = true;
-        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
+        $criteria->select = 't.id, t.category_id, t.title, t.content, t.created_at, t.updated_at,t.icon_file_name, t.attachment_file_name, t.attachment_content_type, t.attachment_file_size, t.attachment_updated_at';
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.is_published', 1);
         
@@ -381,6 +388,13 @@ class News extends CActiveRecord {
             $_data['notice_type_text'] = ucfirst(Settings::$ar_notice_type[$row->category_id]);
             $_data['notice_title'] = $row->title;
             $_data['notice_content'] = $row->content;
+            $_data['notice_icon'] = "";
+            if(!empty($row->icon_file_name))
+            {
+                $sd = new SchoolDomains();
+                $domains = $sd->getSchoolDomainBySchoolId(Yii::app()->user->schoolId);
+                $_data['notice_icon']  = "http://".$domains->domain."/news/icon/".$row->id."/original/".$row->icon_file_name;
+            }
             $_data['file_name'] = (!empty($row->attachment_file_name)) ? $row->attachment_file_name : '';
             $_data['file_type'] = (!empty($row->attachment_content_type)) ? $row->attachment_content_type : '';
             $_data['file_size'] = (!empty($row->attachment_file_size)) ? $row->attachment_file_size : '';

@@ -473,6 +473,8 @@ class ExamsController < ApplicationController
           if student.batch_id.to_i == s.batch_id
             if MultiSchool.current_school.id == 319
               @students.push [student.first_name.to_s,student.last_name.to_s, student.id, student] unless student.nil?
+            elsif MultiSchool.current_school.id == 342
+              @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
             else
               @students.push [student.class_roll_no.to_i,student.first_name.to_s, student.id.to_i, student] unless student.nil? 
             end

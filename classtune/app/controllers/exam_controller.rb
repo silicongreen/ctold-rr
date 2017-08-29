@@ -710,10 +710,11 @@ class ExamController < ApplicationController
     
     if is_elective == nil
       if MultiSchool.current_school.id == 319
-        @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
+        @students = Student.active.find_all_by_batch_id(@batch.id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
       else
-        @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
+        @students = Student.active.find_all_by_batch_id(@batch.id, :order => 'if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),first_name ASC')
       end
+     
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(@exam_subject.id)
       @students = []

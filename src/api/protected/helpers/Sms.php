@@ -143,7 +143,7 @@ class Sms
     {
         if ($school_id == 319)
         {
-            send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
+            self::send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 
         else
         {

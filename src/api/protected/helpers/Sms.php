@@ -141,7 +141,7 @@ class Sms
 
     public static function send_sms_ssl($sms_numbers, $sms_msg_array, $school_id)
     {
-        if ($school_idn == 319)
+        if ($school_id == 319)
         {
             send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 

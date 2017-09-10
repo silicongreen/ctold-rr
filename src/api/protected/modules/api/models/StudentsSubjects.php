@@ -122,7 +122,19 @@ class StudentsSubjects extends CActiveRecord
             {
                 $criteria->compare('t.batch_id', $batch_id);
             }
-            $criteria->order = "LENGTH(Subjectstudent.class_roll_no) ASC,Subjectstudent.class_roll_no ASC";
+            if(Yii::app()->user->schoolId == 319)
+            {
+                $criteria->order = "Subjectstudent.first_name ASC, Subjectstudent.middle_name ASC, Subjectstudent.last_name ASC";
+            }
+            else if(Yii::app()->user->schoolId == 342)
+            {
+                $criteria->order = "LENGTH(Subjectstudent.class_roll_no) ASC,Subjectstudent.class_roll_no ASC";
+            }    
+            else
+            {
+                $criteria->order = "if(Subjectstudent.class_roll_no = '' or Subjectstudent.class_roll_no is null,0,cast(Subjectstudent.class_roll_no as unsigned)),Subjectstudent.first_name ASC";
+            }
+            //$criteria->order = "LENGTH(Subjectstudent.class_roll_no) ASC,Subjectstudent.class_roll_no ASC";
             $students = $this->with("Subjectstudent")->findAll($criteria); 
             $return_array = array();
             

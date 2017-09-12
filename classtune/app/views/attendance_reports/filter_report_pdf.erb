@@ -107,6 +107,7 @@
             <% c =cycle('even','odd ') %>
             <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
               <tr class="<%= "#{c}" %>">
+                <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
                 <td class="col-pdf"> <%= student.admission_no %></td>
                 <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
@@ -119,6 +120,7 @@
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) > @value.to_f and @range == 'Above' %>
               <tr class="<%= "#{c}" %>">
+                <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
                 <td class="col-pdf"> <%= student.admission_no %></td>
                 <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
@@ -131,6 +133,7 @@
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) == @value.to_f and @range == 'Equals' %>
               <tr class="<%= "#{c}" %>">
+                <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
                 <td class="col-pdf"> <%= student.admission_no %></td>
                 <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>

@@ -124,9 +124,9 @@
 <% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
 <div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %><% end %>">
     <table width="100%">
-        <td><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '20%' %></td>
-        <td class="name-td">
-              <h4 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h4>
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '100%' %></span></td>
+        <td class="name-td name-td-south">
+              <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
               <h5 align="center">English Medium - Banani Branch</h5>
               <% if !@connect_exam_obj.blank? %>
                 <% if !@batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>

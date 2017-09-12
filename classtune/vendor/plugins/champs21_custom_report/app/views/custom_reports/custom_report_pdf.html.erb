@@ -2,9 +2,7 @@
   <div class="page1"></div>
   <div class="section1 row" >
 
-    <div class="hor_line"></div>
-    <h2><%= t('custom_reports') %></h2>
-    <div class="hor_line"></div>
+  
     <div class="extender"> </div>
     <div class="report">
       <div id ="main_info">
@@ -13,14 +11,25 @@
 
     </div>
   </div>
+  <% std = 0 %>
   <div class="section1 row" >
     <center>
       <table id="pdf-table" width="100%">
         <tr class="table-header">
           <td class="col-pdf sl_no"><%= t('sl_no') %></td>
+          
           <%@report_columns.each do |rc| %>
-            <td class="col-pdf name"> <%= rc.title %></td>
+            <% if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation" %>
+              <% std = 1 %>
+            <% else %>
+            <td class="col-pdf name"> <%= t(rc.title) %></td>
+            <% end %>
           <%end%>
+          <% if std == 1  %> 
+            <td class="col-pdf name">Father</td>
+            <td class="col-pdf name">Mother</td>
+            <td class="col-pdf name"></td>
+          <% end %>  
         </tr>
       </table>
     </center>
@@ -38,8 +47,56 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf sl_no"><%= i+1 %></td>
             <% @report_columns.each do |col| %>
+              <% if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation" %>
+            
+             <% else %>
               <td class="col-pdf name"><%=  obj.send(col.method) %></td>
+              <% end %>
             <% end %>
+            <% if std == 1  %>
+              <% count_guardian = 0 %>
+              <% father = 0 %>
+              <% guardians = GuardianStudents.find_all_by_student_id(obj.id) %>
+            
+              <% unless guardians.blank?  %>
+                
+                <% guardians.each do |gur| %>
+                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                  <% unless gurdian.blank? %>
+                      <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
+                          <td class="col-pdf name"><%=  gurdian.first_name %> <%=  gurdian.last_name %></td>
+                          <% count_guardian = count_guardian+1 %>
+                          <% father = 1 %>
+                          <% break %>
+                      <% end %>
+                  <% end %>
+                <% end %>
+                <% if father == 0 %>
+                     <td class="col-pdf name"></td>     
+                <% end %>          
+                <% guardians.each do |gur| %>
+                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                  <% unless gurdian.blank? %>
+                      <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
+                          <td class="col-pdf name"><%=  gurdian.first_name %> <%=  gurdian.last_name %></td>
+                          <% count_guardian = count_guardian+1 %>
+                          <% break %>
+                      <% end %>
+                  <% end %>
+                <% end %>
+                          
+                <% if count_guardian == 0 || (count_guardian == 1 && father = 1) %>
+                     <td class="col-pdf name"></td>     
+                <% end %>
+                          
+              <% else %>
+                   <td class="col-pdf name"></td>
+                   <td class="col-pdf name"></td>
+                     
+              <% end %> 
+              <td class="col-pdf name"></td>
+                     
+            <% end %>  
           </tr>
         </table>
       </center>

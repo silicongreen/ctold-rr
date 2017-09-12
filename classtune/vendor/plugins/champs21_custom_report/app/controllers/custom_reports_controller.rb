@@ -101,7 +101,14 @@ class CustomReportsController < ApplicationController
     @column_type = Hash.new
     @report.model_object.columns_hash.each{|key,val| @column_type[key]=val.type }
     @search_results = @report.model_object.report_search(@report.search_param)
-    render :pdf=>'custom_report_pdf' 
+    
+    render :pdf => 'custom_report_pdf',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
 
   def to_csv

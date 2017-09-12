@@ -973,7 +973,7 @@ div.baf_shaheen
 
 .south-point-protrait table td
 {
-    font-size:18px;
+    font-size:20px;
 }
 .south-point-protrait margin-top-bottom-10
 {
@@ -981,12 +981,12 @@ div.baf_shaheen
 }
 .south-point-protrait .academia_box table th
 {
-    font-size:18px !important;
+    font-size:20px !important;
 }
 
 .south-point-protrait .academia_box table td
 {
-    font-size:18px;
+    font-size:20px;
 
 }
 .potrait_header_south_point h4
@@ -995,7 +995,7 @@ div.baf_shaheen
 }
 .potrait_header_south_point h5
 {
-    font-size:11px !important;
+    font-size:12px !important;
 }
 .south-point-protrait h2
 {
@@ -1004,7 +1004,7 @@ div.baf_shaheen
 
 .south-point-protrait table td
 {
-    font-size:17px;
+    font-size:20px;
     padding: 12px 12px 12px 12px;   
 }
 
@@ -1233,7 +1233,7 @@ table.grade_and_attendance tr td.grade_and_attendance_td
 }
 #pdf-header-south table td.south-logo span
 {
-    margin-top:-50px;
+    margin-top:-40px;
     float:left;
 }
 #pdf-header-south table td
@@ -1245,19 +1245,45 @@ table.grade_and_attendance tr td.grade_and_attendance_td
     width: 70%;
     text-align: left;
 }
+
 #pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
 {
-    line-height: 2px;
+    line-height: 0px !important;
     width: 85%;
 }
 #pdf-header-south table td.name-td h5
 {
-    font-size: 14px !important;
+    font-size: 19px !important;
+    font-weight: normal !important;
+  
+}
+#pdf-header-south table td.name-td h5.step-1, #pdf-header-south table td.name-td h5.step-2
+{
+    float:left;
+    margin-top:-10px; 
+}
+
+#pdf-header-south table td.name-td h5.bold-all
+{
+    font-weight: bold !important;
+    
 }
 
 #pdf-header-south table td.name-td-south h4
 {
-    font-size: 25px;
+    float:left;
+    font-size: 27px;
+    font-family: sans-serif !important; 
+  
+}
+
+#pdf-header-south
+{
+    font-family: "Times New Roman", Georgia, Serif !important; 
+}
+.south-point-protrait
+{
+    font-family: "Times New Roman", Georgia, Serif !important; 
 }
 
 table.margin-top-50

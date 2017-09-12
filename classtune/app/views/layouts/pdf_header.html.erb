@@ -130,12 +130,12 @@
               <h5 align="center">English Medium - Banani Branch</h5>
               <% if !@connect_exam_obj.blank? %>
                 <% if !@batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>
-                    <h5 align="center">Result Sheet - <%= @connect_exam_obj.name %></h5>
-                    <h5 align="center"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
+                    <h5 align="center" class="bold-all step-1">Result Sheet - <%= @connect_exam_obj.name %></h5>
+                    <h5 align="center" class="step-2"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
                 <% else %>
                 <% unless @connect_exam_obj.blank? and @batch.blank? %>
-                   <h5 align="center"><%= @batch.course.course_name %></h5>
-                   <h5 align="center">Progress Report - <%= @connect_exam_obj.name %></h5>
+                   <h5 align="center" class="step-2"><%= @batch.course.course_name %></h5>
+                   <h5 align="center"   class="bold-all step-1">Progress Report - <%= @connect_exam_obj.name %></h5>
                 <% end %>
                 <% end %>   
              <% end %>   

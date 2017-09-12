@@ -105,17 +105,42 @@
                   </tr> 
               <% end %>
             <% c =cycle('even','odd ') %>
-            <tr class="<%= "#{c}" %>">
-              <td class="col-pdf1"><%= student.class_roll_no %></td>
-              <td class="col-pdf1"><%= student.full_name %></td>
-              <td class="col-pdf1"><%= student.admission_no %></td>
-              <td class="col-pdf1"> <%= @leaves[student.id]['present'] %></td>
-              <td class="col-pdf1"> <%= @leaves[student.id]['late'] %></td>
-              <td class="col-pdf1"> <%= @leaves[student.id]['absent'] %></td>
-              <td class="col-pdf1"> <%= @leaves[student.id]['on_leave'] %></td>
-              <td class="col-pdf1"><%= @leaves[student.id]['total'] %></td>
-              <td class="col-pdf1"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
-            </tr>
+            <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
+              <tr class="<%= "#{c}" %>">
+                <td class="col-pdf"><%= student.full_name %></td>
+                <td class="col-pdf"> <%= student.admission_no %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['late'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['absent'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['on_leave'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['total'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
+              </tr>
+            <% end %>
+            <% if @leaves[student.id]['percent'].round(2) > @value.to_f and @range == 'Above' %>
+              <tr class="<%= "#{c}" %>">
+                <td class="col-pdf"><%= student.full_name %></td>
+                <td class="col-pdf"> <%= student.admission_no %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['late'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['absent'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['on_leave'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['total'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
+              </tr>
+            <% end %>
+            <% if @leaves[student.id]['percent'].round(2) == @value.to_f and @range == 'Equals' %>
+              <tr class="<%= "#{c}" %>">
+                <td class="col-pdf"><%= student.full_name %></td>
+                <td class="col-pdf"> <%= student.admission_no %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['present'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['late'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['absent'] %></td>
+                <td class="col-pdf"> <%= @leaves[student.id]['on_leave'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['total'] %></td>
+                <td class="col-pdf"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
+              </tr>
+            <% end %>
           <% end %>  
         </table>
       </center>

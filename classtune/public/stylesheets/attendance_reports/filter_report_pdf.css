@@ -7,21 +7,36 @@
     overflow: hidden;
 }
 
-
-
-.hor_line{
-    width:800px;
-    background: #333333;
-    height: 1px;
+#pdf-header-south{
+    width:1000px;
+}
+.page-break td{
+    height: 50px;
+    border: 1px solid #fff;
+    border-bottom: 1px solid #ADACAB;
 }
 
+.hor_line {
+    background: none repeat scroll 0 0 #333333;
+    float: left;
+    height: 1px;
+    margin-top: -10px;
+    width: 800px;
+}
+.hor_line1{
+    background: none repeat scroll 0 0 #000000;
+    float: left;
+    height: 1px;
+    margin-top: -10px;
+    width: 800px;
+}
 h2.heading{
     text-align: center;
     margin:5px;
 }
 
 #main_info h4{
-    color: #555555;
+    color: #000;
     margin-top: 2px;
     font-weight: normal;
 }
@@ -47,33 +62,48 @@ h2.heading{
 
 }
 tr.even{
-   border: 1px solid #ADACAB;
+    border: 1px solid #ADACAB;
 }
 
 tr.odd{
-   border: 1px solid #ADACAB;
+    border: 1px solid #ADACAB;
 }
 
 .even td{
 
-  padding: 12px 12px 12px 15px;
-  border: 1px solid #ADACAB;
-  border-right: 0px solid #fff;
-  border-top: 0px solid #fff;
+    padding: 8px 8px 8px 11px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    font-size:12px;
+    text-align: center;
 
 }
 
 .odd td{
-  padding: 12px 12px 12px 15px;
-  border: 1px solid #ADACAB;
-  border-right: 0px solid #fff;
-  border-top: 0px solid #fff;
+    padding: 8px 8px 8px 11px;
+    border: 1px solid #ADACAB;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    font-size:12px;
+    text-align: center;
 
+}
+.table-header td{
+    padding: 8px 8px 8px 11px;
+    border-top: 1px solid #ADACAB;
+    border-left: 1px solid #ADACAB;
+    border-right: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+    color:black;
+    font-weight: bold;
+    font-size:12px;
+    text-align: center;
 }
 
 table#pdf-table{
- border-top: 1px solid #ADACAB;
- border-collapse:collapse
+    border-top: 1px solid #ADACAB;
+    border-collapse:collapse
 }
 
 
@@ -106,15 +136,78 @@ table#pdf-table{
     text-align: center;
 }
 
+.col-pdf1
+{color: #000000;}
 
-.page-break td{
-    height: 300px;
+.page1 {
+    width:800px;
+    height: auto;
+    page-break-after: always;
+    page-break-inside: avoid;
+    clear: both;
+}
+.page-break1{
+    height: 20px;
     border: 1px solid #fff;
+    width:800px;
+    float: left;
+}
+.grand_total
+{
     border-bottom: 1px solid #ADACAB;
 }
-.col-pdf1
-{color: #990A10;}
+.section1{
+    page-break-before:always;
+    text-align: center;
+}
+.row{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+.page-blank{
+    width: 100%;
+    float: left;
+}
+.page_break{
+    margin-top: 60px;
+}
+.serial-td{
+    width:60px;
+    min-width:60px;
+    max-width:60px;
+    overflow:hidden;
+
+}
+.name-td{
+    width:auto;
+    /*    min-width:180px;
+        max-width:180px;*/
+    overflow: hidden;
+}
+.total-td{
+    width:150px;
+    min-width:150px;
+    max-width:150px;
+    overflow:hidden;
+}
 
 
+#main_info h4 {
+    color: #000000;
+    font-weight: bold;
+    margin-top: 18px;
+    float: left;
+}
+.info1 {
+    float: left;
+    margin-top: -10px;
+    width: 800px;
+}
 
-
+.info-left {
+    float: left;
+}
+.info-right {
+    float: right;
+}

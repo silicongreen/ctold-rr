@@ -7,8 +7,15 @@ class MarksController < ApplicationController
   
   def get_class
     require 'json'
-    batch_name = params[:batch]
-    batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    batch_name = params[:batch]  
+    if current_user.employee
+      batches = @current_user.employee_record.batches
+      batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches = batches.uniq unless batches.empty?
+      batches.reject! {|s| s.name!=batch_name}
+    else
+       batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end  
     @class_list = []
     @class_names = []
     k = 0
@@ -34,6 +41,22 @@ class MarksController < ApplicationController
   
   def get_exam_subject
     require 'json'
+    
+    if current_user.employee
+      @emp_subjects = current_user.employee_record.subjects.active
+      @batches= current_user.employee_record.batches
+      unless @batches.blank?
+        @batches.each do |batch|
+          @emp_subjects += batch.subjects
+        end
+      end
+    
+    @emp_subjects = @emp_subjects.uniq unless @batches.empty?
+    
+    elsif current_user.admin
+      @emp_subjects = Subject.active
+    end
+    
     exam_id = params[:exam_id]
     exam_connect = ExamConnect.find(exam_id)
     
@@ -45,7 +68,7 @@ class MarksController < ApplicationController
       exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
       exams.each do |exam|
         exam_subject = exam.subject
-        if !exam_subject.blank? and !@subjects.include?(exam_subject) 
+        if !exam_subject.blank? and !@subjects.include?(exam_subject) and @emp_subjects.include?(exam_subject) 
           @subjects << exam_subject  
           data[k] = @template.link_to(exam_subject.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s)
           k = k+1
@@ -97,7 +120,15 @@ class MarksController < ApplicationController
     require 'json'
     batch_name = params[:batch]
     course_name = params[:course_name]
-    batches = Batch.find_all_by_name(batch_name)
+    if current_user.employee
+      batches = @current_user.employee_record.batches
+      batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches = batches.uniq unless batches.empty?
+      batches.reject! {|s| s.name!=batch_name}
+    else
+      batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end 
+#    batches = Batch.find_all_by_name(batch_name)
     @batch_list = []
     k = 0
     unless batches.blank?

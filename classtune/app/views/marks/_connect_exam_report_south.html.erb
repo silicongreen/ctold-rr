@@ -35,6 +35,27 @@
     <input type="hidden" name="result_type" value="1" id="result_type" />
     <input type="hidden" name="batch_id" value="0" id="batch_id" />
     <% batches = Batch.active.find(:all, :group => "name") %>
+    
+    <%
+    if @current_user.employee
+      batches_emp = @current_user.employee_record.batches
+      batches_emp += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches_emp = batches_emp.uniq unless batches_emp.empty?
+    else
+      batches_emp = Batch.active
+    end 
+    batches = []
+    batch_names = []
+    unless batches_emp.blank?
+      batches_emp.each do |batch|
+        if !batch_names.include?(batch.name)
+          batch_names << batch.name
+          batches << batch
+        end  
+      end  
+    end  
+    %>
+    
     <div class="shift_batch_section">
       <% if batches %>
       <% 

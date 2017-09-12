@@ -973,7 +973,7 @@ div.baf_shaheen
 
 .south-point-protrait table td
 {
-    font-size:20px;
+    font-size:22px;
 }
 .south-point-protrait margin-top-bottom-10
 {
@@ -981,12 +981,12 @@ div.baf_shaheen
 }
 .south-point-protrait .academia_box table th
 {
-    font-size:20px !important;
+    font-size:22px !important;
 }
 
 .south-point-protrait .academia_box table td
 {
-    font-size:20px;
+    font-size:22px;
 
 }
 .potrait_header_south_point h4
@@ -1004,7 +1004,7 @@ div.baf_shaheen
 
 .south-point-protrait table td
 {
-    font-size:20px;
+    font-size:22px;
     padding: 12px 12px 12px 12px;   
 }
 
@@ -1020,6 +1020,11 @@ div.baf_shaheen
 .south-point-protrait .margin-top-bottom-9
 {
     margin-top: 28px !important;
+}
+
+.south-point-protrait table tr td.comment_section_final
+{
+    font-weight: normal;
 }
 
 

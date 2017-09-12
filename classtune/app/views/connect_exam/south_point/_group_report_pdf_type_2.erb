@@ -255,15 +255,18 @@
               <%= render  :partial=>"/connect_exam/south_point/gradding_level2" %>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-2" width="100%" >
 
+                  <tr class="table-header">
+                      <td class="col-pdf td-align-left" valign="top">Class Teacher Comments</td>
+                  </tr>
                       <tr class="table-header">
                           <td class="col-pdf comment_section_final td-align-left" valign="top">
                               <% if !@exam_comment.blank? %>
 
-                                Class Teacher Comments&nbsp:&nbsp;<%= @exam_comment.comments %>
+                                <%= @exam_comment.comments %>
 
                               <% else %> 
 
-                                Class Teacher Comments&nbsp:&nbsp; 
+                                
 
                               <% end %>
                           </td>                      
@@ -278,20 +281,20 @@
                       <tr>
                           <td class="">
                               <%= "--------------------------------------" %><br />
-                              <font size='3'><%= "Class Teacher" %></font>
+                              <font size='4'><b><%= "Class Teacher" %></b></font>
                           </td>
                           <td class="">
                               <%= "--------------------------------------" %><br />
-                              <font size='3'><%= "Teacher In charge" %></font>
+                              <font size='4'><b><%= "Teacher In charge" %></b></font>
                           </td>
                           <td class="">
                               <%= "--------------------------------------" %><br />
-                              <font size='3'><%= "Principal" %></font>
+                              <font size='4'><b><%= "Principal" %></b></font>
                           </td>
 
                           <td class=""><center>
                       <%= "-------------------------------------" %><br />
-                      <font size='3'><%= "F. Principal" %></font></center>
+                      <font size='4'><b><%= "F. Principal" %></b></font></center>
                   </td>
                   </tr>
 

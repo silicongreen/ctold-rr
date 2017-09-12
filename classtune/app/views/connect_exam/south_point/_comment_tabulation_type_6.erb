@@ -68,60 +68,66 @@
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
-                  <% subject_full_mark = 0 %>
-                  <% subject_obtain_mark = 0 %>
-                  <% jloop = 0 %>
-                  <% @report_data['report']['exams'].each do |rs| %>
-                    <% if jloop == 1 %>
-                    <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                    <% unless @examobj.blank?  %>
-                      <% check_exam = false %>
-                      <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                      <% if @exam_score_all.blank? %>
+                  <% subjectdata = Subject.find(sub['id'].to_i) %>
+                  <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
+                  <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
+                      <% subject_full_mark = 0 %>
+                      <% subject_obtain_mark = 0 %>
+                      <% jloop = 0 %>
+                      <% @report_data['report']['exams'].each do |rs| %>
+                        <% if jloop == 1 %>
+                        <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                        <% unless @examobj.blank?  %>
                           <% check_exam = false %>
-                      <% else %>
-                        <% @exam_score_all.each do |score| %>
-                        <%
-                          unless score.marks.blank?
-                            check_exam = true
-                            break
-                          end
-                        %>
+                          <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                          <% if @exam_score_all.blank? %>
+                              <% check_exam = false %>
+                          <% else %>
+                            <% @exam_score_all.each do |score| %>
+                            <%
+                              unless score.marks.blank?
+                                check_exam = true
+                                break
+                              end
+                            %>
+                            <% end %>
+                          <% end %>
                         <% end %>
-                      <% end %>
-                    <% end %>
-                    <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
-                      
-                      <%
-                          
-                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                          subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                         
-                        
-                      %>
-                    <% end %>
-                    <% end %>
-                    <% jloop = jloop+1 %>
-                   <% end %> 
-                       <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
-                    <td>
-                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
-                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                       <% if !grade.blank? and !grade.name.blank? %>
-                           <%
-                              if grades.include?(grade.name.to_s)
-                                grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
-                              else
-                                grades << grade.name.to_s
-                                grade_count[grade.name.to_s] = 1
-                              end  
-                           %>
-                          <%= grade.name %>  
-                       <% else %>
-                          N/A  
-                       <% end %>
-                    </td>  
+                        <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
+
+                          <%
+
+                              subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+
+
+                          %>
+                        <% end %>
+                        <% end %>
+                        <% jloop = jloop+1 %>
+                       <% end %> 
+                           <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                        <td>
+                           <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                           <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                           <% if !grade.blank? and !grade.name.blank? %>
+                               <%
+                                  if grades.include?(grade.name.to_s)
+                                    grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                                  else
+                                    grades << grade.name.to_s
+                                    grade_count[grade.name.to_s] = 1
+                                  end  
+                               %>
+                              <%= grade.name %>  
+                           <% else %>
+                              N/A  
+                           <% end %>
+                        </td>  
+                    <% end %>     
              <% end %> 
             
               <td>

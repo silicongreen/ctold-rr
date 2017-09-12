@@ -93,6 +93,11 @@
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
+                  <% subjectdata = Subject.find(sub['id'].to_i) %>
+                  <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
+                  <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                    <td>&nbsp;</td>
+                  <% else %>
                   <% st_full_mark = 0 %>
                   <% ct_full_mark = 0 %>
                   <% st_marks = [] %>
@@ -169,7 +174,8 @@
                        <% else %>
                           N/A  
                        <% end %>
-                    </td>  
+                    </td>
+                    <% end %>
             <% end %> 
             <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                     <% if !sub['subject_comment'][std['id']].nil? %>

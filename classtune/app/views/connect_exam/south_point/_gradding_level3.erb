@@ -31,21 +31,20 @@
 
                           <td class="col-pdf">
                             <% if grade.max_score.nil? %>  
-                            <%= '%i%' % grade.min_score %>
-                          <% else %>  
-                            <% min_score = grade.min_score.to_f  %>
-                            <% max_score = grade.max_score.to_f  %>
-                            <% min_score = min_score.to_i %>
-                            <% max_score = max_score.to_i %>
-                            <% if max_score.to_i == 100  %>
-                            <%= min_score.to_s+" and above"  %>
-                            <% elsif min_score.to_i == 0  %>
-                            <% below = max_score.to_i+1 %>
-                            <%=  "Below "+below.to_s  %>
-                            <% else %>
-                                <%= min_score.to_s + " - " + max_score.to_s %>
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = grade.min_score.to_f  %>
+                              <% max_score = grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+
+                              <% if min_score.to_i == 0  %>
+                                <% below = max_score.to_i+1 %>
+                                <%=  "Below "+below.to_s+"%"  %>
+                              <% else %>
+                                <%= min_score.to_s+"%" + " - " + max_score.to_s+"%" %>
+                              <% end %>
                             <% end %>
-                          <% end %> 
                           </td>
                           <td class="col-pdf"><%= grade.name %></td>
                           <td class="col-pdf"><%= grade.description %></td>

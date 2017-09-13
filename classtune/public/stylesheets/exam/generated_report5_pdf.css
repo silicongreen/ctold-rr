@@ -971,6 +971,12 @@ div.baf_shaheen
 }
 
 
+.south-point-protrait table tr.even td, .south-point-protrait table tr.odd td
+{
+    padding: 3px 7px 3px 7px !important; 
+}
+
+
 .south-point-protrait table td
 {
     font-size:22px;

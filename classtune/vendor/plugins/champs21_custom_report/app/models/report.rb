@@ -83,15 +83,76 @@ class Report < ActiveRecord::Base
     ip
   end
   def to_csv
+    std = 0
     csv = FasterCSV.generate do |csv|
-      cols = self.report_columns.collect{|rc| rc.title}
+      
+      cols = []
+      self.report_columns.each do |rc|
+        if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
+            std = 1
+        else
+          cols << t(rc.title)
+        end  
+      end
+      if std == 1 
+        cols << "Father"
+        cols << "Mother"
+      end
       csv << cols
+      
       search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
       search_results.uniq.each do |obj|
         cols = []
         self.report_columns.each do |col|
-          cols << "#{obj.send(col.method)}"
+          if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+           
+          else
+            cols << "#{obj.send(col.method)}"
+          end
         end
+        if std == 1
+          count_guardian = 0
+          father = 0
+          guardians = GuardianStudents.find_all_by_student_id(obj.id)
+          unless guardians.blank?
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                  cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                  count_guardian = count_guardian+1
+                  father = 1
+                  break
+                end
+              end
+            end
+            
+            if father == 0
+              cols << ""
+            end
+            
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                  cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                  count_guardian = count_guardian+1
+                  break
+                end
+              end
+            end
+            
+            if count_guardian == 0 || (count_guardian == 1 && father = 1)
+              cols << ""
+            end
+            
+          else
+            cols << ""
+            cols << ""
+          end  
+          
+        end
+        
         csv << cols
       end
     end

@@ -209,9 +209,9 @@ class ExamController < ApplicationController
         elective_subjects.each do |e|
           is_assigned = StudentsSubject.find_all_by_subject_id(e.id)
           unless is_assigned.empty?
-            unless elective.include?(e.name)
+            unless elective.include?(e.code)
               @elective_subjects.push e
-              elective << e.name
+              elective << e.code
             end
           end
         end

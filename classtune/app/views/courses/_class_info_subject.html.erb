@@ -13,12 +13,14 @@
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
           <% courses_batches.each do |cb| %>
             <% a_course_batch_info = cb.split('-') %>
-            <% @batch_data =   Batch.find(a_course_batch_info[2]) %>
+            <% @batch_data =   Batch.find_by_id(a_course_batch_info[2]) %>
+            <% unless @batch_data.blank? %>
             <%= link_to_remote(a_course_batch_info[0].strip.length > 0 ?  a_course_batch_info[0].strip : "no-section", 
                 :url => {:controller => "subjects",:action => "show", :id => "show", :batch_id => @batch_data.id, :show_batch_subject => "1"}, 
                 :html => {:class=> "sections", :id => "section_" + @batch_data.id.to_s },
                 :before => "$('loading_" + course.id.to_s + "').show(); $('section_" + @batch_data.id.to_s + "').addClassName('selected');", 
                 :complete => "highlight_section(" + @batch_data.id.to_s + "," + course.id.to_s + ");" ) %>
+            <% end %>
           <% end %>  
           <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + course.id.to_s, :style =>"display: none;  float: right; " ) %>
         </div>

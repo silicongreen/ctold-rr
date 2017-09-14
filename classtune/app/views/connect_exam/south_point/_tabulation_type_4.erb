@@ -28,7 +28,10 @@
       <table width="100%" >
             <thead>
                 <tr>
-                    <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
+                    
+                    <td><b>Year: </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                    
+                    
                     <td <% unless @assigned_employee.blank? %>align="center"<% else %>align="right"<% end %> ><b>Class : 
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>

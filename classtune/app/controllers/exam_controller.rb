@@ -2598,6 +2598,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
+    @assigned_employee=@batch.employees
     
     pdf_name = "tabulation_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
     dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s)

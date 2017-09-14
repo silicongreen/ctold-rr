@@ -29,10 +29,10 @@
             <thead>
                 <tr>
                     
-                    <td><b>Year: </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
+                    <td><b>Year:</b> </td><td class="font-light"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
                     
                     
-                    <td <% unless @assigned_employee.blank? %>align="center"<% else %>align="right"<% end %> ><b>Class : 
+                    <td align="right"><b>Class :</b> 
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
                         <% else %>
@@ -42,7 +42,7 @@
                     
                     <% unless @assigned_employee.blank? %>
                     <% @assigned_employee.each do |emp| %>
-                      <td align="right"> Class Teacher : <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+                    <td align="right"> <b>Class Teacher :</b> <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
                     <% break %>
                     <% end %>
                     <% end %>

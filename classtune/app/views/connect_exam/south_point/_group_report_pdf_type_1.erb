@@ -344,7 +344,7 @@
 
                           full_mark = full_mark_first_term+full_mark_final_term
                           obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-                          main_mark = (obtained_mark.to_f/full_mark.to_f)*100
+                          main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
 
 
                         %>
@@ -384,6 +384,7 @@
                           </td>
 
                           <td class="col-pdf"><%=  main_mark.round() %></td>
+                          <%  main_mark = main_mark.round() %>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>

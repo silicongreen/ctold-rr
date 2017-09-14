@@ -974,7 +974,7 @@ div.baf_shaheen
 .south-point-protrait #grouped_exam_report table#pdf-table tr.even td,
 .south-point-protrait #grouped_exam_report table#pdf-table tr.odd td
 {
-    font-size: 23px !important;
+    font-size: 25px !important;
 }
 
 .south-point-protrait table tr.even td, .south-point-protrait table tr.odd td
@@ -1037,6 +1037,7 @@ div.baf_shaheen
 .south-point-protrait table tr td.comment_section_final
 {
     font-weight: normal;
+    font-size: 25px !important;
 }
 
 

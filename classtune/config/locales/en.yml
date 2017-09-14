@@ -257,7 +257,7 @@ en: # locale
         too_long: "is too long (maximum is {{count}} characters)"
         too_short: "is too short (minimum is {{count}} characters)"
         wrong_length: "is the wrong length (should be {{count}} characters)"
-        must_contain_only_letters: "must contain only letters, numbers, hyphen, and  underscores"
+        must_contain_only_letters: "must contain only letters, numbers, hyphen, dot and  underscores"
         must_be_a_valid_email_address: "must be a valid email "
         cant_be_a_future_date: "cannot be a future date"
         should_not_be_admin: "Should Not Be Admin"

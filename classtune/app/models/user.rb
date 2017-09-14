@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, :scope=> [:is_deleted],:if=> 'is_deleted == false' #, :email
   validates_length_of     :username, :within => 1..50
   validates_length_of     :password, :within => 4..40, :allow_nil => true
-  validates_format_of     :username, :with => /^[A-Z0-9_-]*$/i,
+  validates_format_of     :username, :with => /^[A-Z0-9._-]*$/i,
     :message => :must_contain_only_letters
   validates_format_of     :email, :with => /^[A-Z0-9._%-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i,   :allow_blank=>true,
     :message => :must_be_a_valid_email_address

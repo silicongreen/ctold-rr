@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     
-                    <td><b>Year:</b> </td><td class="font-light"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+                    <td><b>Year:<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></b></td>
                     
                     
                     <td align="right"><b>Class :</b> 
@@ -42,7 +42,7 @@
                     
                     <% unless @assigned_employee.blank? %>
                     <% @assigned_employee.each do |emp| %>
-                    <td align="right"> <b>Class Teacher :</b> <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
+                    <td align="right"> <b>Class Teacher : <%= emp.first_name %>&nbsp;<%= emp.last_name %></b></td>
                     <% break %>
                     <% end %>
                     <% end %>

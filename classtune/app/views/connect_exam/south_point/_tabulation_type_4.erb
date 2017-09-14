@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
-                    <td align="center"><b>Class : 
+                    <td <% unless @assigned_employee.blank? %>align="center"<% else %>align="right"<% end %> ><b>Class : 
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
                         <% else %>
@@ -37,7 +37,7 @@
                         <% end %></b>
                     </td>
                     
-                    <% if !@assigned_employee.blank? %>
+                    <% unless @assigned_employee.blank? %>
                     <% @assigned_employee.each do |emp| %>
                       <td align="right"> Class Teacher : <%= emp.first_name %>&nbsp;<%= emp.last_name %></td>
                     <% break %>

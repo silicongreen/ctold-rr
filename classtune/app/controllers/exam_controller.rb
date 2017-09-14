@@ -2638,6 +2638,7 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id) 
     @subject = Subject.find(@subject_id)
+    @assigned_employee=@batch.employees
     
     
     pdf_name = "marksheet_connect_exam_"+@subject_id.to_s+"_"+@connect_exam_obj.id.to_s+".pdf"

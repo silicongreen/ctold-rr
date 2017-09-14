@@ -970,6 +970,12 @@ div.baf_shaheen
     padding: 5px 5px 5px 0px;   
 }
 
+.south-point-protrait #grouped_exam_report table#pdf-table tr.table-header td,
+.south-point-protrait #grouped_exam_report table#pdf-table tr.even td,
+.south-point-protrait #grouped_exam_report table#pdf-table tr.odd td
+{
+    font-size: 23px !important;
+}
 
 .south-point-protrait table tr.even td, .south-point-protrait table tr.odd td
 {

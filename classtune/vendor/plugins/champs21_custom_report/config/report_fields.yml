@@ -76,6 +76,7 @@
   - :gender
   :student:
   - :admission_date
+  - :class_roll_no
   - :date_of_birth
   - :country
   - :nationality

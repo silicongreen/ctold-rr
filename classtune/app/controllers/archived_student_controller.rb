@@ -25,6 +25,14 @@ class ArchivedStudentController < ApplicationController
     @archived_student = ArchivedStudent.find(params[:id])
     @additional_fields = StudentAdditionalField.all(:all, :conditions=> "status = true", :order=>"priority ASC")
   end
+  
+  def retrive_student
+    @current_user = current_user
+    @archived_student = ArchivedStudent.find(params[:id])
+    @archived_student.retrive_student
+    flash[:notice]="Student Retirved"
+    redirect_to :controller => 'user', :action => 'dashboard'
+  end
 
   def edit_leaving_date
     @archived_student = ArchivedStudent.find(params[:id])

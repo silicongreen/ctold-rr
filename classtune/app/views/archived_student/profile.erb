@@ -25,6 +25,9 @@
 
 <div id="inner-tab-menu">
   <ul>
+      
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "Retrive Student", :controller => 'archived_student',
+        :action => 'retrive_student', :id => @archived_student %></li>
 
     <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('reports_text')}", :controller => 'archived_student',
         :action => 'reports', :id => @archived_student %></li>

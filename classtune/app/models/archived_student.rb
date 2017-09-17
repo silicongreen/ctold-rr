@@ -56,6 +56,26 @@ class ArchivedStudent < ActiveRecord::Base
   def gender_as_text
     self.gender == 'm' ? 'Male' : 'Female'
   end
+  
+  def retrive_student
+    student_attributes = self.attributes
+    student_attributes["id"]= self.former_id
+  
+    student_attributes.delete "former_id"
+    student_attributes.delete "status_description"
+    student_attributes.delete "date_of_leaving"
+    
+    student = Student.new(student_attributes)
+    student.photo = self.photo
+    user = User.find_by_id(self.user_id)
+    user.is_deleted = 0
+    user.save
+    
+    if student.save(false)
+      self.destroy
+    end
+
+  end
 
   def first_and_last_name
     "#{first_name} #{last_name}"

@@ -751,6 +751,7 @@ authorization do
       :to => [
       :profile,
       :reports,
+      :retrive_student,
       :guardians,
       :delete,
       :destroy,
@@ -883,6 +884,7 @@ authorization do
       :to => [
       :profile,
       :reports,
+      :retrive_student,
       :guardians,
       :generate_tc_pdf,
       :consolidated_exam_report,
@@ -2576,6 +2578,7 @@ authorization do
       :to => [
       :profile,
       :reports,
+      :retrive_student,
       :guardians,
       :delete,
       :destroy,

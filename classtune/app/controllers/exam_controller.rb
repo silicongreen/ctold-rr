@@ -719,24 +719,30 @@ class ExamController < ApplicationController
     else
       assigned_students = StudentsSubject.find_all_by_subject_id(@exam_subject.id)
       @students = []
+      @studentids = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
-            if MultiSchool.current_school.id == 319
-              @students.push [student.first_name,student.last_name, student.id, student]
-            elsif MultiSchool.current_school.id == 342
-              @students.push [student.class_roll_no,student.first_name, student.id, student] 
-            else
-              @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] 
+            unless @studentids.include?(student.id)
+              @studentids << student.id
+              if MultiSchool.current_school.id == 319
+                @students.push [student.first_name,student.last_name, student.id, student]
+              elsif MultiSchool.current_school.id == 342
+                @students.push [student.class_roll_no,student.first_name, student.id, student] 
+              else
+                @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] 
+              end
             end
           end
         end
       end
-      @ordered_students = @students.sort
-      @students=[]
-      @ordered_students.each do|s|
-        @students.push s[3]
+      unless @students.blank?
+        @ordered_students = @students.sort
+        @students=[]
+        @ordered_students.each do|s|
+          @students.push s[3]
+        end
       end
     end 
     

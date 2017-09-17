@@ -832,8 +832,15 @@ class Classworks extends CActiveRecord
                         $marge['attachment_file_name'] = $value->attachment_file_name;
                     }
 
-                    $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
-                    $marge['teacher_id']   = $value["employeeDetails"]->id;
+                    $marge['teacher_name'] = "";
+                    if(isset($value["employeeDetails"]) && isset($value["employeeDetails"]->first_name) && isset($value["employeeDetails"]->last_name))
+                    {
+                        $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
+                    }
+                    if(isset($value["employeeDetails"]->id))
+                    {
+                        $marge['teacher_id']   = $value["employeeDetails"]->id;
+                    }
                     $marge['subjects'] = $value["subjectDetails"]->name;
                     $marge['subjects_id'] = $value["subjectDetails"]->id;
                     $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;

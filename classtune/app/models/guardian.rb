@@ -82,7 +82,7 @@ class Guardian < ActiveRecord::Base
     if d=ArchivedGuardian.create(guardian_attributes)
       # guardian_attributes.delete "ward_id"
       #d.update_attributes(guardian_attributes)
-      if student.all_siblings.empty?
+      if student.all_siblings.empty? or !student.all_siblings.empty?
         self.user.soft_delete if self.user.present?
         self.destroy
         #      else

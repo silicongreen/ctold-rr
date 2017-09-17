@@ -154,7 +154,7 @@ class ExamController < ApplicationController
         end
       end
     end  
-    render :text=>"Saved"  
+    render :text=>"Saved"      
   end
 
   def update_exam_form
@@ -2492,14 +2492,23 @@ class ExamController < ApplicationController
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
       @assigned_employee=@batch.employees
-      @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
+#      @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
         get_continues(@id,@batch.id)
         report_data = []
         if @student_response['status']['code'].to_i == 200
-          report_data = @student_response['data']
+          @report_data = @student_response['data']
         end
+<<<<<<< HEAD
         report_data
       }
+=======
+        
+#      }
+#      abort(@report_data.inspect)
+
+
+
+>>>>>>> mode change
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
       render_connect_exam("continues",false,file_name)  
     end

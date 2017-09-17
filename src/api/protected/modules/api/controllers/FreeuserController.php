@@ -435,6 +435,28 @@ class FreeuserController extends Controller
                 header("Content-Length: " . $assignmentobj->attachment_file_size);
                 readfile($url);
             }
+            else
+            {
+                $classwork = new Classworks();
+                $classworkobj = $classwork->findByPk($id);
+                if ($classworkobj->attachment_file_name)
+                {
+                    $attachment_datetime_chunk = explode(" ", $classworkobj->updated_at);
+
+                    $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                    $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                    $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                    $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+                    $url = Settings::$paid_image_path . "uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;
+
+                    header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
+                    header("Content-Type: {$classworkobj->attachment_content_type}");
+                    header("Content-Length: " . $classworkobj->attachment_file_size);
+                    readfile($url);
+                }
+            }    
         }
     }
 

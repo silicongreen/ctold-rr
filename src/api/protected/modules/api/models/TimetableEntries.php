@@ -887,7 +887,7 @@ class TimetableEntries extends CActiveRecord {
 
                 foreach($data2 as $row)
                 {
-                    
+                   $new_row = $row;
                    $sub_obj = new Subjects();
                    $e_subject = $sub_obj->getSubjectElectiveGroup($row['subjectDetails']->elective_group_id);
                   
@@ -901,7 +901,7 @@ class TimetableEntries extends CActiveRecord {
                              {
                                  print_r($row);
                                  echo $esvalue->name."|||";
-                                 $new_row = $row;
+                                 
                                 
                                  $new_row['subjectDetails'] = $esvalue;
                                 

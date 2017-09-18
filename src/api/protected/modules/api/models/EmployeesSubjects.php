@@ -301,6 +301,30 @@ class EmployeesSubjects extends CActiveRecord
             
             
         }
+        public function getEmployeeElective($employee_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            $criteria->compare("t.employee_id", $employee_id);
+            $criteria->with = array(
+                'subject' => array(
+                    'select' => 'subject.id,subject.name,subject.elective_group_id,subject.code, subject.icon_number',
+                    'joinType' => "INNER JOIN"
+                )
+            );
+            $criteria->addCondition("subject.elective_group_id is not null");
+            $criteria->compare("subject.is_deleted", 0);
+            $obj_subject = $this->findAll($criteria); 
+            $emp_subject = array();
+            if($obj_subject)
+            {
+                foreach($obj_subject as $value)
+                {
+                    $emp_subject[] = $value['subject']->id;
+                }
+            }
+            return $emp_subject;
+        }
         public function getEmployeeSubjectElective($employee_id)
         {
             $criteria = new CDbCriteria;
@@ -332,7 +356,10 @@ class EmployeesSubjects extends CActiveRecord
                         {
                             foreach($e_subject as $e_sub)
                             {
-                                $all_subject[] = $e_sub->id;
+                                if(!in_array($e_sub->id, $all_subject))
+                                {
+                                    $all_subject[] = $e_sub->id;
+                                }
                             }    
                         }
                         

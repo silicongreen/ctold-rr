@@ -840,6 +840,7 @@ class TimetableEntries extends CActiveRecord {
         
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->addCondition("subjectDetails.elective_group_id is null");
         $criteria->order = 'classTimingDetails.start_time ASC';
        
         $criteria->with=array('classTimingDetails',
@@ -852,106 +853,68 @@ class TimetableEntries extends CActiveRecord {
         
         $data = $this->checkDataOkAndReturn($data);
         
+        
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.weekday_id,t.class_timing_id';
+        $criteria->compare('t.school_id', $school_id);
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->addCondition("subjectDetails.elective_group_id is not null");
+        $criteria->order = 'classTimingDetails.start_time ASC';
+       
+        $criteria->with=array('classTimingDetails',
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data2 = $this->findAll($criteria); 
+        $data2 = $this->checkDataOkAndReturn($data2);
+        
+        
+        
         $emp_sub = new EmployeesSubjects();
         
-        $employees_subject = $emp_sub->getEmployeeSubjectElective($emplyee_id);
+        $employees_subject = $emp_sub->getEmployeeElective($emplyee_id);
         
-        if($employees_subject[0] && $employees_subject[1])
+        
+        $all_routine = $data;
+        if($employees_subject)
         {
-            $criteria = new CDbCriteria;
-            $criteria->select = 't.id, t.weekday_id,t.class_timing_id';
-            $criteria->compare('t.school_id', $school_id);
-            $criteria->compare('t.weekday_id', $cur_day_key);
-            $criteria->compare('t.subject_id', $employees_subject[0]);
+            if (!empty($data2)) {
 
-            $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
-            $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
-            $criteria->order = 'classTimingDetails.start_time ASC';
-
-            $criteria->with=array('classTimingDetails',
-                                   'batchDetails'=>array("with"=>"courseDetails"), 
-                                    'subjectDetails', 
-                                    'employeeDetails', 
-                                    'timeTableDetails');
-
-            $edata = $this->findAll($criteria);
-         
-    
-            $edata = $this->checkDataOkAndReturn($edata);
-           
-        }
-        
-     
-        
-        
-        $change_data = array();
-        
-        if (!empty($data)) {
-            
-            foreach($data as $row)
-            {
-                $add = true;
-               
-                
-                if(isset($edata) && $edata)
+                foreach($data2 as $row)
                 {
-                    foreach($edata as $key=>$erow)
-                    {
-                       
-                        
-                        if($row['classTimingDetails']->start_time > $erow['classTimingDetails']->start_time)
+                   $sub_obj = new Subjects();
+                   $e_subject = $sub_obj->getSubjectElectiveGroup($row['subjectDetails']->elective_group_id);
+                   if($e_subject)
+                   {
+                        foreach($e_subject as $esvalue)
                         {
-                            $check_data = $this->changeElectiveSubjectData($employees_subject,$erow);
-                            if($check_data)
-                            {
-                               $change_data[] = $check_data; 
-                            }
-                            
-                            unset($edata[$key]);
+                             if(in_array($esvalue->id, $employees_subject))
+                             {
+                                 $all_routine[] = $row;
+                             }
                         }
-                        else if ($row->id == $erow->id)
-                        {
-                            $check_data = $this->changeElectiveSubjectData($employees_subject,$erow);
-                            if($check_data)
-                            {
-                               $change_data[] = $check_data; 
-                            }
-                            unset($edata[$key]);
-                            $add = false;
-                        }
-                        
-                    }    
-                }
-                if($add)
-                {
-                    $change_data[] = $row;
-                }
-            }
-            
-            
-            
-            
-        }
-       
-        if(isset($edata) && $edata)
-        {
-            foreach($edata as $key=>$erow)
-            {
-                $check_data = $this->changeElectiveSubjectData($employees_subject,$erow);
-                if($check_data)
-                {
-                   $change_data[] = $check_data; 
-                }
-                
-                unset($edata[$key]);
-            }
-        }
-        if($change_data)
-        {
-            return $this->formatTimeTable($change_data, false, true);
-        }    
+                   }
 
+                }
+            }  
+        }
+        
+        $time_table = array();
+        if($all_routine)
+        {
+            $time_table = $this->formatTimeTable($all_routine, false, true);
+            usort($time_table, function($a, $b) {
+                            return $a['class_start_time'] - $b['class_start_time'];
+            });
+            return $time_table;
+            
+        } 
         return false;
+        
     }
     
     private function checkDataOkAndReturnSingle($obj)

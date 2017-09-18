@@ -534,6 +534,11 @@ academia_box p
     text-align: left;
 }
 
+.st_joseph_bg h4
+{
+    line-height: 5px !important;
+}
+
 
 .odd{
     height:auto;

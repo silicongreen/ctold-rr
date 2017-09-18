@@ -23,6 +23,7 @@
  */
 
 // FCK represents the active editor instance.
+
 var FCK =
 {
 	Name			: FCKURLParams[ 'InstanceName' ],

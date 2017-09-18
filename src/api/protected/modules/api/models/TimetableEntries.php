@@ -894,7 +894,7 @@ class TimetableEntries extends CActiveRecord {
                    {
                         foreach($e_subject as $esvalue)
                         {
-                             echo $esvalue->name."|";
+                            
                              if(in_array($esvalue->id, $employees_subject))
                              {
                                  echo $esvalue->name."|||";

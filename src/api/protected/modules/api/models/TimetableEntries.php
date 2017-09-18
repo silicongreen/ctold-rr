@@ -892,15 +892,12 @@ class TimetableEntries extends CActiveRecord {
                    $e_subject = $sub_obj->getSubjectElectiveGroup($row['subjectDetails']->elective_group_id);
                   
                    if($e_subject)
-                   {    $i = 0;
-                        $new_row = array();
+                   {
                         foreach($e_subject as $esvalue)
                         {
                             
                              if(in_array($esvalue->id, $employees_subject))
                              {
-                                
-                                 
                                 
                                  $new_row['subjectDetails'] = $esvalue;
                                 

@@ -506,7 +506,7 @@ academia_box p
 .st_joseph_bg table td
 {
     font-size:13px !important;
-    padding: 2px 2px 3px 3px !important;
+    padding: 3px 2px 3px 3px !important;
 }
 
 .st_joseph_bg  .float-left
@@ -515,13 +515,13 @@ academia_box p
 }
 .st_joseph_bg  table.float-left-10 tr.odd td
 {
-    padding: 2px 2px 3px 3px !important;
-    font-size:13px !important;
+    padding: 3px 2px 3px 3px !important;
+    font-size:14px !important;
 }
 .st_joseph_bg  table.float-left-10 tr.even td
 {
-    padding: 2px 2px 3px 3px !important;
-    font-size:13px !important;
+    padding: 3px 2px 3px 3px !important;
+    font-size:14px !important;
 }
 .st_joseph_bg  .float-left-10
 {

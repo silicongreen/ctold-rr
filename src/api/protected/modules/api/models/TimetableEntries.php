@@ -892,6 +892,7 @@ class TimetableEntries extends CActiveRecord {
                   
                    if($e_subject)
                    {
+                        $new_row = array();
                         foreach($e_subject as $esvalue)
                         {
                             

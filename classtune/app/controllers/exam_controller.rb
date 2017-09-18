@@ -3867,7 +3867,11 @@ class ExamController < ApplicationController
           render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,
-          :orientation => 'Landscape'
+          :orientation => 'Landscape',
+          :margin => {:top=> 25,
+            :bottom => 25,
+            :left=> 10,
+            :right => 10}
         end
     
   end

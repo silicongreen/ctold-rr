@@ -69,9 +69,11 @@
                                   <% end %>  
 
                                     <% 
+                                      grade_name_single = ""
                                       if total_marks_single_exam > 0 
                                         if marks_obtain_single_exam.to_i == 0
                                             fail_grade = true
+                                            grade_name_single = "U"
                                         else
                                             mark_for_grade = (marks_obtain_single_exam.to_f/total_marks_single_exam.to_f)*100 
                                             grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)
@@ -79,6 +81,7 @@
                                               if grade_check.name.to_s == "U"
                                                 fail_grade = true
                                               end 
+                                              grade_name_single = grade_check.name
                                             end
                                          end
                                       end
@@ -86,9 +89,11 @@
                                       if fail_grade == false and !report['exam_name'].index('Obj').nil? and total_marks_single_exam.to_i == 25
                                         if marks_obtain_single_exam.to_f < 12.00
                                           fail_grade = true
+                                          grade_name_single = "U"
                                         end
                                       end
                                     %>
+                                    &nbsp;<%= grade_name_single  %>
                                     
 
 
@@ -121,16 +126,14 @@
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
-                            <% if fail_grade == true %>
-                              <td class="col-pdf"><b>U</b></td>
+                            
+                            <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                              <% if !grade.blank? and !grade.name.blank? %>
-                                <td class="col-pdf"><b><%= grade.name %></b></td>
-                              <% else %>
-                                <td class="col-pdf"><b>N/A</b></td>
-                              <% end %>
-                            <% end %>  
+                              <td class="col-pdf"><b>N/A</b></td>
+                            <% end %>
+                            
                             <% full_marks_total = full_marks_total+full_mark.to_f %>  
                             <% total_marks_student = total_marks_student+total_mark.to_f %> 
                             <% total_parcent= total_parcent+main_mark %>

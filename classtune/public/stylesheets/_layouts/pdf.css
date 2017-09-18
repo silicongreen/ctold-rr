@@ -163,3 +163,8 @@ body{
     float:left;
     clear:both;
 }
+
+#pdf-header-south h4, #pdf-header-south h6
+{
+    line-height: 5px !important;
+}

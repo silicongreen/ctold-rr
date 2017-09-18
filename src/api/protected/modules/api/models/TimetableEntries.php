@@ -903,7 +903,7 @@ class TimetableEntries extends CActiveRecord {
                                 
                                  $all_routine[] = $new_row;
                                  print_r($all_routine);
-                                 exit;
+                                 
                              }
                         }
                    }

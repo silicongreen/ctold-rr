@@ -902,6 +902,8 @@ class TimetableEntries extends CActiveRecord {
                                  $new_row['subjectDetails'] = $esvalue;
                                 
                                  $all_routine[] = $new_row;
+                                 print_r($all_routine);
+                                 exit;
                              }
                         }
                    }

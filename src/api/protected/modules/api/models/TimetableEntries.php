@@ -906,8 +906,7 @@ class TimetableEntries extends CActiveRecord {
             }  
         }
         
-        print_r($all_routine);
-        exit;
+      
         
         $time_table = array();
         if($all_routine)

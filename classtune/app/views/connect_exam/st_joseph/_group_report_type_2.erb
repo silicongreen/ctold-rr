@@ -51,7 +51,7 @@
                             <% @report_data['report']['exams'].each do |report| %>
                               <% marks_obtain_single_exam = 0 %>
                               <% total_marks_single_exam = 0 %>
-                              
+                              <% na= false %>
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
@@ -61,13 +61,8 @@
                                     N/A
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                    [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                     <% total_marks_single_exam = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                  <% else %>
-
-                                  <% end %>  
-
                                     <% 
                                       grade_name_single = ""
                                       if total_marks_single_exam > 0 
@@ -94,6 +89,12 @@
                                       end
                                     %>
                                     [<%= grade_name_single  %>]
+                                    [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]
+                                    
+                                  <% else %>
+
+                                  <% end %>  
+                                    
                                     
 
 

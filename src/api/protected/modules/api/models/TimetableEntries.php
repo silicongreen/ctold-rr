@@ -899,8 +899,7 @@ class TimetableEntries extends CActiveRecord {
                             
                              if(in_array($esvalue->id, $employees_subject))
                              {
-                                 print_r($row);
-                                 echo $esvalue->name."|||";
+                                
                                  
                                 
                                  $new_row['subjectDetails'] = $esvalue;
@@ -915,7 +914,7 @@ class TimetableEntries extends CActiveRecord {
                 }
             }  
         }
-        exit;
+   
         
       
         

@@ -905,7 +905,7 @@ class TimetableEntries extends CActiveRecord {
                                  $new_row['classTimingDetails'] = $row['classTimingDetails'];
                                  $new_row['batchDetails'] = $row['batchDetails'];
                                  $new_row['batchDetails']['courseDetails'] = $row['batchDetails']['courseDetails'];
-                                 $new_row->weekday_id = $row->weekday_id;
+                                 $new_row['weekday_id'] = $row->weekday_id;
                                 
                                  $all_routine[] = $new_row;
                                 
@@ -1067,8 +1067,16 @@ class TimetableEntries extends CActiveRecord {
                     $_data['classtime_set2'] = $row['classTimingDetails']->class_timing_set_id;
                     
                     
-                    $_data['weekday_id'] = $row->weekday_id;
-                    $_data['weekday_text'] = Settings::$ar_weekdays[$row->weekday_id];
+                    if(isset($row->weekday_id))
+                    {
+                        $_data['weekday_id'] = $row->weekday_id;
+                        $_data['weekday_text'] = Settings::$ar_weekdays[$row->weekday_id];
+                    }
+                    else
+                    {
+                        $_data['weekday_id'] = $row['weekday_id'];
+                        $_data['weekday_text'] = Settings::$ar_weekdays[$row['weekday_id']]; 
+                    }    
                     
                     
                     

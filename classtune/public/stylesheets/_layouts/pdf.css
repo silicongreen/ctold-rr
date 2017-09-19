@@ -168,3 +168,8 @@ body{
 {
     line-height: 5px !important;
 }
+
+div#pdf-header-south.fee_pdf h4
+{
+    line-height: 10px !important;
+}

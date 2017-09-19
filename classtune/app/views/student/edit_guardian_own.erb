@@ -41,20 +41,6 @@
       <span class="span-sub-heading"><%= t('parent_personal_details') %></span>
       <hr class="sub-heading"></hr>
 
-      <div class="label-field-pair">
-        <label for="parent_detail_name"><%= t('first_name') %> <span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= s.text_field :first_name, :value => @parent.first_name %></div>
-      </div>
-
-      <div class="label-field-pair">
-        <label for="parent_detail_name"><%= t('last_name') %></label>
-        <div class="text-input-bg"><%= s.text_field :last_name, :value => @parent.last_name %></div>
-      </div>
-
-      <div class="label-field-pair">
-        <label for="parent_detail_relation"><%= t('relation') %> <span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= s.text_field :relation, :value => g_students.relation %></div>
-      </div>
       <% unless @parent.dob.nil? %>
         <div class="label-field-pair">
           <label for="parent_detail_dob"><%= t('date_of_birth') %></label>

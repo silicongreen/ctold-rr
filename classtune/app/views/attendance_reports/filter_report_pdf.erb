@@ -61,8 +61,8 @@
               
               
             </div>
-              &nbsp;<h4> &nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></h4>
-              &nbsp;&nbsp;&nbsp;<h4><%= @start_date.strftime("%B")%></h4>
+              <h4> &nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></h4>
+              <h4>&nbsp;&nbsp;&nbsp;Month: <%= @start_date.strftime("%B")%></h4>
           </div>
         </div>
       </center>
@@ -149,7 +149,7 @@
               </tr>
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) == @value.to_f and @range == 'Equals' %>
-              <%  std_count = std_count+1; %>
+               <%  std_count = std_count+1; %>
               <% if std_count>24 && extender ==0 %>
                   <% std_count = 0 %>
                   <% extender = 1 %>

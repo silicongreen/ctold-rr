@@ -127,6 +127,16 @@
           <div class="extender"></div>
         </div>
         <div class="button-pair">
+            
+          <% if permitted_to? :edit_guardian_own %>
+            <% if @current_user.guardian_entry.id == p.id %>
+            <% @config = Configuration.find_by_config_key('ParentCanEdit') %>
+            <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+              <%= link_to "► #{t('edit_text')}",
+                { :controller => 'student', :action => 'edit_guardian_own'}, :class=>"user_button" %>
+            <% end %>
+            <% end %>
+          <% end %>  
           <% if permitted_to? :edit_guardian,:student %>
             <div class="parent-edit-button">
               <%= link_to "► #{t('edit_text')}",

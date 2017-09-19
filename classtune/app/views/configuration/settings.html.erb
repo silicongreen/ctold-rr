@@ -203,6 +203,28 @@
               </div>
           </div>
           
+          <div class="label-field-pair">
+              <label for="parent_can_edit">Guardian can edit his/her and children Profile?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:parent_can_edit] == '1' %>
+                    <%= check_box :configuration, :parent_can_edit, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :parent_can_edit, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
+              <label for="teacher_can_edit">Teacher can edit his/her profile?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:teacher_can_edit] == '1' %>
+                    <%= check_box :configuration, :teacher_can_edit, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :teacher_can_edit, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
            <div class="label-field-pair">
               <label for="routine_view_teacher_short_code"><%= t('routine_view_teacher_short_code') %></label>
               <div class="checkbox-input-bg">

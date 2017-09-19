@@ -667,7 +667,18 @@
     </div>
 
 
-    <div id="new_profile_info_top">    
+    <div id="new_profile_info_top"> 
+        
+        <% if permitted_to? :edit_student_guardian, :student %>
+          <% @config = Configuration.find_by_config_key('ParentCanEdit') %>
+            <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+              <div class="buttons">
+                  <%= link_to "#{t('edit_text')}",
+                    {:controller => "student", :action => "edit_student_guardian", :id => @student.id}, :class=> 'user_button' %>
+              </div>
+          <% end %>
+        
+        <% end %>
         
         <% if permitted_to? :edit, :student %>
           <div class="buttons">

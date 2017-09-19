@@ -21,6 +21,7 @@ class EmployeeController < ApplicationController
   filter_access_to :all
   before_filter :set_precision
   before_filter :check_permission, :only => [:index,:profile,:settings,:hr,:employee_attendance,:payslip,:search,:department_payslip]
+  before_filter :only_allowed_when_parmitted, :only => [:edit_employee_own]
 
   before_filter :protect_other_employee_data, :only => [:individual_payslip_pdf,:timetable,:timetable_pdf,:profile_payroll_details,\
       :view_payslip ]
@@ -457,6 +458,45 @@ class EmployeeController < ApplicationController
       page.replace_html 'positions1', :partial => 'positions', :object => @positions
     end
   end
+  
+  def edit_employee_own
+    @countries = @nationalities = Country.find(:all)
+    @employee = Employee.find(current_user.employee_entry.id)
+    unless @employee.gender.nil?
+      @employee.gender=@employee.gender.downcase
+    end
+    @employee_user = @employee.user
+    if request.post?
+      
+        if @employee.update_attributes(params[:employee])
+          
+          username = @employee.employee_number        
+          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+          api_endpoint = champs21_api_config['api_url']
+          uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
+          http = Net::HTTP.new(uri.host, uri.port)
+          auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+          auth_req.set_form_data({"paid_id" => @employee.user.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @employee.first_name, "middle_name" => @employee.middle_name, "last_name" => @employee.last_name, "gender" => (if @employee.gender == 'm' then '1' else '0' end), "country" => @employee.nationality_id, "dob" => @employee.date_of_birth, "email" => username })
+          auth_res = http.request(auth_req)
+          @auth_response = JSON::parse(auth_res.body)
+          
+          flash[:notice] = "#{t('flash15')}  #{@employee.first_name} #{t('flash17')}"
+          redirect_to :controller =>"employee" ,:action => "profile", :id => @employee.id
+        end
+    end
+  end
+  
+  def only_allowed_when_parmitted
+    @config = Configuration.find_by_config_key('TeacherCanEdit')
+    if @config.blank? or @config.config_value.blank? or @config.config_value.to_i == 0
+        flash[:notice] = "#{t('flash_msg4')}"
+        redirect_to :controller => 'user', :action => 'dashboard'
+    else
+      @allow_access = true
+    end 
+  end
+  
+  
 
   def edit1
     @categories = EmployeeCategory.find(:all,:order => "name asc", :conditions => "status = true")

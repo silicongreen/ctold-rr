@@ -61,11 +61,21 @@
   <tr class="even left" style="display: none;"><td><%= t('biometric_id') %></td><td class="right"><%= @biometric_id %></td></tr>
 </table>
 <div class="edit-pdf-group">
-  <% if permitted_to? :change_reporting_manager, :employee %>
+    
+  <% if permitted_to? :edit1, :employee %>
     <div>
       <%= link_to "► #{t('edit_text')}", {:controller => "employee", :action => "edit1", :id =>@employee.id}, :class=> 'user_button' %>
     </div>
-  <%end%>
+  <% elsif permitted_to? :edit_employee_own, :employee  %>
+    <% if @current_user.employee_entry.id == @employee.id %>
+    <% @config = Configuration.find_by_config_key('TeacherCanEdit') %>
+    <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+    <div>
+      <%= link_to "► #{t('edit_text')}", {:controller => "employee", :action => "edit_employee_own"}, :class=> 'user_button' %>
+    </div>  
+    <% end %>
+    <% end %>
+  <% end %>  
   <% if permitted_to?  :profile_pdf , :employee and !check_free_school? %>
     <div>
       <%= link_to " ► #{t('pdf_report')}",

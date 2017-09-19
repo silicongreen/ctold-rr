@@ -22,8 +22,10 @@ class StudentController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter  :set_precision
-  before_filter :protect_other_student_data, :except =>[:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
+  before_filter :protect_other_student_data, :except =>[:edit_guardian_own,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
+  before_filter :only_allowed_when_parmitted , :only=>[:edit_guardian_own,:edit_student_guardian]
+  
   protect_from_forgery :except => [:fee_details]
   
   before_filter :find_student, :only => [:previous_report,
@@ -1286,6 +1288,116 @@ class StudentController < ApplicationController
       @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
       
     end
+  end
+  
+  def edit_guardian_own
+    @parent = Guardian.find(current_user.guardian_entry.id)
+    
+    @countries = Country.all
+    params[:parent_detail].delete "ward_id" if  params[:parent_detail]
+    if request.post? and @parent.update_attributes(params[:parent_detail])  
+      g_students = GuardianStudents.find_all_by_guardian_id(@parent.id)
+      
+      unless g_students.nil?
+        g_students.each do |g_student|
+          GuardianStudents.update(g_student.id, :relation=> params[:parent_detail][:relation])
+        end
+      end
+      
+      unless @parent.user.nil?
+        User.update(@parent.user.id, :first_name=> @parent.first_name, :last_name=> @parent.last_name, :email=> @parent.email, :role =>"Parent")
+      else
+        @parent.create_guardian_user(@student)
+      end
+      #      end
+      flash[:notice] = "#{t('student.flash4')}"
+      redirect_to :controller => "student", :action => "guardians", :id => current_user.guardian_entry.current_ward_id
+    end
+  end
+  
+  def edit_student_guardian
+    @user = current_user
+    @student = Student.find(params[:id])
+    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true")
+    @additional_details = StudentAdditionalDetail.find_all_by_student_id(@student)
+    @student.pass = "01"
+    @student.gender=@student.gender.downcase
+    @student_user = @student.user
+    
+
+    if request.post?
+      params[:student].delete "pass"
+      unless params[:student][:image_file].blank?
+        unless params[:student][:image_file].size.to_f > 280000
+          if @student.update_attributes(params[:student])
+            params[:student_additional_details].each_pair do |k, v|
+              row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+              unless row_id.nil?
+                additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+                StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+              else
+                StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
+              end
+            end
+            
+            username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
+            champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+            api_endpoint = champs21_api_config['api_url']
+            uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
+            http = Net::HTTP.new(uri.host, uri.port)
+            auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+            auth_req.set_form_data({"paid_id" => @student.user.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
+            auth_res = http.request(auth_req)
+            @auth_response = JSON::parse(auth_res.body)
+            
+            flash[:notice] = "#{t('flash3')}"
+            redirect_to :controller => "student", :action => "profile", :id => @student.id
+          end
+        else
+          flash[:notice] = "#{t('flash_msg11')}"
+          redirect_to :controller => "student", :action => "edit", :id => @student.id
+        end
+      else
+        if @student.update_attributes(params[:student])
+          params[:student_additional_details].each_pair do |k, v|
+            row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+            unless row_id.nil?
+              additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+              StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+            else
+              StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
+            end
+          end
+          username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
+          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+          api_endpoint = champs21_api_config['api_url']
+          uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
+          http = Net::HTTP.new(uri.host, uri.port)
+          auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+          auth_req.set_form_data({"paid_id" => @student.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
+          auth_res = http.request(auth_req)
+          @auth_response = JSON::parse(auth_res.body)
+          
+          flash[:notice] = "#{t('flash3')}"
+          redirect_to :controller => "student", :action => "profile", :id => @student.id
+        
+        end
+      end
+    else 
+    end
+  end
+  
+  
+  
+  
+  def only_allowed_when_parmitted
+    @config = Configuration.find_by_config_key('ParentCanEdit')
+    if @config.blank? or @config.config_value.blank? or @config.config_value.to_i == 0
+        flash[:notice] = "#{t('flash_msg4')}"
+        redirect_to :controller => 'user', :action => 'dashboard'
+    else
+      @allow_access = true
+    end 
   end
 
 

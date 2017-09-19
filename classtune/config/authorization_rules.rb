@@ -3093,6 +3093,8 @@ authorization do
       :to => [
       :exam_report,
       :show,
+      :edit_guardian_own,
+      :edit_student_guardian,
       :academic_pdf,
       :profile,
       :guardians,
@@ -3224,6 +3226,7 @@ authorization do
     has_permission_on [:employee],
       :to => [
       :profile,
+      :edit_employee_own,
       :history,
       :references,
       :profile_general,

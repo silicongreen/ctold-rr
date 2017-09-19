@@ -92,6 +92,9 @@
           <% extender = 0 %>
           <% std_count = 0 %>
           <% @students.each_with_index do |student,i| %>
+             
+            <% c =cycle('even','odd ') %>
+            <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
               <%  std_count = std_count+1; %>
               <% if std_count>24 && extender ==0 %>
                   <% std_count = 0 %>
@@ -106,8 +109,6 @@
                       <td colspan="100">&nbsp;</td>
                   </tr> 
               <% end %>
-            <% c =cycle('even','odd ') %>
-            <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
               <tr class="<%= "#{c}" %>">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
@@ -121,6 +122,20 @@
               </tr>
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) > @value.to_f and @range == 'Above' %>
+              <%  std_count = std_count+1; %>
+              <% if std_count>24 && extender ==0 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr>    
+              <% elsif std_count>30 && extender ==1 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr> 
+              <% end %>
               <tr class="<%= "#{c}" %>">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>
@@ -134,6 +149,20 @@
               </tr>
             <% end %>
             <% if @leaves[student.id]['percent'].round(2) == @value.to_f and @range == 'Equals' %>
+              <%  std_count = std_count+1; %>
+              <% if std_count>24 && extender ==0 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr>    
+              <% elsif std_count>30 && extender ==1 %>
+                  <% std_count = 0 %>
+                  <% extender = 1 %>
+                  <tr class="page-break">
+                      <td colspan="100">&nbsp;</td>
+                  </tr> 
+              <% end %>
               <tr class="<%= "#{c}" %>">
                 <td class="col-pdf1"><%= student.class_roll_no %></td>
                 <td class="col-pdf"><%= student.full_name %></td>

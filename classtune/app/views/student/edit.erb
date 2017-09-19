@@ -67,7 +67,7 @@
           <hr class="sub-heading"></hr>
 
           <div class="label-field-pair">
-              <label for="class_roll_no"><%= t('roll_number') %><span class="necessary-field">*</span> </label>
+              <label for="class_roll_no"><%= t('roll_number') %> </label>
               <div class="text-input-bg"><%= s.text_field :class_roll_no %></div>
           </div>
           
@@ -219,7 +219,7 @@
           <hr class="label-underline"></hr>
 
           <div class="label-field-pair" >
-              <label for="master_student_category"><%= t('category') %></label>
+              <label for="master_student_category"><%= t('std_category') %></label>
               <div class="text-input-bg"><%= select :student, :student_category_id, @student_categories.map {|c| [c.name, c.id]}, { :prompt => 'Select category' } %></div>
           </div>
       </div>

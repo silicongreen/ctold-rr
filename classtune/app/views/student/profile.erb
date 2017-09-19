@@ -518,7 +518,37 @@
     </div>
 
     <div class="clearfix"></div>
-
+    
+  <!-- sibling div added by RR -->  
+  <% if @siblings.count()>0 %>
+    <div id="sibling_detail" class="row_wrapper">
+        
+        <div class="row">
+            <div class="sibling_header_txt"> Sibling </div>
+        </div>
+        <div class="clearfix"></div>
+        
+        <% @siblings.each do |sibling| %>
+        <div class="row">
+            <div class="row_label">
+                <div><%= t('name') %></div>
+            </div>
+            <div class="row_data">
+                <div>
+                  <% if @current_user.student %>
+                    <%= sibling.first_name + " " + sibling.last_name %>
+                  <% else  %>
+                    <%= link_to sibling.first_name + " " + sibling.last_name, :controller => 'student', :action => 'profile', :id => sibling.id %>
+                  <% end %>
+                </div>
+            </div>
+        </div>
+        <% end %>
+    </div>
+    <div class="clearfix"></div>
+  <% end %>
+    
+<!-- RR closed -->
 
     <div id="guardian_detail" class="row_wrapper">
 
@@ -526,6 +556,7 @@
             <div class="guardian_header_txt">Emergency Contact Person</div>
         </div>
         <div class="clearfix"></div>
+        
 
         <% unless @immediate_contact.nil? %>
 

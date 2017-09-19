@@ -1800,6 +1800,11 @@ class StudentController < ApplicationController
     
     @att_text = ''
     @att_image = ''
+    #@siblings added by RR
+    #@siblings = Student.find_all_by_sibling_id(@student.sibling_id) - @student
+    @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id <> ?", @student.sibling_id,@student.id])
+    
+    
     get_attendence_text
     unless @attendence_text.nil?
       if @attendence_text['status']['code'].to_i == 200

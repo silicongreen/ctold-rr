@@ -138,6 +138,24 @@
     text-transform: capitalize;
     width: 95%;
 }
+#sibling_detail {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px 0 #bbb;
+    -webkit-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -ms-box-shadow: 0 2px 4px 0 #bbbbbb;
+    -o-box-shadow: 0 2px 4px 0 #bbbbbb;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+}
+.sibling_header_txt {
+    color: #d71921;
+    float: left;
+    font-size: 22px;
+    padding: 15px 0 15px 30px;
+    text-transform: capitalize;
+    width: 95%;
+}
 .margin-left-20{
     margin-left: 20px;
 }

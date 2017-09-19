@@ -52,7 +52,8 @@
       <div id="autofill-area">
 
         <div class="student_admission_date">
-          <label for="student_admission_no"><%= t('admission_number') %> <span class="necessary-field">*</span> </label>
+            
+          <label for="student_admission_no"><%= t('admission_number') %> <span class="necessary-field">*</span> </label>          
           <div class="text-input-bg-admission">
             <% unless @config.config_value == '0' or @last_admitted_student.nil? %>
               <%= s.text_field :admission_no , :value=> @last_admitted_student.admission_no.next%>
@@ -66,7 +67,11 @@
      
 
         <div class="student_admission_date">
+           <% if MultiSchool.current_school.id == 2 %>
+          <label for="student_admission_date"><%= t('admission_date_2') %> <span class="necessary-field">*</span> </label>
+          <% else  %>
           <label for="student_admission_date"><%= t('admission_date') %> <span class="necessary-field">*</span> </label>
+          <% end %>
           <div class="text-input-bg-admission">
             <%= calendar_date_select_tag 'student[admission_date]', I18n.l(Date.today,:format=>:default),
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %>
@@ -88,7 +93,7 @@
       <hr class="sub-heading"></hr>
       
       <div class="label-field-pair">
-        <label for="class_roll_no"><%= t('roll_number') %><span class="necessary-field">*</span> </label>
+        <label for="class_roll_no"><%= t('roll_number') %> </label>
         <div class="text-input-bg"><%= s.text_field :class_roll_no %></div>
       </div>
       <div class="label-field-pair" style="display:none;">
@@ -224,7 +229,7 @@
         <hr class="label-underline"  style="display: none;"></hr>
 
         <div class="label-field-pair" >
-          <label for="student_category"><%= t('category') %></label>
+          <label for="student_category"><%= t('std_category') %></label>
           <% category_id = @categories[0].id unless @categories.nil? %>
           <div class="text-input-bg"><%= s.select :student_category_id, options_for_select(@categories.map {|c| [c.name, c.id]},category_id), { :prompt => "#{t('select_a_category')}" } %></div>
         </div>

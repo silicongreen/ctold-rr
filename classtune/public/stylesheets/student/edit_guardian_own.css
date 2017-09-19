@@ -5,10 +5,7 @@
     Description: Style for admission pages
 */
 
-.label-field-pair
-{
-    height: 55px;
-}
+
 
 #admission1_form {padding-left:50px;}
 #autofill_area .label_field_pair {padding-right:65px;}

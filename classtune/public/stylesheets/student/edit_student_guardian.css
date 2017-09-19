@@ -121,3 +121,7 @@ input#student_image_file{
 input#student_photo{
     height: 28px;
 }
+#admission1-form .label-field-pair label
+{
+    width: 202px;
+}

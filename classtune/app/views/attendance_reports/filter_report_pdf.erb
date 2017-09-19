@@ -45,7 +45,7 @@
             <div class="hor_line1"></div>
           </div>
           <div class="info1">
-            <div class="info-left">
+              <div class="info-left">
               <% if @config.config_value == 'Daily' %>
                 <h4> <%= "#{t('total_no_of_wrkng_days')} = " + @academic_days.to_s %></h4>
               <% else %>
@@ -62,6 +62,7 @@
               
             </div>
               &nbsp;<h4> &nbsp;&nbsp;&nbsp;<%= "#{t('filtered')}: "+ t(@range.to_s.downcase) + " " + @value.to_s + "%" %></h4>
+              &nbsp;&nbsp;&nbsp;<h4><%= @start_date.strftime("%B")%></h4>
           </div>
         </div>
       </center>

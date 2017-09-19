@@ -1,0 +1,2493 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: babykids\n"
+"POT-Creation-Date: 2015-10-14 16:06+0100\n"
+"PO-Revision-Date: 2015-10-14 16:07+0100\n"
+"Last-Translator: nicdark <support@newgraphicses.it>\n"
+"Language-Team: nicdark <newgraphicses@gmail.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.6\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../404.php:9
+msgid "Oops 404, That page can not be found"
+msgstr ""
+
+#: ../archive-courses.php:69 ../archive-excursions.php:92
+#: ../archive-our-events.php:88
+msgid "We colud not find any results for your search! Please try again :)"
+msgstr ""
+
+#: ../archive-courses.php:73 ../archive-excursions.php:96
+#: ../archive-our-events.php:92
+msgid "INFO"
+msgstr ""
+
+#: ../archive-courses.php:150 ../archive-excursions.php:173
+#: ../archive-our-events.php:171 ../archive.php:139 ../search.php:147
+msgid "PREV"
+msgstr ""
+
+#: ../archive-courses.php:153 ../archive-excursions.php:176
+#: ../archive-our-events.php:174 ../archive.php:142 ../search.php:150
+msgid "NEXT"
+msgstr ""
+
+#: ../archive-masonry.php:28
+msgid "Read More"
+msgstr ""
+
+#: ../archive-masonry.php:47 ../search.php:111
+msgid "NOTHING FOUND: Search again"
+msgstr ""
+
+#: ../archive.php:18 ../search.php:18
+msgid "CATEGORY"
+msgstr ""
+
+#: ../archive.php:20 ../search.php:20
+msgid "TAG"
+msgstr ""
+
+#: ../archive.php:22 ../search.php:22
+msgid "ARCHIVE FOR"
+msgstr ""
+
+#: ../archive.php:24 ../search.php:24
+msgid "AUTHOR"
+msgstr ""
+
+#: ../archive.php:26 ../search.php:26
+msgid "SEARCH FOR"
+msgstr ""
+
+#: ../archive.php:28 ../search.php:28
+msgid "ARCHIVE"
+msgstr ""
+
+#: ../archive.php:86 ../include/page/page-info-1.php:17
+#: ../include/post/post-info-1.php:17 ../search.php:86
+msgid "No Comments"
+msgstr ""
+
+#: ../archive.php:86 ../include/page/page-info-1.php:17
+#: ../include/post/post-info-1.php:17 ../search.php:86
+msgid "One Comment"
+msgstr ""
+
+#: ../archive.php:86 ../include/page/page-info-1.php:17
+#: ../include/post/post-info-1.php:17 ../search.php:86
+msgid "% Comments"
+msgstr ""
+
+#: ../archive.php:97 ../search.php:97
+msgid "READ MORE"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:161 ../functions.php:132
+msgid "Install Required Plugins"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:162 ../functions.php:133
+msgid "Install Plugins"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:163 ../functions.php:134
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:164
+msgid "Something went wrong."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:175 ../functions.php:146
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:176
+msgid "Return to the dashboard"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:177
+#: ../class-tgm-plugin-activation.php:1945 ../functions.php:147
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:178
+msgid "The following plugin was activated successfully:"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:179
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:180
+msgid "Dismiss this notice"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:534
+#: ../class-tgm-plugin-activation.php:2162
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1169
+msgid "Private Repository"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1172
+msgid "Pre-Packaged"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1177
+msgid "WordPress Repository"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1180
+msgid "Required"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1180
+msgid "Recommended"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1183
+msgid "Not Installed"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1185
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1290
+#: ../class-tgm-plugin-activation.php:1398
+msgid "Install"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1312
+#: ../class-tgm-plugin-activation.php:1399
+msgid "Activate"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1361
+#, php-format
+msgid ""
+"No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
+"Dashboard\">Return to the Dashboard</a>"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1377
+msgid "Plugin"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1378
+msgid "Source"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1379
+msgid "Type"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1380
+msgid "Status"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1928
+msgid "Install package not available."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1929
+#, php-format
+msgid "Downloading install package from <span class=\"code\">%s</span>&#8230;"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1930
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1931
+msgid "Installing the plugin&#8230;"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1932
+msgid "Plugin install failed."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1933
+msgid "Plugin installed successfully."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:1944
+msgid "Plugin activation failed."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2058
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2059
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2059
+#: ../class-tgm-plugin-activation.php:2068
+msgid "Show Details"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2059
+#: ../class-tgm-plugin-activation.php:2068
+msgid "Hide Details"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2060
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2061
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2065
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2066
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2067
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2068
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2069
+msgid "All installations have been completed."
+msgstr ""
+
+#: ../class-tgm-plugin-activation.php:2070
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: ../comments.php:3
+msgid "NO COMMENTS"
+msgstr ""
+
+#: ../comments.php:3
+msgid "ONE COMMENT"
+msgstr ""
+
+#: ../comments.php:3
+msgid "% COMMENTS"
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:530
+#: ../framework/ReduxCore/framework.php:1950
+msgid "You have changes that are not saved. Would you like to save them now?"
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:531
+#: ../framework/ReduxCore/framework.php:1958
+msgid "Are you sure? Resetting will lose all custom values."
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:532
+#: ../framework/ReduxCore/framework.php:1974
+msgid ""
+"Your current options will be replaced with the values of this preset. Would "
+"you like to proceed?"
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:565
+msgid "You have changes that are not saved.  Would you like to save them now?"
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:566
+msgid "Are you sure?  Resetting will lose all custom values."
+msgstr ""
+
+#: ../framework/ReduxCore/extensions/customizer/extension_customizer.php:567
+msgid ""
+"Your current options will be replaced with the values of this preset.  Would "
+"you like to proceed?"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:213
+#, php-format
+msgid "Options panel created using %1$s"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:213
+msgid "Redux Framework"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:217
+#: ../framework/ReduxCore/framework.php:221
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:906
+msgid "Options"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:1369
+#: ../framework/ReduxCore/framework.php:1370
+#: ../framework/ReduxCore/framework.php:3587
+#: ../framework/ReduxCore/framework.php:3666
+msgid "System Info"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:1966
+msgid "Are you sure? Resetting will lose all custom values in this section."
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:1981
+msgid "Please Wait"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2106
+msgid "Enable"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2111
+msgid "Disable"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2117
+msgid "moving the mouse over"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2119
+msgid "clicking"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2123
+#, php-format
+msgid ""
+"Hints are tooltips that popup when %d the hint icon, offering addition "
+"information about the field in which they appear.  They can be %d d by using "
+"the link below."
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2128
+msgid "Hints"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:2253
+msgid "Default"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3334
+msgid "Warning- This options panel will not work properly without javascript!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3385
+msgid "Developer Mode Enabled"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3413
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1070
+msgid "Expand"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3415
+#: ../framework/ReduxCore/framework.php:3723
+msgid "Save Changes"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3419
+#: ../framework/ReduxCore/framework.php:3727
+msgid "Reset Section"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3421
+#: ../framework/ReduxCore/framework.php:3729
+msgid "Reset All"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3426
+#: ../framework/ReduxCore/framework.php:3734
+msgid "Working..."
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3446
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1056
+msgid "Settings Imported!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3461
+msgid "All Defaults Restored!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3475
+msgid "Section Defaults Restored!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3489
+msgid "Settings Saved!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3507
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1059
+msgid "Settings have changed, you should save them!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3515
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1063
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1345
+msgid "error(s) were found!"
+msgstr ""
+
+#: ../framework/ReduxCore/framework.php:3523
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1066
+msgid "warning(s) were found!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/class.redux_filesystem.php:22
+msgid "Unable to create a required directory. Please ensure that"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/class.redux_filesystem.php:24
+msgid ""
+"has the proper read/write permissions or enter your FTP information below."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/class.redux_functions.php:253
+msgid "Dismiss"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/class.redux_themecheck.php:61
+#, php-format
+msgid ""
+"The theme you are testing has %s embedded. We invite you to read the %sTheme-"
+"Check Documentation%s to understand some warnings you will see because of "
+"Redux."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/class.redux_themecheck.php:109
+msgid ""
+"The following directories & files are still located in your <strong>Redux</"
+"strong>  directory. They may cause errors in Theme-Check."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/debug.php:41
+#: ../framework/ReduxCore/inc/debug.php:69
+#: ../framework/ReduxCore/inc/debug.php:76
+#: ../framework/ReduxCore/inc/debug.php:77
+msgid "Options Object"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/debug.php:54
+msgid "Show Object in Javascript Console Object"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:124
+#: ../framework/ReduxCore/inc/fields/color/field_color.php:72
+#: ../framework/ReduxCore/inc/fields/color_gradient/field_color_gradient.php:79
+#: ../framework/ReduxCore/inc/fields/color_gradient/field_color_gradient.php:91
+#: ../framework/ReduxCore/inc/fields/color_rgba/field_color_rgba.php:77
+msgid "Transparent"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:141
+msgid "Background Repeat"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:157
+msgid "Background Clip"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:173
+msgid "Background Origin"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:188
+msgid "Background Size"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:203
+msgid "Background Attachment"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:223
+msgid "Background Position"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:277
+#: ../framework/ReduxCore/inc/fields/media/field_media.php:149
+msgid "No media selected"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:314
+#: ../framework/ReduxCore/inc/fields/media/field_media.php:193
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:126
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:188
+msgid "Upload"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/background/field_background.php:321
+#: ../framework/ReduxCore/inc/fields/media/field_media.php:200
+#: ../framework/ReduxCore/inc/fields/multi_text/field_multi_text.php:69
+#: ../framework/ReduxCore/inc/fields/multi_text/field_multi_text.php:73
+#: ../framework/ReduxCore/inc/fields/multi_text/field_multi_text.php:76
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:133
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:190
+msgid "Remove"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:114
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:191
+msgid "All"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:127
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:215
+msgid "Top"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:134
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:222
+msgid "Right"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:141
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:229
+msgid "Bottom"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:148
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:236
+msgid "Left"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/border/field_border.php:162
+msgid "Border style"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/color_gradient/field_color_gradient.php:68
+msgid "From "
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/color_gradient/field_color_gradient.php:82
+msgid "To "
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/dimensions/field_dimensions.php:161
+msgid "Width"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/dimensions/field_dimensions.php:177
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:436
+msgid "Height"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/dimensions/field_dimensions.php:188
+#: ../framework/ReduxCore/inc/fields/dimensions/field_dimensions.php:189
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:245
+#: ../framework/ReduxCore/inc/fields/spacing/field_spacing.php:246
+msgid "Units"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/gallery/field_gallery.php:73
+msgid "Add/Edit Gallery"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/gallery/field_gallery.php:74
+msgid "Clear Gallery"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/link_color/field_link_color.php:87
+msgid "Regular"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/link_color/field_link_color.php:91
+msgid "Hover"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/link_color/field_link_color.php:95
+msgid "Visited"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/link_color/field_link_color.php:99
+msgid "Active"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/multi_text/field_multi_text.php:61
+msgid "Add More"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/password/field_password.php:62
+msgid "Password"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/password/field_password.php:63
+msgid "Username"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/select/field_select.php:82
+#: ../framework/ReduxCore/inc/fields/select_image/field_select_image.php:62
+msgid "Select an item"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/select/field_select.php:126
+#: ../framework/ReduxCore/inc/fields/select_image/field_select_image.php:143
+msgid "No items of this type were found."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:68
+msgid "Slide"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:73
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:145
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:200
+#: ../framework/sample/config.php:722 ../framework/sample/config.php:847
+#: ../framework/sample/config.php:971
+#: ../framework/sample/metabox-courses.php:113
+#: ../framework/sample/metabox-events.php:122
+#: ../framework/sample/metabox-excursions.php:131
+#: ../framework/sample/metabox-pages.php:54
+#: ../framework/sample/metabox-posts.php:54
+msgid "Title"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:149
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:204
+#: ../framework/sample/metabox-courses.php:123
+#: ../framework/sample/metabox-events.php:132
+#: ../framework/sample/metabox-excursions.php:141
+#: ../framework/sample/metabox-pages.php:64
+#: ../framework/sample/metabox-posts.php:64
+msgid "Description"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:153
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:207
+msgid "URL"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:167
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:220
+msgid "Delete"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/slides/field_slides.php:223
+#, php-format
+msgid "Add %s"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/switch/field_switch.php:41
+msgid "On"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/switch/field_switch.php:44
+msgid "Off"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:227
+msgid "Font Family"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:228
+msgid "Font family"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:254
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:255
+msgid "Backup Font Family"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:269
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:276
+msgid "Font style"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:270
+msgid "Font Weight &amp; Style"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:276
+#: ../framework/sample/config.php:681
+msgid "Style"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:316
+msgid "Font subsets"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:318
+msgid "Font Subsets"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:319
+msgid "Subsets"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:319
+msgid "Font script"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:336
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:337
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:338
+msgid "Text Align"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:359
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:360
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:361
+msgid "Text Transform"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:382
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:383
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:384
+msgid "Font Variant"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:402
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:403
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:404
+msgid "Text Decoration"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:426
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:427
+msgid "Font Size"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:427
+msgid "Size"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:435
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:436
+msgid "Line Height"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:444
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:445
+msgid "Word Spacing"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:453
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:454
+msgid "Letter Spacing"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:472
+msgid "Font Color"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:474
+msgid "Font color"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:851
+msgid "Standard Fonts"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/fields/typography/field_typography.php:952
+msgid "Google Webfonts"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:78
+msgid "Import / Export Options"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:81
+msgid "Import Options"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:82
+msgid "Import from file"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:82
+msgid "Import from URL"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:85
+msgid ""
+"Input your backup file below and hit Import to restore your sites options "
+"from a backup."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:90
+msgid ""
+"Input the URL to another sites options set and hit Import to load the "
+"options from that site."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:94
+msgid "Import"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:94
+msgid ""
+"WARNING! This will overwrite all existing option values, please proceed with "
+"caution!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:97
+msgid "Export Options"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:100
+msgid ""
+"Here you can copy/download your current option settings. Keep this safe as "
+"you can use it as a backup should anything go wrong, or you can use it to "
+"restore your settings on this site (or any other site)."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:104
+msgid "Copy"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:104
+msgid "Download"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:104
+msgid "Copy Link"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/import_export.php:140
+#: ../framework/ReduxCore/inc/import_export.php:149
+#: ../framework/ReduxCore/inc/import_export.php:150
+#: ../framework/sample/config.php:1702
+msgid "Import / Export"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:129
+msgid "Help improve Our Panel"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:130
+msgid ""
+"Please helps us improve our panel by allowing us to gather anonymous usage "
+"stats so we know which configurations, plugins and themes to test to ensure "
+"compatibility."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:135
+msgid "Allow tracking"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:140
+msgid "Do not allow tracking"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:151
+msgid "Welcome to the Redux Demo Panel"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:152
+#: ../framework/ReduxCore/inc/welcome.php:139
+msgid "Getting Started"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:152
+#, php-format
+msgid ""
+"This panel demonstrates the many features of Redux.  Before digging in, we "
+"suggest you get up to speed by reviewing %1$s."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:152
+msgid "our documentation"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:153
+msgid "Redux Generator"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:153
+#, php-format
+msgid ""
+"Want to get a head start? Use the %1$s. It will create a customized "
+"boilerplate theme or a standalone admin folder complete with all things "
+"Redux (with the help of Underscores and TGM). Save yourself a headache and "
+"try it today."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:154
+msgid "Redux Extensions"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:154
+#, php-format
+msgid ""
+"Did you know we have extensions, which greatly enhance the features of "
+"Redux?  Visit our %1$s to learn more!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:154
+msgid "extensions directory"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:155
+msgid "Like Redux?"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:155
+#, php-format
+msgid ""
+"If so, please %1$s and consider making a %2$s to keep development of Redux "
+"moving forward."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:155
+msgid "leave us a favorable review on WordPress.org"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:155
+msgid "donation"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:156
+msgid "Newsletter"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:156
+msgid ""
+"If you'd like to keep up to with all things Redux, please subscribe to our "
+"newsletter"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:157
+msgid "Email address"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:157
+msgid "Subscribe"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/tracking.php:166
+msgid "Close"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/color/validation_color.php:15
+#: ../framework/ReduxCore/inc/validation/color_rgba/validation_color_rgba.php:14
+#: ../framework/ReduxCore/inc/validation/colorrgba/validation_colorrgba.php:16
+msgid "This field must be a valid color value."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/comma_numeric/validation_comma_numeric.php:16
+msgid ""
+"You must provide a comma separated list of numerical values for this option."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/date/validation_date.php:16
+msgid "This field must be a valid date."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/email/validation_email.php:16
+#: ../framework/ReduxCore/inc/validation/email_not_empty/validation_email_not_empty.php:16
+msgid "You must provide a valid email for this option."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/no_html/validation_no_html.php:15
+msgid ""
+"You must not enter any HTML in this field, all HTML tags have been removed."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/no_special_chars/validation_no_special_chars.php:16
+msgid ""
+"You must not enter any special characters in this field, all special "
+"characters have been removed."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/not_empty/validation_not_empty.php:16
+msgid "This field cannot be empty. Please provide a value."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/numeric/validation_numeric.php:16
+#: ../framework/ReduxCore/inc/validation/numeric_not_empty/validation_numeric_not_empty.php:16
+msgid "You must provide a numerical value for this option."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/validation/url/validation_url.php:16
+msgid "You must provide a valid URL for this option."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:40
+msgid "Welcome to Redux Framework"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:48
+#: ../framework/ReduxCore/inc/welcome.php:295
+msgid "Redux Framework Changelog"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:56
+msgid "Getting started with Redux Framework"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:64
+msgid "The people that develop Redux Framework"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:135
+msgid "What's New"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:143
+msgid "Changelog"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:147
+msgid "Credits"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:164
+#: ../framework/ReduxCore/inc/welcome.php:333
+#: ../framework/ReduxCore/inc/welcome.php:471
+#, php-format
+msgid "Welcome to Redux Framework %s"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:167
+#, php-format
+msgid ""
+"Thank you for updating to the latest version! Redux Framework %s is ready to "
+"<add description>"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:169
+#: ../framework/ReduxCore/inc/welcome.php:300
+#: ../framework/ReduxCore/inc/welcome.php:338
+#: ../framework/ReduxCore/inc/welcome.php:476
+#: ../framework/sample/config.php:252
+#, php-format
+msgid "Version %s"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:174
+msgid "Some Feature"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:178
+#: ../framework/ReduxCore/inc/welcome.php:182
+#: ../framework/ReduxCore/inc/welcome.php:195
+#: ../framework/ReduxCore/inc/welcome.php:199
+#: ../framework/ReduxCore/inc/welcome.php:203
+#: ../framework/ReduxCore/inc/welcome.php:208
+#: ../framework/ReduxCore/inc/welcome.php:221
+#: ../framework/ReduxCore/inc/welcome.php:225
+#: ../framework/ReduxCore/inc/welcome.php:230
+msgid "Feature"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:190
+msgid "Some feature"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:217
+msgid "More Features"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:223
+#: ../framework/ReduxCore/inc/welcome.php:227
+#: ../framework/ReduxCore/inc/welcome.php:232
+msgid "description"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:238
+msgid "Additional Updates"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:242
+#: ../framework/ReduxCore/inc/welcome.php:246
+#: ../framework/ReduxCore/inc/welcome.php:252
+#: ../framework/ReduxCore/inc/welcome.php:256
+#: ../framework/ReduxCore/inc/welcome.php:262
+#: ../framework/ReduxCore/inc/welcome.php:266
+msgid "Cool thing"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:244
+#: ../framework/ReduxCore/inc/welcome.php:248
+#: ../framework/ReduxCore/inc/welcome.php:254
+#: ../framework/ReduxCore/inc/welcome.php:258
+#: ../framework/ReduxCore/inc/welcome.php:264
+#: ../framework/ReduxCore/inc/welcome.php:268
+msgid "cool thing description."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:277
+#: ../framework/ReduxCore/inc/welcome.php:316
+msgid "Go to Redux Framework"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:278
+msgid "View the Full Changelog"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:298
+#: ../framework/ReduxCore/inc/welcome.php:336
+#: ../framework/ReduxCore/inc/welcome.php:474
+#, php-format
+msgid ""
+"Thank you for updating to the latest version! Redux Framework %s is ready to "
+"make your <description>"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:305
+msgid "Full Changelog"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:342
+msgid ""
+"Use the tips below to get started using Redux Framework. You'll be up and "
+"running in no time!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:345
+msgid "Creating Your First Panel"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:350
+#, php-format
+msgid "<a href=\"%s\">%s &rarr; Add New</a>"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:352
+#, php-format
+msgid ""
+"The %s menu is your access point for all aspects of your Easy Digital "
+"Downloads product creation and setup. To create your first product, simply "
+"click Add New and then fill out the product details."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:354
+msgid "Product Price"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:356
+msgid ""
+"Products can have simple prices or variable prices if you wish to have more "
+"than one price point for a product. For a single price, simply enter the "
+"price. For multiple price points, click <em>Enable variable pricing</em> and "
+"enter the options."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:358
+msgid "Download Files"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:360
+msgid ""
+"Uploading the downloadable files is simple. Click <em>Upload File</em> in "
+"the Download Files section and choose your download file. To add more than "
+"one file, simply click the <em>Add New</em> button."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:366
+msgid "Display a Product Grid"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:373
+msgid "Flexible Product Grids"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:375
+msgid ""
+"The [downloads] shortcode will display a product grid that works with any "
+"theme, no matter the size. It is even responsive!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:377
+msgid "Change the Number of Columns"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:379
+msgid ""
+"You can easily change the number of columns by adding the columns=\"x\" "
+"parameter:"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:385
+msgid "Additional Display Options"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:387
+#, php-format
+msgid ""
+"The product grids can be customized in any way you wish and there is <a href="
+"\"%s\">extensive documentation</a> to assist you."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:392
+msgid "Purchase Buttons Anywhere"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:397
+msgid "The <em>[purchase_link]</em> Shortcode"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:399
+msgid ""
+"With easily accessible shortcodes to display purchase buttons, you can add a "
+"Buy Now or Add to Cart button for any product anywhere on your site in "
+"seconds."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:401
+msgid "Buy Now Buttons"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:403
+msgid ""
+"Purchase buttons can behave as either Add to Cart or Buy Now buttons. With "
+"Buy Now buttons customers are taken straight to PayPal, giving them the most "
+"frictionless purchasing experience possible."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:409
+msgid "Need Help?"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:413
+msgid "Phenomenal Support"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:415
+msgid ""
+"We do our best to provide the best support we can. If you encounter a "
+"problem or have a question, post a question in the <a href=\"https://"
+"easydigitaldownloads.com/support\">support forums</a>."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:417
+msgid "Need Even Faster Support?"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:419
+msgid ""
+"Our <a href=\"https://easydigitaldownloads.com/support/pricing/\">Priority "
+"Support forums</a> are there for customers that need faster and/or more in-"
+"depth assistance."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:425
+msgid "Stay Up to Date"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:429
+msgid "Get Notified of Extension Releases"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:431
+msgid ""
+"New extensions that make Easy Digital Downloads even more powerful are "
+"released nearly every single week. Subscribe to the newsletter to stay up to "
+"date with our latest releases. <a href=\"http://eepurl.com/kaerz\" target="
+"\"_blank\">Signup now</a> to ensure you do not miss a release!"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:433
+msgid "Get Alerted About New Tutorials"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:435
+msgid ""
+"<a href=\"http://eepurl.com/kaerz\" target=\"_blank\">Signup now</a> to hear "
+"about the latest tutorial releases that explain how to take Easy Digital "
+"Downloads further."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:441
+msgid "Extensions for Everything"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:445
+msgid "Over 250 Extensions"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:447
+msgid ""
+"Add-on plugins are available that greatly extend the default functionality "
+"of Easy Digital Downloads. There are extensions for payment processors, such "
+"as Stripe and PayPal, extensions for newsletter integrations, and many, many "
+"more."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:449
+msgid "Visit the Extension Store"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:451
+msgid ""
+"<a href=\"https://asydigitaldownloads.com/extensions\" target=\"_blank\">The "
+"Extensions store</a> has a list of all available extensions, including "
+"convenient category filters so you can find exactly what you are looking for."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:480
+msgid ""
+"Redux Framework is created by a worldwide team of developers who <something "
+"witty here>"
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:500
+msgid "No valid changlog was found."
+msgstr ""
+
+#: ../framework/ReduxCore/inc/welcome.php:539
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:306
+msgid "Redux Framework has an embedded demo."
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:306
+msgid "Click here to activate the sample config file."
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:407
+msgid "Repo"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:408
+msgid "Generator"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:409
+msgid "Issues"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:410 ../framework/sample/config.php:1738
+#: ../framework/sample/config.php:1884
+msgid "Documentation"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:415
+msgid "Deactivate Demo Mode"
+msgstr ""
+
+#: ../framework/class.redux-plugin.php:417
+msgid "Activate Demo Mode"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:55
+msgid "Home Settings"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:56
+#, php-format
+msgid ""
+"Redux Framework was created with the developer in mind. It allows for any "
+"theme developer to have an advanced theme panel with most of the features a "
+"developer would need. For more information check out the Github repo at: %d"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:64
+msgid "Web Fonts"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:68
+msgid "Basic media uploader with disabled URL input field."
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:69
+msgid "Upload any media using the WordPress native uploader"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:84
+#: ../framework/sample/config.php:1749
+msgid "Theme Information 1"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:85
+#: ../framework/sample/barebones-config.php:91
+#: ../framework/sample/config.php:1750 ../framework/sample/config.php:1756
+msgid "<p>This is the tab content, HTML is allowed.</p>"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:90
+#: ../framework/sample/config.php:1755
+msgid "Theme Information 2"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:95
+#: ../framework/sample/config.php:1760
+msgid "<p>This is the sidebar content, HTML is allowed.</p>"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:118
+#: ../framework/sample/barebones-config.php:119
+msgid "Sample Options"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:236
+#, php-format
+msgid ""
+"<p>Did you know that Redux sets a global variable for you? To access any of "
+"your saved options from within your code you can use your global variable: "
+"<strong>$%1$s</strong></p>"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:238
+msgid ""
+"<p>This text is displayed above the options panel. It isn't required, but "
+"more info is always better! The intro_text field accepts all HTML.</p>"
+msgstr ""
+
+#: ../framework/sample/barebones-config.php:242
+msgid ""
+"<p>This text is displayed below the options panel. It isn't required, but "
+"more info is always better! The footer_text field accepts all HTML.</p>"
+msgstr ""
+
+#: ../framework/sample/config.php:150
+msgid "Section via hook"
+msgstr ""
+
+#: ../framework/sample/config.php:151
+msgid ""
+"<p class=\"description\">This is a section created by adding a filter to the "
+"sections array. Can be used by child themes to add/remove sections from the "
+"options.</p>"
+msgstr ""
+
+#: ../framework/sample/config.php:231
+#, php-format
+msgid "Customize &#8220;%s&#8221;"
+msgstr ""
+
+#: ../framework/sample/config.php:251
+#, php-format
+msgid "By %s"
+msgstr ""
+
+#: ../framework/sample/config.php:253 ../framework/sample/config.php:1308
+#: ../framework/sample/metabox-posts.php:212
+msgid "Tags"
+msgstr ""
+
+#: ../framework/sample/config.php:258
+#, php-format
+msgid "This <a href=\"%1$s\">child theme</a> requires its parent theme, %2$s."
+msgstr ""
+
+#: ../framework/sample/config.php:258
+msgid "http://codex.wordpress.org/Child_Themes"
+msgstr ""
+
+#: ../framework/sample/config.php:281
+#: ../framework/sample/metabox-courses.php:66
+#: ../framework/sample/metabox-events.php:75
+#: ../framework/sample/metabox-excursions.php:84
+#: ../framework/sample/metabox-pages.php:7
+#: ../framework/sample/metabox-posts.php:7
+msgid "Header Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:292
+msgid "HEADER SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:297
+msgid "Boxed Header"
+msgstr ""
+
+#: ../framework/sample/config.php:298
+msgid "Disable Boxed Style For your Header"
+msgstr ""
+
+#: ../framework/sample/config.php:307
+msgid "Gradient"
+msgstr ""
+
+#: ../framework/sample/config.php:308
+msgid "Disable Gradient Line On Your Header"
+msgstr ""
+
+#: ../framework/sample/config.php:317
+msgid "Background Color"
+msgstr ""
+
+#: ../framework/sample/config.php:318
+msgid "Select Your Header Bg Color"
+msgstr ""
+
+#: ../framework/sample/config.php:336
+msgid "Sticky Menu"
+msgstr ""
+
+#: ../framework/sample/config.php:337
+msgid "Set the margin-top for your Header"
+msgstr ""
+
+#: ../framework/sample/config.php:338
+msgid "If yo do not want the menu fixed set a negative value as -200"
+msgstr ""
+
+#: ../framework/sample/config.php:349
+msgid "Left Sidebar"
+msgstr ""
+
+#: ../framework/sample/config.php:350
+msgid "Enable Left Sidebar On Header!"
+msgstr ""
+
+#: ../framework/sample/config.php:360
+msgid "Icon Retina (Left Sidebar)"
+msgstr ""
+
+#: ../framework/sample/config.php:361 ../framework/sample/config.php:401
+#: ../framework/sample/metabox-excursions.php:73
+msgid "Insert your retina icon code."
+msgstr ""
+
+#: ../framework/sample/config.php:369
+msgid "Icon BG Color (Left Sidebar)"
+msgstr ""
+
+#: ../framework/sample/config.php:370 ../framework/sample/config.php:410
+msgid "Select Your Bg Color for your icon"
+msgstr ""
+
+#: ../framework/sample/config.php:389
+msgid "Right Sidebar"
+msgstr ""
+
+#: ../framework/sample/config.php:390
+msgid "Enable Right Sidebar On Header!"
+msgstr ""
+
+#: ../framework/sample/config.php:400
+msgid "Icon Retina (Right Sidebar)"
+msgstr ""
+
+#: ../framework/sample/config.php:409
+msgid "Icon BG Color (Right Sidebar)"
+msgstr ""
+
+#: ../framework/sample/config.php:433
+msgid "Top Header"
+msgstr ""
+
+#: ../framework/sample/config.php:440
+msgid "TOP HEADER SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:445
+msgid "Disable Top Header Display"
+msgstr ""
+
+#: ../framework/sample/config.php:446
+msgid "Disable Top Header Section!"
+msgstr ""
+
+#: ../framework/sample/config.php:455 ../framework/sample/config.php:1440
+msgid "Left Content"
+msgstr ""
+
+#: ../framework/sample/config.php:457 ../framework/sample/config.php:474
+#: ../framework/sample/config.php:1441 ../framework/sample/config.php:1452
+msgid "Insert Your Content, HTML / SHORTCODES / TEXT is allowed"
+msgstr ""
+
+#: ../framework/sample/config.php:473 ../framework/sample/config.php:1451
+msgid "Right Content"
+msgstr ""
+
+#: ../framework/sample/config.php:489
+msgid "Logos and Favicons"
+msgstr ""
+
+#: ../framework/sample/config.php:496
+msgid "LOGO AND FAVICONS SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:501
+msgid "Logo"
+msgstr ""
+
+#: ../framework/sample/config.php:503
+msgid "Upload your logo in high resolution"
+msgstr ""
+
+#: ../framework/sample/config.php:513
+msgid "Logo Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:514
+msgid "Insert your width and margin-top (+,-) for logo position."
+msgstr ""
+
+#: ../framework/sample/config.php:515
+msgid "Width / Margin-top (positive or negative)"
+msgstr ""
+
+#: ../framework/sample/config.php:524
+msgid "Enable Custom Favicons"
+msgstr ""
+
+#: ../framework/sample/config.php:525
+msgid "Enable Custom Favicons For Your Site!"
+msgstr ""
+
+#: ../framework/sample/config.php:534
+msgid "Favicon ICO"
+msgstr ""
+
+#: ../framework/sample/config.php:536
+msgid "Upload your Favicon 16px X 16px (.ico)"
+msgstr ""
+
+#: ../framework/sample/config.php:542
+msgid "Favicon IPHONE"
+msgstr ""
+
+#: ../framework/sample/config.php:544
+msgid "Upload your Favicon 57px X 57px (.png)"
+msgstr ""
+
+#: ../framework/sample/config.php:550
+msgid "Favicon IPAD"
+msgstr ""
+
+#: ../framework/sample/config.php:552
+msgid "Upload your Favicon 72px X 72px (.png)"
+msgstr ""
+
+#: ../framework/sample/config.php:558
+msgid "Favicon RETINA"
+msgstr ""
+
+#: ../framework/sample/config.php:560
+msgid "Upload your Favicon 114px X 114px (.png)"
+msgstr ""
+
+#: ../framework/sample/config.php:571
+msgid "Archive Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:582
+msgid "ARCHIVE POST SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:588 ../framework/sample/config.php:712
+#: ../framework/sample/config.php:837 ../framework/sample/config.php:961
+#: ../framework/sample/config.php:1089
+#: ../framework/sample/metabox-courses.php:75
+#: ../framework/sample/metabox-events.php:84
+#: ../framework/sample/metabox-excursions.php:93
+#: ../framework/sample/metabox-pages.php:16
+#: ../framework/sample/metabox-posts.php:16
+msgid "Enable Header Image Display"
+msgstr ""
+
+#: ../framework/sample/config.php:589 ../framework/sample/config.php:713
+#: ../framework/sample/config.php:838 ../framework/sample/config.php:962
+#: ../framework/sample/config.php:1090
+#: ../framework/sample/metabox-courses.php:76
+#: ../framework/sample/metabox-events.php:85
+#: ../framework/sample/metabox-excursions.php:94
+#: ../framework/sample/metabox-pages.php:17
+#: ../framework/sample/metabox-posts.php:17
+msgid "Enable Header Parallax Image Display!"
+msgstr ""
+
+#: ../framework/sample/config.php:598 ../framework/sample/config.php:732
+#: ../framework/sample/config.php:857 ../framework/sample/config.php:981
+#: ../framework/sample/config.php:1099
+#: ../framework/sample/metabox-courses.php:85
+#: ../framework/sample/metabox-events.php:94
+#: ../framework/sample/metabox-excursions.php:103
+#: ../framework/sample/metabox-pages.php:26
+#: ../framework/sample/metabox-posts.php:26 ../include/shortcodes.php:85
+#: ../include/shortcodes.php:134
+msgid "Image Parallax"
+msgstr ""
+
+#: ../framework/sample/config.php:600 ../framework/sample/config.php:734
+#: ../framework/sample/config.php:859 ../framework/sample/config.php:983
+#: ../framework/sample/config.php:1101
+#: ../framework/sample/metabox-courses.php:87
+#: ../framework/sample/metabox-events.php:96
+#: ../framework/sample/metabox-excursions.php:105
+#: ../framework/sample/metabox-pages.php:28
+#: ../framework/sample/metabox-posts.php:28
+msgid "Upload your parallax image"
+msgstr ""
+
+#: ../framework/sample/config.php:606 ../framework/sample/config.php:740
+#: ../framework/sample/config.php:865 ../framework/sample/config.php:989
+#: ../framework/sample/config.php:1107
+#: ../framework/sample/metabox-courses.php:93
+#: ../framework/sample/metabox-events.php:102
+#: ../framework/sample/metabox-excursions.php:111
+#: ../framework/sample/metabox-pages.php:34
+#: ../framework/sample/metabox-posts.php:34
+msgid "Filter"
+msgstr ""
+
+#: ../framework/sample/config.php:607 ../framework/sample/config.php:741
+#: ../framework/sample/config.php:866 ../framework/sample/config.php:990
+#: ../framework/sample/config.php:1108
+#: ../framework/sample/metabox-courses.php:94
+#: ../framework/sample/metabox-events.php:103
+#: ../framework/sample/metabox-excursions.php:112
+#: ../framework/sample/metabox-pages.php:35
+#: ../framework/sample/metabox-posts.php:35
+msgid "Select Color Filter Over Image"
+msgstr ""
+
+#: ../framework/sample/config.php:626 ../framework/sample/config.php:760
+#: ../framework/sample/config.php:885 ../framework/sample/config.php:1009
+#: ../framework/sample/config.php:1127
+#: ../framework/sample/metabox-courses.php:144
+#: ../framework/sample/metabox-events.php:153
+#: ../framework/sample/metabox-excursions.php:162
+#: ../framework/sample/metabox-pages.php:85
+#: ../framework/sample/metabox-posts.php:85
+msgid "Margin Top"
+msgstr ""
+
+#: ../framework/sample/config.php:627 ../framework/sample/config.php:761
+#: ../framework/sample/config.php:886 ../framework/sample/config.php:1010
+#: ../framework/sample/config.php:1128
+#: ../framework/sample/metabox-courses.php:145
+#: ../framework/sample/metabox-events.php:154
+#: ../framework/sample/metabox-excursions.php:163
+#: ../framework/sample/metabox-pages.php:86
+#: ../framework/sample/metabox-posts.php:86
+msgid "Select Title Margin Top"
+msgstr ""
+
+#: ../framework/sample/config.php:654 ../framework/sample/config.php:788
+#: ../framework/sample/config.php:913 ../framework/sample/config.php:1037
+#: ../framework/sample/config.php:1155
+#: ../framework/sample/metabox-courses.php:172
+#: ../framework/sample/metabox-events.php:181
+#: ../framework/sample/metabox-excursions.php:190
+#: ../framework/sample/metabox-pages.php:113
+#: ../framework/sample/metabox-posts.php:113
+msgid "Margin Bottom"
+msgstr ""
+
+#: ../framework/sample/config.php:655 ../framework/sample/config.php:789
+#: ../framework/sample/config.php:914 ../framework/sample/config.php:1038
+#: ../framework/sample/config.php:1156
+#: ../framework/sample/metabox-courses.php:173
+#: ../framework/sample/metabox-events.php:182
+#: ../framework/sample/metabox-excursions.php:191
+#: ../framework/sample/metabox-pages.php:114
+#: ../framework/sample/metabox-posts.php:114
+msgid "Select Title Margin Bottom"
+msgstr ""
+
+#: ../framework/sample/config.php:682
+msgid "Select the style"
+msgstr ""
+
+#: ../framework/sample/config.php:697
+msgid "Courses"
+msgstr ""
+
+#: ../framework/sample/config.php:706
+msgid "ARCHIVE COURSE SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:723 ../framework/sample/config.php:848
+#: ../framework/sample/config.php:972
+msgid "Insert the title"
+msgstr ""
+
+#: ../framework/sample/config.php:822
+msgid "Excursions"
+msgstr ""
+
+#: ../framework/sample/config.php:831
+msgid "ARCHIVE EXCURSIONS SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:946 ../framework/sample/config.php:1326
+msgid "Events"
+msgstr ""
+
+#: ../framework/sample/config.php:955
+msgid "ARCHIVE EVENTS SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1072 ../framework/sample/config.php:1335
+msgid "Woo Commerce"
+msgstr ""
+
+#: ../framework/sample/config.php:1083
+msgid "WOOCOMMERCE SHOP SETTINGS: only for SHOP and PRODUCTS pages"
+msgstr ""
+
+#: ../framework/sample/config.php:1192
+msgid "Widgets Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:1203
+msgid "WIDGETS SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1209
+msgid "Archives"
+msgstr ""
+
+#: ../framework/sample/config.php:1210 ../framework/sample/config.php:1219
+#: ../framework/sample/config.php:1228 ../framework/sample/config.php:1237
+#: ../framework/sample/config.php:1246 ../framework/sample/config.php:1255
+#: ../framework/sample/config.php:1264 ../framework/sample/config.php:1273
+#: ../framework/sample/config.php:1282 ../framework/sample/config.php:1291
+#: ../framework/sample/config.php:1300 ../framework/sample/config.php:1309
+#: ../framework/sample/config.php:1318 ../framework/sample/config.php:1327
+#: ../framework/sample/config.php:1336
+msgid "Select Your Title Bg Color"
+msgstr ""
+
+#: ../framework/sample/config.php:1218
+msgid "Calendar"
+msgstr ""
+
+#: ../framework/sample/config.php:1227
+#: ../framework/sample/metabox-posts.php:221
+msgid "Categories"
+msgstr ""
+
+#: ../framework/sample/config.php:1236
+msgid "Menu"
+msgstr ""
+
+#: ../framework/sample/config.php:1245
+msgid "Meta"
+msgstr ""
+
+#: ../framework/sample/config.php:1254
+msgid "Pages"
+msgstr ""
+
+#: ../framework/sample/config.php:1263
+#: ../framework/sample/metabox-pages.php:221
+#: ../framework/sample/metabox-posts.php:239
+msgid "Comments"
+msgstr ""
+
+#: ../framework/sample/config.php:1272
+msgid "Posts"
+msgstr ""
+
+#: ../framework/sample/config.php:1281
+msgid "Slider"
+msgstr ""
+
+#: ../framework/sample/config.php:1290
+msgid "Rss"
+msgstr ""
+
+#: ../framework/sample/config.php:1299
+msgid "Search"
+msgstr ""
+
+#: ../framework/sample/config.php:1317
+msgid "Text"
+msgstr ""
+
+#: ../framework/sample/config.php:1349
+msgid "Footer Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:1360
+msgid "FOOTER SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1365
+msgid "Disable Footer Display"
+msgstr ""
+
+#: ../framework/sample/config.php:1366
+msgid "Disable Footer Section!"
+msgstr ""
+
+#: ../framework/sample/config.php:1375
+msgid "Disable Gradient"
+msgstr ""
+
+#: ../framework/sample/config.php:1376
+msgid "Disable Gradient Section"
+msgstr ""
+
+#: ../framework/sample/config.php:1377
+msgid "For change the gradient color edit the code in your css/shortcodes.css"
+msgstr ""
+
+#: ../framework/sample/config.php:1386
+msgid "Footer Columns"
+msgstr ""
+
+#: ../framework/sample/config.php:1387
+msgid "Select your Columns"
+msgstr ""
+
+#: ../framework/sample/config.php:1416
+msgid "Copyright"
+msgstr ""
+
+#: ../framework/sample/config.php:1424
+msgid "COPYRIGHT SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1429
+msgid "Disable Copyright Display"
+msgstr ""
+
+#: ../framework/sample/config.php:1430
+msgid "Disable Copyright Section!"
+msgstr ""
+
+#: ../framework/sample/config.php:1463
+msgid "Disable Back To Top"
+msgstr ""
+
+#: ../framework/sample/config.php:1464
+msgid "Disable Back To Top Arrow"
+msgstr ""
+
+#: ../framework/sample/config.php:1478
+#: ../framework/sample/metabox-courses.php:206
+#: ../framework/sample/metabox-events.php:215
+#: ../framework/sample/metabox-excursions.php:224
+#: ../framework/sample/metabox-pages.php:147
+#: ../framework/sample/metabox-posts.php:147
+msgid "Color Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:1489
+msgid "COLOR SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1494
+msgid "RED Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1496
+msgid "Set your red color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1506
+msgid "ORANGE Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1508
+msgid "Set your orange color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1518
+msgid "YELLOW Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1520
+msgid "Set your yellow color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1530
+msgid "BLUE Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1532
+msgid "Set your blue color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1542
+msgid "GREEN Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1544
+msgid "Set your green color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1554
+msgid "VIOLET Normal/Dark"
+msgstr ""
+
+#: ../framework/sample/config.php:1556
+msgid "Set your violet color (dark is used for shadows and borders)"
+msgstr ""
+
+#: ../framework/sample/config.php:1572
+msgid "Fonts Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:1583
+msgid "FONT SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1588
+msgid "Main Font"
+msgstr ""
+
+#: ../framework/sample/config.php:1589
+msgid "Specify the main font."
+msgstr ""
+
+#: ../framework/sample/config.php:1604
+msgid "Second Font"
+msgstr ""
+
+#: ../framework/sample/config.php:1605
+msgid "Specify the second font."
+msgstr ""
+
+#: ../framework/sample/config.php:1620
+msgid "Third Font"
+msgstr ""
+
+#: ../framework/sample/config.php:1621
+msgid ""
+"Specify the third font. Only for \"signature\" class apply to heading tag"
+msgstr ""
+
+#: ../framework/sample/config.php:1642
+#: ../framework/sample/metabox-pages.php:176
+#: ../framework/sample/metabox-posts.php:176
+msgid "General Settings"
+msgstr ""
+
+#: ../framework/sample/config.php:1653
+msgid "GENERAL SETTINGS"
+msgstr ""
+
+#: ../framework/sample/config.php:1658
+msgid "Enable Boxed Layout"
+msgstr ""
+
+#: ../framework/sample/config.php:1659
+msgid "Enable Boxed Layout For Your Site!"
+msgstr ""
+
+#: ../framework/sample/config.php:1670
+msgid "Background Options"
+msgstr ""
+
+#: ../framework/sample/config.php:1671
+msgid "Body background with image, pattern and color"
+msgstr ""
+
+#: ../framework/sample/config.php:1677
+msgid "Custom CSS"
+msgstr ""
+
+#: ../framework/sample/config.php:1678
+msgid "Paste your CSS code here."
+msgstr ""
+
+#: ../framework/sample/config.php:1687
+msgid "Google Analytics"
+msgstr ""
+
+#: ../framework/sample/config.php:1688
+msgid "Paste your Google Analytics here. "
+msgstr ""
+
+#: ../framework/sample/config.php:1703
+msgid "Import and Export your Theme Options settings from file, text or URL."
+msgstr ""
+
+#: ../framework/sample/config.php:1721
+msgid "Theme Information"
+msgstr ""
+
+#: ../framework/sample/config.php:1783 ../framework/sample/config.php:1784
+msgid "Theme Options"
+msgstr ""
+
+#: ../framework/sample/config.php:1890
+msgid "Support"
+msgstr ""
+
+#: ../framework/sample/config.php:1896
+msgid "Extensions"
+msgstr ""
+
+#: ../framework/sample/config.php:1931
+msgid "<p>cleanthemes.net - nicdarkthemes.com"
+msgstr ""
+
+#: ../framework/sample/config.php:1935
+msgid "<p>cleanthemes.net - nicdarkthemes.com</p>"
+msgstr ""
+
+#: ../framework/sample/extensions/metaboxes/extension_metaboxes.php:1350
+msgid "warnings(s) were found!"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:7
+msgid "Course Settings"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:16
+msgid "Price"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:17
+msgid "Insert the price E.g. 32"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:24
+msgid "Currency"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:25
+msgid "Insert the currency E.g. USD"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:36
+#: ../framework/sample/metabox-events.php:45
+#: ../framework/sample/metabox-excursions.php:45
+msgid "Preview Settings"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:45
+#: ../framework/sample/metabox-events.php:54
+#: ../framework/sample/metabox-excursions.php:54
+msgid "Text button"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:46
+#: ../framework/sample/metabox-events.php:55
+#: ../framework/sample/metabox-excursions.php:55
+msgid "Insert custom text"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:54
+#: ../framework/sample/metabox-events.php:63
+#: ../framework/sample/metabox-excursions.php:63
+msgid "Link button"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:55
+#: ../framework/sample/metabox-events.php:64
+#: ../framework/sample/metabox-excursions.php:64
+msgid "This must be a URL. E.g. http://www.cleanthemes.net"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:114
+#: ../framework/sample/metabox-events.php:123
+#: ../framework/sample/metabox-excursions.php:132
+#: ../framework/sample/metabox-pages.php:55
+#: ../framework/sample/metabox-posts.php:55
+msgid "Insert your title"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:124
+#: ../framework/sample/metabox-events.php:133
+#: ../framework/sample/metabox-excursions.php:142
+#: ../framework/sample/metabox-pages.php:65
+#: ../framework/sample/metabox-posts.php:65
+msgid "Insert your description"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:133
+#: ../framework/sample/metabox-events.php:142
+#: ../framework/sample/metabox-excursions.php:151
+#: ../framework/sample/metabox-pages.php:74
+#: ../framework/sample/metabox-posts.php:74
+msgid "Disable Divider"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:134
+#: ../framework/sample/metabox-events.php:143
+#: ../framework/sample/metabox-excursions.php:152
+#: ../framework/sample/metabox-pages.php:75
+#: ../framework/sample/metabox-posts.php:75
+msgid "Disable Divider above title"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:214
+#: ../framework/sample/metabox-events.php:223
+#: ../framework/sample/metabox-excursions.php:232
+#: ../framework/sample/metabox-pages.php:155
+#: ../framework/sample/metabox-posts.php:155
+msgid "Color"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:215
+#: ../framework/sample/metabox-events.php:224
+#: ../framework/sample/metabox-excursions.php:233
+#: ../framework/sample/metabox-pages.php:156
+#: ../framework/sample/metabox-posts.php:156
+msgid "Select Your Main Color"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:235
+#: ../framework/sample/metabox-events.php:244
+#: ../framework/sample/metabox-excursions.php:253
+#: ../framework/sample/metabox-pages.php:236
+#: ../framework/sample/metabox-posts.php:254
+msgid "Sidebar Settings"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:242
+#: ../framework/sample/metabox-events.php:251
+#: ../framework/sample/metabox-excursions.php:260
+#: ../framework/sample/metabox-pages.php:243
+#: ../framework/sample/metabox-posts.php:261
+msgid "Sidebar"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:256
+msgid "Course Options"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:275
+msgid "Layout Courses"
+msgstr ""
+
+#: ../framework/sample/metabox-courses.php:276
+#: ../framework/sample/metabox-events.php:285
+#: ../framework/sample/metabox-excursions.php:294
+#: ../framework/sample/metabox-pages.php:278
+#: ../framework/sample/metabox-posts.php:296
+msgid "Select main content and sidebar position."
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:7
+msgid "Event Settings"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:16
+#: ../framework/sample/metabox-excursions.php:16
+msgid "Date"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:17
+#: ../framework/sample/metabox-excursions.php:17
+msgid "Insert the date. E.g. mm/dd/yyyy"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:23
+#: ../framework/sample/metabox-excursions.php:23
+msgid "Hour"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:24
+msgid "Insert the hour"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:32
+#: ../framework/sample/metabox-excursions.php:32
+msgid "Location"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:33
+msgid "Insert the location"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:265
+msgid "Event Options"
+msgstr ""
+
+#: ../framework/sample/metabox-events.php:284
+msgid "Layout events"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:7
+msgid "Excursion Settings"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:24
+msgid "Insert the hour E.g. 10 AM"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:33
+msgid "Insert the location E.g. VENICE"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:72
+msgid "Icon"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:274
+msgid "Excursion Options"
+msgstr ""
+
+#: ../framework/sample/metabox-excursions.php:293
+msgid "Layout excursions"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:185
+#: ../framework/sample/metabox-posts.php:185
+msgid "Featured Image"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:186
+#: ../framework/sample/metabox-posts.php:186
+msgid "Disable Featured Image!"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:194
+#: ../framework/sample/metabox-posts.php:194
+msgid "Information Bar"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:195
+#: ../framework/sample/metabox-posts.php:195
+msgid "Disable Information Bar!"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:203
+msgid "Title Page"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:204
+msgid "Disable Title Page!"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:212
+#: ../framework/sample/metabox-posts.php:230
+msgid "Author"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:213
+#: ../framework/sample/metabox-posts.php:231
+msgid "Disable Author Bar!"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:222
+#: ../framework/sample/metabox-posts.php:240
+msgid "Disable Comments!"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:258
+msgid "Options Page"
+msgstr ""
+
+#: ../framework/sample/metabox-pages.php:277
+msgid "Layout Pages"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:203
+msgid "Title Post"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:204
+msgid "Disable Title Post!"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:213
+msgid "Disable Tags Section!"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:222
+msgid "Disable categories section!"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:276
+msgid "Options Post"
+msgstr ""
+
+#: ../framework/sample/metabox-posts.php:295
+msgid "Layout Posts"
+msgstr ""
+
+#: ../functions.php:135
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: ../functions.php:148
+#, php-format
+msgid "All plugins installed and activated successfully. %s"
+msgstr ""
+
+#: ../functions.php:161
+msgid "Main Menu"
+msgstr ""
+
+#: ../include/page/page-info-2.php:4 ../include/post/post-info-2.php:4
+msgid "Pages:"
+msgstr ""
+
+#: ../include/page/page-info-2.php:9 ../include/post/post-info-2.php:9
+msgid "Next page"
+msgstr ""
+
+#: ../include/page/page-info-2.php:10 ../include/post/post-info-2.php:10
+msgid "Previous page"
+msgstr ""
+
+#: ../include/post/post-info-2.php:50
+msgid "Category"
+msgstr ""
+
+#: ../include/shortcodes.php:54 ../include/shortcodes.php:104
+msgid "Section ID"
+msgstr ""
+
+#: ../include/shortcodes.php:56 ../include/shortcodes.php:106
+msgid "Insert section ID for anchor link. E.g. my_section_id_1"
+msgstr ""
+
+#: ../include/shortcodes.php:63 ../include/shortcodes.php:113
+msgid "Choose the style for the row"
+msgstr ""
+
+#: ../include/shortcodes.php:68 ../include/shortcodes.php:117
+msgid "Parallax"
+msgstr ""
+
+#: ../include/shortcodes.php:71 ../include/shortcodes.php:120
+msgid "No"
+msgstr ""
+
+#: ../include/shortcodes.php:72 ../include/shortcodes.php:121
+msgid "Yes"
+msgstr ""
+
+#: ../include/shortcodes.php:74 ../include/shortcodes.php:123
+msgid "Set the image in Design Options Tab"
+msgstr ""
+
+#: ../include/shortcodes.php:78 ../include/shortcodes.php:127
+msgid "ID for parallax"
+msgstr ""
+
+#: ../include/shortcodes.php:80 ../include/shortcodes.php:129
+msgid "Insert parallax ID name. E.g. my_first_parallax_1"
+msgstr ""
+
+#: ../include/shortcodes.php:88 ../include/shortcodes.php:137
+msgid "Select image from media library."
+msgstr ""
+
+#: ../include/shortcodes.php:93 ../include/shortcodes.php:142
+msgid "Color Filter"
+msgstr ""
+
+#: ../include/shortcodes.php:95 ../include/shortcodes.php:144
+msgid "Choose color filter"
+msgstr ""
+
+#: ../woocommerce.php:16
+msgid "SHOP"
+msgstr ""

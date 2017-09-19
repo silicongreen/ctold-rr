@@ -1,0 +1,169 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<script>
+  $jq = jQuery.noConflict()
+  $jq(document).ready(function() {
+    $jq("#employee_joining_date").datepicker({dateFormat: 'yy-mm-dd'});
+    $jq("#employee_date_of_birth").datepicker({dateFormat: 'yy-mm-dd'});
+  });
+</script>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('edit_employee_information') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('general') %></div>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+
+
+
+  <% form_for :employee,:id => @employee.id do |a| %>
+    <%= error_messages_for  'employee' %>
+
+    <div id="admission1_form">
+
+      <div id="necessary-field-notification"> <%= t('legend1') %>  <span class="necessary-field">*</span><%= t('legend2') %></div>
+      <span class="span-sub-heading"><%= t('general_details') %></span>
+      
+      <hr class="label-underline"></hr>
+
+      <div class="label-field-pair">
+        <label for="employee_job_title"><%= t('job_title') %></label>
+        <div class="text-input-bg"><%= a.text_field :job_title, :value => @employee.job_title %></div>
+      </div>
+      <hr class="label-underline"></hr>
+
+      <div class="label-field-pair">
+        <label for="employee_qualification"><%= t('qualification') %></label>
+        <div class="text-input-bg"><%= a.text_field :qualification, :value => @employee.qualification %></div>
+      </div>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair-text-area">
+        <label for="employee_experience"><%= t('exp_info') %></label>
+        <div class="textarea-input-bg"><%= a.text_area :experience_detail,:cols => 27, :rows => 5,:class => 'admission1-textarea' %></div>
+      </div>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="employee_total-experience"><%= t('total_exp') %></label>
+        <div class="text-input-bg"><%= select :employee, :experience_year, (0..50),{:prompt=>"#{t('year')}"} %>
+          <%= select :employee, :experience_month, (0..11),{:prompt=>"#{t('month')}"} %></div>
+      </div>
+      <hr class="label-underline"></hr>
+
+      <div class="label_field_pair">
+        <label class="label_for_employee_gender" for="master_student_gender"><%= t('gender') %></label>
+        <div class="employee_gender_value">
+          <label class="label_for_gender" for="master_student_gender_true"><%= t('male') %></label>
+          <%= a.radio_button  "gender", "m" %>
+
+          <label class="label_for_gender" for="master_student_gender_false"><%= t('female') %></label>
+          <%= a.radio_button  "gender", "f" %>
+        </div>
+      </div>
+      
+      <hr class="label-underline"></hr>
+      <span class="span-sub-heading"><%= t('home_address') %></span>
+      <hr class="sub-heading"></hr>
+          <div class="label-field-pair">
+            <label><%= t('line_1') %></label>
+            <div class="text-input-bg"><%= a.text_field :home_address_line1 %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('line_2') %></label>
+            <div class="text-input-bg"><%= a.text_field :home_address_line2 %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('city') %></label>
+            <div class="text-input-bg"><%= a.text_field :home_city %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('state') %></label>
+            <div class="text-input-bg"><%= a.text_field :home_state %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('country') %></label>
+            <div class="text-input-bg"><%= select :employee, :home_country_id, @countries.map {|c| [c.name, c.id]}, :selected => @employee.home_country_id %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('zip') %></label>
+            <div class="text-input-bg"><%= a.text_field :home_pin_code %></div>
+            <div class="extender"></div>
+          </div>
+      <br/>
+      <span class="span-sub-heading"><%= t('office_address') %></span>
+      <hr class="sub-heading"></hr>
+          <div class="label-field-pair">
+            <label><%= t('line_1') %></label>
+            <div class="text-input-bg"><%= a.text_field :office_address_line1 %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('line_2') %></label>
+            <div class="text-input-bg"><%= a.text_field :office_address_line2 %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('city') %></label>
+            <div class="text-input-bg"><%= a.text_field :office_city %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('state') %></label>
+            <div class="text-input-bg"><%= a.text_field :office_state %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('country') %></label>
+            <div class="text-input-bg"><%= select :employee, :office_country_id, @countries.map {|c| [c.name, c.id]}, :selected => @employee.office_country_id %></div>
+            <div class="extender"></div>
+          </div>
+      <hr class="label-underline"></hr>
+          <div class="label-field-pair">
+            <label><%= t('zip') %></label>
+            <div class="text-input-bg"><%= a.text_field :office_pin_code %></div>
+            <div class="extender"></div>
+          </div>
+
+
+    </div>
+    <%= submit_tag "► #{ t('update')}", :class => "submit_button" %>
+  <% end %>
+</div>
+

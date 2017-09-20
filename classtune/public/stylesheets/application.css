@@ -3661,6 +3661,11 @@ a.user_button:hover
      background: #145214 !important;
 }
 
+.row_wrapper .row .row_data
+{
+    width: 65.6%;
+}
+
 
 
 

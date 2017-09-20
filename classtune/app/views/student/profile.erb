@@ -520,7 +520,7 @@
     <div class="clearfix"></div>
     
   <!-- sibling div added by RR -->  
-  <% if @siblings.count()>0 %>
+  <% unless @siblings.blank?  %>
     <div id="sibling_detail" class="row_wrapper">
         
         <div class="row">

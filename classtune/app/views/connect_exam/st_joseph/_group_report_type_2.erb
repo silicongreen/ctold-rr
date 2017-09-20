@@ -125,7 +125,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %> | <%= sprintf( "%0.02f", full_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
                             
                             <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

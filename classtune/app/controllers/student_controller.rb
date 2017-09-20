@@ -1330,7 +1330,11 @@ class StudentController < ApplicationController
       params[:student_additional_details].each_pair do |k, v|
         additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
         unless additional_detail.blank?
-          StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+          if v['additional_info'].blank?
+            StudentAdditionalDetail.destroy
+          else 
+            StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+          end
         else
           StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
         end

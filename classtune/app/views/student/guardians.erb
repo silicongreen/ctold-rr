@@ -111,6 +111,7 @@
             <tr class="odd left"><td><%= t('name') %></td><td class="right"><%= shorten_string(p.full_name,35) %></td></tr>
             <tr class="even left"><td><%= t('relation') %></td><td class="right"><%= g_students.relation  %></td></tr>
             <tr class="odd left"><td><%= t('date_of_birth') %></td><td class="right"><%= p.dob.strftime('%d %B, %Y') unless p.dob.nil? %></td></tr>
+            <tr class="odd left"><td><%= t('education') %></td><td class="right"><%= p.education %></td></tr>
             <tr class="even left"><td><%= t('email') %></td><td class="right"><%= p.email  %></td></tr>
 
             <tr class="odd left"><td><%= t('office_phone1') %></td><td class="right"><%= p.office_phone1 %></td></tr>

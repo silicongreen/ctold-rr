@@ -65,13 +65,13 @@
         <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>17 && extender ==0 %>
+          <% if std_count>13 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>22 && extender ==1 %>
+          <% elsif std_count>19 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

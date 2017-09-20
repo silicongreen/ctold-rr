@@ -136,11 +136,58 @@
       
       <% @additional_fields.each do |additional| %>
           <% @student_additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,additional.id) %>
+          <% input_val = @student_additional_detail.nil? ? "" : @student_additional_detail.additional_info %>
+         
+           <% if additional.input_type=="belongs_to" %>
           <div class="label-field-pair">
-            <label><%= additional.name %></label>
-            <div class="text-input-bg"><%= text_field :student_additional_details, :additional_info,:index => additional.id, :value => (@student_additional_detail.nil? ? "" : @student_additional_detail.additional_info)%></div>
-            <div class="extender"></div>
+            <label><%= additional.name %>
+              <% if additional.is_mandatory %>
+                <span class="necessary-field">*</span>
+              <% end %>
+            </label>
+            <div class="text-input-bg"><%= select_tag "student_additional_details[#{additional.id}][additional_info]", options_for_select(additional.student_additional_field_options.map{|b| [b.field_option,b.field_option]}, input_val)%></div>
           </div>
+        <% elsif additional.input_type=="has_many" %>
+          <div class="grades">
+            <div class="label-field-pair">
+              <label><%= additional.name %>
+                <% if additional.is_mandatory %>
+                  <span class="necessary-field">*</span>
+                <% end %></label>
+            </div>
+            <div class="fee_category_scroll">
+              <div class="sel-list">
+                <%= t('select') %>: <%= link_to_function t('all'), "$$('input.check#{i}').each(function(checkbox) { checkbox.checked = true; });" %>,
+                <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+              </div>
+              <% additional.student_additional_field_options.each do |k| %>
+                <div class="each_batch">
+                  <%= check_box_tag "student_additional_details[#{additional.id}][additional_info][]", k.field_option,(!(input_val.nil?) and input_val.include?(k.field_option)), :class=>"batches_box check#{i}" %> <label><%= k.field_option %></label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <% i+=1 %>
+        <% elsif additional.input_type=="text_area" %>
+          <div class="label-field-pair-text-area">
+            <label><%= additional.name %>
+              <% if additional.is_mandatory %>
+                <span class="necessary-field">*</span>
+              <% end %></label>
+            <div class="textarea-input-bg"><%= text_area_tag "student_additional_details[#{additional.id}][additional_info]", input_val%></div>
+          </div>
+        <% else %>
+          <div class="label-field-pair">
+            <label><%= additional.name %>
+              <% if additional.is_mandatory %>
+                <span class="necessary-field">*</span>
+              <% end %></label>
+
+            <div class="text-input-bg"><%= text_field_tag "student_additional_details[#{additional.id}][additional_info]", input_val %></div>
+          </div>
+        <% end %>
+          
+          
           <% end %>
           
       </div> 

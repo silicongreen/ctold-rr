@@ -1327,19 +1327,17 @@ class StudentController < ApplicationController
 
     if request.post?
       params[:student].delete "pass"
+      params[:student_additional_details].each_pair do |k, v|
+        additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+        unless additional_detail.blank?
+          StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+        else
+          StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
+        end
+      end
       unless params[:student][:image_file].blank?
         unless params[:student][:image_file].size.to_f > 280000
           if @student.update_attributes(params[:student])
-            params[:student_additional_details].each_pair do |k, v|
-              row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-              unless row_id.blank?
-                additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-                additional_detail.update_attributes(v['additional_info'])
-              else
-                StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
-              end
-            end
-            
             username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
             champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
             api_endpoint = champs21_api_config['api_url']
@@ -1358,16 +1356,9 @@ class StudentController < ApplicationController
           redirect_to :controller => "student", :action => "edit", :id => @student.id
         end
       else
+        
         if @student.update_attributes(params[:student])
-          params[:student_additional_details].each_pair do |k, v|
-            row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-            unless row_id.blank?
-              additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-              additional_detail.update_attributes(v['additional_info'])
-            else
-              StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
-            end
-          end
+          
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
           champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
           api_endpoint = champs21_api_config['api_url']

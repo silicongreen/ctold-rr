@@ -41,86 +41,19 @@
 
           <span class="span-sub-heading"><%= t('personal_details') %></span>
 
-          <hr class="sub-heading"></hr>
-
-          <div class="label-field-pair">
-              <label for="class_roll_no"><%= t('roll_number') %></label>
-              <div class="text-input-bg"><%= s.text_field :class_roll_no %></div>
-          </div>
+         
           
           
 
           <hr class="label-underline"></hr>
 
           <div class="label-field-pair">
-              <label for="student_email"><%= t('email') %></label>
+              <label for="student_email"><%= t('email_for_school_use') %></label>
               <div class="text-input-bg"><%= s.text_field :email %></div>
           </div>
 
         
-          <hr class="label-underline"></hr>
-
-          <div class="label-field-pair">
-              <label for="master_student_first_name"><%= t('last_name') %></label>
-              <div class="text-input-bg"><%= s.text_field :last_name %></div>
-          </div>
           
-          <hr class="label-underline"></hr>
-          <div class="label-field-pair">
-              <label for="master_student_first_name"><%= t('first_name') %><span class="necessary-field">*</span></label>
-              <div class="text-input-bg"><%= s.text_field :first_name %></div>
-          </div>
-
-          <hr class="label-underline"></hr>
-
-          <div class="label-field-pair">
-              <label for="master_student_first_name"><%= t('middle_name') %></label>
-              <div class="text-input-bg"><%= s.text_field :middle_name %></div>
-          </div>
-
-          
-          <hr class="label-underline"></hr>
-
-          <div class="label-field-pair">
-              <label for="master_student_date_of_birth"><%= t('date_of_birth') %><span class="necessary-field">*</span></label>
-              <div class="text-input-bg">
-                  <%= calendar_date_select_tag 'student[date_of_birth]',
-                    I18n.l(@student.date_of_birth,:format=>:default), :year_range => 40.years.ago..0.years.ago ,:readonly=>true,:popup => "force"  %>
-              </div>
-          </div>
-
-          <hr class="label-underline"></hr>
-
-          <div class="label-field-pair-gender">
-
-              <label class="label-gender-edit" for="master_student_gender"><%= t('gender') %></label>
-              <div class="edit_student_gender">
-                  <label class="label_for_gender" for="master_student_gender_true"><%= t('male') %></label>
-                  <%= s.radio_button  "gender", "m" %>
-                  <label class="label_for_gender" for="master_student_gender_false"><%= t('female') %></label>
-                  <%= s.radio_button  "gender", "f" %>
-              </div>
-
-              <div class="extender"></div>
-
-          </div>
-
-
-          
-           <div class="label-field-pair">
-                  <label for="master_student_nationality"><%= t('nationality') %></label>
-                  <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.nationality.id %></div>
-          </div>
-          
-          <div class="label-field-pair">
-                  <label for="master_student_nationality"><%= t('dual_nationality') %></label>
-                  <div class="text-input-bg"><%= select :student, :dual_nationality_id, options_for_select(Country.find(:all).map {|c| [c.name, c.id]}, @student.dual_nationality_id.to_i),
-        {:prompt => "#{t('select')}"} %></div>
-          </div>
-          <div class="label-field-pair">
-              <label for="master_student_religion"><%= t('religion') %></label>
-              <div class="text-input-bg"><%= s.text_field :religion, :value =>@student.religion %></div>
-          </div>
 
       </div>
       <br/>
@@ -192,21 +125,14 @@
                   <div class="text-input-bg"><%= s.text_field :sms_number, :value =>@student.sms_number %></div>
               </div>
 
-              <hr class="label-underline" style="display: none;"></hr>
-              <div style="clear: both; height: 20px;"></div>
-              <span class="span-sub-heading" ><%= t('upload_photo') %></span>
-              <hr class="sub-heading"></hr>
-
-              <div class="label-field-pair">
-                  <label for="master_student_image_file"><%= t('upload_photo') %> (<%= t('max_size') %>)</label>
-                  <div class="text-input-bg"><%= s.file_field :photo, :size=>12 %></div>
-              </div>
+              
           </div>
           <div class="extender"></div>
       </div>
       <% unless @additional_fields.blank? %>
       <div id="admission1-form">
           <span class="span-sub-heading">Other Info</span>
+          <hr class="sub-heading"></hr>
       
       <% @additional_fields.each do |additional| %>
           <% @student_additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,additional.id) %>

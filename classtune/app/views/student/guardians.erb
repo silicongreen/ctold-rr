@@ -98,6 +98,12 @@
         <% end %>
       </ul>
     </div>
+    
+    <% if permitted_to? :add_guardian,:student %>
+      <div class="parent-edit-button">
+         <%= link_to "#{t('add_guardian')}",{:controller => 'student',:action => 'add_guardian', :id => @student.id}, :class=>"user_button" %>
+      </div>
+    <% end %>
 
 
     <div id="parent-list">
@@ -153,6 +159,9 @@
               </div>
             <%  end %>
           <% end %>
+            
+               
+            
         </div>
 
         <div class="extender"></div>

@@ -549,9 +549,9 @@
   <% end %>
     
 <!-- RR closed -->
-
+    
     <div id="guardian_detail" class="row_wrapper">
-
+        <% if MultiSchool.current_school.id != 340 %>
         <div class="row">
             <div class="guardian_header_txt">Emergency Contact Person</div>
         </div>
@@ -655,6 +655,8 @@
           </div>
           <div class="clearfix"></div>
 
+        <% end %>
+          
         <% end %>
         
       

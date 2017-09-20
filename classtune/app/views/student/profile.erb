@@ -483,34 +483,7 @@
                       </div>
                   </div>
                   <div class="clearfix"></div>
-                <%else%>
-                  <% if permitted_to? :previous_data,:student %>
-                    <div class="row">
-                        <div class="row_label">
-                            <div>&nbsp;</div>
-                        </div>
-                        <div class="row_data">
-                            <div>
-                                <%= t('no_previous_data') %>
-                                <span>(<%= link_to "#{t('add_previous_data')}", :controller => 'student', :action => 'previous_data_from_profile', :id => @student.id %>)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                  <% else %>
-                    <div class="row">
-                        <div class="row_label">
-                            <div>&nbsp;</div>
-                        </div>
-                        <div class="row_data">
-                            <div>
-                                <%= t('no_previous_data') %>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-
-                  <% end %>
+                 
                 <% end %>
 
             </div>

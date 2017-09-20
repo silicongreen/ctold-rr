@@ -1331,7 +1331,7 @@ class StudentController < ApplicationController
         additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
         unless additional_detail.blank?
           if v['additional_info'].blank?
-            StudentAdditionalDetail.destroy
+            additional_detail.destroy
           else 
             StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
           end

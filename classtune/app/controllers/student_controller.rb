@@ -1318,7 +1318,7 @@ class StudentController < ApplicationController
   def edit_student_guardian
     @user = current_user
     @student = Student.find(params[:id])
-    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true")
+    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
     @additional_details = StudentAdditionalDetail.find_all_by_student_id(@student)
     @student.pass = "01"
     @student.gender=@student.gender.downcase
@@ -1332,7 +1332,7 @@ class StudentController < ApplicationController
           if @student.update_attributes(params[:student])
             params[:student_additional_details].each_pair do |k, v|
               row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-              unless row_id.nil?
+              unless row_id.blank?
                 additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
                 StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
               else
@@ -1361,7 +1361,7 @@ class StudentController < ApplicationController
         if @student.update_attributes(params[:student])
           params[:student_additional_details].each_pair do |k, v|
             row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-            unless row_id.nil?
+            unless row_id.blank?
               additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
               StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
             else
@@ -1912,11 +1912,6 @@ class StudentController < ApplicationController
     
     @att_text = ''
     @att_image = ''
-    #@siblings added by RR
-    #@siblings = Student.find_all_by_sibling_id(@student.sibling_id) - @student
-    @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id <> ?", @student.sibling_id,@student.id])
-    
-    
     get_attendence_text
     unless @attendence_text.nil?
       if @attendence_text['status']['code'].to_i == 200

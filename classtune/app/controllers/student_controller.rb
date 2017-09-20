@@ -1363,7 +1363,7 @@ class StudentController < ApplicationController
             row_id=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
             unless row_id.blank?
               additional_detail = StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-              StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+              StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info']) unless destroyed
             else
               StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
             end

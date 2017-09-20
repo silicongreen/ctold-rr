@@ -682,6 +682,15 @@ table#pdf-table{
 
 
 ///SFX
+.sfx margin-top-bottom-50
+{
+    margin: 50px !important;
+}
+.sfx .margin-top-50
+{
+    margin-top: 50px !important;
+}
+
 .sfx
 {
     font-family: serif;

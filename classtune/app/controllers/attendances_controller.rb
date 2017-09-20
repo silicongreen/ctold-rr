@@ -182,7 +182,7 @@ class AttendancesController < ApplicationController
                   @all_sub_elective = Subject.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
                   unless @all_sub_elective.blank?
                     @all_sub_elective.each do |esub|
-                       @subjects << @timetable_subject
+                       @subjects << esub
                     end
                   end
                 else

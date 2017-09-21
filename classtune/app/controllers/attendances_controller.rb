@@ -171,7 +171,6 @@ class AttendancesController < ApplicationController
         else
           @entries=[]
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:weekday_id=>@weekday_id.to_i,:class_timing_id=>@class_timing_id})
-          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i,:class_timing_id=>@class_timing_id})
           
          
           unless @entries.blank?

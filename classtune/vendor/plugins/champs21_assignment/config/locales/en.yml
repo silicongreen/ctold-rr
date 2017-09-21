@@ -57,6 +57,7 @@ en:
     done_this_assignment: "Done"
     rejected: "Rejected"
     hostel_accepted: "ACCEPTED"
+    update_assignment_defaulter: "Update Homework Defaulter"
     update_assignment: "Update Homework"
     edit_assignment: "Edit homework"
     no_assignments_for_this_subject_have_been_created: "No homeworks for this subject have been created"

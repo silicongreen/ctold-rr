@@ -536,6 +536,66 @@ class AssignmentsController < ApplicationController
     end   
   end
   
+  # RR sept 20
+  def defaulter_registration
+    
+    
+    @assignment = Assignment.find_by_id(params[:id])
+    #abort(@assignment.inspect)
+    @assigned_students = []
+    @assignment.student_list.split(",").each do |s|
+      student = Student.find_by_id s
+      if student.nil?
+        student=ArchivedStudent.find_by_former_id s
+      end
+      @assigned_students << student
+    end
+    
+    @defaulter = AssignmentDefaulterList.find_all_by_assignment_id(@assignment.id)
+    @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
+    @defaulter_students = []
+    
+    unless @defaulter.nil? 
+      @defaulter.each do |s|
+        @defaulter_students << s.student_id
+      end
+    end
+    
+    #abort(@assignment.inspect)
+   
+    
+    if request.post?
+      abort("thats a post request")
+      student_ids = params[:assignment][:student_ids]
+      registration_checked = params[:isRegistered]
+      #abort(params.inspect)
+      if !@defaulter_registered.blank? or !registration_checked.blank?
+        assignment_given = @assigned_students.count
+        if !student_ids.blank?
+          assignment_given -= student_ids.count
+        end
+        assignment_not_given = @assigned_students.count - assignment_given
+        
+        if @defaulter_registered.blank?
+          #RR, create now row
+          row = AssignmentDefaulterRegistration.new(:employee_id => @assignment.employee_id, :assignment_id => @assignment.id, :assignment_given => assignment_given, :assignment_not_given => assignment_not_given)
+          row.save
+        else
+          #RR, update existing row
+          row = AssignmentDefaulterRegistration.find_view_by_id(@defaulter_registered.id)
+          row.update_attribute(:assignment_given => assignment_given, :assignment_not_given => assignment_not_given)
+        end
+        #RR, insert rows in assignment defaulter lists
+        unless student_ids.blank?
+          student_ids.each do |defaulter|
+            row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => defaulter)
+            row.save
+          end
+        end
+        redirect_to :controller=>:assignments,:action=>:show
+      end
+    end
+    
+  end
   
-
 end

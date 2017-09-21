@@ -48,6 +48,7 @@ authorization do
   role :employee do
     has_permission_on [:assignments],
       :to=>[
+      :defaulter_registration,
       :assignment_student_list,
       :subject_assignments3,
       :create,
@@ -75,6 +76,7 @@ authorization do
   role :admin do
     has_permission_on [:assignments],
       :to=>[
+      :defaulter_registration,
       :assignment_student_list,
       :subject_assignments3,
       :create,

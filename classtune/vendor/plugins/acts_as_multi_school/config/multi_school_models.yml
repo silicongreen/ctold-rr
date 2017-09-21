@@ -23,6 +23,7 @@ multi_school_models:
 - ExamGroup
 - ArchivedExamScore
 - Course
+- AssignmentDefaulterRegistration
 - ArchivedGuardian
 - StudentCategory
 - NewsComment

@@ -162,10 +162,14 @@
               @assignment, :method => "delete",
               :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
           </div>
-          <% if @assignment.is_published==0 %>
-          <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
+          <%# if @assignment.is_published==0 %>
+          <%#= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
-          <% end %>  
+          <%#*<!-- RR sept20 -->%>
+          <%# else %>
+          <%#= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},
+              :confirm => "Do You realy want to register defaulter?", :class => "user_button" %>
+          <%# end %>  
         </div>
         <div id="student-list-bg">
           <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>

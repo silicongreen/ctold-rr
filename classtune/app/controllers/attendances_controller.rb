@@ -147,10 +147,10 @@ class AttendancesController < ApplicationController
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i,:class_timing_id=>@class_timing_id})
           unless @entries.blank?
             @entries.each do |te|
-              @timetable_subject = Subject.find_by_id(te.subject_id)
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
               unless @timetable_subject.blank?
                 if @timetable_subject.elective_group_id.present?
-                  @all_sub_elective = Subject.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
                   unless @all_sub_elective.blank?
                     @all_sub_elective.each do |esub|
                       if @employee_subjects.include?(esub)
@@ -175,10 +175,10 @@ class AttendancesController < ApplicationController
          
           unless @entries.blank?
             @entries.each do |te|
-              @timetable_subject = Subject.find_by_id(te.subject_id)
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
               unless @timetable_subject.blank?
                 if @timetable_subject.elective_group_id.present?
-                  @all_sub_elective = Subject.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
                   unless @all_sub_elective.blank?
                     @all_sub_elective.each do |esub|
                        @subjects << esub

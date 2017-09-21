@@ -224,7 +224,7 @@ class MarksController < ApplicationController
       unless exams.blank?   
         exams.each do |exam|
           exam_subject = exam.subject
-          if !exam_subject.blank? and !@subjects.include?(exam_subject) 
+          if !exam_subject.blank? and !exam_connect_batch.blank? and !@subjects.include?(exam_subject) 
             if @employee_subjects.include?(exam_subject) or @current_user.admin?
               @subjects << exam_subject
               data[k] = []

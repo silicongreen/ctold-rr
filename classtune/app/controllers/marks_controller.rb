@@ -182,7 +182,7 @@ class MarksController < ApplicationController
       unless @exam_group.blank?
         exam_group_batch = @exam_group.batch
         exam_subject = exam.subject
-        unless exam_subject.blank?  or exam_group_batch.blank? or @exam_group.result_published == true or @exam_group.is_deleted == true
+        unless exam_subject.blank?  or exam_group_batch.blank? or @exam_group.result_published == true or (@exam_group.is_deleted == true and MultiSchool.current_school.id == 323)
           data[k] = []
 
           data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"

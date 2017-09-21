@@ -1,0 +1,215 @@
+<!--<div id="content-header">
+<%#= show_header_icon %>
+  <h1><%#= "#{t('assignments_text')}"%></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%#= "#{t('edit_assignment')}"%></div>
+</div>-->
+
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %> 
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <%= link_to "Homework", :controller => 'assignments', :action => 'index' %> &nbsp;  |&nbsp; <%= "Defaulter"%>
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>
+      
+    </div>
+  </div>    
+<div class="clearfix"></div>
+  
+</div>
+
+<div id="page-yield" style="margin-top:0px;" >
+  
+  
+  <% form_for @assignment, :url => {:action => 'defaulter_registration', :id=>@assignment.id} do |f| %>
+     <h4> <%= @assignment.title %>  </h4>    Defaulter Registration Status 
+    <input name="isRegistered" id="defaulterRegCheck" type="checkbox" <% unless @defaulter_registered.nil? %> checked="checked" disabled <% end %> onclick='enableDefaulterCheckBox();' /> 
+    <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+       <%= f.text_field :title %>
+    <table id="listing table-design">
+      <thead>
+        <tr class="tr-head">
+
+            <th>Roll</th>
+            <th>Student Name</th>
+            <th>Submission Status</th>
+            <th>Defaulter</th>
+        </tr>
+      </thead>
+
+      <% @assigned_students.each do |student| %>
+        <tr>
+          <td class="col-2"><%= student.class_roll_no %></td>
+          <td class="col-2"><%= student.first_name + " " + student.last_name %></td>
+          <td class="col-2">
+              <% if !@defaulter_students.include?(student.id) %>
+                <span class="checkmark">
+                    <div class="checkmark_circle"></div>
+                    <div class="checkmark_stem"></div>
+                    <div class="checkmark_kick"></div>
+                </span>
+              <% else %>
+                <span class="checkmark">
+                    <div class="checkmark_circle absent"></div>
+                    <div class="checkmark_stem"></div>
+                    <div class="checkmark_kick"></div>
+                </span>
+              <% end %>
+          </td>
+          <td class="col-2">              
+              <input name="assignment[student_ids][]" type="checkbox" <% if @defaulter_students.include?(student.id) %> checked="checked" <% end %> value="<%= student.id%>" <% if @defaulter_registered.nil? %> disabled <% end %> class="group" />
+          </td>
+        </tr>
+          <% end %>
+    </table>
+</div>
+     <div id ="assignment-submit" >
+      <%= f.submit "#{t('update_assignment_defaulter')}" ,:class=>"submit_button"%>
+    </div>
+  <% end %>
+</div>
+ 
+<%= load_redactor_script %>
+
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'tadded-header' %>
+
+<script type="text/javascript">
+  var jj = jQuery.noConflict();
+  function enableDefaulterCheckBox()
+  {
+    
+    if (jj("#defaulterRegCheck").is(":checked"))
+    {
+        jj("input.group").prop("disabled", false);
+        //jj('.group').attr('disabled', false);
+        //alert('RR');
+    }
+    else
+    {
+        jj("input.group").attr('checked', false);
+        jj("input.group").prop("disabled", true);        
+    }
+  }
+</script>
+  
+<style>
+    .CSSTableGenerator table thead tr th{
+        text-align: center;
+        padding: 10px;
+    }
+    .CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        margin: -20px;
+        
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        margin: -20px;
+        
+    }
+    .CSSTableGenerator table tr td 
+    {
+        text-align: center;
+        font-weight: bold;
+        overflow: hidden;
+        padding: 3px !important;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
+    .checkmark {
+        display:inline-block;
+        width: 22px;
+        height:22px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+    }
+
+    span div.absent {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #B3B9BB;
+        border-radius:11px;
+        left:0;
+        top:0;
+    }
+
+    .checkmark_circle {
+        position: absolute;
+        width:22px;
+        height:22px;
+        background-color: #0691D5;
+        border-radius:11px;
+        left:10;
+        top:0;
+    }
+
+    .checkmark_stem {
+        position: absolute;
+        width:3px;
+        height:9px;
+        background-color:#fff;
+        left:11px;
+        top:6px;
+    }
+
+    .checkmark_kick {
+        position: absolute;
+        width:3px;
+        height:3px;
+        background-color:#fff;
+        left:8px;
+        top:12px;
+    }
+    .status-class {
+        text-align: center !important;
+    }
+    .approved {
+        /*background-color: #9F38E7;*/
+        color: #ffffff !important;
+    }
+    .declined {
+        /*background-color: #CB232A;*/
+        color: #ffffff !important;
+    }
+    .leave_sts {
+        clear: both;
+        float: left;
+        margin-bottom: 7px;
+        width: 100%;
+    }
+    .leave_sts_appr, .leave_sts_deny {
+        background-color: #cb232a;
+        float: left;
+        margin-left: 5px;
+        padding: 6px 5px;
+    }
+    .leave_sts_deny {
+        float: left !important;
+    }
+    .leave_sts_appr a, .leave_sts_deny a {
+        color: #ffffff !important;
+        float: left !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style> 

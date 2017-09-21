@@ -1,0 +1,12 @@
+<ul id="result_filter" class="body-filter-controls bg-greensea" style="margin-top: 10px;">
+    <li style='width: 49%;'>          
+        <b style="padding-left: 10px;">Classes</b>
+        <ui-select ng-model="classes.selected" ng-disabled="disabled" search-enabled="true" style="width: 100%; padding: 4px; padding-top: 10px;" on-select="loadResultGraph($item)">
+            <ui-select-match placeholder="Pick one...">{{$select.selected.class_name}}</ui-select-match>
+            <ui-select-choices repeat="class_data in classes | filter:$select.search">
+                {{class_data.class_name}}
+            </ui-select-choices>
+
+        </ui-select>  
+    </li>
+</ul>

@@ -1,0 +1,535 @@
+<div class="page page-dashboard" scroll-position="scroll" style="position: fixed; z-index: 9999; width: 90%; padding-bottom: 0px;"><!-- position: fixed; z-index: 9999; width: 90%; padding-bottom: 0px;-->
+    <h3 style="margin-top: 0; margin-bottom: 20px;">{{page.title}}</h3>
+    <div ng-if="displayQuickLink">
+        <p class="tab_border_drank">
+            <a scroll-on-click href="#student_attendance" data-targetheadclass="drank" data-idtochange="attendance_header,attendance_filter,summary_head,employee_position_header" data-scrolltype="tab_scroll" data-scrollattendance="Student" type="button" class="btn btn-drank btn-xlarge active_tab_custom custom-tab"><i class="fa fa-check-square-o fa-btn-lrg"></i>&nbsp;&nbsp;<strong>Student Attendance</strong></a>
+            <a scroll-on-click href="#student_attendance" data-targetheadclass="primary" data-idtochange="attendance_header,attendance_filter,summary_head,employee_position_header" data-scrolltype="tab_scroll" data-scrollattendance="Employee" type="button" class="btn btn-primary btn-xlarge deactive_tab_custom custom-tab"><i class="fa fa-check-square-o fa-btn-lrg"></i>&nbsp;&nbsp;<strong>Employee Attendance</strong></a>
+            <a scroll-on-click href="#result_university" data-targetheadclass="greensea" data-scrolltype="tab_scroll" type="button" class="btn btn-greensea btn-xlarge custom-tab deactive_tab_custom"><i class="fa fa-area-chart fa-btn-lrg"></i>&nbsp;&nbsp;<strong>Result Statistics</strong></a>
+            <a scroll-on-click href="#university_evaluation" data-targetheadclass="red" data-scrolltype="tab_scroll" type="button" class="btn btn-lightred btn-xlarge deactive_tab_custom custom-tab"><i class="fa fa-signal fa-btn-lrg custom-tab"></i>&nbsp;&nbsp;<strong>Employee Evaluation</strong></a>
+        </p>
+    </div>
+</div>
+
+<div class="page page-dashboard"  ng-class="{'MarginTop15Percent': displayQuickLink == true,'MarginTop5Percent': displayQuickLink == false}">
+  <div class="pageheader">
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.dashboard">{{page.subtitle}}</a>
+        </li>
+      </ul>
+
+      <div ng-controller="DaterangepickerCtrl" class="page-toolbar">
+        <a href="javascript:;" class="btn btn-lightred no-border" daterangepicker="rangeOptions" date-begin="startDate" date-end="endDate">
+          <i class="fa fa-calendar"></i>&nbsp;&nbsp;<span>{{startDate}} - {{endDate}}</span>&nbsp;&nbsp;<i class="fa fa-angle-down"></i>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- cards row -->
+  <div class="row" ng-controller="CountController">
+
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-greensea">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>User Login Today</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+          
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-user-plus fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.student}}</p-->
+                <p class="text-elg text-strong mb-0">245</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-greensea">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-dutch">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>Login from Web</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+            
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-user-times fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.employee}}</p-->
+                <p class="text-elg text-strong mb-0">192</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-dutch">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-slategray">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>Login from Mobile</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+            
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-users fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.employee}}</p-->
+                <p class="text-elg text-strong mb-0">53</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-slategray">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+    
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-lightred">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>Employee Login</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+            
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-graduation-cap fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.employee}}</p-->
+                <p class="text-elg text-strong mb-0">49</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-lightred">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+    
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-drank">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>Student Present</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+            
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-bell-o fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.employee}}</p-->
+                <p class="text-elg text-strong mb-0">237</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-drank">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+    
+    <!-- col -->
+    <div class="card-container col-lg-2">
+      <div class="card">
+        <div class="front bg-cyan">
+
+            <!-- row -->
+            <div class="row">
+              <!-- col -->
+              <div class="col-xs-12">
+                  <span><b>Total Homework</b></span>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+            
+            <!-- row -->
+            <div class="row" style="padding-top: 10px;">
+              <!-- col -->
+              <div class="col-xs-4">
+                <i class="fa fa-edit fa-2x"></i>
+              </div>
+              <!-- /col -->
+              <!-- col -->
+              <div class="col-xs-8">
+                <!--p class="text-elg text-strong mb-0">{{counts.employee}}</p-->
+                <p class="text-elg text-strong mb-0">21</p>
+              </div>
+              <!-- /col -->
+            </div>
+            <!-- /row -->
+
+        </div>
+        <div class="back bg-cyan">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-12">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+  </div>
+  <!-- /row -->
+
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-8">
+      <!-- tile -->
+      <section id="student_attendance" class="tile" fullscreen="isFullscreen06" ng-controller="AttendanceTypeCtrl">
+
+        <!-- tile header -->
+       <div class="tile-header dvd dvd-btm bg-greensea" id="attendance_header">
+            <h2 class="custom-font"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;<strong> Attendance </strong> </h2> 
+        </div>
+        <!-- /tile header -->
+
+        <div class="tile-body table-custom" style="padding: 0;">
+            <wrap-owlcarousel class="owl-carousel" data-options="{
+          autoPlay: 5000,
+          stopOnHover: true,
+          slideSpeed : 300,
+          paginationSpeed : 400,
+          singleItem : true}">
+
+            <div id="attendance_table" style="padding: 20px;"></div> 
+
+            <div class="tile-widget bg-greensea">
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Details): </h3>
+                <hr />
+                <flot dataset="dataset" options="options" height="350px"></flot>
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Present/Absent/Late): </h3>
+                <hr />
+                <flot dataset="datasetAttendance" options="optionsAttendance" height="350px"></flot>
+            </div>
+
+            <div style="padding: 20px;">
+                <h2>Student Attendance Summary</h2>
+                <hr />
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;This Month Statistics: </h3>
+                <hr />
+                <div id="attendance_statistics" class="row"></div>
+                <hr />
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Absent Student: </h3><small>Today</small>
+                <hr />
+                <div id="absent_students" style="padding: 10px;"></div>
+                <hr />
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Maximum Absent Student: </h3><small>This month</small>
+                <hr />
+                <div id="absent_students_month" style="padding: 10px;"></div>
+                <hr />
+                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Top 10 Student (100% Present): </h3><small>This Month</small>
+                <hr />
+                <div id="top_students" style="padding: 10px;"></div>
+            </div>
+            
+            <div style="padding: 20px;">
+                <h2>Employee Attendance Summary</h2>
+                <hr />
+                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;This Month Statistics: </h3>
+                <hr />
+                <div id="attendance_statistics_employee" class="row"></div>
+                <hr />
+                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Absent Teacher </h3><small>Today</small>
+                <hr />
+                <div id="absent_employees" style="padding: 10px;"></div>
+                <hr />
+                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Maximum Absent Teacher: </h3><small>This month</small>
+                <hr />
+                <div id="absent_employees_month" style="padding: 10px;"></div>
+                <hr />
+                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Top 10 Teacher (100% Present): </h3><small>This Month</small>
+                <hr />
+                <div id="top_employees" style="padding: 10px;"></div>
+            </div>
+
+          </wrap-owlcarousel>   
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+    </div>
+    <!-- /col -->
+    
+    <!-- col -->
+    <div class="col-md-4">
+
+      <!-- tile -->
+      <section class="tile" fullscreen="isFullscreen02" ng-controller="EmployeeStatisticsCtrl">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm bg-greensea" id="employee_position_header">
+            <h2 class="custom-font"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;<strong>Statistics</strong></h2>
+            <ul class="controls">
+              
+            </ul>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile-widget -->
+        <div id="statistics" style="min-height: 400px;"></div>
+        <!-- /tile-widget -->
+        
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="col-md-4" ng-controller="NoticesCtrl">
+
+    <div class="tile tile-simple tile-shadow tile-rounded bg-greensea">
+      <div class="tile-header">
+        <h2 class="custom-font"><strong>Notices</strong></h2>
+        <hr />
+      </div>
+      <div class="tile-body">
+        <div ng-repeat="notice in noticeData track by $index" class="task-container priority-high">
+          <h3 class="task-name">{{notice.title}}</h3>
+          <p class="task-meta">
+            <strong>Publish Date:</strong> {{notice.created_at}},
+            <strong>Published By:</strong> {{notice.name}}
+          </p>
+          <p class="task-desc">{{notice.content}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    <!-- /col -->
+
+  </div>
+  <!-- /row -->
+
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-8" ng-controller="HomeworkController">
+      <!-- tile -->
+      <section class="tile" fullscreen="isFullscreen07">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm bg-greensea">
+          <h2 class="custom-font"><i class="fa fa-signal"></i>&nbsp;&nbsp;<strong>Homework/ClassWork List </strong></h2>
+          <hr />
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body p-0">
+          <uib-tabset class="tabs-dark">
+
+            <uib-tab ng-repeat="option in options track by $index" heading="{{option.value}}" ng-click="callTabAjax(option.key)">
+                <table datatable dt-options="dtOptions[option.key]" dt-columns="dtColumns[option.key]" class="table table-custom"></table>
+                <hr />
+            </uib-tab>
+
+          </uib-tabset>
+        </div>
+        <!-- /tile body -->
+        
+        <!-- tile widget -->
+        <div class="tile-widget" style=""></div>
+        <!-- /tile widget -->
+        
+      </section>
+      <!-- /tile -->
+    </div>
+    <!-- /col -->
+    
+    <!-- col -->
+    <div class="col-md-4">
+      <!-- tile -->
+      <section class="tile bg-slategray widget-calendar" fullscreen="isFullscreen05" style="min-height: 470px;">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm">
+          <h2 class="custom-font"><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;<strong>Mini </strong>Calendar</h2>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body p-0" ng-controller="CalendarWidgetCtrl">
+          <uib-datepicker ng-model="dt" show-weeks="false" class="datepicker"></uib-datepicker>
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+    </div>
+    <!-- /col -->
+
+  </div>
+  <!-- /row -->
+
+
+
+
+
+</div>

@@ -4,6 +4,7 @@
   @xml.school do
     @configuration = Array.new
     @configuration = Configuration.get_school_details
+    @xml.institute_id(MultiSchool.current_school.id)
     @xml.institute_name(@configuration.first)
     @xml.institute_address(@configuration.second)
     @xml.institute_phone(@configuration[2])

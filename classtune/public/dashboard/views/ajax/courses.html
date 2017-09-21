@@ -1,0 +1,16 @@
+<data-owl-carousel  class="owl-carousel" data-options="{
+        autoPlay: 5000,
+        stopOnHover: true,
+        slideSpeed : 300,
+        paginationSpeed : 400,
+        singleItem : true}">
+    <div div owl-carousel-item="" class="media social-feed" ng-repeat="course in courses track by $index">
+        <div class="col-sm-12" style="text-align: center;"><h3>{{course.course_name}}</h3><hr /></div>
+        <div class="clearfix"></div>
+        <div class="media-body">
+            <div id="donut_data">
+                <div id="donutGraph" class="donutGraph" morris-donut-chart donut-data='course.donutData' style="height: 250px"></div>
+            </div>
+        </div>
+    </div>
+</data-owl-carousel>

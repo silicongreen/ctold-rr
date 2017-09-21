@@ -1,0 +1,22 @@
+<data-owl-carousel  class="owl-carousel" data-options="{
+        autoPlay: 5000,
+        stopOnHover: true,
+        slideSpeed : 300,
+        paginationSpeed : 400,
+        singleItem : true}">
+    <div div owl-carousel-item="" class="media social-feed" ng-repeat="feed in feeds track by $index">
+        <span class="pull-left" ng-if="feed.type == 'facebook'">
+            <i class="fa fa-facebook fa-2x icon-border wh45 text-center" style="line-height: 45px"></i> 
+        </span>
+        <span class="pull-left" ng-if="feed.type == 'twitter'">
+            <i class="fa fa-twitter fa-2x icon-border wh45 text-center" style="line-height: 45px"></i> 
+        </span>
+        <span class="pull-left" ng-if="feed.type == 'google'">
+            <i class="fa fa-google-plus fa-2x icon-border wh45 text-center" style="line-height: 45px"></i> 
+        </span>
+        <div class="media-body">
+          <p class="media-heading"><strong>{{feed.user_name}}</strong>&nbsp;&nbsp;<small class="text-light text-transparent-white">{{feed.time}} minutes ago</small></p>
+          <p class="text-transparent-white">{{feed.feed | cut:true:170:' ...'}}</p>
+        </div>
+    </div>
+</data-owl-carousel>

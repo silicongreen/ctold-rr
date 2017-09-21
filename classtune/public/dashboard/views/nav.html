@@ -1,0 +1,31 @@
+<div id="sidebar-wrap" ng-controller="NavCtrl">
+  <uib-accordion close-others="oneAtTime" slimscroll="{height: '100%'}">
+
+    <uib-accordion-group is-open="status.isFirstOpen" ng-class="{'open': status.isFirstOpen, 'closed': !status.isFirstOpen}">
+      <uib-accordion-heading>
+        Navigation <i class="pull-right fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
+      </uib-accordion-heading>
+      <ul id="navigation" nav-collapse ripple>
+        <li ui-sref-active="active"><a ui-sref="app.dashboard"><fa name="dashboard"></fa> <span>{{ 'Menu.DASHBOARD' | translate }}</span></a></li>
+        <li ui-sref-active="active" ng-class="{'open':$state.includes('app.mail')}">
+          <a ui-sref="app.mail"><fa name="envelope-o"></fa> <span>{{ 'Menu.MAIL' | translate }}</span> <span class="badge bg-lightred">6</span></a>
+          <ul>
+            <li ui-sref-active="active"><a ui-sref="app.mail.inbox"><fa name="caret-right"></fa> {{ 'Menu.INBOX' | translate }}</a></li>
+            <li ui-sref-active="active"><a ui-sref="app.mail.compose"><fa name="caret-right"></fa> {{ 'Menu.COMPOSE_MAIL' | translate }}</a></li>
+            <li ui-sref-active="active"><a ui-sref="app.mail.single"><fa name="caret-right"></fa> {{ 'Menu.SINGLE_MAIL' | translate }}</a></li>
+          </ul>
+        </li>
+        <li ui-sref-active="active" ng-class="{'open':$state.includes('app.maps')}">
+          <a ui-sref="app.maps"><fa name="map-marker"></fa> <span>{{ 'Menu.MAPS' | translate }}</span></a>
+          <ul>
+            <li ui-sref-active="active"><a ui-sref="app.maps.vector"><fa name="caret-right"></fa> {{ 'Menu.VECTOR_MAPS' | translate }}</a></li>
+            <li ui-sref-active="active"><a ui-sref="app.maps.google"><fa name="caret-right"></fa> {{ 'Menu.GOOGLE_MAPS' | translate }}</a></li>
+            <li ui-sref-active="active"><a ui-sref="app.maps.leaflet"><fa name="caret-right"></fa> {{ 'Menu.LEAFLET_MAPS' | translate }}</a></li>
+          </ul>
+        </li>
+        <li ui-sref-active="active"><a ui-sref="app.calendar"><fa name="calendar-o"></fa> <span>{{ 'Menu.CALENDAR' | translate }}</span> <span class="label label-success">new events</span></a></li>
+      </ul>
+    </uib-accordion-group>
+
+  </uib-accordion>
+</div>

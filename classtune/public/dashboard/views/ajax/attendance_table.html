@@ -1,0 +1,26 @@
+<div  class="table-responsive">
+    <h2>{{typeAttendance}} Attendance</h2><hr />
+    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-custom">
+        <thead>
+            <tr>
+              <th>Serial</th>
+              <th>Institution Name</th>
+              <th>Attendance percentage</th>
+              <th>Attendance graph</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="project in projects track by $index">
+          <td>{{ $index+1 }}</td>
+          <td>{{ project.title }}</td>
+          <td><uib-progressbar class="progress-xxs not-rounded mb-0 inline-block" value="project.status" type="greensea" style="width: 250px; margin-right: 5px"></uib-progressbar><small>{{project.status}}%</small></td>
+          <td class="text-right"><span sparkline data="project.chart.data" options="{
+            type: 'bar',
+            barColor: project.chart.color,
+            barWidth: '10%',
+            height: '28px'
+          }"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

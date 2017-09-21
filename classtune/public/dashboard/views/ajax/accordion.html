@@ -1,0 +1,13 @@
+<!-- tile widget -->
+<div class="summary">
+    <ui-select ng-model="classes.selected" ng-disabled="disabled" search-enabled="true" style="padding-top: 30px; width: 100%; padding: 4px;" on-select="loadDonut($item)">
+        <ui-select-match placeholder="Select a Class...">{{$select.selected.class_name}}</ui-select-match>
+        <ui-select-choices repeat="class in classes | filter:$select.search">
+            {{class.class_name}}
+        </ui-select-choices>
+
+    </ui-select>
+</div>
+
+<div id="donut_subjects" class="tile-widget"></div>
+<!-- /tile widget -->

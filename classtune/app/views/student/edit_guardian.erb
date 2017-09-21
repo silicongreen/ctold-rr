@@ -58,7 +58,7 @@
 
       <div class="label-field-pair">
         <label for="parent_detail_relation"><%= t('relation') %> <span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= s.text_field :relation, :value => g_students.relation %></div>
+        <div class="text-input-bg"><%= s.text_field :relation, :value => @parent.relation %></div>
       </div>
       <% unless @parent.dob.nil? %>
         <div class="label-field-pair">
@@ -91,7 +91,7 @@
         <div class="text-input-bg"><%= s.text_field :email, :value => @parent.email %></div>
       </div>
       <br/>
-      <span class="span-sub-heading"><%= t('contact_details_office') %></span>
+      <span class="span-sub-heading"><%= t('parent_contact_details') %></span>
       <hr class="sub-heading"></hr>
       <div class="label-field-pair">
         <label for="master_student_city"><%= t('office_address_line1') %></label>

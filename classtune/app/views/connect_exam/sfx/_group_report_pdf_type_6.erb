@@ -124,7 +124,7 @@
                           <% end %>
                             <td class="col-pdf"> 
                             <% att_percentize = 0 %> 
-                            <% if !@subject_att_count[subjects['id'].to_i].blank? %>
+                            <% if !@subject_att_count.blank? and !@subject_att_count[subjects['id'].to_i].blank? %>
                                 <% if !@subject_std_att_count[subjects['id'].to_i].blank? and !@subject_std_att_count[subjects['id'].to_i][@student.id].blank?  %>
                                   <% total_present = @subject_att_count[subjects['id'].to_i].to_i-@subject_std_att_count[subjects['id'].to_i][@student.id].to_i  %>
                                   <% if total_present > 0 %>

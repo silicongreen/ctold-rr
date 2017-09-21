@@ -122,17 +122,17 @@
 
                             <% end %>
                           <% end %>
-                            <td class="col-pdf">
-                            <% total_att = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>subjects['id'].to_i,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                            <% absent_att = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>subjects['id'].to_i,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                              
-                            <% att_percentize = 0 %>  
-                            <% if total_att.to_i > 0 %>
-                                <% total_present = total_att.to_i-absent_att.to_i  %>
-                                <% if total_present > 0 %>
-                                  <% att_percentize = (total_present.to_f/total_att.to_f)*100  %>
-                                 
+                            <td class="col-pdf"> 
+                            <% att_percentize = 0 %> 
+                            <% if !@subject_att_count[subjects['id'].to_i].blank? %>
+                                <% if !@subject_std_att_count[subjects['id'].to_i].blank? && !@subject_std_att_count[subjects['id'].to_i][@student.id].blank?  %>
+                                  <% total_present = @subject_att_count[subjects['id'].to_i-@subject_std_att_count[subjects['id'].to_i][@student.id].to_i  %>
+                                  <% if total_present > 0 %>
+                                    <% att_percentize = (total_present.to_f/@subject_att_count[subjects['id'].to_f)*100  %>
+
+                                  <% end %>
                                 <% end %>
+                                
                                 <%= sprintf( "%0.02f", att_percentize) %> %
                             <% else %> 
                                 N/A

@@ -1,0 +1,20 @@
+<%
+total_att_all = SubjectAttendanceRegister.find(:all,:select=>"count(id) as tatt, subject_id",:conditions=>{:batch_id=>@batch.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}).group(:subject_id)
+absent_att_all = SubjectAttendance.find(:all,:select=>"count(id) as tatt, subject_id, student_id",:conditions=>{:batch_id=>@batch.id,:is_late=>0,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}).group(:subject_id,:student_id)
+@subject_att_count = {}
+@subject_std_att_count = {}
+
+unless total_att_all.blank?
+  total_att_all.each do |sub_att|
+      @subject_att_count[sub_att.subject_id] = sub_att.tatt
+  end    
+end
+
+unless absent_att_all.blank?
+  absent_att_all.each do |sub_att|
+      @subject_std_att_count[sub_att.subject_id] = {}
+      @subject_std_att_count[sub_att.subject_id][sub_att.student_id] = sub_att.tatt
+  end    
+end
+
+%>

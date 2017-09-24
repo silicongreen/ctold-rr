@@ -123,19 +123,25 @@
                             <% end %>
                           <% end %>
                             <td class="col-pdf">
+                             <% total_att = 0 %>
+                             <% absent_att = 0 %>   
+                                
                              <% e_subject_id = 0 %>
                              <% unless @std_subject_elective.blank? %>
                                 <% @std_subject_elective.each do |esub| %>
                                     <% unless esub.subject.blank? %>
                                     <% if esub.subject.name.include?(subjects['name']) && esub.subject.id != subjects['id'].to_i %>
-                                       <% e_subject_id = esub.subject.id %>
+                                        <% e_subject_id = esub.subject.id %>
+                                        <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                        <% total_att = total_att+total_att_temp.to_i %>
+                                        <% absent_att = absent_att+absent_att_temp.to_i %>
                                     <% end %>
                                     <% end %>
                                 <% end %>
                              <% end %> 
                              <% if e_subject_id != 0 %>
-                                <% total_att = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                                <% absent_att = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                               
 
                                 <% att_percentize = 0 %>  
                                 <% if total_att.to_i > 0 %>

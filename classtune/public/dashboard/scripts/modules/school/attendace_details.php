@@ -165,6 +165,7 @@
     $ar_employees = array();
     $i = 1;
     $ar_employee_data = array();
+    $str_school_id = $school_id;
     while( $rs = $result->fetch_array(MYSQLI_ASSOC)) 
     {
         $server_name = $_SERVER['SERVER_NAME'];

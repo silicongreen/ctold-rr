@@ -112,6 +112,7 @@
     $ar_students = array();
     $i = 1;
     $ar_student_data = array();
+    $str_school_id = $school_id;
     while( $rs = $result->fetch_array(MYSQLI_ASSOC)) 
     {
         $server_name = $_SERVER['SERVER_NAME'];

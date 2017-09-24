@@ -724,53 +724,53 @@ app
                                         .then(function(response) {
                                             $scope.dataset[0].data = response.data.student_attendace;
                                             $scope.dataset[1].data = response.data.student_counts;
-                                            if ( $scope.dataset[0].data == undefined )
-                                            {
-                                                $scope.dataset[0].data = [];
-                                                $scope.dataset[1].data = [];
-                                                $scope.options.xaxis.ticks = [];
-                                            }
-                                            else if ( $scope.dataset[0].data == undefined )
-                                            {
-                                                $scope.dataset[0].data = [];
-                                                $scope.dataset[1].data = [];
-                                                $scope.options.xaxis.ticks = [];
-                                            }
-                                            else
-                                            {
-                                                $scope.options.xaxis.ticks = response.data.courses;
-                                            }
-                                            
+//                                            if ( $scope.dataset[0].data == undefined )
+//                                            {
+//                                                $scope.dataset[0].data = [];
+//                                                $scope.dataset[1].data = [];
+//                                                $scope.options.xaxis.ticks = [];
+//                                            }
+//                                            else if ( $scope.dataset[0].data == undefined )
+//                                            {
+//                                                $scope.dataset[0].data = [];
+//                                                $scope.dataset[1].data = [];
+//                                                $scope.options.xaxis.ticks = [];
+//                                            }
+//                                            else
+//                                            {
+//                                                $scope.options.xaxis.ticks = response.data.courses;
+//                                            }
+                                            $scope.options.xaxis.ticks = response.data.courses;
                                             $scope.datasetAttendance[0].data = response.data.student_present;
                                             $scope.datasetAttendance[1].data = response.data.student_absent;
                                             $scope.datasetAttendance[2].data = response.data.student_late;
-                                            if ( $scope.datasetAttendance[0].data == undefined )
-                                            {
-                                                $scope.datasetAttendance[0].data = [];
-                                                $scope.datasetAttendance[1].data = [];
-                                                $scope.datasetAttendance[2].data = [];
-                                                $scope.optionsAttendance.xaxis.ticks = [];
-                                            }
-                                            else if ( $scope.datasetAttendance[1].data == undefined )
-                                            {
-                                                $scope.datasetAttendance[0].data = [];
-                                                $scope.datasetAttendance[1].data = [];
-                                                $scope.datasetAttendance[2].data = [];
-                                                $scope.optionsAttendance.xaxis.ticks = [];
-                                            }
-                                            else if ( $scope.datasetAttendance[2].data == undefined )
-                                            {
-                                                $scope.datasetAttendance[0].data = [];
-                                                $scope.datasetAttendance[1].data = [];
-                                                $scope.datasetAttendance[2].data = [];
-                                                $scope.optionsAttendance.xaxis.ticks = [];
-                                            }
-                                            else
-                                            {
-                                                $scope.optionsAttendance.xaxis.ticks = response.data.courses_attendance;
-                                            }
+//                                            if ( $scope.datasetAttendance[0].data == undefined )
+//                                            {
+//                                                $scope.datasetAttendance[0].data = [];
+//                                                $scope.datasetAttendance[1].data = [];
+//                                                $scope.datasetAttendance[2].data = [];
+//                                                $scope.optionsAttendance.xaxis.ticks = [];
+//                                            }
+//                                            else if ( $scope.datasetAttendance[1].data == undefined )
+//                                            {
+//                                                $scope.datasetAttendance[0].data = [];
+//                                                $scope.datasetAttendance[1].data = [];
+//                                                $scope.datasetAttendance[2].data = [];
+//                                                $scope.optionsAttendance.xaxis.ticks = [];
+//                                            }
+//                                            else if ( $scope.datasetAttendance[2].data == undefined )
+//                                            {
+//                                                $scope.datasetAttendance[0].data = [];
+//                                                $scope.datasetAttendance[1].data = [];
+//                                                $scope.datasetAttendance[2].data = [];
+//                                                $scope.optionsAttendance.xaxis.ticks = [];
+//                                            }
+//                                            else
+//                                            {
+//                                                $scope.optionsAttendance.xaxis.ticks = response.data.courses_attendance;
+//                                            }
                                             
-
+                                                $scope.optionsAttendance.xaxis.ticks = response.data.courses_attendance;
                                             $scope.attendance_statistics = response.data.attendance_statistics;
                                             $scope.attendance_statistics_emp = response.data.attendance_statistics_emp;
                                             $scope.students_top = response.data.students_top;

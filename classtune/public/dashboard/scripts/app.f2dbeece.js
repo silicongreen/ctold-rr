@@ -710,8 +710,9 @@ app
                                      .withOption('serverSide', true)
                                      .withBootstrap()
                                      .withOption('fnDrawCallback', function () { 
-                                         alert("ksadkasd");
+                                         //alert(angular.element( document.getElementsByClassName("attendance_chart"));
                                         angular.forEach(angular.element( document.getElementsByClassName("attendance_chart") ), function(obj, index) {
+                                            alert("ksadhaksjd");
                                             var data = JSON.parse(obj.attributes['data'].value);//;
                                             var options = JSON.parse(obj.attributes['options'].value);
                                             angular.element(obj).sparkline(data, options);

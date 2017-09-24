@@ -124,7 +124,11 @@
                           <% end %>
                             <td class="col-pdf"> 
                             <% att_percentize = 0 %> 
-                            <% subject_name_to_use = subjects['name'].to_s.gsub(" ", "_")  %>
+                            <%  
+                              subname = subjects['name'].split(' ')
+                              subject_name_to_use = subname[0]
+                            %>
+                         
                             <% if !@subject_att_count.blank? and !@subject_att_count[subject_name_to_use].blank? %>
                                 <% if !@subject_std_att_count[subject_name_to_use].blank? and !@subject_std_att_count[subject_name_to_use][@student.id].blank?  %>
                                   <% total_present = @subject_att_count[subject_name_to_use].to_i-@subject_std_att_count[subject_name_to_use][@student.id].to_i  %>

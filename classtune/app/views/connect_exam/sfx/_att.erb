@@ -8,10 +8,12 @@ unless total_att_all.blank?
   total_att_all.each do |sub_att|
       subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
       unless subj_details.blank?
-        unless @subject_att_count[subj_details.name.gsub(" ", "_")].blank?
-          @subject_att_count[subj_details.name.gsub(" ", "_")] = @subject_att_count[subj_details.name.gsub(" ", "_")]+sub_att.tatt
+        subname = subj_details.split(' ')
+        subject_main_name = subname[0]
+        unless @subject_att_count[subject_main_name].blank?
+          @subject_att_count[subject_main_name] = @subject_att_count[subject_main_name]+sub_att.tatt
         else
-          @subject_att_count[subj_details.name.gsub(" ", "_")] = sub_att.tatt
+          @subject_att_count[subject_main_name] = sub_att.tatt
         end
       end
   end    
@@ -21,11 +23,13 @@ unless absent_att_all.blank?
   absent_att_all.each do |sub_att|
       subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
       unless subj_details.blank?
-        unless @subject_att_count[subj_details.name.gsub(" ", "_")].blank?
-          @subject_std_att_count[subj_details.name.gsub(" ", "_")][sub_att.student_id] = @subject_std_att_count[subj_details.name.gsub(" ", "_")][sub_att.student_id]+sub_att.tatt
+        subname = subj_details.split(' ')
+        subject_main_name = subname[0]
+        unless @subject_att_count[subject_main_name].blank?
+          @subject_std_att_count[subject_main_name][sub_att.student_id] = @subject_std_att_count[subject_main_name][sub_att.student_id]+sub_att.tatt
         else
-          @subject_std_att_count[subj_details.name.gsub(" ", "_")] = {}
-          @subject_std_att_count[subj_details.name.gsub(" ", "_")][sub_att.student_id] = sub_att.tatt
+          @subject_std_att_count[subject_main_name] = {}
+          @subject_std_att_count[subject_main_name][sub_att.student_id] = sub_att.tatt
         end
       end
   end    

@@ -136,13 +136,13 @@
         $date = array();
         for( $i=0; $i<10; $i++ )
         {
-            if ( $l == 0 )
+            if ( $i == 0 )
             {
                 $t_date = date("Y-m-d");
             }
             else
             {
-                $t_date = date("Y-m-d", strtotime("-" . $l . " day", strtotime(date("Y-m-d"))));
+                $t_date = date("Y-m-d", strtotime("-" . $i . " day", strtotime(date("Y-m-d"))));
             }
             $date[] = $t_date;
         }

@@ -1,0 +1,237 @@
+.ch_homework_answers_wrapper
+{
+    float: left;
+    width: 95%;
+    background-color: #fff;
+    padding:0px 30px 30px;  
+    border:1px solid #CCC;
+}
+.assignment_container{
+    width: 950px;
+    overflow:hidden;
+
+}
+.assignment_form{
+    float:left;
+    width: 540px;
+    padding-top:20px;;
+}
+#subjects_student_list{
+    float:left;
+    margin-left:0px;
+    width: 360px;
+    padding-top: 30px;
+    padding-left:30px;
+}
+
+.scrollable{
+    width: 250px;
+    background-color: #EEE;
+    padding :7px;
+    -webkit-border-radius : 10px;
+    -moz-border-radius : 10px;
+}
+#scrollable-list {
+    width: 250px;
+    overflow: auto;
+    height: 160px;
+}
+.select_all{
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom:10px;
+}
+.select_all a {
+    color: #9F0C14;
+    text-decoration: none;
+}
+.select_all a:hover {
+    color: #9F0C14;
+    text-decoration: none;
+}
+.listitem{
+    margin-bottom: 2px;
+    border-bottom: 1px solid #DDDDDD;
+    overflow: hidden;
+    font-size:14px;
+}
+.listitem .check_box {
+    float:left;
+    width: 5px;
+}
+.listitem .student_name {
+    float:left;
+    width: 200px;
+}
+
+#assignment_description{
+    height:150px;
+    overflow: hidden;
+
+}
+.submit_button {
+    margin-left: 210px;
+    padding: 7px 10px;
+    color: #fff;
+    background: #db3434;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    font-weight: bold;
+    font-size: 14px;
+    border:none;
+    cursor:pointer;
+}
+
+.submit_button:hover {
+    background:#7e0000;
+}
+
+.text-input-bg textarea  {
+    -moz-border-radius:10px 10px 10px 10px;
+    -webkit-border-radius:10px;
+    background-color:#EEEEEE;
+    border:1px solid #C6C6C6;
+    height:120px;
+    margin:5px 0 0 10px;
+    padding:3px 6px;
+    width:215px;
+}
+
+.text-input-bg textarea:focus{
+    background: #fff;
+    border: 1px solid #9e0f15;
+}
+
+#assignment-attachment input{
+    height: 24px;
+}
+.text-input-bg img{
+    padding-top:10px;
+    padding-left: 2px;
+}
+.label-field-pair a {
+    color: #000;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+.label-field-pair a:hover{
+    text-decoration: underline;
+}
+.label-field-pair label {
+/*    width: 122px;*/
+}
+#assignment-submit{
+    padding-top : 30px;
+}
+
+.homework_content
+{
+    height: 40px;
+    padding-top: 3px;
+    width: 100%;
+}
+.homework_content_label
+{
+    color: #444;
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: 600;
+    width: 100%;
+}
+.homework_content_div
+{
+    background-color: #eee;
+    border: 1px solid #c6c6c6;
+    border-radius: 10px;
+    float: left;
+    clear:both;
+    height: 273px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 90%;
+}
+
+.redactor_editor {
+    height: 192px !important;
+    width: 463px !important;
+}
+
+.CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        margin: -20px;
+        padding: 20px;
+    }
+    .CSSTableGenerator table tr td 
+    {
+        font-weight: bold;
+        overflow: hidden;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
+
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+span div.absent {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #B3B9BB;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_circle {
+    position: absolute;
+    width:22px;
+    height:22px;
+    background-color: #0691D5;
+    border-radius:11px;
+    left:0;
+    top:0;
+}
+
+.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:#fff;
+    left:11px;
+    top:6px;
+}
+
+.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:#fff;
+    left:8px;
+    top:12px;
+}

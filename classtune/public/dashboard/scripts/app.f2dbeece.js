@@ -120,11 +120,9 @@ var app = angular
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
             'scripts/vendor/flot/jquery.flot.resize.js',
-            'scripts/vendor/flot/jquery.flot.orderBars.js',
             'scripts/vendor/flot/jquery.flot.stack.js',
             'scripts/vendor/flot/jquery.flot.pie.js',
             'scripts/vendor/gaugejs/gauge.min.js',  
-            'scripts/vendor/datatables/datatables.bootstrap.min.css',
             'scripts/vendor/datatables/datatables.bootstrap.min.css'
           ]);
         }]
@@ -713,9 +711,8 @@ app
                                          //alert(angular.element( document.getElementsByClassName("attendance_chart"));
                                         angular.forEach(angular.element( document.getElementsByClassName("attendance_chart") ), function(obj, index) {
                                             var data = JSON.parse(obj.attributes['data'].value);//;
-                                            console.log(data);
                                             var options = JSON.parse(obj.attributes['options'].value);
-                                            angular.element(obj).sparkline(data, options);
+                                            obj.sparkline(data, options);
                                         });
 
                                         $http({

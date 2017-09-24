@@ -6,14 +6,20 @@ absent_att_all = SubjectAttendance.find(:all,:select=>"count(id) as tatt, subjec
 
 unless total_att_all.blank?
   total_att_all.each do |sub_att|
-      @subject_att_count[sub_att.subject_id] = sub_att.tatt
+      subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
+      unless subj_details.blank?
+        @subject_att_count[subj_details.name.gsub(" ", "_")] = sub_att.tatt
+      end
   end    
 end
 
 unless absent_att_all.blank?
   absent_att_all.each do |sub_att|
-      @subject_std_att_count[sub_att.subject_id] = {}
-      @subject_std_att_count[sub_att.subject_id][sub_att.student_id] = sub_att.tatt
+      subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
+      unless subj_details.blank?
+        @subject_std_att_count[subj_details.name.gsub(" ", "_")] = {}
+        @subject_std_att_count[subj_details.name.gsub(" ", "_")][sub_att.student_id] = sub_att.tatt
+      end
   end    
 end
 %>

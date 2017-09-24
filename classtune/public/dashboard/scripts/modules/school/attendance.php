@@ -118,7 +118,7 @@
         
         if ( $type_attendance == 1 )
         {
-            $subresult = $conn->query("SELECT AVG(present) as present, AVG(late) as late FROM `attendance_registers` 
+            $subresult = $conn->query("SELECT attendance_date, AVG(present) as present, AVG(late) as late FROM `attendance_registers` 
                                        WHERE batch_id IN (SELECT id from batches WHERE course_id = " . $id . ")  and 
                                        attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
                                        GROUP BY attendance_date ORDER BY attendance_date");
@@ -133,9 +133,20 @@
         }
         
         $chart['data'] = array();
+        $l = 0;
         while( $sr = $subresult->fetch_array(MYSQLI_ASSOC))
         {
+            if ( $l == 0 )
+            {
+                $t_date = date("Y-m-d");
+            }
+            else
+            {
+                $t_date = date("Y-m-d", strtotime("+" . $l . " day", strtotime(date("Y-m-d"))));
+            }
+            print $t_date . "\n\n";
             $chart['data'][] = (int) ($sr['present'] + $sr['late']);
+            $l++;
             //$i--;
         }
         $a_options = array("type" => "bar", "barColor" => $chart['color'], "barWidth" => "10%", "height" => "28px");

@@ -126,8 +126,10 @@
                              <% e_subject_id = 0 %>
                              <% unless @std_subject_elective.blank? %>
                                 <% @std_subject_elective.each do |esub| %>
+                                    <% unless esub.subject.blank? %>
                                     <% if esub.subject.name.include?(subjects['name']) && esub.subject.id != subjects['id'].to_i %>
                                        <% e_subject_id = esub.subject.id %>
+                                    <% end %>
                                     <% end %>
                                 <% end %>
                              <% end %> 

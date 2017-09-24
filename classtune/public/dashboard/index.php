@@ -10,36 +10,36 @@
     
     //Temporary Code, When Done please remove
     //Indent to pass the token using $_GET parameter
-//    $url = $server_name . '/oauth/token';
-//    
-//    $fields = array(
-//            'client_id' => '900dbcba0d3320a2fd3ded6f0fe93b68e41e87ce',
-//            'client_secret' => 'f943d664fbbb19778c63d059d5d7d35a98f72102',
-//            'grant_type' => 'password',
-//            'username' => 'chs-admin',
-//            'password' => '123456',
-//            'redirect_uri' => $server_name . '/authenticate'
-//    );
-//    $fields_string = '';
-//    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-//    $fields_string = substr($fields_string, 0, -1);
-//    
-//    $ch = curl_init();
-//
-//    //set the url, number of POST vars, POST data
-//    curl_setopt($ch,CURLOPT_URL, $url);
-//    curl_setopt($ch,CURLOPT_POST, count($fields));
-//    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//    
-//    //execute post
-//    $result = curl_exec($ch);
-//    $res = json_decode($result);
-//    
-//    //close connection
-//    curl_close($ch);
-//    $token = $res->access_token;
-    $token = $_GET['access_token'];
+    $url = $server_name . '/oauth/token';
+    
+    $fields = array(
+            'client_id' => '900dbcba0d3320a2fd3ded6f0fe93b68e41e87ce',
+            'client_secret' => 'f943d664fbbb19778c63d059d5d7d35a98f72102',
+            'grant_type' => 'password',
+            'username' => 'chs-admin',
+            'password' => '123456',
+            'redirect_uri' => $server_name . '/authenticate'
+    );
+    $fields_string = '';
+    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+    $fields_string = substr($fields_string, 0, -1);
+    
+    $ch = curl_init();
+
+    //set the url, number of POST vars, POST data
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_POST, count($fields));
+    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    //execute post
+    $result = curl_exec($ch);
+    $res = json_decode($result);
+    
+    //close connection
+    curl_close($ch);
+    $token = $res->access_token;
+    //$token = $_GET['access_token'];
     $username = $_GET['username'];
 ?>
 <!doctype html>

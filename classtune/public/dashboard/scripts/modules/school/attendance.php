@@ -138,7 +138,6 @@
             $chart['data'][] = (int) ($sr['present'] + $sr['late']);
             //$i--;
         }
-        print_r($chart);
         $a_options = array("type" => "bar", "barColor" => $chart['color'], "barWidth" => "10%", "height" => "28px");
         $tmp['graph_attendance'] = "<span class='attendance_chart' sparkline data='" . json_encode($chart['data']) . "' options='" . json_encode($a_options) . "'  watch-me='numberOfPages'>
                                     </span>";

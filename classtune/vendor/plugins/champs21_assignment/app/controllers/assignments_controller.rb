@@ -5,9 +5,22 @@ class AssignmentsController < ApplicationController
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
   
+  def get_homework_filter
+    batch_id = params[:batch_name]
+    @assignments = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        @assignments =Assignment.paginate  :conditions=>"batches.name = #{batch_name}  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}]     
+      end
+    end
+    render(:update) do |page|
+      page.replace_html 'listing', :partial=>'get_homework_filter'
+    end
+  end
+  
   def index
-   
-    
     @current_user = current_user
     if    @current_user.employee?
       @subjects = current_user.employee_record.subjects.active

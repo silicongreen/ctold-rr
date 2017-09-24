@@ -79,6 +79,7 @@ authorization do
       :to=>[
       :defaulter_registration,
       :defaulter_students,
+      :get_homework_filter,
       :assignment_student_list,
       :subject_assignments3,
       :create,

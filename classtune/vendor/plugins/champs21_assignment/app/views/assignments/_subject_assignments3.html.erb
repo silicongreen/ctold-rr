@@ -5,20 +5,26 @@
 </div>
 <div style="clear: both;"></div>
 <% unless @subject.nil? %>
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+<div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+  <table id="listing table-design" align="center" width="100%" cellpadding="1" cellspacing="1">
     <% unless @assignments.empty? %>
     <tr class="tr-head">
-      <td>
+        <thead>
+      <th>
         <%= "#{t('sl_no')}."%>
-      </td>
-      <td>
+      </th>
+      <th>
        <%= "#{t('title')}"%>
-      </td>
-      <td>
+      </th>
+      <th>
+       <%= "#{t('course')}"%>
+      </th>
+      <th>
         <%= "#{t('due_date')}"%>
-      </td>
+      </th>
+  </thead>
     </tr>
-    <tr class="tr-blank"></tr>
+   
       <% @assignments.each_with_index do |assignment,i| %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
           <td class="col-1">
@@ -26,6 +32,9 @@
           </td>
           <td class="col-2">
             <%=  link_to assignment.title, assignment%>
+          </td>
+          <td class="col-2">
+            <%=  assignment.subject.batch.full_name %>
           </td>
           <td class="col-4">
             <%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %>
@@ -38,5 +47,6 @@
       </tr>
     <% end %>
   </table>
+</div>    
   <%= will_paginate @assignments %>
 <% end %>

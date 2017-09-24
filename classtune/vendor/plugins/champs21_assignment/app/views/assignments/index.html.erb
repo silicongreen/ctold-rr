@@ -296,12 +296,28 @@
          
             <div id="syllabus" class="news_label_field"></div>
             <br />
-            <div id="listing"></div>
+            <div id="listing"></div>   
+            
+            <script type="text/javascript">
+                var jj = jQuery.noConflict();
+                jj("#student_batch_name").on( "change", function( event ) {
+                  jj("#listing").html("");
+                  jj.get( "assignments/get_homework_filter", { batch_name: jj("#student_batch_name").val() } )
+                  .done(function( data ) {
+                    alert("here");
+                  });
+                });
+            </script>    
+            
+            
+            
           <% end %>
 
         </div>
   </div>        
 </div>
+        
+        <%= stylesheet_link_tag 'list_table' %>
 
           <style type="text/css">
             .calendar_date_select_popup_icon{
@@ -330,6 +346,42 @@
             {
               margin-bottom:30px;
             }
+            
+            
+            .CSSTableGenerator table thead tr th{
+        text-align: center;
+        padding: 10px;
+    }
+    .CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        
+    }
+    .CSSTableGenerator table tr td 
+    {
+        text-align: center;
+        font-weight: bold;
+        overflow: hidden;
+        padding: 3px !important;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
           </style>
 
 <% content_for :head do %>

@@ -46,6 +46,7 @@
                           <% exam_marks = 0 %>
                           <% grade_i = false %>
                           <% grade_w = false %>
+                          <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
 
                           <td class="col-pdf td-align-left"><%= subjects['name'] %></td>
                           <td class="col-pdf">Full Marks <hr/> Marks Obtained</td>

@@ -145,30 +145,26 @@
                 $t_date = date("Y-m-d", strtotime("-" . $i . " day", strtotime(date("Y-m-d"))));
             }
             $date[] = $t_date;
+            $chart['data'][] = 0;
         }
-        print_r($t_date);
+        
         $l = 0;
         while( $sr = $subresult->fetch_array(MYSQLI_ASSOC))
         {
-            if ( $l == 0 )
+            $attendance_date = $sr['attendance_date'];
+            $m = 0;
+            foreach ($date as $d)
             {
-                $t_date = date("Y-m-d");
+                if ( $attendance_date == $d )
+                {
+                    break;
+                }
+                $m++;
             }
-            else
-            {
-                $t_date = date("Y-m-d", strtotime("-" . $l . " day", strtotime(date("Y-m-d"))));
-            }
-            if ( $sr['attendance_date'] == $t_date )
-            {
-                $chart['data'][] = (int) ($sr['present'] + $sr['late']);
-            }
-            else
-            {
-                $chart['data'][] = 0;
-            }
-            $l++;
+            $chart['data'][$m] = (int) ($sr['present'] + $sr['late']);
             //$i--;
         }
+        print_r($chart['data']);
         $a_options = array("type" => "bar", "barColor" => $chart['color'], "barWidth" => "10%", "height" => "28px");
         $tmp['graph_attendance'] = "<span class='attendance_chart' sparkline data='" . json_encode($chart['data']) . "' options='" . json_encode($a_options) . "'  watch-me='numberOfPages'>
                                     </span>";

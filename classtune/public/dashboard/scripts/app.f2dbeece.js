@@ -712,7 +712,7 @@ app
                                         angular.forEach(angular.element( document.getElementsByClassName("attendance_chart") ), function(obj, index) {
                                             var data = JSON.parse(obj.attributes['data'].value);//;
                                             var options = JSON.parse(obj.attributes['options'].value);
-                                            angular.element(obj).sparkline(data, options);
+                                            obj.sparkline(data, options);
                                         });
 
                                         $http({

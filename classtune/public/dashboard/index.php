@@ -170,7 +170,7 @@
     <script src="scripts/oldieshim.f2dbeece.js"></script>
     <![endif]-->
 
-    <script src="scripts/vendor.4c173da6.js"></script>
+    <script src="scripts/vendor.342123aasw3.js"></script>
 
     <script src="scripts/app.f2dbeece.js"></script>
 </body>

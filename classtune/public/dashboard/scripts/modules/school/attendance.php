@@ -133,6 +133,20 @@
         }
         
         $chart['data'] = array();
+        $date = array();
+        for( $i=0; $i<10; $i++ )
+        {
+            if ( $l == 0 )
+            {
+                $t_date = date("Y-m-d");
+            }
+            else
+            {
+                $t_date = date("Y-m-d", strtotime("-" . $l . " day", strtotime(date("Y-m-d"))));
+            }
+            $date[] = $t_date;
+        }
+        print_r($t_date);
         $l = 0;
         while( $sr = $subresult->fetch_array(MYSQLI_ASSOC))
         {

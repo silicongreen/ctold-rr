@@ -142,10 +142,16 @@
             }
             else
             {
-                $t_date = date("Y-m-d", strtotime("+" . $l . " day", strtotime(date("Y-m-d"))));
+                $t_date = date("Y-m-d", strtotime("-" . $l . " day", strtotime(date("Y-m-d"))));
             }
-            print $t_date . "\n\n";
-            $chart['data'][] = (int) ($sr['present'] + $sr['late']);
+            if ( $sr['attendance_date'] == $t_date )
+            {
+                $chart['data'][] = (int) ($sr['present'] + $sr['late']);
+            }
+            else
+            {
+                $chart['data'][] = 0;
+            }
             $l++;
             //$i--;
         }

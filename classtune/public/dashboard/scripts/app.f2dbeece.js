@@ -855,7 +855,7 @@ app
             $scope.sizeOf = function(obj) {
                 if ( obj == undefined || typeof(obj) == undefined || obj == null )
                 {
-                    return 0;
+                    return false;
                 }
                 else
                 {

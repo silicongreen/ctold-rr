@@ -247,7 +247,10 @@
                   letter_grade = grade.name
                 end  
               end
-              percentage =  total_parcent/total_subject
+              percentage = 0
+              unless total_subject.blank?
+                percentage =  total_parcent/total_subject
+              end
               %>
               <table id="pdf-table" class="evaluation1" width="99.8%" >
                 <tr class="odd">

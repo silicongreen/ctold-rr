@@ -123,6 +123,11 @@
                                        attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
                                        GROUP BY attendance_date ORDER BY attendance_date");
             
+            print "SELECT AVG(present) as present, AVG(late) as late FROM `attendance_registers` 
+                                       WHERE batch_id IN (SELECT id from batches WHERE course_id = " . $id . ")  and 
+                                       attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
+                                       GROUP BY attendance_date ORDER BY attendance_date\n\n";
+            
         }
         else
         {

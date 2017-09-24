@@ -162,15 +162,39 @@
               @assignment, :method => "delete",
               :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
           </div>
-          <%# if @assignment.is_published==0 %>
-          <%#= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
+          <% if @assignment.is_published==0 %>
+          <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
-          <%#*<!-- RR sept20 -->%>
-          <%# else %>
-          <%#= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},
+          <!-- RR sept20 -->
+          <% else %>
+          <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},
               :confirm => "Do You realy want to register defaulter?", :class => "user_button" %>
-          <%# end %>  
+          <% end %>  
         </div>
+        
+          <div>
+            <% unless @defaulter_students.blank? %>
+              <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+                <table id="listing table-design">
+                  <thead>
+                    <tr class="tr-head">
+
+                        <th>Defaulter Student Roll</th>
+                        <th>Defaulter Student Name</th>
+                    </tr>
+                  </thead>
+
+                  <% @defaulter_students.each do |student| %>
+                    <tr>
+                      <td class="col-2"><%= student.class_roll_no %></td>
+                      <td class="col-2"><%= student.first_name + " " + student.last_name %></td>
+                    </tr>
+                  <% end %>
+                </table>
+            </div>
+              <% end %>
+          </div>
+          
         <div id="student-list-bg">
           <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>
           <div id="quickinfo">  <h5><%= link_to_remote  "#{t('assigned')} (#{@students_assigned_count})",:update=>"assigned_students",:url=>{:action=>:assignment_student_list,:id=>@assignment.id,:status=>"assigned"},   :before => "Element.show('loader')", :success => "Element.hide('loader')"%></h5>
@@ -245,6 +269,7 @@
 </div>
 </div>
   </div>
+<%= stylesheet_link_tag 'list_table' %>
 <%= stylesheet_link_tag 'tadded-header' %>
 <style type="text/css">
   #action_buttons {
@@ -265,14 +290,46 @@
     color: #555;
   }
   .partial_homework
-{
-    clear: both;
-}
-.partial_homework h2 {
-  color: #2dc99a;
-  float: left;
-  font-size: 38px;
-  font-weight: normal;
-  margin: 0;
-}
+  {
+      clear: both;
+  }
+  .partial_homework h2 {
+    color: #2dc99a;
+    float: left;
+    font-size: 38px;
+    font-weight: normal;
+    margin: 0;
+  }
+  .CSSTableGenerator table thead tr th{
+      text-align: center;
+      padding: 10px;
+  }
+  .CSSTableGenerator td a
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;  
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator td a:hover
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator table tr td 
+  {
+      text-align: center;
+      font-weight: bold;
+      overflow: hidden;
+      padding: 3px !important;
+  }
+  
 </style>

@@ -25,11 +25,10 @@
 <div id="page-yield" style="margin-top:0px;" >
   
   
-  <% form_for @assignment, :url => {:action => 'defaulter_registration', :id=>@assignment.id} do |f| %>
+  <% form_for @assignment, :url => {:action => 'defaulter_registration', :id=>@assignment.id}, :html => {:method => :post} do |f| %>
      <h4> <%= @assignment.title %>  </h4>    Defaulter Registration Status 
     <input name="isRegistered" id="defaulterRegCheck" type="checkbox" <% unless @defaulter_registered.nil? %> checked="checked" disabled <% end %> onclick='enableDefaulterCheckBox();' /> 
     <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
-       <%= f.text_field :title %>
     <table id="listing table-design">
       <thead>
         <tr class="tr-head">

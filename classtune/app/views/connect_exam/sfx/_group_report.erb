@@ -1,4 +1,4 @@
 <%= render  :partial=>"/connect_exam/sfx/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
-<% if @connect_exam_obj.result_type.to_i == 6 and @connect_exam_obj.result_type.to_i != 6 %>
+<% if @connect_exam_obj.result_type.to_i == 6 %>
   <%= render  :partial=>"/connect_exam/sfx/att" %>
 <% end %>

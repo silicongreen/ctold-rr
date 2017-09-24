@@ -8,7 +8,7 @@ unless total_att_all.blank?
   total_att_all.each do |sub_att|
       subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
       unless subj_details.blank?
-        subname = subj_details.split(' ')
+        subname = subj_details.name.split(' ')
         subject_main_name = subname[0]
         unless @subject_att_count[subject_main_name].blank?
           @subject_att_count[subject_main_name] = @subject_att_count[subject_main_name]+sub_att.tatt
@@ -23,7 +23,7 @@ unless absent_att_all.blank?
   absent_att_all.each do |sub_att|
       subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
       unless subj_details.blank?
-        subname = subj_details.split(' ')
+        subname = subj_details.name.split(' ')
         subject_main_name = subname[0]
         unless @subject_att_count[subject_main_name].blank?
           @subject_std_att_count[subject_main_name][sub_att.student_id] = @subject_std_att_count[subject_main_name][sub_att.student_id]+sub_att.tatt

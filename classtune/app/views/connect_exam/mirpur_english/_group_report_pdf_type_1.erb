@@ -238,9 +238,10 @@
               </table>
               
               <%
-              if letter_grade.blank?
+              if letter_grade.blank? and total_credit_point>0
                 final_grade = total_credit_point.to_f/total_subject
                 letter_grade = "N/A"
+              
                 grade = GradingLevel.grade_point_to_grade(final_grade, @batch.id)
                 if !grade.blank? and !grade.name.blank?
                   letter_grade = grade.name

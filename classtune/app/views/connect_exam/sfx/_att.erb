@@ -9,7 +9,7 @@ unless total_att_all.blank?
       subj_details = Subject.find_by_id(sub_att.subject_id.to_i)
       unless subj_details.blank?
         unless @subject_att_count[subj_details.name.gsub(" ", "_")].blank?
-          @subject_att_count[subj_details.name.gsub(" ", "_")] = @subject_att_count[subj_details.name.gsub(" ", "_")].to_i+sub_att.tatt
+          @subject_att_count[subj_details.name.gsub(" ", "_")] = @subject_att_count[subj_details.name.gsub(" ", "_")]+sub_att.tatt
         else
           @subject_att_count[subj_details.name.gsub(" ", "_")] = sub_att.tatt
         end

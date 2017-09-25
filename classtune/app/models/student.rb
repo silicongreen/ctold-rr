@@ -172,7 +172,7 @@ class Student < ActiveRecord::Base
   
   def check_std_category
     if student_category_id_changed?
-      student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.balance >'#{0}'")
+      student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0")
       if student_fees.present?
         student_fees.each do |stfees|
           f_fees_std = finance_fees.find(stfees.id)

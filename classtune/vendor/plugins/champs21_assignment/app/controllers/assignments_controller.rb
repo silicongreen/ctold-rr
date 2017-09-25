@@ -5,19 +5,28 @@ class AssignmentsController < ApplicationController
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
   
-  def get_homework_filter
+   def get_homework_filter
     batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
     @assignments = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
         batch_name = batchdata.name
-        @assignments =Assignment.paginate  :conditions=>"batches.name = #{batch_name}  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}]     
+        if student_class_name.blank?
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}]     
+        elsif student_section.blank?
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[{:batch=>[:course]}]}] 
+        else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}] 
+          end
+        end  
       end
     end
-    render(:update) do |page|
-      page.replace_html 'listing', :partial=>'get_homework_filter'
-    end
+    render :partial=>"get_homework_filter"
   end
   
   def index
@@ -622,6 +631,7 @@ class AssignmentsController < ApplicationController
     end
     
   end
+  
   
   def defaulter_students
     @assignment  = Assignment.active.find(params[:id], :include => [:employee])

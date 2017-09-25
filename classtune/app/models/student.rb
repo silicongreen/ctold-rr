@@ -174,6 +174,7 @@ class Student < ActiveRecord::Base
     if student_category_id_changed?
       student_fees=finance_fees.find(:all,:joins=>"INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fee_collections.is_deleted=0 and finance_fees.is_paid ='#{0}'")
       if student_fees.present?
+        student_fees_map = student_fees.map(&:fee_collection_id)
         student_fees.each do |stfees|
           f_fees_std = finance_fees.find(stfees.id)
           f_fees_std.destroy
@@ -182,8 +183,10 @@ class Student < ActiveRecord::Base
         @fee_collection_batch = FeeCollectionBatch.find_all_by_batch_id_and_is_deleted(@student.batch_id,false)
           unless @fee_collection_batch.blank?
             @fee_collection_batch.each do |fb|
-              @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
-              FinanceFee.new_student_fee(@finance_fee_collection,@student)
+              if student_fees_map.include?(fb.finance_fee_collection_id)
+                @finance_fee_collection = FinanceFeeCollection.find( fb.finance_fee_collection_id)
+                FinanceFee.new_student_fee(@finance_fee_collection,@student)
+              end
             end
         end
       end

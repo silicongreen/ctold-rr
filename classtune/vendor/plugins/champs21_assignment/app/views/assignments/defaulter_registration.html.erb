@@ -26,8 +26,9 @@
   
   
   <% form_for @assignment, :url => {:action => 'defaulter_registration', :id=>@assignment.id}, :html => {:method => :post} do |f| %>
-     <h4> <%= @assignment.title %>  </h4>    Defaulter Registration Status 
+     <h4> <%= @assignment.title %>  </h4>
     <input name="isRegistered" id="defaulterRegCheck" type="checkbox" <% unless @defaulter_registered.nil? %> checked="checked" disabled <% end %> onclick='enableDefaulterCheckBox();' /> 
+    <% if @defaulter_registered.nil? %> Click here to register <% else  %> Registered <%  end %>
     <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
     <table id="listing table-design">
       <thead>

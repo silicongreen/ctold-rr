@@ -49,6 +49,7 @@ authorization do
     has_permission_on [:assignments],
       :to=>[
       :defaulter_registration,
+      :defaulter_students,
       :assignment_student_list,
       :subject_assignments3,
       :create,
@@ -77,6 +78,7 @@ authorization do
     has_permission_on [:assignments],
       :to=>[
       :defaulter_registration,
+      :defaulter_students,
       :assignment_student_list,
       :subject_assignments3,
       :create,

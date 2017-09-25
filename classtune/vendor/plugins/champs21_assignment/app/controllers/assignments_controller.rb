@@ -578,7 +578,10 @@ class AssignmentsController < ApplicationController
     
     if request.post?
       #abort("thats a post request")
-      student_ids = params[:assignment][:student_ids]
+      student_ids = []
+      unless params[:assignment].blank?
+        student_ids = params[:assignment][:student_ids]
+      end
       registration_checked = params[:isRegistered]
       #abort(params.inspect)
       if !@defaulter_registered.blank? or !registration_checked.blank?
@@ -596,27 +599,7 @@ class AssignmentsController < ApplicationController
           
           @defaulter_registered.update_attributes(:assignment_given => assignment_given, :assignment_not_given => assignment_not_given)
         end
-#        insert / delete rows in assignment defaulter lists
-#        db_status = find_all_by_assignment_id(@assignment.id)
-#        db_status_std_id = []
-#        db_status.each do |s|
-#          db_status_std_id << s.student_id
-#        end
-#        @assigned_students.each do |s|
-#          if db_status_std_id.include? s.id
-#            unless student_ids.include? s.id
-#              # database recored exist but checkbox unchecked ==> remove the record
-#              row = AssignmentDefaulterList.find(:all , :conditions => {:student_id => s.id, :assignment_id => @assignment.id})
-#              row..destroy
-#            end
-#          else
-#            if student_ids.include? s.id
-#              # no database record but checkbox checked ==> insert that bitch
-#              row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => defaulter)
-#              row.save
-#            end
-#          end
-#        end
+
          # remove all by assignment id
          rows = AssignmentDefaulterList.find_all_by_assignment_id(@assignment.id)
          rows.each do |row|
@@ -624,9 +607,11 @@ class AssignmentsController < ApplicationController
          end
          
         #insert checked in checkbox
-        student_ids.each do |s|
-          row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => s)
-          row.save
+        unless student_ids.blank?
+          student_ids.each do |s|
+            row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => s)
+            row.save
+          end
         end
          
         redirect_to :controller=>:assignments,:action=>:show
@@ -635,4 +620,21 @@ class AssignmentsController < ApplicationController
     
   end
   
+  def defaulter_students
+    @assignment  = Assignment.active.find(params[:id], :include => [:employee])
+    unless @assignment.nil?
+      #RR assignment defaulter added
+      defaulter_student_rows = AssignmentDefaulterList.find_all_by_assignment_id(@assignment.id)
+      @defaulter_students = []
+      unless defaulter_student_rows.blank?
+        defaulter_student_rows.each do |s|
+          std = Student.find_by_id(s.student_id)
+          if std.nil?
+            std=ArchivedStudent.find_by_former_id s.student_id
+          end
+          @defaulter_students << std
+        end
+      end
+    end
+  end
 end

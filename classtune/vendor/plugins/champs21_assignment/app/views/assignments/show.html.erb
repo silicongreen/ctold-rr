@@ -165,35 +165,12 @@
           <% if @assignment.is_published==0 %>
           <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
-          <!-- RR sept20 -->
-          <% else %>
-          <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},
-              :confirm => "Do You realy want to register defaulter?", :class => "user_button" %>
+          <!-- RR, remove comment-out later -->
+          <%# else %>
+          <%#= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
+          <%#= link_to "See Defaulters", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
           <% end %>  
         </div>
-        
-          <div>
-            <% unless @defaulter_students.blank? %>
-              <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
-                <table id="listing table-design">
-                  <thead>
-                    <tr class="tr-head">
-
-                        <th>Defaulter Student Roll</th>
-                        <th>Defaulter Student Name</th>
-                    </tr>
-                  </thead>
-
-                  <% @defaulter_students.each do |student| %>
-                    <tr>
-                      <td class="col-2"><%= student.class_roll_no %></td>
-                      <td class="col-2"><%= student.first_name + " " + student.last_name %></td>
-                    </tr>
-                  <% end %>
-                </table>
-            </div>
-              <% end %>
-          </div>
           
         <div id="student-list-bg">
           <div id="loaderbox">     <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %> </div>

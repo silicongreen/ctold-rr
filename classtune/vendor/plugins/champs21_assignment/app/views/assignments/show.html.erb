@@ -166,9 +166,11 @@
           <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
           <!-- RR, remove comment-out later -->
-          <%# else %>
-          <%#= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
-          <%#= link_to "See Defaulters", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
+          <% else %>
+          <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
+          <% unless @defaulter_registered.blank? %>
+            <%= link_to "See Defaulters", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
+          <% end %>
           <% end %>  
         </div>
           

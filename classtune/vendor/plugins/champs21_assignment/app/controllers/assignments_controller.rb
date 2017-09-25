@@ -381,17 +381,7 @@ class AssignmentsController < ApplicationController
     @assignment  = Assignment.active.find(params[:id], :include => [:employee])
     unless @assignment.nil?
       #RR assignment defaulter added
-      defaulter_student_rows = AssignmentDefaulterList.find_all_by_assignment_id(@assignment.id)
-      @defaulter_students = []
-      unless defaulter_student_rows.blank?
-        defaulter_student_rows.each do |s|
-          std = Student.find_by_id(s.student_id)
-          if std.nil?
-            std=ArchivedStudent.find_by_former_id s.student_id
-          end
-          @defaulter_students << std
-        end
-      end
+      @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
       @current_user = current_user
       @assignment_answers = @assignment.assignment_answers
       @students_assigned_count = @assignment.student_list.split(",").count

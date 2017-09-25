@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
   
-   def get_homework_filter
+  def get_homework_filter
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
@@ -15,18 +15,21 @@ class AssignmentsController < ApplicationController
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}]     
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
         elsif student_section.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
         else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
-            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page],:include=>[{:subject=>[:batch]}] 
+            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
           end
         end  
       end
     end
-    render :partial=>"get_homework_filter"
+    respond_to do |format|
+      format.js { render :action => 'get_homework_filter' }
+    end
+   
   end
   
   def index
@@ -118,7 +121,7 @@ class AssignmentsController < ApplicationController
       @batch_id = @batch_data.id 
     end
     
-    if @batch_id == ''
+    if @batch_id.blank? or @batch_id == 0
       @subjects = []
     else
       @batch = Batch.find @batch_id
@@ -197,7 +200,7 @@ class AssignmentsController < ApplicationController
 
     @subject =Subject.find_by_id params[:subject_id]    
     unless @subject.nil?
-      @assignments =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=1 ",:order=>"duedate desc", :page=>params[:page]    
+      @assignments =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=1 ",:order=>"duedate desc", :page=>params[:page] , :per_page => 20   
     else
       @assignments = []
     end

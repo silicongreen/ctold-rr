@@ -169,7 +169,7 @@
           <% else %>
           <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
           <% unless @defaulter_registered.blank? %>
-            <%= link_to "See Defaulters", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
+            <%= link_to "Defaulter List (#{@defaulter_registered.assignment_not_given})", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>
           <% end %>
           <% end %>  
         </div>
@@ -182,6 +182,7 @@
 
           </div>
 
+          
           
 
           <div id="student_list"></div>

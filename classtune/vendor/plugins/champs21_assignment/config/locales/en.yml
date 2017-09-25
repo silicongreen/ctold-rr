@@ -15,7 +15,10 @@ en:
     errors:
       messages:
         date_cant_be_past_date : "Date can't be past date"
-
+        
+  teacher_name: "Teacher"
+  not_regester: "Not Registerd"
+  defaulter: "Defaulter"
   assigned_date: "Assigned Date"
   due_date: "Due Date"
   subject_and_class: "Subject and Class"

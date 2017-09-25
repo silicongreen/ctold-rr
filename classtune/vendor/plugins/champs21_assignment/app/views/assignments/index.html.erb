@@ -302,10 +302,37 @@
                 var jj = jQuery.noConflict();
                 jj("#student_batch_name").on( "change", function( event ) {
                   jj("#listing").html("");
+                  jj("#syllabus").html("");
                   jj.get( "assignments/get_homework_filter", { batch_name: jj("#student_batch_name").val() } )
                   .done(function( data ) {
-                    alert("here");
+                    
                   });
+                });
+                
+                jj(document).off("change","#student_class_name").on( "change","#student_class_name", function( event ) {
+                  jj("#listing").html("");
+                  jj("#syllabus").html("");
+                  jj.get( "assignments/get_homework_filter", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val() } )
+                  .done(function( data ) {
+                  });
+                });
+                
+                jj(document).off("change","#student_section").on( "change","#student_section", function( event ) {
+                  jj("#listing").html("");
+                  jj.get( "assignments/get_homework_filter", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val(),student_section: jj("#student_section").val() } )
+                  .done(function( data ) {
+                  });
+                });
+                
+                
+                jj(document).off("change","#assignment_subject").on( "change","#assignment_subject", function( event ) {
+                  if(jj("#assignment_subject").val() == "")
+                  {
+                    jj("#listing").html("");
+                    jj.get( "assignments/get_homework_filter", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val(),student_section: jj("#student_section").val() } )
+                    .done(function( data ) {
+                    });
+                  }
                 });
             </script>    
             
@@ -375,7 +402,7 @@
         text-align: center;
         font-weight: bold;
         overflow: hidden;
-        padding: 3px !important;
+        padding: 5px !important;
     }
     .CSSTableGenerator table tr td:last-child
     {

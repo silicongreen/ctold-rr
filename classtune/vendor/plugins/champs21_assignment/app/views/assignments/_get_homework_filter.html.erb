@@ -1,36 +1,30 @@
-<% unless @subject.nil? %>
-<div style="float: right;height: 50px;">
-  <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new",:subject_id=>@subject.id },:target=>"blank", :class => 'submit_button' %>
-  
-</div>
-<div style="clear: both;"></div>
 
+<div style="clear: both;"></div>
 
 <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
   <table id="listing table-design" align="center" width="100%" cellpadding="1" cellspacing="1">
     <% unless @assignments.empty? %>
     <tr class="tr-head">
-      <thead>
-        <th>
-         <%= "#{t('course')}"%>
-        </th>
-        <th>
-          <%= "#{t('subject')}"%>
-        </th>
-        <th>
-         <%= "#{t('title')}"%>
-        </th>
-        <th>
-          <%= "#{t('teacher_name')}"%>
-        </th>
-        
-        <th>
-          <%= "#{t('due_date')}"%>
-        </th>
-        <th>
-          <%= "#{t('defaulter')}"%>
-        </th>
-      </thead>
+        <thead>
+      <th>
+       <%= "#{t('course')}"%>
+      </th>
+      <th>
+       <%= "#{t('subject')}"%>
+      </th>
+      <th>
+       <%= "#{t('title')}"%>
+      </th>
+      <th>
+        <%= "#{t('teacher_name')}"%>
+      </th>
+      <th>
+        <%= "#{t('due_date')}"%>
+      </th>
+      <th>
+        <%= "#{t('defaulter')}"%>
+      </th>
+  </thead>
     </tr>
    
       <% @assignments.each_with_index do |assignment,i| %>
@@ -55,7 +49,8 @@
           </td>
           <td class="col-4" style="color:red">
               <% unless @defaulter_registered.blank? %>
-                   <%= link_to @defaulter_registered.assignment_not_given, { :action => 'defaulter_students', :id =>params[:id]} %>     
+                   <%= link_to @defaulter_registered.assignment_not_given, { :action => 'defaulter_students', :id =>assignment.id} %>
+                 
               <% else %>
                   <%= "#{t('not_regester')}" %>
               <% end %>
@@ -69,14 +64,14 @@
       </tr>
     <% end %>
   </table>
-</div>    
-  <% posted_params = params %>
-  <% posted_params.delete(:page) %>
-  <% posted_params.delete(:authenticity_token) %>
-  <%= will_paginate @assignments, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer', :params => params ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  } %>
-  <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader_paginate",
-            :style =>"display: none;" ) %>
-<% end %>
+</div> 
+<% posted_params = params %>
+<% posted_params.delete(:page) %>
+<% posted_params.delete(:authenticity_token) %>
+<%= will_paginate @assignments, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer', :params => params ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  } %>
+<%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_paginate",
+          :style =>"display: none;" ) %>
+

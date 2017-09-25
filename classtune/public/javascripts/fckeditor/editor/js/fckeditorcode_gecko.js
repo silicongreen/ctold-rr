@@ -281,7 +281,16 @@ var FCK = {
             };
             if (F) {
                 var H = D.parentNode;
-                if (!E) E = H.insertBefore(B.createElement(A), D);
+                if (!E)
+                {
+                    //MY CODE
+                    var attr_my = document.createAttribute("style");
+                    attr_my.value = "font-size:medium"; 
+                    var elementB = B.createElement(A);
+                    elementB.setAttributeNode(attr_my);
+                    
+                    E = H.insertBefore(elementB, D);
+                }
                 E.appendChild(H.removeChild(D));
                 D = E.nextSibling;
             } else {
@@ -492,7 +501,13 @@ var FCK = {
             C.InsertNode(A);
             var D = FCKDomTools.GetNextSourceElement(A, false, null, ['hr', 'br', 'param', 'img', 'area', 'input'], true);
             if (!D && FCKConfig.EnterMode != 'br') {
-                D = this.EditorDocument.body.appendChild(this.EditorDocument.createElement(FCKConfig.EnterMode));
+                //MY CODE
+                var attr_my = document.createAttribute("style");
+                attr_my.value = "font-size:medium"; 
+                var elementB = this.EditorDocument.createElement(FCKConfig.EnterMode);
+                elementB.setAttributeNode(attr_my);
+                    
+                D = this.EditorDocument.body.appendChild(elementB);
                 if (FCKBrowserInfo.IsGeckoLike) FCKTools.AppendBogusBr(D);
             };
             if (FCKListsLib.EmptyElements[B] == null) C.MoveToElementEditStart(A);
@@ -1289,7 +1304,14 @@ var FCKDomTools = {
         } catch (e) {
             return;
         };
-        var C = A.createElement(B);
+        
+        //MY CODE
+        var attr_my = document.createAttribute("style");
+        attr_my.value = "font-size:medium"; 
+        var elementB = A.createElement(B);
+        elementB.setAttributeNode(attr_my);
+        
+        var C = elementB;
         if (FCKBrowserInfo.IsGecko && FCKListsLib.NonEmptyBlockElements[B]) FCKTools.AppendBogusBr(C);
         this.PaddingNode = C;
         if (A.body.childNodes.length == 1 && A.body.firstChild.nodeType == 1 && A.body.firstChild.tagName.toLowerCase() == 'br' && (A.body.firstChild.getAttribute('_moz_dirty') != null || A.body.firstChild.getAttribute('type') == '_moz')) A.body.replaceChild(C, A.body.firstChild);
@@ -1484,7 +1506,16 @@ var FCKDomTools = {
                 var I;
                 if (J.grandparent.nodeName.IEquals(['ul', 'ol'])) I = D.createElement('li');
                 else {
-                    if (FCKConfig.EnterMode.IEquals(['div', 'p']) && !J.grandparent.nodeName.IEquals('td')) I = D.createElement(FCKConfig.EnterMode);
+                    if (FCKConfig.EnterMode.IEquals(['div', 'p']) && !J.grandparent.nodeName.IEquals('td')) 
+                    {   
+                        //MY CODE
+                        var attr_my = document.createAttribute("style");
+                        attr_my.value = "font-size:medium"; 
+                        var elementB = D.createElement(FCKConfig.EnterMode);
+                        elementB.setAttributeNode(attr_my);
+                        
+                        I = elementB;
+                    }
                     else I = D.createDocumentFragment();
                 };
                 for (var i = 0; i < J.contents.length; i++) I.appendChild(J.contents[i].cloneNode(true));
@@ -1669,7 +1700,7 @@ FCKTools.HTMLDecode = function(A) {
 };
 FCKTools._ProcessLineBreaksForPMode = function(A, B, C, D, E) {
     var F = 0;
-    var G = "<p>";
+    var G = "<p style='font-size:medium'>";
     var H = "</p>";
     var I = "<br />";
     if (C) {
@@ -4557,7 +4588,13 @@ var FCKListHandler = {
                     D.AppendTo(N);
                     FCKDomTools.InsertAfterNode(B, N);
                 };
-                var O = C.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');
+                //MY CODE
+                var attr_my = document.createAttribute("style");
+                attr_my.value = "font-size:medium"; 
+                var elementB = C.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');;
+                elementB.setAttributeNode(attr_my);
+                
+                var O = elementB;
                 FCKDomTools.MoveChildren(B.removeChild(A), O);
                 FCKDomTools.InsertAfterNode(B, O);
                 if (FCKConfig.EnterMode == 'br') {
@@ -5039,7 +5076,14 @@ FCKDomRange.prototype = {
         var C = this.CreateBookmark();
         this.Collapse(A);
         this.Expand('block_contents');
-        var D = this.Window.document.createElement(B);
+        
+        //MY CODE
+        var attr_my = document.createAttribute("style");
+        attr_my.value = "font-size:medium"; 
+        var elementB = this.Window.document.createElement(B);
+        elementB.setAttributeNode(attr_my);
+        
+        var D = elementB;
         this.ExtractContents().AppendTo(D);
         FCKDomTools.TrimNode(D);
         this.InsertNode(D);
@@ -5214,7 +5258,14 @@ FCKDomRangeIterator.prototype = {
             if (!A && !this.EnforceRealBlocks && B.StartBlockLimit.nodeName.IEquals('DIV', 'TH', 'TD') && B.CheckStartOfBlock() && B.CheckEndOfBlock()) {
                 A = B.StartBlockLimit;
             } else if (!A || (this.EnforceRealBlocks && A.nodeName.toLowerCase() == 'li')) {
-                A = this.Range.Window.document.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');
+                
+                //MY CODE
+                var attr_my = document.createAttribute("style");
+                attr_my.value = "font-size:medium"; 
+                var elementB = this.Range.Window.document.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');
+                elementB.setAttributeNode(attr_my);
+                
+                A = elementB;
                 B.ExtractContents().AppendTo(A);
                 FCKDomTools.TrimNode(A);
                 B.InsertNode(A);
@@ -5779,7 +5830,12 @@ FCKEnterKey.prototype._FixIESelectAllBug = function(A) {
     B.body.innerHTML = '';
     var C;
     if (FCKConfig.EnterMode.IEquals(['div', 'p'])) {
-        C = B.createElement(FCKConfig.EnterMode);
+        //MY CODE
+        var attr_my = document.createAttribute("style");
+        attr_my.value = "font-size:medium"; 
+        var elementB = B.createElement(FCKConfig.EnterMode);
+        elementB.setAttributeNode(attr_my);
+        C = elementB;
         B.body.appendChild(C);
     } else C = B.body;
     A.MoveToNodeContents(C);
@@ -7683,7 +7739,13 @@ FCKBlockQuoteCommand.prototype = {
             var I = [];
             while ((H = G.GetNextParagraph())) I.push(H);
             if (I.length < 1) {
-                para = B.Window.document.createElement(FCKConfig.EnterMode.IEquals('p') ? 'p' : 'div');
+                //MY CODE
+                var attr_my = document.createAttribute("style");
+                attr_my.value = "font-size:medium"; 
+                var elementB = B.Window.document.createElement(FCKConfig.EnterMode.IEquals('p') ? 'p' : 'div');
+                elementB.setAttributeNode(attr_my);
+                
+                para = elementB;
                 B.InsertNode(para);
                 para.appendChild(B.Window.document.createTextNode('\ufeff'));
                 B.MoveToBookmark(C);

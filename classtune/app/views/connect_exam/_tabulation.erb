@@ -159,6 +159,7 @@
                     <% end %>
                    <% end %> 
                        <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                    <% unless @examobj.blank?  %>
                     <td>
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
                        <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
@@ -177,6 +178,7 @@
                           N/A  
                        <% end %>
                     </td> 
+                    <% end %>
                  <% end %>   
              <% end %> 
              <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

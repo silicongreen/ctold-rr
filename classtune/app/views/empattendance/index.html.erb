@@ -122,6 +122,34 @@
         jq("#grade_id").val(jq("#grade").val()).trigger('change');
     }
 }
+
+function filterEmployeeDatatableByDepartment(data)		
+ {		
+     var value = jq("#department_id").val();		
+     oDataTable.column( 1 ).search( value ).draw(); 		
+   		
+ }		
+ 		
+ function filterEmployeeDatatableByCategory(data)		
+ {		
+     var value = jq("#category_id").val();		
+     oDataTable.column( 2 ).search( value ).draw(); 		
+    		
+ }		
+ 		
+ function filterEmployeeDatatableByPosition(data)		
+ {		
+     var value = jq("#position_id").val();		
+     oDataTable.column( 3 ).search( value ).draw();		
+    		
+ }		
+ 		
+ function filterEmployeeDatatableByGrade(data)		
+ {		
+     var value = jq("#grade_id").val();		
+     oDataTable.column( 4 ).search( value ).draw();		
+ }
+
 </script>
 <style>
   table tr td a

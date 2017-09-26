@@ -175,7 +175,7 @@
 
                             <% @report_data['report']['exams'].each do |rs| %>
 
-
+                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                               
                             
                               <% unless has_exam == false  %>

@@ -39,7 +39,21 @@
                     </tr>
                 </thead>    
             </table>
-
+            <% 
+             @all_subject_id = []
+             @all_exams = Exam.find(
+                :all,
+                :conditions => [
+                  "grouped_exams.connect_exam_id = ?",
+                  @connect_exam_obj.id
+                ],
+                :include=>[{:exam_group=>[:grouped_exam]}]
+              )
+            
+              unless @all_exams.blank?
+               @all_subject_id = @all_exams.map(&:subject_id).uniq
+              end   
+            %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
@@ -49,14 +63,8 @@
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
-                        <% @report_data['report']['exams'].each do |rs| %>
-                          <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                          <% unless @examobj.blank? %>
-                            <% 
-                            has_exam = true
-                            break
-                          %>
-                          <% end %>
+                        <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                          <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
                           <td><%=  sub['code'] %><hr/>Grade</td>
@@ -90,14 +98,8 @@
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
-                            <% @report_data['report']['exams'].each do |rs| %>
-                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                              <% unless @examobj.blank? %>
-                                <% 
-                                has_exam = true
-                                break
-                              %>
-                              <% end %>
+                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                              <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
                               <td><%=  sub['code'] %><hr/>Grade</td>
@@ -123,14 +125,8 @@
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
-                            <% @report_data['report']['exams'].each do |rs| %>
-                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                              <% unless @examobj.blank? %>
-                                <% 
-                                has_exam = true
-                                break
-                              %>
-                              <% end %>
+                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                              <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
                               <td><%=  sub['code'] %><hr/>Grade</td>
@@ -165,18 +161,16 @@
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
+                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
 
                             <% @report_data['report']['exams'].each do |rs| %>
 
 
-                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                              <% unless @examobj.blank? %>
-                                <% 
-                                has_exam = true
-
-                              %>
-                              <% end %>
-                              <% unless @examobj.blank?  %>
+                              
+                            
+                              <% unless has_exam == false  %>
                                 <% check_exam = false %>
                                 <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
                                 <% if @exam_score_all.blank? %>

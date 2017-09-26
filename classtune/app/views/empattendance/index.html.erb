@@ -36,10 +36,10 @@
   <% end %>
   <% form_remote_for :campus_report, :url => {:action=> 'campus_report_show'}, :html=> {:id=>'campus_report_show'} do |s| %>
   <div class="box">
-      <div class="label-field-pair" style="display:none;">
-          <label for="attandence_date"><%= t('report_type') %></label>
+      <div class="label-field-pair">
+          <label for="attandence_date"><%= "Report Type" %></label>
           <div class="text-input-bg">
-              <%= select :campus_report, :report_type, [["Daily",1],["Monthly",2],["Month Range",3],["Date Range",4]], {}, :class=>"no-seacrh-custom-combo", :onchange => "j('.date_report').hide(); var val = this.value; j('#report_date_' + val).css('display', 'inline-block');" %>
+              <%= select :campus_report, :report_type, [["All",1],["Absent",2],["Present",3],["Late",4]] %>
           </div>
       </div>
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">

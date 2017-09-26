@@ -41,6 +41,7 @@
             </table>
             <% 
              @all_subject_id = []
+             @has_exam_score = []
              @all_group_exams = GroupedExam.find(
                 :all,
                 :conditions => [
@@ -57,8 +58,15 @@
                 :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
               )
             
+              
               unless @all_exams.blank?
                @all_subject_id = @all_exams.map(&:subject_id).uniq
+               @all_exam_id = @all_exams.map(&:id).uniq
+               @exam_score_all = ExamScore.find(
+                  :all,
+                  :conditions => ["exam_id IN (?)", @all_exam_id]
+                )
+               @has_exam_score = @all_exams.map(&:exam_id).uniq
               end
              end
             %>
@@ -174,26 +182,35 @@
                             <% end %>
 
                             <% @report_data['report']['exams'].each do |rs| %>
-
-                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                              
-                            
-                              <% unless has_exam == false  %>
-                                <% check_exam = false %>
-                                <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                                <% if @exam_score_all.blank? %>
-                                  <% check_exam = false %>
+                              <% unless has_exam == false  %> 
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank? %>
+                                    <% check_exam = false %>
+                                    <% if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i) %>
+                                      <% check_exam = true %>
+                                    <% end %>
                                 <% else %>
-                                  <% @exam_score_all.each do |score| %>
-                                    <%
-                                    unless score.marks.blank?
-                                      check_exam = true
-                                    break
-                                      end
-                                  %>
-                                  <% end %>
+                                    <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                                        <% check_exam = false %>
+                                        <% unless @examobj.blank?  %>
+                                        <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                                          <% if @exam_score_all.blank? %>
+                                            <% check_exam = false %>
+                                          <% else %>
+                                          <% @exam_score_all.each do |score| %>
+                                          <%
+                                            unless score.marks.blank?
+                                              check_exam = true
+                                              break
+                                            end
+                                          %>
+                                          <% end %>
+                                        <% end %>
+                                    <% end %>
                                 <% end %>
                               <% end %>
+                              
+                            
+                              
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
 
                                 <%

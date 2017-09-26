@@ -71,7 +71,7 @@
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
-                        <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
                           <% has_exam = true %>
                         <% end %>
                         <% if has_exam == true %>
@@ -106,7 +106,7 @@
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
-                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
@@ -133,7 +133,7 @@
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
-                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
                             <% if has_exam == true %>
@@ -169,7 +169,7 @@
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
-                            <% if @all_subject_id.inlcude?(sub['id'].to_i) %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
 

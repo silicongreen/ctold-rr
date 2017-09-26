@@ -352,7 +352,7 @@
                               <% if promotion_status == 0 or merit_position == 0 %>
                                 <%= @report_data['total']-@report_data['present'] %>
                               <% else %>
-                                <%= promotion_status-merit_position %>
+                                <%= promotion_status.to_i-merit_position.to_i %>
                               <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%">

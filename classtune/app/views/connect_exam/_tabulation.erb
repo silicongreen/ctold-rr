@@ -41,18 +41,29 @@
             </table>
             <% 
              @all_subject_id = []
+             @all_group_exams = GroupedExam.find(
+                :all,
+                :conditions => [
+                  "connect_exam_id = ?",
+                  @connect_exam_obj.id
+                ]
+              )
+            unless @all_group_exams.blank?
+             @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+             
+             
              @all_exams = Exam.find(
                 :all,
                 :conditions => [
-                  "grouped_exams.connect_exam_id = ?",
-                  @connect_exam_obj.id
-                ],
-                :include=>[{:exam_group=>[:grouped_exam]}]
+                  "exam_group_id IN = ?",
+                  @all_exam_group_id
+                ]
               )
             
               unless @all_exams.blank?
                @all_subject_id = @all_exams.map(&:subject_id).uniq
-              end   
+              end
+             end
             %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>

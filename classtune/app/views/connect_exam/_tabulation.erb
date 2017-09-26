@@ -104,13 +104,11 @@
                     <% unless @examobj.blank? %>
                       <% 
                         has_exam = true
-                        break
-                    
                       %>
                     <% end %>
                   <% end %>
                   <% if has_exam == true %>
-                  <td><%=  sub['code'] %><hr/>Grade</td>
+                    <td><%=  sub['code'] %><hr/>Grade</td>
                   <% end %>
                 <% end %> 
                 <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>

@@ -141,8 +141,16 @@
                     
                   <% subject_full_mark = 0 %>
                   <% subject_obtain_mark = 0 %>
+                  <% has_exam = false %>
                   
                   <% @report_data['report']['exams'].each do |rs| %>
+                    
+                    <% unless @examobj.blank? %>
+                      <% 
+                        has_exam = true
+                    
+                      %>
+                    <% end %>
                     <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                     <% unless @examobj.blank?  %>
                       <% check_exam = false %>
@@ -171,8 +179,9 @@
                       %>
                     <% end %>
                    <% end %> 
+                    
                        <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
-                    <% unless @examobj.blank?  %>
+                    <% if has_exam == true %>
                     <td>
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
                        <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>

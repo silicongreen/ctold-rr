@@ -135,7 +135,10 @@
                 <%= link_to_remote "#{t('attendance')}", {:url => {:action => "view_attendance", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>
               </li>
               <li>
-                <%= link_to_remote "Settings", {:url => {:action => "employee_settings", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>   
+                <%= link_to_remote "#{t('settings')}", {:url => {:action => "employee_settings", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>   
+            </li>
+            <li>
+                <%= link_to_remote "#{t('add_attendance')}", {:url => {:action => "employee_add_attendance", :id => @employee.id}, :update => "profile-infos"}, {:class => 'f2'} %>   
             </li>
             </ul>
           </li>

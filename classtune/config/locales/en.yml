@@ -412,6 +412,7 @@ en: # locale
     batch_transfers:
       errors_found: "Following errors were found"
   
+  add_attendance: "Add Attendance"
   course_batch_details: "Class Details"
   import_batch_course: "Import Class and Subjects"
   proceed_anyway: "Proceed Anyway"

@@ -50,6 +50,30 @@ class EmployeeController < ApplicationController
     render :partial => "employee_settings"
   end
   
+  def employee_add_attendance
+    @employee = Employee.find(params[:id])
+    render :partial => "employee_add_attendance"
+  end
+  
+  def employee_create_attendance
+    @employee = Employee.find(params[:id])
+    @c_att = CardAttendance.new
+    @c_att.time = params[:card_attendnace][:entry_time].to_time.strftime("%H:%M")
+    @c_att.date = params[:card_attendnace][:entry_time].to_time.strftime('%Y-%m-%d')
+    @c_att.type = 1
+    @c_att.type_data = 1
+    @c_att.profile_id = @employee.id
+    @c_att.user_id = @employee.user_id
+    if @c_att.save
+      flash[:notice] = "Employee Attendance Added"
+    else
+      flash[:notice] = "Something Went Wrong"
+    end  
+    render :update do |page|
+      page.replace_html 'profile-infos', :partial => 'employee_add_attendance'
+    end
+  end
+  
   def edit_employee_settings
     @employee = Employee.find(params[:id])
     @employee_settings = EmployeeSetting.find_by_employee_id(params[:id])

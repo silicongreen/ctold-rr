@@ -117,7 +117,14 @@ FCKConfig.ToolbarSets["Basic"] = [
 	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
 ] ;
 
-FCKConfig.EnterMode = 'p' ;			// p | div | br
+FCKConfig.EnterMode = 'p' ;// p | div | br
+FCKConfig.EnterModeStyle = 'font-size:medium;' ;
+FCKConfig.AttrMy = false;
+if (FCKConfig.EnterModeStyle!="")
+{
+    FCKConfig.AttrMy = document.createAttribute("style");
+    FCKConfig.AttrMy.value = FCKConfig.EnterModeStyle;
+}
 FCKConfig.ShiftEnterMode = 'br' ;	// p | div | br
 
 FCKConfig.Keystrokes = [
@@ -182,7 +189,7 @@ FCKConfig.BodyClass = '' ;
 FCKConfig.DefaultStyleLabel = '' ;
 FCKConfig.DefaultFontFormatLabel = '' ;
 FCKConfig.DefaultFontLabel = '' ;
-FCKConfig.DefaultFontSizeLabel = '' ;
+FCKConfig.DefaultFontSizeLabel = 'medium' ;
 
 FCKConfig.DefaultLinkTarget = '' ;
 

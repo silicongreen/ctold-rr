@@ -98,18 +98,25 @@
                 <td class="col-pdf">Roll</td>
                 <td class="col-pdf">Students Name</td>
                 <% @report_data['report']['subjects'].each do |sub| %>
+                <td>
                   <% has_exam = false %>
+                
                   <% @report_data['report']['exams'].each do |rs| %>
                     <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                    
                     <% unless @examobj.blank? %>
                       <% 
                         has_exam = true
+                        
                       %>
+                    <%= rs['exam_id'].to_i %>&nbsp;<%= sub['id'].to_i %>
                     <% end %>
                   <% end %>
+                
                   <% if has_exam == true %>
-                    <td><%=  sub['code'] %><hr/>Grade</td>
+                    <%=  sub['code'] %><%=  %><hr/>Grade
                   <% end %>
+                   </td> 
                 <% end %> 
                 <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                     <td><%=  sub['code'] %></td>

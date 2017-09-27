@@ -192,7 +192,7 @@ class Exams extends CActiveRecord
         ORDER BY total_score DESC"; 
         $data = $this->findAllBySql($sql);
         $students = array();
-        foreach ($students_ranked as $value)
+        foreach ($data as $value)
         {
             $students[] = $value;
         }

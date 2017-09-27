@@ -190,7 +190,7 @@ class Exams extends CActiveRecord
         
         $criteria->with = array(
                 'Scores' => array(
-                    'select' => 't.id',
+                    'select' => 'Scores.id',
                     'with' => array(
                         'Students' => array(
                             'select' => 'Students.*',

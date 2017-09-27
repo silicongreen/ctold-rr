@@ -69,13 +69,13 @@
                           <% full_mark = 0 %>
                           <% fail_grade = false %>
 
-                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <td class="col-pdf"  rowspan="2"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <% marks_obtain_single_exam = 0 %>
                               <% total_marks_single_exam = 0 %>
                               <% na= false %>
-                              <td class="col-pdf no-warp">
+                              <td class="col-pdf no-warp"  rowspan="2">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% marks_obtain_single_exam = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -148,14 +148,14 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
+                            <td class="col-pdf"  rowspan="2"><%= sprintf( "%0.02f", total_mark) %></td>
+                            <td class="col-pdf"  rowspan="2"><%= sprintf( "%0.02f", heighst_mark)%> </td>
                             
                             <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><b><%= grade.name %></b></td>
+                              <td class="col-pdf"  rowspan="2"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"  rowspan="2"><b>N/A</b></td>
                             <% end %>
                             
                             <% full_marks_total = full_marks_total+full_mark.to_f %>  
@@ -163,10 +163,10 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf" rowspan="2">N/A</td>
+                            <td class="col-pdf" rowspan="2">N/A</td>
+                            <td class="col-pdf" rowspan="2">N/A</td>
+                            <td class="col-pdf" rowspan="2">N/A</td>
                           <% end %>      
 
                       </tr> 

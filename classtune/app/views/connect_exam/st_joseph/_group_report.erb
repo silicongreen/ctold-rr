@@ -4,6 +4,21 @@
     @dt_start = @dt_year.to_s+"-01-01 00:00:00"
     @dt_end   = @dt_year.to_s+"-12-31 00:00:00"
     @student_detention_count = Detention.count(:all,:conditions=>{:student_id=>@student.id,:created_at => @dt_start..@dt_end})
+    
+    @all_group_exams = GroupedExam.find(
+            :all,
+            :conditions => [
+              "connect_exam_id = ?",
+              @connect_exam_obj.id
+            ]
+    )
+    unless @all_group_exams.blank?
+      @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+      @all_exam_groups = ExamGroup.find(
+        :all,
+        :conditions => ["id IN (?)", @all_exam_group_id]
+      )
+    end          
 
 %>
 <%= render  :partial=>"/connect_exam/st_joseph/group_report_type_"+@connect_exam_obj.result_type.to_s %>

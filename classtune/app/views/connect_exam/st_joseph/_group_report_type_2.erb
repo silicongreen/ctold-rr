@@ -1,4 +1,18 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+
+  <%
+    @top_exam_group = []
+    unless @all_exam_groups.blank?
+      @all_exam_groups.each do |exam_group|
+         if !exam_group.name.index('Sub').nil?
+           exam_group_name_array = exam_group.name.split(" ")
+           @top_exam_group << exam_group_name_array[0]+" "+exam_group_name_array[1]
+         end
+      end  
+    end
+
+  %>
+
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
 
       <p>&nbsp;<p>
@@ -20,7 +34,10 @@
               <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf"><%= "Subject" %></b></td>
+                      <td class="col-pdf"><b><%= "Subject" %></b></td>
+                      <% @top_exam_group.each do |top_exam| %>
+                        <td class="col-pdf" colspan="3"><%= top_exam %></td>
+                      <% end %>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                           <td class="col-pdf">
@@ -32,6 +49,21 @@
                       <td class="col-pdf">Total Marks</td>
                       <td class="col-pdf">Highest Marks</td>
                       <td class="col-pdf">Grade</td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf"></td>
+                      
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <td class="col-pdf">
+                              <%= report['exam_name'] %>
+                          </td> 
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf"></td>
                   </tr>
 
                   <% total_parcent = 0 %>
@@ -125,7 +157,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %> </td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", heighst_mark)%> </td>
                             
                             <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

@@ -187,7 +187,7 @@ class Exams extends CActiveRecord
         FROM exams
         LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
         LEFT JOIN students ON Scores.student_id = students.id
-        WHERE exams.exam_group_id IN (" . $exam_group_ids . ")
+        WHERE exams.exam_group_id IN (" . implode(",",$exam_group_ids) . ")
         GROUP BY Scores.student_id
         ORDER BY total_score DESC"; 
         $data = $this->findAllBySql($sql);

@@ -151,12 +151,12 @@ class ExamScores extends CActiveRecord
 
             $criteria->group = 't.student_id';
             $criteria->order = 'total_score DESC';
-            $students_ranked = $this->find($criteria);
+            $students_ranked = $this->findAll($criteria);
             
             $students = array();
             foreach ($students_ranked as $value)
             {
-                $students[] = $value;
+                $students[] = $value['Students'];
             }
             return $students;
         } 

@@ -315,11 +315,7 @@
                                   subject_objective_obtain_mark = subject_objective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                 end 
                               
-                                if !@examgroupobj.name.index('Prac').nil?
-                                  practical = true
-                                  subject_prac_full_mark = subject_prac_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  subject_prac_obtain_mark = subject_prac_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                end 
+                               
 
 
                               %>

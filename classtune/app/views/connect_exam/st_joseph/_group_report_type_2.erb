@@ -35,16 +35,12 @@
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
-                      <% @top_exam_group.each do |top_exam| %>
-                        <td class="col-pdf" colspan="3"><%= top_exam %></td>
-                      <% end %>
-                      <% unless @report_data['report']['exams'].blank? %>  
-                        <% @report_data['report']['exams'].each do |report| %>
-                          <td class="col-pdf">
-                              <%= report['exam_name'] %>
-                          </td> 
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% @top_exam_group.each do |top_exam| %>
+                          <td class="col-pdf" colspan="3"><%= top_exam %></td>
                         <% end %>
                       <% end %>
+                      
 
                       <td class="col-pdf">Total Marks</td>
                       <td class="col-pdf">Highest Marks</td>
@@ -54,10 +50,16 @@
                       <td class="col-pdf"></td>
                       
                       <% unless @report_data['report']['exams'].blank? %>  
-                        <% @report_data['report']['exams'].each do |report| %>
+                        <% @top_exam_group.each do |top_exam| %>
                           <td class="col-pdf">
-                              <%= report['exam_name'] %>
+                              Subjective
                           </td> 
+                          <td class="col-pdf">
+                              Objective
+                          </td>
+                          <td class="col-pdf">
+                              Practical
+                          </td>
                         <% end %>
                       <% end %>
 

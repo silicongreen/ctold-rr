@@ -210,6 +210,7 @@ class AssignmentsController < ApplicationController
   end
   
   def new
+           
     if current_user.employee?
       @subjects = current_user.employee_record.subjects
       
@@ -325,12 +326,18 @@ class AssignmentsController < ApplicationController
   
 
   def create
+    
     student_ids = params[:assignment][:student_ids]
     params[:assignment].delete(:student_ids)
     @subject = Subject.find_by_id(params[:assignment][:subject_id])
     @assignment = Assignment.new(params[:assignment])
     @assignment.student_list = student_ids.join(",") unless student_ids.nil?
     @assignment.employee = current_user.employee_record
+    
+    @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1           
+      @assignment.is_published = 2
+    end
     
     students = Student.find_all_by_id(student_ids)
     available_user_ids = []
@@ -370,7 +377,11 @@ class AssignmentsController < ApplicationController
               :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
           )
         end
-        flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
+        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1
+          flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
+        else
+          flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
+        end
         redirect_to :action=>:index
       else
         if current_user.employee?
@@ -454,6 +465,9 @@ class AssignmentsController < ApplicationController
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @assignment = Assignment.find_by_id(params[:id])
     @assignment.is_published = 1
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1           
+      @assignment.is_published = 2
+    end
     @assignment.created_at = now
     
     if @assignment.save

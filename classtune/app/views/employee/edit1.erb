@@ -131,10 +131,15 @@
       </div>
        <% if school_detention_allowed? %>
       <div class="label-field-pair">
-        <label for="employee_martial_status">POD</label>
+        <label for="employee_martial_status"><%= t('pod') %></label>
         <div class="text-input-bg"><%= select :employee, :is_pod, [["No",0], ["Yes",1]] %></div>
       </div>
       <% end %>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="employee_forwarder_status"><%= t('publisher') %></label>
+        <div class="text-input-bg"><%= select :employee, :homework_publisher, [["No",0], ["Yes",1]] %></div>
+      </div>
       <hr class="label-underline"></hr>
 
       <div class="label-field-pair">

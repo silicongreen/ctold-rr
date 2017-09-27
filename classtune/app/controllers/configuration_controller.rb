@@ -29,7 +29,7 @@ class ConfigurationController < ApplicationController
         'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
         'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry',\
         'TimeZone','FirstTimeLoginEnable','FeeReceiptNo','EnableSibling','PrecisionCount',\
-        'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit']
+        'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderNeedAdminApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit']
     @grading_types = Course::GRADINGTYPES
     @enabled_grading_types = Configuration.get_grading_types
     @time_zones = TimeZone.all
@@ -38,6 +38,7 @@ class ConfigurationController < ApplicationController
     @fonts = Configuration.get_fonts()
     
     if request.post?
+      
       Configuration.set_config_values(params[:configuration])
       session[:language] = nil unless session[:language].nil?
       unless params[:school_detail].nil?
@@ -50,7 +51,7 @@ class ConfigurationController < ApplicationController
         @config = Configuration.get_multiple_configs_as_hash ['InstitutionName', 'InstitutionAddress', 'InstitutionPhoneNo', \
             'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
             'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry','TimeZone',\
-            'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','ReminderNeedAdminApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit']
+            'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderNeedAdminApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit']
         return
       end
       @current_user.clear_menu_cache

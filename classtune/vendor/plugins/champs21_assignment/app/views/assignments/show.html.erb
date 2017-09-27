@@ -55,7 +55,7 @@
   </div>
   <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
     <div class="subcontent-date" style="color:#000;"><b>Assigned On &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
-    <div class="subcontent-date" style="color:#000;"><b><%= @assignment.duedate.past??  "#{t('assignment_already_due')}"  : "#{t('due_in')} #{distance_of_time_in_words( Time.now ,@assignment.duedate)}   "%>&nbsp;&nbsp;&nbsp; : </b><%="<small>#{@assignment.duedate.strftime("%A, %d %B, %Y")}</small>"%></div>                                    
+    <div class="subcontent-date" style="color:#000;"><b><%= @assignment.duedate.past??  "#{t('assignment_already_due')}" : "#{t('due_in')} #{distance_of_time_in_words( Time.now ,@assignment.duedate)}   "%>&nbsp; : </b><%="<small>#{@assignment.duedate.strftime("%A, %d %B, %Y")}</small>"%></div>                                    
   </div>
   
   <% if @current_user.student? %>
@@ -143,6 +143,9 @@
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
   <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
       <div id="assignment_content">
+          <%if @assignment.is_published == 2%>
+          <h4 style="color: red;"> This Homework has not yet published </h4>
+          <% end %>
       <p>
         <%= @assignment.content.to_s%>
       </p>
@@ -162,10 +165,11 @@
               @assignment, :method => "delete",
               :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
           </div>
-          <% if @assignment.is_published==0 %>
+          <% if @assignment.is_published==0 or (@current_user.admin? and @assignment.is_published==2) %>
           <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
           <!-- RR, remove comment-out later -->
+          
           <% else %>
           <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
           <% unless @defaulter_registered.blank? %>

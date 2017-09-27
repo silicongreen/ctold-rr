@@ -106,9 +106,17 @@
               I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
-        <%= hidden_field :assignment,"is_published", :value =>1 %>
+        <%= hidden_field :assignment,"is_published", :value =>1 %>        
         <div id ="assignment-submit" >
-          <%= f.submit "#{t('publish_new_assignment')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+          
+           <% @config = Configuration.find_by_config_key('HomeworkWillForwardOnly') %>
+            
+           <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1 %>            
+              <%= f.submit "#{t('forward_assignment')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+           <% else %>
+              <%= f.submit "#{t('publish_new_assignment')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+           <% end %>
+  
          <input style="margin-left: 10px;
     padding: 7px 10px;
     color: #fff;

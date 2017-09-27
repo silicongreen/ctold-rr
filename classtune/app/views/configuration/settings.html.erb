@@ -300,7 +300,18 @@
                     <%= check_box :configuration, :free_feed_for_student, :checked => false %>
                   <% end %>
               </div>
-          </div>      
+          </div> 
+          
+          <div class="label-field-pair">
+              <label for="student_admission_auto"><%= t('homework_will_forward_only') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:homework_will_forward_only] == '1' %>
+                    <%= check_box :configuration, :homework_will_forward_only, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :homework_will_forward_only, :checked => false %>
+                  <% end %>
+              </div>
+          </div>   
 
           <% Champs21Plugin.deliver_registered_hook(:general_settings_checkbox).each do |mod| %>
             <br/>

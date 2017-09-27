@@ -141,40 +141,40 @@
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                        <% if has_exam == true %>
-                          <% 
-                          subjective = false
-                          objective = false
-                          practical = false
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+                              <% 
+                              subjective = false
+                              objective = false
+                              practical = false
 
 
-                        %>
-                          <% @all_exam_groups.each do |exam_group| %>
-                            <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
-                            <% unless examfound.blank? %>
-                              <% if !exam_group.name.index('Sub').nil? && subjective == false %>
-                                <% subjective = true %>
-                                <td><%=  sub['code'] %></td>
-                              <% end %>
+                            %>
+                              <% @all_exam_groups.each do |exam_group| %>
+                                <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
+                                <% unless examfound.blank? %>
+                                  <% if !exam_group.name.index('Sub').nil? && subjective == false %>
+                                    <% subjective = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
 
-                              <% if !exam_group.name.index('Obj').nil? && objective == false %>
-                                <% objective = true %>
-                                <td><%=  sub['code'] %></td>
-                              <% end %>
+                                  <% if !exam_group.name.index('Obj').nil? && objective == false %>
+                                    <% objective = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
 
-                              <% if !exam_group.name.index('Prac').nil? && practical == false %>
-                                <% practical = true %>
-                                <td><%=  sub['code'] %></td>
+                                  <% if !exam_group.name.index('Prac').nil? && practical == false %>
+                                    <% practical = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
+                                <% end %>
+
                               <% end %>
                             <% end %>
-
                           <% end %>
-                        <% end %>
-                      <% end %>
 
                           <td>Total</td>
                           <td class="col-pdf">Rank</td>
@@ -190,40 +190,40 @@
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
-                        <% has_exam = false %>
-                        <% if @all_subject_id.include?(sub['id'].to_i) %>
-                          <% has_exam = true %>
-                        <% end %>
-                        <% if has_exam == true %>
-                          <% 
-                          subjective = false
-                          objective = false
-                          practical = false
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+                              <% 
+                              subjective = false
+                              objective = false
+                              practical = false
 
 
-                        %>
-                          <% @all_exam_groups.each do |exam_group| %>
-                            <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
-                            <% unless examfound.blank? %>
-                              <% if !exam_group.name.index('Sub').nil? && subjective == false %>
-                                <% subjective = true %>
-                                <td><%=  sub['code'] %></td>
-                              <% end %>
+                            %>
+                              <% @all_exam_groups.each do |exam_group| %>
+                                <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
+                                <% unless examfound.blank? %>
+                                  <% if !exam_group.name.index('Sub').nil? && subjective == false %>
+                                    <% subjective = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
 
-                              <% if !exam_group.name.index('Obj').nil? && objective == false %>
-                                <% objective = true %>
-                                <td><%=  sub['code'] %></td>
-                              <% end %>
+                                  <% if !exam_group.name.index('Obj').nil? && objective == false %>
+                                    <% objective = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
 
-                              <% if !exam_group.name.index('Prac').nil? && practical == false %>
-                                <% practical = true %>
-                                <td><%=  sub['code'] %></td>
+                                  <% if !exam_group.name.index('Prac').nil? && practical == false %>
+                                    <% practical = true %>
+                                    <td><%=  sub['code'] %></td>
+                                  <% end %>
+                                <% end %>
+
                               <% end %>
                             <% end %>
-
                           <% end %>
-                        <% end %>
-                      <% end %>
 
                           <td>Total</td>
                           <td class="col-pdf">Rank</td>
@@ -250,20 +250,20 @@
                             <% subject_obtain_mark = 0 %>
                             <% subject_subjective_full_mark = 0 %>
                             <% subject_subjective_obtain_mark = 0 %>
-                            
+
                             <% subject_objective_full_mark = 0 %>
                             <% subject_objective_obtain_mark = 0 %>
-                            
-                            
+
+
                             <% subject_prac_full_mark = 0 %>
                             <% subject_prac_obtain_mark = 0 %>
-                            
+
                             <% 
-                              subjective = false
-                              objective = false
-                              practical = false
-                            %>
-                            
+                            subjective = false
+                            objective = false
+                            practical = false
+                          %>
+
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -271,9 +271,9 @@
 
                             <% @report_data['report']['exams'].each do |rs| %>
                               <% unless has_exam == false  %> 
-                            
+
                                 <% @examgroupobj = ExamGroup.find_by_id(rs['exam_id'].to_i) %>
-                                
+
                                 <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                                 <% check_exam = false %>
                                 <% unless @examobj.blank?  %>
@@ -291,62 +291,62 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
-                              
-                            
 
 
 
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
-
-                                <%
-
-                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                
-                                if !@examgroupobj.name.index('Sub').nil?
-                                  subjective = true
-                                  subject_subjective_full_mark = subject_subjective_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  subject_subjective_obtain_mark = subject_subjective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                end 
-                              
-                                if !@examgroupobj.name.index('Obj').nil?
-                                  objective = true
-                                  subject_objective_full_mark = subject_objective_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  subject_objective_obtain_mark = subject_objective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                end 
-                              
-                                if !@examgroupobj.name.index('Prac').nil?
-                                  practical = true
-                                  subject_prac_full_mark = subject_prac_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                  subject_prac_obtain_mark = subject_prac_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                end 
 
 
-                              %>
-                              <% end %>
-                            <% end %> 
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
+
+                                  <%
+
+                                  subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+
+                                  if !@examgroupobj.name.index('Sub').nil?
+                                    subjective = true
+                                    subject_subjective_full_mark = subject_subjective_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_subjective_obtain_mark = subject_subjective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    end 
+
+                                  if !@examgroupobj.name.index('Obj').nil?
+                                    objective = true
+                                    subject_objective_full_mark = subject_objective_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_objective_obtain_mark = subject_objective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    end 
+
+                                  if !@examgroupobj.name.index('Prac').nil?
+                                    practical = true
+                                    subject_prac_full_mark = subject_prac_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_prac_obtain_mark = subject_prac_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    end 
+
+
+                                %>
+                                <% end %>
+                              <% end %> 
                             <% end %>
                             <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                             <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                              <% if subjective == true %>
+                            <% if subjective == true %>
                               <td>
                                   <%= subject_subjective_obtain_mark.round() %>
                               </td> 
-                              <% end %>
-                              <% if objective == true %>
+                            <% end %>
+                            <% if objective == true %>
                               <td>
                                   <%= subject_objective_obtain_mark.round() %>
                               </td> 
-                              <% end %>
-                              <% if practical == true %>
+                            <% end %>
+                            <% if practical == true %>
                               <td>
                                   <%= subject_prac_obtain_mark.round() %>
                               </td> 
-                              
+
                             <% end %>
                           <% end %>   
                         <% end %> 
-                             
+
 
                         <td>
                             <%= total_mark %>    

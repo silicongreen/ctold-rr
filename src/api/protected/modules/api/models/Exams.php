@@ -194,7 +194,7 @@ class Exams extends CActiveRecord
         $students = array();
         foreach ($data as $value)
         {
-            $students[] = $value['Scores']['students'];
+            $students[] = $value['Scores'];
         }
         return $students;
     }        

@@ -34,23 +34,10 @@
               <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf"><b><%= "Subject" %></b></td>
+                      <td class="col-pdf" rowspan="2"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
                           <td class="col-pdf" colspan="3"><%= top_exam %></td>
-                        <% end %>
-                      <% end %>
-                      
-
-                      <td class="col-pdf">Total Marks</td>
-                      <td class="col-pdf">Highest Marks</td>
-                      <td class="col-pdf">Grade</td>
-                  </tr>
-                  <tr class="table-header">
-                      <td class="col-pdf"></td>
-                      
-                      <% unless @report_data['report']['exams'].blank? %>  
-                        <% @top_exam_group.each do |top_exam| %>
                           <td class="col-pdf">
                               Subjective
                           </td> 
@@ -62,11 +49,13 @@
                           </td>
                         <% end %>
                       <% end %>
+                      
 
-                      <td class="col-pdf"></td>
-                      <td class="col-pdf"></td>
-                      <td class="col-pdf"></td>
+                      <td class="col-pdf" rowspan="2">Total Marks</td>
+                      <td class="col-pdf" rowspan="2">Highest Marks</td>
+                      <td class="col-pdf" rowspan="2">Grade</td>
                   </tr>
+                  
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>

@@ -920,6 +920,7 @@ class ExamGroups extends CActiveRecord
                 $result['exam_id'] = $all_exams->id;
                 foreach($all_exams['Exams'] as $value)
                 {
+                   $result['result'][$all_exams->id]['exam_id'] = $value->id; 
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['marks_obtained'] = "AB";
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['grade'] = "N/A";
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['weightage_mark'] = 0;
@@ -938,7 +939,7 @@ class ExamGroups extends CActiveRecord
             foreach($examresult['Exams'] as $value)
             {
                
-
+               $result['result'][$examresult->id]['exam_id'] = $value->id; 
                if(isset($value['Scores']))
                {
                    foreach($value['Scores'] as $key=>$score)

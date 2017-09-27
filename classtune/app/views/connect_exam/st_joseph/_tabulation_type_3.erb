@@ -74,7 +74,7 @@
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      <td class="col-pdf">Sl.</td>
+                      
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -92,6 +92,7 @@
 
                       <td>Total</td>
                       <td>Grade Count</td>
+                      <td class="col-pdf">Ranking</td>
 
                   </tr>
 
@@ -109,7 +110,6 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
-                          <td class="col-pdf">Sl.</td>
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
@@ -127,6 +127,7 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
+                          <td class="col-pdf">Ranking</td>
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -136,7 +137,6 @@
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">
-                          <td class="col-pdf">Sl.</td>
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
@@ -154,6 +154,7 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
+                          <td class="col-pdf">Ranking</td>
 
                       </tr>
                     <% end %>    
@@ -161,7 +162,7 @@
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="col-pdf"><%= j %></td>
+                       
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
                         <% total_mark = 0 %>
@@ -281,6 +282,7 @@
                               <% i = i+1 %>
                             <% end %>
                         </td> 
+                        <td class="col-pdf"><%= j %></td>
 
 
                     </tr>

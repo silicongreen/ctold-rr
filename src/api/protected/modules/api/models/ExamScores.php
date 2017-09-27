@@ -133,12 +133,12 @@ class ExamScores extends CActiveRecord
         
         public function getrankedStudents($exam_group_ids)
         {
-            $sql = "SELECT SUM( scores.marks ) AS total_score,students.*
+            $sql = "SELECT SUM( exam_scores.marks ) AS total_score,students.*
             FROM scores
-            LEFT JOIN exams ON scores.exam_id = exams.id
-            LEFT JOIN students ON scores.student_id = students.id
+            LEFT JOIN exams ON exam_scores.exam_id = exams.id
+            LEFT JOIN students ON exam_scores.student_id = students.id
             WHERE exams.exam_group_id IN (" . implode(",",$exam_group_ids) . ")
-            GROUP BY scores.student_id
+            GROUP BY exam_scores.student_id
             ORDER BY total_score DESC"; 
             $data = $this->findAllBySql($sql);
             $students = array();

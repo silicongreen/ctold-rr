@@ -101,17 +101,17 @@
                             <% unless examfound.blank? %>
                               <% if exam_group.name.index('sub') && subjective == false %>
                                 <% subjective = true %>
-                                <td><%=  sub['code'] %><hr/>Grade</td>
+                                <td><%=  sub['code'] %></td>
                               <% end %>
 
                               <% if exam_group.name.index('Obj') && objective == false %>
                                 <% objective = true %>
-                                <td><%=  sub['code'] %><hr/>Grade</td>
+                                <td><%=  sub['code'] %></td>
                               <% end %>
 
                               <% if exam_group.name.index('prac') && practical == false %>
                                 <% practical = true %>
-                                <td><%=  sub['code'] %><hr/>Grade</td>
+                                <td><%=  sub['code'] %></td>
                               <% end %>
                             <% end %>
 
@@ -120,8 +120,7 @@
                       <% end %>
 
                       <td>Total</td>
-                      <td>Grade Count</td>
-                      <td class="col-pdf">Ranking</td>
+                      <td class="col-pdf">Rank</td>
 
                   </tr>
 
@@ -159,17 +158,17 @@
                                 <% unless examfound.blank? %>
                                   <% if exam_group.name.index('sub') && subjective == false %>
                                     <% subjective = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
 
                                   <% if exam_group.name.index('Obj') && objective == false %>
                                     <% objective = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
 
                                   <% if exam_group.name.index('prac') && practical == false %>
                                     <% practical = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
                                 <% end %>
 
@@ -178,8 +177,7 @@
                           <% end %>
 
                           <td>Total</td>
-                          <td>Grade Count</td>
-                          <td class="col-pdf">Ranking</td>
+                          <td class="col-pdf">Rank</td>
 
                       </tr>
                     <% elsif std_count>21 && extender ==1 %>
@@ -207,17 +205,17 @@
                                 <% unless examfound.blank? %>
                                   <% if exam_group.name.index('sub') && subjective == false %>
                                     <% subjective = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
 
                                   <% if exam_group.name.index('Obj') && objective == false %>
                                     <% objective = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
 
                                   <% if exam_group.name.index('prac') && practical == false %>
                                     <% practical = true %>
-                                    <td><%=  sub['code'] %><hr/>Grade</td>
+                                    <td><%=  sub['code'] %></td>
                                   <% end %>
                                 <% end %>
 
@@ -226,8 +224,7 @@
                           <% end %> 
 
                           <td>Total</td>
-                          <td>Grade Count</td>
-                          <td class="col-pdf">Ranking</td>
+                          <td class="col-pdf">Rank</td>
 
                       </tr>
                     <% end %>    
@@ -348,7 +345,7 @@
                              
 
                         <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
+                            <%= total_mark %>    
                         </td>
                         <td class="col-pdf"><%= j %></td>
 

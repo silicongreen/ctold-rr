@@ -509,6 +509,11 @@ academia_box p
     padding: 3px 2px 3px 3px !important;
 }
 
+.st_joseph_bg p.line-height-10
+{
+   line-height: 5px;
+}
+
 .st_joseph_bg  .float-left
 {
     float:left;

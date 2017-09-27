@@ -185,12 +185,12 @@ class Exams extends CActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->together = true;
-        $criteria->select = 'SUM(Scores.marks) AS total_score,students.*';
+        $criteria->select = 'SUM(Scores.marks) AS total_score';
         $criteria->addInCondition('t.exam_group_id',$exam_group_ids); 
         
         $criteria->with = array(
                 'Scores' => array(
-                    'select' => '',
+                    'select' => 't.id',
                     'with' => array(
                         'Students' => array(
                             'select' => 'Students.*',

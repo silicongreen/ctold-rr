@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<div id="page-yield" class="available_sections1">
+<div id="page-yield" class="available_sections1 legal_tabulation">
     <div class="page1"> </div>
     <div class="section1 row" >
         <center>
@@ -131,7 +131,7 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>20 && extender ==0 %>
+                    <% if std_count>25 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -180,7 +180,7 @@
                           <td class="col-pdf">Rank</td>
 
                       </tr>
-                    <% elsif std_count>21 && extender ==1 %>
+                    <% elsif std_count>26 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">

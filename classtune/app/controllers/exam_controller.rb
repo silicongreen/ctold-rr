@@ -2627,6 +2627,17 @@ class ExamController < ApplicationController
       end
        
       @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+      if MultiSchool.current_school.id == 280 && @connect_exam_obj.type==2
+       render :pdf => 'tabulation',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :page_size => 'Legal',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+      else
       render :pdf => 'tabulation',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :margin => {    :top=> 10,
@@ -2635,6 +2646,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
     end  
   end
   

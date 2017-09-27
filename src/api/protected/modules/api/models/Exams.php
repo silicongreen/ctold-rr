@@ -181,7 +181,46 @@ class Exams extends CActiveRecord
         $percentile = (100 * $j) / $i;
         return $percentile;
     }
-           
+    public function getrankedStudents($exam_group_ids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->together = true;
+        $criteria->select = 'SUM(Scores.marks) AS total_score,students.*';
+        $criteria->addInCondition('t.exam_group_id',$exam_group_ids); 
+        
+        $criteria->with = array(
+                'Scores' => array(
+                    'select' => '',
+                    'with' => array(
+                        'Students' => array(
+                            'select' => 'Students.*',
+                            
+                        )
+
+                    )
+                )
+        );
+        
+        $criteria->group = 'Scores.student_id';
+        $criteria->order = 'total_score DESC';
+        $students_ranked = $this->find($criteria);
+        
+        
+        $sql = "SELECT SUM( Scores.marks ) AS total_score,students.*
+        FROM exams
+        LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+        LEFT JOIN students ON Scores.student_id = students.id
+        WHERE exams.exam_group_id IN (" . implode(",",$exam_group_ids) . ")
+        GROUP BY Scores.student_id
+        ORDER BY total_score DESC"; 
+        $data = $this->findAllBySql($sql);
+        $students = array();
+        foreach ($students_ranked as $value)
+        {
+            $students[] = $value['Scores']->students;
+        }
+        return $students;
+    }        
 
     public function getPositionConnectExam($exam_group_ids, $total_grade_point, $total_mark)
     {

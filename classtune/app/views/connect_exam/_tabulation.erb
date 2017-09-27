@@ -16,6 +16,20 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% 
+  @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
+  @exam_group_ids = @grouped_exams.map(&:exam_group_id)
+  @ranked_student = ExamScore.find(:all,:select=>"SUM(exam_scores.marks) AS total_score,exam_scores.student_id",:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids],:include=>[:exams,:students],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+  @ranked_positions = {}
+  unless @ranked_student.blank?
+    p = 0
+    @ranked_student.each do |rs|
+      p = p+1
+      @ranked_positions[rs.student_id.to_i] = p
+    end
+  end
+  
+%>
 <div id="page-yield" class="available_sections1">
     <div class="page1"> </div>
     <div class="section1 row" >
@@ -74,7 +88,7 @@
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      <td class="col-pdf">Sl.</td>
+                      
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -92,6 +106,9 @@
 
                       <td>Total</td>
                       <td>Grade Count</td>
+                      <% unless @ranked_positions.blank? %>
+                        <td>Position</td>
+                      <% end %>
 
                   </tr>
 
@@ -109,7 +126,7 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
-                          <td class="col-pdf">Sl.</td>
+                          
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
@@ -127,6 +144,9 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
+                          <% unless @ranked_positions.blank? %>
+                              <td>Position</td>
+                            <% end %>
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -136,7 +156,7 @@
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">
-                          <td class="col-pdf">Sl.</td>
+                          
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
@@ -154,6 +174,9 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
+                          <% unless @ranked_positions.blank? %>
+                              <td>Position</td>
+                           <% end %>
 
                       </tr>
                     <% end %>    
@@ -161,7 +184,7 @@
 
 
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="col-pdf"><%= j %></td>
+                        
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
                         <% total_mark = 0 %>
@@ -281,6 +304,14 @@
                               <% i = i+1 %>
                             <% end %>
                         </td> 
+                        
+                        <% unless @ranked_positions.blank? %>
+                           <% unless @ranked_positions[std['id'].to_i].blank? %>
+                              <td><%= @ranked_positions[std['id'].to_i] %></td>
+                           <% else %>
+                              <td>N/A</td>
+                           <% end %>
+                        <% end %>
 
 
                     </tr>

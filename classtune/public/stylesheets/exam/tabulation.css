@@ -175,9 +175,9 @@ table#pdf-table{
 
 
 
-h4.margin-top-minus-10
+p.line-height-10
 {
-    margin-top:-10px;
+   line-height: 10px;
 }
 
 .legal_tabulation h4{

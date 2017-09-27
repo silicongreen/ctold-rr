@@ -444,9 +444,10 @@ class GroupedExams extends CActiveRecord
                 $connect_exam = $cont_exam->findByPk($connect_exam_id);
                 $first_term_id = 0;
                 $final_term_id = 0;
+                $all_exam_group_id = array();
                 foreach($examgroups as $value)
                 {
-
+                    $all_exam_group_id[] = $value['examgroup']->id;
                     if($value['examgroup']->quarter == 5)
                     {
                         $first_term_id = $value['examgroup']->id;
@@ -461,6 +462,12 @@ class GroupedExams extends CActiveRecord
                         $results['exams'][] = $result_main;
                     }
 
+                }
+                
+                if(Yii::app()->user->schoolId == (280))
+                {
+                    $examObj = new Exams();
+                    $results['students'] = $examObj->getrankedStudents($all_exam_group_id);
                 }
                 
                 

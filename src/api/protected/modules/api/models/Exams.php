@@ -181,6 +181,23 @@ class Exams extends CActiveRecord
         $percentile = (100 * $j) / $i;
         return $percentile;
     }
+    public function getrankedStudents($exam_group_ids)
+    {
+        $sql = "SELECT SUM( Scores.marks ) AS total_score,students.*
+        FROM exams
+        LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
+        LEFT JOIN students ON Scores.student_id = students.id
+        WHERE exams.exam_group_id IN (" . $exam_group_ids . ")
+        GROUP BY Scores.student_id
+        ORDER BY total_score DESC"; 
+        $data = $this->findAllBySql($sql);
+        $students = array();
+        foreach ($data as $value)
+        {
+            $students[] = $value['students'];
+        }
+        return $students;
+    }        
 
     public function getPositionConnectExam($exam_group_ids, $total_grade_point, $total_mark)
     {

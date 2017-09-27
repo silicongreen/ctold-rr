@@ -176,10 +176,10 @@ table#pdf-table{
 
 
 
-.legal_tabulation tr h4{
+.legal_tabulation h4{
     font-size: 12px;
 }
-.legal_tabulation tr h2{
+.legal_tabulation h2{
     font-size: 14px;
 }
 

@@ -22,6 +22,7 @@ class ExamScores extends CActiveRecord
 	 */
         public $max_marks;
         public $avg_marks;
+        public $total_score;
        
 	public function tableName()
 	{
@@ -60,6 +61,9 @@ class ExamScores extends CActiveRecord
                     'Students' => array(self::BELONGS_TO, 'Students', 'student_id',
                         'joinType' => 'LEFT JOIN',
                     ),
+                    'Exams' => array(self::BELONGS_TO, 'Exams', 'exam_id',
+                        'joinType' => 'LEFT JOIN',
+                    )
 		);
 	}
 
@@ -126,6 +130,26 @@ class ExamScores extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getrankedStudents($exam_group_ids)
+        {
+            $sql = "SELECT SUM( scores.marks ) AS total_score,students.*
+            FROM scores
+            LEFT JOIN exams ON scores.exam_id = exams.id
+            LEFT JOIN students ON scores.student_id = students.id
+            WHERE exams.exam_group_id IN (" . implode(",",$exam_group_ids) . ")
+            GROUP BY scores.student_id
+            ORDER BY total_score DESC"; 
+            $data = $this->findAllBySql($sql);
+            $students = array();
+            foreach ($data as $value)
+            {
+                $students[] = $value;
+            }
+            return $students;
+        } 
+        
+        
         public function getExamStudentAvgMark($exam_id)
         {
             $criteria = new CDbCriteria();

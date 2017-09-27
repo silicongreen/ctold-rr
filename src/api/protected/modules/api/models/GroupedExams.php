@@ -466,8 +466,8 @@ class GroupedExams extends CActiveRecord
                 
                 if(Yii::app()->user->schoolId == (280))
                 {
-                    $examObj = new Exams();
-                    $results['students'] = $examObj->getrankedStudents($all_exam_group_id);
+                    $scoreObj = new ExamScores();
+                    $results['students'] = $scoreObj->getrankedStudents($all_exam_group_id);
                 }
                 
                 

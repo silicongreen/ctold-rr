@@ -107,6 +107,9 @@
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
                                     &#10004;
                                   <% end %>
+                                  <% unless @exam_comment.blank? %>
+                                    <%=  @exam_comment.comments %>
+                                  <% end %>  
                                 </td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 2  %>
@@ -137,7 +140,7 @@
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         <td class="col-2"></td>
                         <td class="col-2"></td>
-                        <% unless personal_and_social[i].blank? %>
+                        <% unless personal_and_social[j].blank? %>
                             <td class="col-2"><%= personal_and_social[j] %></td>
                             <td class="col-2">
                               <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 1  %>

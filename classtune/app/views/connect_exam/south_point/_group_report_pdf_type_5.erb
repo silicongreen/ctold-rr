@@ -67,7 +67,7 @@
                                       <% else %>
                                       <% @exam_score_all.each do |score| %>
                                       <%
-                                        if score.marks.blank? and score.marks.to_i > 0
+                                        if !score.marks.blank? and score.marks.to_i > 0
                                           check_exam = true
                                           break
                                         end
@@ -97,7 +97,7 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                             <% if !grade.blank? and !grade.name.blank?  %>
-                              <td class="col-2"><b><%= grade.name %></b></td>
+                              <td class="col-2"><b><%= full_mark.to_f %>&nbsp;<%= total_mark.to_f %><%= grade.name %></b></td>
                             <% else %>
                               <td class="col-2"><b>-</b></td>
                             <% end %>

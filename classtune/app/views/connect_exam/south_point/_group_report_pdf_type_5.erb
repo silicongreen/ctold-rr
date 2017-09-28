@@ -51,7 +51,7 @@
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      
+                      <% check_subject_exam = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf"><%= subjects['name'] %></td>
@@ -69,6 +69,7 @@
                                       <%
                                         if !score.marks.blank? and score.marks.to_i > 0
                                           check_exam = true
+                                          check_subject_exam = true
                                           break
                                         end
                                       %>
@@ -96,7 +97,7 @@
                            %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
-                            <% if !grade.blank? and !grade.name.blank?  %>
+                            <% if !grade.blank? and !grade.name.blank? and check_subject_exam == true  %>
                               <td class="col-2"><b><%= grade.name %></b></td>
                             <% else %>
                               <td class="col-2"><b>-</b></td>

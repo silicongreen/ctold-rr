@@ -146,9 +146,66 @@
         </tr>
         <% @std_info = std %>
         <% @std_id_comment = std['id'] %>
-        <%= render  :partial=>"/connect_exam/comment_input" %>
+        <%= render  :partial=>"/connect_exam/south_point/comment_input_lower_grade" %>
         <% end %>
       </table>
       <% end %>
     </center>
   </div>
+  
+ <script>
+  var comments_connect_exam = "";
+  var std_ids_connect_exam = "";
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      jj('#exam_comment_save_all').click(function () {
+          Element.show('loader2');
+          Element.hide('success-messege');
+          comments_connect_exam = ""
+          std_ids_connect_exam = ""
+          jj( ".comment_input_box_connect_td" ).each(function( index ) {
+            var comment_input_id_string = jj(this).attr("id");
+            var comment_input_id_array = comment_input_id_string.split("_");
+            var comment_input_id = comment_input_id_array[1];
+            var comment_all_added = "";
+            jj( ".comment_input_box_connect_exam_multiple_"+comment_input_id ).each(function( index2 ) {
+                var value = jj(this).val();
+                var comment_vale="0"
+                if(value)
+                {
+                    comment_vale=value
+                } 
+                if(comment_all_added)
+                {
+                    comment_all_added = comment_all_added+"|"+comment_vale
+                }
+                else
+                {
+                    comment_all_added = comment_vale
+                }  
+                
+            });
+            
+                
+                comments_connect_exam = comments_connect_exam+encodeURIComponent(comment_all_added)+"||";
+                std_ids_connect_exam = std_ids_connect_exam+comment_input_id+"||"
+                
+              
+          });
+          if(comments_connect_exam)
+          {
+              new Ajax.Request('/exam/add_comments_connect_exam',
+                      {asynchronous: true, evalScripts: true,
+                          parameters: 'comments=' + comments_connect_exam+"&student_ids="+std_ids_connect_exam+"&connect_exam=<%= @connect_exam_obj.id %>", onSuccess: function (request) {
+                              Element.hide('loader2');
+                              Element.show('success-messege');
+                          }
+                      });
+          }  
+          else
+          {
+             Element.hide('loader2');
+          }
+      });
+  });
+</script>

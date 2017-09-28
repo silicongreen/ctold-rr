@@ -1,0 +1,33 @@
+<tr>
+    
+  <%
+    personal_and_social = ['Complete works in time','Does home-work regularly','Does work neatly','Eagerly participates in class','Express good behaviour','Is attentive to work','Punctual in class','Takes interest in game','Understand and follows instruction','Works cooperatively with peers']
+  %>
+  <% 
+    all_comments_array = []
+    if !@student_exam_comment[@std_id_comment.to_s].blank?
+      all_comments = @student_exam_comment[@std_id_comment.to_s]
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+      end
+    end
+  %>
+
+ <td colspan="100" class="comment_input_box_connect_td" id="commentstd_<%= @std_id_comment %>">
+     <% i = 0 %>
+     <% width_percentize = (100/personal_and_social.coun.to_f)-0.2 %>
+     <% personal_and_social.each do |p_and_s| %>
+     
+      <% cmt = "" %>
+      <% unless all_comments_array[i].blank? %>
+        <% cmt = all_comments_array[i] %>
+      <% end %>
+      <input type="text" placeholder="<%= p_and_s %>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" name="commentstd_<%= @std_id_comment %>_<%= i %>" id="commentstd_<%= @std_id_comment %>_<%= i %>" value="<%= cmt %>" style="width:<%= width_percentize %>%; height:50px;" />
+     <% i = i+1 %> 
+     <% end %>
+ </td>
+
+</tr>
+<tr style="border:none;">
+    <td colpsan="100" style="border:none;">&nbsp;</td>
+<tr>    

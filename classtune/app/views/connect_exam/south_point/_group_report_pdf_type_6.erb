@@ -6,7 +6,7 @@
   if !@exam_comment.blank?
     all_comments = @exam_comment.comments
     if !all_comments.blank?
-      all_comments_array = all_comments.split("|")
+      all_comments_array = all_comments.split("**")
     end
   end
 
@@ -18,7 +18,7 @@
     if !@exam_comments_first_term.blank?
       all_comments = @exam_comments_first_term.comments
       if !all_comments.blank?
-        all_comments_array2 = all_comments.split("|")
+        all_comments_array2 = all_comments.split("**")
       end
     end
   end

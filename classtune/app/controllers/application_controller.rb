@@ -324,7 +324,7 @@ class ApplicationController < ActionController::Base
 
   def check_status
     unless Configuration.find_by_config_key("SetupAttendance").try(:config_value) == "1"
-      flash[:notice] = "System under maintainance. Try the feature after some time."
+      flash[:notice] = "#{t('system_under_maintainance')}"
       redirect_to :controller => "user", :action => "dashboard"
     end
   end
@@ -662,7 +662,7 @@ class ApplicationController < ActionController::Base
     end
 
     if (@start_date.nil? or @end_date.nil?)
-      flash[:notice]=t('invalid_date_format')
+      flash[:notice]="#{t('invalid_date_format')}"
       redirect_to :controller => "user", :action => "dashboard"
       return false
     end

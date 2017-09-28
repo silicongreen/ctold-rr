@@ -38,7 +38,7 @@ class DescriptiveIndicatorsController < ApplicationController
       @descriptive_indicators=@descriptive.describable.descriptive_indicators.all
       @observation=@descriptive if params[:observation_id]
       @fa_criteria=@descriptive  if params[:fa_criteria_id]
-      flash[:notice]="Descriptive Indicator Created Successfully."
+      flash[:notice]="#{t('descriptive_indicator_created_successfully')}"
     else
       @observation=Observation.find(params[:observation_id]) if params[:observation_id]
       @fa_criteria=FaCriteria.find(params[:fa_criteria_id]) if params[:fa_criteria_id]
@@ -70,7 +70,7 @@ class DescriptiveIndicatorsController < ApplicationController
       @descriptive_indicators=@descriptive.describable.descriptive_indicators.all
       @observation=@descriptive if @descriptive.describable_type == "Observation"
       @fa_criteria=@descriptive if @descriptive.describable_type == "FaCriteria"
-      flash[:notice]="Descriptive Indicator Updated Successfully."
+      flash[:notice]="#{t('descriptive_indicator_updated_successfully')}"
     else
       @error=true
       #      render 'edit'
@@ -84,9 +84,9 @@ class DescriptiveIndicatorsController < ApplicationController
   def destroy_indicator
     @descriptive_indicator=DescriptiveIndicator.find(params[:id])
     if @descriptive_indicator.destroy
-      flash[:notice]="Descriptive indicator deleted."
+      flash[:notice]="#{t('descriptive_indicator_deleted')}"
     else
-      flash[:notice]="Unable to delete the descriptive indicator, dependant data present"
+      flash[:notice]="#{t('unable_to_delete_the_descriptive_indicator_dependant_data_present')}"
     end
     @descriptive_indicators=@descriptive_indicator.describable.descriptive_indicators.all(:order=>"sort_order ASC")
     render(:update) do |page|

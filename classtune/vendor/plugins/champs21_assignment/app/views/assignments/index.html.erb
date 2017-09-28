@@ -112,9 +112,8 @@
     <% end %>
  
   <div class="clearfix"></div>
-  <% if @current_user.admin? %>
-  
-  <% else %>
+  <% if !@current_user.admin? %>
+
     <% if  permitted_to? :new,:assignments %>
       <div class="tabbed-header-wrapper">    
         <ul class="header-tabs">

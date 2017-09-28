@@ -36,7 +36,7 @@ class EmployeeAttendanceController < ApplicationController
       @employee.each do |e|
         EmployeeLeave.create( :employee_id => e.id, :employee_leave_type_id => @leave_type.id, :leave_count => @leave_type.max_leave_count)
       end
-      flash[:notice] = t('flash1')
+      flash[:notice] = "#{t('flash1')}"
       redirect_to :action => "add_leave_types"
     end
   end
@@ -44,7 +44,7 @@ class EmployeeAttendanceController < ApplicationController
   def edit_leave_types
     @leave_type = EmployeeLeaveType.find(params[:id])
     if request.post? and @leave_type.update_attributes(params[:leave_type])
-      flash[:notice] = t('flash2')
+      flash[:notice] = "#{t('flash2')}"
       redirect_to :action => "add_leave_types"
     end
   end
@@ -58,7 +58,7 @@ class EmployeeAttendanceController < ApplicationController
       @leave_count.each do |e|
         e.delete
       end
-      flash[:notice] = t('flash3')
+      flash[:notice] = "#{t('flash3')}"
     else
       flash[:notice] = "#{t('flash13')}"
     end
@@ -164,7 +164,7 @@ class EmployeeAttendanceController < ApplicationController
 
       end
     end
-    flash[:notice]=t('flash12')
+    flash[:notice]= "#{t('flash12')}"
     redirect_to :controller=>"employee_attendance", :action => "employee_leave_reset_by_department"
   end
 
@@ -258,7 +258,7 @@ class EmployeeAttendanceController < ApplicationController
           @employee_attendance = EmployeeAttendance.create(:attendance_date => params[:date],
             :employees_id => emp, :employee_leave_types_id=> att) unless att == ""
         end
-        flash[:notice]=t('flash3')
+        flash[:notice]= "#{t('flash3')}"
         redirect_to :controller=>"employee_attendance", :action => "register"
       end
     end
@@ -433,7 +433,7 @@ class EmployeeAttendanceController < ApplicationController
               :rid=>@leave_apply.id,
               :body=>""+@employee.first_name+" apply for leave from "+params[:leave_apply][:start_date]+" to "+params[:leave_apply][:end_date] ))
             end 
-            flash[:notice]=t('flash5')
+            flash[:notice]= "#{t('flash5')}"
             redirect_to :controller => "employee_attendance", :action=> "leaves", :id=>@employee.id
           end
         else
@@ -643,7 +643,7 @@ class EmployeeAttendanceController < ApplicationController
             redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@applied_employee.reporting_manager.employee_record.id and return
           end  
         else
-          flash[:notice] = "The application contains dates which are earlier than reset date."
+          flash[:notice] = "#{t('the_application_contains_dates_which_are_earlier_than_reset_date')}"
           if @request_from == "admin"
             redirect_to :controller=>"employee", :action=>"employee_attendance" and return
           else
@@ -651,7 +651,7 @@ class EmployeeAttendanceController < ApplicationController
           end  
         end
       else
-        flash[:notice] = "Total amount of leave exceeded."
+        flash[:notice] = "#{t('total_amount_of_leave_exceeded')}"
         if @request_from == "admin"
             redirect_to :controller=>"employee", :action=>"employee_attendance" and return
         else
@@ -828,9 +828,9 @@ class EmployeeAttendanceController < ApplicationController
     @employee = Employee.find(@applied_leave.employee_id)
     unless @applied_leave.viewed_by_manager
       ApplyLeave.destroy(params[:id])
-      flash[:notice] = t('flash8')
+      flash[:notice] = "#{t('flash8')}"
     else
-      flash[:notice] = t('flash10')
+      flash[:notice] = "#{t('flash10')}"
     end
     redirect_to :action=>"leaves", :id=>@employee.id
   end

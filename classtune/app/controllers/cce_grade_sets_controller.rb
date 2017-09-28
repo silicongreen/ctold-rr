@@ -30,7 +30,7 @@ class CceGradeSetsController < ApplicationController
   def create
     @grade_set=CceGradeSet.new(params[:cce_grade_set])
     if @grade_set.save
-      flash[:notice]="CCE Gradeset created successfully."
+      flash[:notice]="#{t('cce_gradeset_created_successfully')}"
       @grade_sets=CceGradeSet.all
     else
       @error=true
@@ -45,7 +45,7 @@ class CceGradeSetsController < ApplicationController
     @grade_set=CceGradeSet.find(params[:id])
     @grade_set.name=params[:cce_grade_set][:name]
     if @grade_set.save
-      flash[:notice]="CCE Gradeset updated successfully."
+      flash[:notice]="#{t('cce_gradeset_updated_successfully')}"
       @grade_sets=CceGradeSet.all
     else
       @error=true
@@ -61,9 +61,9 @@ class CceGradeSetsController < ApplicationController
     @grade_set=CceGradeSet.find(params[:id])
     if @grade_set.observation_groups.empty?
       if @grade_set.destroy
-        flash[:notice]="Grade set deleted."
+        flash[:notice]="#{t('grade_set_deleted')}"
       else
-        flash[:notice]="Unable to delete Grade Set due to dependent data"
+        flash[:notice]="#{t('unable_to_delete_grade_set_due_to_dependent_data')}"
       end
     else
       flash[:warn_notice]="Grade set #{@grade_set.name} is associated to some Co-Scholastic groups. Clear them before deleting."
@@ -85,7 +85,7 @@ class CceGradeSetsController < ApplicationController
       @grade_set=@grade.cce_grade_set
       if @grade.save
         @grades=@grade_set.cce_grades
-        flash[:notice]="Grade created successfully"
+        flash[:notice]="#{t('grade_created_successfully')}"
       else
         @error=true
       end
@@ -104,7 +104,7 @@ class CceGradeSetsController < ApplicationController
     @grade_set=@grade.cce_grade_set
     if @grade.update_attributes(params[:grade])
       @grades=@grade_set.cce_grades
-      flash[:notice]="Grade updated successfully"
+      flash[:notice]="#{t('grade_updated_successfully')}"
     else
       @error=true
     end
@@ -114,9 +114,9 @@ class CceGradeSetsController < ApplicationController
     @grade=CceGrade.find(params[:id])
     @grades=@grade.cce_grade_set.cce_grades
     if @grade.destroy
-      flash[:notice]="Grade deleted."
+      flash[:notice]="#{t('grade_deleted')}"
     else
-      flash[:notice]="Could not delete grade."
+      flash[:notice]="#{t('could_not_delete_grade')}"
     end
     render(:update) do |page|
       page.replace_html 'flash-box', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?

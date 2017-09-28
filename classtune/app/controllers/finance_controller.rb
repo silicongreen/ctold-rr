@@ -575,7 +575,7 @@ class FinanceController < ApplicationController
     @salary  = Employee.calculate_salary(@monthly_payslips, @individual_payslips)
     @currency_type= currency
     if @monthly_payslips.blank?
-      flash[:notice] = "No paylips found for this employee"
+      flash[:notice] = "#{t('no_paylips_found_for_this_employee')}"
       redirect_to :controller => "finance", :action => "view_monthly_payslip"
     end
   end
@@ -1391,7 +1391,7 @@ class FinanceController < ApplicationController
       Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection]))
 
 
-      flash[:notice]="Collection is in queue. <a href='/scheduled_jobs/FinanceFeeCollection/1'>Click Here</a> to view the scheduled job."
+      flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')
 
     end
@@ -2148,7 +2148,7 @@ class FinanceController < ApplicationController
 
   def report_compare
     if (date_format(params[:start_date]).nil? or date_format(params[:end_date]).nil? or date_format(params[:start_date2]).nil? or date_format(params[:end_date2]).nil?)
-      flash[:notice]=t('invalid_date_format')
+      flash[:notice]= "#{t('invalid_date_format')}"
       redirect_to :controller => "user", :action => "dashboard"
     else
       fixed_category_name
@@ -2598,7 +2598,7 @@ class FinanceController < ApplicationController
   def other_fee_new
     @other_fees = OtherFee.new(params[:other_fees])
     if request.post? and @other_fees.save
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{f('succesfully_saved')}"
       redirect_to  :action => 'other_fee'
     end
   end
@@ -2608,7 +2608,7 @@ class FinanceController < ApplicationController
   def delete_other_fee
     @other_fee = OtherFee.find(params[:id])
     @other_fee.update_attributes(:is_deleted=>true)
-    flash[:notice] = "Succesfully Removed"
+    flash[:notice] = "#{t('succesfully_removed')}"
     redirect_to  :action => 'other_fee'
   end
   
@@ -3265,7 +3265,7 @@ class FinanceController < ApplicationController
       end
     end
     if error
-      flash[:notice]=t('invalid_date_format')
+      flash[:notice]="#{t('invalid_date_format')}"
       redirect_to :controller => "user", :action => "dashboard"
     else
       render :pdf => 'refund_search_pdf'
@@ -3311,12 +3311,12 @@ class FinanceController < ApplicationController
 
     if request.post?
       if params[:fine_id].nil?
-        flash[:notice]=t('fine_created_successfully')
+        flash[:notice]="#{t('fine_created_successfully')}"
       else
-        flash[:notice]=t('fine_slabs_updated')
+        flash[:notice]="#{t('fine_slabs_updated')}"
       end
       if  params[:fine][:is_deleted].present?
-        flash[:notice]=t('fine_deleted')
+        flash[:notice]= "#{t('fine_deleted')}"
       end
       fine_id=params[:fine_id]
       @fine=Fine.find_or_initialize_by_id(fine_id)

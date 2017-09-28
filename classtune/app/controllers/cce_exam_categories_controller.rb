@@ -28,7 +28,7 @@ class CceExamCategoriesController < ApplicationController
   def create
     @category=CceExamCategory.new(params[:cce_exam_category])
     if @category.save
-      flash[:notice]="Exam Category created successfully."
+      flash[:notice]="#{t('exam_category_created_successfully')}"
       @categories=CceExamCategory.all
     else
       @error=true
@@ -44,7 +44,7 @@ class CceExamCategoriesController < ApplicationController
     @category.name=params[:cce_exam_category][:name]
     @category.desc=params[:cce_exam_category][:desc]
     if @category.save
-      flash[:notice]="Exam Category updated successfully."
+      flash[:notice]="#{t('exam_category_updated_successfully')}"
       @categories=CceExamCategory.all
     else
       @error=true
@@ -53,9 +53,9 @@ class CceExamCategoriesController < ApplicationController
   def destroy
     @category=CceExamCategory.find(params[:id])
     if @category.destroy
-      flash[:notice]="Exam Category Deleted"
+      flash[:notice]="#{t('exam_category_deleted')}"
     else
-      flash[:notice]="Exam category cannot be deleted, dependant data present"
+      flash[:notice]="#{t('exam_category_cannot_be_deleted_dependant_data_present')}"
     end
     redirect_to :action => "index"
   end

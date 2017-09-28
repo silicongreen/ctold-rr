@@ -31,7 +31,7 @@ class CalendarController < ApplicationController
     unless @acacal.nil?
         send_file  @acacal.attachment.path , :type=>@acacal.attachment.content_type, :filename => filename
     else
-      flash[:notice]="Something Went Wrong"
+      flash[:notice]="#{t('Something Went Wrong')}"
       redirect_to :controller => 'calendar', :action => 'acacals'
     end
   end
@@ -203,7 +203,7 @@ class CalendarController < ApplicationController
               :body=>@acacal.title ))
         end
       end  
-      flash[:notice] = "Calendar Saved Successfully"
+      flash[:notice] = "#{t('calendar_saved_successfully')}"
       redirect_to :controller => 'calendar', :action => 'acacals'
     end
   end
@@ -229,7 +229,7 @@ class CalendarController < ApplicationController
   end
   def cancel_acacal
     @acacal = Acacal.find(params[:id]).destroy
-    flash[:notice] = "Calendar Removed Succesfully"
+    flash[:notice] = "#{t('calendar_removed_succesfully')}"
     redirect_to :controller => 'calendar', :action => 'acacals'
   end
   
@@ -273,7 +273,7 @@ class CalendarController < ApplicationController
         BatchAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
         DepartmentAcacal.delete_all("acacal_id ="+@acacal.id.to_s)
       end 
-      flash[:notice] = "Calendar Update Successfully"
+      flash[:notice] = "#{t('calendar_update_successfully')}"
       redirect_to :controller => 'calendar', :action => 'acacals'
     end
   end

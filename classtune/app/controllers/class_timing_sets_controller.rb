@@ -24,7 +24,7 @@ class ClassTimingSetsController < ApplicationController
     @class_timing_set = ClassTimingSet.new(params[:class_timing_set])
 
     if @class_timing_set.save
-      flash[:notice] = t('class_timing_set_created')
+      flash[:notice] = "#{t('class_timing_set_created')}"
       redirect_to class_timing_sets_path
     else
       render :new
@@ -43,7 +43,7 @@ class ClassTimingSetsController < ApplicationController
     @class_timing_set = ClassTimingSet.find(params[:id])
 
     if @class_timing_set.update_attributes(params[:class_timing_set])
-      flash[:notice] = t('class_timing_set_updated')
+      flash[:notice] = "#{t('class_timing_set_updated')}"
       redirect_to class_timing_sets_path
     else
       render :edit
@@ -63,7 +63,7 @@ class ClassTimingSetsController < ApplicationController
     @class_timing_set = ClassTimingSet.find(params[:id])
     @class_timing_set.destroy
 
-    flash[:notice] = t('class_timing_set_deleted')
+    flash[:notice] = "#{t('class_timing_set_deleted')}"
     redirect_to class_timing_sets_path
   end
 
@@ -135,7 +135,7 @@ class ClassTimingSetsController < ApplicationController
     @class_timing_set = ClassTimingSet.first
 
     if @class_timing_sets.empty?
-      flash[:notice] = t('please_create')
+      flash[:notice] = "#{t('please_create')}"
       redirect_to class_timing_sets_path
     end
   end

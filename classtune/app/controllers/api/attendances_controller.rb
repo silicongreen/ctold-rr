@@ -61,7 +61,7 @@ class Api::AttendancesController < ApiController
     @attendance.reason = params[:reason]
     respond_to do |format|
       if @attendance.save
-        flash[:notice] = 'Attendance was successfully created.'
+        flash[:notice] = "#{t('attendance_was_successfully_created')}"
         format.xml  { render :attendance, :status => :created }
       else
         format.xml  { render :xml => @attendance.errors, :status => :unprocessable_entity }
@@ -106,7 +106,7 @@ class Api::AttendancesController < ApiController
         @attendance.afternoon = params[:afternoon]
       end
       if @attendance.update_attributes(:reason => params[:reason])
-        flash[:notice] = 'Post was successfully updated.'
+        flash[:notice] = "#{t('post_was_successfully_updated')}"
         format.xml  { render :attendance }
       else
         format.xml  { render :xml => @attendance.errors, :status => :unprocessable_entity }

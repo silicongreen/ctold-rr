@@ -204,7 +204,7 @@ class NewsController < ApplicationController
     unless @news.nil?
         send_file  @news.attachment.path , :type=>@news.attachment.content_type, :filename => filename
     else
-      flash[:notice]=t('flash_msg4')
+      flash[:notice]= "#{t('flash_msg4')}"
       redirect_to :controller=>:user ,:action=>:dashboard
     end
   end
@@ -363,7 +363,7 @@ class NewsController < ApplicationController
        
      
      end
-     flash[:notice] = "Notice successfully published"
+     flash[:notice] = "#{t('notice_successfully_published')}"
      redirect_to :controller => 'news', :action => 'all'
     
   end

@@ -50,10 +50,10 @@ class CceReportsController < ApplicationController
             errors += ["Incomplete grading level credit points for #{batch.full_name}, report generation failed."]
           end
         end
-        flash[:notice]="Report generation in queue for batches #{batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/3'>Click Here</a> to view the scheduled job."
+        flash[:notice]= "#{t('report_generation_in_queue_for_batches')}" + " #{batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/3'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
         flash[:error]=errors
       else
-        flash[:notice]="No batch selected"
+        flash[:notice]="#{t('no_batch_selected')}"
       end      
     end
     

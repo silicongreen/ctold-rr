@@ -36,7 +36,7 @@ class FaGroupsController < ApplicationController
     @fa_group=FaGroup.new(params[:fa_group])
     if @fa_group.save
       @fa_groups=FaGroup.active.paginate(:page => params[:page], :per_page => 20)
-      flash[:notice]="FA Group created successfully."
+      flash[:notice]="#{t('fa_group_created_successfully')}"
     else
       @error=true
     end
@@ -60,7 +60,7 @@ class FaGroupsController < ApplicationController
     @fa_group.attributes=params[:fa_group]
     if @fa_group.save
       @fa_groups=FaGroup.active.paginate(:page => params[:page], :per_page => 20)
-      flash[:notice]="FA Group updated successfully."
+      flash[:notice]="#{t('fa_group_updated_successfully')}"
     else
       @error=true
     end
@@ -69,9 +69,9 @@ class FaGroupsController < ApplicationController
   def destroy
     @fa_group=FaGroup.find(params[:id])
     if @fa_group.update_attribute(:is_deleted,true)
-      flash[:notice]="FA Group deleted"
+      flash[:notice]="#{t('fa_group_deleted')}"
     else
-      flash[:notice]="Unable to delete FA Group."
+      flash[:notice]="#{t('unable_to_delete_fa_group')}"
     end
     redirect_to :action => "index"
   end
@@ -102,7 +102,7 @@ class FaGroupsController < ApplicationController
 
   def update_subject_fa_groups
     unless params[:subject].present?
-      flash[:notice] = "Please select at least one subject."
+      flash[:notice] = "#{t('please_select_at_least_one_subject')}"
       render :js=>"window.location='/fa_groups/assign_fa_groups'" and return
     end
     @subject=Subject.find(params[:id])
@@ -131,7 +131,7 @@ class FaGroupsController < ApplicationController
     
     #    flash[:notice] = (!a ? "not saved" : "saved" )
     if a
-      flash[:notice] = "FA groups successfully assigned for the selected subject."
+      flash[:notice] = "#{t('fa_groups_successfully_assigned_for_the_selected_subject')}"
       render :js=>"window.location='/fa_groups/assign_fa_groups'"
 
     else
@@ -180,9 +180,9 @@ class FaGroupsController < ApplicationController
     @fa_criteria=FaCriteria.find(params[:id])
     @fa_group=@fa_criteria.fa_group
     if @fa_criteria.update_attribute(:is_deleted,true)
-      flash[:notice]="scholastic criteria deleted"
+      flash[:notice]="#{t('scholastic_criteria_deleted')}"
     else
-      flash[:notice]="scholastic criteria cannot be deleted"
+      flash[:notice]="#{t('scholastic_criteria_cannot_be_deleted')}"
     end
     @fa_criterias=@fa_criteria.fa_group.fa_criterias.active
     render(:update) do |page|

@@ -32,7 +32,7 @@ class CceWeightagesController < ApplicationController
   def create
     @weightage=CceWeightage.new(params[:cce_weightage])
     if @weightage.save
-      flash[:notice]="Weightage created successfully."
+      flash[:notice]="#{t('weightage_created_successfully')}"
       @weightages=CceWeightage.all
     else
       @error=true
@@ -54,7 +54,7 @@ class CceWeightagesController < ApplicationController
     @weightage=CceWeightage.find(params[:id])
     @weightage.attributes=params[:cce_weightage]
     if @weightage.save
-      flash[:notice]="Weightage updated successfully."
+      flash[:notice]="#{t('weightage_updated_successfully')}"
       @weightages=CceWeightage.all
     else
       @error=true
@@ -66,9 +66,9 @@ class CceWeightagesController < ApplicationController
 
     if @weightage.courses.empty?
       if @weightage.destroy
-        flash[:notice]="Weightage deleted."
+        flash[:notice]="#{t('weightage_deleted')}"
       else
-        flash[:warn_notice]="Weightage could be deleted."
+        flash[:warn_notice]="#{t('weightage_could_be_deleted')}"
       end
     else
       flash[:warn_notice]="CCE weightage #{@weightage.weightage}(#{@weightage.criteria_type}) has been assigned to courses. Remove the associations before deleting."
@@ -83,7 +83,7 @@ class CceWeightagesController < ApplicationController
       new_courses = params[:cce_weightage][:course_ids] if params[:cce_weightage]
       new_courses ||= []
       @weightage.courses = Course.find_all_by_id(new_courses)
-      flash[:notice] = "saved"
+      flash[:notice] = "#{t('saved')}"
       redirect_to ""
     end
   end
@@ -113,7 +113,7 @@ class CceWeightagesController < ApplicationController
     @course_weightages=@course.cce_weightages
     @weightages=CceWeightage.all
     if @course.save and params[:course].present? and params[:course][:weightage_ids].present?
-      flash[:notice] = "CCE weightages for the course assigned successfully."
+      flash[:notice] = "#{t('cce_weightages_for_the_course_assigned_successfully')}"
       render :js=>"window.location='/cce_weightages/assign_weightages'"
     else
       @error_object=@course

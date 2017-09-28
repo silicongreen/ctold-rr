@@ -482,7 +482,7 @@ class ElectiveGroupsController < ApplicationController
 
         @electives = Subject.find(:all, :conditions => ["elective_group_id IN (?) and is_deleted = 0", elective_batch_ids], :group => "name")
       end
-      flash[:notice] = "Elective subject created successfully!"
+      flash[:notice] = "#{t('elective_subject_created_successfully')}"
     else
       @error = true
     end
@@ -598,7 +598,7 @@ class ElectiveGroupsController < ApplicationController
         
       end
       
-      flash[:notice] = "Elective subject updated successfully!"
+      flash[:notice] = "#{t('elective_subject_updated_successfully')}"
     else
       @error = true
     end

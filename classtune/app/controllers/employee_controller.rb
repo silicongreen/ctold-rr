@@ -65,9 +65,9 @@ class EmployeeController < ApplicationController
     @c_att.profile_id = @employee.id
     @c_att.user_id = @employee.user_id
     if @c_att.save
-      flash[:notice] = "Employee Attendance Added"
+      flash[:notice] = "#{t('employee_attendance_added')}"
     else
-      flash[:notice] = "Something Went Wrong"
+      flash[:notice] = "#{t('something_went_wrong')}"
     end  
     render :update do |page|
       page.replace_html 'profile-infos', :partial => 'employee_add_attendance'
@@ -108,7 +108,7 @@ class EmployeeController < ApplicationController
     @inactive_categories = EmployeeCategory.find(:all,:conditions=>'status = 0')
     @category = EmployeeCategory.new(params[:category])
     if request.post? and @category.save
-      flash[:notice] = t('flash1')
+      flash[:notice] = "#{t('flash1')}"
       redirect_to :controller => "employee", :action => "add_category"
     end
   end
@@ -145,7 +145,7 @@ class EmployeeController < ApplicationController
               p.update_attributes(:status=> '0')
             end
           end
-          flash[:notice] = t('flash2')
+          flash[:notice] = "#{t('flash2')}"
           redirect_to :action => "add_category"
         end
       else
@@ -164,7 +164,7 @@ class EmployeeController < ApplicationController
     if employees.empty? and category_position.empty?
       EmployeeCategory.find(params[:id]).destroy
       @categories = EmployeeCategory.find :all
-      flash[:notice]=t('flash3')
+      flash[:notice]= "#{t('flash3')}"
       redirect_to :action => "add_category"
     else
       flash[:warn_notice]=t('flash4')
@@ -178,7 +178,7 @@ class EmployeeController < ApplicationController
     @categories = EmployeeCategory.find(:all,:order => "name asc",:conditions=> 'status = 1')
     @position = EmployeePosition.new(params[:position])
     if request.post? and @position.save
-      flash[:notice] = t('flash5')
+      flash[:notice] = "#{t('flash5')}"
       redirect_to :controller => "employee", :action => "add_position"
     end
   end
@@ -190,7 +190,7 @@ class EmployeeController < ApplicationController
     if request.post?
       if (params[:position][:status] == 'false' and employees.blank?) or params[:position][:status] == 'true'
         if @position.update_attributes(params[:position])
-          flash[:notice] = t('flash6')
+          flash[:notice] = "#{t('flash6')}"
           redirect_to :action => "add_position"
         end
       else
@@ -208,7 +208,7 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeePosition.find(params[:id]).destroy
       @positions = EmployeePosition.find :all
-      flash[:notice]=t('flash3')
+      flash[:notice]= "#{t('flash3')}"
       redirect_to :action => "add_position"
     else
       flash[:warn_notice]=t('flash4')
@@ -221,7 +221,7 @@ class EmployeeController < ApplicationController
     @inactive_departments = EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 0')
     @department = EmployeeDepartment.new(params[:department])
     if request.post? and @department.save
-      flash[:notice] =  t('flash7')
+      flash[:notice] =  "#{t('flash7')}"
       redirect_to :controller => "employee", :action => "add_department"
     end
   end
@@ -232,7 +232,7 @@ class EmployeeController < ApplicationController
     if request.post?
       if (params[:department][:status] == 'false' and employees.blank?) or params[:department][:status] == 'true'
         if @department.update_attributes(params[:department])
-          flash[:notice] = t('flash8')
+          flash[:notice] = "#{t('flash8')}"
           redirect_to :action => "add_department"
         end
       else
@@ -249,10 +249,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeeDepartment.find(params[:id]).destroy
       @departments = EmployeeDepartment.find :all
-      flash[:notice]=t('flash3')
+      flash[:notice]= "#{t('flash3')}"
       redirect_to :action => "add_department"
     else
-      flash[:warn_notice]=t('flash4')
+      flash[:warn_notice]= "#{t('flash4')}"
       redirect_to :action => "add_department"
     end
   end
@@ -262,7 +262,7 @@ class EmployeeController < ApplicationController
     @inactive_grades = EmployeeGrade.find(:all,:order => "name asc",:conditions=>'status = 0')
     @grade = EmployeeGrade.new(params[:grade])
     if request.post? and @grade.save
-      flash[:notice] =  t('flash9')
+      flash[:notice] =  "#{t('flash9')}"
       redirect_to :controller => "employee", :action => "add_grade"
     end
   end
@@ -273,7 +273,7 @@ class EmployeeController < ApplicationController
     if request.post?
       if (params[:grade][:status] == 'false' and employees.blank?) or params[:grade][:status] == 'true'
         if @grade.update_attributes(params[:grade])
-          flash[:notice] = t('flash10')
+          flash[:notice] = "#{t('flash10')}"
           redirect_to :action => "add_grade"
         end
       else
@@ -290,10 +290,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       EmployeeGrade.find(params[:id]).destroy
       @grades = EmployeeGrade.find :all
-      flash[:notice]=t('flash3')
+      flash[:notice]= "#{t('flash3')}"
       redirect_to :action => "add_grade"
     else
-      flash[:warn_notice]=t('flash4')
+      flash[:warn_notice]= "#{t('flash4')}"
       redirect_to :action => "add_grade"
     end
   end
@@ -303,7 +303,7 @@ class EmployeeController < ApplicationController
     @inactive_bank_details = BankField.find(:all,:order => "name asc",:conditions=>{:status => false})
     @bank_field = BankField.new(params[:bank_field])
     if request.post? and @bank_field.save
-      flash[:notice] =t('flash11')
+      flash[:notice] = "#{t('flash11')}"
       redirect_to :controller => "employee", :action => "add_bank_details"
     end
   end
@@ -311,7 +311,7 @@ class EmployeeController < ApplicationController
   def edit_bank_details
     @bank_details = BankField.find(params[:id])
     if request.post? and @bank_details.update_attributes(params[:bank_details])
-      flash[:notice] = t('flash12')
+      flash[:notice] = "#{t('flash12')}"
       redirect_to :action => "add_bank_details"
     end
   end
@@ -320,10 +320,10 @@ class EmployeeController < ApplicationController
     if employees.empty?
       BankField.find(params[:id]).destroy
       @bank_details = BankField.find(:all)
-      flash[:notice]=t('flash3')
+      flash[:notice]= "#{t('flash3')}"
       redirect_to :action => "add_bank_details"
     else
-      flash[:warn_notice]=t('flash4')
+      flash[:warn_notice]= "#{t('flash4')}"
       redirect_to :action => "add_bank_details"
     end
   end
@@ -343,7 +343,7 @@ class EmployeeController < ApplicationController
       @additional_field = AdditionalField.new(params[:additional_field])
       @additional_field.priority = priority
       if @additional_field.save
-        flash[:notice] = t('flash13')
+        flash[:notice] = "#{t('flash13')}"
         redirect_to :controller => "employee", :action => "add_additional_details"
       end
     end
@@ -378,7 +378,7 @@ class EmployeeController < ApplicationController
       render :action=>'add_additional_details'
     else
       if @additional_field.update_attributes(params[:additional_field])
-        flash[:notice] = t('flash14')
+        flash[:notice] = "#{t('flash14')}"
         redirect_to :action => "add_additional_details"
       else
         render :action=>"add_additional_details"
@@ -392,7 +392,7 @@ class EmployeeController < ApplicationController
       if employees.empty?
         AdditionalField.find(params[:id]).destroy
         @additional_details = AdditionalField.find(:all)
-        flash[:notice]=t('flash3')
+        flash[:notice]= "#{t('flash3')}"
         redirect_to :action => "add_additional_details"
       else
         flash[:warn_notice]=t('flash4')
@@ -569,7 +569,7 @@ class EmployeeController < ApplicationController
           redirect_to :controller =>"employee" ,:action => "profile", :id => @employee.id
         end
       else
-        flash[:notice] = t('flash19')
+        flash[:notice] = "#{t('flash19')}"
         redirect_to :controller => "employee", :action => "edit_personal", :id => @employee.id
       end
     end
@@ -926,7 +926,7 @@ class EmployeeController < ApplicationController
       if manager.present?
         Employee.update(@employee, :reporting_manager_id => manager.user_id)
       end
-      flash[:notice]=t('flash25')
+      flash[:notice]= "#{t('flash25')}"
       redirect_to :controller => "payroll", :action => "manage_payroll", :id=>@employee.id
     end
 
@@ -952,7 +952,7 @@ class EmployeeController < ApplicationController
       else
         @emp.update_attributes(:reporting_manager_id => nil)
       end
-      flash[:notice]=t('flash26')
+      flash[:notice]= "#{t('flash26')}"
       redirect_to :action => "profile", :id=>@emp.id
     end
   end
@@ -1235,10 +1235,10 @@ ORDER BY emp.first_name ASC"
         if params[:status_change] == "1"
           
           activated_employee(params[:emp_id])
-          flash[:notice] = "Employee activated"
+          flash[:notice] = "#{t('employee_activated')}"
         elsif params[:status_change] == "0"
           delete_employee(params[:emp_id])
-          flash[:notice] = "Employee Parmanantly deleted"
+          flash[:notice] = "#{t('employee_parmanantly_deleted')}"
         end  
         
       end
@@ -1686,7 +1686,7 @@ ORDER BY emp.first_name ASC"
     rescue ArgumentError
     end
     unless @salary_date.present?
-      flash[:notice] = "Date invalid"
+      flash[:notice] = "#{t('date_invalid')}"
       redirect_to :controller => "user", :action => "dashboard"
     end
     @employee = Employee.find(params[:id])
@@ -1932,7 +1932,7 @@ ORDER BY emp.first_name ASC"
         unless leaves_half_day == 1 and params[:leave_apply][:is_half_day]=='0'
           if @leave_apply.save
             ApplyLeave.update(@leave_apply, :approved=> nil, :viewed_by_manager=> false)
-            flash[:notice]=t('flash30')
+            flash[:notice]= "#{t('flash30')}"
             redirect_to :controller => "employee", :action=> "leave_management", :id=>@employee.id
           end
         else
@@ -1999,7 +1999,7 @@ ORDER BY emp.first_name ASC"
     @individual_payslips =  IndividualPayslipCategory.find(:all,:conditions=>["employee_id=? AND salary_date = ?",params[:id],params[:salary_date]])
     @salary  = Employee.calculate_salary(@monthly_payslips, @individual_payslips)
     if @monthly_payslips.blank?
-      flash[:notice] = "No paylips found for this employee"
+      flash[:notice] = "#{t('no_paylips_found_for_this_employee')}"
       redirect_to :controller => "employee", :action => "profile", :id => params[:id]
     end
   end
@@ -2047,7 +2047,7 @@ ORDER BY emp.first_name ASC"
     rescue ArgumentError
     end
     unless @salary_date.present?
-      flash[:notice] = "Date invalid"
+      flash[:notice] = "#{t('date_invalid')}"
       redirect_to :controller => "employee", :action => "profile", :id => @employee.id and return
     end
     @bank_details = EmployeeBankDetail.find_all_by_employee_id(@employee.id)
@@ -2089,7 +2089,7 @@ ORDER BY emp.first_name ASC"
 
     @net_amount = @net_non_deductionable_amount - @net_deductionable_amount
     if @monthly_payslips.blank?
-      flash[:notice] = "No payslips found."
+      flash[:notice] = "#{t('no_payslips_found')}"
       redirect_to :controller => "employee", :action => "profile", :id => params[:id]
     else
       render :pdf => 'individual_payslip_pdf'
@@ -2108,7 +2108,7 @@ ORDER BY emp.first_name ASC"
       if @employee.present?
         @employee.id = @employee.former_id
       else
-        flash[:notice] = "Employee does not exist."
+        flash[:notice] = "#{t('employee_does_not_exist')}"
         redirect_to :controller => "user", :action => "dashboard" and return
       end
     end
@@ -2124,7 +2124,7 @@ ORDER BY emp.first_name ASC"
     rescue ArgumentError
     end
     unless @salary_date.present?
-      flash[:notice] = "Date invalid"
+      flash[:notice] = "#{t('date_invalid')}"
       redirect_to :controller => "employee", :action => "profile", :id => @employee.id and return
     end
     @monthly_payslips = MonthlyPayslip.find_all_by_salary_date_and_employee_id(@salary_date,params[:id],:order=> "payroll_category_id ASC")
@@ -2166,7 +2166,7 @@ ORDER BY emp.first_name ASC"
     @net_amount = @net_non_deductionable_amount - @net_deductionable_amount
 
     if @monthly_payslips.blank?
-      flash[:notice] = "No payslips found."
+      flash[:notice] = "#{t('no_payslips_found')}"
       redirect_to :controller => "employee", :action => "profile", :id => params[:id]
     else
       render :pdf => 'individual_payslip_pdf'
@@ -2289,12 +2289,12 @@ ORDER BY emp.first_name ASC"
   def remove
     @employee = Employee.find(params[:id])
     if current_user == @employee.user
-      flash[:notice] = "You cannot delete your own profile"
+      flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
       redirect_to :controller => "user", :action => "dashboard" and return
     else
       associate_employee = Employee.find(:all, :conditions=>["reporting_manager_id=#{@employee.user_id}"])
       unless associate_employee.blank?
-        flash[:notice] = t('flash35')
+        flash[:notice] = "#{t('flash35')}"
         redirect_to :action=>'remove_subordinate_employee', :id=>@employee.id
       end
     end
@@ -2325,7 +2325,7 @@ ORDER BY emp.first_name ASC"
     @dependency = @employee.former_dependency
     if request.post?
       if current_user == @employee.user
-        flash[:notice] = "You cannot delete your own profile"
+        flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
         redirect_to :controller => "user", :action => "dashboard" and return
       else
         flash[:notice]= "#{t('employee_text')} - #{@employee.employee_number} #{t('flash46')}"
@@ -2339,7 +2339,7 @@ ORDER BY emp.first_name ASC"
   def delete
     employee = Employee.find(params[:id])
     if current_user == employee.user
-      flash[:notice] = "You cannot delete your own profile"
+      flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
       redirect_to :controller => "user", :action => "dashboard" and return
     else
       unless employee.has_dependency
@@ -2411,7 +2411,7 @@ ORDER BY emp.first_name ASC"
     dates.each do |d|
       d.approve(current_user.id)
     end
-    flash[:notice] = t('flash34')
+    flash[:notice] = "#{t('flash34')}"
     redirect_to :action => "hr"
 
   end

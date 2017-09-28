@@ -679,9 +679,9 @@ class ExamController < ApplicationController
         end
       end
       unless @exam_marks_error == true
-        flash[:notice] = "Successfully Saved"
+        flash[:notice] = "#{t('successfully_saved')}"
       else
-        flash[:notice] = "Exam score is greter the exam maximum marks"
+        flash[:notice] = "#{t('exam_score_is_greter_the_exam_maximum_marks')}"
       end
     end
     
@@ -700,7 +700,7 @@ class ExamController < ApplicationController
           end  
         end
       else
-        flash[:notice] = "Something Went Wrong"
+        flash[:notice] = "#{t('something_went_wrong')}"
         redirect_to :controller=>"user", :action=>"dashboard"
       end 
     end  
@@ -901,7 +901,7 @@ class ExamController < ApplicationController
           batch.job_type = "2"
           Delayed::Job.enqueue(batch)
         end
-        flash[:notice]="Report generation in queue for batches #{@batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/2'>Click Here</a> to view the scheduled job."
+        flash[:notice]="#{t('report_generation_in_queue_for_batches')}" + " #{@batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/2'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       else
         flash[:notice]="#{t('flash11')}"
         return
@@ -946,7 +946,7 @@ class ExamController < ApplicationController
           batch.job_type = "1"
           Delayed::Job.enqueue(batch)
         end
-        flash[:notice]="Report generation in queue for batches #{@batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/1'>Click Here</a> to view the scheduled job."
+        flash[:notice]="#{t('report_generation_in_queue_for_batches')}" + " #{@batches.collect(&:full_name).join(", ")}. <a href='/scheduled_jobs/Batch/2'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       else
         flash[:notice]="#{t('flash11')}"
         return
@@ -2171,7 +2171,7 @@ class ExamController < ApplicationController
         @batches=Batch.all(:select=>"DISTINCT batches.*",:joins=>"LEFT OUTER JOIN `batch_students` ON batch_students.batch_id = batches.id",:conditions=>["batch_students.student_id = ?",@student.id],:order=>"batch_students.id")
         @batches << @batch
       else
-        flash[:notice] = "No Students in this Batch."
+        flash[:notice] = "#{t('no_students_in_this_batch')}"
         redirect_to :action=>"transcript" and return
       end
     end
@@ -2803,7 +2803,7 @@ class ExamController < ApplicationController
     
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
-        flash[:notice] = "Select A Combined Exam Please"
+        flash[:notice] = "#{t('select_a_combined_exam_please')}"
         redirect_to :action=>'grouped_exam_report_new' and return
       else
         @connect_exam = params[:connect_exam]
@@ -2981,7 +2981,7 @@ class ExamController < ApplicationController
 
     if params[:student].nil?  or params[:student][:connect_exam].blank? 
       if params[:connect_exam].blank? 
-        flash[:notice] = "Select A Combined Exam Please"
+        flash[:notice] = "#{t('select_a_combined_exam_please')}"
         redirect_to :action=>'grouped_exam_report_new' and return
       else
         @connect_exam = params[:connect_exam]

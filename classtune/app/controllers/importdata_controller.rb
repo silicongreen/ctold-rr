@@ -45,9 +45,9 @@ class ImportdataController < ApplicationController
         seed_file = File.join(Rails.root,'db', 'importbatch.rb')
         load(seed_file) if File.exist?(seed_file)
         if ARGV[2] == "error"
-          flash[:notice]="Incorrect Excel format, found " + ARGV[5].to_s + " row but valid Class Found " + ARGV[4].length.to_s + ". <br/ ><br /> Classes are: " + ARGV[4].map{|l| l["class_name"]}.join(', ') + " <br /><br />Please Check and reupload the excel and checked the proced anyway checkbox if you want to upload this excel file with " + ARGV[4].length.to_s + " Class"
+          flash[:notice]="#{t('incorrect_excel_format_found')} " + ARGV[5].to_s + " #{t('row_but_valid_class_found')} " + ARGV[4].length.to_s + "#{t('classes_are')} " + ARGV[4].map{|l| l["class_name"]}.join(', ') + " #{t('please_check_and_reupload_the_excel')} " + ARGV[4].length.to_s + " #{t('class')}"
         else  
-          flash[:notice]="Shift and Class imported successfully"
+          flash[:notice]="#{t('shift_and_class_imported_successfully')}"
         end
         redirect_to :action=>'import_batches'
       end
@@ -72,7 +72,7 @@ class ImportdataController < ApplicationController
         ARGV[0] = path
         seed_file = File.join(Rails.root,'db', 'grade.rb')
         load(seed_file) if File.exist?(seed_file)
-        flash[:notice]="Grade imported successfully"
+        flash[:notice]="#{t('grade_imported_successfully')}"
         redirect_to :action=>'import_grade'
       end
     end  
@@ -125,7 +125,7 @@ class ImportdataController < ApplicationController
         
         seed_file = File.join(Rails.root,'db', 'importemployee.rb')
         load(seed_file) if File.exist?(seed_file)
-        flash[:notice]="Employee department category and grade update successfully"
+        flash[:notice]="#{t('employee_department_category_and_grade_update_successfully')}"
         redirect_to :action=>'import_employee_data'
       end
       

@@ -85,7 +85,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'task'
     end
    
@@ -179,7 +179,7 @@ class DetentionController < ApplicationController
     if request.post?
       if !params[:dwork][:comment].blank?
         @task.update_attributes(:comment=>params[:dwork][:comment])
-        flash[:notice] = "Comment Succesfully Saved"
+        flash[:notice] = "#{t('comment_succesfully_saved')}"
         redirect_to :controller => 'detention', :action => 'task'
       end
     end
@@ -271,7 +271,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'leave'
     end
    
@@ -433,7 +433,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'counseling'
     end
    
@@ -520,7 +520,7 @@ class DetentionController < ApplicationController
     if request.post?
       if !params[:counseling][:comment].blank?
         @counseling.update_attributes(:comment=>params[:counseling][:comment])
-        flash[:notice] = "Counselor Comment Succesfully Saved"
+        flash[:notice] = "#{t('counselor_comment_succesfully_saved')}"
         redirect_to :controller => 'detention', :action => 'counseling'
       end
     end
@@ -608,7 +608,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'awarning'
     end
    
@@ -781,7 +781,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'notification'
     end
    
@@ -868,7 +868,7 @@ class DetentionController < ApplicationController
     if request.post?
       if !params[:lnotification][:opinion].blank?
         @notification.update_attributes(:opinion=>params[:lnotification][:opinion])
-        flash[:notice] = "Opnion Succesfully Saved"
+        flash[:notice] = "#{t('opinion_succesfully_saved')}"
         redirect_to :controller => 'detention', :action => 'notification'
       end
     end
@@ -953,7 +953,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'suspension'
     end
    
@@ -1128,7 +1128,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'warning'
     end
    
@@ -1362,7 +1362,7 @@ class DetentionController < ApplicationController
             :body=>messege ))
       end
       
-      flash[:notice] = "Succesfully Saved"
+      flash[:notice] = "#{t('succesfully_saved')}"
       redirect_to :controller => 'detention', :action => 'index'
     end
    

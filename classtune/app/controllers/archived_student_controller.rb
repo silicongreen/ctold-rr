@@ -30,7 +30,7 @@ class ArchivedStudentController < ApplicationController
     @current_user = current_user
     @archived_student = ArchivedStudent.find(params[:id])
     @archived_student.retrive_student
-    flash[:notice]="Student Retirved"
+    flash[:notice]= "#{t('student_retirved')}"
     redirect_to :controller => 'user', :action => 'dashboard'
   end
 

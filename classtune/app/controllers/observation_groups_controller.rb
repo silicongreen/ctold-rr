@@ -32,7 +32,7 @@ class ObservationGroupsController < ApplicationController
   def create
     @obs_group=ObservationGroup.new(params[:observation_group])
     if @obs_group.save
-      flash[:notice]="Co-Scholastic Group Created Successfully."
+      flash[:notice]="#{t('co_scholastic_group_created_successfully')}"
       @obs_groups=ObservationGroup.active
     else
       @error=true

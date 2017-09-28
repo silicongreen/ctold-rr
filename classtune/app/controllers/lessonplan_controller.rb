@@ -32,7 +32,7 @@ class LessonplanController < ApplicationController
         redirect_to :controller=>:news
       end
     else
-      flash[:notice]=t('flash_msg4')
+      flash[:notice]= "#{t('flash_msg4')}"
       redirect_to :controller=>:user ,:action=>:dashboard
     end
   end
@@ -332,7 +332,7 @@ class LessonplanController < ApplicationController
 
           @lessonplan.update_attributes(:subject_ids => subject_ids)
           @lessonplan.update_attributes(:batch_ids => batch_ids)
-          flash[:notice] = "Updated"
+          flash[:notice] = "#{t('updated')}"
           @error = true
         end
       end

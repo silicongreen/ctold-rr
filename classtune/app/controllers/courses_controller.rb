@@ -59,7 +59,7 @@ class CoursesController < ApplicationController
       @subject_amount = @course.subject_amounts.build(params[:subject_amount])
       if @subject_amount.save
         @subject_amounts = @course.subject_amounts.reject{|sa| sa.new_record?}
-        flash[:notice] = "Subject amount saved successfully"
+        flash[:notice] = "#{t('subject_amount_saved_successfully')}"
         redirect_to assign_subject_amount_courses_path(:id => @course.id)
       else
         render :assign_subject_amount
@@ -73,7 +73,7 @@ class CoursesController < ApplicationController
     @subjects = @course.batches.map(&:subjects).flatten.compact.map(&:code).compact.flatten.uniq
     if request.post?
       if @subject_amount.update_attributes(params[:subject_amount])
-        flash[:notice] = "Subject amount has been updated successfully"
+        flash[:notice] = "#{t('subject_amount_has_been_updated_successfully')}"
         redirect_to assign_subject_amount_courses_path(:id => @subject_amount.course_id)
       else
         render :edit_subject_amount
@@ -85,7 +85,7 @@ class CoursesController < ApplicationController
     subject_amount = SubjectAmount.find(params[:subject_amount_id])
     course_id = subject_amount.course_id
     subject_amount.destroy
-    flash[:notice] = "Subject amount has been destroyed sucessfully"
+    flash[:notice] = "#{t('subject_amount_has_been_destroyed_sucessfully')}"
     redirect_to assign_subject_amount_courses_path(:id => course_id)
   end
 

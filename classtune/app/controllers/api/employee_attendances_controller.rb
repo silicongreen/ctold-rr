@@ -33,7 +33,7 @@ class Api::EmployeeAttendancesController < ApiController
           leave = leaves_taken.to_f+(1)
           @reset_count.update_attributes(:leave_taken => leave)
         end
-        flash[:notice] = 'Attendance was successfully created.'
+        flash[:notice] = "#{t('attendance_was_successfully_created')}"
         format.xml  { render :attendance, :status => :created }
       else
         format.xml  { render :xml => @attendance.errors, :status => :unprocessable_entity }

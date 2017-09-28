@@ -305,6 +305,23 @@
                 end
                 %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
+                 
+                      <% unless @ranked_positions.blank? %>
+                           <tr class="odd">
+                              <td class="col-pdf border-left-none" width="33%">
+                                  Position
+                              </td>
+                              <% unless @ranked_positions[@student.id.to_i].blank? %>
+                                  <td class="col-pdf align-center" width="33%"><b> <%= @ranked_positions[@student.id.to_i] %></b></td>
+                               <% else %>
+                                  <td class="col-pdf align-center" width="33%"><b>N/A</b></td>
+                               <% end %> 
+                              <td class="col-pdf no-border"  width="33%">
+
+                              </td>
+                          </tr>
+                           
+                        <% end %>
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="33%">
                               Remarks
@@ -362,6 +379,7 @@
                               
                           </td>
                       </tr>
+                      
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="33%">
                               Class Teacher's Signature

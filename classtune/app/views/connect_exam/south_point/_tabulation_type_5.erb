@@ -114,7 +114,7 @@
                   <% else %>
                     <% subject_full_mark = 0 %>
                     <% subject_obtain_mark = 0 %>
-
+                    <% check_subject_exam = false %>
                     <% @report_data['report']['exams'].each do |rs| %>
                       <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                       <% unless @examobj.blank?  %>
@@ -127,6 +127,7 @@
                           <%
                             unless score.marks.blank?
                               check_exam = true
+                              check_subject_exam = true
                               break
                             end
                           %>
@@ -146,21 +147,23 @@
                      <% end %> 
                          <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                       <td>
-                         <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                         <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
-                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                         <% if !grade.blank? and !grade.name.blank? %>
-                             <%
-                                if grades.include?(grade.name.to_s)
-                                  grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
-                                else
-                                  grades << grade.name.to_s
-                                  grade_count[grade.name.to_s] = 1
-                                end  
-                             %>
-                            <%= grade.name %>  
-                         <% else %>
-                            N/A  
+                         <% if check_subject_exam == true %>
+                          <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                          <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                          <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                          <% if !grade.blank? and !grade.name.blank? %>
+                              <%
+                                 if grades.include?(grade.name.to_s)
+                                   grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                                 else
+                                   grades << grade.name.to_s
+                                   grade_count[grade.name.to_s] = 1
+                                 end  
+                              %>
+                             <%= grade.name %>  
+                          <% else %>
+                             N/A  
+                          <% end %>
                          <% end %>
                       </td> 
                   <% end %>    

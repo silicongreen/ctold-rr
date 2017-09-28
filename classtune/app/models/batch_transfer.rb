@@ -1,3 +1,3 @@
-class BatchTransfer < ActiveRecord::Base
+class BatchTutor < ActiveRecord::Base
 
 end

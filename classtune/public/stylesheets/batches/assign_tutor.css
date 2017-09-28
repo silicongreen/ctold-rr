@@ -31,7 +31,7 @@
     background : #EEF2FD;
     border-bottom:1px solid #BECFFB;
     color : #444;
-    height : 1.5em; width : 30em;
+    height : 1.5em; width : 35em;
     list-style-type : none;
     padding : 0.5em 0 0 5em;
 }
@@ -40,7 +40,7 @@
     background : #DFEAFF;
     border-bottom:1px solid #BECFFB;
     color : #444;
-    height : 1.5em; width : 30em;
+    height : 1.5em; width : 35em;
     list-style-type : none;
     padding : 0.5em 0 0 5em;
 }
@@ -57,13 +57,13 @@
     float : left;
 }
 #tutor-list li div.tutor-name {
-    width : 350px;
+    width : 25%;
     font-weight:bold;
     font-size:13px;
 }
 #tutor-list li div.remove{
     font-size : 0.9em;
-    width : 50px;
+    width : 25%;
 }
 #tutor-list li div a {
     color : #000;

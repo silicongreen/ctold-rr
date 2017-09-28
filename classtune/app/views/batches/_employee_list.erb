@@ -22,11 +22,16 @@
     <li class="heading"> <%= t('assign_new') %>: </li>
     <% @employees.each do |e| %>
       <li class="list<%=cycle('even', 'odd')%>">
-        <div class="tutor-name"><%= e.full_name %></div>
+        
+        
         <% if @assigned_employee.include?e %>
-          <div class="remove"><%= link_to_remote "#{t('remove')}", :url => {:action => "remove_employee", :id => e.id,:batch_id=>params[:batch_id],:department_id=>params[:department_id]}, :update => "department-select", :before=>"this.style.display='none'" %></div>
+          <div class="tutor-name" style="width:75%;"><%= e.full_name %></div>
+          <div class="remove"  style="width:25%;"><%= link_to_remote "#{t('remove')}", :url => {:action => "remove_employee", :id => e.id,:batch_id=>params[:batch_id],:department_id=>params[:department_id]}, :update => "department-select", :before=>"this.style.display='none'" %></div>
         <% else %>
-          <div class="remove"><%= link_to_remote "#{t('assign')}", :url => {:action => "assign_employee", :id => e.id,:batch_id=>params[:batch_id],:department_id=>params[:department_id]},  :update => "setTimeount(function{department-select}, 2000)", :before=>"this.style.display='none'" %></div>
+          <div class="tutor-name"><%= e.full_name %></div>
+          <div class="remove"><select id="class_teacher_<%= e.id %>" name="class_teacher_<%= e.id %>"><option value="1">Class Teacher</option><option value="0">N/A</option></select></div>
+          <div class="remove"><select id="show_result_<%= e.id %>" name="show_result_<%= e.id %>"><option value="1">Show Result</option><option value="0">N/A</option></select></div>
+          <div class="remove"><%= link_to_remote "#{t('assign')}", :url => {:action => "assign_employee", :id => e.id},:with => "'batch_id=#{params[:batch_id]}'+'&department_id=#{params[:department_id]}'+'&class_teacher='+$('class_teacher_#{e.id}').value+'&show_result='+$('show_result_#{e.id}').value",  :update => "setTimeount(function{department-select}, 2000)", :before=>"this.style.display='none'" %></div>
         <% end %>
       </li>
     <% end %>

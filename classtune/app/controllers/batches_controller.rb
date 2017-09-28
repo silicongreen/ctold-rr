@@ -206,7 +206,12 @@ class BatchesController < ApplicationController
   def assign_employee
     @batch = Batch.find_by_id(params[:batch_id])
     @employees = Employee.find_all_by_employee_department_id(params[:department_id]).sort_by{|e| e.full_name.downcase}
-    @batch.employee_ids=@batch.employee_ids << params[:id]
+    batch_tutor = BatchTutor.new
+    batch_tutor.employee_id = params[:id]
+    batch_tutor.batch_id = params[:batch_id]
+    batch_tutor.class_teacher = params[:class_teacher]
+    batch_tutor.show_result = params[:show_result]
+    batch_tutor.save
     @assigned_employee=@batch.employees
     render :update do |page|
       page.replace_html 'employee-list', :partial => 'employee_list'

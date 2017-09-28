@@ -2513,8 +2513,7 @@ class ExamController < ApplicationController
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @comments.each do |cmt|
       @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam,@student_ids[i])
-      if !cmt.blank?
-        
+      if !cmt.blank?     
         if @exam_comment_exists.blank?
           ecobj = ExamConnectComment.new
           ecobj.employee_id = current_user.employee_record.id
@@ -2530,7 +2529,7 @@ class ExamController < ApplicationController
           @exam_comment_exists.updated_at = now
           @exam_comment_exists.save          
         end
-      else !@exam_comment_exists.blank?
+      elsif !@exam_comment_exists.blank?
         @exam_comment_exists.destroy
       end  
         

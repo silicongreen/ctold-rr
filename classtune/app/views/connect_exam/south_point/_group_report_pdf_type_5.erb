@@ -105,10 +105,7 @@
                                 <td class="col-2"><%= personal_and_social[i] %></td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
-                                    &#10004;
-                                  <% end %>
-                                  <% unless @exam_comment.blank? %>
-                                    <%=  @exam_comment.comments %>
+                                    &#10004; <%= all_comments_array[i].to_i %>
                                   <% end %>  
                                 </td>
                                 <td class="col-2">

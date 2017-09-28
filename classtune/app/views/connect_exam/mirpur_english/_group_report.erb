@@ -1,4 +1,3 @@
-<%= render  :partial=>"/connect_exam/mirpur_english/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 <% 
   if @ranked_positions.blank?
     @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
@@ -15,3 +14,4 @@
   end
   
 %>
+<%= render  :partial=>"/connect_exam/mirpur_english/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

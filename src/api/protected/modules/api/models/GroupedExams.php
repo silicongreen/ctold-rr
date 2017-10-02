@@ -464,7 +464,7 @@ class GroupedExams extends CActiveRecord
 
                 }
                 
-                if(Yii::app()->user->schoolId == (280))
+                if(Yii::app()->user->schoolId == 280 || Yii::app()->user->schoolId == 325)
                 {
                     $scoreObj = new ExamScores();
                     $results['students'] = $scoreObj->getrankedStudents($all_exam_group_id);

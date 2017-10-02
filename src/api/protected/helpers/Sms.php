@@ -11,7 +11,7 @@ class Sms
 
     public static $sms_attendence_school = [2, 296, 319, 312];
     public static $sms_all_guardian = [319];
-    public static $sms_subject_attendence_school = [2];
+    public static $sms_subject_attendence_school = [2,319];
     //296
 
     public static $sms_school_host = array(2 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd");

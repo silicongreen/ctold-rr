@@ -94,12 +94,12 @@ class SubjectsController < ApplicationController
             @subjects = @subject.batch.normal_batch_subject
             @normal_subjects = @subject
             @elective_groups = ElectiveGroup.find_all_by_batch_id(@batch.id)
-            flash[:notice] = "Subject created successfully!"
+            flash[:notice] = "#{t('subject_created_successfully')}"
           else
             @batch = @subject.batch
             @elective_groups = ElectiveGroup.find_all_by_batch_id(@batch.id, :conditions =>{:is_deleted=>false})
             @subjects = @subject.batch.normal_batch_subject
-            flash[:notice] = "Elective subject created successfully!"
+            flash[:notice] = "#{t('elective_subject_created_successfully')}"
           end
         else
           @error = true
@@ -181,9 +181,9 @@ class SubjectsController < ApplicationController
         @subjects = Subject.find(:all, :conditions => ["elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         @elective_groups = ElectiveGroup.find(:all, :conditions => ["is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         if params[:subject][:elective_group_id] == ""
-          flash[:notice] = "Subject created successfully!"
+          flash[:notice] = "#{t('subject_created_successfully')}"
         else
-          flash[:notice] = "Elective subject created successfully!"
+          flash[:notice] = "#{t('elective_subject_created_successfully')}"
         end
       end
     end
@@ -237,12 +237,12 @@ class SubjectsController < ApplicationController
           @subjects = @subject.batch.normal_batch_subject
           @normal_subjects = @subject
           @elective_groups = ElectiveGroup.find_all_by_batch_id(@batch.id, :conditions =>{:is_deleted=>false})
-          flash[:notice] = "Subject updated successfully!"
+          flash[:notice] = "#{t('subject_updated_successfully')}"
         else
           @batch = @subject.batch
           @elective_groups = ElectiveGroup.find_all_by_batch_id(@batch.id, :conditions =>{:is_deleted=>false})
           @subjects = @subject.batch.normal_batch_subject
-          flash[:notice] = "Elective subject updated successfully!"
+          flash[:notice] = "#{t('elective_subject_updated_successfully')}"
         end
       else
         @error = true
@@ -319,9 +319,9 @@ class SubjectsController < ApplicationController
         @subjects = Subject.find(:all, :conditions => ["elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         @elective_groups = ElectiveGroup.find(:all, :conditions => ["is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         if params[:subject][:elective_group_id] == ""
-          flash[:notice] = "Subject updated successfully!"
+          flash[:notice] = "#{t('subject_updated_successfully')}"
         else
-          flash[:notice] = "Elective subject updated successfully!"
+          flash[:notice] = "#{t('elective_subject_updated_successfully')}"
         end
       else
         @error = true
@@ -420,7 +420,7 @@ class SubjectsController < ApplicationController
       @error_text = "#{t('cannot_delete_subjects')}"
       flash[:notice] = "#{t('cannot_delete_subjects')}"
     else
-      flash[:notice] = "Subject Deleted successfully!"
+      flash[:notice] = "#{t('subject_deleted_successfully')}"
     end
     
   end
@@ -497,9 +497,9 @@ class SubjectsController < ApplicationController
     @subjects = Subject.find(:all, :conditions => ["elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
     
     if @error_found
-      flash[:notice] = "Subject can't be assigned for some batches"
+      flash[:notice] = "#{t('subject_cant_be_assigned_for_some_batches')}"
     else
-      flash[:notice] = "Subject Assigned successfully!"
+      flash[:notice] = "#{t('subject_assigned_successfully')}"
     end
     
     partial_path = ""
@@ -647,12 +647,12 @@ class SubjectsController < ApplicationController
     
     #if params[:subject][:elective_group_id] == ""
     if @error_found
-      flash[:notice] = "Subject can't be assigned for some batches"
+      flash[:notice] = "#{t('subject_cant_be_assigned_for_some_batches')}"
     else
-      flash[:notice] = "Subject Assigned successfully!"
+      flash[:notice] = "#{t('subject_assigned_successfully')}"
     end
    # else
-    #  flash[:notice] = "Elective subject created successfully!"
+    #  flash[:notice] = "#{t('elective_subject_updated_successfully')}"
     #end
     
     partial_path = ""

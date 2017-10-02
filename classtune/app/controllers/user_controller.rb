@@ -480,7 +480,7 @@ class UserController < ApplicationController
         end
       end
     else
-      flash[:notice] = t('no_users')
+      flash[:notice] = "#{t('no_users')}"
       redirect_to :controller => "user", :action => "dashboard"
     end
   end
@@ -506,7 +506,7 @@ class UserController < ApplicationController
     @user = User.active.find_by_username(params[:id],:conditions=>"admin = 1")
     unless @user.nil?
       if current_user == @user
-        flash[:notice] = "You cannot delete your own profile"
+        flash[:notice] = "#{t('you_cannot_delete_your_own_profile')}"
         redirect_to :controller => "user", :action => "dashboard" and return
       else
         if @user.employee_record.nil?
@@ -986,7 +986,7 @@ class UserController < ApplicationController
     allowed_links = MenuLink.find_all_by_id(params[:selected_links])
     current_user.menu_links = allowed_links
     Rails.cache.delete("user_quick_links#{current_user.id}")
-    flash[:notice]="Quick Links modified successfully."
+    flash[:notice]="#{t('quick_links_modified_successfully')}"
     render :text=>""
   end
 

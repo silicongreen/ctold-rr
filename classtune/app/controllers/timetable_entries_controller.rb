@@ -272,7 +272,7 @@ class TimetableEntriesController < ApplicationController
     @timetable=Timetable.find_by_id(params[:timetable_id])
 
     if @timetable.nil?
-      flash[:notice] = t('former_timetable')
+      flash[:notice] = "#{t('former_timetable')}"
       redirect_to :controller => "user", :action => "dashboard"
     end
   end

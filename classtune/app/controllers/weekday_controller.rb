@@ -65,7 +65,7 @@ class WeekdayController < ApplicationController
       else
         if @batch.nil?
           if(weekday_ids.blank? or TimeTableWeekday.find_by_weekday_set_id(WeekdaySet.first.try(:id)).present?)
-            flash[:notice] = "Default weekdays cannot be edited"
+            flash[:notice] = "#{t('default_weekdays_cannot_be_edited')}"
           else   
             WeekdaySet.first.weekday_ids = weekday_ids
             flash[:notice] = "#{t('weekdays_modified')}"

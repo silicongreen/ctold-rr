@@ -46,7 +46,7 @@ class ReminderController < ApplicationController
         flash[:notice] = "#{t('flash1')}"
         redirect_to :controller=>"reminder", :action=>"create_reminder"
       else
-        flash[:notice]="<b>ERROR:</b>#{t('flash6')}"
+        flash[:notice]="<b>#{t('error')}:</b>#{t('flash6')}"
         redirect_to :controller=>"reminder", :action=>"create_reminder"
       end
     end
@@ -157,7 +157,7 @@ class ReminderController < ApplicationController
         flash[:notice]="#{t('flash3')}"
         redirect_to :controller=>"reminder", :action=>"view_reminder", :id2=>params[:id2]
       else
-        flash[:notice]="<b>ERROR:</b>#{t('flash4')}"
+        flash[:notice]="<b>#{t('error')}:</b>#{t('flash4')}"
         redirect_to :controller=>"reminder", :action=>"view_reminder",:id2=>params[:id2]
       end
     end

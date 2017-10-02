@@ -54,7 +54,7 @@ class ObservationGroupsController < ApplicationController
     @obs_group=ObservationGroup.find(params[:id])
     @obs_group.attributes=params[:observation_group]
     if @obs_group.save
-      flash[:notice]="Co-Scholastic Group Updated Successfully."
+      flash[:notice]="#{t('co_scholastic_group_created_successfully')}"
       @obs_groups=ObservationGroup.active
     else
       @error=true
@@ -63,9 +63,9 @@ class ObservationGroupsController < ApplicationController
   def destroy
     @category=ObservationGroup.find(params[:id])
     if @category.update_attribute(:is_deleted,true)
-      flash[:notice]="Co-Scholastic Group Deleted."
+      flash[:notice]="#{t('co_scholastic_group_deleted')}"
     else
-      flash[:notice]="Unable to delete Co-Scholastic Group"
+      flash[:notice]="#{t('unable_to_delete_co_scholastic_group')}"
     end
     redirect_to :action => "index"
   end
@@ -82,7 +82,7 @@ class ObservationGroupsController < ApplicationController
     @observation.is_active=true
     if @observation.save
       @observations=@obs_group.observations.active
-      flash[:notice]="Co-Scholastic Criteria Created Successfully."
+      flash[:notice]="#{t('co_scholastic_criteria_created_successfully')}"
     else
       @error=true
     end
@@ -99,7 +99,7 @@ class ObservationGroupsController < ApplicationController
     @obs_group=ObservationGroup.find(params[:observation][:observation_group_id])
     if @observation.save
       @observations=@obs_group.observations.active
-      flash[:notice]="Co-Scholastic Criteria updated Successfully."
+      flash[:notice]="#{t('co_scholastic_criteria_updated_successfully')}"
     else
       @error=true
     end
@@ -128,7 +128,7 @@ class ObservationGroupsController < ApplicationController
     @course.observation_groups = ObservationGroup.find_all_by_id(new_observation_groups)
     @course_observation_groups=@course.observation_groups
     @obs_groups=ObservationGroup.all
-    flash[:notice] = "Co-Scholastic groups successfully assigned to the selected course."
+    flash[:notice] = "#{t('co_scholastic_groups_successfully_assigned_to_the_selected_course')}"
     render :js=>"window.location='/observation_groups/assign_courses'"
   end
 
@@ -136,9 +136,9 @@ class ObservationGroupsController < ApplicationController
     @observation=Observation.find(params[:id])
     @obs_group=@observation.observation_group
     if @observation.update_attribute(:is_active,false)
-      flash[:notice]="Co-scholastic criteria deleted."
+      flash[:notice]="#{t('co_scholastic_criteria_deleted')}"
     else
-      flash[:notice]="Co-Scholastic criteria could not be deleted"
+      flash[:notice]="#{t('co_scholastic_criteria_could_not_be_deleted')}"
     end
     @observations=@obs_group.observations.find(:all,:conditions=>{:is_active=>true},:order=>"sort_order ASC")
     render(:update) do |page|

@@ -149,10 +149,10 @@ class SyllabusController < ApplicationController
     if request.post?         
       if params[:syllabus][:title]=="" or params[:syllabus][:content]==""      
         if @is_class          
-          flash[:notice] = "Please fill up the required field." 
+          flash[:notice] = "#{t('please_fill_up_the_required_field')}" 
           redirect_to :controller => 'syllabus', :action => 'new', :batch_id => params[:batch_id], :batch_name => params[:batch_name],:class => true,:course_name => params[:course_name]
         else
-          flash[:notice] = "Please fill up the required field." 
+          flash[:notice] = "#{t('please_fill_up_the_required_field')}" 
           redirect_to :controller => 'syllabus', :action => 'new', :batch_id => params[:batch_id], :batch_name => params[:batch_name]        
         end
       end  
@@ -210,7 +210,7 @@ class SyllabusController < ApplicationController
         unless params[:batch].nil?          
           @syllabus.batch_id =  params[:batch][0]
         else          
-          flash[:notice] = "Batch is Empty. Please select a Batch"
+          flash[:notice] = "#{t('batch_is_empty_please_select_a_batch')}"
         end
         
         if params[:syllabus][:subject_id].to_i == 0
@@ -232,7 +232,7 @@ class SyllabusController < ApplicationController
           flash[:notice] = "#{t('flash1')}"          
           redirect_to :controller => 'syllabus', :action => 'view', :id => @syllabus.id
         else
-          flash[:notice] = "Hello Sir."
+          flash[:notice] = "#{t('hello_sir')}"
         end
       end
       

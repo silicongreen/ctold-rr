@@ -416,7 +416,7 @@ class StudentController < ApplicationController
       unless file.nil?               
         case File.extname(file.original_filename)        
         when ".xls" then @hasfile = 1        
-        else flash[:notice] =  "Invalid file type for Import: #{file.original_filename}"
+        else flash[:notice] =  "#{t('invalid_file_type_for_import')}: #{file.original_filename}"
         end
         @all = []
         @success_data = []
@@ -463,7 +463,7 @@ class StudentController < ApplicationController
               end
               
               if @batch_id == 0 or @batch_id == "0" or @batch_id == ""
-                flash[:notice] =  "Student batch not found.Please check Class,Section and Shift for student '#{row[1]} #{row[3]}'"
+                flash[:notice] =  "#{t('student_batch_not_found_please_check_class_section_and_shift_for_student')} '#{row[1]} #{row[3]}'"
                 break
               end
               
@@ -591,11 +591,11 @@ class StudentController < ApplicationController
         #  flash[:notice] = e.message
         #end 
         if @msg == 1
-          flash[:notice] =  "No student added.There is Some Error.Please Contact to your Administrator."
+          flash[:notice] =  "#{t('no_student_added_there_is_some_error_please_contact_to_your_administrator')}"
         elsif @msg ==2
-          flash[:notice] =  "There is Some Error.Please Contact to your Administrator."
+          flash[:notice] =  "#{t('there_is_some_error_please_contact_to_your_administrator')}"
         elsif @msg ==3
-          flash[:notice] =  "All students added"
+          flash[:notice] =  "#{t('all_students_added')}"
         end
         
       end
@@ -931,7 +931,7 @@ class StudentController < ApplicationController
     @student_additional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id)
     @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
     if @additional_fields.empty?
-      flash[:notice] = "#{t('flash9')} #{@student.first_name} #{@student.last_name}. #{t('new_admission_link')} <a href='/student/admission1'>Click Here</a>"
+      flash[:notice] = "#{t('flash9')} #{@student.first_name} #{@student.last_name}. #{t('new_admission_link')} <a href='/student/admission1'>#{t('click_here')}</a>"
       redirect_to(:controller => "student", :action => "profile", :id => @student.id ) and return
     end
     if request.post?
@@ -979,7 +979,7 @@ class StudentController < ApplicationController
             additional_info.destroy unless additional_info.student_additional_field.is_mandatory == true
           end
         end
-        flash[:notice] = "#{t('flash9')} #{@student.first_name} #{@student.last_name}. #{t('new_admission_link')} <a href='/student/admission1'>Click Here</a>"
+        flash[:notice] = "#{t('flash9')} #{@student.first_name} #{@student.last_name}. #{t('new_admission_link')} <a href='/student/admission1'>#{t('click_here')}</a>"
         redirect_to :controller => "student", :action => "profile", :id => @student.id
       end
     end
@@ -1818,10 +1818,10 @@ class StudentController < ApplicationController
        
         if params[:status_change] == "1"
           activated_student_and_guardian(params[:student_id])
-          flash[:notice] = "Student activated"
+          flash[:notice] = "#{t('student_activated')}"
         elsif params[:status_change] == "0"
           delete_student_and_guardian(params[:student_id])
-          flash[:notice] = "Student Parmanantly deleted"
+          flash[:notice] = "#{t('student_parmanantly_deleted')}"
         end  
         
       end
@@ -1835,13 +1835,13 @@ class StudentController < ApplicationController
           student_ids.each do |r|
             activated_student_and_guardian(r)
           end
-          flash[:notice] = "Students activated"
+          flash[:notice] = "#{t('student_activated')}"
         elsif params[:status_change] == "0"
           student_ids = params[:student_ids].split("|") 
           student_ids.each do |r|
             delete_student_and_guardian(r)
           end
-          flash[:notice] = "Students Parmanantly deleted"
+          flash[:notice] = "#{t('student_parmanantly_deleted')}"
         end  
         
       end
@@ -2263,7 +2263,7 @@ class StudentController < ApplicationController
         end
       end
     else
-      flash[:notice] = "#{"Unable to delete guardian since there exist siblings"} #{@student.all_siblings.select{|s| s.immediate_contact_id==@guardian.id}.collect(&:full_name).join(',')}"
+      flash[:notice] = "#{t('unable_to_delete_guardian_since_there_exist_siblings')} #{@student.all_siblings.select{|s| s.immediate_contact_id==@guardian.id}.collect(&:full_name).join(',')}"
       redirect_to :controller => 'student', :action => 'profile', :id => params[:student_id]
     end
   end
@@ -2358,7 +2358,7 @@ class StudentController < ApplicationController
       @employee_obj = Employee.find_by_id(employee.id)
       @employee_batches = @employee_obj.batches
       if @employee_batches.empty?
-        flash[:notice]="Only class teacher can access this page"
+        flash[:notice]="#{t('only_class_teacher_can_access_this_page')}"
         redirect_to :controller => "user", :action => "dashboard"
       else
         @batch_id = @employee_batches[0].batch_id

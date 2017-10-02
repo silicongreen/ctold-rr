@@ -404,7 +404,7 @@ class StudentAttendanceController < ApplicationController
                 :body=>""+@student.first_name+" apply for leave from "+params[:leave_apply][:start_date]+" to "+params[:leave_apply][:end_date] ))
           end 
           
-          flash[:notice] = "Leave Applied Successfully"
+          flash[:notice] = "#{t('leave_applied_successfully')}"
           redirect_to :controller => "student_attendance", :action=> "leaves", :id=>@student.id
         end
       else
@@ -430,9 +430,9 @@ class StudentAttendanceController < ApplicationController
     @students = Student.find(@applied_leave.student_id)
     unless @applied_leave.viewed_by_teacher
       ApplyLeaveStudent.destroy(params[:id])
-      flash[:notice] = t('student_cancle_leave_done')
+      flash[:notice] = "#{t('student_cancle_leave_done')}"
     else
-      flash[:notice] = t('student_cancle_leave_viewed')
+      flash[:notice] = "#{t('student_cancle_leave_viewed')}"
     end
     redirect_to :action=>"leaves", :id=>@students.id
   end

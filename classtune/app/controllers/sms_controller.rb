@@ -116,7 +116,7 @@ class SmsController < ApplicationController
             
             message = params[:send_sms][:message]
             sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
-            flash[:notice]="Succesffully Send"
+            flash[:notice]="#{t('succesffully_send')}"
           else
            
             csv_string = FasterCSV.generate do |csv|
@@ -135,10 +135,10 @@ class SmsController < ApplicationController
           end
           
         else
-          flash[:notice]="No Number Selected"
+          flash[:notice]="#{t('no_number_selected')}"
         end
       else
-        flash[:notice]="No Student Selected"
+        flash[:notice]="#{t('no_student_selected')}"
       end
       
     end
@@ -279,7 +279,7 @@ class SmsController < ApplicationController
             
             message = params[:send_sms][:message]
             sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
-            flash[:notice]="Succesffully Send"
+            flash[:notice]="#{t('succesffully_send')}"
           else
            
             csv_string = FasterCSV.generate do |csv|
@@ -298,10 +298,10 @@ class SmsController < ApplicationController
           end
           
         else
-         flash[:notice]="No Number Selected"
+         flash[:notice]="#{t('no_number_selected')}"
         end
       else
-        flash[:notice]="No Employee Selected"
+        flash[:notice]="#{t('no_employee_selected')}"
       end
       
     end

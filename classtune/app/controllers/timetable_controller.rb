@@ -86,7 +86,7 @@ class TimetableController < ApplicationController
           flash[:notice]="#{t('timetable_created_from')} #{@timetable.start_date} - #{@timetable.end_date}"
           redirect_to :controller=>:timetable_entries,:action => "new",:timetable_id=>@timetable.id
         else
-          flash[:notice]='error_occured'
+          flash[:notice]= "#{t('error_occured')}"
           render :action=>'new_timetable'
         end
       else
@@ -173,10 +173,10 @@ class TimetableController < ApplicationController
                   entry2.save
                 end
               end
-              flash[:notice]=t('timetable_updated')
+              flash[:notice]= "#{t('timetable_updated')}"
               redirect_to :controller=>:timetable_entries,:action => "new",:timetable_id=>@tt2.id
             else
-              flash[:notice]=t('timetable_updated')
+              flash[:notice]= "#{t('timetable_updated')}"
               redirect_to :controller=>:timetable,:action=>:edit_master
             end
           else
@@ -185,12 +185,12 @@ class TimetableController < ApplicationController
           end
         else
           if @tt.update_attributes(params[:timetable])
-            flash[:notice]=t('timetable_updated')
+            flash[:notice]= "#{t('timetable_updated')}"
             redirect_to :controller=>"timetable",:action => "edit_master"
           else
             @timetable.errors.add_to_base("timetable_update_failure")
             @error=true
-            flash[:notice]=t('timetable_update_failure')
+            flash[:notice]= "#{t('timetable_update_failure')}"
           end
         end
       else
@@ -333,7 +333,7 @@ class TimetableController < ApplicationController
   def destroy
     @timetable=Timetable.find(params[:id])
     if @timetable.destroy
-      flash[:notice]=t('timetable_deleted')
+      flash[:notice]= "#{t('timetable_deleted')}"
       redirect_to :controller=>:timetable
     end
   end
@@ -373,10 +373,10 @@ class TimetableController < ApplicationController
           @timetable_entries[tt.weekday_id][tt.class_timing_id][i] = tt
         end
       else
-        flash[:notice]=t('no_entries_found')
+        flash[:notice]= "#{t('no_entries_found')}"
       end
     else
-      flash[:notice]=t('flash_msg6')
+      flash[:notice]= "#{t('flash_msg6')}"
       redirect_to :controller=>:user ,:action=>:dashboard
     end
   end
@@ -455,7 +455,7 @@ class TimetableController < ApplicationController
         end
       end
     else
-      flash[:notice] = t('timetable_not_set')
+      flash[:notice] = "#{t('timetable_not_set')}"
       redirect_to :controller => 'user', :action => 'dashboard'
     end
   end
@@ -551,12 +551,12 @@ class TimetableController < ApplicationController
         params[:employee_subjects].delete_blank
         success,@error_obj = EmployeesSubject.allot_work(params[:employee_subjects])
         if success
-          flash[:notice] = t('work_allotment_success')
+          flash[:notice] = "#{t('work_allotment_success')}"
         else
-          flash[:notice] = t('updated_with_errors')
+          flash[:notice] = "#{t('updated_with_errors')}"
         end
       else
-        flash[:notice] = t('updated_with_errors')
+        flash[:notice] = "#{t('updated_with_errors')}"
       end
     end
     @batches = Batch.active :include=>[{:subjects=>:employees},:course]

@@ -622,6 +622,7 @@ authorization do
       :all_students_import,
       :get_section_data,
       :get_classes,
+      :get_classes_publisher,
       :get_batches,
       :admission2,
       :admission3,
@@ -1454,6 +1455,7 @@ authorization do
       :all_students_import,
       :get_section_data,
       :get_classes,
+      :get_classes_publisher,
       :get_batches,
       :update_positions,
       :edit1,
@@ -1536,9 +1538,7 @@ authorization do
       :view_attendance,
       :employee_setting_update,
       :edit_employee_settings,
-      :employee_settings,
-      :employee_add_attendance,
-      :employee_create_attendance
+      :employee_settings
     ]
     has_permission_on [:employee_attendances],
       :to => [
@@ -1688,7 +1688,7 @@ authorization do
       :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan
       ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
-    has_permission_on [:meetings], :to => [:index,:outbox,:inbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_batches, :get_section_data, :list_students_by_course]
+    has_permission_on [:meetings], :to => [:index,:outbox,:inbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:user],  :to => [:edit_privilege,:index,:make_sibligns]
     has_permission_on [:weekday], :to => [:index, :week, :create]
     has_permission_on [:class_timing_sets], :to => [
@@ -2484,6 +2484,7 @@ authorization do
       :all_students_import,
       :get_section_data,
       :get_classes,
+      :get_classes_publisher,
       :get_batches,
       :admission1_2,
       :admission2,
@@ -2688,6 +2689,7 @@ authorization do
       :all_students_import,
       :get_section_data,
       :get_classes,
+      :get_classes_publisher,
       :get_batches,
       :update_positions,
       :edit1,
@@ -2798,9 +2800,7 @@ authorization do
       :view_employee_payslip,
       :employee_setting_update,
       :edit_employee_settings,
-      :employee_settings,
-      :employee_add_attendance,
-      :employee_create_attendance
+      :employee_settings
 
     ]
     has_permission_on [:calendar], :to => [:event_delete, :event_list,:edit_acacal,:addacacal,:cancel_acacal]
@@ -3263,7 +3263,7 @@ authorization do
       :show,
       :profile_pdf
     ]
-    has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_batches, :get_section_data, :list_students_by_course]
+    has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt]
     has_permission_on [:event], :to => [:event_details]
     has_permission_on [:detention],

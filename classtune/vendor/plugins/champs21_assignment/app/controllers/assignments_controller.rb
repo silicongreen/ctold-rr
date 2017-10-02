@@ -4,6 +4,7 @@ class AssignmentsController < ApplicationController
   filter_access_to :all,:except=>[:show]
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
+  before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:subject_assignments_publisher]
   
   def get_homework_filter
     batch_id = params[:batch_name]
@@ -28,6 +29,33 @@ class AssignmentsController < ApplicationController
     end
     respond_to do |format|
       format.js { render :action => 'get_homework_filter' }
+    end
+   
+  end
+  
+  def get_homework_filter_publisher
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    @assignments = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=2 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+        elsif student_section.blank?
+          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=2 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+        else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=2 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+          end
+        end  
+      end
+    end
+    respond_to do |format|
+      format.js { render :action => 'get_homework_filter_publisher' }
     end
    
   end
@@ -75,6 +103,23 @@ class AssignmentsController < ApplicationController
       @batches = Batch.active      
     end
   end
+  
+  def publisher
+    
+      @classes = []
+      @batches = []
+      @batch_no = 0
+      @course_name = ""
+      @courses = []
+      if current_user.employee
+        @batches = @current_user.employee_record.batches
+        @batches = @batches.uniq unless @batches.empty?
+      elsif current_user.admin
+        @batches = Batch.active
+      end    
+ 
+  end
+  
   def showsubjects
     batch_name = ""
     if Batch.active.find(:all, :group => "name").length > 1
@@ -140,6 +185,72 @@ class AssignmentsController < ApplicationController
       format.js { render :action => 'showsubjects' }
     end
   end
+  
+  def showsubjects_publisher
+    batch_name = ""
+    if Batch.active.find(:all, :group => "name").length > 1
+      unless params[:student].nil?
+        unless params[:student][:batch_name].nil?
+          batch_id = params[:student][:batch_name]
+          batches_data = Batch.find_by_id(batch_id)
+          batch_name = batches_data.name
+        end
+        unless params[:student][:from].nil?
+          @from = params[:student][:from]
+        end
+      end
+    else
+      batches = Batch.active
+      batch_name = batches[0].name
+    end
+    course_id = 0
+    unless params[:course_id].nil?
+      course_id = params[:course_id]
+    end
+    if course_id == 0
+      unless params[:student].nil?
+        unless params[:student][:section].nil?
+          course_id = params[:student][:section]
+        end
+      end
+    end
+    
+    if batch_name.length == 0
+        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+          batches = Batch.find_by_course_id(course_id)
+          batches
+        }
+    else
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
+        batches = Batch.find_by_course_id_and_name(course_id, batch_name)
+        batches
+      }
+    end 
+      
+    @batch_id = 0
+    unless @batch_data.nil?
+      @batch_id = @batch_data.id 
+    end
+    
+    if @batch_id.blank? or @batch_id == 0
+      @subjects = []
+    else
+      @batch = Batch.find @batch_id
+      @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
+      @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+      @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
+#      @elective_subjects = []
+#      @student_electives.each do |e|
+#        @elective_subjects.push Subject.find(e.subject_id)
+#      end
+      @subjects = @normal_subjects+@elective_subjects
+    end
+    
+    #puts @elective_groups.to_yaml
+    respond_to do |format|
+      format.js { render :action => 'showsubjects_publisher' }
+    end
+  end
 
   def subject_assignments
 
@@ -166,6 +277,19 @@ class AssignmentsController < ApplicationController
     
     render(:update) do |page|
       page.replace_html 'subject_assignments_list', :partial=>'subject_assignments'
+    end
+  end
+  
+  def subject_assignments_publisher
+
+    @subject =Subject.find_by_id params[:subject_id]    
+    unless @subject.nil?
+      @assignments =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=2 ",:order=>"duedate desc", :page=>params[:page] , :per_page => 20   
+    else
+      @assignments = []
+    end
+    render(:update) do |page|
+      page.replace_html 'listing', :partial=>'subject_assignments_publisher'
     end
   end
 
@@ -335,7 +459,7 @@ class AssignmentsController < ApplicationController
     @assignment.employee = current_user.employee_record
     
     @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
-    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1           
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1           
       @assignment.is_published = 2
     end
     
@@ -377,7 +501,7 @@ class AssignmentsController < ApplicationController
               :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
           )
         end
-        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and !@current_user.employee_entry.homework_publisher == 1
+        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1
           flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
         else
           flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
@@ -401,6 +525,33 @@ class AssignmentsController < ApplicationController
   end
 
   def show
+    @assignment  = Assignment.active.find(params[:id], :include => [:employee])
+    unless @assignment.nil?
+      #RR assignment defaulter added
+      @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(@assignment.id)
+      @current_user = current_user
+      @assignment_answers = @assignment.assignment_answers
+      @students_assigned_count = @assignment.student_list.split(",").count
+      @answered_count = @assignment_answers.count
+      @pending_count =     @students_assigned_count  -  @answered_count
+      @assignment_answers = AssignmentAnswer.find_all_by_student_id_and_assignment_id(current_user.student_record.id,@assignment.id) if current_user.student?
+      
+      @subject =Subject.find_by_id @assignment.subject_id
+      student=current_user.student_record
+      unless @subject.nil?
+        @assignments_list =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=1 and FIND_IN_SET(#{student.id},student_list)",:order=>"duedate desc", :page=>params[:page]
+      else
+        @assignments_list =Assignment.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1",:order=>"duedate desc", :page=>params[:page]
+      end
+      
+      Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 4,current_user.id])
+    else
+      flash[:notice]=t('flash_msg4')
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end
+  end
+  
+  def show_publisher
     @assignment  = Assignment.active.find(params[:id], :include => [:employee])
     unless @assignment.nil?
       #RR assignment defaulter added
@@ -470,7 +621,7 @@ class AssignmentsController < ApplicationController
     end
     @assignment.created_at = now
     
-    if @assignment.save
+    if @assignment.save and @assignment.is_published == 1
       a_student = @assignment.student_list
       if !a_student.blank?
         @subject = Subject.find_by_id(@assignment.subject_id)
@@ -512,6 +663,58 @@ class AssignmentsController < ApplicationController
       end
       flash[:notice] = "Homerok successfully published"
       redirect_to assignments_path
+    end
+  end
+  
+  def publisher_homework
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @assignment = Assignment.find_by_id(params[:id])
+    @assignment.is_published = 1
+  
+    @assignment.created_at = now
+    
+    if @assignment.save
+      a_student = @assignment.student_list
+      if !a_student.blank?
+        @subject = Subject.find_by_id(@assignment.subject_id)
+        student_ids = a_student.split(',')
+        students = Student.find_all_by_id(student_ids)
+        available_user_ids = []
+        batch_ids = {}
+        student_ids = {}
+
+        students.each do |st|
+          available_user_ids << st.user_id
+          batch_ids[st.user_id] = st.batch_id
+          student_ids[st.user_id] = st.id
+          @student = Student.find(st.id)
+          unless @student.student_guardian.empty?
+              guardians = @student.student_guardian
+              guardians.each do |guardian|
+    #            guardian = Guardian.find(@student.immediate_contact_id)
+
+                unless guardian.user_id.nil?
+                  available_user_ids << guardian.user_id
+                  batch_ids[guardian.user_id] = @student.batch_id
+                  student_ids[guardian.user_id] = @student.id
+                end
+              end  
+          end
+        end
+        #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+        Delayed::Job.enqueue(
+            DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => available_user_ids,
+              :subject=>"#{t('new_homework_added')} : "+@assignment.title,
+              :rtype=>4,
+              :rid=>@assignment.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
+          )
+      end
+      flash[:notice] = "Homerok successfully published"
+      redirect_to :action=>"show_publisher",:id=>@assignment.id
     end
   end
 
@@ -666,5 +869,29 @@ class AssignmentsController < ApplicationController
         end
       end
     end
+  end
+  
+  def only_publisher_admin_allowed
+    @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
+    
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1)
+      if @current_user.employee?
+        employee= @current_user.employee_record
+        if employee.homework_publisher.to_i == 1
+          @allow_access = true
+        else
+          flash[:notice] = "#{t('flash_msg4')}"
+          redirect_to :controller => 'user', :action => 'dashboard'
+        end
+      elsif @current_user.admin?
+        @allow_access = true
+      else  
+        flash[:notice] = "#{t('flash_msg4')}"
+        redirect_to :controller => 'user', :action => 'dashboard'
+      end  
+    else
+      flash[:notice] = "#{t('flash_msg4')}"
+      redirect_to :controller => 'user', :action => 'dashboard'
+    end  
   end
 end

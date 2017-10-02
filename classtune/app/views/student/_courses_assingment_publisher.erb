@@ -1,0 +1,6 @@
+<%= select :student, :class_name, options_for_select(@courses.map {|c| [c.course_name]}, @course_name),
+{:prompt => "#{t('select')}"},
+{:onChange => "#{remote_function(:url => {:controller => "student",:action => "get_section_data"}, :with => "'class_name='+value+'&'+$('new_student').serialize()+'&page=section_assingment&partial_view=student/sections_assignment_view_publisher'" ,:before => "$('loading').show();",
+:success => "$('loading').hide();")}"} %>  
+
+<%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading", :style =>"display: none;" ) %>

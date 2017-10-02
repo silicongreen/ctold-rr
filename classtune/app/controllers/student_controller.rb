@@ -262,6 +262,58 @@ class StudentController < ApplicationController
     end
   end
   
+  def get_classes_publisher
+    school_id = MultiSchool.current_school.id
+    @batch_name = false
+    unless params[:batch_id].empty?
+      batch_data = Batch.find params[:batch_id]
+      batch_name = batch_data.name
+    end 
+    @courses = []
+    unless batch_name.blank?
+      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+        @batch_name = batch_name;
+        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+        class_data = tmp_classes
+        class_data
+      }
+    end
+    
+    @classes = []
+    @batch_id = ''
+    @course_name = ""
+    render :update do |page|
+      if params[:page].nil?
+        page.replace_html 'course', :partial => 'courses', :object => @courses
+        unless params[:section_page].nil? and params[:section_partial].nil?
+          page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+        end
+        unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+          page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+        end
+      else
+        if params[:partial_view].nil?
+          page.replace_html params[:page], :partial => 'courses', :object => @courses
+          unless params[:section_page].nil? and params[:section_partial].nil?
+            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+          end
+          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+          end
+        else
+          page.replace_html params[:page], :partial => params[:partial_view], :object => @courses
+          unless params[:section_page].nil? and params[:section_partial].nil?
+            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+          end
+          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+          end
+        end
+      end  
+    end
+  end
+  
   def insert_into_new_parent_student_table
     
     @students = Student.active.find(:all)

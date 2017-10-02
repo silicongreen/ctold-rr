@@ -15,6 +15,28 @@
       </div>      
     </div>    
   </div>
+    
+  <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li class="active">
+                    <%= link_to "All Homework",
+                      {:controller=>"assignments", :action=>"index"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+                <% @config = Configuration.find_by_config_key('HomeworkWillForwardOnly') %>
+                <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and (@current_user.admin? or @current_user.employee_entry.homework_publisher == 1) %>
+                <li>
+                  <%= link_to "Forwarded Homework",
+                      {:controller=>"assignments", :action=>"publisher"},
+                      {:class => 'f2'}
+                  %>
+
+                </li>
+                <% end %>
+                
+            </ul>
+        </div>
   
     <% if @current_user.employee?  %> 
     <div class="header-form-wrapper">

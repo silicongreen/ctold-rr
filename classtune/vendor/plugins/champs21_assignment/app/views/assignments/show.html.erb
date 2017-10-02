@@ -166,7 +166,7 @@
               :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
           </div>
           <% if @assignment.is_published==0 or (@current_user.admin? and @assignment.is_published==2) %>
-          <%= link_to "► Published Homework", { :action => 'published_homework', :id =>params[:id]},
+          <%= link_to "► Publish Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
           <!-- RR, remove comment-out later -->
           

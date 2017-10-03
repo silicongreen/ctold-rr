@@ -2,15 +2,40 @@
   if @ranked_positions.blank?
     @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
     @exam_group_ids = @grouped_exams.map(&:exam_group_id)
-    @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,GROUP_CONCAT(grading_levels.name) as grades,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+    @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,GROUP_CONCAT(grading_levels.name,'|||',exam_scores.exam_id) as grades,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
     @ranked_positions = {}
     unless @ranked_student.blank?
       p = 0
       @ranked_student.each do |rs|
-        if rs.grades.index("F").nil?
-          p = p+1
-          @ranked_positions[rs.student_id.to_i] = p
+        all_grades = rs.grades.split(",")
+        ranked = true
+        unless all_grades.blank?
+
+          all_grades.each do |gr|
+            unless gr.index("F").nil?
+              exam_gr = gr.split("|||")
+              exam_id = exam_gr[1]
+              exam = Exam.find_by_id(exam_id) 
+              unless exam.blank? and exam.subject.blank? and 
+                unless exam.subject.elective_group_id.blank?
+                  check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id.to_i,exam.subject_id)
+                  unless check_std_subject.blank?
+                    ranked = false
+                  end
+                else
+                  ranked = false
+                end
+
+            end
+          end
+
+
         end
+      end
+      if ranked == true
+        p = p+1
+        @ranked_positions[rs.student_id.to_i] = p
+      end
       end
     end
   end

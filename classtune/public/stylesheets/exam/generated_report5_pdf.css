@@ -1614,7 +1614,149 @@ td.checkbox_inline p
 
 
 ///sjis
+.sjis-new table td
+{
+    font-size:20px;
+    padding: 2px 2px 2px 3px;   
+}
+.sjis-new table tr td.t-left
+{
+    text-align: left;
+}
+.sjis-new table td.border-left-none{
+   border-left: none !important; 
+} 
+.sjis-new table td.border-right-none{
+   border-right: none !important;  
+}
+ .sjis-new table td.no-border
+ {
+    border: none !important;  
+ }
+ .sjis-new table.evaluation td
+ {
+     text-align: left;
+     padding: 2px 2px 2px 3px !important; 
+     font-size: 16px;
+ }
+ .sjis-new td.align-center
+ {
+     text-align:center !important;
+ }
+ .sjis-new #pdf-table
+ {
+     margin-left:1px;
+ }
+ 
+ 
+
+.sjis-new .table-header td{
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size:16px;
+}
+
+.sjis-new tr.odd td.align-left-baf, .sjis-new tr.even td.align-left-baf
+{
+    text-align: left;
+}
 
 
+.sjis-new tr.odd td, .sjis-new tr.even td
+{
+    padding: 1px 1px 1px 1px;  
+    border: 1px solid #000000;
+    font-size:16px;
+}
 
 
+.sjis-new table#pdf-table{
+    border-top: none;
+    border-collapse:collapse
+}
+.sjis-new tr.even{
+    border: none;
+}
+
+.sjis-new tr.odd{
+    border: none;
+}
+.sjis-new h4.h4-evaluation
+{
+   margin: 2px 2px 2px 3px; 
+}
+.sjis-new #grouped_exam_report h4.result-in-details
+{
+   margin: 2px 2px 2px 3px; 
+}
+.sjis-new h4
+{
+    border-bottom: 1px solid black;
+    font-size: 20px;
+    padding: 0px;
+    width: auto;
+    float:left;
+    clear:both;
+    margin-bottom: 5px;
+}
+
+.sjis-new div.student_information
+{
+    float:left;
+    clear:both;
+    font-size: 16px;
+    width: 70%;
+    margin: 3px 3px;
+    
+    
+}
+.sjis-new div.student_information table
+{
+    margin: 5px 0px;
+    float:left;
+    clear:both;
+}
+.sjis-new div.student_information table tr td
+{
+    padding: 2px 2px 2px 3px;   
+}
+.sjis-new div.student_information table tr td.font-dark
+{
+    font-weight: 500;
+}
+.sjis-new div.student_information table tr td.font-light
+{
+   color: #333333; 
+}
+.sjis-new div.grade_information
+{
+    margin-left:102px;
+    float:left;
+    width: 18.5%;
+    font-size: 12px;
+   
+}
+.sjis-new div.grade_information table tr.odd td
+{
+    padding: 1px 1px 1px 1px; 
+}
+.sjis-new div.grade_information table tr.even td
+{
+    padding: 1px 1px 1px 1px; 
+}
+.sjis-new div.grade_information p
+{
+    font-size: 13px;
+    margin-left: 16px;
+    margin-bottom: 3px;
+}
+div.sjis-new
+{
+    border: 1px solid #000000;
+}

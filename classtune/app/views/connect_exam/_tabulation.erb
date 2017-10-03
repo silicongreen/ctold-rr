@@ -119,7 +119,7 @@
                   <% j = 0 %>
 
                   <% @report_data['report']['students'].each do |std| %>
-                    <% if std.blank? and !std['first_name'].blank? %>
+                    <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
                     <% if std_count>12 && extender ==0 %>

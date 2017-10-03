@@ -67,18 +67,18 @@
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
           @report_data['report']['exams'].each do |rs|
               
-                check_exam = true
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank?
-                  check_exam = false
-                  if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i)
-                  check_exam = true
-                  end
-                end
-              
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id].blank? and check_exam==true
-                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id]['full_mark'].to_i
-                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id]['marks_obtained'].to_f
-                end
+            check_exam = true
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank?
+              check_exam = false
+              if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i)
+              check_exam = true
+              end
+            end
+
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank? and check_exam==true
+               subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i
+               subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
+            end
              
           end
           if subject_full_mark>0

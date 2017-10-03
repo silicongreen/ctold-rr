@@ -53,7 +53,7 @@
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
-                  <% if @top_exam_group.blank? %>
+                  <% unless @top_exam_group.blank? %>
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                       <% unless @report_data['report']['exams'].blank? %> 

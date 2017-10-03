@@ -1584,9 +1584,8 @@ td.checkbox_inline p
     float:left;
     margin-left:10px;
     padding:0px;
-
+}
 .sjws_table_head td.rotate {
-  /* Something you can count on */
   height: 220px;
   white-space: nowrap; 
   line-height: 20px;
@@ -1756,7 +1755,4 @@ td.checkbox_inline p
     margin-left: 16px;
     margin-bottom: 3px;
 }
-div.sjis-new
-{
-    border: 1px solid #000000;
-}
+

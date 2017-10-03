@@ -1,20 +1,22 @@
 
 <%  
     unless @all_exam_groups.nil?
-      @all_group_exams = GroupedExam.find(
-              :all,
-              :conditions => [
-                "connect_exam_id = ?",
-                @connect_exam_obj.id
-              ]
-      )
-      unless @all_group_exams.blank?
-        @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
-        @all_exam_groups = ExamGroup.find(
-          :all,
-          :conditions => ["id IN (?)", @all_exam_group_id]
+        @all_group_exams = GroupedExam.find(
+                :all,
+                :conditions => [
+                  "connect_exam_id = ?",
+                  @connect_exam_obj.id
+                ]
         )
-      end  
+      
+        unless @all_group_exams.blank?
+          @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+          @all_exam_groups = ExamGroup.find(
+            :all,
+            :conditions => ["id IN (?)", @all_exam_group_id]
+          )
+        end  
+      
         @top_exam_group = []
         @top_exam_group_count = []
         unless @all_exam_groups.blank?
@@ -26,15 +28,17 @@
           end  
         end
 
-        if @top_exam_group.each do |top_exam|
-            e_count = 0
-            @all_exam_groups.each do |exam_group|  
-              if !exam_group.name.index(top_exam).nil?
-                e_count = e_count+1
+        unless @top_exam_group.blank?
+          @top_exam_group.each do |top_exam|
+              e_count = 0
+              @all_exam_groups.each do |exam_group|  
+                if !exam_group.name.index(top_exam).nil?
+                  e_count = e_count+1
+                end
               end
-            end
-            @top_exam_group_count << e_count
-        end 
+              @top_exam_group_count << e_count
+          end 
+        end
   
     end
 

@@ -53,7 +53,7 @@
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
-                 
+                  <% unless @top_exam_group.blank? %>
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
@@ -99,6 +99,30 @@
                       <td class="col-pdf border-right-none">HIGHEST MARKS</td>
                       
                   </tr>
+                  
+                  <% else %>
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
+                      <% unless @report_data['report']['exams'].blank? %>  
+                        <% @report_data['report']['exams'].each do |report| %>
+                        
+                          <td class="col-pdf">
+                              <%= report['exam_name'].upcase %>
+                             
+                              
+                          </td> 
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf">
+                          TOTAL MARKS
+                      </td>
+                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf border-right-none">HIGHEST MARKS</td>
+                      
+                  </tr>
+                  
+                  <% end %>
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>

@@ -1538,7 +1538,9 @@ authorization do
       :view_attendance,
       :employee_setting_update,
       :edit_employee_settings,
-      :employee_settings
+      :employee_settings,
+      :employee_add_attendance,
+      :employee_create_attendance
     ]
     has_permission_on [:employee_attendances],
       :to => [
@@ -2800,7 +2802,9 @@ authorization do
       :view_employee_payslip,
       :employee_setting_update,
       :edit_employee_settings,
-      :employee_settings
+      :employee_settings,
+      :employee_add_attendance,
+      :employee_create_attendance
 
     ]
     has_permission_on [:calendar], :to => [:event_delete, :event_list,:edit_acacal,:addacacal,:cancel_acacal]

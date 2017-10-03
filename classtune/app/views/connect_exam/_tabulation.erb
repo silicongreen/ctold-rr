@@ -42,15 +42,16 @@
               else
                 ranked = false
               end
-            else
+           
           end
         end
-        if ranked == true
-          p = p+1
-          @ranked_positions[rs.student_id.to_i] = p
-        end
+        
         
       end
+    end
+    if ranked == true
+      p = p+1
+      @ranked_positions[rs.student_id.to_i] = p
     end
   end
   

@@ -55,14 +55,40 @@
                   <% total_mark_of_allexam = 0 %>
                  
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
-                      <% unless @report_data['report']['exams'].blank? %>  
-                        <% @report_data['report']['exams'].each do |report| %>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% jloop = 0 %>
+                        <% @top_exam_group.each do |top_exam| %>
+                          <td class="col-pdf" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam %></td>
+                          <% jloop = jloop+1 %>
+                        <% end %>
+                      <% end %>
+                          
+                     
+
+                      <td class="col-pdf">
+                          
+                      </td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf border-right-none"></td>
+                      
+                  </tr>
+                  
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>
+                      
                         
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% @top_exam_group.each do |top_exam| %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if !report['exam_name'].index(top_exam).nil? %>
+                          <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
-                              <%= report['exam_name'].upcase %>
+                              <%= exam_name_new.upcase %>
                               
-                          </td> 
+                          </td>
+                          <% end %>
+                        <% end %>
                         <% end %>
                       <% end %>
 

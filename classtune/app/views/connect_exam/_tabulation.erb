@@ -17,79 +17,53 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% 
-
-     @all_subject_id = []
-     @has_exam_score = []
-     @all_group_exams = GroupedExam.find(
-        :all,
-        :conditions => [
-          "connect_exam_id = ?",
-          @connect_exam_obj.id
-        ]
-      )
-    unless @all_group_exams.blank?
-     @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
-
-
-     @all_exams = Exam.find(
-        :all,
-        :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
-      )
-
-
-      unless @all_exams.blank?
-       @all_subject_id = @all_exams.map(&:subject_id).uniq
-       @all_exam_id = @all_exams.map(&:id).uniq
-       @exam_score_all = ExamScore.find(
-          :all,
-          :conditions => ["exam_id IN (?)", @all_exam_id]
-        )
-       @has_exam_score = @exam_score_all.map(&:exam_id).uniq
-      end
-     end
-   
-
   @grouped_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id)
   @exam_group_ids = @grouped_exams.map(&:exam_group_id)
-  @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,GROUP_CONCAT(grading_levels.name) as grades,GROUP_CONCAT(exam_scores.exam_id) as exam_ids,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+  @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
   @ranked_positions = {}
   unless @ranked_student.blank?
     p = 0
     @ranked_student.each do |rs|
-      all_grades = rs.grades.split(",")
-      all_exams = rs.exam_ids.split(",")
-      ranked = true
-      unless all_grades.blank?
-        i = 0
-        all_grades.each do |gr|
-          unless gr.index("F").nil?
-            exam_id = all_exams[i]
-            exam = Exam.find_by_id(exam_id) 
-            if !exam.blank? and !exam.subject.blank? 
-              if @all_subject_id.include?(exam.subject.id)
-                
-                unless exam.subject.elective_group_id.blank?
-                  check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id.to_i,exam.subject_id)
-                  unless check_std_subject.blank?
-                    ranked = false
-                  end
-                else
-                  ranked = false
-                end
-                
-              end
-           
-          end
-          i = i+1
+      ranked_std = true
+      @report_data['report']['subjects'].each do |sub|
+        if ranked_std == false
+          break
         end
-        
-        
+        subject_full_mark = 0
+        subject_obtain_mark = 0
+        subjectdata = Subject.find(sub['id'].to_i)
+        check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id,sub['id'].to_i)
+        if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
+          @report_data['report']['exams'].each do |rs|
+              
+                check_exam = true
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank?
+                  check_exam = false
+                  if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i)
+                  check_exam = true
+                  end
+                end
+              
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][rs.student_id].blank? and check_exam==true
+                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][rs.student_id]['full_mark'].to_i
+                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][rs.student_id]['marks_obtained'].to_f
+                end
+             
+          end
+          if subject_full_mark>0
+            main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
+            grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+            if !grade.blank? and !grade.name.blank? and grade.name == "F"
+              ranked_std = false
+              break
+            end
+          end
+        end
       end
-    end
-    if ranked == true
-      p = p+1
-      @ranked_positions[rs.student_id.to_i] = p
-    end
+      if ranked_std == true
+        p = p+1
+        @ranked_positions[rs.student_id.to_i] = p
+      end
     end
   end
   
@@ -118,7 +92,35 @@
                 </thead>    
             </table>
             <% 
+             @all_subject_id = []
+             @has_exam_score = []
+             @all_group_exams = GroupedExam.find(
+                :all,
+                :conditions => [
+                  "connect_exam_id = ?",
+                  @connect_exam_obj.id
+                ]
+              )
+            unless @all_group_exams.blank?
+             @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
              
+             
+             @all_exams = Exam.find(
+                :all,
+                :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+              )
+            
+              
+              unless @all_exams.blank?
+               @all_subject_id = @all_exams.map(&:subject_id).uniq
+               @all_exam_id = @all_exams.map(&:id).uniq
+               @exam_score_all = ExamScore.find(
+                  :all,
+                  :conditions => ["exam_id IN (?)", @all_exam_id]
+                )
+               @has_exam_score = @exam_score_all.map(&:exam_id).uniq
+              end
+             end
             %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>

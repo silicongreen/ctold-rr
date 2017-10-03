@@ -63,7 +63,7 @@
         subject_full_mark = 0
         subject_obtain_mark = 0
         subjectdata = Subject.find(sub['id'].to_i)
-        check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id,sub['id'].to_i)
+        check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(ras.student_id,sub['id'].to_i)
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
           @report_data['report']['exams'].each do |rs|
               

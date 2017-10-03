@@ -128,7 +128,7 @@ class StudentController < ApplicationController
     @graph = open_flash_chart_object(965, 350, "/student/graph_for_academic_report?course=#{@course.id}&student=#{@student.id}")
     @graph2 = open_flash_chart_object(965, 350, "/student/graph_for_annual_academic_report?course=#{@course.id}&student=#{@student.id}")
   end
-
+  
   def get_section_data
     @batch_name = ""
     @class_name = ""
@@ -155,18 +155,22 @@ class StudentController < ApplicationController
       @batch_name = batch_name
     end
     
-    unless batch_name.blank?    
-      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{batch_name.parameterize("_")}_#{school_id}"){
-        batches = Batch.find(:all, :conditions => ["name = ? and is_active = 1 and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])
-        tmp_class_data
-      }     
+    unless batch_name.blank?
+      if current_user.employee
+        batches_all = @current_user.employee_record.batches
+        batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches_all = batches_all.uniq unless batches_all.empty?
+        batches_all.reject! {|s| s.name!=batch_name}
+      else
+        batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+      end 
+      
+      batches = batches_all.map{|b| b.course_id}    
+      @classes = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0 and id IN (?)",params[:class_name], batches])      
     else    
-      @classes = Rails.cache.fetch("section_data_#{params[:class_name].parameterize("_")}_#{school_id}"){
-        tmp_class_data = Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]])
-        tmp_class_data
-      }
+      @classes =  Course.find(:all, :conditions => ["course_name LIKE ? and is_deleted = 0",params[:class_name]]) 
     end
+    
     @selected_section = 0
     
     @batch_id = 0
@@ -217,23 +221,45 @@ class StudentController < ApplicationController
       batch_data = Batch.find params[:batch_id]
       batch_name = batch_data.name
     end 
-    @courses = []
-    unless batch_name.blank?
-      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
-        @batch_name = batch_name;
-        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-        class_data = tmp_classes
-        class_data
-      }
-    end
     
-    @classes = []
-    @batch_id = ''
-    @course_name = ""
-    render :update do |page|
-      if params[:page].nil?
-        page.replace_html 'course', :partial => 'courses', :object => @courses
+    
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches_all = batches_all.uniq unless batches_all.empty?
+      batches_all.reject! {|s| s.name!=batch_name}
+    else
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end 
+    
+    batches = batches_all.map{|b| b.course_id}
+    @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    
+    #    @courses = []
+    #    unless batch_name.blank?
+    #      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
+    #        @batch_name = batch_name;
+    #        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
+    #        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    #        class_data = tmp_classes
+    #        class_data
+    #      }
+    
+  @classes = []
+  @batch_id = ''
+  @course_name = ""
+  render :update do |page|
+    if params[:page].nil?
+      page.replace_html 'course', :partial => 'courses', :object => @courses
+      unless params[:section_page].nil? and params[:section_partial].nil?
+        page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+      end
+      unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+        page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+      end
+    else
+      if params[:partial_view].nil?
+        page.replace_html params[:page], :partial => 'courses', :object => @courses
         unless params[:section_page].nil? and params[:section_partial].nil?
           page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
         end
@@ -241,26 +267,18 @@ class StudentController < ApplicationController
           page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
         end
       else
-        if params[:partial_view].nil?
-          page.replace_html params[:page], :partial => 'courses', :object => @courses
-          unless params[:section_page].nil? and params[:section_partial].nil?
-            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
-          end
-          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
-            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
-          end
-        else
-          page.replace_html params[:page], :partial => params[:partial_view], :object => @courses
-          unless params[:section_page].nil? and params[:section_partial].nil?
-            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
-          end
-          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
-            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
-          end
+        page.replace_html params[:page], :partial => params[:partial_view], :object => @courses
+        unless params[:section_page].nil? and params[:section_partial].nil?
+          page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
         end
-      end  
-    end
+        unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+          page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+        end
+      end
+    end  
   end
+end
+
   
   def get_classes_publisher
     school_id = MultiSchool.current_school.id

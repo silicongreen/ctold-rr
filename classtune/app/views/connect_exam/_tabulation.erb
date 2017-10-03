@@ -54,7 +54,7 @@
   @ranked_positions = {}
   unless @ranked_student.blank?
     p = 0
-    @ranked_student.each do |rs|
+    @ranked_student.each do |ras|
       ranked_std = true
       @report_data['report']['subjects'].each do |sub|
         if ranked_std == false
@@ -75,9 +75,9 @@
                   end
                 end
               
-                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][rs.student_id].blank? and check_exam==true
-                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][rs.student_id]['full_mark'].to_i
-                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][rs.student_id]['marks_obtained'].to_f
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id].blank? and check_exam==true
+                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id]['full_mark'].to_i
+                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id]['marks_obtained'].to_f
                 end
              
           end
@@ -93,7 +93,7 @@
       end
       if ranked_std == true
         p = p+1
-        @ranked_positions[rs.student_id.to_i] = p
+        @ranked_positions[ras.student_id.to_i] = p
       end
     end
   end

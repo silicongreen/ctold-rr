@@ -1,6 +1,6 @@
 
 <%  
-    unless @all_exam_groups.nil?
+    if @all_exam_groups.nil?
         @all_group_exams = GroupedExam.find(
                 :all,
                 :conditions => [

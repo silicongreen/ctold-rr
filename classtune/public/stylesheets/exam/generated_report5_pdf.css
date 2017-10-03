@@ -1764,11 +1764,18 @@ td.checkbox_inline p
 .sjis-new .left-table
 {
     float:left;
-    margin-left:10px;
+    margin-left:10px !important;
 }
 
 div.sjis-new
 {
     border: 1px solid #000000;
 }
+
+ .sjis-new table.grade_list td
+ {
+     text-align: left;
+     padding: 4px 4px 4px 4px !important; 
+   
+ }
 

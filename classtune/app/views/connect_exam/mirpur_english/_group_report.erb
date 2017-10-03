@@ -32,7 +32,7 @@
   end
  
   if @tabulation_data.nil?
-    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,false)
     @tabulation_data = []
     if student_response['status']['code'].to_i == 200
       @tabulation_data = student_response['data']

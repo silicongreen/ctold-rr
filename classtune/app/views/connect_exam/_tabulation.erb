@@ -25,12 +25,13 @@
     p = 0
     @ranked_student.each do |rs|
       all_grades = rs.grades.split(",")
+      all_exams = rs.exam_ids.split(",")
       ranked = true
       unless all_grades.blank?
         i = 0
         all_grades.each do |gr|
           unless gr.index("F").nil?
-            exam_id = rs.exam_ids[i]
+            exam_id = all_exams[i]
             exam = Exam.find_by_id(exam_id) 
             if !exam.blank? and !exam.subject.blank? 
               unless exam.subject.elective_group_id.blank?

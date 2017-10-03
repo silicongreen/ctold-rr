@@ -1615,8 +1615,8 @@ td.checkbox_inline p
 ///sjis
 .sjis-new table td
 {
-    font-size:26px;
-    padding: 8px 8px 8px 11px;   
+    font-size:24px;
+    padding: 2px 2px 2px 2px;   
 }
 .sjis-new table tr td.t-left
 {
@@ -1635,8 +1635,8 @@ td.checkbox_inline p
  .sjis-new table.evaluation td
  {
      text-align: left;
-     padding: 4px 2px 5px 9px !important; 
-     font-size: 21px;
+     padding: 2px 2px 2px 9px !important; 
+     font-size: 19px;
  }
  .sjis-new td.align-center
  {
@@ -1658,7 +1658,8 @@ td.checkbox_inline p
     background: #ffffff;
     font-weight: bold;
     text-align: center;
-    font-size:21px;
+    font-size:19px;
+    padding: 2px 2px 2px 2px !important;
 }
 
 .sjis-new tr.odd td.align-left-baf, .sjis-new tr.even td.align-left-baf
@@ -1669,15 +1670,15 @@ td.checkbox_inline p
 
 .sjis-new tr.odd td
 {
-    padding: 2px 2px 10px 9px;  
+    padding: 2px 2px 2px 2px !important;   
     border: 1px solid #000000;
-    font-size:21px;
+    font-size:19px;
 }
 .sjis-new tr.even td
 {
-    padding: 2px 2px 10px 9px;
+    padding: 2px 2px 2px 2px !important; 
     border: 1px solid #000000;
-    font-size:21px;
+    font-size:19px;
 }
 
 .sjis-new table#pdf-table{
@@ -1702,7 +1703,7 @@ td.checkbox_inline p
 .sjis-new h4
 {
     border-bottom: 2px solid black;
-    font-size: 25px;
+    font-size: 23px;
     padding: 0px;
     width: auto;
     float:left;
@@ -1714,8 +1715,8 @@ td.checkbox_inline p
 {
     float:left;
     clear:both;
-    font-size: 23px;
-    width: 75%;
+    font-size: 21px;
+    width: 72%;
     margin: 5px 5px;
     
     
@@ -1728,7 +1729,7 @@ td.checkbox_inline p
 }
 .sjis-new div.student_information table tr td
 {
-    padding: 7px 7px 7px 3px;  
+    padding: 5px 7px 5px 3px;  
 }
 .sjis-new div.student_information table tr td.font-dark
 {
@@ -1742,8 +1743,8 @@ td.checkbox_inline p
 {
     margin-left:102px;
     float:left;
-    width: 13.5%;
-    font-size: 14px;
+    width: 15.5%;
+    font-size: 12px;
    
 }
 .sjis-new div.grade_information table tr.odd td
@@ -1756,10 +1757,16 @@ td.checkbox_inline p
 }
 .sjis-new div.grade_information p
 {
-    font-size: 15px;
+    font-size: 13px;
     margin-left: 16px;
     margin-bottom: 3px;
 }
+.sjis-new .left-table
+{
+    float:left;
+    margin-left:10px;
+}
+
 div.sjis-new
 {
     border: 1px solid #000000;

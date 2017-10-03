@@ -43,7 +43,7 @@
                 unless examSubject.blank?
                   ranked_student_f = false
                   unless examSubject.elective_group_id.blank?
-                    check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id.to_i,examSubject.to_i)
+                    check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id.to_i,examSubject.id.to_i)
                     if check_std_subject.blank?
                       ranked_student_f = true
                     end

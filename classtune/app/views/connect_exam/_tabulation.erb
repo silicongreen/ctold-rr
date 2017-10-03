@@ -32,7 +32,7 @@
           unless gr.index("F").nil?
             exam_id = rs.exam_ids[i]
             exam = Exam.find_by_id(exam_id) 
-            unless exam.blank? and exam.subject.blank? and 
+            if !exam.blank? and !exam.subject.blank? 
               unless exam.subject.elective_group_id.blank?
                 check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(rs.student_id.to_i,exam.subject_id)
                 unless check_std_subject.blank?

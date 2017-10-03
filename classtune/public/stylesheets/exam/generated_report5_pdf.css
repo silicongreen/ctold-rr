@@ -1659,7 +1659,7 @@ td.checkbox_inline p
     font-weight: bold;
     text-align: center;
     font-size:19px;
-    padding: 2px 2px 2px 2px !important;
+    padding: 4px 4px 4px 4px !important;
 }
 
 .sjis-new tr.odd td.align-left-baf, .sjis-new tr.even td.align-left-baf
@@ -1670,13 +1670,13 @@ td.checkbox_inline p
 
 .sjis-new tr.odd td
 {
-    padding: 2px 2px 2px 2px !important;   
+    padding: 4px 4px 4px 4px !important;  
     border: 1px solid #000000;
     font-size:19px;
 }
 .sjis-new tr.even td
 {
-    padding: 2px 2px 2px 2px !important; 
+    padding: 24px 4px 4px 4px !important; 
     border: 1px solid #000000;
     font-size:19px;
 }

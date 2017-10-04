@@ -24,7 +24,7 @@
              if !exam_group.name.downcase.index('ct').nil? or !exam_group.name.downcase.index('term').nil?
                exam_group_name_array = exam_group.name.split(" ")
                main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
-               if !@top_exam_group.inlcude?(main_exam_name)
+               if !@top_exam_group.include?(main_exam_name)
                   @top_exam_group << main_exam_name
                end     
              end

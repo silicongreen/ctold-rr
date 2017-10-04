@@ -1778,4 +1778,8 @@ div.sjis-new
      padding: 4px 4px 4px 4px !important; 
    
  }
+  .sjis-new table.left-table tr.even td
+  {
+      padding: 8px 4px 8px 4px !important
+  }
 

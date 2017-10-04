@@ -21,9 +21,12 @@
         @top_exam_group_count = []
         unless @all_exam_groups.blank?
           @all_exam_groups.each do |exam_group|
-             if !exam_group.name.index('CT1').nil?
+             if !exam_group.name.downcase.index('ct').nil? or !exam_group.name.downcase.index('term').nil?
                exam_group_name_array = exam_group.name.split(" ")
-               @top_exam_group << exam_group_name_array[0]+" "+exam_group_name_array[1]
+               main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
+               if !@top_exam_group.inlcude(main_exam_name)
+                  @top_exam_group << main_exam_name
+               end     
              end
           end  
         end

@@ -5,46 +5,10 @@
       
       <div class="student_information">
       <h4><b>Student's Information</b></h4>
-      
-      <table class="std_info_table" width="100%" cellspacing="0">
-          <tr>
-              <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
-          </tr>
-          <tr>
-              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
-          </tr>
-          <tr>
-              <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
-              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") unless @student.gender.blank? %></td>
-          </tr> 
-           <tr>
-              
-              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                 
-                  <% if month_number.to_i>6 %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
-                  <% else %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
-                  <% end %> 
-              
-             
-              <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
-          </tr> 
-          <tr>
-              <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
-              <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
-              
-          </tr>
-          <tr>
-              <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;December-2016</td>
-          </tr>
-      </table>
-      <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
+      <%= render  :partial=>"/connect_exam/sjis/student_information" %>
       </div>
       <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
-        
+      <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
       </div>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
@@ -59,7 +23,7 @@
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% jloop = 0 %>
                         <% @top_exam_group.each do |top_exam| %>
-                          <td class="col-pdf" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam %></td>
+                          <td class="col-pdf" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>
@@ -301,113 +265,10 @@
                       
               </table>
              
-              <table id="pdf-table" class="left-table" width="30%" cellspacing="0">
-                  <tr class="even">
-                      <td width="50%">Grade</td>
-                      <td width="50%">Meaning</td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">A</td>
-                      <td width="50%">Excellent</td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">B</td>
-                      <td width="50%">Good</td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">C</td>
-                      <td width="50%">Ok</td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">D</td>
-                      <td width="50%">Bad</td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">E</td>
-                      <td width="50%">Very Bad</td>
-                  </tr>
-              </table>
-              <table id="pdf-table" class="left-table" width="30%" cellspacing="0">
-                  <tr class="even">
-                      <td width="50%">Regularity</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Patriotism</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Honesty</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Leadership</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Discipline</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Cooperation</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-              </table>
-              <table id="pdf-table" class="left-table" width="30%" cellspacing="0">
-                  <tr class="even">
-                      <td width="50%">Participation</td>
-                      <td  width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Tolerance</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Awareness</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Punctuality</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Handwriting</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-                  <tr class="even">
-                      <td width="50%">Homework</td>
-                      <td width="50%"><br/></td>
-                  </tr>
-              </table>
-              
+              <%= render  :partial=>"/connect_exam/sjis/behaviour_grade" %>
               <h5><b>&nbsp;</b></h5>
-              <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
-                    <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
-                              Class Teacher's Signature
-                          </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
-                              <br/><br/>
-                          </td>
-                      </tr>
-                      <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
-                              Principal's Signature
-                          </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
-                              <br/><br/>
-                          </td>
-                      </tr>
-                      <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
-                              Director's Signature
-                          </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
-                              <br/><br/>
-                          </td>
-                      </tr>
-
-              </table> 
+              <%= render  :partial=>"/connect_exam/sjis/signs" %>
+               
 
           </div>
       </div>

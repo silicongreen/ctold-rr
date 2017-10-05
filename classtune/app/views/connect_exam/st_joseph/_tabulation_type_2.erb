@@ -325,6 +325,7 @@
                                 <% end %>
 
                                  <% 
+                                 if check_exam == true
                                   if !@examgroupobj.name.index('Sub').nil?
                                     subjective = true
                                   end 
@@ -336,6 +337,7 @@
                                   if !@examgroupobj.name.index('Prac').nil?
                                     practical = true
                                   end
+                                 end
                                 %>
 
 

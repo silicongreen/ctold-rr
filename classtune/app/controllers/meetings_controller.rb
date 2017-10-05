@@ -2,8 +2,21 @@ class MeetingsController < ApplicationController
   filter_access_to :all
   before_filter :login_required
   before_filter :default_time_zone_present_time
+  before_filter :only_meeting_forwarder_allowed , :only=>[:forwarded, :show_forwarded, :update_forwarded]
   
   def index
+    
+    @config = Configuration.find_by_config_key('ParentMeetingRequestNeedApproval')
+    @allow = false
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1)
+      if @current_user.employee?
+        employee= @current_user.employee_record
+        if employee.meeting_forwarder.to_i == 1
+          @allow = true
+        end
+      end
+    end
+    
     school = MultiSchool.current_school
     include_rel = []
     condition = ["students.school_id = ? AND employees.school_id = ? AND meeting_type = ? ", school.id, school.id, 2]
@@ -71,14 +84,15 @@ class MeetingsController < ApplicationController
     if @current_user.admin?
       include_rel = [:student, :employee]
     elsif @current_user.employee?
+#      @employee_batches = @current_user.employee_record.batches
+#      batch_ids = @employee_batches.map(&:id)
+#      include_rel = [:student,:employee]
+#      condition = ["students.school_id = ? AND meeting_type = ? AND forward = ? AND students.batch_id in (?)", school.id, @current_user.employee_entry.id, 2, 0,batch_ids]
+       
       condition = ["students.school_id = ? AND teacher_id = ? AND meeting_type = ? AND forward = ?", school.id, @current_user.employee_entry.id, 2, 1]
       include_rel = [:student]
     else
-#      student = @current_user.guardian_entry.current_ward
-#      students = student.siblings.select{|g| g.immediate_contact_id = @current_user.guardian_entry.id}
-#      @student_ids = students.map{|s| s.id} << student.id
 
-      #EDITED FOR MULTIPLE GUARDIAN
       @student_ids = []
       unless @current_user.guardian_entry.guardian_student.empty?
         students = @current_user.guardian_entry.guardian_student
@@ -95,6 +109,16 @@ class MeetingsController < ApplicationController
     render :partial=>"list"
      
   end
+  
+def forwarded
+    school = MultiSchool.current_school
+    @employee_batches = @current_user.employee_record.batches
+    batch_ids = @employee_batches.map(&:id)
+    include_rel = [:student,:employee]
+    condition = ["students.school_id = ? AND meeting_type = ? AND forward = ? AND students.batch_id in (?) AND meeting_requests.status = ?", school.id, 2, 0,batch_ids,0 ]
+    @meetings = MeetingRequest.paginate(:order=>"meeting_requests.id DESC", :conditions => condition, :page => params[:page], :per_page => 10, :include => include_rel)
+    render :partial=>"list_forwarded"   
+end
 
   def new
     @classes = []
@@ -128,10 +152,15 @@ class MeetingsController < ApplicationController
       
         i = 0
         
-        reminder_need_admin_approval = Configuration.find_by_sql ["SELECT id, config_value FROM configurations WHERE config_key = ? AND school_id = ?", 'ReminderNeedAdminApproval', @current_user.school_id]
-        
+#        reminder_need_admin_approval = Configuration.find_by_sql ["SELECT id, config_value FROM configurations WHERE config_key = ? AND school_id = ?", 'ReminderNeedAdminApproval', @current_user.school_id]
+#        
+#        forward = 0
+#        if reminder_need_admin_approval.nil? or reminder_need_admin_approval[0]['config_value'].to_i == 0
+#          forward = 1
+#        end
+        @config = Configuration.find_by_config_key('TeacherMeetingRequestNeedAdminApproval')
         forward = 0
-        if reminder_need_admin_approval.nil? or reminder_need_admin_approval[0]['config_value'].to_i == 0
+        if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
           forward = 1
         end
         
@@ -205,7 +234,13 @@ class MeetingsController < ApplicationController
       unless params[:meeting_request][:teacher_id].nil?
         teacher_id = params[:meeting_request][:teacher_id]
         meeting_type = 2
-      
+        
+        @config = Configuration.find_by_config_key('ParentMeetingRequestNeedApproval')
+        forward = 0
+        if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+          forward = 1
+        end
+        
         @meeting = MeetingRequest.new()
         @meeting.meeting_type = meeting_type
         @meeting.teacher_id = teacher_id
@@ -213,7 +248,10 @@ class MeetingsController < ApplicationController
         @meeting.description = description
         @meeting.datetime = datetime
         @meeting.status = 0
-        @meeting.forward = 1
+#        @meeting.forward = 1
+        @meeting.forward = forward
+       
+        
         if @meeting.valid?
           @meeting.save
           
@@ -264,7 +302,8 @@ class MeetingsController < ApplicationController
     end
     
     @meetings = MeetingRequest.find(meeting_id)
-    @meetings.status = status 
+    @meetings.status = status
+    @meetings.reciver_messege = params[:msg_acept_reject]
     
     if forward!=0
       @meetings.forward = forward
@@ -325,12 +364,165 @@ class MeetingsController < ApplicationController
         end 
       end
       
+      if params[:request] == 'Forward' and @meetings.forward == 1
+          reminderrecipients = []          
+          employees = Employee.find(@meeting.teacher_id)          
+          reminderrecipients.push employees.user_id unless employees.user_id.nil?
+          
+          @applied_student = Student.find(@meetings.parent_id)
+            
+             #EDITED FOR MULTIPLE GUARDIAN
+          @g_name = ""
+          unless @applied_student.student_guardian.empty?
+            guardians = @applied_student.student_guardian
+            guardians.each do |guardian|
+              @g_name = guardian.first_name
+              break
+              
+            end  
+          end
+          
+          
+          unless reminderrecipients.nil? and @meeting.forward == 1 and @g_name!=""
+            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients,
+            :subject=>"New Meeting Request",
+            :rtype=>12,
+            :rid=>@meeting.id,
+            :body=>"New Meeting Request Send from #{@g_name} at #{@meeting.datetime}" ))
+          end 
+        
+      end
+      
+      
       flash[:success] = "Meeting request successfully sent."
     else
       @errors = @meeting.errors
       flash[:error] = "Could not sent meeting request at the moment."
     end
-    redirect_to :action => "show", :id => @meetings.id
+#    redirect_to(:back)
+#    if params[:request] == 'Forward'
+#      redirect_to :action => "show_forwarded", :id => @meetings.id
+#    else
+     redirect_to :action => "show", :id => @meetings.id
+#    end
+  end
+  
+def update_forwarded
+    meeting_id = params[:id]
+    if params[:request] == 'Accept'
+      status = 1
+      status_text = "Accepted"
+    elsif params[:request] == 'Reject'
+      status = 2
+      status_text = "Declined"
+    elsif params[:request] == 'Forward'
+      status = 0
+      status_text = "Forwarded"
+    else
+      status = 0
+    end
+    
+    @meetings = MeetingRequest.find(meeting_id)
+    @meetings.status = status
+    @meetings.reciver_messege = params[:msg_acept_reject]
+    
+    @meetings.forward = 1
+    
+    if @meetings.save
+      if @meetings.status!=0
+        if @current_user.admin? or @current_user.employee?
+            reminderrecipients = []
+            batch_ids = {}
+            student_ids = {}
+            @applied_student = Student.find(@meetings.parent_id)
+            
+             #EDITED FOR MULTIPLE GUARDIAN
+            unless @applied_student.student_guardian.empty?
+              guardians = @applied_student.student_guardian
+              guardians.each do |guardian|
+
+                unless guardian.user_id.nil?
+                  reminderrecipients.push guardian.user_id
+                  batch_ids[guardian.user_id] = @applied_student.batch_id
+                  student_ids[guardian.user_id] = @applied_student.id
+                end
+              end  
+            end
+            
+#            unless @applied_student.immediate_contact_id.nil?
+#                guardian = Guardian.find(@applied_student.immediate_contact_id)
+#                unless guardian.user_id.nil?
+#                  reminderrecipients.push guardian.user_id
+#                  batch_ids[guardian.user_id] = @applied_student.batch_id
+#                  student_ids[guardian.user_id] =  @applied_student.id
+#                end
+#            end
+            unless reminderrecipients.nil? and params[:request] != 'Forward'
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => reminderrecipients,
+              :subject=>"Your Meeting Request is "+status_text,
+              :rtype=>13,
+              :rid=>@meetings.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"Your meeting request with #{@current_user.employee_entry.first_name}  have been  #{status_text} for #{@meetings.datetime}" ))
+            end 
+        else
+          reminderrecipients = []          
+          employees = Employee.find(@meetings.teacher_id)          
+          reminderrecipients.push employees.user_id unless employees.user_id.nil?
+          unless reminderrecipients.nil? and params[:request] != 'Forward'
+            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients,
+            :subject=>"Your Meeting Request is "+status_text,
+            :rtype=>14,
+            :rid=>@meetings.id,
+            :body=>"Your meeting request with #{@current_user.guardian_entry.first_name} have been  #{status_text} for #{@meetings.datetime}" ))
+          end 
+
+        end 
+      end
+      
+      if params[:request] == 'Forward' and @meetings.forward == 1
+          reminderrecipients = []          
+          employees = Employee.find(@meeting.teacher_id)          
+          reminderrecipients.push employees.user_id unless employees.user_id.nil?
+          
+          @applied_student = Student.find(@meetings.parent_id)
+            
+             #EDITED FOR MULTIPLE GUARDIAN
+          @g_name = ""
+          unless @applied_student.student_guardian.empty?
+            guardians = @applied_student.student_guardian
+            guardians.each do |guardian|
+              @g_name = guardian.first_name
+              break
+              
+            end  
+          end
+          
+          
+          unless reminderrecipients.nil? and @meeting.forward == 1 and @g_name!=""
+            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients,
+            :subject=>"New Meeting Request",
+            :rtype=>12,
+            :rid=>@meeting.id,
+            :body=>"New Meeting Request Send from #{@g_name} at #{@meeting.datetime}" ))
+          end 
+        
+      end
+      
+      
+      flash[:success] = "Meeting request successfully sent."
+    else
+      @errors = @meeting.errors
+      flash[:error] = "Could not sent meeting request at the moment."
+    end
+
+    redirect_to :action => "show_forwarded", :id => @meetings.id
+    
   end
 
   def show
@@ -360,6 +552,15 @@ class MeetingsController < ApplicationController
       condition = ["employees.school_id = ? AND parent_id IN (?) and (forward = 1 or meeting_type = 2)", school.id, @student_ids]
       include_rel = [:employee]
     end
+    @meetings = MeetingRequest.find(meeting_id, :conditions => condition, :include => include_rel)
+  end
+  
+  def show_forwarded
+    meeting_id = params[:id]
+    school = MultiSchool.current_school
+    include_rel = []
+    condition = ["students.school_id = ? and meeting_type = 2", school.id]
+    include_rel = [:student]
     @meetings = MeetingRequest.find(meeting_id, :conditions => condition, :include => include_rel)
   end
 
@@ -601,6 +802,28 @@ class MeetingsController < ApplicationController
     render :update do |page|
       page.replace_html 'employee_list', :partial => 'employee_view_all_list', :object => @employees
     end
+  end
+  
+  def only_meeting_forwarder_allowed
+    @config = Configuration.find_by_config_key('ParentMeetingRequestNeedApproval')
+    
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1)
+      if @current_user.employee?
+        employee= @current_user.employee_record
+        if employee.meeting_forwarder.to_i == 1
+          @allow_access = true
+        else
+          flash[:notice] = "#{t('flash_msg4')}"
+          redirect_to :controller => 'user', :action => 'dashboard'
+        end
+      else  
+        flash[:notice] = "#{t('flash_msg4')}"
+        redirect_to :controller => 'user', :action => 'dashboard'
+      end  
+    else
+      flash[:notice] = "#{t('flash_msg4')}"
+      redirect_to :controller => 'user', :action => 'dashboard'
+    end  
   end
 
 end

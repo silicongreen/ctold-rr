@@ -149,7 +149,7 @@ table#listing{
     width: 93%;
 }
 .timetable_last {
-    background: #49BB4B;
+    background: none repeat scroll 0 0 #f0f2f3;
     float: right;
     height: 70px;
     padding: 10px;

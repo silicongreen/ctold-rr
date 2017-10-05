@@ -141,6 +141,12 @@
         <div class="text-input-bg"><%= select :employee, :homework_publisher, [["No",0], ["Yes",1]] %></div>
       </div>
       <hr class="label-underline"></hr>
+      
+      <div class="label-field-pair">
+        <label for="employee_meeting_forwarder_status"><%= t('meeting_forwarder') %></label>
+        <div class="text-input-bg"><%= select :employee, :meeting_forwarder, [["No",0], ["Yes",1]] %></div>
+      </div>
+      <hr class="label-underline"></hr>
 
       <div class="label-field-pair">
         <label for="employee_job_title"><%= t('job_title') %></label>

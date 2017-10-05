@@ -312,30 +312,33 @@
                   <% end %>
               </div>
           </div>   
+          
+          <div class="label-field-pair">
+              <label for="student_admission_auto"><%= t('teacher_meeting_request_need_admin_approval') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:teacher_meeting_request_need_admin_approval] == '1' %>
+                    <%= check_box :configuration, :teacher_meeting_request_need_admin_approval, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :teacher_meeting_request_need_admin_approval, :checked => false %>
+                  <% end %>
+              </div>
+          </div>   
+          
+          <div class="label-field-pair">
+              <label for="student_admission_auto"><%= t('parent_meeting_request_need_approval') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:parent_meeting_request_need_approval] == '1' %>
+                    <%= check_box :configuration, :parent_meeting_request_need_approval, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :parent_meeting_request_need_approval, :checked => false %>
+                  <% end %>
+              </div>
+          </div> 
 
           <% Champs21Plugin.deliver_registered_hook(:general_settings_checkbox).each do |mod| %>
             <br/>
             <%= render :partial=>mod.camelize.constantize.send("general_settings_checkbox") %>
           <% end %>
-
-  <%# Champs21Plugin::REGISTERED_HOOKS[:general_settings_checkbox].each do |mod| %>
-  <%#*<br/>%>
-  <%#= render :partial=>mod.camelize.constantize.send("general_settings_checkbox") %>
-  <%# end %>
-
-          <div class="grades">
-              <div class="label-field-pair">
-                  <label for="configuration_reminder_need_admin_approval"><%= t('admin_auto_approval_for_reminder') %></label>
-              </div>
-              <div class="fee_category_scroll">
-                  <div class="each_batch">
-                      <%= radio_button :configuration, :reminder_need_admin_approval, '1', {:checked => ( @config[:reminder_need_admin_approval].to_i == 1 ? true : false) } %>
-                      <label for="configuration_reminder_need_admin_approval_1">Yes</label>
-                      <%= radio_button :configuration, :reminder_need_admin_approval, '0', {:checked => ( @config[:reminder_need_admin_approval].to_i != 1 ? true : false) } %>
-                      <label for="configuration_reminder_need_admin_approval_0">No</label>
-                  </div>
-              </div>
-          </div>
 
           <div class="label-field-pair">
               <label for="configuration_font_face"><%= t('font_face') %></label>

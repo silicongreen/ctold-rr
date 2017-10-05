@@ -1,0 +1,153 @@
+<div id="page-yield" class="bg-disable" style="margin-top: 0px;">
+
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+
+    <div id="all_news" class="partial_homework" style="margin-top:0px;">
+        
+        <% if @meetings.blank? %>
+          <div class="portlet-subcontent">  
+              <center> No Forwarded Meeting Requests </center>
+          </div>
+        <% end %>
+        
+        <% @meetings.each_with_index do |meeting, i| %>
+
+          <div class="portlet-subcontent">     
+              <div class="timetable_left">
+                  <% j = i + 1 
+                  if params[:page]
+                    j = (params[:page].to_i-1)*10 + j
+                    end
+                %>
+                  <span><%= j.to_s.rjust(2, '0') %></span>
+              </div>
+              <%
+              teacher_full_name = '';
+              parent_full_name = ''
+
+              unless meeting.employee.nil?
+                unless meeting.employee.first_name.nil?
+                  teacher_full_name = meeting.employee.first_name
+                  end
+
+                unless meeting.employee.middle_name.nil?
+                  teacher_full_name += ' ' + meeting.employee.middle_name
+                  end
+
+                unless meeting.employee.last_name.nil?
+                  teacher_full_name += ' ' + meeting.employee.last_name
+                  end
+                teacher_full_name += ' ' + '(T)'
+                end
+
+              unless meeting.student.immediate_contact.nil?
+                unless @current_user.parent?
+                  unless meeting.student.immediate_contact.first_name.nil?
+                    parent_full_name = meeting.student.immediate_contact.first_name
+                    end
+
+                  unless meeting.student.immediate_contact.last_name.nil?
+                    parent_full_name += ' ' + meeting.student.immediate_contact.last_name
+                    end
+                  parent_full_name += ' ' + '(G)'
+                end
+              end
+            %>
+              <% if @current_user.admin? %>
+                  <div class="timetable_right" style="width:20%;">
+                    <div class="subcontent-header themed_text"> 
+                       From :  <% if meeting.meeting_type == 1 %>
+                          <%
+                          if @current_user.employee_entry.id.to_i == meeting.teacher_id.to_i
+                            teacher_full_name = "Me"
+                            end
+                          %>
+                          <%= teacher_full_name %>
+                        <% else %>
+                          <%
+                          if !@student_ids.nil? and @student_ids.include?(meeting.parent_id)
+                            parent_full_name = "Me"
+                            end
+                          %>
+                          <%= parent_full_name %><br/>
+                          <%= meeting.student.full_name %> (S)
+                        <% end %>
+                    </div>                         
+                  </div>
+                  <div class="timetable_right" style="width:20%;">
+                    <div class="subcontent-header themed_text"> 
+                       To :  <% if meeting.meeting_type == 2 %>
+                          <%
+                          if @current_user.employee_entry.id.to_i == meeting.teacher_id.to_i
+                            teacher_full_name = "Me"
+                            end
+                          %>
+                          <%= teacher_full_name %>
+                        <% else %>
+                          <%
+                          if !@student_ids.nil? and @student_ids.include?(meeting.parent_id)
+                            parent_full_name = "Me"
+                            end
+                          %>
+                          <%= parent_full_name %><br/>
+                        <%= meeting.student.full_name %> (S)
+                        <% end %>
+                    </div>                         
+                  </div>
+              <% else %>
+              <div class="timetable_right">
+                  <div class="subcontent-header themed_text"> 
+                      <% if meeting.meeting_type == 1 %>
+                        <%
+                        if @current_user.employee_entry.id.to_i == meeting.teacher_id.to_i
+                          teacher_full_name = "Me"
+                          end
+                        %>
+                        <%= teacher_full_name %>
+                      <% else %>
+                        <%
+                        if !@student_ids.nil? and @student_ids.include?(meeting.parent_id)
+                          parent_full_name = "Me"
+                          end
+                        %>
+                        <%= parent_full_name %><br/>
+                        <%= meeting.student.full_name %> (S)
+                      <% end %>
+                  </div>                         
+              </div>
+              <% end %>
+              <div class="timetable_right"  style="float:left;height: 90px;width: 35%;padding: 0px;border-left:1px dotted #cccccc">                            
+                  <div class="subcontent-date" style="margin-top:5px;">
+                      <p> 
+                          <b style="color:#000;"> Status </b> : <% if meeting.status.nil? or meeting.status.to_i == 0 or meeting.status.blank? %>
+                            <%= t('pending') %>
+                          <% elsif meeting.status == 1 %>
+                            <%= t('approved') %>
+                          <% else %>
+                            <%= t('rejected') %>
+                          <% end %></p>
+
+                      <p> <b style="color:#000;"> Preferred Date</b> : <%= I18n.l(meeting.datetime, :format=>"%A, %d %B, %Y") %>
+                      </p>
+                      <p> <b style="color:#000;"> Preferred Time</b> : <%= I18n.l(meeting.datetime, :format=>"%I:%M %p") %></p>
+                  </div>
+              </div>
+              <div class='timetable_last'>
+                  <%=  link_to "View", :controller => 'meetings', :action => 'show_forwarded', :id => meeting.id%>
+              </div>
+          </div>
+          <div style="float: left; margin: 7px; width: 95%;"></div> 
+        <% end %>
+
+        <div class="pagination_div"><div class="div1"><%= will_paginate @meetings, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader_paginate').hide();"  }, :remote=>{:update=>'data_div'}, :params => {:controller=>:meetings,:action => "forwarded"} %></div><div class="div2"><%= image_tag("loader.gif",
+                  :align => "absmiddle",
+                  :border => 0,
+                  :id => "loader_paginate",
+                  :style =>"display: none;" ) %></div></div>
+
+
+    </div>
+
+</div>

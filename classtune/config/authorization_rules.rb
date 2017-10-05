@@ -1690,7 +1690,7 @@ authorization do
       :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan
       ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
-    has_permission_on [:meetings], :to => [:index,:outbox,:inbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
+    has_permission_on [:meetings], :to => [:index,:outbox,:inbox,:new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:user],  :to => [:edit_privilege,:index,:make_sibligns]
     has_permission_on [:weekday], :to => [:index, :week, :create]
     has_permission_on [:class_timing_sets], :to => [
@@ -3267,7 +3267,7 @@ authorization do
       :show,
       :profile_pdf
     ]
-    has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
+    has_permission_on [:meetings], :to => [:index,:forwarded,:inbox,:outbox, :new, :create, :edit, :update,:update_forwarded, :show,:show_forwarded, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt]
     has_permission_on [:event], :to => [:event_details]
     has_permission_on [:detention],

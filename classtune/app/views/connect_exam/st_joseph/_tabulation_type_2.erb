@@ -244,7 +244,39 @@
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
                           <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
-                            <td>&nbsp;</td>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
+                            <% if has_exam == true %>
+                                <% 
+                                subjective = false
+                                objective = false
+                                practical = false
+
+
+                              %>
+                                <% @all_exam_groups.each do |exam_group| %>
+                                  <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
+                                  <% unless examfound.blank? %>
+                                    <% if !exam_group.name.index('Sub').nil? && subjective == false %>
+                                      <% subjective = true %>
+                                      <td>&nbsp;</td>
+                                    <% end %>
+
+                                    <% if !exam_group.name.index('Obj').nil? && objective == false %>
+                                      <% objective = true %>
+                                      <td>&nbsp;</td>
+                                    <% end %>
+
+                                    <% if !exam_group.name.index('Prac').nil? && practical == false %>
+                                      <% practical = true %>
+                                      <td>&nbsp;</td>
+                                    <% end %>
+                                  <% end %>
+
+                                <% end %>
+                              <% end %>
                           <% else %>
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>

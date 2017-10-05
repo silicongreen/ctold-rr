@@ -190,6 +190,10 @@ class Meetingrequest extends CActiveRecord
             if($type2==1)
             {
                 $criteria->compare('teacher_id', $id);
+                if($type == 2)
+                {
+                    $criteria->compare('forward', 1);
+                }    
             }
             else
             {

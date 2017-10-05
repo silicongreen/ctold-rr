@@ -592,7 +592,18 @@ class EventController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
-
+    private function checkMeetingPublisher()
+    {
+        $configuration = new Configurations();
+        $meeting_config = (int)$configuration->getValue("ParentMeetingRequestNeedApproval");
+        $empObj = new Employees();
+        $emp_data = $empObj->findByPk(Yii::app()->user->profileId);
+        if($meeting_config == 0 || ($emp_data && $emp_data->meeting_forwarder==1))
+        {
+            return true;
+        }
+        return false;
+    } 
     public function actionAddMeetingParent()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -610,6 +621,11 @@ class EventController extends Controller
             $meetingreq->teacher_id = $parent_id;
             $meetingreq->parent_id = $student_id;
             $meetingreq->meeting_type = 2;
+            if($this->checkMeetingPublisher()==false)
+            {
+                $meetingreq->forward = 0;
+            }
+            
             $meetingreq->save();
             
             $guardian = new Guardians();
@@ -617,7 +633,7 @@ class EventController extends Controller
             $employee = new Employees();
             $techer_profile = $employee->findByPk($parent_id);
             
-            if(isset($techer_profile->user_id) && isset($guardianData->first_name))
+            if(isset($techer_profile->user_id) && isset($guardianData->first_name) && $meetingreq->forward == 1)
             {
                 $reminder = new Reminders();
                 $reminder->sender = Yii::app()->user->id;
@@ -631,6 +647,7 @@ class EventController extends Controller
 
                 $reminder->updated_at = date("Y-m-d H:i:s");
                 $reminder->save();
+                
                 
                 Settings::sendCurlNotification($techer_profile->user_id, $reminder->id);
                 

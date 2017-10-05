@@ -733,7 +733,7 @@ class ApplicationController < ActionController::Base
       if current_user.parent?
         gstd = current_user.guardian_entry.guardian_student
         gstd.each do|s| 
-          if s.id == params[:id].to_i or params[:student].to_i == s.id or   params[:student_id].to_i == s.id
+          if s.id == params[:id].to_i or (!params[:student].is_a? Hash and params[:student].to_i == s.id) or params[:student_id].to_i == s.id
             guardian_check = true
           end
         end

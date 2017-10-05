@@ -202,7 +202,7 @@ class Guardian < ActiveRecord::Base
   
   #EDITED FOR MULTIPLE GUARDIAN
   def current_ward_id
-    (Champs21.present_student_id.present?) ? student=Student.find(Champs21.present_student_id) : student=nil
+    (Champs21.present_student_id.present?) ? student=Student.find_by_id(Champs21.present_student_id) : student=nil
     checked = false
     if student.present?
       batch_students= GuardianStudents.find_all_by_guardian_id(self.id)

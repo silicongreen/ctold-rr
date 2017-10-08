@@ -3850,10 +3850,9 @@ class ExamController < ApplicationController
             :save_only    => for_save,
             :orientation => 'Portrait',
             :margin => {:top=> 35,
-            :bottom => 10,
+            :bottom => 25,
             :left=> 10,
-            :right => 10},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+            :right => 10}
         elsif  MultiSchool.current_school.id == 340  
             if @connect_exam_obj.result_type == 13
               render :pdf => template,

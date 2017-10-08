@@ -26,5 +26,26 @@ class OtherController < ApplicationController
     render :layout => false
   end
   
+  def student_record
+    @batches=Batch.active.all(:include=>:course)
+  end
+   def list_student_record
+    @students = []
+    unless params[:batch_id].blank?
+      batch_ids = params[:batch_id].split(",")
+      @students = Student.find_all_by_batch_id(batch_ids)
+    end
+  end
+  def print_student_record
+    if request.post?
+      unless params[:student_record][:student_ids].nil?
+          @student_ids = params[:student_record][:student_ids]
+          @section_name = params[:section_name]
+          @year = params[:year]
+      end   
+    end
+    render :layout => false
+  end
+  
   
 end

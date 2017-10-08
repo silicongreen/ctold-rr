@@ -103,10 +103,32 @@
 
               </table>
           </div>
-        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323  or MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
+        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323  or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
           
         
+        <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342 %>
+          <div id="pdf-footer">
 
+              <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+                  <thead>          
+
+                      <tr>
+                          <td class="">
+                              <%= "------------------------------------------" %><br />
+                              <font size='3'><%= "Class Teacher" %></font>
+                          </td>
+                          <td class="">
+                              <%= "------------------------------------------" %><br />
+                              <font size='3'><%= "Principal" %></font>
+                          </td>
+                          <td class="">
+                              <%= "------------------------------------------" %><br />
+                              <font size='3'><%= "Director" %></font>
+                          </td>
+                  </tr>
+
+              </table>
+          </div>
         <% else %>
           <div id="pdf-footer">
 

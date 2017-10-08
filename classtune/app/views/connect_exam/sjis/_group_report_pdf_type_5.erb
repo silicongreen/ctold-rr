@@ -5,46 +5,10 @@
       
       <div class="student_information">
       <h4><b>Student's Information</b></h4>
-      
-      <table class="std_info_table" width="100%" cellspacing="0">
-          <tr>
-              <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
-          </tr>
-          <tr>
-              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
-          </tr>
-          <tr>
-              <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></td>
-              <td>Gender </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= t("#{@student.gender_as_text.downcase}") unless @student.gender.blank? %></td>
-          </tr> 
-           <tr>
-              
-              <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                 
-                  <% if month_number.to_i>6 %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
-                  <% else %>
-                    <td>Academic Session </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
-                  <% end %> 
-              
-             
-              <td>Roll </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.class_roll_no %></td>
-          </tr> 
-          <tr>
-              <td>Standard </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></td>
-              <td>Section </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= @batch.course.section_name %></td>
-              
-          </tr>
-          <tr>
-              <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;December-2016</td>
-          </tr>
-      </table>
-      <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
+      <%= render  :partial=>"/connect_exam/sjis/student_information" %>
       </div>
       <div class="grade_information">
-        <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
-        
+      <%= render  :partial=>"/connect_exam/sjis/gradding_level" %>
       </div>
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
@@ -53,9 +17,56 @@
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
-                 
+                  <% unless @top_exam_group.blank? %>
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= "SUBJECT" %></b></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% jloop = 0 %>
+                        <% @top_exam_group.each do |top_exam| %>
+                          <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
+                          <% jloop = jloop+1 %>
+                        <% end %>
+                      <% end %>
+                          
+                     
+
+                      <td class="col-pdf">
+                          
+                      </td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf border-right-none"></td>
+                      
+                  </tr>
+                  
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>
+                      
+                        
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% @top_exam_group.each do |top_exam| %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if !report['exam_name'].index(top_exam).nil? %>
+                          <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
+                          <td class="col-pdf">
+                              <%= exam_name_new.upcase %>
+                              
+                          </td>
+                          <% end %>
+                        <% end %>
+                        <% end %>
+                      <% end %>
+
+                      <td class="col-pdf">
+                          TOTAL
+                      </td>
+                      <td class="col-pdf">GRADE</td>
+                      <td class="col-pdf border-right-none">HIGHEST</td>
+                      
+                  </tr>
+                  
+                  <% else %>
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
                         
@@ -68,12 +79,14 @@
                       <% end %>
 
                       <td class="col-pdf">
-                          TOTAL MARKS
+                          TOTAL
                       </td>
                       <td class="col-pdf">GRADE</td>
-                      <td class="col-pdf border-right-none">HIGHEST MARKS</td>
+                      <td class="col-pdf border-right-none">HIGHEST</td>
                       
                   </tr>
+                  
+                  <% end %>
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
@@ -251,27 +264,11 @@
                      
                       
               </table>
+             
+              <%= render  :partial=>"/connect_exam/sjis/behaviour_grade" %>
               <h5><b>&nbsp;</b></h5>
-              <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
-
-                      <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
-                              Class Teacher's Signature
-                          </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
-                              <br/><br/>
-                          </td>
-                      </tr>
-                      <tr class="even">
-                          <td class="col-pdf  border-left-none" width="33%">
-                              Principal's Signature
-                          </td> 
-                          <td class="col-pdf  border-right-none" width="67%">
-                              <br/><br/>
-                          </td>
-                      </tr>
-
-              </table> 
+              <%= render  :partial=>"/connect_exam/sjis/signs" %>
+               
 
           </div>
       </div>

@@ -23,7 +23,7 @@
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% jloop = 0 %>
                         <% @top_exam_group.each do |top_exam| %>
-                          <td class="col-pdf" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
+                          <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>

@@ -24,6 +24,8 @@ en:
   subject_and_class: "Subject and Class"
   select_subject_and_class: "All Subject and Class"
   new_homework_added: "New Homework"
+  your_action_required: "Your action required"
+  added_for: "Added for"
   homework_added_for: "New Homework Added for"
   view_reports_homework: "Please check the homework"
   new_assignment_sucessfuly_forwarded: "New homework successfully forwarded"

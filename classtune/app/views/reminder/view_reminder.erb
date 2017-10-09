@@ -54,7 +54,14 @@
 
           <% end %>
           <% if @new_reminder.rtype==4 %>
-                <%= link_to "View Homework", :controller=>"assignments", :action=>"show",:id=>@new_reminder.rid %>
+                <% assignment_details = Assignment.find_by_id(@new_reminder.rid) %>
+                <% unless assignment_details.blank? %>
+                    <% if assignment_details.is_published == 2 %>
+                      <%= link_to "View Homework", :controller=>"assignments", :action=>"show_publisher",:id=>@new_reminder.rid %>
+                    <% else %>
+                      <%= link_to "View Homework", :controller=>"assignments", :action=>"show",:id=>@new_reminder.rid %>
+                    <% end %>
+                <% end %>
           <% end %>
           <% if @new_reminder.rtype==3 %>
              <% if @current_user.parent? %>

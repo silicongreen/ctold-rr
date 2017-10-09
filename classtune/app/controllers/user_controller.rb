@@ -765,6 +765,7 @@ class UserController < ApplicationController
       activity_log.save
 
       session[:user_id] = nil if session[:user_id]
+      session[:access_token] = nil if session[:access_token]
       session[:language] = nil
       flash[:notice] = "#{t('logged_out')}"
       available_login_authes = Champs21Plugin::AVAILABLE_MODULES.select{|m| m[:name].camelize.constantize.respond_to?("logout_hook")}

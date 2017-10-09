@@ -266,12 +266,13 @@ if (!function_exists('check_login_paid'))
                         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                         $result = curl_exec($ch);
-                        print_r($result);
-                        exit;
+                       
                         curl_close($ch);
                         if($result)
                         {
                             $result_obj = json_decode($result);
+                             print_r($result_obj);
+                        exit;
                             $params.="&acess_token="+$result_obj->access_token;
 
                         }

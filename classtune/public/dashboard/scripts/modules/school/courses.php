@@ -45,8 +45,8 @@
 
             if ( $resAssignment->num_rows == 0)
             {
-                //$num_assignment = 0;
-                $num_assignment = (int) rand(10, 21);
+                $num_assignment = 0;
+                //$num_assignment = (int) rand(10, 21);
             }
             else
             {
@@ -62,8 +62,8 @@
 
             if ( $resClasswork->num_rows == 0)
             {
-                //$num_assignment = 0;
-                $num_classworks = (int) rand(10, 21);
+                $num_classworks = 0;
+                //$num_classworks = (int) rand(10, 21);
             }
             else
             {
@@ -82,8 +82,7 @@
 
             if ( $resLessonplan->num_rows == 0)
             {
-                //$num_assignment = 0;
-                $num_lessonplan = (int) rand(10, 21);
+                $num_lessonplan = 0;
             }
             else
             {

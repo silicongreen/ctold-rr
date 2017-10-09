@@ -8,6 +8,16 @@
         <div class="col-sm-12" style="text-align: center;"><h3>{{course.course_name}}</h3><hr /></div>
         <div class="clearfix"></div>
         <div class="media-body">
+            <table class="table table-no-border m-0">
+                <tbody>
+                  <tr ng-repeat="data in course.donutData track by $index">
+                    <td>{{$index+1}}</td>
+                    <td>{{data.label}}</td>
+                    <td>{{data.value}}</td>
+                  </tr>
+                </tbody>
+            </table>
+            <hr />
             <div id="donut_data">
                 <div id="donutGraph" class="donutGraph" morris-donut-chart donut-data='course.donutData' style="height: 250px"></div>
             </div>

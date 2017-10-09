@@ -42,7 +42,7 @@ authorization do
     has_permission_on :api_biometric_informations, :to => [:show]
     has_permission_on :api_employees, :to => [:show]
     has_permission_on :api_news, :to => [:index]
-    has_permission_on :api_reminders, :to => [:create]
+    has_permission_on :api_reminders, :to => [:create, :count, :collections]
     has_permission_on :api_books, :to => [:index]
   end
 
@@ -65,7 +65,7 @@ authorization do
 
   role :basic do
     has_permission_on :api_events, :to => [:index]
-    has_permission_on :api_reminders, :to => [:index]
+    has_permission_on :api_reminders, :to => [:index, :count, :collections]
     has_permission_on :api_timetables, :to => [:show]
   end
 

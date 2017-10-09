@@ -33,11 +33,11 @@
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
     
     $current_date = date("Y-m-d");
-//    $start_date = date("Y-m-d", strtotime("-10 day", strtotime($current_date)));
-//    $end_date = $current_date;
+    $start_date = date("Y-m-d", strtotime("-10 day", strtotime($current_date)));
+    $end_date = $current_date;
 //    $current_date = date("Y-m-d");
-    $end_date = date("Y-m-d", strtotime("+10 day", strtotime($current_date)));
-    $start_date = $current_date;
+    //$end_date = date("Y-m-d", strtotime("+10 day", strtotime($current_date)));
+    //$start_date = $current_date;
     
     
     if ( $type_attendance == 1 )

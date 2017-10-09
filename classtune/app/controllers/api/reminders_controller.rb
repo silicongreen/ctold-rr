@@ -12,7 +12,35 @@ class Api::RemindersController < ApiController
       end
     end
   end
+  
+  def collections
+    @xml = Builder::XmlMarkup.new
+    user = User.active.find_by_username(params[:id])
+    
+    @reminders = Reminder.find_all_by_recipient(user.id, :conditions=>"is_read = false and is_deleted_by_recipient = false",:limit=>10,:order=>"created_at DESC")
+    
+    respond_to do |format|
+      format.xml  { render :reminders_collections }
+    end
+  end
 
+  def count
+    @xml = Builder::XmlMarkup.new
+    user = User.active.find_by_username(params[:id])
+    
+    reminders = Reminder.find(:all , :conditions => ["recipient = '#{user.id}'"])
+    count = 0
+    reminders.each do |r|
+      unless r.is_read
+        count += 1
+      end
+    end
+    @reminder_count = count
+    respond_to do |format|
+      format.xml  { render :reminder_count }
+    end
+  end
+  
   def create
     @xml = Builder::XmlMarkup.new
     @reminder = Reminder.new

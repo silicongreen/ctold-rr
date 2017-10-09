@@ -56,13 +56,15 @@
         var school_domain = 'chs';
         var school_name = '';
         var school_id = 0;
+        var admin_name = '';
+        var admin_username = '';
     </script>    
     <script>
-        var fedena_server = '<?php echo $server_name; ?>';
+        var classtune_server = '<?php echo $server_name; ?>';
         var token = '<?php echo $token; ?>';
         var username = '<?php echo $username; ?>';
-        show_user(fedena_server, token, username);
-        function show_user(fedena_server, token, username)
+        show_user(classtune_server, token, username);
+        function show_user(classtune_server, token, username)
         {
             try
             {
@@ -72,11 +74,11 @@
                 {
                    if (xhr.readyState==4)
                     {
-                        return show_response(evt.target.responseText, fedena_server, token);
+                        return show_response(evt.target.responseText, classtune_server, token);
                     }
                 }
                 
-                xhr.open('GET', fedena_server+"/api/users/"+username);
+                xhr.open('GET', classtune_server+"/api/users/"+username);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('Authorization', 'Token token="'+token+'"');
                 xhr.send();
@@ -86,14 +88,23 @@
                 alert(err.message);
             }
         }
-
-        function show_response(xml, fedena_server, token)
+        
+        function reminder_counts(classtune_server, token, username)
         {
+            
+        }
+
+        function show_response(xml, classtune_server, token)
+        {
+            
             var parser = new DOMParser();
             var xmlDoc = parser.parseFromString(xml,"text/xml");
+            admin_name = xmlDoc.getElementsByTagName("first_name")[0].childNodes[0].nodeValue + " " + xmlDoc.getElementsByTagName("last_name")[0].childNodes[0].nodeValue;
+            admin_username = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
+            
             if ( xmlDoc.getElementsByTagName("user_type")[0].childNodes[0].nodeValue != "Admin" && xmlDoc.getElementsByTagName("user_type")[0].childNodes[0].nodeValue != "Principle" )
             {
-                location.href = fedena_server;
+                location.href = classtune_server;
             }
             else
             {
@@ -112,7 +123,7 @@
                         }
                     }
 
-                    xhr.open('GET', fedena_server+"/api/schools");
+                    xhr.open('GET', classtune_server+"/api/schools");
                     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                     xhr.setRequestHeader('Authorization', 'Token token="'+token+'"');
                     xhr.send();

@@ -109,236 +109,60 @@
 
   <!-- Right-side navigation -->
   <ul class="nav-right pull-right list-inline">
-    <!--li class="dropdown users" uib-dropdown>
-
-      <a href class="dropdown-toggle" uib-dropdown-toggle>
-        <fa name="user"></fa>
-        <span class="badge bg-lightred">2</span>
-      </a>
-
-      <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInUp" role="menu">
-
-        <div class="panel-heading">
-          You have <strong>2</strong> requests
-        </div>
-
-        <ul class="list-group">
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object thumb thumb-sm">
-                  <img src="images/arnold-avatar.1df41c32.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">Arnold sent you a request</span>
-                <small class="text-muted">15 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object  thumb thumb-sm">
-                  <img src="images/george-avatar.85c5009a.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">George sent you a request</span>
-                <small class="text-muted">5 hours ago</small>
-              </div>
-            </a>
-          </li>
-
-        </ul>
-
-        <div class="panel-footer">
-          <a href="javascript:;">Show all requests <fa name="angle-right" class="pull-right"></fa></a>
-        </div>
-
-      </div>
-
-    </li>
-
-    <li class="dropdown messages" uib-dropdown>
-
-      <a href class="dropdown-toggle" uib-dropdown-toggle>
-        <fa name="envelope"></fa>
-        <span class="badge bg-lightred">4</span>
-      </a>
-
-      <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInDown" role="menu">
-
-        <div class="panel-heading">
-          You have <strong>4</strong> messages
-        </div>
-
-        <ul class="list-group">
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object thumb thumb-sm">
-                  <img src="images/ici-avatar.c6a5ded8.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">Imrich sent you a message</span>
-                <small class="text-muted">12 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object  thumb thumb-sm">
-                  <img src="images/peter-avatar.5a0f3fd1.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">Peter sent you a message</span>
-                <small class="text-muted">46 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object  thumb thumb-sm">
-                  <img src="images/random-avatar1.7dd877de.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">Bill sent you a message</span>
-                <small class="text-muted">1 hour ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object  thumb thumb-sm">
-                  <img src="images/random-avatar3.85ee4bda.jpg" alt="" class="img-circle">
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">Ken sent you a message</span>
-                <small class="text-muted">3 hours ago</small>
-              </div>
-            </a>
-          </li>
-
-        </ul>
-
-        <div class="panel-footer">
-          <a href="javascript:;">Show all messages <fa name="angle-right" class="pull-right"></fa></a>
-        </div>
-
-      </div>
-
-    </li-->
-
-    <li class="dropdown notifications" uib-dropdown>
+    <li class="dropdown notifications" uib-dropdown ng-controller="NotificationCtrl">
 
       <a href class="dropdown-toggle" uib-dropdown-toggle>
         <fa name="bell"></fa>
-        <span class="badge bg-lightred">3</span>
+        <span ng-if="count > 0" class="badge bg-lightred">{{count}}</span>
       </a>
 
-      <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft" role="menu">
+      <div ng-if="count > 0" class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft" role="menu">
 
         <div class="panel-heading">
-          You have <strong>3</strong> notifications
+          You have <strong>{{count}}</strong> new notifications
         </div>
 
         <ul class="list-group">
 
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
+          <li class="list-group-item" ng-repeat="reminder in reminders track by $index">
+            <a href="{{reminders_link + reminder.id}}" class="media">
               <div class="media-left">
-                <span class="media-object media-icon bg-danger">
-                  <fa name="ban"></fa>
+                <span class="media-object media-icon bg-greensea">
+                  <fa name="book"></fa>
                 </span>
               </div>
               <div class="media-body">
-                <span class="block">User Mizan's account cancelled</span>
-                <small class="text-muted">6 minutes ago</small>
+                <span class="block">{{reminder.subject}}</span>
               </div>
             </a>
           </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class="media-object media-icon bg-primary">
-                  <fa name="bolt"></fa>
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">New Teachers registered for Amberkhan Girls High School And College, Bangladesh</span>
-                <small class="text-muted">12 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <div class="media-left">
-                <span class=" media-object media-icon bg-greensea">
-                  <fa name="lock"></fa>
-                </span>
-              </div>
-              <div class="media-body">
-                <span class="block">90% A+ Grade for Baushi Ardhachandra Higher Secondary School, Congratulations!!!</span>
-                <small class="text-muted">18 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
         </ul>
 
         <div class="panel-footer">
-          <a href="javascript:;">Show all notifications <fa name="angle-right" class="pull-right"></fa></a>
+          <a href="{{reminders_link_all}}">Show all notifications <fa name="angle-right" class="pull-right"></fa></a>
         </div>
 
       </div>
 
     </li>
 
-    <li class="dropdown nav-profile" uib-dropdown>
+    <li class="dropdown nav-profile" uib-dropdown ng-controller="UserCtrl">
 
       <a href class="dropdown-toggle" uib-dropdown-toggle>
-        <img src="images/profile-photo.106f5df1.jpg" alt="" class="img-circle size-30x30">
-        <span>Huffas Abdullah <fa name="angle-down"></fa></span>
+        <img src="{{admin_profile_image}}" alt="" class="img-circle size-30x30">
+        <span>{{admin_name}} <fa name="angle-down"></fa></span>
       </a>
 
       <ul class="dropdown-menu animated littleFadeInRight" role="menu">
 
         <li>
-          <a href="#">
-            <span class="badge bg-greensea pull-right">86%</span>
+          <a href="{{admin_profile_link}}">
             <fa name="user"></fa>Profile
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="label bg-lightred pull-right">new</span>
-            <fa name="check"></fa>Tasks
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <fa name="cog"></fa>Settings
           </a>
         </li>
         <li class="divider"></li>
         <li>
-          <a href="#">
+          <a href="{{admin_logout_link}}">
             <fa name="sign-out"></fa>Logout
           </a>
         </li>
@@ -364,12 +188,6 @@
       </ul>
 
     </li>
-
-    <!--li class="toggle-right-sidebar">
-      <a href="javascript:;" ng-click="main.settings.rightbarShow = !main.settings.rightbarShow">
-        <fa name="university"></fa>
-      </a>
-    </li-->
   </ul>
   <!-- Right-side navigation end -->
 

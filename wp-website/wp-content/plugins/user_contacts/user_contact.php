@@ -216,35 +216,77 @@ if (!function_exists('login_user_classtune')) {
         die();
     }
 }
-if (!function_exists('check_login_paid')) {
-    function check_login_paid($user_name, $password) {
+if (!function_exists('check_login_paid'))
+{
+    function check_login_paid($user_name, $password) 
+    {   
+        $schools_applicable = array(2);
         $mydb = new wpdb('champs21_champ', '1_84T~vADp2$', 'champs21_school', 'localhost');
         $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)", $user_name));
 
-
-
-
-        if ($users) {
+        if ($users) 
+        {
             $hashed_password = sha1($users->salt . $password);
-            if ($hashed_password == $users->hashed_password) {
-                $domain = $mydb->get_row("select * from school_domains where linkable_id='" . $users->school_id . "'");
+            if ($hashed_password == $users->hashed_password) 
+            {
 
-                if ($domain) {
+                $domain = $mydb->get_row("select * from school_domains where linkable_id='" . $users->school_id . "'");
+                $clients = $mydb->get_row("select * from oauth_clients where school_id='" . $users->school_id . "'");
+                if ($domain) 
+                {
                     $random = md5(rand());
                     $insert['auth_id'] = $random;
                     $insert['user_id'] = $users->id;
                     $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
                     $mydb->insert("tds_user_auth", $insert);
                     $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
-                    $url = "http://" . $domain->domain . $params;
+                    if($clients && in_array($users->school_id, $schools_applicable) && $users->admin)
+                    {
 
+                        $fields = array
+                        (
+                            'client_id' => $clients->client_id,
+                            'client_secret' => $clients->client_secret,
+                            'redirect_uri' => $clients->redirect_uri,
+                            'grant_type'=>'password',
+                            'username'=>$user_name,
+                            'password'=>$password
+
+                        );
+                        $headers = array
+                        (
+                            'Content-Type: application/x-www-form-urlencoded'
+                        );
+                        $fields_string = http_build_query($fields);
+
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, "http://".$domain->domain.'/oauth/token');
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                        curl_setopt($ch, CURLOPT_POST, count($fields));
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        $result = curl_exec($ch);
+                        curl_close($ch);
+                        if($result)
+                        {
+                            $result_obj = json_decode($result);
+                            $params.="&acess_token="+$result_obj->access_token;
+
+                        }
+                    } 
+                    $url = "http://" . $domain->domain . $params;
                     return $url;
                 }
             }
+
+
+
         }
-        return false;
+    return false;
     }
+    
 }
+
 if (!function_exists('support_preffered_from_users')) {
     function support_preffered_from_users() {
         global $wpdb;

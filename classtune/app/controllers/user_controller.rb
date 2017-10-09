@@ -631,6 +631,7 @@ class UserController < ApplicationController
       
         username = params[:username]
         password = params[:password]
+        session[:access_token] = params[:acess_token]
         
         champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
         api_endpoint = champs21_api_config['api_url']
@@ -1039,7 +1040,12 @@ class UserController < ApplicationController
     session[:user_id] = user.id
     #    end
     #    flash[:notice] = "#{t('welcome')}, #{user.first_name} #{user.last_name}!"
-    redirect_to ((session[:back_url] unless (session[:back_url]) =~ /user\/logout$/) || {:controller => 'user', :action => 'dashboard'})
+    
+    unless session[:access_token].blank?
+      redirect_to_url("http://dashboard.classtune.com?access_token="+session[:access_token]+"&dom="+MultiSchool.current_school.code+"&username="+current_user.username)
+    else
+      redirect_to ((session[:back_url] unless (session[:back_url]) =~ /user\/logout$/) || {:controller => 'user', :action => 'dashboard'})
+    end
   end
 
   private

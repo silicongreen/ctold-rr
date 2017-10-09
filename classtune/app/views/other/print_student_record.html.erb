@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Admit Card</title>
+        <title>Student Record</title>
         <meta charset="UTF-8">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -32,29 +32,94 @@
         <div class="col-xs-6">
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12">
-              <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px; height:75px;' src='/images/school_logo/2/sfx-logo.png' /></div>
+              <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px; height:70px;' src='/images/school_logo/2/sfx-logo.png' /></div>
               <div class="col-xs-8">
-                  <div class="col-xs-12"><center><b><font size="4">STUDENT RECORD (Annual)</font></b></center></div>
-                  <div class="col-xs-12"><center><font size="3"><%= @section_name %></font></center></div>
-                  <div class="col-xs-12"><center><font size="3">YEAR : <%= @year %></font></center></div>
+                  <div class="col-xs-12"><center><b><font size="3">STUDENT RECORD (Annual)</font></b></center></div>
+                  <div class="col-xs-12"><center><font size="2"><%= @section_name %></font></center></div>
+                  <div class="col-xs-12"><center><font size="2">YEAR : <%= @year %></font></center></div>
                   
               </div>
               <div class="col-xs-2" style="padding:0px;"><%= image_tag "#{@profile_image}" %></div>
             </div>
-            <div class="col-xs-12"><center><b><font size="4"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
+            <div class="col-xs-12"><center><b><font size="3"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
+            <div class="col-xs-12"><center><font size="1"><%=Configuration.get_config_value('InstitutionAddress'); %></font></center></div>
             
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12">
-              <table class="table table-user-information" width="90%">
-                    <tbody>
-                      <tr>
-                        <td>Name</td>
-                        <td>&nbsp;:&nbsp;<%= std_info.full_name %></td>
-                        <td>Class & Section</td>
-                        <td>&nbsp;:&nbsp;<%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></td>
-                      </tr>
-                      
-                    </tbody> 
-              </table>       
+                <div class="col-xs-12 data-group">
+                  <div class="col-xs-2" >Name :</div>
+                  <div class="col-xs-4 underline" ><%= std_info.full_name %></div>
+                  <div class="col-xs-3" >Class & Section :</div>
+                  <div class="col-xs-3 underline" ><%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></div>
+                </div>
+                <div class="col-xs-12 data-group">
+                  <div class="col-xs-2" >Nationality :</div>
+                  <div class="col-xs-3 underline" ><%= std_info.nationality.name unless std_info.nationality_id.nil? %></div>
+                  <div class="col-xs-3" >Date of Birth :</div>
+                  <div class="col-xs-4 underline" ><%= I18n.l(std_info.date_of_birth,:format=>:normal) unless std_info.date_of_birth.nil? %></div>
+                </div>
+                <div class="col-xs-12 data-group">
+                  <div class="col-xs-4" >Date of Admission :</div>
+                  <div class="col-xs-4 underline" ><%= I18n.l(std_info.admission_date,:format=>:normal) unless std_info.admission_date.nil? %></div>
+                  <div class="col-xs-2" >Religion :</div>
+                  <div class="col-xs-2 underline" ><%= std_info.religion.titlecase unless std_info.religion.blank? %></div>
+                </div>
+                <% father_mobile = "" %>
+                <% mother_mobile = "" %>
+                <% guardians = GuardianStudents.find_all_by_student_id(std_info.id) %>
+                <% unless guardians.blank?  %>
+                 <% guardians.each do |gur| %>
+                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                  <% unless gurdian.blank? %>
+                      <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Father's Name :</div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-3" >Qualification :</div>
+                            <div class="col-xs-3 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
+                          </div>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Passport / ID No :</div>
+                            <div class="col-xs-9 underline" ></div>
+                          </div>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Occupation :</div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                            <div class="col-xs-3" >Designation :</div>
+                            <div class="col-xs-3 underline" ></div>
+                          </div>
+                          <% father_mobile = gurdian.mobile_phone %>
+                          <% break %>
+                      <% end %>
+                  <% end %>
+                
+                  <% guardians.each do |gur| %>
+                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                  <% unless gurdian.blank? %>
+                      <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Father's Name :</div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-3" >Qualification :</div>
+                            <div class="col-xs-3 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
+                          </div>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Passport / ID No :</div>
+                            <div class="col-xs-9 underline" ></div>
+                          </div>
+                          <div class="col-xs-12 data-group">
+                            <div class="col-xs-3" >Occupation :</div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                            <div class="col-xs-3" >Designation :</div>
+                            <div class="col-xs-3 underline" ></div>
+                          </div>
+                          <% father_mobile = gurdian.mobile_phone %>
+                          <% break %>
+                      <% end %>
+                  <% end %>
+                <% end %>
+                   
             </div>
             
                
@@ -66,6 +131,23 @@
     </body>
 </html>
 <style>
+   
+    .col-xs-12
+    {
+       padding:0px !important;
+    }
+    .col-xs-12 div
+    {
+       padding:0px !important;
+    }
+     div.col-xs-12 div.data-group
+    {
+      padding: 5px 0px !important;
+      border-bottom: 1px dashed black;
+    }
+
+    
+    
   .table-user-information > tbody > tr {
     border-top: 1px solid rgb(221, 221, 221);
 }

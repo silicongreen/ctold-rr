@@ -273,7 +273,9 @@ if (!function_exists('check_login_paid'))
                             $params.="&acess_token="+$result_obj->access_token;
 
                         }
+                        $params.="&test1=t1";
                     } 
+                    $params.="&test2=t2";
                     $url = "http://" . $domain->domain . $params;
                     return $url;
                 }

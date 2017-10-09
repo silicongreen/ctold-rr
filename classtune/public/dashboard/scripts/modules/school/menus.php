@@ -32,6 +32,7 @@
     );
     while( $rs = $result->fetch_array(MYSQLI_ASSOC)) 
     {
+        $rs['link'] = $server . "/" . $rs['link_key'];
         $menus[] = $rs;
     }
     

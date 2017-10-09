@@ -271,9 +271,10 @@ if (!function_exists('check_login_paid'))
                         if($result)
                         {
                             $result_obj = json_decode($result);
-                             print_r($result_obj);
-                        exit;
+                            
                             $params.="&acess_token="+$result_obj->access_token;
+                             print_r($params);
+                        exit;
 
                         }
                         

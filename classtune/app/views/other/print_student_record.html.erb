@@ -43,7 +43,7 @@
             
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12">
+            <div class="col-xs-12 font-size-12">
                 <div class="col-xs-12 data-group">
                   <div class="col-xs-2" >Name :</div>
                   <div class="col-xs-4 underline" ><%= std_info.full_name %></div>
@@ -141,7 +141,7 @@
                 </div>
                    
             </div>
-            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12 ">&nbsp;</div>
             <% @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", std_info.sibling_id,std_info.id]) %>
             <% unless @siblings.blank?  %>
               <div class="col-xs-12"><center><b><font size="2">OTHER CHILDREN OF THE FAMILY IN THE SCHOOL/CLASS & SECTION</font></b></center></div>
@@ -188,7 +188,7 @@
     {
         height: 100%;
         margin: 0px;
-        font-size: 12px;
+        
     }
     body > div.col-xs-6
     {
@@ -218,6 +218,9 @@
     {
       padding: 5px 0px !important;
       border-bottom: 1px solid black;
+      
+      font-size: 12px;
+      
     }
 
     

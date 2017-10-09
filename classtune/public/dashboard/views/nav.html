@@ -6,7 +6,9 @@
         Navigation <i class="pull-right fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
       </uib-accordion-heading>
       <ul id="navigation" nav-collapse ripple>
-        <li ui-sref-active="active"><a ui-sref="app.dashboard"><fa name="dashboard"></fa> <span>{{ 'Menu.DASHBOARD' | translate }}</span></a></li>
+        <li ui-sref-active="active">
+            <a href="{{menu.link}}" ng-repeat="menu in menus track by $index"><fa name="{{menu.fa_icon}}"></fa> <span>{{ menu.menu_name }}</span></a>
+        </li>
       </ul>
     </uib-accordion-group>
 

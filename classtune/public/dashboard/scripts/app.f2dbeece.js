@@ -925,14 +925,29 @@ app
         $scope.format = $scope.formats[0];
     })
 
-.controller('NavCtrl', function ($scope) {
-    $scope.oneAtATime = false;
+.controller('NavCtrl', function ($scope, $http) {
+    var schoolSelectInterval = setInterval(function(){
+        $scope.oneAtATime = false;
 
-    $scope.status = {
-      isFirstOpen: true,
-      isSecondOpen: true,
-      isThirdOpen: true
-    };
+        $scope.status = {
+          isFirstOpen: true,
+          isSecondOpen: true,
+          isThirdOpen: true
+        };
+        if ( school_id > 0 )
+        {
+             clearInterval(schoolSelectInterval);
+             $scope.server = classtune_server;
+             $http({ 
+                 url: '/scripts/modules/school/menus.php',
+                 method: "PUT",
+                 data: { 'school_id' : school_id, 'server' : classtune_server, 'dashboard_link' : dashboard_link, 'school_domain' : school_domain, 'username' : username, 'token': token }
+             })
+             .then(function(response){
+                 $scope.menus = response.data;
+             });
+        }
+     }, 200);
 });
 
 'use strict';

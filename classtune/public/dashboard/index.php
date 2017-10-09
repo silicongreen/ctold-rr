@@ -5,6 +5,7 @@
     }
     
     $server_name = $_SERVER['SERVER_NAME'];
+    $current_server = "http://" . $server_name;
     $server_name = "http://" . str_replace("dashboard", $_GET['dom'], $server_name);
     
     //Temporary Code, When Done please remove
@@ -37,6 +38,7 @@
 //    
 //    //close connection
 //    curl_close($ch);
+//    $token = $res->access_token;
     $token = $_GET['access_token'];
     $username = $_GET['username'];
 ?>
@@ -57,6 +59,7 @@
         var school_id = 0;
         var admin_name = '';
         var admin_username = '';
+        var dashboard_link = '<?php echo $current_server; ?>';
     </script>    
     <script>
         var classtune_server = '<?php echo $server_name; ?>';

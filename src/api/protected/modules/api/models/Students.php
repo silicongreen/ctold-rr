@@ -398,8 +398,14 @@ class Students extends CActiveRecord
             )
         );
         $students = $this->find($criteria);
+        
+        if($students)
+        {
+           return $students->total; 
+        }
+        return 0;
 
-        return $students->total;
+        
     }
 
     public function getStudentAll($batch_name = false, $class_name = false, $batch_id = false)

@@ -194,14 +194,17 @@ class UserController extends Controller {
                 if (isset($error['trace'])) {
                     $error_log->etrace = $error['trace'];
                 }
+                $error_log->is_paid = 0;
                 if (isset(Yii::app()->user->id)) {
                     $error_log->is_paid = 1;
                     $error_log->paid_user_id = Yii::app()->user->id;
                 }
+                
                 if (isset(Yii::app()->user->free_id)) {
                     $error_log->user_id = Yii::app()->user->free_id;
                 }
-                if($error_log->is_paid == 1)
+                
+                if($error_log->is_paid == 1 && $error_log->ecode!=404)
                 {
                     $error_log->save();
                 }

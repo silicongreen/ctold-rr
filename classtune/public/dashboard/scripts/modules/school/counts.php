@@ -32,16 +32,30 @@
         $employee_record_total = $rs['count'];
     }
     
-    $result = $conn->query("SELECT count(*) as count FROM attendances WHERE month_date = '" . date("Y-m-d") . "' AND school_id = " . $school_id);
+    $result = $conn->query("SELECT * FROM attendance_registers WHERE attendance_date = '" . date("Y-m-d") . "' AND school_id = " . $school_id);
 
     if ( $result->num_rows == 0)
     {
-        $absent_student_total = 0;
+        $student_attendance = false;
     }
     else
     {
-        $rs = $result->fetch_array(MYSQLI_ASSOC);
-        $absent_student_total = $rs['count'];
+        $student_attendance = true;
+    }
+    
+    if ( $student_attendance )
+    {
+        $result = $conn->query("SELECT count(*) as count FROM attendances WHERE month_date = '" . date("Y-m-d") . "' AND school_id = " . $school_id);
+
+        if ( $result->num_rows == 0)
+        {
+            $absent_student_total = 0;
+        }
+        else
+        {
+            $rs = $result->fetch_array(MYSQLI_ASSOC);
+            $absent_student_total = $rs['count'];
+        }
     }
     
     $result = $conn->query("SELECT count(*) as count FROM employee_attendances WHERE attendance_date = '" . date("Y-m-d") . "' AND school_id = " . $school_id);
@@ -72,8 +86,16 @@
     
     $outp['student'] = number_format($student_record_total);
     $outp['employee'] = number_format($employee_record_total);
-    $outp['student_present'] = number_format($student_record_total) - number_format($absent_student_total);
-    $outp['employee_present'] = number_format($employee_record_total) - number_format($absent_employee_total);
+    if ( $student_attendance )
+    {
+        $outp['student_present'] = number_format($student_record_total) - number_format($absent_student_total);
+        $outp['employee_present'] = number_format($employee_record_total) - number_format($absent_employee_total);
+    }
+    else
+    {
+        $outp['student_present'] = "no Class today";
+        $outp['employee_present'] = "no Class today";
+    }
     $outp['homework'] = $homework_total;
     
     echo json_encode($outp);

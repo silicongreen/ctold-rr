@@ -621,13 +621,13 @@ app
         };
     
         $scope.datasetAttendance = [{
-          data: [[10, 50], [20, 80], [30, 60], [40, 40]],
+          data: [],
           label: 'Present'
         }, {
-          data: [[10, 30], [20, 50], [30, 70], [40, 50]],
+          data: [],
           label: 'Absent'
         }, {
-          data: [[10, 40], [20, 60], [30, 90], [40, 60]],
+          data: [],
           label: 'Late'
         }];
 

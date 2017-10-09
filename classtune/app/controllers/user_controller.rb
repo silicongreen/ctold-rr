@@ -1042,7 +1042,7 @@ class UserController < ApplicationController
     #    flash[:notice] = "#{t('welcome')}, #{user.first_name} #{user.last_name}!"
     
     unless session[:access_token].blank?
-      redirect_to_url("http://dashboard.classtune.com?access_token="+session[:access_token]+"&dom="+MultiSchool.current_school.code+"&username="+current_user.username)
+      redirect_to "http://dashboard.classtune.com?access_token="+session[:access_token]+"&dom="+MultiSchool.current_school.code+"&username="+current_user.username
     else
       redirect_to ((session[:back_url] unless (session[:back_url]) =~ /user\/logout$/) || {:controller => 'user', :action => 'dashboard'})
     end

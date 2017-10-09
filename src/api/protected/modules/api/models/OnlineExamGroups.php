@@ -279,7 +279,7 @@ class OnlineExamGroups extends CActiveRecord {
                 $response_array['pass_percentage'] = intval($data->pass_percentage);
                 $response_array['title'] = $data->name;
 
-                $subject = "";
+                $subject = "Bangla";
                 $subject_icon = "";
                 if (isset($value['subject']->name) && $value['subject']->name) {
                     $subject = $value['subject']->name;

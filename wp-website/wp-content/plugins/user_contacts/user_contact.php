@@ -220,7 +220,7 @@ if (!function_exists('check_login_paid'))
 {
     function check_login_paid($user_name, $password) 
     {   
-        $schools_applicable = array(2);
+        $schools_applicable = array(312);
         $mydb = new wpdb('champs21_champ', '1_84T~vADp2$', 'champs21_school', 'localhost');
         $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)", $user_name));
 
@@ -240,7 +240,7 @@ if (!function_exists('check_login_paid'))
                     $insert['expire'] = date("Y-m-d H:i:s", strtotime("+1 Day"));
                     $mydb->insert("tds_user_auth", $insert);
                     $params = "?username=" . $user_name . "&password=" . $password . "&auth_id=" . $random . "&user_id=" . $users->id;
-                    if($clients && in_array($users->school_id, $schools_applicable) && $users->admin)
+                    if($clients && !in_array($users->school_id, $schools_applicable) && $users->admin)
                     {
 
                         $fields = array

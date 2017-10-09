@@ -67,6 +67,7 @@
                 </div>
                 <% father_mobile = "" %>
                 <% mother_mobile = "" %>
+                <% office_phone = "" %>
                 <% guardians = GuardianStudents.find_all_by_student_id(std_info.id) %>
                 <% unless guardians.blank?  %>
                  <% guardians.each do |gur| %>
@@ -75,9 +76,9 @@
                       <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-3" >Father's Name :</div>
-                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                             <div class="col-xs-3" >Qualification :</div>
-                            <div class="col-xs-3 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
+                            <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                           </div>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-3" >Passport / ID No :</div>
@@ -90,19 +91,21 @@
                             <div class="col-xs-3 underline" ></div>
                           </div>
                           <% father_mobile = gurdian.mobile_phone %>
+                          <% office_phone = gurdian.office_phone1  %>
                           <% break %>
                       <% end %>
                   <% end %>
+                 <% end %>
                 
                   <% guardians.each do |gur| %>
                   <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
                   <% unless gurdian.blank? %>
-                      <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
+                      <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
                           <div class="col-xs-12 data-group">
-                            <div class="col-xs-3" >Father's Name :</div>
-                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-3" >Mother's Name :</div>
+                            <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                             <div class="col-xs-3" >Qualification :</div>
-                            <div class="col-xs-3 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
+                            <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                           </div>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-3" >Passport / ID No :</div>
@@ -114,13 +117,39 @@
                             <div class="col-xs-3" >Designation :</div>
                             <div class="col-xs-3 underline" ></div>
                           </div>
-                          <% father_mobile = gurdian.mobile_phone %>
+                          <% mother_mobile = gurdian.mobile_phone %>
                           <% break %>
                       <% end %>
                   <% end %>
                 <% end %>
+               <% end %>
+               
+               <div class="col-xs-12 data-group">
+                  <div class="col-xs-3" >Present Address :</div>
+                  <div class="col-xs-9 underline" ><%=  std_info.address_line1 unless std_info.address_line1.blank? %></div>
+                </div>
+                
+                <div class="col-xs-12 data-group">
+                  <div class="col-xs-4" >Land Phone(Res) :</div>
+                  <div class="col-xs-3 underline" ><%=  std_info.phone1.to_s  unless std_info.phone1.blank? %></div>
+                  <div class="col-xs-2" >Office :</div>
+                  <div class="col-xs-3 underline" ><%= office_phone %></div>
+                </div>
+                
+                <div class="col-xs-12 data-group">
+                  <div class="col-xs-4" >Mobile Phone(Father) :</div>
+                  <div class="col-xs-3 underline" ><%=  father_mobile %></div>
+                  <div class="col-xs-2" >(Mother) :</div>
+                  <div class="col-xs-3 underline" ><%= mother_mobile %></div>
+                </div>
                    
             </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">&nbsp;</div>
+            <% @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", @student.sibling_id,@student.id]) %>
+            <% unless @siblings.blank?  %>
+              <div class="col-xs-12"><center><b><font size="3">OTHER CHILDREN OF THE FAMILY IN THE SCHOOL/CLASS & SECTION</font></b></center></div>
+            <% end %>
             
                
               
@@ -143,7 +172,7 @@
      div.col-xs-12 div.data-group
     {
       padding: 5px 0px !important;
-      border-bottom: 1px dashed black;
+      border-bottom: 1px solid black;
     }
 
     

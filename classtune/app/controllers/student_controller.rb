@@ -1974,7 +1974,7 @@ end
     @assigned_employees = @student.batch.employees
     @additional_details = @student.student_additional_details.find(:all,:include => [:student_additional_field],:conditions => ["student_additional_fields.status = true"],:order => "student_additional_fields.priority ASC")
     @additional_fields_count = StudentAdditionalField.count(:conditions => "status = true")    
-    
+    @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", @student.sibling_id,@student.id])
     @att_text = ''
     @att_image = ''
     get_attendence_text

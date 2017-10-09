@@ -73,8 +73,8 @@
                       <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-3" >Father's Name :</div>
-                            <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
-                            <div class="col-xs-3" >Qualification :</div>
+                            <div class="col-xs-5 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-2" >Qualification:</div>
                             <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                           </div>
                           <div class="col-xs-12 data-group">
@@ -100,8 +100,8 @@
                       <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-3" >Mother's Name :</div>
-                            <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
-                            <div class="col-xs-3" >Qualification :</div>
+                            <div class="col-xs-5 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-2" >Qualification:</div>
                             <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                           </div>
                           <div class="col-xs-12 data-group">
@@ -188,6 +188,7 @@
     {
         height: 100%;
         margin: 0px;
+        font-size: 14px;
     }
     body > div.col-xs-6
     {

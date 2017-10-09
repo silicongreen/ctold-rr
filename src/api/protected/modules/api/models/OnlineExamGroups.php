@@ -318,7 +318,7 @@ class OnlineExamGroups extends CActiveRecord {
 
                         $response_array['question'][$i]['id'] = $questions->id;
                         $response_array['question'][$i]['question'] = Settings::substr_with_unicode($questions->question);
-                        $response_array['question'][$i]['explanation'] = null;
+                        $response_array['question'][$i]['explanation'] = "";
                         if($questions->explanation)
                         {
                             $response_array['question'][$i]['explanation'] = $questions->explanation;

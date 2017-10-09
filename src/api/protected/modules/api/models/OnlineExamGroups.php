@@ -189,11 +189,11 @@ class OnlineExamGroups extends CActiveRecord {
                 $response_array['min_score'] = $examattendence->getScore("MIN", $data->id);
                 $subject = "";
                 $subject_icon = "";
-                if (isset($value['subject']->name) && $value['subject']->name) {
-                    $subject = $value['subject']->name;
+                if (isset($data['subject']->name) && $data['subject']->name) {
+                    $subject = $data['subject']->name;
                 }
-                if (isset($value['subject']->icon_number) && $value['subject']->icon_number) {
-                    $subject_icon = $value['subject']->icon_number;
+                if (isset($data['subject']->icon_number) && $data['subject']->icon_number) {
+                    $subject_icon = $data['subject']->icon_number;
                 }
 
                 $response_array['subject_name'] = $subject;
@@ -279,13 +279,13 @@ class OnlineExamGroups extends CActiveRecord {
                 $response_array['pass_percentage'] = intval($data->pass_percentage);
                 $response_array['title'] = $data->name;
 
-                $subject = "Bangla";
+                $subject = "";
                 $subject_icon = "";
-                if (isset($value['subject']->name) && $value['subject']->name) {
-                    $subject = $value['subject']->name;
+                if (isset($data['subject']->name) && $data['subject']->name) {
+                    $subject = $data['subject']->name;
                 }
-                if (isset($value['subject']->icon_number) && $value['subject']->icon_number) {
-                    $subject_icon = $value['subject']->icon_number;
+                if (isset($data['subject']->icon_number) && $data['subject']->icon_number) {
+                    $subject_icon = $data['subject']->icon_number;
                 }
 
                 $response_array['subject_name'] = $subject;

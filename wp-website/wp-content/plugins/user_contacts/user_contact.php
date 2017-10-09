@@ -266,6 +266,8 @@ if (!function_exists('check_login_paid'))
                         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                         $result = curl_exec($ch);
+                        print_r($result);
+                        exit;
                         curl_close($ch);
                         if($result)
                         {
@@ -273,9 +275,9 @@ if (!function_exists('check_login_paid'))
                             $params.="&acess_token="+$result_obj->access_token;
 
                         }
-                        $params.="&test1=t1";
+                        
                     } 
-                    $params.="&test2=t2";
+                   
                     $url = "http://" . $domain->domain . $params;
                     return $url;
                 }

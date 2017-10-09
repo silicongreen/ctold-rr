@@ -94,7 +94,7 @@
             <div class="row">
               <!-- col -->
               <div class="col-xs-12">
-                  <span><b>Student Present</b></span>
+                  <span><b>Student Attendance</b></span>
               </div>
               <!-- /col -->
             </div>
@@ -108,8 +108,11 @@
               </div>
               <!-- /col -->
               <!-- col -->
-              <div class="col-xs-8">
+              <div class="col-xs-8" ng-if="student_attendance">
                 <p class="text-elg text-strong mb-0">{{counts.student_present}}</p>
+              </div>
+              <div class="col-xs-8" ng-if="!student_attendance">
+                <small>( {{counts.student_present}} )</small>
               </div>
               <!-- /col -->
             </div>
@@ -142,7 +145,7 @@
             <div class="row">
               <!-- col -->
               <div class="col-xs-12">
-                  <span><b>Employee Info</b></span>
+                  <span><b>Employee Info</b><small style="font-size: 12px; padding-left: 20px;">( {{counts.employee_present}} )</small></span>
               </div>
               <!-- /col -->
             </div>
@@ -156,8 +159,11 @@
               </div>
               <!-- /col -->
               <!-- col -->
-              <div class="col-xs-8">
+              <div class="col-xs-8" ng-if="student_attendance">
                 <p class="text-elg text-strong mb-0">{{counts.employee}} | {{counts.employee_present}}</p>
+              </div>
+              <div class="col-xs-8" ng-if="!student_attendance">
+                <p class="text-elg text-strong mb-0">{{counts.employee}} | 0</p>
               </div>
               <!-- /col -->
             </div>

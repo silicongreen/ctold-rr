@@ -86,15 +86,18 @@
     
     $outp['student'] = number_format($student_record_total);
     $outp['employee'] = number_format($employee_record_total);
+    
     if ( $student_attendance )
     {
+        $outp['student_attendance'] = $student_attendance;
         $outp['student_present'] = number_format($student_record_total) - number_format($absent_student_total);
         $outp['employee_present'] = number_format($employee_record_total) - number_format($absent_employee_total);
     }
     else
     {
-        $outp['student_present'] = "no Class today";
-        $outp['employee_present'] = "no Class today";
+        $outp['student_attendance'] = $student_attendance;
+        $outp['student_present'] = "no class today";
+        $outp['employee_present'] = "no class today";
     }
     $outp['homework'] = $homework_total;
     

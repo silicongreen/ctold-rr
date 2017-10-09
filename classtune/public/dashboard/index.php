@@ -17,7 +17,7 @@
             'grant_type' => 'password',
             'username' => 'chs-admin',
             'password' => '123456',
-            'redirect_uri' => 'http://chs.classtune.dev/authenticate'
+            'redirect_uri' => $server_name . '/authenticate'
     );
     $fields_string = '';
     foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }

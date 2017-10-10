@@ -20,7 +20,7 @@
                   <% top_exam_first = "" %>
                   <% top_exam_first_main = "" %>
                   <% group_count = 0 %>
-                  <% if @top_exam_group.blank? %>
+                  <% unless @top_exam_group.blank? %>
                   <% group_count = @top_exam_group.count %>
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"></td>

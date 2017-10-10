@@ -159,6 +159,13 @@
 
       });
       j(document).ready(function() {
+         if(j("#student_batch_name").length)
+          {
+            if(j("#student_batch_name").val()!="")
+            {
+                j("#student_batch_name").trigger("change");
+            }
+          } 
         j("#upper-menu-div").click(function(e){
           e.stopPropagation();
           j(".child-link-box").each(function() {

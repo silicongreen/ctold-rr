@@ -90,23 +90,23 @@
       <div class="label-field-pair">
         <label for="master_student_city"><%= t('office_address_line1') %></label>
           <%#*<div class="text-input-bg"><%= s.text_field :office_address_line1 </div>%>
-          <div class="text-input-bg"><%= s.text_field :office_address_line1,:value=>@student.address_line1.present? ? @student.address_line1.to_s : params[:parent_info].present? ? params[:parent_info][:office_address_line1] : '' %></div>
+          <div class="text-input-bg"><%= s.text_field :office_address_line1,:value=>params[:parent_info].present? ? params[:parent_info][:office_address_line1] : '' %></div>
       </div>
 
       <div class="label-field-pair">
         <label for="master_student_city"><%= t('office_address_line2') %></label>
           <%#*<div class="text-input-bg"><%= s.text_field :office_address_line2 </div>%>
-          <div class="text-input-bg"><%= s.text_field :office_address_line2,:value=>@student.address_line2.present? ? @student.address_line2.to_s : params[:parent_info].present? ? params[:parent_info][:office_address_line2] : ''%></div>
+          <div class="text-input-bg"><%= s.text_field :office_address_line2,:value=>params[:parent_info].present? ? params[:parent_info][:office_address_line2] : ''%></div>
       </div>
 
       <div class="label-field-pair">
         <label for="parent_detail_city"><%= t('city') %></label>
-          <div class="text-input-bg"><%=  s.text_field :city,:value=>@student.city.present? ? @student.city.to_s : params[:parent_info].present? ? params[:parent_info][:city] : ''%></div>
+          <div class="text-input-bg"><%=  s.text_field :city,:value=>params[:parent_info].present? ? params[:parent_info][:city] : ''%></div>
       </div>
 
       <div class="label-field-pair">
         <label for="parent_detail_state"><%= t('state') %></label>
-          <div class="text-input-bg"><%= s.text_field :state,:value=>@student.state.present? ? @student.state.to_s : params[:parent_info].present? ? params[:parent_info][:state] : ''%></div>
+          <div class="text-input-bg"><%= s.text_field :state,:value=>params[:parent_info].present? ? params[:parent_info][:state] : ''%></div>
       </div>
 
       <div class="label-field-pair">

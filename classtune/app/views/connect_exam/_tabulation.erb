@@ -54,6 +54,7 @@
   @ranked_positions = {}
   unless @ranked_student.blank?
     p = 0
+    last_total_score = 0
     @ranked_student.each do |ras|
       ranked_std = true
       @report_data['report']['subjects'].each do |sub|
@@ -92,7 +93,10 @@
         end
       end
       if ranked_std == true
-        p = p+1
+        if ras.total_score != last_total_score
+          p = p+1
+          last_total_score = ras.total_score
+        end
         @ranked_positions[ras.student_id.to_i] = p
       end
     end

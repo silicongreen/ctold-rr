@@ -45,6 +45,7 @@
   @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id IN (?)",@exam_group_ids,],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
   @ranked_positions = {}
   unless @ranked_student.blank?
+    last_total_score = 0
     p = 0
     @ranked_student.each do |ras|
       ranked_std = true
@@ -84,7 +85,10 @@
         end
       end
       if ranked_std == true
-        p = p+1
+        if ras.total_score != last_total_score
+          p = p+1
+          last_total_score = ras.total_score
+        end
         @ranked_positions[ras.student_id.to_i] = p
       end
     end

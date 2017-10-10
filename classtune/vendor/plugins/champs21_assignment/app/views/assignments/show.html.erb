@@ -165,12 +165,12 @@
               @assignment, :method => "delete",
               :confirm => "#{t('delete_this_assignment')}", :class => "user_button" %>
           </div>
-          <% if @assignment.is_published==0 or (@current_user.admin? and @assignment.is_published==2) %>
+          <% if @assignment.is_published==0 %>
           <%= link_to "► Publish Homework", { :action => 'published_homework', :id =>params[:id]},
               :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
           <!-- RR, remove comment-out later -->
           
-          <% else %>
+          <% elsif @assignment.is_published==1 %>
           <%= link_to "► Defaulter Registration", { :action => 'defaulter_registration', :id =>params[:id]},  :class => "user_button" %>
           <% unless @defaulter_registered.blank? %>
             <%= link_to "Defaulter List (#{@defaulter_registered.assignment_not_given})", { :action => 'defaulter_students', :id =>params[:id]},  :class => "user_button" %>

@@ -112,8 +112,16 @@ class AssignmentsController < ApplicationController
     @course_name = ""
     @courses = []
     if current_user.employee
-      @batches = @current_user.employee_record.batches
-      @batches = @batches.uniq unless @batches.empty?
+      @batches2 = @current_user.employee_record.batches
+      @batches2 = @batches2.uniq unless @batches.empty?
+      batch_name = []
+      @batches2.each do |batch|
+        unless batch_name.include?(batch.name)
+          batch_name << batch.name
+          @batches << batch
+        end
+      end
+      
     elsif current_user.admin
       @batches = Batch.active
     end    
@@ -509,12 +517,12 @@ class AssignmentsController < ApplicationController
             Delayed::Job.enqueue(
               DelayedReminderJob.new( :sender_id  => current_user.id,
                 :recipient_ids => available_user_ids,
-                :subject=>"#{t('your_action_required')} : #{t('new_homework')} '#{@assignment.title}' #{t('added_for')} #{@subject.name}",
+                :subject=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name}",
                 :rtype=>4,
                 :rid=>@assignment.id,
-                :student_id => student_ids,
-                :batch_id => batch_ids,
-                :body=>"#{t('your_action_required')} : #{t('new_homework')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+                :student_id => 0,
+                :batch_id => 0,
+                :body=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
             )
           end
         
@@ -703,12 +711,12 @@ class AssignmentsController < ApplicationController
           Delayed::Job.enqueue(
             DelayedReminderJob.new( :sender_id  => current_user.id,
               :recipient_ids => available_user_ids,
-              :subject=>"#{t('your_action_required')} : #{t('new_homework')} #{@assignment.title} #{t('added_for')}  #{@subject.name}",
+              :subject=>"#{t('your_action_required')} : #{t('new_homework_added')} #{@assignment.title} #{t('added_for')}  #{@subject.name}",
               :rtype=>4,
               :rid=>@assignment.id,
-              :student_id => student_ids,
-              :batch_id => batch_ids,
-              :body=>"#{t('your_action_required')} : #{t('new_homework')} #{@assignment.title} #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+              :student_id => 0,
+              :batch_id => 0,
+              :body=>"#{t('your_action_required')} : #{t('new_homework_added')} #{@assignment.title} #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
           )
         end 
         flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
@@ -719,6 +727,7 @@ class AssignmentsController < ApplicationController
   def publisher_homework
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @assignment = Assignment.find_by_id(params[:id])
+    previous_status = @assignment.is_published
     @assignment.is_published = 1
   
     @assignment.created_at = now
@@ -762,6 +771,25 @@ class AssignmentsController < ApplicationController
             :batch_id => batch_ids,
             :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
         )
+        
+        if previous_status == 2
+          emp = @assignment.employee
+          emp_user_id = []
+          unless emp.blank?
+            emp_user_id << emp.user_id
+            Delayed::Job.enqueue(
+              DelayedReminderJob.new( :sender_id  => current_user.id,
+                :recipient_ids => emp_user_id,
+                :subject=>"Your homework : #{@assignment.title} is published",
+                :rtype=>4,
+                :rid=>@assignment.id,
+                :student_id => 0,
+                :batch_id => 0,
+                :body=>"Your homework '#{@assignment.title}' for  #{@subject.name} is published now <br/>#{t('view_reports_homework')}")
+            )
+          end
+        end
+        
       end
       flash[:notice] = "Homerok successfully published"
       redirect_to :action=>"show_publisher",:id=>@assignment.id
@@ -890,7 +918,7 @@ class AssignmentsController < ApplicationController
          
         available_user_ids = []
         batch_ids = {}
-        student_ids = {}
+        std_ids = {}
         
         available_user_ids2 = []
         batch_ids2 = {}
@@ -902,6 +930,9 @@ class AssignmentsController < ApplicationController
             row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => s)
             row.save
             @student = Student.find(s)
+            available_user_ids << @student.user_id
+            batch_ids[@student.user_id] = @student.batch_id
+            std_ids[@student.user_id] = @student.id
             unless @student.student_guardian.empty?
               guardians = @student.student_guardian
               guardians.each do |guardian|
@@ -923,9 +954,9 @@ class AssignmentsController < ApplicationController
                 :subject=>'Homework Defaulter : '+@assignment.title,
                 :rtype=>4,
                 :rid=>@assignment.id,
-                :student_id => student_ids,
+                :student_id => std_ids,
                 :batch_id => batch_ids,
-                :body=>"You did not submit the homework #{@assignment.title} for #{@subject.name} <br/>#{t('view_reports_homework')}")
+                :body=>"You did not submit the homework '#{@assignment.title}' for '#{@assignment.subject.name}' <br/>#{t('view_reports_homework')}")
             )
           end
           
@@ -938,7 +969,7 @@ class AssignmentsController < ApplicationController
                 :rid=>@assignment.id,
                 :student_id => student_ids2,
                 :batch_id => batch_ids2,
-                :body=>"Your child did not submit the homework #{@assignment.title} for #{@subject.name} <br/>#{t('view_reports_homework')}")
+                :body=>"Your child did not submit the homework '#{@assignment.title}' for '#{@assignment.subject.name}' <br/>#{t('view_reports_homework')}")
             )
           end
           

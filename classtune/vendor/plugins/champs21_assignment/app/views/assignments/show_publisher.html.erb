@@ -1,0 +1,158 @@
+<div class="box_content" style="float:left;">
+<div class="partial_homework" style="padding: 0px 0px;">
+
+  <!--<a href="/assignments"><h2 class="f2 routine">HOMEWORK | <%#= @assignment.subject.name.to_s %></h2></a>-->
+  <div class="header-wrapper">
+    <div class="header-title" style="width: 62%;">
+      <div class="header-icon">
+        <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+      </div>
+      <div class="header-title-text-wrapper">
+        <div class="header-title-main-text f2">
+          <%= link_to "Forwarded Homework", :controller => 'assignments', :action => 'publisher' %>
+          <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+        </div>
+        <div class="header-title-sub-text f5">  </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    
+    <!--<div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li><a href="#" class="f2">Monthly Attendance Report</a></li>
+        <li><a href="#" class="f2">Yearly Attendance Report</a></li>
+      </ul>
+    </div>-->
+
+  </div>  
+<%#= debug @assignment %>
+  <%
+        unless @assignment.employee.nil?
+          emp_name = @assignment.employee.first_name
+          unless @assignment.employee.middle_name.nil?
+            emp_name += ' ' + @assignment.employee.middle_name
+          end
+          unless @assignment.employee.last_name.nil?
+            emp_name += ' ' + @assignment.employee.last_name
+          end
+        end
+      %>
+<div class="portlet-subcontent" style="width:100%">     
+  <div class="timetable_left">
+     <% if @assignment.subject.icon_number %>
+          <%= image_tag("icons/subjects/"+@assignment.subject.icon_number , :size=> "83x60", :alt=> @assignment.subject.name) %>
+        <% else %>
+          <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> @assignment.subject.name) %>
+    <% end %>
+
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+    <div class="subcontent-header themed_text">
+        <%=  link_to @assignment.subject.name.to_s+' - '+@assignment.title, @assignment%>
+    </div>                           
+    <div class="subcontent-info"><%= emp_name %> </div>              
+  </div>
+  <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+    <div class="subcontent-date" style="color:#000;"><b>Assigned On &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
+    <div class="subcontent-date" style="color:#000;"><b><%= @assignment.duedate.past??  "#{t('assignment_already_due')}" : "#{t('due_in')} #{distance_of_time_in_words( Time.now ,@assignment.duedate)}   "%>&nbsp; : </b><%="<small>#{@assignment.duedate.strftime("%A, %d %B, %Y")}</small>"%></div>                                    
+  </div>
+  </div>
+    
+  <div id="page-yield" class="ch_homework_wrapper bg-disable">
+ 
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+  <div style="background-color: #ffffff; float: left; padding: 30px;width: 94%;">
+      <div id="assignment_content">
+          <%if @assignment.is_published == 2%>
+          <h4 style="color: red;">This Homework has not yet published </h4>
+          <% end %>
+      <p>
+        <%= @assignment.content.to_s%>
+      </p>
+      
+    </div>
+
+
+    
+      <div id="employee-options" >
+        <div id="action_buttons">
+          <% if @assignment.is_published == 2 %>
+          <%= link_to "► Publish Homework", { :action => 'publisher_homework', :id =>params[:id]},
+              :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
+          <% end %>  
+          
+        </div>
+      </div>
+     
+
+  </div>
+</div>
+</div>
+</div>
+
+<%= stylesheet_link_tag 'list_table' %>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style type="text/css">
+  #action_buttons {
+    margin-left: 0;
+  }
+  table#listing {
+    padding: 30px 10px 30px;
+  }
+  table#listing .tr-head td {
+    font-size: 13px;
+  }
+  .emp_name {
+    line-height: 0px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: -15px;
+    margin-bottom: 25px;
+    color: #555;
+  }
+  .partial_homework
+  {
+      clear: both;
+  }
+  .partial_homework h2 {
+    color: #2dc99a;
+    float: left;
+    font-size: 38px;
+    font-weight: normal;
+    margin: 0;
+  }
+  .CSSTableGenerator table thead tr th{
+      text-align: center;
+      padding: 10px;
+  }
+  .CSSTableGenerator td a
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;  
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator td a:hover
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator table tr td 
+  {
+      text-align: center;
+      font-weight: bold;
+      overflow: hidden;
+      padding: 3px !important;
+  }
+  
+</style>

@@ -1,0 +1,1 @@
+page.replace_html 'syllabus', :partial => 'subjects_publisher'

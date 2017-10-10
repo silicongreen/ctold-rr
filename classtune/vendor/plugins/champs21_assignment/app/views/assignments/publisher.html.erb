@@ -1,0 +1,200 @@
+<div class="box_content">
+  <div class="partial_homework" style="padding: 0px 0px;">
+  <!--<h2 class="f2 routine">HOMEWORK</h2>-->
+  
+  
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <%= link_to "Homework", :controller => 'assignments', :action => 'index' %> 
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+      </div>      
+    </div>    
+  </div>
+  
+    <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li>
+                    <%= link_to "All Homework",
+                      {:controller=>"assignments", :action=>"index"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+                <% @config = Configuration.find_by_config_key('HomeworkWillForwardOnly') %>
+                <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and (@current_user.admin? or @current_user.employee_entry.homework_publisher == 1) %>
+                <li class="active">
+                  <%= link_to "Forwarded Homework",
+                      {:controller=>"assignments", :action=>"publisher"},
+                      {:class => 'f2'}
+                  %>
+
+                </li>
+                <% end %>
+                
+            </ul>
+        </div>
+ 
+  <div class="clearfix"></div>
+  
+</div>  
+ 
+          <div id="page-yield" style="margin-top: 0px;">
+         
+
+          <% unless flash[:notice].nil? %>
+            <p class="flash-msg"> <%= flash[:notice] %> </p>
+          <% end %>
+
+          
+          
+              
+          
+            <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>    
+              <%# if Batch.active.find(:all, :group => "name").length > 1  %> 
+                <div class="label-field-pair" style="margin: 0px auto;">
+                  <label for="student_grade"><%= t('shift_label') %></label>
+                  <div class="text-input-bg">
+                    <%= select :student, :batch_name, options_for_select(@batches.map {|b| [b.name, b.id]}, @batch_no.to_i), 
+                      {:prompt => "#{t('select')}"},
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes_publisher"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&page=course_assingment&partial_view=student/courses_assingment_publisher&section_page=section_assingment&section_partial=student/sections_assignment_view_publisher'" ,:before => "$('loading_2').show();",
+                      :success => "$('loading_2').hide();")}"} %>
+                    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
+                </div>
+              <%# end %>
+              <div class="label-field-pair" style="margin: 0px auto;">
+                <label for="student_grade"><%= t('class_label') %></label>
+                <div class="text-input-bg"><div id="course_assingment"> <%= render :partial => 'student/courses_assingment_publisher', :object => @courses %></div></div>
+              </div>        
+              <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
+                <label for="student_grade"><%= t('section_label') %></label>
+                <div class="text-input-bg"><div id="section_assingment"> <%= render :partial => 'student/sections_assignment_view_publisher', :object => @classes %></div></div>
+              </div>             
+            <% end %><%# FORM END%>  
+
+         
+            <div id="syllabus" class="news_label_field"></div>
+            <br />
+            <div id="listing"></div>   
+            
+            <script type="text/javascript">
+                var jj = jQuery.noConflict();
+                jj("#student_batch_name").on( "change", function( event ) {
+                  jj("#listing").html("");
+                  jj("#syllabus").html("");
+                  jj.get( "get_homework_filter_publisher", { batch_name: jj("#student_batch_name").val() } )
+                  .done(function( data ) {
+                    
+                  });
+                });
+                
+                jj(document).off("change","#student_class_name").on( "change","#student_class_name", function( event ) {
+                  jj("#listing").html("");
+                  jj("#syllabus").html("");
+                  jj.get( "get_homework_filter_publisher", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val() } )
+                  .done(function( data ) {
+                  });
+                });
+                
+                jj(document).off("change","#student_section").on( "change","#student_section", function( event ) {
+                  jj("#listing").html("");
+                  jj.get( "get_homework_filter_publisher", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val(),student_section: jj("#student_section").val() } )
+                  .done(function( data ) {
+                  });
+                });
+                
+                
+                jj(document).off("change","#assignment_subject").on( "change","#assignment_subject", function( event ) {
+                  if(jj("#assignment_subject").val() == "")
+                  {
+                    jj("#listing").html("");
+                    jj.get( "get_homework_filter_publisher", { batch_name: jj("#student_batch_name").val(),student_class_name: jj("#student_class_name").val(),student_section: jj("#student_section").val() } )
+                    .done(function( data ) {
+                    });
+                  }
+                });
+            </script>    
+            
+            
+            
+        
+
+        </div>
+  </div>        
+</div>
+        
+        <%= stylesheet_link_tag 'list_table' %>
+
+          <style type="text/css">
+            .calendar_date_select_popup_icon{
+              margin: 9px 1px 0;
+            }
+            .attachment {
+              background: url("/images/assignment/paperclip.png") no-repeat left;
+              padding-left: 11px;
+              height: 35px;
+            }
+            .clear-date {
+              color: #db3434;
+              cursor: pointer;
+              float: right;
+              font-size: 12px;
+              margin-right: 45px;
+              margin-top: 9px;
+              width: 0;
+            }
+            div h2.routine
+            {
+             
+              width: 60%;
+            }
+            .pagination
+            {
+              margin-bottom:30px;
+            }
+            
+            
+            .CSSTableGenerator table thead tr th{
+        text-align: center;
+        padding: 10px;
+    }
+    .CSSTableGenerator td a
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;  
+        display: block;
+        
+    }
+    .CSSTableGenerator td a:hover
+    {
+        color: inherit;
+        padding : 0;
+        background-color: inherit;
+        float: none;
+        display: block;
+        
+    }
+    .CSSTableGenerator table tr td 
+    {
+        text-align: center;
+        font-weight: bold;
+        overflow: hidden;
+        padding: 5px !important;
+    }
+    .CSSTableGenerator table tr td:last-child
+    {
+        padding: 0;
+        width: 15%;
+    }
+          </style>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/assignment" %>
+<% end %>
+<%= stylesheet_link_tag 'pagination_and_table' %>
+<%= stylesheet_link_tag 'tadded-header' %>          

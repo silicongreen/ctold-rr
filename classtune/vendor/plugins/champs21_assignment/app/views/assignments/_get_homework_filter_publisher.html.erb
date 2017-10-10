@@ -1,0 +1,68 @@
+
+<div style="clear: both;"></div>
+
+<div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+  <table id="listing table-design" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <% unless @assignments.empty? %>
+    <tr class="tr-head">
+        <thead>
+      <th>
+       <%= "#{t('course')}"%>
+      </th>
+      <th>
+       <%= "#{t('subject')}"%>
+      </th>
+      <th>
+       <%= "#{t('title')}"%>
+      </th>
+      <th>
+        <%= "#{t('teacher_name')}"%>
+      </th>
+      <th>
+        <%= "#{t('due_date')}"%>
+      </th>
+     
+  </thead>
+    </tr>
+   
+      <% @assignments.each_with_index do |assignment,i| %>
+        <% @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(assignment.id) %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          
+          <td class="col-2">
+            <%=  link_to assignment.subject.batch.full_name , { :action => 'show_publisher', :id =>assignment.id},{:target=>"_blank"}%>
+          </td>
+          <td class="col-2">
+              <%=  link_to assignment.subject.name , { :action => 'show_publisher', :id =>assignment.id},{:target=>"_blank"}%>
+          </td>
+          <td class="col-2">
+            <%=  link_to assignment.title, { :action => 'show_publisher', :id =>assignment.id},{:target=>"_blank"}%>
+          </td>
+          <td class="col-2">
+            <%=  assignment.employee.full_name %>
+          </td>
+          
+          <td class="col-4">
+            <%= I18n.l(assignment.duedate,:format=>"%d-%m-%Y") %>
+          </td>
+          
+          
+        </tr>
+      <% end %>
+    <% else %>
+      <tr class="tr-odd">
+        <td class="col-1">No Forwarded Homework Found</td>
+      </tr>
+    <% end %>
+  </table>
+</div> 
+<% posted_params = params %>
+<% posted_params.delete(:page) %>
+<% posted_params.delete(:authenticity_token) %>
+<%= will_paginate @assignments, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer', :params => params ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  } %>
+<%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_paginate",
+          :style =>"display: none;" ) %>
+

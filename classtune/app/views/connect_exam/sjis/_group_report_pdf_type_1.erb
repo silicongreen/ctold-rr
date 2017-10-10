@@ -20,7 +20,8 @@
                   <% top_exam_first = "" %>
                   <% top_exam_first_main = "" %>
                   <% group_count = 0 %>
-                  <% unless @top_exam_group.blank? %>
+                  <% if @top_exam_group.blank? %>
+                  <% group_count = @top_exam_group.count %>
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
@@ -29,7 +30,9 @@
                           <% if jloop == 0  %>
                             <% top_exam_first = top_exam_first_main = top_exam %>
                           <% end %>
-                          <% group_count = group_count+1 %>
+                          <% if group_count == 1 %>
+                            <% @top_exam_group_count[jloop] = @top_exam_group_count[jloop]-1 %>
+                          <% end %>
                           <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
@@ -65,6 +68,7 @@
                               TOTAL
                           </td>
                           <% end %>
+                     
                         <% end %>
                       <% end %>
 

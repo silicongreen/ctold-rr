@@ -2583,6 +2583,7 @@ authorization do
       :profile,
       :reports,
       :guardians,
+      :retrive_student,
       :delete,
       :destroy,
       :generate_tc_pdf,

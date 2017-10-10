@@ -5093,8 +5093,7 @@ FCKDomRange.prototype = {
         //MY CODE
        
         var elementB = this.Window.document.createElement(B);
-        if(FCKConfig.AttrMy)
-            elementB.setAttributeNode(FCKConfig.AttrMy);
+      
         
         var D = elementB;
         this.ExtractContents().AppendTo(D);

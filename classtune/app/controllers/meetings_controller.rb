@@ -142,6 +142,8 @@ end
   def create
     @errors = nil
     datetime = params[:datetime]
+    datetime2 = params[:datetime2]
+    datetime3 = params[:datetime3]
     description = params[:meeting_request][:description]
     
     if @current_user.admin? or @current_user.employee?
@@ -171,6 +173,12 @@ end
           @meeting.parent_id = p
           @meeting.description = description
           @meeting.datetime = datetime
+          unless datetime2.blank?
+            @meeting.datetime2 = datetime2
+          end
+          unless datetime3.blank?
+            @meeting.datetime3 = datetime3
+          end
           @meeting.status = 0
           @meeting.forward = forward
           if @meeting.valid?
@@ -247,6 +255,12 @@ end
         @meeting.parent_id = @current_user.guardian_entry.current_ward.id
         @meeting.description = description
         @meeting.datetime = datetime
+        unless datetime2.blank?
+          @meeting.datetime2 = datetime2
+        end
+        unless datetime3.blank?
+          @meeting.datetime3 = datetime3
+        end
         @meeting.status = 0
 #        @meeting.forward = 1
         @meeting.forward = forward
@@ -258,7 +272,7 @@ end
           reminderrecipients = []          
           employees = Employee.find(teacher_id)          
           reminderrecipients.push employees.user_id unless employees.user_id.nil?
-          unless reminderrecipients.nil? and @meeting.forward == 1
+          if !reminderrecipients.nil? and @meeting.forward == 1
             Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
             :subject=>"New Meeting Request",
@@ -304,6 +318,11 @@ end
     @meetings = MeetingRequest.find(meeting_id)
     @meetings.status = status
     @meetings.reciver_messege = params[:msg_acept_reject]
+    if params[:date] == "datetime2"
+      @meetings.datetime = @meetings.datetime2
+    elsif params[:date] == "datetime3"
+      @meetings.datetime = @meetings.datetime3
+    end 
     
     if forward!=0
       @meetings.forward = forward
@@ -426,6 +445,11 @@ def update_forwarded
     @meetings = MeetingRequest.find(meeting_id)
     @meetings.status = status
     @meetings.reciver_messege = params[:msg_acept_reject]
+    if params[:date] == "datetime2"
+      @meetings.datetime = @meetings.datetime2
+    elsif params[:date] == "datetime3"
+      @meetings.datetime = @meetings.datetime3
+    end 
     
     @meetings.forward = 1
     
@@ -503,7 +527,7 @@ def update_forwarded
           end
           
           
-          unless reminderrecipients.nil? and @meeting.forward == 1 and @g_name!=""
+          if !reminderrecipients.nil? and @meeting.forward == 1 and @g_name!=""
             Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
             :subject=>"New Meeting Request",
@@ -533,7 +557,7 @@ def update_forwarded
     if @current_user.admin?
       include_rel = [:student, :employee]
     elsif @current_user.employee?
-      condition = ["students.school_id = ? AND meeting_requests.teacher_id = ? and (forward = 1 or meeting_type = 2)", school.id, @current_user.employee_entry.id]
+      condition = ["students.school_id = ? AND meeting_requests.teacher_id = ? and (forward = 1 and meeting_type = 2)", school.id, @current_user.employee_entry.id]
       include_rel = [:student]
     else
 #      student = @current_user.guardian_entry.current_ward

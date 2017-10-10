@@ -53,7 +53,12 @@
           unless meeting.student.immediate_contact.last_name.nil?
             parent_full_name += ' ' + meeting.student.immediate_contact.last_name
             end
-          parent_full_name += ' ' + '(G)'
+#          parent_full_name += ' ' + '(G)'
+          if meeting.student.immediate_contact.relation.nil?
+            parent_full_name += ' ' + '(G)'
+          else
+            parent_full_name += ', ' + meeting.student.immediate_contact.relation + ' of '
+          end
         end
       end
     %>
@@ -77,8 +82,8 @@
                       parent_full_name = "Me"
                       end
                   %>
-                    <%= parent_full_name %>&nbsp;&nbsp;
-                        <%= meeting.student.full_name %> (S) [<%= meeting.student.batch.full_name %> ]
+                    <%= parent_full_name %>
+                        <%= meeting.student.full_name %> [<%= meeting.student.batch.full_name %> ]
                   <% end %>
               </label>
           </div>
@@ -166,8 +171,17 @@
 
       <% if (!@current_user.admin? or teacher_full_name == 'Me') and (meeting.status == 0) and ( (meeting.meeting_type == 2 and parent_full_name != 'Me') or ((meeting.meeting_type == 1 and teacher_full_name != 'Me')) )  %>
         <% form_for(@meeting, :url => {:action => :update_forwarded, :id => meeting.id}) do |f| %>
-        <div style="float:left; width:30%">
-            <input type="text" placeholder="Accept Messege" name="msg_acept_reject" id="msg_acept_reject" style="width:140px; margin-left:10px;" />
+        <div style="float:left; width:40%">
+            <input type="text" placeholder="Accept Messege" name="msg_acept_reject" id="msg_acept_reject" style="width:250px; margin-left:10px;" />
+            <select name="date" style="width:250px; margin-left:10px;">
+              <option value="datetime"><%= I18n.l(meeting.datetime, :format=>"%A, %d %B, %Y %I:%M %p") %></option>
+              <%  if !meeting.datetime2.blank? and !meeting.datetime2.nil? %>
+                <option value="datetime2"><%= I18n.l(meeting.datetime2, :format=>"%A, %d %B, %Y %I:%M %p") %></option>
+              <% end %>
+              <%  if !meeting.datetime3.blank? and !meeting.datetime3.nil? %>
+              <option value="datetime3"><%= I18n.l(meeting.datetime3, :format=>"%A, %d %B, %Y %I:%M %p") %></option>
+              <% end %>
+            </select>
         <div class="details-row">
             <div class="left-col col-3">
                 <input name="request" value="Accept" type="submit">
@@ -175,9 +189,9 @@
         </div>
         </div>
         <% end %>
-        <% form_for(@meeting, :url => {:action => :update, :id => meeting.id}) do |f| %>
+        <% form_for(@meeting, :url => {:action => :update_forwarded, :id => meeting.id}) do |f| %>
         <div style="float:left; width:30%">
-        <input type="text"  placeholder="Reject Messege" name="msg_acept_reject" id="msg_acept_reject" style="width:140px; margin-left:10px;" />
+        <input type="text"  placeholder="Reject Messege" name="msg_acept_reject" id="msg_acept_reject" style="width:250px; margin-left:10px;" />
         <div class="details-row">
             
             <div class="left-col col-3">
@@ -191,7 +205,7 @@
       <% if (@current_user.admin? or @current_user.employee_record.meeting_forwarder) and !meeting.forward and meeting.status == 0 %>
         <div class="details-row">
             <div class="left-col col-3">
-                <%=  button_to "Forward", { :action => "update", :id => meeting.id }, {:method => :forward, :name => 'request'} %>
+                <%=  button_to "Forward", { :action => :update_forwarded, :id => meeting.id }, {:method => :forward, :name => 'request'} %>
             </div>
         </div>
       <% end %>

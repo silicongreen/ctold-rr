@@ -1,4 +1,4 @@
-<% form_for(@meeting, :url => {:action => @action}, :html=> {:id=>'new_student'}) do |f| %>
+<% form_for(@meeting, :url => {:action => @action}) do |f| %>
   <%= error_messages_for :meeting %>
 
   <div class="left-col col-6">
@@ -14,6 +14,28 @@
         <%= calendar_date_select_tag "datetime", I18n.l(1.week.since, :format=>("%Y-%m-%d %H:%M")), :time => true, :readonly=>true, :popup=>"force"%>
       </div>
     </div>
+      
+    <div class="label-field-pair details-row">
+      <div class="left-col col-3">
+        <label for="datetime2">
+          <%= t('alternet_meeting_schedule') %>:
+        </label>
+      </div>
+      <div class="text-input-bg right-col col-9">
+        <%= calendar_date_select_tag "datetime2", "", :time => true, :readonly=>true, :popup=>"force"%>
+      </div>
+    </div>      
+      
+    <div class="label-field-pair details-row">
+      <div class="left-col col-3">
+        <label for="datetime3">
+          <%= t('alternet_meeting_schedule2') %>:
+        </label>
+      </div>
+      <div class="text-input-bg right-col col-9">
+        <%= calendar_date_select_tag "datetime3", "", :time => true, :readonly=>true, :popup=>"force"%>
+      </div>
+    </div>   
 
     <div class="label-field-pair details-row">
       <div class="left-col col-3">

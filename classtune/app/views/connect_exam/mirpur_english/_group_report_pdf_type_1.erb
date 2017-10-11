@@ -251,7 +251,7 @@
               end
               percentage = 0
               if full_mark_all_subject != 0 && total_mark_all_subject!=0
-                percentage =  total_mark_all_subject/full_mark_all_subject
+                percentage =  total_mark_all_subject.to_f/full_mark_all_subject.to_f
               end
               %>
               <table id="pdf-table" class="evaluation1" width="99.8%" >

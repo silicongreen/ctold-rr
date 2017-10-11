@@ -40,9 +40,9 @@
       <div class="label-container"><%= label :grading_type, t('grading_type') %></div>
       <div class="input-container"> 
         <% selected_percentage = (@grading_level.max_score.nil?) ? true : false %>  
-        <%= check_box_tag "grading_type_data[]","percentage", selected_percentage, :id=>"grading_type", :style => "float: left; width: 30px; margin: 8px;", :class => "grading_type", :onclick => "javascript:enable_grading_level(this);" %> <label for="grading_type"><%= t('grading_type_percentage')  %> </label>
+        <%= check_box_tag "grading_type_data[]","percentage", selected_percentage, :id=>"grading_type", :style => "float: left; width: 30px; margin: 8px;", :class => "grading_type", :onclick => "javascript:enable_grading_level(this);" %> <label for="grading_type" style="float:left; clear:none;"><%= t('grading_type_percentage')  %> </label>
         <% selected_normal = (@grading_level.max_score.nil?) ? false : true %>  
-        <%= check_box_tag "grading_type_data[]","normal", selected_normal, :id=>"grading_type", :style => "float: left; width: 30px; margin: 8px;", :class => "grading_type", :onclick => "javascript:enable_grading_level(this);" %> <label for="grading_type"><%= t('grading_type_normal')  %> </label>
+        <%= check_box_tag "grading_type_data[]","normal", selected_normal, :id=>"grading_type", :style => "float: left; width: 30px; margin: 8px;", :class => "grading_type", :onclick => "javascript:enable_grading_level(this);" %> <label for="grading_type" style="float:left; clear:none;"><%= t('grading_type_normal')  %> </label>
       </div>
     </div>
     

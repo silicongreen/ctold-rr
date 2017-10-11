@@ -110,6 +110,7 @@
                   <% total_subject = 0 %>
                   <% total_credit_point = 0 %>
                   <% total_mark_all_subject = 0 %>
+                  <% full_mark_all_subject = 0 %>
                   <%
                     final_grade = 0.0
                     letter_grade = ""
@@ -206,6 +207,7 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                             <% total_mark_all_subject = total_mark_all_subject+total_mark %>
+                            <% full_mark_all_subject = full_mark_all_subject+full_mark %>
                           <% else  %>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
@@ -248,8 +250,8 @@
                 end  
               end
               percentage = 0
-              if total_subject != 0
-                percentage =  total_parcent/total_subject
+              if full_mark_all_subject != 0 && total_mark_all_subject!=0
+                percentage =  total_mark_all_subject/full_mark_all_subject
               end
               %>
               <table id="pdf-table" class="evaluation1" width="99.8%" >

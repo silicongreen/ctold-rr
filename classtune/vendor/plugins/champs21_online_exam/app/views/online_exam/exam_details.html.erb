@@ -35,17 +35,26 @@
       </div>
     </div>    
 
-  <div class="header-form-wrapper">
-      <div class='header-right-button'>
+    
+  
+  
         <% unless @exam_questions.blank? %>
-          <% unless @attendance  %>
-            <%= link_to "#{t('add_question')}", :action=>'add_extra_question', :id=>@exam_group.id %>
+          <% if @attendance.blank?  %>
+            <div class="header-form-wrapper">
+              <div class='header-right-button'>
+                <%= link_to "#{t('add_question')}", :action=>'add_extra_question', :id=>@exam_group.id %>
+              </div>
+            </div>
           <% end  %>
         <% else %>
-          <%= link_to "#{t('add_question')}", {:action=>'add_extra_question', :id=>@exam_group.id} %>
+          <div class="header-form-wrapper">
+              <div class='header-right-button'>
+                 <%= link_to "#{t('add_question')}", {:action=>'add_extra_question', :id=>@exam_group.id} %>
+              </div>
+          </div>
         <% end %>
-      </div>
-  </div>
+      
+  
 </div>
 <% unless @exam_questions.blank? %>
 <div id="page-yield" style="margin-top: 0px;">

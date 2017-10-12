@@ -106,6 +106,9 @@
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
+                  <% total_term1 = 0 %>
+                  <% total_term2 = 0 %>
+                  
                   <% total_mark_all_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -114,6 +117,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <% total_term = 0 %>
+                          <% exam_no = 1 %>
                           
 
                           <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
@@ -124,6 +128,7 @@
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
                                     <td class="col-pdf"><%= total_term %></td>
                                     <%
+                                        exam_no = 2
                                         total_term = 0
                                         exam_group_name_array = report['exam_name'].split(" ")
                                         top_exam_first = exam_group_name_array[0]+" "+exam_group_name_array[1]
@@ -138,6 +143,12 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  
+                                    <% if exam_no == 1  %>
+                                        <% total_term1 = total_term1.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% else %>
+                                        <% total_term2 = total_term2.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% end %>
                                     
                                   <% else %>
                                     N/A
@@ -247,16 +258,25 @@
                         
                       <tr class="odd">
                           <td class="col-pdf border-left-none"><b>Total Mark</b></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>
-                                <td></td>
-                            <% end %>
-                          <% end %>
+                          
+                          <% if group_count > 1 %>
                           <% unless @report_data['report']['exams'].blank? %> 
-                              <% @top_exam_group.each do |top_exam| %>
-                                <td></td>
-                              <% end %>
-                          <% end %>      
+                            <% jloop = 0 %>
+                            <% @top_exam_group.each do |top_exam| %>
+                              <% @top_exam_group_count[jloop] = @top_exam_group_count[jloop]-1 %>
+                                <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"></td>
+                                <% jloop = jloop+1 %>
+                                <% if jloop == 1 %>
+                                  <td class="col-pdf"><%= total_term1 %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= total_term2 %></td>
+                                <% end %>
+                            <% end %>
+                          <% end %>  
+                         <% else %>
+                           <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0] %>"></td>   
+                         <% end %>      
+                                
                          <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
                           
                          <td class="col-pdf"></td>

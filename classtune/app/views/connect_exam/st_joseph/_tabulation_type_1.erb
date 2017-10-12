@@ -239,7 +239,12 @@
                                       grade_count[grade.name.to_s] = 1
                                       end  
                                   %>
-                                    <%= grade.name %>  
+                                    <%= grade.name %>&nbsp;
+                                    <% if grade.name == "U" %>
+                                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/delete_image.gif")) %>
+                                    <% else %>
+                                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/tick_image.gif")) %>
+                                    <% end %>
                                   <% else %>
                                     N/A  
                                   <% end %>

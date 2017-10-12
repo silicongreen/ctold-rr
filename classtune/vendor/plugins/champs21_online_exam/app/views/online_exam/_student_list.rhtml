@@ -11,11 +11,13 @@
 
       <% form_for :attendance,:url=>{:action=>'update_reset_exam'} do |form| %>
         <% @attendance.each do |b| %>
+          <% if !b.blank? and !b.student.blank?  %>
           <div class="name_list<%=cycle('odd', 'even')%>">
             <li>
-              <label> <%= check_box_tag "att_id[]", b.id,true,:class=>'batches_box' %> <div class="att_list_names"><%= b.student_full_name %><span> (<%= b.student_admission_no %>)</span></div></label>
+              <label> <%= check_box_tag "att_id[]", b.id,true,:class=>'batches_box' %> <div class="att_list_names"><%= b.student.full_name %><span> (<%= b.student_admission_no %>)</span></div></label>
             </li>
           </div>
+          <% end %>
         <% end %>
 
         <div class="user_submit_button1">

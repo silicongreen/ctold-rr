@@ -706,23 +706,27 @@ sfx  .table-header td{
 }
 .sfx table tr.table-header td
 {
-    font-size:23px;
+    font-size:24px;
+    color:black;
     text-align: center;
 }
 .sfx table  tr.odd td
 {
-   font-size:23px;
+   font-size:24px;
+    color:black;
    padding: 7px 7px 7px 11px; 
 }
 .sfx table  tr.even td
 {
-   font-size:23px;
+   font-size:24px;
+    color:black;
    padding: 7px 7px 7px 11px; 
 }
 .sfx table  td
 {
 
-    font-size:23px;
+    font-size:24px;
+     color:black;
     padding: 7px 7px 7px 11px; 
 }
 

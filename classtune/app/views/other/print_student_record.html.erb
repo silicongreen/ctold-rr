@@ -71,11 +71,11 @@
                       <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-2" >Father's Name :</div>
-                            <div class="col-xs-2 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                             <div class="col-xs-2" >Qualification:</div>
                             <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                             <div class="col-xs-2" >Occupation :</div>
-                            <div class="col-xs-2 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                            <div class="col-xs-1 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
                             
                           </div>
                           <div class="col-xs-12 data-group">
@@ -97,11 +97,11 @@
                       <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-2" >Mother's Name :</div>
-                            <div class="col-xs-2 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                            <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                             <div class="col-xs-2" >Qualification:</div>
                             <div class="col-xs-2 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                             <div class="col-xs-2" >Occupation :</div>
-                            <div class="col-xs-2 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                            <div class="col-xs-1 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
                             
                           </div>
                           <div class="col-xs-12 data-group">
@@ -119,9 +119,9 @@
                
                <div class="col-xs-12 data-group">
                   <div class="col-xs-2" >Present Address :</div>
-                  <div class="col-xs-6 underline" ><%=  std_info.address_line1 unless std_info.address_line1.blank? %></div>
+                  <div class="col-xs-7 underline" ><%=  std_info.address_line1 unless std_info.address_line1.blank? %></div>
                   <div class="col-xs-2" >Land Phone(Res) :</div>
-                  <div class="col-xs-2 underline" ><%=  std_info.phone1.to_s  unless std_info.phone1.blank? %></div>
+                  <div class="col-xs-1 underline" ><%=  std_info.phone1.to_s  unless std_info.phone1.blank? %></div>
                 </div>
                 
                 <div class="col-xs-12 data-group">

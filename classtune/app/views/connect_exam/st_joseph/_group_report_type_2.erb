@@ -121,6 +121,21 @@
                                           grade_name_single = "U"
                                         end
                                       end
+                                    
+                                      if fail_grade == true and !report['exam_name'].index('sub').nil? and total_marks_single_exam.to_i == 50
+                                        if marks_obtain_single_exam.to_f >= 22.00
+                                          fail_grade = false
+                                          grade_name_single = "D"
+                                        end
+                                      end
+                                    
+                                      if fail_grade == true and !report['exam_name'].index('prac').nil? and total_marks_single_exam.to_i == 25
+                                        if marks_obtain_single_exam.to_f >= 11.00
+                                          fail_grade = false
+                                          grade_name_single = "D"
+                                        end
+                                      end
+                                    
                                     %>
                                     [<%= grade_name_single  %>]
                                     [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]

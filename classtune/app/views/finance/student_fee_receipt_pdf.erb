@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% if MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
+<% if MultiSchool.current_school.id == 312 %>
   <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
 <% else %>
   <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>

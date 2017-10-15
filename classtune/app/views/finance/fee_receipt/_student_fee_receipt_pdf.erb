@@ -60,7 +60,7 @@
             <table class="std_info">
                
                 <tr>
-                    <td colspan="2"><%= "Name of Student" %></td> <td colspan="2">:&nbsp; <%=  "#{@student.full_name}" %></td>
+                    <td colspan="1"><%= "Name of Student" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.full_name}" %></td>
                 </tr>
                    <tr> <td><%= "Class" %></td> <td>:&nbsp;  <%=  "#{@student.batch.course.course_name}" %></td> <td><%= "Roll" %></td> <td>:&nbsp;  <%=  "#{@student.class_roll_no}" %></td>
                 </tr> 
@@ -203,11 +203,10 @@
                 <% if ((k+1)%1)==0 %>
               </table>
               </center>
-               <table id="pdf-table" width="100%" >
 
-                    <% end %>
-                </table>
-              
+              <% end %>
+            
+              <p>&nbsp;</p>
               <table class="signature">
                   <tr>
                       <td>Signature of Guardian</td>
@@ -224,4 +223,5 @@
     
 </div>
 
-
+<p>&nbsp;</p>
+<p>&nbsp;</p>

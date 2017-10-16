@@ -254,9 +254,11 @@
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           
-                          <% subjectdata = Subject.find(sub['id'].to_i) %>
-                          <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
-                          <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                          <% check_std_subject = false %>
+                          <% if !@std_subject_hash.blank? and !@std_subject_hash[std['id'].to_s].blank?  and !@std_subject_hash[std['id'].to_s][sub['id'].to_s].blank?  %>
+                              <%  check_std_subject = true %>
+                          <% end %>
+                          <% if check_std_subject == false and sub['elective_group_id'].to_i != 0 %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -320,30 +322,25 @@
                             <% @report_data['report']['exams'].each do |rs| %>
                               <% unless has_exam == false  %> 
                                       
-                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank? %>
-                                    <% check_exam = false %>
-                                    <% if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i) %>
-                                      <% check_exam = true %>
-                                    <% end %>
-                                <% else %>
-                                    <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                                    <% check_exam = false %>
-                                    <% unless @examobj.blank?  %>
-                                      <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                                        <% if @exam_score_all.blank? %>
-                                          <% check_exam = false %>
-                                        <% else %>
-                                          <% @exam_score_all.each do |score| %>
-                                            <%
-                                              unless score.marks.blank?
-                                                check_exam = true
-                                                break
-                                              end
-                                            %>
-                                          <% end %>
+                               
+                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                                  <% check_exam = false %>
+                                  <% unless @examobj.blank?  %>
+                                    <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                                      <% if @exam_score_all.blank? %>
+                                        <% check_exam = false %>
+                                      <% else %>
+                                        <% @exam_score_all.each do |score| %>
+                                          <%
+                                            unless score.marks.blank?
+                                              check_exam = true
+                                              break
+                                            end
+                                          %>
                                         <% end %>
-                                    <% end %>
-                                <% end %>
+                                      <% end %>
+                                  <% end %>
+                              
                                 
                                 
 

@@ -1463,7 +1463,7 @@ class FinanceController < ApplicationController
               :recipient_ids => recipient_ids,
               :subject=>subject,
               :body=>body ))
-          @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["is_deleted = '#{false}'"])
+          @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["finance_fee_collections.is_deleted = '#{false}'"])
           page.replace_html 'form-errors', :text => ''
           page << "Modalbox.hide();"
           page.replace_html 'fee_collection_dates', :partial => 'fee_collection_list'
@@ -1483,14 +1483,14 @@ class FinanceController < ApplicationController
         page.visual_effect(:highlight, 'form-errors')
       end
     end
-    @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["is_deleted = '#{false}'"])
+    @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["finance_fee_collections.is_deleted = '#{false}'"])
   end
 
   def fee_collection_delete
     @batch=Batch.find(params[:batch_id])
     @finance_fee_collection = FinanceFeeCollection.find params[:id]
     @finance_fee_collection.delete_collection(@batch.id)
-    @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["is_deleted = '#{false}'"])
+    @finance_fee_collections = @batch.finance_fee_collections.find(:all,:conditions => ["finance_fee_collections.is_deleted = '#{false}'"])
   end
 
   #fees_submission-----------------------------------

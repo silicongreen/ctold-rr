@@ -297,7 +297,7 @@ var FCK = {
                      
                     var elementB = B.createElement(A);
                     if(FCKConfig.AttrMy)
-                    elementB.setAttributeNode(FCKConfig.AttrMy);
+                    elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                     
                     E = H.insertBefore(elementB, D);
                 }
@@ -514,8 +514,9 @@ var FCK = {
                 //MY CODE
                 
                 var elementB = this.EditorDocument.createElement(FCKConfig.EnterMode);
+              
                 if(FCKConfig.AttrMy)
-                elementB.setAttributeNode(FCKConfig.AttrMy);
+                    elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                     
                 D = this.EditorDocument.body.appendChild(elementB);
                 if (FCKBrowserInfo.IsGeckoLike) FCKTools.AppendBogusBr(D);
@@ -1321,7 +1322,7 @@ var FCKDomTools = {
         
         var elementB = A.createElement(B);
         if(FCKConfig.AttrMy)
-        elementB.setAttributeNode(FCKConfig.AttrMy);
+        elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
         
         var C = elementB;
         if (FCKBrowserInfo.IsGecko && FCKListsLib.NonEmptyBlockElements[B]) FCKTools.AppendBogusBr(C);
@@ -1524,7 +1525,7 @@ var FCKDomTools = {
                        
                         var elementB = D.createElement(FCKConfig.EnterMode);
                         if(FCKConfig.AttrMy)
-                        elementB.setAttributeNode(FCKConfig.AttrMy);
+                        elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                         
                         I = elementB;
                     }
@@ -4605,7 +4606,7 @@ var FCKListHandler = {
                 
                 var elementB = C.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');;
                 if(FCKConfig.AttrMy)
-                    elementB.setAttributeNode(FCKConfig.AttrMy);
+                    elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                 
                 var O = elementB;
                 FCKDomTools.MoveChildren(B.removeChild(A), O);
@@ -5093,6 +5094,8 @@ FCKDomRange.prototype = {
         //MY CODE
        
         var elementB = this.Window.document.createElement(B);
+        if(FCKConfig.AttrMy)
+          elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
       
         
         var D = elementB;
@@ -5275,7 +5278,7 @@ FCKDomRangeIterator.prototype = {
                 
                 var elementB = this.Range.Window.document.createElement(FCKConfig.EnterMode == 'p' ? 'p' : 'div');
                 if(FCKConfig.AttrMy)
-                elementB.setAttributeNode(FCKConfig.AttrMy);
+                elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                 
                 A = elementB;
                 B.ExtractContents().AppendTo(A);
@@ -5846,7 +5849,7 @@ FCKEnterKey.prototype._FixIESelectAllBug = function(A) {
         
         var elementB = B.createElement(FCKConfig.EnterMode);
         if(FCKConfig.AttrMy)
-        elementB.setAttributeNode(FCKConfig.AttrMy);
+            elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
         C = elementB;
         B.body.appendChild(C);
     } else C = B.body;
@@ -7755,7 +7758,7 @@ FCKBlockQuoteCommand.prototype = {
                 
                 var elementB = B.Window.document.createElement(FCKConfig.EnterMode.IEquals('p') ? 'p' : 'div');
                 if(FCKConfig.AttrMy)
-                elementB.setAttributeNode(FCKConfig.AttrMy);
+                elementB.setAttributeNode(FCKConfig.AttrMy.cloneNode(true));
                 
                 para = elementB;
                 B.InsertNode(para);

@@ -90,8 +90,8 @@
     if ( $student_attendance )
     {
         $outp['student_attendance'] = $student_attendance;
-        $outp['student_present'] = number_format($student_record_total) - number_format($absent_student_total);
-        $outp['employee_present'] = number_format($employee_record_total) - number_format($absent_employee_total);
+        $outp['student_present'] = $student_record_total - $absent_student_total;
+        $outp['employee_present'] = $employee_record_total - $absent_employee_total;
     }
     else
     {

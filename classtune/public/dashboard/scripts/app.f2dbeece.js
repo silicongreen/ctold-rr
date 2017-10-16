@@ -538,6 +538,7 @@ app
                 })
                 .then(function(response){
                     $scope.noticeData = response.data;
+                    $scope.server = classtune_server;
                 });
            }
         }, 200);    

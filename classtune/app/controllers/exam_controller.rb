@@ -2623,12 +2623,17 @@ class ExamController < ApplicationController
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/tabulation/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
+      
+      @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
+        get_tabulation(@id,@batch.id)
+        report_data = []
+        if @student_response['status']['code'].to_i == 200
+          report_data = @student_response['data']
+        end
+        report_data
+      }
      
-      get_tabulation(@id,@batch.id)
-      @report_data = []
-      if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
-      end
+  
        
       @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
       if MultiSchool.current_school.id == 280 && @connect_exam_obj.result_type==2

@@ -28,8 +28,17 @@ class GradingLevel < ActiveRecord::Base
   validates_numericality_of :min_score ,:credit_points ,:greater_than_or_equal_to => 0, :message =>:must_be_positive ,:allow_blank=>true
 
   default_scope :order => 'min_score desc'
-  named_scope   :default, :conditions => { :batch_id => nil, :is_deleted => false }
-  named_scope   :for_batch, lambda { |b| { :conditions => { :batch_id => b.to_i, :is_deleted => false } } }
+  
+  after_save :delete_cache
+  before_destroy :delete_cache 
+  
+  def delete_cache
+    unless self.batch_id.blank?
+      Rails.cache.delete("grading_level_batch_#{self.batch_id}")
+    else
+      Rails.cache.delete("grading_level_school_#{MultiSchool.current_school.id}")
+    end  
+  end
 
   def validate
     if self.min_score.to_i <= 100
@@ -39,6 +48,8 @@ class GradingLevel < ActiveRecord::Base
       return false
     end
   end
+  
+  
 
   def inactivate
     update_attribute :is_deleted, true
@@ -68,29 +79,67 @@ class GradingLevel < ActiveRecord::Base
   
   
   class << self
+    def default
+      gradding_level = Rails.cache.fetch("grading_level_school_#{MultiSchool.current_school.id}"){
+          grades = GradingLevel.find(:all,:conditions => { :batch_id => nil, :is_deleted => false }, :order => 'min_score desc')
+          grades
+        }
+      gradding_level
+    end 
+
+    def for_batch(batch_id)
+      gradding_level = Rails.cache.fetch("grading_level_batch_#{batch_id}"){
+          batch_grades = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc')
+          batch_grades
+        }
+      gradding_level
+    end
+    
     def percentage_to_grade(percent_score, batch_id)
       if percent_score.to_s == "NaN"
           percent_score = 0
       end
       batch_grades = GradingLevel.for_batch(batch_id)
+      grade = {}
       if batch_grades.empty?
-        grade = GradingLevel.default.find :first,
-          :conditions => [ "min_score <= ?", percent_score.round ], :order => 'min_score desc'
+        grades = GradingLevel.default
+        grades.each do |gradevalue|
+          if gradevalue.min_score <= percent_score.round
+            grade = gradevalue
+            break
+          end  
+        end
       else
-        grade = GradingLevel.for_batch(batch_id).find :first,
-          :conditions => [ "min_score <= ?", percent_score.round ], :order => 'min_score desc'
+        grades = GradingLevel.for_batch(batch_id)
+        grades.each do |gradevalue|
+          if gradevalue.min_score <= percent_score.round
+            grade = gradevalue
+            break
+          end  
+        end
       end
       grade
     end
     
     def grade_point_to_grade(grade_point, batch_id)
       batch_grades = GradingLevel.for_batch(batch_id)
+      grade = {}
       if batch_grades.empty?
-        grade = GradingLevel.default.find :first,
-          :conditions => [ "credit_points <= ?", grade_point ], :order => 'credit_points desc'
+        grades = GradingLevel.default
+        grades.each do |gradevalue|
+          if gradevalue.credit_points <= grade_point
+            grade = gradevalue
+            break
+          end  
+        end
       else
-        grade = GradingLevel.for_batch(batch_id).find :first,
-          :conditions => [ "credit_points <= ?", grade_point ], :order => 'credit_points desc'
+        grades = GradingLevel.for_batch(batch_id)
+        grades.each do |gradevalue|
+          if gradevalue.credit_points <= grade_point
+            grade = gradevalue
+            break
+          end  
+        end
       end
       grade
     end

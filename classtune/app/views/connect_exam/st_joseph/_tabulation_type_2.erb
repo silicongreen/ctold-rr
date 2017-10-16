@@ -258,7 +258,7 @@
                           <% if !@std_subject_hash.blank? and !@std_subject_hash[std['id'].to_s].blank?  and !@std_subject_hash[std['id'].to_s][sub['id'].to_s].blank?  %>
                               <%  check_std_subject = true %>
                           <% end %>
-                          <% if check_std_subject == true or sub['elective_group_id'].to_i == 0 %>
+                          <% if check_std_subject == false and sub['elective_group_id'].to_i != 0 %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -431,8 +431,6 @@
                                     end
                                   %>
                                   <hr/>
-                                  <%= grade_name_single %>
-                                  &nbsp;
                                   <% if grade_name_single == "U" %>
                                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/delete_image.gif")) %>
                                   <% else %>
@@ -473,8 +471,6 @@
                                       
                                   %>
                                   <hr/>
-                                  <%= grade_name_single %>
-                                  &nbsp;
                                   <% if grade_name_single == "U" %>
                                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/delete_image.gif")) %>
                                   <% else %>
@@ -512,8 +508,6 @@
                                     end
                                   %>
                                   <hr/>
-                                  <%= grade_name_single %>
-                                  &nbsp;
                                   <% if grade_name_single == "U" %>
                                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/delete_image.gif")) %>
                                   <% else %>

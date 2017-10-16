@@ -316,30 +316,24 @@
                               <% unless has_exam == false  %> 
 
                                 <% @examgroupobj = ExamGroup.find_by_id(rs['exam_id'].to_i) %>
-                                  <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']]['exam_id'].blank? %>
-                                      <% check_exam = false %>
-                                      <% if @has_exam_score.include?(rs['result'][rs['exam_id']]['exam_id'].to_i) %>
-                                        <% check_exam = true %>
-                                      <% end %>
+                                
+                                <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                                <% check_exam = false %>
+                                <% unless @examobj.blank?  %>
+                                  <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                                  <% if @exam_score_all.blank? %>
+                                    <% check_exam = false %>
                                   <% else %>
-                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                                  <% check_exam = false %>
-                                  <% unless @examobj.blank?  %>
-                                    <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                                    <% if @exam_score_all.blank? %>
-                                      <% check_exam = false %>
-                                    <% else %>
-                                      <% @exam_score_all.each do |score| %>
-                                        <%
-                                        unless score.marks.blank?
-                                          check_exam = true
-                                        break
-                                          end
-                                      %>
-                                      <% end %>
+                                    <% @exam_score_all.each do |score| %>
+                                      <%
+                                      unless score.marks.blank?
+                                        check_exam = true
+                                      break
+                                        end
+                                    %>
                                     <% end %>
                                   <% end %>
-                                <% end %>      
+                                <% end %>
 
                                  <% 
                                  if check_exam == true

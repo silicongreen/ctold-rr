@@ -543,6 +543,13 @@ academia_box p
     line-height: 5px !important;
 }
 
+.st_joseph_bg .table-header td.group_exam{
+    border-top: 2px solid #000000 !important;
+    border-left: 2px solid #000000 !important;
+    border-right: 2px solid #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
 
 .odd{
     height:auto;

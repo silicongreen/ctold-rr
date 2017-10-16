@@ -37,7 +37,7 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
-                          <td class="col-pdf" colspan="3"><%= top_exam %></td>
+                          <td class="col-pdf group_exam" colspan="3"><%= top_exam %></td>
                         <% end %>
                       <% end %>
                       
@@ -228,7 +228,7 @@
                               <% if !@exam_comment.blank? %>
                                 <%= @exam_comment.comments %>
                               <% else %>     
-                                &nbsp;<br /><br />
+                                &nbsp;<br /><br /><br /><br />
                               <% end %>
                           </td>                      
                       </tr>

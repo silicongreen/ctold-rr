@@ -1,6 +1,6 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-             <table id="pdf-table" width="100%" cellspacing="0">
+            <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                  
@@ -28,12 +28,11 @@
                   <% total_subject = 0 %>
                   <% total_credit_point = 0 %>
                   <% total_mark_all_subject = 0 %>
+                  <% full_mark_all_subject = 0 %>
                   <%
                     final_grade = 0.0
                     letter_grade = ""
                   %>
-                  
-                  
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
@@ -69,10 +68,6 @@
                             <% end %>
                           <% end %>
 
-
-
-
-
                           <% 
                             highest_mark = 0
                             @conn = ActiveRecord::Base.connection
@@ -85,7 +80,7 @@
                             and exam_groups.quarter = 3
                             GROUP BY Scores.student_id
                             ORDER BY total_score DESC";
-                          
+                            ip = 1
                             exam_marks_max = @conn.execute(sql).all_hashes
                             if !exam_marks_max.blank? and !exam_marks_max[0].blank? and !exam_marks_max[0]['total_score'].blank?
                               highest_mark = exam_marks_max[0]['total_score']
@@ -96,6 +91,7 @@
                               main_mark = 0
                             end 
                         %>
+
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
@@ -126,6 +122,7 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                             <% total_mark_all_subject = total_mark_all_subject+total_mark %>
+                            <% full_mark_all_subject = full_mark_all_subject+full_mark %>
                           <% else  %>
                             <td class="col-pdf">N/A</td>
                             <td class="col-pdf">N/A</td>
@@ -145,7 +142,7 @@
                               <% end %>  
                             <% end %>
                           <% end %>
-                          <td class="col-pdf border-left-none" colspan="<%= colspan %>"><b>Total Mark & Total GPA</b></td>
+                          <td class="col-pdf border-left-none" colspan="<%= colspan %>"><b>Total Mark & Total Grade Point</b></td>
                      
                            
                          <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
@@ -166,9 +163,12 @@
                   letter_grade = grade.name
                 end  
               end 
-              percentage =  total_parcent/total_subject
+              percentage = 0
+              if full_mark_all_subject != 0 && total_mark_all_subject!=0
+                 percentage =  (total_mark_all_subject.to_f/full_mark_all_subject.to_f)*100
+              end
               %>
-              <table id="pdf-table" class="margin-top-20" width="100%" >
+              <table id="pdf-table" class="evaluation1" width="99.8%" >
                 <tr class="odd">
                     <td class="col-pdf border-left-none">
                         Final Grade
@@ -190,7 +190,7 @@
                     </td>
                     
                 </tr>
-              </table> 
+              </table>
               
               <%
                 summer_mark = 0

@@ -77,7 +77,7 @@
               end
              end
            
-             std_subject = StudentsSubject.find_by_all_by_batch_id(@batch.id)
+             std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
              
              @std_subject_hash = {}
              unless std_subject.blank?

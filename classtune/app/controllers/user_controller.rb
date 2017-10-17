@@ -34,7 +34,7 @@ class UserController < ApplicationController
     'application'
   end
   
-  def make_sibligns
+  def make_siblings
     
     if request.post?
       @username1 = params[:user][:username1]
@@ -56,7 +56,7 @@ class UserController < ApplicationController
           if !@user_info2.blank? && @user_info2.student
             @student_info2 = @user_info2.student_record
             @std_obj = Student.find @student_info2.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -75,7 +75,7 @@ class UserController < ApplicationController
           if !@user_info3.blank? && @user_info3.student
             @student_info3 = @user_info3.student_record
             @std_obj = Student.find @student_info3.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -94,7 +94,7 @@ class UserController < ApplicationController
           if !@user_info4.blank? && @user_info4.student
             @student_info4 = @user_info4.student_record
             @std_obj = Student.find @student_info4.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -113,7 +113,7 @@ class UserController < ApplicationController
           if !@user_info5.blank? && @user_info5.student
             @student_info5 = @user_info5.student_record
             @std_obj = Student.find @student_info5.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id)
+            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|

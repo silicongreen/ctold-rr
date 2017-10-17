@@ -64,7 +64,8 @@
                @all_exam_id = @all_exams.map(&:id).uniq
                @exam_score_all = ExamScore.find(
                   :all,
-                  :conditions => ["exam_id IN (?)", @all_exam_id]
+                  :conditions => ["exam_id IN (?)", @all_exam_id],
+                  :include => [:exam]
                 )
                 
                 @has_exam_score = []

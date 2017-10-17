@@ -265,7 +265,7 @@
                          
                           <% check_std_subject = false %>
                           
-                          <% if @std_subject_hash.inlcude?(std['id'].to_s+"_"+sub['id'].to_s) %>
+                          <% if @std_subject_hash.include?(std['id'].to_s+"_"+sub['id'].to_s) %>
                             <% check_std_subject = true %>
                           <% end %>
                         

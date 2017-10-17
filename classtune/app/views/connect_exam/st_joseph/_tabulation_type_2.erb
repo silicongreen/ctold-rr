@@ -90,11 +90,10 @@
             
               std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
 
-               @std_subject_hash = {}
+               @std_subject_hash = []
                unless std_subject.blank?
                  std_subject.each do |std_sub|
-                   @std_subject_hash[std_sub.student_id.to_i] = {}
-                   @std_subject_hash[std_sub.student_id.to_i][std_sub.subject_id.to_i] = std_sub.id
+                   @std_subject_hash << std_sub.student_id.to_s+"_"+std_sub.subject_id.to_s
                  end
                end 
           %>
@@ -263,9 +262,14 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
-                          <% subjectdata = Subject.find(sub['id'].to_i) %>
-                          <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
-                          <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                         
+                          <% check_std_subject = false %>
+                          
+                          <% if @std_subject_hash.inlcude?(std['id'].to_s+"_"+sub['id'].to_s) %>
+                            <% check_std_subject = true %>
+                          <% end %>
+                        
+                           <% if check_std_subject == false and sub['elective_group_id'].to_i != 0 %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>

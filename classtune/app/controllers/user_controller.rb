@@ -19,7 +19,7 @@
 class UserController < ApplicationController
   layout :choose_layout
   before_filter :login_required, :except => [:new_student_registration,:logout,:get_section_data,:get_batches,:new_guardian, :forgot_password, :login, :set_new_password, :reset_password]
-  before_filter :only_admin_allowed, :only => [:edit,:make_sibligns, :create, :index, :edit_privilege, :user_change_password,:delete,:list_user,:all]
+  before_filter :only_admin_allowed, :only => [:edit,:make_siblings, :create, :index, :edit_privilege, :user_change_password,:delete,:list_user,:all]
   before_filter :protect_user_data, :only => [:profile, :user_change_password]
   before_filter :check_if_loggedin, :only => [:login]
   before_filter :check_permission,:only=>[:index]

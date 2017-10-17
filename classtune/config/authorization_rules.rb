@@ -1691,7 +1691,7 @@ authorization do
       ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
     has_permission_on [:meetings], :to => [:index,:outbox,:inbox,:new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
-    has_permission_on [:user],  :to => [:edit_privilege,:index,:make_sibligns]
+    has_permission_on [:user],  :to => [:edit_privilege,:index,:make_siblings]
     has_permission_on [:weekday], :to => [:index, :week, :create]
     has_permission_on [:class_timing_sets], :to => [
       :index,

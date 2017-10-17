@@ -299,8 +299,7 @@ function teacher_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">
-            <h4>Please Fill The Form Below To View Demo</h4>'
+        <div class="modal-body">'
           . do_shortcode( "[ninja_form id=5]" ).
         '</div>
         <div class="modal-footer">
@@ -326,8 +325,7 @@ function parent_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">
-            <h4>Please Fill The Form Below To View Demo</h4>'
+        <div class="modal-body">'
           . do_shortcode( "[ninja_form id=1]" ).
         '</div>
         <div class="modal-footer">
@@ -354,8 +352,7 @@ function student_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">
-            <h4>Please Fill The Form Below To View Demo</h4>'
+        <div class="modal-body">'
           . do_shortcode( "[ninja_form id=4]" ).
         '</div>
         <div class="modal-footer">
@@ -381,8 +378,7 @@ function feedback_popup() {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Feedback</h4>
         </div>
-        <div class="modal-body">
-            Please Give Us a Feedback'
+        <div class="modal-body">'
           . do_shortcode( "[ninja_form id=6]" ).
         '</div>
         <div class="modal-footer">

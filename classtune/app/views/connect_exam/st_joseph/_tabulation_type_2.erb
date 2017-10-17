@@ -56,7 +56,8 @@
 
               @all_exams = Exam.find(
                 :all,
-                :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+                :conditions => ["exam_group_id IN (?)", @all_exam_group_id],
+                :include => [:exam_group]
                 )
 
               @all_exam_groups = ExamGroup.find(

@@ -83,7 +83,7 @@ class Import < ActiveRecord::Base
       true
     else
       self.status = "Failed"
-      self.import_log_details.create(:status => "Failed",:description => "csv_format_error")
+      self.import_log_details.create(:status => "Failed",:description => database_columns.first.inspect)
       false
     end
   end

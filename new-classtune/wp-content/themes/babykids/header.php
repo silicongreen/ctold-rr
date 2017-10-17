@@ -35,7 +35,7 @@
         </div>
         <div class="modal-body">
             Please Give Us a Feedback
-            <?php echo do_shortcode( "[ninja_form id=6]" ); ?>
+            <?php echo do_shortcode( "[ninja_form id=7]" ); ?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

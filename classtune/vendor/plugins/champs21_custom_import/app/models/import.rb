@@ -83,7 +83,7 @@ class Import < ActiveRecord::Base
       true
     else
       self.status = "Failed"
-      self.import_log_details.create(:status => "Failed",:description => found_core_match+"|"+found_inject_match+"|"+found_associate_match)
+      self.import_log_details.create(:status => "Failed",:description => found_core_match.to_s+"|"+found_inject_match.to_s+"|"+found_associate_match.to_s)
       false
     end
   end

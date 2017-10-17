@@ -59,6 +59,10 @@
                 :conditions => ["exam_group_id IN (?)", @all_exam_group_id],
                 :include => [:exam_group]
                 )
+              
+              @subjective_marks = {}
+              @objective_marks = {}
+              @practical_marks = {}
 
               @all_exam_groups = ExamGroup.find(
                 :all,

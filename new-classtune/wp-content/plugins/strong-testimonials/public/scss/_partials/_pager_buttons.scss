@@ -1,0 +1,29 @@
+.strong-view {
+	&.pager-style-buttons {
+		.wpmslider-wrapper {
+			.wpmslider-pager {
+				line-height: 24px;
+				margin: 0 4px;
+				text-align: center;
+			}
+			.wpmslider-pager-link:before {
+				//noinspection CssNoGenericFontName
+				font-family: fontawesome;
+				content: "\f10c";
+				display: inline-block;
+				color: #999;
+				cursor: pointer;
+				font-size: 12px;
+				width: 18px;
+				text-align: center;
+			}
+			.wpmslider-pager-link:hover:before {
+				content: "\f111";
+				color: #111;
+			}
+			.wpmslider-pager-link.active:before {
+				content: "\f111";
+			}
+		}
+	}
+}

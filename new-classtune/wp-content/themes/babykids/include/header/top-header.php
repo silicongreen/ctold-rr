@@ -1,5 +1,5 @@
 <!--start before navigation-->
-<div class="nicdark_section nicdark_bg_greydark nicdark_displaynone_responsive">
+<div class="nicdark_section nicdark_bg_green nicdark_displaynone_responsive">
     <div class="nicdark_container nicdark_clearfix">
         
         <div class="grid grid_6">

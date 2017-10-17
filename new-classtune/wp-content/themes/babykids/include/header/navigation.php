@@ -19,14 +19,21 @@
             <?php if ($redux_demo['header_left_sidebar'] == 1) { ?> <a class="nicdark_btn_icon nicdark_zoom nicdark_bg_<?php echo $redux_demo['header_background_btn_left_sidebar']; ?>_hover nicdark_left_sidebar_btn_open nicdark_marginright20 nicdark_bg_<?php echo $redux_demo['header_background_btn_left_sidebar']; ?> extrasmall nicdark_radius white right"><i class="<?php echo $redux_demo['header_icon_btn_left_sidebar']; ?>"></i></a> <?php } else {}; ?>
             <!--end btn left/right sidebar open-->
 
-            <?php wp_nav_menu( array( 'theme_location' => 'main-menu' ) ); ?>    
-        
+            <?php wp_nav_menu( array( 'theme_location' => 'main-menu' ) ); ?>   
+            
+            
             <div class="nicdark_space20"></div>
 
         </div>
 
     </div>
     <!--end container-->
-
+    
 </div>
 <!--end header-->
+<div class="col-sm-3 login-form" id="login-form">
+    <input type="text" title="Please Fill Out This Field" placeholder="Username*">
+    <input type="text" title="Please Fill Out This Field" placeholder="Password*">
+    <a class="row col-sm-12 forgot-password" href="#">Forgot Password?</a>
+    <button class="btn btn-lg btn-success btn-proceed">Proceed</button>
+</div>

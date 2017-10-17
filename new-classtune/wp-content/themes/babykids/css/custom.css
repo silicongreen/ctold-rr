@@ -1,0 +1,41 @@
+/*====================Login==============*/
+.menu > li > a {
+    color: #5db85e;
+    font-size: 20px;
+    margin-top: 5px;
+}
+#login-button{
+    cursor: pointer;
+}
+#login-form{
+    display: none;
+    padding: 50px;
+}
+.login-form{
+    float: right;
+    box-shadow: 1px 1px 5px #ddd;
+    text-align: center;
+    background: #ffffff;
+    top: -82px;
+}
+.login-form input{
+    padding: 5px 10px;
+    box-shadow: 0 0 0 0;
+    border: 1px solid #adadad;
+    background: none;
+}
+.forgot-password{
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    text-align: left;
+}
+.btn-proceed{
+    margin: 20px 0 0 0;
+    width: 100%;
+    padding: 2px;
+}
+
+/*====================Login End==============*/
+

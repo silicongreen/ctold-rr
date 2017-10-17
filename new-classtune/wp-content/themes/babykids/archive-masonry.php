@@ -14,7 +14,7 @@
 					<div class="nicdark_archive1 nicdark_bg_<?php echo $redux_demo['metabox_posts_color']; ?> nicdark_radius nicdark_shadow">
                     
 	                    <?php if (has_post_thumbnail()): ?>
-	                    	<a href="<?php the_permalink(); ?>" class="nicdark_zoom nicdark_btn_icon nicdark_bg_<?php echo $redux_demo['metabox_posts_color']; ?> nicdark_border_<?php echo $redux_demo['metabox_posts_color']; ?>dark white medium nicdark_radius_circle nicdark_absolute_left"><i class="icon-link-outline"></i></a>
+	                    	<a href="<?php the_permalink(); ?>" class="nicdark_zoom nicdark_btn_icon nicdark_bg_<?php echo $redux_demo['metabox_posts_color']; ?> nicdark_border_<?php echo $redux_demo['metabox_posts_color']; ?>dark white medium nicdark_radius_circle nicdark_absolute_right"><i class="icon-link-outline"></i></a>
 							<div class="nicdark_featured_image"><?php the_post_thumbnail('large'); ?></div>
 						<?php endif ?>
 	                    

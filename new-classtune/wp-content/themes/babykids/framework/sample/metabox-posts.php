@@ -163,7 +163,7 @@ $boxSections_posts[] = array(
                 'green' => 'green',
                 'violet' => 'violet'
             ),
-            'default'  => 'orange'
+            'default'  => 'green'
         ),               
                                                            
     ),

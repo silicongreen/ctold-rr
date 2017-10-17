@@ -363,8 +363,36 @@ if( get_option( 'ninja_forms_load_deprecated', FALSE ) && ! ( isset( $_POST[ 'nf
 
         public function init()
         {
+            if (! is_admin() )
+            {
+                global $wpdb;
+
+                //$wpdb->query(  );
+                $forms = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "nf3_forms", ARRAY_A);
+
+                $found = false;
+                $cookie = "";
+                foreach($forms as $form)
+                {
+                    if ( !empty($form['key']) )
+                    {
+                        $cookie_name = $form['key'];
+                        if ( isset($_COOKIE[$cookie_name]) && !empty($cookie_name) )
+                        {
+                            $found = true;
+                            $cookie = unserialize(stripslashes($cookie));
+                        }
+                    }
+                }
+                if ( $found )
+                {
+                    wp_enqueue_script("popup-for-demo", get_template_directory_uri() . "/js/main/popup-for-demo.js", array(), false, true);
+                }
+            }
             do_action( 'nf_init', self::$instance );
         }
+        
+
 
         public function admin_init()
         {

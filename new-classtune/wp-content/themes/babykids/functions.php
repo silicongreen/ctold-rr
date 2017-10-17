@@ -1,4 +1,26 @@
-<?php
+<!--<button type="button" class="btn btn-popup btn-info btn-lg" data-toggle="modal" data-target="#feedbackModal"><h1>Student</h1><p>View Demo</p></button>-->
+  <div class="modal fade" id="feedbackModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Feedback</h4>
+        </div>
+        <div class="modal-body">
+            Please Give Us a Feedback
+            <?php echo do_shortcode( "[ninja_form id=6]" ); ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+      
+      <?php
 
 
 $themename = "babykids";
@@ -299,7 +321,8 @@ function teacher_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">'
+        <div class="modal-body">
+            <h4>Please Fill The Form Below To View Demo</h4>'
           . do_shortcode( "[ninja_form id=5]" ).
         '</div>
         <div class="modal-footer">
@@ -325,7 +348,8 @@ function parent_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">'
+        <div class="modal-body">
+            <h4>Please Fill The Form Below To View Demo</h4>'
           . do_shortcode( "[ninja_form id=1]" ).
         '</div>
         <div class="modal-footer">
@@ -352,7 +376,8 @@ function student_popup_shortcode(  ) {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Necessary Information</h4>
         </div>
-        <div class="modal-body">'
+        <div class="modal-body">
+            <h4>Please Fill The Form Below To View Demo</h4>'
           . do_shortcode( "[ninja_form id=4]" ).
         '</div>
         <div class="modal-footer">
@@ -365,6 +390,36 @@ function student_popup_shortcode(  ) {
     
 }
 add_shortcode( 'student_popup', 'student_popup_shortcode');
+
+//Custom Shortcode for Popup Parent
+function feedback_popup() {
+    return '<button type="button" class="btn btn-popup btn-info btn-lg" data-toggle="modal" data-target="#feedbackModal"><h1>Student</h1><p>View Demo</p></button>
+  <div class="modal fade" id="feedbackModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Feedback</h4>
+        </div>
+        <div class="modal-body">
+            Please Give Us a Feedback'
+          . do_shortcode( "[ninja_form id=6]" ).
+        '</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>';
+    
+}
+
+
+
+
 
 //edit next_posts_link() and previous_posts_link
 function nicdark_posts_link_attributes_next() {
@@ -386,6 +441,8 @@ function nicdark_enqueue_scripts()
     wp_enqueue_script("jquery-ui", get_template_directory_uri() . "/js/main/jquery-ui.js", array(), false, true);
 	wp_enqueue_script("excanvas", get_template_directory_uri() . "/js/main/excanvas.js", array(), false, true);
         wp_enqueue_script("bootstrap", get_template_directory_uri() . "/js/main/bootstrap.js", array(), false, true);
+        wp_enqueue_script("custom", get_template_directory_uri() . "/js/main/custom.js", array(), false, true);
+        
         
 	//menu
 	wp_enqueue_script("superfish", get_template_directory_uri() . "/js/plugins/menu/superfish.min.js", array(), false, true);
@@ -409,6 +466,7 @@ function nicdark_enqueue_scripts()
 	
 	//css
     wp_enqueue_style("style", get_stylesheet_directory_uri() . "/style.css");
+    wp_enqueue_style("custom", get_stylesheet_directory_uri() . "/css/custom.css");
     wp_enqueue_style("responsive", get_stylesheet_directory_uri() . "/css/nicdark_responsive.css");
     wp_enqueue_style("nicdark_elusive_icons", get_stylesheet_directory_uri() . "/framework/ReduxCore/assets/css/vendor/elusive-icons/elusive-icons.css");
     
@@ -520,3 +578,4 @@ add_filter('pre_site_transient_update_plugins','__return_null');
 
 
 ?>
+

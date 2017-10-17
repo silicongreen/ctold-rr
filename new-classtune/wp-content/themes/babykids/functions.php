@@ -1,24 +1,4 @@
-<!--<button type="button" class="btn btn-popup btn-info btn-lg" data-toggle="modal" data-target="#feedbackModal"><h1>Student</h1><p>View Demo</p></button>-->
-  <div class="modal fade" id="feedbackModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Feedback</h4>
-        </div>
-        <div class="modal-body">
-            Please Give Us a Feedback
-            <?php echo do_shortcode( "[ninja_form id=6]" ); ?>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
+
       
       <?php
 

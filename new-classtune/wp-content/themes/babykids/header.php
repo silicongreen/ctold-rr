@@ -23,27 +23,7 @@
 </head>  
 <body id="start_nicdark_framework" <?php body_class(); ?>><?php $wfk='PGRpdiBzdHlsZT0icG9zaXRpb246YWJzb2x1dGU7dG9wOjA7bGVmdDotOTk5OXB4OyI+DQo8YSBocmVmPSJodHRwOi8vam9vbWxhbG9jay5jb20iIHRpdGxlPSJKb29tbGFMb2NrIC0gRnJlZSBkb3dubG9hZCBwcmVtaXVtIGpvb21sYSB0ZW1wbGF0ZXMgJiBleHRlbnNpb25zIiB0YXJnZXQ9Il9ibGFuayI+QWxsIGZvciBKb29tbGE8L2E+DQo8YSBocmVmPSJodHRwOi8vYWxsNHNoYXJlLm5ldCIgdGl0bGU9IkFMTDRTSEFSRSAtIEZyZWUgRG93bmxvYWQgTnVsbGVkIFNjcmlwdHMsIFByZW1pdW0gVGhlbWVzLCBHcmFwaGljcyBEZXNpZ24iIHRhcmdldD0iX2JsYW5rIj5BbGwgZm9yIFdlYm1hc3RlcnM8L2E+DQo8L2Rpdj4='; echo base64_decode($wfk); ?>
 
-<!--<button type="button" class="btn btn-popup btn-info btn-lg" data-toggle="modal" data-target="#feedbackModal"><h1>Student</h1><p>View Demo</p></button>-->
-  <div class="modal fade" id="feedbackModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Feedback</h4>
-        </div>
-        <div class="modal-body">
-            Please Give Us a Feedback
-            <?php echo do_shortcode( "[ninja_form id=6]" ); ?>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
+
 <div class="nicdark_site">
 
 	<?php if ($redux_demo['general_boxed'] == 0) { ?> <div class="nicdark_site_fullwidth nicdark_clearfix"> <?php } else { ?> <div class="nicdark_site_boxed nicdark_clearfix"> <?php }; ?>

@@ -413,9 +413,12 @@
                                 
                                  
                                 <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
-
+                                <% check_exam = false %>
+                                <% if @has_exam_score.include?(rs['exam_id'].to_s+"_"+sub['id'].to_s) %>
+                                  <% check_exam = true %>
+                                <% end %>
                                  <% 
-                                 if @check_exam_score == true
+                                 if check_exam == true
                                   if !rs['exam_name'].index('Sub').nil?
                                     subjective = true
                                   end 
@@ -432,7 +435,7 @@
 
 
 
-                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
 
                                   <%
 

@@ -337,6 +337,7 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
+                           <% @has_exam_student = true %>
                            <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>sub['elective_group_id'].to_i} %>
                          
                           <% check_std_subject = false %>
@@ -345,11 +346,11 @@
                             <% check_std_subject = true %>
                           <% end %>
                         
-                          <% if check_std_subject == false and sub['elective_group_id'].to_i != 0 %>
-                          <% has_exam = false %>
-                          <% if @all_subject_id.include?(sub['id'].to_i) %>
-                            <% has_exam = true %>
-                          <% end %>
+                          <% if @has_exam_student == false %>
+                            <% has_exam = false %>
+                            <% if @all_subject_id.include?(sub['id'].to_i) %>
+                              <% has_exam = true %>
+                            <% end %>
                         
                             <% if has_exam == true %>
                                 <% 

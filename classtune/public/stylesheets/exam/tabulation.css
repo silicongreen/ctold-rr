@@ -127,6 +127,26 @@ table#pdf-table{
     border-bottom: 1px solid #ADACAB;
 }
 
+.page-break70 td{
+    height: 70px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+
+.page-break74 td{
+    height: 74px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+.page-break75 td{
+    height: 75px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
+
 .page-break90 td{
     height: 95px;
     border: 1px solid #fff;

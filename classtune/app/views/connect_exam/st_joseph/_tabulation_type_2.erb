@@ -63,6 +63,8 @@
               @subjective_marks = {}
               @objective_marks = {}
               @practical_marks = {}
+              
+              
 
               @all_exam_groups = ExamGroup.find(
                 :all,
@@ -71,6 +73,33 @@
 
 
               unless @all_exams.blank?
+                
+                @all_exams.each do |exam|
+                  
+                  unless exam.exam_group.name.index('Sub').nil?
+                    if @subjective_marks[exam.subject_id.to_i].nil?
+                        @subjective_marks[exam.subject_id.to_i] = 0
+                    end
+                    @subjective_marks[exam.subject_id.to_i] = @subjective_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                  end 
+                  
+                  unless exam.exam_group.name.index('Obj').nil?
+                    if @objective_marks[exam.subject_id.to_i].nil?
+                        @objective_marks[exam.subject_id.to_i] = 0
+                    end
+                    @objective_marks[exam.subject_id.to_i] = @objective_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                  end
+                  
+                  unless exam.exam_group.name.index('Prac').nil?
+                    if @practical_marks[exam.subject_id.to_i].nil?
+                        @practical_marks[exam.subject_id.to_i] = 0
+                    end
+                    @practical_marks[exam.subject_id.to_i] = @practical_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                  end
+                  
+                end  
+                
+                
                 @all_subject_id = @all_exams.map(&:subject_id).uniq
                 @all_exam_id = @all_exams.map(&:id).uniq
                 @exam_score_all = ExamScore.find(
@@ -127,17 +156,31 @@
                             <% unless examfound.blank? %>
                               <% if !exam_group.name.index('Sub').nil? && subjective == false %>
                                 <% subjective = true %>
-                                <td><%=  sub['code'] %></td>
+                                <td>
+                                   <%=  sub['code'] %>
+                                   <% unless @subjective_marks[sub['id'].to_i].nil? %>
+                                      <hr/>
+                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                   <% end %>
+                                </td>
                               <% end %>
 
                               <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                 <% objective = true %>
                                 <td><%=  sub['code'] %></td>
+                                <% unless @objective_marks[sub['id'].to_i].nil? %>
+                                    <hr/>
+                                    <%= @objective_marks[sub['id'].to_i] %>
+                                <% end %>
                               <% end %>
 
                               <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                 <% practical = true %>
                                 <td><%=  sub['code'] %></td>
+                                <% unless @practical_marks[sub['id'].to_i].nil? %>
+                                    <hr/>
+                                    <%= @practical_marks[sub['id'].to_i] %>
+                                <% end %>
                               <% end %>
                             <% end %>
 
@@ -157,7 +200,7 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>11 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -183,18 +226,32 @@
                                 <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                                 <% unless examfound.blank? %>
                                   <% if !exam_group.name.index('Sub').nil? && subjective == false %>
-                                    <% subjective = true %>
-                                    <td><%=  sub['code'] %></td>
+                                  <% subjective = true %>
+                                  <td>
+                                     <%=  sub['code'] %>
+                                     <% unless @subjective_marks[sub['id'].to_i].nil? %>
+                                        <hr/>
+                                        <%= @subjective_marks[sub['id'].to_i] %>
+                                     <% end %>
+                                  </td>
                                   <% end %>
 
                                   <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                     <% objective = true %>
                                     <td><%=  sub['code'] %></td>
+                                    <% unless @objective_marks[sub['id'].to_i].nil? %>
+                                        <hr/>
+                                        <%= @objective_marks[sub['id'].to_i] %>
+                                    <% end %>
                                   <% end %>
 
                                   <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                     <% practical = true %>
                                     <td><%=  sub['code'] %></td>
+                                    <% unless @practical_marks[sub['id'].to_i].nil? %>
+                                        <hr/>
+                                        <%= @practical_marks[sub['id'].to_i] %>
+                                    <% end %>
                                   <% end %>
                                 <% end %>
 
@@ -206,7 +263,7 @@
                           <td class="col-pdf">Rank</td>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>12 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break5">
@@ -233,17 +290,31 @@
                                 <% unless examfound.blank? %>
                                   <% if !exam_group.name.index('Sub').nil? && subjective == false %>
                                     <% subjective = true %>
-                                    <td><%=  sub['code'] %></td>
+                                    <td>
+                                       <%=  sub['code'] %>
+                                       <% unless @subjective_marks[sub['id'].to_i].nil? %>
+                                          <hr/>
+                                          <%= @subjective_marks[sub['id'].to_i] %>
+                                       <% end %>
+                                    </td>
                                   <% end %>
 
                                   <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                     <% objective = true %>
                                     <td><%=  sub['code'] %></td>
+                                    <% unless @objective_marks[sub['id'].to_i].nil? %>
+                                        <hr/>
+                                        <%= @objective_marks[sub['id'].to_i] %>
+                                    <% end %>
                                   <% end %>
 
                                   <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                     <% practical = true %>
                                     <td><%=  sub['code'] %></td>
+                                    <% unless @practical_marks[sub['id'].to_i].nil? %>
+                                        <hr/>
+                                        <%= @practical_marks[sub['id'].to_i] %>
+                                    <% end %>
                                   <% end %>
                                 <% end %>
 

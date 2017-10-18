@@ -122,6 +122,14 @@
               end
               end
             
+              std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+              @std_subject_hash = []
+              unless std_subject.blank?
+                std_subject.each do |std_sub|
+                  @std_subject_hash << std_sub.student_id.to_s+"_"+std_sub.subject_id.to_s
+                end
+              end
+            
              
           %>
             <% unless @report_data.blank? %>
@@ -337,29 +345,21 @@
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
-                           <% @has_exam_student = true %>
-                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>sub['elective_group_id'].to_i} %>
-                         
-                          <% check_std_subject = false %>
+                          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>sub['elective_group_id'].to_i} %>
                           
-                          <% if @std_subject_hash.include?(std['id'].to_s+"_"+sub['id'].to_s) %>
-                            <% check_std_subject = true %>
-                          <% end %>
-                        
                           <% if @has_exam_student == false %>
-                            <% has_exam = false %>
-                            <% if @all_subject_id.include?(sub['id'].to_i) %>
-                              <% has_exam = true %>
-                            <% end %>
+                              
+                              <% has_exam = false %>
+                              <% if @all_subject_id.include?(sub['id'].to_i) %>
+                                <% has_exam = true %>
+                              <% end %>
                         
-                            <% if has_exam == true %>
-                                <% 
-                                subjective = false
-                                objective = false
-                                practical = false
-
-
-                              %>
+                              <% if has_exam == true %>
+                                  <% 
+                                    subjective = false
+                                    objective = false
+                                    practical = false
+                                  %>
                                 <% @all_exam_groups.each do |exam_group| %>
                                   <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                                   <% unless examfound.blank? %>
@@ -398,11 +398,11 @@
                             <% subject_prac_obtain_mark = 0 %>
 
                             <% 
-                            subjective = false
-                            objective = false
-                            practical = false
-                          %>
-
+                              subjective = false
+                              objective = false
+                              practical = false
+                            %>
+                                
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -411,15 +411,11 @@
                             <% @report_data['report']['exams'].each do |rs| %>
                               <% unless has_exam == false  %> 
                                 
-                                      
-                                <% check_exam = false %>
-                                <% if @has_exam_score.include?(rs['exam_id'].to_s+"_"+sub['id'].to_s) %>
-                                  <% check_exam = true %>
-                                <% end %>
-                                
-
+                                 
+                                <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                               
                                  <% 
-                                 if check_exam == true
+                                 if @check_exam_score == true
                                   if !rs['exam_name'].index('Sub').nil?
                                     subjective = true
                                   end 
@@ -436,7 +432,7 @@
 
 
 
-                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
                                   <%
 

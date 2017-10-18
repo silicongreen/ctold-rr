@@ -122,6 +122,14 @@
               end
               end
             
+              std_subject = StudentsSubject.find_all_by_batch_id(@batch.id)
+              @std_subject_hash = []
+              unless std_subject.blank?
+                std_subject.each do |std_sub|
+                  @std_subject_hash << std_sub.student_id.to_s+"_"+std_sub.subject_id.to_s
+                end
+              end
+            
              
           %>
             <% unless @report_data.blank? %>
@@ -338,8 +346,13 @@
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>sub['elective_group_id'].to_i} %>
-                         
-                          <% if @has_exam_student == false %>
+                          <% check_std_subject = false %>
+                          
+                          <% if @std_subject_hash.include?(std['id'].to_s+"_"+sub['id'].to_s) %>
+                            <% check_std_subject = true %>
+                          <% end %>
+                        
+                          <% if check_std_subject == false and sub['elective_group_id'].to_i != 0 %>
                               <% has_exam = false %>
                                 <% if has_exam == true %>
                                   <% 

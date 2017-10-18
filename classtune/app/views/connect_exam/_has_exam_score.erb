@@ -16,6 +16,7 @@
     )
     
     unless @all_exams.blank?
+      @all_exam_id = @all_exams.map(&:id).uniq
       @exam_score_all = ExamScore.find(
         :all,
         :conditions => ["exam_id IN (?)", @all_exam_id],

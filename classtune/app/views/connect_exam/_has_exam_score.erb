@@ -1,0 +1,44 @@
+<% 
+  if @has_exam_score.nil?
+    @all_group_exams = GroupedExam.find(
+      :all,
+      :conditions => [
+        "connect_exam_id = ?",
+        @connect_exam_obj.id
+      ]
+    )
+    
+    @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+    
+    @all_exams = Exam.find(
+      :all,
+      :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+    )
+    
+    unless @all_exams.blank?
+      @exam_score_all = ExamScore.find(
+        :all,
+        :conditions => ["exam_id IN (?)", @all_exam_id],
+        :include => [:exam]
+      )
+      
+      @has_exam_score = []
+      unless @exam_score_all.blank?
+        @exam_score_all.each do |score|
+            if !score.marks.blank? and score.marks.to_i!=0 and !@has_exam_score.include?(score.exam_id)
+              exammain = score.exam
+              unless exammain.blank?
+                @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
+              end
+            end
+        end
+      end
+      
+    end
+  end
+
+  @check_exam_score = false 
+  if @has_exam_score.include?(exam_group_id+"_"+subject_id)
+    @check_exam_score = true
+  end
+%>

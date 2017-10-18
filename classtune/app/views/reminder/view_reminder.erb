@@ -94,6 +94,10 @@
               <%= link_to "View", :controller=>"meetings", :action=>"show",:id=>@new_reminder.rid %>
           <% end %>
       
+          <% if @new_reminder.rtype==112 %>
+              <%= link_to "View", :controller=>"meetings", :action=>"show_forwarded",:id=>@new_reminder.rid %>
+          <% end %>
+      
           <% if @new_reminder.rtype==15 %>
               <%= link_to "Online Exam", :controller=>"online_student_exam" %>
           <% end %>

@@ -80,21 +80,21 @@
                     if @subjective_marks[exam.subject_id.to_i].nil?
                         @subjective_marks[exam.subject_id.to_i] = 0
                     end
-                    @subjective_marks[exam.subject_id.to_i] = @subjective_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                    @subjective_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
                   end 
                   
                   unless exam.exam_group.name.index('Obj').nil?
                     if @objective_marks[exam.subject_id.to_i].nil?
                         @objective_marks[exam.subject_id.to_i] = 0
                     end
-                    @objective_marks[exam.subject_id.to_i] = @objective_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                    @objective_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
                   end
                   
                   unless exam.exam_group.name.index('Prac').nil?
                     if @practical_marks[exam.subject_id.to_i].nil?
                         @practical_marks[exam.subject_id.to_i] = 0
                     end
-                    @practical_marks[exam.subject_id.to_i] = @practical_marks[exam.subject_id.to_i]+exam.maximum_marks.to_i
+                    @practical_marks[exam.subject_id.to_i] = exam.maximum_marks.to_i
                   end
                   
                 end  

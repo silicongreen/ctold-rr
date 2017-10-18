@@ -153,13 +153,6 @@ end
         meeting_type = 1
       
         i = 0
-        
-#        reminder_need_admin_approval = Configuration.find_by_sql ["SELECT id, config_value FROM configurations WHERE config_key = ? AND school_id = ?", 'ReminderNeedAdminApproval', @current_user.school_id]
-#        
-#        forward = 0
-#        if reminder_need_admin_approval.nil? or reminder_need_admin_approval[0]['config_value'].to_i == 0
-#          forward = 1
-#        end
         @config = Configuration.find_by_config_key('TeacherMeetingRequestNeedAdminApproval')
         forward = 0
         if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
@@ -202,14 +195,7 @@ end
               end  
             end
             
-#            unless @applied_student.immediate_contact_id.nil?
-#                guardian = Guardian.find(@applied_student.immediate_contact_id)
-#                unless guardian.user_id.nil?
-#                  reminderrecipients.push guardian.user_id
-#                  batch_ids[guardian.user_id] = @applied_student.batch_id
-#                  student_ids[guardian.user_id] =  @applied_student.id
-#                end
-#            end
+
             unless reminderrecipients.nil? and forward == 1
               Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
               :recipient_ids => reminderrecipients,
@@ -280,8 +266,34 @@ end
             :rid=>@meeting.id,
             :body=>"New Meeting Request Send from #{@current_user.guardian_entry.first_name} at #{@meeting.datetime}" ))
           end 
+         
+          if @meeting.forward == false
+            batch = @meeting.student.batch
+            
+            unless batch.blank?
+              batch_tutor = batch.employees
+              available_user_ids = []
+              unless batch_tutor.blank?
+                batch_tutor.each do |employee|
+                  if employee.meeting_forwarder == 1
+                    available_user_ids << employee.user_id
+                  end
+                end
+              end
+            end
+            
+            unless available_user_ids.nil?
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => available_user_ids,
+              :subject=>"New Meeting Request",
+              :rtype=>112,
+              :rid=>@meeting.id,
+              :body=>"New Meeting Request Send from #{@current_user.guardian_entry.first_name} at #{@meeting.datetime}. Need your action" ))
+            end
+            
+          end
           
-          flash[:success] = "Meeting request successfully sent."
+          flash[:success] = "Meeting request successfully sent." 
         else
           @errors = @meeting.errors
           flash[:error] = "Could not sent meeting request at the moment."
@@ -508,9 +520,9 @@ def update_forwarded
         end 
       end
       
-      if params[:request] == 'Forward' and @meetings.forward == 1
+      if params[:request] == 'Forward' and @meetings.forward == true
           reminderrecipients = []          
-          employees = Employee.find(@meeting.teacher_id)          
+          employees = Employee.find(@meetings.teacher_id)          
           reminderrecipients.push employees.user_id unless employees.user_id.nil?
           
           @applied_student = Student.find(@meetings.parent_id)
@@ -527,19 +539,18 @@ def update_forwarded
           end
           
           
-          if !reminderrecipients.nil? and @meeting.forward == 1 and @g_name!=""
+          if !reminderrecipients.nil? and @meetings.forward == true and @g_name!=""
             Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
             :subject=>"New Meeting Request",
             :rtype=>12,
-            :rid=>@meeting.id,
-            :body=>"New Meeting Request Send from #{@g_name} at #{@meeting.datetime}" ))
+            :rid=>@meetings.id,
+            :body=>"New Meeting Request Send from #{@g_name} at #{@meetings.datetime}" ))
           end 
-        
+          flash[:success] = "Meeting request successfully forwared."
+      else
+          flash[:success] = "Meeting request "+status_text
       end
-      
-      
-      flash[:success] = "Meeting request successfully sent."
     else
       @errors = @meeting.errors
       flash[:error] = "Could not sent meeting request at the moment."

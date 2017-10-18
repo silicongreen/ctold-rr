@@ -18,6 +18,13 @@
 
 </div>
 <div id="page-yield">
+<% unless flash[:success].nil? %>
+    <div>
+      <div class="success-text" style="padding:10px; color: red;">
+        <%= flash[:success] %>
+      </div>
+    </div>
+  <% end %>
 <%#*<pre>%>
 <%#= debug @meetings.inspect %>
     <% meeting = @meetings %>

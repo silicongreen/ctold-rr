@@ -10,7 +10,7 @@
   end
   @has_exam_student = true
   check_std_subject = false
-  if @std_subject_hash.include?(student_id.to_s+"_"+subject_id.to_s)
+  if @std_subject_hash.include?(student_id+"_"+subject_id)
     check_std_subject = true
   end
 

@@ -151,6 +151,8 @@
                                 <% subjective = true %>
                                 <td>
                                    <%=  sub['code'] %>
+                                   <hr/>
+                                   Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @subjective_marks[sub['id'].to_i] %>
@@ -161,6 +163,8 @@
                               <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                 <% objective = true %>
                                 <td><%=  sub['code'] %>
+                                <hr/>
+                                Obj
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
                                     <%= @objective_marks[sub['id'].to_i] %>
@@ -171,6 +175,8 @@
                               <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                 <% practical = true %>
                                 <td><%=  sub['code'] %>
+                                <hr/>
+                                Prac
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
                                     <%= @practical_marks[sub['id'].to_i] %>
@@ -224,6 +230,8 @@
                                 <% subjective = true %>
                                 <td>
                                    <%=  sub['code'] %>
+                                   <hr/>
+                                   Sub
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @subjective_marks[sub['id'].to_i] %>
@@ -234,6 +242,8 @@
                                 <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                   <% objective = true %>
                                   <td><%=  sub['code'] %>
+                                  <hr/>
+                                  Obj
                                   <% unless @objective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @objective_marks[sub['id'].to_i] %>
@@ -244,6 +254,8 @@
                                 <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                   <% practical = true %>
                                   <td><%=  sub['code'] %>
+                                  <hr/>
+                                  Prac
                                   <% unless @practical_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @practical_marks[sub['id'].to_i] %>
@@ -263,7 +275,7 @@
                     <% elsif std_count>12 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break85">
+                      <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">
@@ -289,6 +301,8 @@
                                   <% subjective = true %>
                                   <td>
                                      <%=  sub['code'] %>
+                                     <hr/>
+                                     Sub
                                      <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                         <hr/>
                                         <%= @subjective_marks[sub['id'].to_i] %>
@@ -299,6 +313,8 @@
                                   <% if !exam_group.name.index('Obj').nil? && objective == false %>
                                     <% objective = true %>
                                     <td><%=  sub['code'] %>
+                                    <hr/>
+                                    Obj
                                     <% unless @objective_marks[sub['id'].to_i].nil? %>
                                         <hr/>
                                         <%= @objective_marks[sub['id'].to_i] %>
@@ -309,6 +325,8 @@
                                   <% if !exam_group.name.index('Prac').nil? && practical == false %>
                                     <% practical = true %>
                                     <td><%=  sub['code'] %>
+                                    <hr/>
+                                    Prac
                                     <% unless @practical_marks[sub['id'].to_i].nil? %>
                                         <hr/>
                                         <%= @practical_marks[sub['id'].to_i] %>

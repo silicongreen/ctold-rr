@@ -31,7 +31,7 @@
                 break
                   end
               %>
-                <%= emp.first_name %><% if i==2 %>&nbsp;&nbsp;,&nbsp;&nbsp;<% end %><%= emp.last_name %>&nbsp;
+                <% if i==2 %>&nbsp;&nbsp;,&nbsp;&nbsp;<% end %><%= emp.first_name %>&nbsp<%= emp.last_name %>&nbsp;
               <% end %>
             <% end %> 
         </td>

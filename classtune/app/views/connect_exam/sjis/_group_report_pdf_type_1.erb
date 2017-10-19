@@ -263,8 +263,8 @@
                           <% unless @report_data['report']['exams'].blank? %> 
                             <% jloop = 0 %>
                             <% @top_exam_group.each do |top_exam| %>
-                              <% @top_exam_group_count[jloop] = @top_exam_group_count[jloop]-1 %>
-                                <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"></td>
+                              <% colspan = @top_exam_group_count[jloop]-1 %>
+                                <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                 <% jloop = jloop+1 %>
                                 <% if jloop == 1 %>
                                   <td class="col-pdf"><%= total_term1 %></td>

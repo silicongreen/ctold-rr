@@ -30,6 +30,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :edit_exam_group,
       :marksheet,
       :effot_gradesheet,
       :score_sheet,
@@ -384,6 +385,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :edit_exam_group,
       :previous_batch_exams,
       :marksheet,
       :effot_gradesheet,
@@ -1982,6 +1984,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :edit_exam_group,
       :update_exam_form,
       :publish,
       :marksheet,
@@ -3410,6 +3413,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :edit_exam_group,
       :create_exam,
       :marksheet,
       :effot_gradesheet,
@@ -3676,6 +3680,7 @@ authorization do
     has_permission_on [:exam],
       :to => [
       :index,
+      :edit_exam_group,
       :create_exam,
       :redirect_exam,
       :update_batch,

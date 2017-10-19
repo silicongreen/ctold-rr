@@ -21,7 +21,7 @@ class ExamController < ApplicationController
   include ActionView::Helpers::TextHelper
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:settings,:create_exam,:generate_reports,:report_center]
-  before_filter :protect_other_student_data, :except=>[:student_exam_schedule,:student_exam_schedule_view,:exam_schedule_pdf]
+  before_filter :protect_other_student_data, :except=>[:student_exam_schedule,:edit_exam_group,:student_exam_schedule_view,:exam_schedule_pdf]
   before_filter :restrict_employees_from_exam
   before_filter :default_time_zone_present_time
   filter_access_to :all, :except=>[:index,:create_exam,:update_batch,:exam_wise_report,:list_exam_types,:generated_report,:graph_for_generated_report,
@@ -68,6 +68,15 @@ class ExamController < ApplicationController
     }
     @exam_modules = permitted_modules
     
+  end
+  
+  def edit_exam_group
+    @examgroup = ExamGroup.find_by_id(params[:id])
+    @batch = @examgroup.batch
+    if request.post? and @examgroup.update_attributes(params[:exam_group]) 
+      flash[:notice] = "Successfully Saved"
+      redirect_to batch_exam_groups_path(@batch)
+    end
   end
   
   def split_pdf_and_save

@@ -1,0 +1,96 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'>Edit</div>
+
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+    <%= link_to "#{t('exam_groups_text')}", batch_exam_groups_path(@batch) %> <div class = "bread-crumb-separator"> > </div> <%= @examgroup.name %>
+  </div>
+
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <div id="application-list"> 
+
+  
+      <h4><%= @examgroup.name %></h4>
+      
+      <% form_for :exam_group do |form| %>
+         
+        <div class="label-field-pair">
+        <label for="exam_name"><%= t('exam_name') %></label>
+        <% if params[:ename].nil?  %>
+          <% @ename = "" %>
+        <% else %>
+          <% @ename = params[:ename] %>
+        <% end  %>
+        <div class="text-input-bg"><%= form.text_field :name, :value=>@examgroup.name%></div>
+      </div>
+      <div class="label-field-pair">
+          <% exam_type = get_exam_result_type2() %>              
+        <label >Exam Category</label>
+        <div  class="text-input-bg" id="exam-category-select">
+          <%= select :exam_option,:exam_category,options_from_collection_for_select(exam_type, :first, :last,@examgroup.exam_category) %>
+        </div>
+      </div>
+      <div class="label-field-pair">
+          <% exam_quarter = get_exam_result_quarter() %>
+       <label >Quarter</label>
+        <div  class="text-input-bg">
+          <%= select :exam_option,:quarter,options_from_collection_for_select(exam_quarter, :first, :last,@examgroup.quarter) %>
+        </div>
+      </div>
+      <div class="label-field-pair"  style="float:left; clear:both;">
+        <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
+        <div  class="text-input-bg">
+          <%= calendar_date_select_tag "exam_option[attandence_start_date]",
+            I18n.l(@examgroup.attandence_start_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+        </div>
+      </div>
+      <div class="label-field-pair"  style="float:left; clear:both;">
+        <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
+        <div  class="text-input-bg">
+          <%= calendar_date_select_tag "exam_option[attandence_end_date]",
+            I18n.l(@examgroup.attandence_end_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+        </div>
+      </div>
+
+        <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :id => 'submit_button' %>
+      <% end %>
+   
+
+
+    <div class="extender"></div>
+  </div>
+</div>
+<style>
+  .submit_button
+  {
+     float:left;
+     clear:both;
+     
+  }
+</style>
+

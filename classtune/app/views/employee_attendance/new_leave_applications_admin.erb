@@ -65,11 +65,24 @@
 <% end %>
 </table>
 <% end %>
-<% @count_student = ApplyLeaveStudent.count(:all,:conditions=>{ :approved=> nil})  %>
+
+
+ <%   
+    @config = Configuration.find_by_config_key('LeaveSectionManager')
+    if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+    else
+      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL and forward=?",true])
+    end 
+ %> 
 
 <% if @count_student > 0 %>
-  <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher =?", false],:order=>"start_date DESC") %>
-  <% unless @applied_leaves_students == [] %>
+  <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) %>
+    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>{ :approved=> nil},:order=>"start_date DESC") %>
+  <% else %>
+    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>{ :approved=> nil,:forward=>true},:order=>"start_date DESC") %>
+  <% end %>
+  <% unless @applied_leaves_students.blank? %>
 
   <div class="heading themed_text" style="margin-top: 20px"><%= t('new_applications_from_student') %></div>
   <table id="listing" width="100%">
@@ -82,13 +95,15 @@
   
 
       <% @applied_leaves_students.each do |l| %>
-        <% if l.viewed_by_teacher == false %>
-          <tr class="tr-<%=cycle('odd', 'even')%>">
-            <td class="col-2"><%= link_to "#{Student.find(l.student_id).first_name}",:controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
-            <td class="col-2"><%= link_to "#{l.start_date.strftime("%d/%m/%Y")}",:controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
-            <td class="col-2"><%= link_to "#{l.end_date.strftime("%d/%m/%Y")}",  :controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
-          </tr>
-        <% end %><!-- if -->
+          <% studentData = Student.find_by_id(l.student_id) %>
+          <% unless studentData.blank? %>
+            <tr class="tr-<%=cycle('odd', 'even')%>">
+              <td class="col-2"><%= link_to "#{studentData.first_name}",:controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
+              <td class="col-2"><%= link_to "#{l.start_date.strftime("%d/%m/%Y")}",:controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
+              <td class="col-2"><%= link_to "#{l.end_date.strftime("%d/%m/%Y")}",  :controller => "employee_attendance", :action=>"leave_application", :id=>l.id, :target => "student", :request_from => "admin" %></td>
+            </tr>
+          <% end %>
+        
        <% end %><!-- |l| -->
   </table>
   <% end %><!-- unless -->  

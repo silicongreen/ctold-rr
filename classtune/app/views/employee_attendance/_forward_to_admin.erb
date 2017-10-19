@@ -20,13 +20,11 @@
 <div class="approval-form">
 
 
-  <% form_for :approve_leave,  :url => {:action => 'approve_leave'} do %>
+  <% form_for :forward_leave,  :url => {:action => 'forward_leave'} do %>
     <div class="label-field-pair">
-      <label for="course_grade"><%= t('approval_remark') %></label>
-      <div class="text-input-bg"> <%= text_field_tag :manager_remark %> </div>
+      <label for="course_grade" >Remarks : </label>
+      <div class="text-input-bg"> <%= text_field_tag :forwarder_remark %> </div>
       <%= hidden_field_tag :applied_leave, @applied_leave.id %>
-      <%= hidden_field_tag :target, @target %>
-      <%= hidden_field_tag :request_from, @request_from %>
     </div>
 
     <div id="submit-button" style="float:left; clear:both; margin-top: 20px;">

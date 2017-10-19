@@ -394,17 +394,43 @@ class StudentAttendanceController < ApplicationController
       if(leaves == 0 and already_apply == 0) or (leaves <= 1 )
         if @leave_apply.save
             
-          ApplyLeaveStudent.update(@leave_apply, :approved=> nil, :viewed_by_teacher=> false, :approving_teacher => @reporting_teacher.id)
-          unless reminder_recipient_ids.nil?
-            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @student.user_id,
-                :recipient_ids => reminder_recipient_ids,
-                :subject=>"#{t('student_leave_notice')}",
-                :rtype=>9,
-                :rid=>@leave_apply.id,
-                :body=>""+@student.first_name+" apply for leave from "+params[:leave_apply][:start_date]+" to "+params[:leave_apply][:end_date] ))
-          end 
+          @config = Configuration.find_by_config_key('LeaveSectionManager')
+          if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+              unless reminder_recipient_ids.nil?
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @student.user_id,
+                  :recipient_ids => reminder_recipient_ids,
+                  :subject=>"#{t('student_leave_notice')}",
+                  :rtype=>9,
+                  :rid=>@leave_apply.id,
+                  :body=>""+@student.first_name+" apply for leave from "+params[:leave_apply][:start_date]+" to "+params[:leave_apply][:end_date] ))
+            end 
+          else
+            ApplyLeaveStudent.update(@leave_apply, :approved=> nil, :viewed_by_teacher=> false, :approving_teacher => @reporting_teacher.id)
+            batch = @leave_apply.student.batch
+
+            unless batch.blank?
+              batch_tutor = batch.employees
+              available_user_ids = []
+              unless batch_tutor.blank?
+                batch_tutor.each do |employee|
+                  if employee.meeting_forwarder == 1
+                    available_user_ids << employee.user_id
+                  end
+                end
+              end
+            end
+
+            unless available_user_ids.nil?
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @student.user_id,
+                  :recipient_ids => available_user_ids,
+                  :subject=>"#{t('student_leave_notice')}",
+                  :rtype=>9,
+                  :rid=>@leave_apply.id,
+                  :body=>""+@student.first_name+" apply for leave from "+params[:leave_apply][:start_date]+" to "+params[:leave_apply][:end_date] ))
+            end 
+          end
           
-          flash[:notice] = "#{t('leave_applied_successfully')}"
+          flash[:notice] = "Leave Applied Successfully"
           redirect_to :controller => "student_attendance", :action=> "leaves", :id=>@student.id
         end
       else
@@ -430,9 +456,9 @@ class StudentAttendanceController < ApplicationController
     @students = Student.find(@applied_leave.student_id)
     unless @applied_leave.viewed_by_teacher
       ApplyLeaveStudent.destroy(params[:id])
-      flash[:notice] = "#{t('student_cancle_leave_done')}"
+      flash[:notice] = t('student_cancle_leave_done')
     else
-      flash[:notice] = "#{t('student_cancle_leave_viewed')}"
+      flash[:notice] = t('student_cancle_leave_viewed')
     end
     redirect_to :action=>"leaves", :id=>@students.id
   end

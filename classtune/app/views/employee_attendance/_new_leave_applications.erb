@@ -74,13 +74,32 @@
   <!-- Employee -->
 
 
-  <% @count_student = ApplyLeaveStudent.count(:all,:conditions=>{:viewed_by_teacher=> false})  %>
+   <%   
+    @config = Configuration.find_by_config_key('LeaveSectionManager')
+    if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+    else
+      @employee_batches = @current_user.employee_record.batches
+      batch_ids = @employee_batches.map(&:id)
+      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student])
+    end 
+ %>
 
   <% if @count_student > 0 %>
-    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher =?", false],:order=>"start_date DESC") %>
+    <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) %>
+      <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>{ :approved=> nil},:order=>"start_date DESC") %>
+    <% else %>
+      <% 
+        @employee_batches = @current_user.employee_record.batches
+        batch_ids = @employee_batches.map(&:id)
+        @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student]) 
+      %>
+    <% end %>
+    
     <% unless @applied_leaves_students == [] %>
       <% @applied_leaves_students.each do |l| %>
-        <% if l.viewed_by_teacher == false %>
+        <% studentData = Student.find_by_id(l.student_id) %>
+          <% unless studentData.blank? %>
 
           <div class="new_leave_row">
             <a href="/employee_attendance/leave_application/<%= l.id %>?target=student">
@@ -120,7 +139,7 @@
             </div>
 
           </div>
-
+          
         <% end %><!-- if -->
       <% end %><!-- |l| -->
     <% end %><!-- unless -->

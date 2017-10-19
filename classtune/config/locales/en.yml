@@ -655,6 +655,8 @@ en: # locale
   pod: "POD"
   publisher: "Publisher"
   meeting_forwarder: "Meeting Forwarder"
+  section_manager: "Section Manager"
+  leave_section_manager: "Only Section Manager Can Approve Leave Application"
   date_of_birth: "Date of Birth"
   gender: "Gender"
   male: "Male"

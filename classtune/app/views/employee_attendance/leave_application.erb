@@ -104,11 +104,31 @@
       
       <% if @target != "employee" %>
       <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Subject:</div>
-        <%= @applied_leave.leave_subject %></li>
+        <%= @applied_leave.leave_subject %>
+      </li>
+      <% end %>
+      
+      <% if @target == "student" and !@applied_leave.teacher_remark.blank? %>
+      <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Remarks: </div>
+        <%= @applied_leave.teacher_remark %>
+      </li>
+      <% elsif @target == "employee" and !@applied_leave.manager_remark.blank? %>
+      <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Remarks: </div>
+        <%= @applied_leave.manager_remark %>
+      </li>
       <% end %>
       
       <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('reason') %>:</div>
-        <%= @applied_leave.reason %></li>
+        <%= @applied_leave.reason %>
+      </li>
+      <% if @applied_leave.forward.to_i == 1 %>
+        <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Forwarder Message:</div>
+          <%= @applied_leave.forwarder_remark %>
+        </li>
+      <% end %>
+        
+     
+      
       <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('status') %>:</div>
         <% if @target == "employee" %>
         <%= "#{t('approved')}" if @applied_leave.approved == true and @applied_leave.viewed_by_manager == true %>
@@ -120,12 +140,15 @@
         <%= "#{t('pending_approval')}" if(@applied_leave.approved == false or @applied_leave.approved.nil?) and @applied_leave.viewed_by_teacher == false %>
         <% end %>
       </li>
+      <% if @target == "employee" %>
       <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('leave_count') %>:</div>
-        <% if @target == "employee" %>
         <%= @leave_count.leave_taken %> / <%= @leave_count.leave_count %></li>
-        <% else %>
+      </li>
+      <% else %>
+      <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('leave_count') %>:</div>
         <%= @leave_count %></li>
-        <% end %>
+      </li>
+      <% end %>
     </ul>
 
 
@@ -135,6 +158,17 @@
             :url => {:action => "approve_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'} %>
         </div>
       <% end %>
+        
+      <% if @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1  %>
+        <% @config = Configuration.find_by_config_key('LeaveSectionManager') %>
+        <% if @applied_leave.approved.nil? and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+          <div class="cancel_button"><%= link_to_remote "► Forward",
+            :url => {:action => "forward_to_admin", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'}  %>
+          </div>
+        <% end %>
+      <% end %>   
+      
+     
       
       <% if((@applied_leave.approved == true or @applied_leave.approved.nil?) or (@target == "student" and @applied_leave.viewed_by_teacher == false)) %>
         <div class="cancel_button"><%= link_to_remote "► #{t('deny')}",
@@ -144,6 +178,18 @@
     </div>
   </div>
 </div>
+<% if @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1  %>
+  <% @config = Configuration.find_by_config_key('LeaveSectionManager') %>
+  <% if @applied_leave.approved.nil? and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+  <style>
+      .buttons {
+      margin: 0 auto;
+      width: 385px;
+      }
+
+  </style>
+  <% end %>
+<% end %>
 
 
 

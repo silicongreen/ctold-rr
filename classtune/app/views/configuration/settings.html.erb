@@ -311,18 +311,7 @@
                     <%= check_box :configuration, :homework_will_forward_only, :checked => false %>
                   <% end %>
               </div>
-          </div>   
-          
-          <div class="label-field-pair">
-              <label for="student_admission_auto"><%= t('teacher_meeting_request_need_admin_approval') %></label>
-              <div class="checkbox-input-bg">
-                  <% if @config[:teacher_meeting_request_need_admin_approval] == '1' %>
-                    <%= check_box :configuration, :teacher_meeting_request_need_admin_approval, :checked => true %>
-                  <% else %>
-                    <%= check_box :configuration, :teacher_meeting_request_need_admin_approval, :checked => false %>
-                  <% end %>
-              </div>
-          </div>   
+          </div> 
           
           <div class="label-field-pair">
               <label for="student_admission_auto"><%= t('parent_meeting_request_need_approval') %></label>
@@ -331,6 +320,17 @@
                     <%= check_box :configuration, :parent_meeting_request_need_approval, :checked => true %>
                   <% else %>
                     <%= check_box :configuration, :parent_meeting_request_need_approval, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
+              <label for="student_admission_auto"><%= t('leave_section_manager') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:leave_section_manager] == '1' %>
+                    <%= check_box :configuration, :leave_section_manager, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :leave_section_manager, :checked => false %>
                   <% end %>
               </div>
           </div> 

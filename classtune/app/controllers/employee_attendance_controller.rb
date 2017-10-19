@@ -401,8 +401,18 @@ class EmployeeAttendanceController < ApplicationController
       @total_leave_count = @total_leave_count + @app_leaves
     end
     
-    @app_leaves = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher =?", false])
-    @total_leave_count = @total_leave_count + @app_leaves
+    @config = Configuration.find_by_config_key('LeaveSectionManager')
+    if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+      @total_leave_count = @total_leave_count + @app_leaves
+    elsif @current_user.employee_record.meeting_forwarder.to_i == 1
+
+      @employee_batches = @current_user.employee_record.batches
+      batch_ids = @employee_batches.map(&:id)
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student])
+      @total_leave_count = @total_leave_count + @app_leaves
+    end 
+    
     
     @leave_apply = ApplyLeave.new(params[:leave_apply])
     if request.post?
@@ -470,6 +480,12 @@ class EmployeeAttendanceController < ApplicationController
     @applied_employee = Employee.find(@applied_leave.employee_id)
     @manager = @applied_employee.reporting_manager_id
   end
+  
+  def forward_to_admin
+   @applied_leave = ApplyLeaveStudent.find(params[:id])
+   render :action => "forward_to_admin_student.rjs"
+  end
+  
 
   def approve_remarks
     @target = params[:target]
@@ -499,6 +515,28 @@ class EmployeeAttendanceController < ApplicationController
     else
       render :action => "deny_remarks.rjs"
     end
+  end
+  
+  def forward_leave
+    @applied_leave = ApplyLeaveStudent.find(params[:applied_leave])
+    @applied_student = Student.find(@applied_leave.student_id)
+    @applied_leave.update_attributes(:forward =>true,:forwarder_remark => params[:forwarder_remark])
+    @approving_teacher = Employee.find_by_user_id(current_user.id) 
+    reminderrecipients = User.find(:all,:conditions=>["admin = ? and is_deleted = ?",true,false]).map(&:id)
+    unless reminderrecipients.nil?
+        Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+        :recipient_ids => reminderrecipients,
+        :subject=>"A leave apllication need your action",
+        :rtype=>9,
+        :rid=>@applied_leave.id,
+        :student_id => 0,
+        :batch_id => 0,
+        :body=>"A Leave Apllication from (#{@applied_student.first_name}) is need your action" ))
+    end 
+    
+    flash[:notice]="Leave Application Forwarded"
+    
+    redirect_to :controller=>"employee_attendance", :action=>"leaves", :id=>@approving_teacher.id and return
   end
 
   def approve_leave

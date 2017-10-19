@@ -1450,8 +1450,12 @@ ORDER BY emp.first_name ASC"
       @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND viewed_by_manager =?", e.id, false])
       @total_leave_count = @total_leave_count + @app_leaves
     end
-
-    @app_leaves = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher =?", false])
+    @config = Configuration.find_by_config_key('LeaveSectionManager')
+    if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+    else
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL and forward=?",true])
+    end  
     @total_leave_count = @total_leave_count + @app_leaves
   end
 

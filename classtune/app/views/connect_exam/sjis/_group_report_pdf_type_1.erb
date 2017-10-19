@@ -30,10 +30,11 @@
                           <% if jloop == 0  %>
                             <% top_exam_first = top_exam_first_main = top_exam %>
                           <% end %>
+                          <% colspan = @top_exam_group_count[jloop] %>
                           <% if group_count == 1 %>
-                            <% @top_exam_group_count[jloop] = @top_exam_group_count[jloop]-1 %>
+                            <% colspan = @top_exam_group_count[jloop]-1 %>
                           <% end %>
-                          <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[jloop] %>"><%= top_exam.upcase %></td>
+                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam.upcase %></td>
                           <% jloop = jloop+1 %>
                         <% end %>
                       <% end %>

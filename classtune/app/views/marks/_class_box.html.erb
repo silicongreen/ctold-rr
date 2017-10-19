@@ -1,3 +1,6 @@
+<%
+batch_class_section = []
+%>
 <div class="box">
       <% batch_names = [] %>
        <% @batches.each do |batch| %>
@@ -40,8 +43,11 @@
           <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
-                
-                <option value="<%= batch_names[0] %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% b_c_s = batch_names[0]+" "+class_name+" "+section %>
+                <% unless batch_class_section.include(b_c_s)  %>
+                  <% batch_class_section << b_c_s %>
+                  <option value="<%= batch_names[0] %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% end %>
             <% end %>
           </select>
       
@@ -76,8 +82,11 @@
           <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
-                
-                <option value="<%= batch_name %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% b_c_s = batch_name+" "+class_name+" "+section %>
+                <% unless batch_class_section.include(b_c_s)  %>
+                  <% batch_class_section << b_c_s %>
+                  <option value="<%= batch_name %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% end %>
             <% end %>
           </select>
       

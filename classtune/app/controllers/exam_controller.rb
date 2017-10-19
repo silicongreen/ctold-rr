@@ -3864,7 +3864,7 @@ class ExamController < ApplicationController
             :save_only    => for_save,
             :orientation => 'Portrait',
             :margin => {:top=> 35,
-            :bottom => 25,
+            :bottom => 35,
             :left=> 10,
             :right => 10}
         elsif  MultiSchool.current_school.id == 340  

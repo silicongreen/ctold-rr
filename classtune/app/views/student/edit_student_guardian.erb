@@ -48,7 +48,7 @@
           <hr class="label-underline"></hr>
 
           <div class="label-field-pair">
-              <label for="student_email"><%= t('email_for_school_use') %></label>
+              <label for="student_email"><%= t('email_for_school_use') %><span class="necessary-field">*</span></label>
               <div class="text-input-bg"><%= s.text_field :email %></div>
           </div>
 
@@ -65,7 +65,7 @@
           <div id="admission1_form_vertical_block_right">
 
               <div class="label-field-pair">
-                  <label for="master_student_city"><%= t('address_line') %></label>
+                  <label for="master_student_city"><%= t('address_line') %><span class="necessary-field">*</span></label>
                   <div class="text-input-bg"><%= s.text_field :address_line1, :value => @student.address_line1 %></div>
               </div>
 
@@ -79,7 +79,7 @@
               <hr class="label-underline"></hr>
 
               <div class="label-field-pair">
-                  <label for="master_student_city"><%= t('city') %></label>
+                  <label for="master_student_city"><%= t('city') %><span class="necessary-field">*</span></label>
                   <div class="text-input-bg"><%= s.text_field :city, :value => @student.city %></div>
               </div>
 
@@ -100,30 +100,20 @@
               <hr class="label-underline"></hr>
 
               <div class="label-field-pair">
-                  <label for="master_student_country"><%= t('country') %></label>
+                  <label for="master_student_country"><%= t('country') %><span class="necessary-field">*</span></label>
                   <div class="text-input-bg"><%= select :student, :country_id, Country.all.map {|c| [c.name, c.id]}, :selected => @student.country.id %></div>
               </div>
 
+             
+
               <hr class="label-underline"></hr>
-
-              <div class="label-field-pair" style="display: none;">
-                  <label for="master_student_phone1"><%= t('phone') %></label>
-                  <div class="text-input-bg"><%= s.text_field :phone1, :value =>@student.phone1 %></div>
-              </div>
-
-              <hr class="label-underline" style="display: none;"></hr>
 
               <div class="label-field-pair">
                   <label for="master_student_phone2"><%= t('mobile') %></label>
                   <div class="text-input-bg"><%= s.text_field :phone2, :value =>@student.phone2 %></div>
               </div>
               
-              <hr class="label-underline" style="display: none;"></hr>
-
-              <div class="label-field-pair">
-                  <label for="student_phone2"><%= "Designated Number for SMS" %></label>
-                  <div class="text-input-bg"><%= s.text_field :sms_number, :value =>@student.sms_number %></div>
-              </div>
+            
 
               
           </div>

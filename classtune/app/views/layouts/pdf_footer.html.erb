@@ -105,7 +105,7 @@
 
               </table>
           </div>
-        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342  or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
+        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
           
         
         <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342 %>
@@ -116,14 +116,18 @@
 
                       <tr>
                           <td class="">
-                              <%= "---------------------------------------------------------------" %><br />
-                              <font size='4'><%= "Class Teacher" %></font>
-                          </td>
-                          <td class="">
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/principal.jpg")),:width=> '16%' %><br />
                               <%= "---------------------------------------------------------------" %><br />
                               <font size='4'><%= "Principal" %></font>
                           </td>
                           <td class="">
+                              <br /><br />
+                              <%= "---------------------------------------------------------------" %><br />
+                              <font size='4'><%= "Class Teacher" %></font>
+                          </td>
+                          
+                          <td class="">
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/342/director_new.jpg")),:width=> '15%' %><br/>
                               <%= "---------------------------------------------------------------" %><br />
                               <font size='4'><%= "Director" %></font>
                           </td>

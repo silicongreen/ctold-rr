@@ -44,7 +44,7 @@ batch_class_section = []
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_names[0]+" "+class_name+" "+section %>
-                <% unless batch_class_section.include(b_c_s)  %>
+                <% unless batch_class_section.include?(b_c_s)  %>
                   <% batch_class_section << b_c_s %>
                   <option value="<%= batch_names[0] %> <%= class_name %> <%= section %>" /><%= section %></option>
                 <% end %>
@@ -83,7 +83,7 @@ batch_class_section = []
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_name+" "+class_name+" "+section %>
-                <% unless batch_class_section.include(b_c_s)  %>
+                <% unless batch_class_section.include?(b_c_s)  %>
                   <% batch_class_section << b_c_s %>
                   <option value="<%= batch_name %> <%= class_name %> <%= section %>" /><%= section %></option>
                 <% end %>

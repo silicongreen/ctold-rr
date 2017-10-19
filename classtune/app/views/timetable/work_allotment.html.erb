@@ -53,7 +53,7 @@
           <li class="list<%=cycle('odd','even')%>">
             <div class="category-subject-name"><%= "#{subj.name}" %></div>
             <div class="category-employee-options">
-              <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)) %>
+              <%= select_tag   "employee_subjects[#{subj.id}]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]},subj.employees.first.try(:id)),{:class => 'js-example-basic-single'} %>
             </div>
             <div class="category-employee-names"><%= "#{subj.employees.collect(&:full_name).join(',')}" %></div>
           </li>
@@ -76,3 +76,22 @@
     <% end %>
   </ul>
 </div>
+
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq('.js-example-basic-single').select2();
+  });
+  
+</script> 
+<style>
+    .category-list li span
+    {
+      float: none;
+      margin-right: 0px;
+      text-align:inherit;
+      width:auto;
+     
+    }
+    
+</style>    

@@ -52,27 +52,27 @@
           <% exam_type = get_exam_result_type2() %>              
         <label >Exam Category</label>
         <div  class="text-input-bg" id="exam-category-select">
-          <%= select :exam_option,:exam_category,options_from_collection_for_select(exam_type, :first, :last,@examgroup.exam_category.to_s) %>
+          <%= select :exam_group,:exam_category,options_from_collection_for_select(exam_type, :first, :last,@examgroup.exam_category.to_s) %>
         </div>
       </div>
       <div class="label-field-pair">
           <% exam_quarter = get_exam_result_quarter() %>
        <label >Quarter</label>
         <div  class="text-input-bg">
-          <%= select :exam_option,:quarter,options_from_collection_for_select(exam_quarter, :first, :last,@examgroup.quarter.to_s) %>
+          <%= select :exam_group,:quarter,options_from_collection_for_select(exam_quarter, :first, :last,@examgroup.quarter.to_s) %>
         </div>
       </div>
       <div class="label-field-pair"  style="float:left; clear:both;">
         <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
         <div  class="text-input-bg">
-          <%= calendar_date_select_tag "exam_option[attandence_start_date]",
+          <%= calendar_date_select_tag "exam_group[attandence_start_date]",
             I18n.l(@examgroup.attandence_start_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
         </div>
       </div>
       <div class="label-field-pair"  style="float:left; clear:both;">
         <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
         <div  class="text-input-bg">
-          <%= calendar_date_select_tag "exam_option[attandence_end_date]",
+          <%= calendar_date_select_tag "exam_group[attandence_end_date]",
             I18n.l(@examgroup.attandence_end_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
         </div>
       </div>

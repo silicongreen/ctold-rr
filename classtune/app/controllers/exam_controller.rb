@@ -3898,7 +3898,7 @@ class ExamController < ApplicationController
           :save_only    => for_save,
           :orientation => 'Landscape',
           :margin => {:top=> 25,
-            :bottom => 30,
+            :bottom => 40,
             :left=> 10,
             :right => 10}
         end

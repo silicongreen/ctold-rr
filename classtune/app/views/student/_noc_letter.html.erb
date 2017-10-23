@@ -32,16 +32,12 @@
     
     <div class="row">
       <div class="row_label">Class</div>
-      <div class="row_data">
-                  <%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
-                    <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
-                    <% unless  @student.batch.course.section_name.empty? %>                      
-                      <%= ", " %>
-                      <%= t('profile_section_label') %>         
-                      <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string+" "  + t('profile_section_label')+" " +  @student.batch.course.section_name %>
-                    <% end %>
-          <input type="hidden" id="student_class" value="<%= class_string %>">
+      <div class="row_data"><%= @student.batch.full_name %>          
+          <% unless @student.batch.course.section_name.blank?   %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>, Section : <%= @student.batch.course.section_name %>">
+          <% else %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>">
+          <% end %>
       </div>
     </div> 
    
@@ -60,7 +56,7 @@
 
     <div class="row" id="end_date_1">
       <div class="row_label">End Date</div>
-      <div class="row_data"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
     </div>
     
     <div class="row" id="request_date_1">
@@ -85,7 +81,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/noc_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#st_achivement').val()+"|"+jj('#start_date').val()+"|"+jj('#start_date').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#st_achivement').val()+"|"+jj('#start_date').val()+"|"+jj('#end_date').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2'); location.reload();}
       }); 
     }); 
 </script>

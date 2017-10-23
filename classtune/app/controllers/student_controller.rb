@@ -2036,8 +2036,35 @@ end
   end
   
   def studentformlist
-    school_id = MultiSchool.current_school.id 
-    @formData = StudentForm.find_all_by_is_delete_and_school_id(0, school_id)
+    @batch_id = params[:batch_id]
+    @status_id = params[:status_id]
+    @form_type = params[:form_type]
+    extra_condition = ""
+    if current_user.admin?
+      extra_condition = ""
+    elsif @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1
+      @employee_batches = @current_user.employee_record.batches
+      unless @employee_batches.blank?
+        batch_ids = @employee_batches.map(&:id) 
+        extra_condition+= " and students.batch_id in ("+batch_ids.join(',')+")"
+      else
+        extra_condition+= " and student_forms.is_delete=true"
+      end  
+    else
+      extra_condition+= " and student_forms.is_delete=true"
+    end  
+    school_id = MultiSchool.current_school.id
+    if !@batch_id.blank? and @batch_id!=""
+      extra_condition += " and students.batch_id = #{@batch_id}"
+    end 
+    if !@status_id.blank? and @status_id!=""
+      extra_condition += " and student_forms.status = #{@status_id}"
+    end
+    
+    if !@form_type.blank? and @form_type!=""
+      extra_condition += " and student_forms.form_type_text = '#{@form_type}'"
+    end
+    @formData = StudentForm.paginate :conditions=>"student_forms.school_id = #{school_id} and student_forms.is_delete=false"+extra_condition, :order=>"student_forms.created_at desc",:include=>[:student], :page=>params[:page], :per_page => 2
   end
   
   def generate_pdf_letter
@@ -2052,7 +2079,7 @@ end
       school_id = MultiSchool.current_school.id 
       
       @schoolData = MultiSchool.current_school
-      @student = Student.find(params[:id])
+      @student = Student.find_by_id(params[:id])
       @formData = StudentForm.find_by_id(params[:aid])
       @defaultFromData = StudentFormDefault.find_by_form_type_text_and_school_id(@formData.form_type_text, school_id)
       
@@ -2101,9 +2128,11 @@ end
     
     if @studentForm.save
       @error = true
+      send_notification_section_manager
     end
     render :update do |page|
       if @studentForm.save
+        
         page.replace_html 'form-errors', :text => ''
         page << "Modalbox.hide();"
         page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
@@ -2132,9 +2161,11 @@ end
     
     if @studentForm.save
       @error = true
+      send_notification_section_manager
     end
     render :update do |page|
       if @studentForm.save
+        
         page.replace_html 'form-errors', :text => ''
         page << "Modalbox.hide();"
         page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
@@ -2163,9 +2194,11 @@ end
     
     if @studentForm.save
       @error = true
+      send_notification_section_manager
     end
     render :update do |page|
       if @studentForm.save
+        
         page.replace_html 'form-errors', :text => ''
         page << "Modalbox.hide();"
         page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg20')}</p>"
@@ -2195,6 +2228,7 @@ end
     
     if @studentForm.save
       @error = true
+      send_notification_section_manager
     end
     render :update do |page|
       if @studentForm.save
@@ -2227,6 +2261,7 @@ end
     
     if @studentForm.save
       @error = true
+      send_notification_section_manager
     end
     render :update do |page|
       if @studentForm.save
@@ -2253,8 +2288,10 @@ end
     @formData = StudentForm.find_by_id(params[:aid])        
     @formData.update_attributes(:status => params[:status])
     
+    send_guardian_notification
+    
     flash[:warn_notice]="<p>Request is Updated.</p>"
-    redirect_to :action=>'studentformlist', :id => params[:id]
+    redirect_to :action=>'studentformlist', :id => params[:id], :page => params[:page], :status_id => params[:status_id], :batch_id => params[:batch_id], :form_type => params[:form_type]
   end
   
   def del_guardian
@@ -3653,6 +3690,89 @@ end
     end
     
     @attendence_text
+  end
+  
+  def send_guardian_notification
+    @applied_student = @formData.student
+    reminderrecipients = []
+    batch_ids = {}
+    student_ids = {}
+    
+    unless @applied_student.student_guardian.empty?
+      guardians = @applied_student.student_guardian
+      guardians.each do |guardian|
+
+        unless guardian.user_id.nil?
+          reminderrecipients.push guardian.user_id
+          batch_ids[guardian.user_id] = @applied_student.batch_id
+          student_ids[guardian.user_id] = @applied_student.id
+        end
+      end  
+    end
+    
+    if @formData.form_type_text == "transfer_letter" 
+      title = "Transfer Certificate Letter"
+    elsif @formData.form_type_text == "noc_letter" 
+      title = "No Objection Certificate Letter"
+    elsif @formData.form_type_text == "recommendation_letter"
+      style = "recommendation_letter"
+    elsif @formData.form_type_text == "studentship_letter" 
+      title = "Studentship Letter"
+    elsif @formData.form_type_text == "visa_recommendation_letter" 
+      title = "VISA Recommendation Certificate Letter"
+    end 
+    
+    unless reminderrecipients.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+      :recipient_ids => reminderrecipients,
+      :subject=>"Your application status for "+title+" is updated",
+      :rtype=>1000,
+      :rid=>@studentForm.id,
+      :student_id => student_ids,
+      :batch_id => batch_ids,
+      :body=>"Your application status for "+title+" is updated. please check student profile form." ))
+    end
+    
+  end
+  
+  def send_notification_section_manager
+    batch = @studentForm.student.batch       
+    unless batch.blank?
+      batch_tutor = batch.employees
+      available_user_ids = []
+      unless batch_tutor.blank?
+        batch_tutor.each do |employee|
+          if employee.meeting_forwarder == 1
+            available_user_ids << employee.user_id
+          end
+        end
+      end
+    end
+    
+     
+    if @studentForm.form_type_text == "transfer_letter" 
+      title = "Transfer Certificate Letter"
+    elsif @studentForm.form_type_text == "noc_letter" 
+      title = "No Objection Certificate Letter"
+    elsif @studentForm.form_type_text == "recommendation_letter"
+      style = "recommendation_letter"
+    elsif @studentForm.form_type_text == "studentship_letter" 
+      title = "Studentship Letter"
+    elsif @studentForm.form_type_text == "visa_recommendation_letter" 
+      title = "VISA Recommendation Certificate Letter"
+    end 
+        
+    
+    unless available_user_ids.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+      :recipient_ids => available_user_ids,
+      :subject=>"New "+title+" Submitted",
+      :rtype=>1000,
+      :rid=>@studentForm.id,
+      :body=>"New "+title+" Submitted from #{@current_user.guardian_entry.first_name}. Need your action" ))
+    end
+    
+    
   end
  
 end

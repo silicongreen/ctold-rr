@@ -1,0 +1,111 @@
+ <% if !@formData.empty? and @formData.count > 0 %>  
+      <% @formData.each do |a| %>
+        <% 
+        if a.form_type_text == "transfer_letter" 
+          title = "Transfer Certificate Letter"
+          style = "transfer_letter"
+        elsif a.form_type_text == "noc_letter" 
+          title = "No Objection Certificate Letter"
+          style = "noc_letter"
+        elsif a.form_type_text == "recommendation_letter" 
+          title = "Recommendation Certificate Letter"
+          style = "recommendation_letter"
+        elsif a.form_type_text == "studentship_letter" 
+          title = "Studentship Letter"
+          style = "studentship_letter"
+        elsif a.form_type_text == "visa_recommendation_letter" 
+          title = "VISA Recommendation Certificate Letter"
+          style = "visa_recommendation_letter"
+        end 
+        %>        
+       
+        <div class="row <%= style %>">
+            <div class="row_label">
+              <div><%= title %></div>
+            </div>
+            <div class="row_data">
+              <div>
+                <% result = a.form_data.split("|") %>
+
+                <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
+                <b>Class :</b> <%= result[1] %> <br />
+                <b>Date of Collection :</b> <%= result[2] %> <br />
+              </div>
+            </div> 
+            <div class="row_status"> 
+                <div>
+                  <% if a.status == 1 %>
+                    <span class="Pending">
+                        Pending
+                    </span>  
+                  <% end %>
+                  <% if a.status == 2 %>
+                    <span class="Pending">Processing</span>
+                  <% end %>
+                  <% if a.status == 3 %> 
+                    <span class="Ready">Ready</span>
+                  <% end %>
+                  <% if a.status == 22 %>
+                    <span class="rejected">Rejected</span>
+                  <% end %>
+                </div>
+            </div>
+            <div class="row_action">
+              <div>
+                <% if a.status == 1 %>
+                  <span class="apply_tag">
+                      <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                  </span>  
+                <% end %>
+                
+                <% if a.status == 2 %>                  
+                <span class="Processing">
+                  <%= link_to "Complete Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3,:page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                </span>
+                <% end %>
+                <% if a.status == 3 %> 
+                  
+                <% end %>
+                
+                <% if a.status == 22 %>
+                
+                <% elsif a.status == 3 %>
+                
+                <% else %>
+                <span class="Denied">
+                  <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                </span>
+                <% end %>
+                <% if a.status != 22 %>
+                  <span class="generate_pdf">
+                  <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
+                  </span>
+                  <% if !a.generated_form.nil? %>
+                    <span class="generate_pdf">
+                    <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
+                    </span>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+        </div>
+      <% end %>
+  <% posted_params = params %>
+  <% posted_params.delete(:page) %>
+  <% posted_params.delete(:authenticity_token) %>
+  <% posted_params.delete(:controller) %>
+  <% posted_params.delete(:action) %>
+  <% @url_params = "" %>
+  <% posted_params.each{|k,v| @url_params = @url_params.to_s+k.to_s+"="+v.to_s+"&"}  %>
+
+  <%= will_paginate @formData, :renderer => 'RemoteLinkRenderer', :remote=>{:update=>'data-div'},:params =>params %>
+
+<% else %>
+<div class="row" style="padding: 20px;">
+    No Form Found
+</div>
+
+<% end %>
+
+
+

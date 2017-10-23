@@ -32,17 +32,24 @@
     
     <div class="row">
       <div class="row_label">Class</div>
-      <div class="row_data"><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
-                    <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
-                    <% unless  @student.batch.course.section_name.empty? %>                      
-                      <%= ", " %>
-                      <%= t('profile_section_label') %>         
-                      <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string+" " + t('profile_section_label')+" " + @student.batch.course.section_name %>
-                    <% end %>
-          <input type="hidden" id="student_class" value="<%= class_string %>">
+      <div class="row_data"><%= @student.batch.full_name %>          
+         <% unless @student.batch.course.section_name.blank?   %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>, Section : <%= @student.batch.course.section_name %>">
+          <% else %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>">
+          <% end %>
       </div>
-    </div>
+    </div> 
+    
+    <%  if @student.gender == 'f' %>
+         <input type="hidden" id="student_gender1" value="she">
+         <input type="hidden" id="student_gender2" value="her">
+         <input type="hidden" id="student_gender3" value="girl">
+      <%  elsif @student.gender == 'm' %>
+          <input type="hidden" id="student_gender1" value="he">
+         <input type="hidden" id="student_gender2" value="his">
+         <input type="hidden" id="student_gender3" value="boy">
+      <% end %>
     <div class="row">
       <div class="row_label"><%= t('admission_date') %></div>
       <div class="row_data">
@@ -83,7 +90,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/recommendation_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#st_achivement').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#st_achivement').val()+"|"+jj('#student_gender1').val()+"|"+jj('#student_gender2').val()+"|"+jj('#student_gender3').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2'); location.reload();}
       }); 
     }); 
 </script>

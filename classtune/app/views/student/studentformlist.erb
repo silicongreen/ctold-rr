@@ -1,3 +1,4 @@
+<% if params[:authenticity_token].nil? %>
 <div class="header-wrapper">
     <div class="header-title" style="width:100%;">
         <div class="header-icon" style="width:10%;">
@@ -19,113 +20,87 @@
     <div class="clearfix"></div>
       
 </div>
+<div id="page-yield" class="bg-disable">
+  <div id="guardian_detail" class="row_wrapper" style="padding: 20px 0px;">
+<% @batches = [] %>
+<% if @current_user.admin? %>
+  <% @batches = Batch.active %>
+<% elsif @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1 %>
+    <%  @batches = @current_user.employee_record.batches %>
+<% end %>
+<%= select :form_data, :batch_id,
+      options_for_select(@batches.map {|b| [b.full_name, b.id] },@batch_id),
+      {:prompt => "Select a Class"},
+      {:onchange => "#{remote_function(
+      :url => { :action => 'studentformlist' },
+      :update => 'data-div',
+      :with => "'batch_id='+value+'&status_id='+$('form_data_status').value+'&form_type='+$('form_data_form_type').value+'&authenticity_token=filter'",
+      :before => "Element.show('loader')",
+      :success => "Element.hide('loader')"  )}"} 
+ %>
 
+&nbsp;&nbsp;&nbsp;&nbsp;
+<%= select :form_data, :status, 
+        options_for_select([["Pending", "1"],["Processing", "2"], ["Ready", "3"], ["Rejected", "22"]],@status_id),
+        {:prompt => "Select Status"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'studentformlist' },
+                  :update => 'data-div',
+                  :with => "'status_id='+value+'&batch_id='+$('form_data_batch_id').value+'&form_type='+$('form_data_form_type').value+'&authenticity_token=filter'",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} %>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<%= select :form_data, :form_type, 
+        options_for_select([["Transfer Certificate Letter", "transfer_letter"],["No Objection Certificate Letter", "noc_letter"], ["Recommendation Certificate Letter", "recommendation_letter"], ["Studentship Letter", "studentship_letter"], ["VISA Recommendation Certificate Letter", "visa_recommendation_letter"]],@form_type),
+        {:prompt => "Form Type"},
+                  {:onchange => "#{remote_function(
+                  :url => { :action => 'studentformlist' },
+                  :update => 'data-div',
+                  :with => "'form_type='+value+'&batch_id='+$('form_data_batch_id').value+'&status_id='+$('form_data_status').value+'&authenticity_token=filter'",
+                  :before => "Element.show('loader')",
+                  :success => "Element.hide('loader')"  )}"} %>
+    
+<%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+  </div>
+</div>    
 <div id="page-yield" class="bg-disable">
   <div id="guardian_detail" class="row_wrapper">
     <div class="row">
         <div class="guardian_header_txt">List</div>
     </div>
     <div class="clearfix"></div>
-    
-    <% if !@formData.empty? and @formData.count > 0 %>  
-      <% @formData.each do |a| %>
-        <% 
-        if a.form_type_text == "transfer_letter" 
-          title = "Transfer Certificate Letter"
-          style = "transfer_letter"
-        elsif a.form_type_text == "noc_letter" 
-          title = "No Objection Certificate Letter"
-          style = "noc_letter"
-        elsif a.form_type_text == "recommendation_letter" 
-          title = "Recommendation Certificate Letter"
-          style = "recommendation_letter"
-        elsif a.form_type_text == "studentship_letter" 
-          title = "Studentship Letter"
-          style = "studentship_letter"
-        elsif a.form_type_text == "visa_recommendation_letter" 
-          title = "VISA Recommendation Certificate Letter"
-          style = "visa_recommendation_letter"
-        end 
-        %>        
-       
-        <div class="row <%= style %>">
-            <div class="row_label">
-              <div><%= title %></div>
-            </div>
-            <div class="row_data">
-              <div>
-                <% result = a.form_data.split("|") %>
-
-                <b>Student Name :</b> <%= link_to result[0], { :controller=>"student",:action => 'profile', :id => a.student_id},:target => "blank" %> <br />
-                <b>Class :</b> <%= result[1] %> <br />
-                <b>Date of Collection :</b> <%= result[2] %> <br />
-              </div>
-            </div> 
-            <div class="row_status"> 
-                <div>
-                  <% if a.status == 1 %>
-                    <span class="Pending">
-                        Pending
-                    </span>  
-                  <% end %>
-                  <% if a.status == 2 %>
-                    <span class="Pending">Processing</span>
-                  <% end %>
-                  <% if a.status == 3 %> 
-                    <span class="Ready">Ready</span>
-                  <% end %>
-                  <% if a.status == 22 %>
-                    <span class="rejected">Rejected</span>
-                  <% end %>
-                </div>
-            </div>
-            <div class="row_action">
-              <div>
-                <% if a.status == 1 %>
-                  <span class="apply_tag">
-                      <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                  </span>  
-                <% end %>
-                
-                <% if a.status == 2 %>                  
-                <span class="Processing">
-                  <%= link_to "Processing Complete ", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                </span>
-                <% end %>
-                <% if a.status == 3 %> 
-                  
-                <% end %>
-                
-                <% if a.status == 22 %>
-                
-                <% elsif a.status == 3 %>
-                
-                <% else %>
-                <span class="Denied">
-                  <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                </span>
-                <% end %>
-                <% if a.status != 22 %>
-                  <span class="generate_pdf">
-                  <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
-                  </span>
-                  <% if !a.generated_form.nil? %>
-                    <span class="generate_pdf">
-                    <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "blank" %>
-                    </span>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-        </div>
-      <% end %>
     <% end %>
+    
+    <div id="data-div">
+      <%= render :partial => 'studentformlist' %>
+    </div>
+   <% if params[:authenticity_token].nil? %> 
     
   </div>
 </div>
-
+<%= stylesheet_link_tag 'pagination_and_table' %>
 <%= stylesheet_link_tag 'tadded-header' %>
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
+<% end %>
+
+<style>
+  .row_wrapper
+  {
+     padding:20px 0px;
+     
+  }
+  .row_wrapper select
+  {
+     margin-left: 30px;
+     height: 30px;
+     min-width: 150px;
+  }
+    
+</style>
 

@@ -53,7 +53,7 @@
 
       <div class="label-field-pair">
         <label for="parent_detail_relation"><%= t('relation') %> <span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= s.text_field :relation, :value => g_students.relation %></div>
+        <div class="text-input-bg"><%= s.text_field :relation, :value => @parent.relation %></div>
       </div>
       <% unless @parent.dob.nil? %>
         <div class="label-field-pair">

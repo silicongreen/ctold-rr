@@ -126,7 +126,7 @@
                   </span>
                   <span class="close_tag">
                     <% if close_transfer == 1 %>                  
-                        <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => a.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete"  %>
+                        <%= link_to "Cancel", { :controller=>"student",:action => 'close_letter',:aid => a.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete"  %>
                         
                     <% end %>
                   </span> 
@@ -184,7 +184,7 @@
                 </span>
                 <span class="close_tag">  
                   <% if close_noc == 1 %>                  
-                      <%= link_to "Close", {:action => 'close_letter',:aid => b.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                      <%= link_to "Cancel", {:action => 'close_letter',:aid => b.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                       
                   <% end %>
                 </span>  </div>
@@ -243,7 +243,7 @@
                   </span>
                   <span class="close_tag">
                     <% if close_recommendation == 1 %>                  
-                        <%= link_to "Close", { :action => 'close_letter', :aid => c.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                        <%= link_to "Cancel", { :action => 'close_letter', :aid => c.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                         
                     <% end %>
                   </span>
@@ -301,7 +301,7 @@
                 </span> 
                 <span class="close_tag">
                   <% if close_studentship == 1 %>                  
-                      <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => d.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                      <%= link_to "Cancel", { :controller=>"student",:action => 'close_letter',:aid => d.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                   <% end %>
                 </span> </div>
             </div>
@@ -355,7 +355,7 @@
                 </span> 
                 <span class="close_tag">
                     <% if close_visa_recommendation == 1 %>                  
-                        <%= link_to "Close", { :controller=>"student",:action => 'close_letter',:aid => e.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                        <%= link_to "Cancel", { :controller=>"student",:action => 'close_letter',:aid => e.id, :id => @student.id},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                     <% end %>
                 </span> </div>
             </div>

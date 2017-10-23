@@ -19,7 +19,6 @@
     <div class="clearfix"></div>
       
 </div>
-<%= debug  @student %>
 <% if !@formData.nil? %>  
 
   <%
@@ -46,29 +45,29 @@
       title = "Transfer Certificate Letter"
       style = "transfer_letter"
       
+ 
+      
+      
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]]       
-      arStudentData << ["Admission Date", result[4]] 
-      arStudentData << ["Date of Birth", result[3]] 
-      arStudentData << ["End Date", result[5]]   
-      arStudentData << ["Request Date of Collection", result[2]] 
+      arStudentData << ["Admission Date", result[4].to_date.strftime("%d-%m-%Y").to_s] 
+      arStudentData << ["Date of Birth", result[3].to_date.strftime("%d-%m-%Y").to_s] 
+      arStudentData << ["End Date", result[5].to_date.strftime("%d-%m-%Y").to_s]   
+      arStudentData << ["Request Date of Collection", result[2].to_date.strftime("%d-%m-%Y").to_s] 
       
       
       formContent = formContent.gsub("{Student_name}", result[0])
       formContent = formContent.gsub("{Class_title}", result[1])
-      #formContent = formContent.gsub("{Section_title}", result[1])
+      formContent = formContent.gsub("{PLAYGROUP}", result[1])
       formContent = formContent.gsub("{School_name}", @schoolData.name)
-      formContent = formContent.gsub("{Admission_date}", result[4])
-      formContent = formContent.gsub("{Date_of_birth}", result[3])
-      formContent = formContent.gsub("{Academic_duration}", DateTime.parse(result[5].to_s) - DateTime.parse(result[4].to_s) )
-        
-      if @student.gender == 'f'
-        formContent = formContent.gsub("{he/she}", "she")
-        formContent = formContent.gsub("{his/her}", "her")
-      elsif @student.gender == 'm'
-        formContent = formContent.gsub("{he/she}", "he")
-        formContent = formContent.gsub("{his/her}", "his")
-      end
+      formContent = formContent.gsub("{Admission_date}", result[4].to_date.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{Date_of_birth}", result[3].to_date.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{DOB}", result[3].to_date.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{Academic_duration}", result[4].to_date.strftime("%d-%m-%Y").to_s+" - "+result[5].to_date.strftime("%d-%m-%Y").to_s)
+     
+      formContent = formContent.gsub("{he/she}", result[6])
+      formContent = formContent.gsub("{his/her}", result[7])
+   
       
     elsif @formData.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
@@ -77,41 +76,80 @@
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]]       
       arStudentData << ["Reason", result[3]] 
-      arStudentData << ["Start Date", result[4]] 
-      arStudentData << ["End Date", result[5]] 
-      arStudentData << ["Request Date of Collection", result[2]] 
+      arStudentData << ["Start Date", result[4].to_date.strftime("%d-%m-%Y").to_s] 
+      arStudentData << ["End Date", result[5].to_date.strftime("%d-%m-%Y").to_s] 
+      arStudentData << ["Request Date of Collection", result[2].to_date.strftime("%d-%m-%Y").to_s] 
+      
+      formContent = formContent.gsub("{student_name}", result[0])
+      formContent = formContent.gsub("{class_title}", result[1])
+      formContent = formContent.gsub("{school_name}", MultiSchool.current_school.name)
+      formContent = formContent.gsub("{startdate}", result[4].to_date.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{enddate}", result[5].to_date.strftime("%d-%m-%Y").to_s)
     elsif @formData.form_type_text == "recommendation_letter" 
       title = "Recommendation Certificate Letter"
       style = "recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Admission Date", result[3].to_date.strftime("%d-%m-%Y").to_s] 
       arStudentData << ["Achievements Hints", result[4]] 
-      arStudentData << ["Request Date of Collection", result[2]] 
+      arStudentData << ["Request Date of Collection", result[2].to_date.strftime("%d-%m-%Y").to_s] 
+      
+      formContent = formContent.gsub("his/here", "his/her")
+      
+      formContent = formContent.gsub("{current_date}", Date.today.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{admissoin_date}", result[3].to_date.strftime("%d-%m-%Y").to_s)
+      formContent = formContent.gsub("{Student_name}", result[0])
+      formContent = formContent.gsub("he/she", result[5])
+      formContent = formContent.gsub("He/She", result[5])
+      formContent = formContent.gsub("His/Her", result[6])
+      formContent = formContent.gsub("his/her", result[6])
+      formContent = formContent.gsub("girl/boy", result[7])
     elsif @formData.form_type_text == "studentship_letter" 
       title = "Studentship Letter"
       style = "studentship_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Admission Date", result[3].to_date.strftime("%d-%m-%Y").to_s] 
       arStudentData << ["Father Name", result[4]] 
       arStudentData << ["Mother Name", result[5]] 
+      formContent = formContent.gsub("{Student_name}", result[0])
+      formContent = formContent.gsub("{school_name}", MultiSchool.current_school.name)
+      formContent = formContent.gsub("{Class_title}", result[1])
+      formContent = formContent.gsub(", {Section_title}", "")
+      formContent = formContent.gsub("{Father_name}", result[4])
+      formContent = formContent.gsub("{Mother_name}", result[5])
+      formContent = formContent.gsub("requeired", "required")
+      formContent = formContent.gsub("studing", "studying")
       arStudentData << ["Request Date of Collection", result[2]] 
+      
     elsif @formData.form_type_text == "visa_recommendation_letter" 
       title = "VISA Recommendation Certificate Letter"
       style = "visa_recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 
       arStudentData << ["Class", result[1]] 
-      arStudentData << ["Admission Date", result[3]] 
+      arStudentData << ["Admission Date", result[3].to_date.strftime("%d-%m-%Y").to_s] 
       arStudentData << ["Father Name", result[4]] 
       arStudentData << ["Mother Name", result[5]] 
-      arStudentData << ["Date of Birth", result[6]] 
+      arStudentData << ["Date of Birth", result[6].to_date.strftime("%d-%m-%Y").to_s] 
       arStudentData << ["Passport No", result[7]] 
       arStudentData << ["Head To Embassy", result[8].gsub(/\n/, '<br/>')] 
       arStudentData << ["Request Date of Collection", result[2]] 
+      
+    formContent = formContent.gsub("{Student_name}", result[0])
+    formContent = formContent.gsub("{school_name}", MultiSchool.current_school.name)
+    formContent = formContent.gsub("{Class_title}", result[1])
+    formContent = formContent.gsub(", {Section_title}", "")
+    formContent = formContent.gsub("{Father_name}", result[4])
+    formContent = formContent.gsub("{Mother_name}", result[5])
+    formContent = formContent.gsub("{passport_no}", result[7])
+    formContent = formContent.gsub("{dbo}", result[6])
+    formContent = formContent.gsub("son/daughter", result[9])
+    formContent = formContent.gsub("requeired", "required")
+    formContent = formContent.gsub("studing", "studying")
+    formHead = result[8]
     end 
   %>
   

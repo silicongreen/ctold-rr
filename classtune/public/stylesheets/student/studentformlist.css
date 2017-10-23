@@ -91,17 +91,20 @@
     
     float: left;
     width: 25%;
+    min-height: 120px;
 }
-.row_data {
+.row_wrapper .row .row_data {
     float: left;
     width: 30%;
     border-right: 1px solid #DFE1E2;
     border-left: 1px solid #DFE1E2;
+    min-height: 120px;
 }
 .row_status {
     float: left;
     width: 20%;
     border-right: 1px solid #DFE1E2; 
+    min-height: 120px;
 }
 .row_action {
     float: right;

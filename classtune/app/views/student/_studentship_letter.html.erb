@@ -32,17 +32,14 @@
     
     <div class="row">
       <div class="row_label">Class</div>
-      <div class="row_data"><%= @student.batch.name %>&nbsp;<%= @student.batch.course.course_name %>&nbsp;
-                    <%  class_string = @student.batch.name+" "+@student.batch.course.course_name %>
-                    <% unless  @student.batch.course.section_name.empty? %>                      
-                      <%= ", " %>
-                      <%= t('profile_section_label') %>         
-                      <%= @student.batch.course.section_name %>
-                      <%  class_string = class_string + t('profile_section_label')+" " +  @student.batch.course.section_name %>
-                    <% end %>
-          <input type="hidden" id="student_class" value="<%= class_string %>">
+      <div class="row_data"><%= @student.batch.full_name %>          
+          <% unless @student.batch.course.section_name.blank?   %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>, Section : <%= @student.batch.course.section_name %>">
+          <% else %>
+              <input type="hidden" id="student_class" value="Class : <%= @student.batch.course.course_name %>">
+          <% end %>
       </div>
-    </div>
+    </div> 
     <div class="row">
       <div class="row_label"><%= t('admission_date') %></div>
       <div class="row_data">
@@ -85,7 +82,7 @@
       Element.show('loader2')
       new Ajax.Request('/student/studentship_letter_update',
       {asynchronous:true, evalScripts:true,
-        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2')}
+        parameters:'letter_data='+jj('#student_name').val()+"|"+jj('#student_class').val()+"|"+jj('#request_date').val()+"|"+jj('#admission_date').val()+"|"+jj('#father').val()+"|"+jj('#mother').val()+'&id=<%= @student.id %>',onSuccess:function(request){Element.hide('loader2'); location.reload();}
       }); 
     }); 
 </script>

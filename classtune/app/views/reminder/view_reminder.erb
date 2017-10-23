@@ -98,6 +98,18 @@
               <%= link_to "View", :controller=>"meetings", :action=>"show_forwarded",:id=>@new_reminder.rid %>
           <% end %>
       
+          <% if @new_reminder.rtype==1000 and @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1 %>
+              <%= link_to "View Applications", :controller=>"student", :action=>"studentformlist" %>
+          <% end %>
+      
+          <% if @new_reminder.rtype==1000 and @current_user.parent? %>
+              <%= link_to "View Applications", :controller=>"student", :action=>"form_to_apply", :id=>@new_reminder.student_id %>
+          <% end %>
+      
+          <% if @new_reminder.rtype==1 %>
+              <%= link_to "#{t('view_event_reminder')}", :controller=>"event", :action=>"event_details",:id=>@new_reminder.rid %>
+          <% end %>
+      
           <% if @new_reminder.rtype==15 %>
               <%= link_to "Online Exam", :controller=>"online_student_exam" %>
           <% end %>

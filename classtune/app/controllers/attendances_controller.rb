@@ -45,26 +45,118 @@ class AttendancesController < ApplicationController
     render :partial=>"subject_report"
   end
   
+#  def subjects2
+#    @subjects = []
+#    if params[:batch_id].present?
+#      @batch = Batch.find(params[:batch_id])
+#      @subjects = @batch.subjects
+#      if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+#        employee = @current_user.employee_record
+#        if @batch.employee_id.to_i == employee.id
+#          @subjects= @batch.subjects
+#        else
+#          subjects = Subject.find(:all,:joins=>"INNER JOIN employees_subjects ON employees_subjects.subject_id = subjects.id AND employee_id = #{employee.try(:id)} AND batch_id = #{@batch.id} ")
+#          swapped_subjects = Subject.find(:all, :joins => :timetable_swaps, :conditions => ["subjects.batch_id = ? AND timetable_swaps.employee_id = ?",params[:batch_id],employee.try(:id)])
+#          @subjects = (subjects + swapped_subjects).compact.flatten.uniq
+#        end
+#      end 
+#    end
+#    render(:update) do |page|
+#      page.replace_html 'subjects', :partial=> 'subjects2'
+#    end
+#  end
+  
   def subjects2
     @subjects = []
     if params[:batch_id].present?
       @batch = Batch.find(params[:batch_id])
-      @subjects = @batch.subjects
-      if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
-        employee = @current_user.employee_record
-        if @batch.employee_id.to_i == employee.id
-          @subjects= @batch.subjects
-        else
-          subjects = Subject.find(:all,:joins=>"INNER JOIN employees_subjects ON employees_subjects.subject_id = subjects.id AND employee_id = #{employee.try(:id)} AND batch_id = #{@batch.id} ")
-          swapped_subjects = Subject.find(:all, :joins => :timetable_swaps, :conditions => ["subjects.batch_id = ? AND timetable_swaps.employee_id = ?",params[:batch_id],employee.try(:id)])
-          @subjects = (subjects + swapped_subjects).compact.flatten.uniq
+      @class_timing_id = []
+      unless @batch.class_timing_set.blank?
+        @class_timings = @batch.class_timing_set.class_timings
+        unless @class_timings.blank?
+          @class_timing_id = @class_timings.map(&:id)
         end
-      end 
+      end
+      
+      @subjects = @batch.subjects
+      @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+      
+      @weekday_id = @date_to_use.strftime("%w")
+      unless @current_timetable.blank?
+        @subjects = []
+        if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+          @employee = @current_user.employee_record
+          @employee_subjects = @employee.subjects
+          subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+          electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+          elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+          @entries=[]
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:employee_id => @employee.id,:class_timing_id=>@class_timing_id})
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:class_timing_id=>@class_timing_id})
+          unless @entries.blank?
+            @entries.each do |te|
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
+              unless @timetable_subject.blank?
+                if @timetable_subject.elective_group_id.present?
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  unless @all_sub_elective.blank?
+                    @all_sub_elective.each do |esub|
+                      if @employee_subjects.include?(esub) and !@subjects.include?(esub)
+                        @subjects << esub
+                      end  
+                    end
+                    
+                  end
+                else
+                  unless @subjects.include?(@timetable_subject)
+                    @subjects << @timetable_subject
+                  end
+                end
+              end
+            end
+          end
+            
+
+        else
+          @entries=[]
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:class_timing_id=>@class_timing_id})
+          
+         
+          unless @entries.blank?
+            @entries.each do |te|
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
+              unless @timetable_subject.blank?
+                if @timetable_subject.elective_group_id.present?
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  unless @all_sub_elective.blank?
+                    @all_sub_elective.each do |esub|
+                      unless @subjects.include?(esub)
+                        @subjects << esub
+                      end
+                    end
+                  end
+                else
+                  unless @subjects.include?(@timetable_subject)
+                    @subjects << @timetable_subject  
+                  end 
+                end
+              end
+            end
+          end
+
+         end
+        
+          
+      end  
+        
     end
-    render(:update) do |page|
-      page.replace_html 'subjects', :partial=> 'subjects2'
-    end
+   
+  render(:update) do |page|
+    page.replace_html 'subjects', :partial=> 'subjects2'
   end
+end
+  
+  
   
   def get_subject_report_pdf
     unless params[:subject_id].nil?

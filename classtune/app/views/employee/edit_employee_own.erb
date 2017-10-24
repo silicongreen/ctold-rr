@@ -51,9 +51,10 @@
       <hr class="label-underline"></hr>
 
       <div class="label-field-pair">
-        <label for="employee_qualification"><%= t('qualification') %></label>
-        <div class="text-input-bg"><%= a.text_field :qualification, :value => @employee.qualification %></div>
+        <label for="employee_job_title"><%= t('job_title') %></label>
+        <div class="text-input-bg"><%= a.text_field :job_title, :value => @employee.job_title %></div>
       </div>
+     
       <hr class="label-underline"></hr>
       <div class="label-field-pair-text-area">
         <label for="employee_experience"><%= t('exp_info') %></label>
@@ -65,10 +66,21 @@
         <div class="text-input-bg"><%= select :employee, :experience_year, (0..50),{:prompt=>"#{t('year')}"} %>
           <%= select :employee, :experience_month, (0..11),{:prompt=>"#{t('month')}"} %></div>
       </div>
-      
+      <hr class="label-underline"></hr>
+
+      <div class="label_field_pair">
+        <label class="label_for_employee_gender" for="master_student_gender"><%= t('gender') %></label>
+        <div class="employee_gender_value">
+          <label class="label_for_gender" for="master_student_gender_true"><%= t('male') %></label>
+          <%= a.radio_button  "gender", "m" %>
+
+          <label class="label_for_gender" for="master_student_gender_false"><%= t('female') %></label>
+          <%= a.radio_button  "gender", "f" %>
+        </div>
+      </div>
       
       <hr class="label-underline"></hr>
-      <span class="span-sub-heading"><%= t('present_address') %></span>
+      <span class="span-sub-heading"><%= t('home_address') %></span>
       <hr class="sub-heading"></hr>
           <div class="label-field-pair">
             <label><%= t('line_1') %></label>
@@ -106,7 +118,7 @@
             <div class="extender"></div>
           </div>
       <br/>
-      <span class="span-sub-heading"><%= t('permanent_address') %></span>
+      <span class="span-sub-heading"><%= t('office_address') %></span>
       <hr class="sub-heading"></hr>
           <div class="label-field-pair">
             <label><%= t('line_1') %></label>

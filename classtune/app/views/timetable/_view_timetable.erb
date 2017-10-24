@@ -62,17 +62,13 @@
       <%- @weekday.sort.each do |weekday| -%>
         <td class="td-blank"></td>
         <%- @class_timing.each do |ct| -%>
-          
           <td class="td">
             <div class="drop">
               <div class="tt-subject">
                 <% if  @timetable[weekday][ct.id].present? %>
-                  <% main_class_timming = @main_time_table_id[weekday][ct.id] %>
-                  <% main_timing = ClassTiming.find_by_id(main_class_timming) %>
                   <% unless  @timetable[weekday][ct.id].subject.elective_group.nil? %>
                     <div class="subject themed_text">
                       <span class="sub-line"><%= shorten_string(@timetable[weekday][ct.id].subject.elective_group.name.to_s,10) %></span>
-                      <span class="sub-line"><%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %></span>
                       <span class="themed_text">
                         <% @timetable[weekday][ct.id].subject.elective_group.subjects.active.each do |s| %>
                           <% @sub_emp = s.employees %>
@@ -96,9 +92,6 @@
                             <% end %>
                           <% end %>
                         <% end %>
-                        <div class="emp-name">
-                            <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
-                        </div>
                       </span>
                     </div>
                     <div class="employee">
@@ -109,7 +102,6 @@
                       <span class="sub-line">
                         <%= shorten_string(@timetable[weekday][ct.id].subject.code.to_s,10) %>
                       </span>
-                      <span class="sub-line"><%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %></span>
                       <span class="themed_text">
                         <%= @timetable[weekday][ct.id].subject.name %>
                         <div class="emp-name">
@@ -117,9 +109,6 @@
                            <%= @timetable[weekday][ct.id].employee.full_name unless @timetable[weekday][ct.id].employee.nil? %>
                         
                           
-                        </div>
-                        <div class="emp-name">
-                            <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
                         </div>
                       </span>
                     </div>
@@ -157,24 +146,3 @@
 
 <%= link_to " ► #{t('pdf_report')}",
   {:controller => "timetable", :action => "timetable_pdf", :course_id => @batch.id, :timetable_id=>@tt.id},:target => '_blank', :class=> 'user_button' %>
-
-<style>
-    td .name
-    {
-        background: #fff;
-        height: 53px;
-        text-align: center;
-        padding: 20px 10px 0 10px
-    }
-    .drop {
-        background: none repeat scroll 0 0 #FFFFFF;
-        height: 73px;
-        text-transform: uppercase;
-        width: 100%;
-    }
-    td .tt-subject .subject 
-    {
-      height: 46px;
-    }
-    
-</style>    

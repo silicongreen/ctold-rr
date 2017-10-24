@@ -32,8 +32,8 @@
           </tr>
         <% end %>
       </table>
-    </div> 
-   <div id="table-viewer" style="width:760px; overflow-x:auto;">
+    </div>
+    <div id="table-viewer" style="width:760px; overflow-x:auto;">
       <table id="timetable" cellspacing="1">
         <tr id="period-count" class="themed_text">
           <% @all_classtimings.each do |ct| -%>
@@ -103,17 +103,6 @@
                       <% end %>
                     <% end %>
                   <% end -%>
-                  <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
-                  <% else %>
-                  <% if !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
-                  <% main_class_timming = @main_time_table_id[weekday][ct.id] %>
-                 
-                  <% main_timing = ClassTiming.find_by_id(main_class_timming) %>
-                  <div class="sub_name">
-                     <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
-                  </div>
-                  <% end %>
-                  <% end %>
                 </div>
               </td>
             <% end -%>

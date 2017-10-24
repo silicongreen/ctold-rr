@@ -330,6 +330,7 @@ class TimetableController < ApplicationController
       @i = 0
       @new_class_timing = []
       @running_id = 0
+      @checking_max = 0
       @class_timing.each do |ct|
 
         if @prev_max.blank?
@@ -343,7 +344,7 @@ class TimetableController < ApplicationController
         end
 
 
-        if @prev_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
+        if @checking_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
           if ct.end_time.strftime("%H%M").to_i > @prev_max.to_i
             @prev_max = ct.end_time.strftime("%H%M")
             @prev_max_main = ct.end_time
@@ -363,6 +364,7 @@ class TimetableController < ApplicationController
             @prev_max_main = ct.end_time
             @prev_min_main = ct.start_time
           end
+          @checking_max = ct.start_time.strftime("%H%M").to_i
           @temp_timing = ct
           @running_id = ct.id
           @all_timing_id[ct.id]=[]
@@ -453,6 +455,7 @@ class TimetableController < ApplicationController
           @i = 0
           @new_class_timing = []
           @running_id = 0
+          @checking_max = 0
           @all_classtimings.each do |ct|
 
             if @prev_max.blank?
@@ -466,7 +469,7 @@ class TimetableController < ApplicationController
             end
 
 
-            if @prev_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
+            if @checking_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
               if ct.end_time.strftime("%H%M").to_i > @prev_max.to_i
                 @prev_max = ct.end_time.strftime("%H%M")
                 @prev_max_main = ct.end_time
@@ -486,6 +489,7 @@ class TimetableController < ApplicationController
                 @prev_max_main = ct.end_time
                 @prev_min_main = ct.start_time
               end
+              @checking_max = ct.start_time.strftime("%H%M").to_i
               @temp_timing = ct
               @running_id = ct.id
               @all_timing_id[ct.id]=[]
@@ -605,6 +609,7 @@ class TimetableController < ApplicationController
           @i = 0
           @new_class_timing = []
           @running_id = 0
+          @checking_max = 0
           @all_classtimings.each do |ct|
 
             if @prev_max.blank?
@@ -618,7 +623,7 @@ class TimetableController < ApplicationController
             end
 
 
-            if @prev_max.to_i != ct[0].start_time.strftime("%H%M").to_i and @i != 0
+            if @checking_max.to_i != ct[0].start_time.strftime("%H%M").to_i and @i != 0
               if ct[0].end_time.strftime("%H%M").to_i > @prev_max.to_i
                 @prev_max = ct[0].end_time.strftime("%H%M")
                 @prev_max_main = ct[0].end_time
@@ -638,6 +643,7 @@ class TimetableController < ApplicationController
                 @prev_max_main = ct[0].end_time
                 @prev_min_main = ct[0].start_time
               end
+              @checking_max = ct[0].end_time.strftime("%H%M").to_i
               @temp_timing = ct[0]
               @running_id = ct[0].id
               @all_timing_id[ct[0].id]=[]

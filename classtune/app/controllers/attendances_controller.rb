@@ -147,7 +147,8 @@ class AttendancesController < ApplicationController
          end
         
           
-      end  
+      end 
+      @subjects.sort! { |a, b|  a.name <=> b.name }
         
     end
    

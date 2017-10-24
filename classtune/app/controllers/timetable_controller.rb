@@ -364,7 +364,7 @@ class TimetableController < ApplicationController
             @prev_max_main = ct.end_time
             @prev_min_main = ct.start_time
           end
-          @checking_max = ct.start_time.strftime("%H%M").to_i
+          @checking_max = ct.end_time.strftime("%H%M").to_i
           @temp_timing = ct
           @running_id = ct.id
           @all_timing_id[ct.id]=[]
@@ -489,7 +489,7 @@ class TimetableController < ApplicationController
                 @prev_max_main = ct.end_time
                 @prev_min_main = ct.start_time
               end
-              @checking_max = ct.start_time.strftime("%H%M").to_i
+              @checking_max = ct.end_time.strftime("%H%M").to_i
               @temp_timing = ct
               @running_id = ct.id
               @all_timing_id[ct.id]=[]

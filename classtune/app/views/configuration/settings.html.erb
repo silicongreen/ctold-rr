@@ -248,6 +248,17 @@
           </div>
           
           <div class="label-field-pair">
+              <label for="view_small_routine"><%= "View Small Routine" %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:view_small_routine] == '1' %>
+                    <%= check_box :configuration, :view_small_routine, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :view_small_routine, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
               <label for="enable_news_comment_moderation"><%= t('enable_sibling') %></label>
               <div class="checkbox-input-bg">
                   <% if @config[:enable_sibling] == '1' %>

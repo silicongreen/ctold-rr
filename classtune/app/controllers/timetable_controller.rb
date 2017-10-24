@@ -321,9 +321,82 @@ class TimetableController < ApplicationController
     @class_timing = timetable_class_timing.nil? ? Array.new : timetable_class_timing.class_timing_set.class_timings.timetable_timings
     @timetable_entries=TimetableEntry.find(:all,:conditions=>{:batch_id=>@batch.id,:timetable_id=>@tt.id},:include=>[:subject,:employee])
     @timetable= Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
-    @timetable_entries.each do |tte|
-      @timetable[tte.weekday_id][tte.class_timing_id]=tte
-    end
+    
+    if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+      @main_time_table_id = Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
+      @temp_timing = {}
+      @all_timing_id = {}
+      @i = 0
+      @new_class_timing = []
+      @running_id = 0
+      @class_timing.each do |ct|
+
+        if @prev_max.blank?
+          @prev_max = ct.end_time.strftime("%H%M")
+          @prev_max_main = ct.end_time
+        end
+
+        if @prev_min.blank?
+          @prev_min = ct.start_time.strftime("%H%M")
+          @prev_min_main = ct.start_time
+        end
+
+
+        if @prev_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
+          if ct.end_time.strftime("%H%M").to_i > @prev_max.to_i
+            @prev_max = ct.end_time.strftime("%H%M")
+            @prev_max_main = ct.end_time
+          end
+          if ct.start_time.strftime("%H%M").to_i < @prev_min.to_i
+            @prev_min = ct.start_time.strftime("%H%M")
+            @prev_min_main = ct.start_time
+          end
+          @temp_timing.start_time = @prev_min_main
+          @temp_timing.end_time = @prev_max_main
+          @all_timing_id[@running_id] << ct.id
+        else
+          if @i != 0
+            @new_class_timing << @temp_timing
+            @prev_max = ct.end_time.strftime("%H%M")
+            @prev_min = ct.start_time.strftime("%H%M")
+            @prev_max_main = ct.end_time
+            @prev_min_main = ct.start_time
+          end
+          @temp_timing = ct
+          @running_id = ct.id
+          @all_timing_id[ct.id]=[]
+        end
+        j = @i+1
+        if j == @class_timing.size
+          @new_class_timing << @temp_timing
+        end
+
+        @i = @i+1
+      end
+      @class_timing = @new_class_timing
+   
+      @timetable_entries.each do |tte|
+        if !@all_timing_id.blank? and !@all_timing_id[tte.class_timing_id].blank?
+          @timetable[tte.weekday_id][tte.class_timing_id]=tte
+          @main_time_table_id[tte.weekday_id][tte.class_timing_id]=tte.class_timing_id
+        else
+          new_ct = tte.class_timing_id
+          if !@all_timing_id.blank?
+            @all_timing_id.each do |k,at|
+                if at.include?(tte.class_timing_id)
+                  new_ct = k
+                end
+            end
+          end
+          @timetable[tte.weekday_id][new_ct]=tte
+          @main_time_table_id[tte.weekday_id][new_ct]=tte.class_timing_id
+        end  
+      end
+    else
+      @timetable_entries.each do |tte|
+        @timetable[tte.weekday_id][tte.class_timing_id]=tte
+      end
+    end  
 
     render :update do |page|
       page.replace_html "timetable_view", :partial => "view_timetable"
@@ -356,6 +429,7 @@ class TimetableController < ApplicationController
       unless @current.nil?
         @electives=@employee.subjects.group_by(&:elective_group_id)
         @timetable_entries = Hash.new { |l, k| l[k] = Hash.new(&l.default_proc) }
+        
         @employee_subjects = @employee.subjects
         subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
         electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
@@ -369,9 +443,85 @@ class TimetableController < ApplicationController
         @all_weekdays = @all_timetable_entries.collect(&:weekday_id).uniq.sort
         @all_classtimings = @all_timetable_entries.collect(&:class_timing).uniq.sort!{|a,b| a.start_time <=> b.start_time}
         @all_teachers = @all_timetable_entries.collect(&:employee).uniq
-        @all_timetable_entries.each_with_index do |tt , i|
-          @timetable_entries[tt.weekday_id][tt.class_timing_id][i] = tt
-        end
+        
+        if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+          @main_time_table_id = Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
+          @temp_timing = {}
+          @all_timing_id = {}
+          @i = 0
+          @new_class_timing = []
+          @running_id = 0
+          @all_classtimings.each do |ct|
+
+            if @prev_max.blank?
+              @prev_max = ct.end_time.strftime("%H%M")
+              @prev_max_main = ct.end_time
+            end
+
+            if @prev_min.blank?
+              @prev_min = ct.start_time.strftime("%H%M")
+              @prev_min_main = ct.start_time
+            end
+
+
+            if @prev_max.to_i != ct.start_time.strftime("%H%M").to_i and @i != 0
+              if ct.end_time.strftime("%H%M").to_i > @prev_max.to_i
+                @prev_max = ct.end_time.strftime("%H%M")
+                @prev_max_main = ct.end_time
+              end
+              if ct.start_time.strftime("%H%M").to_i < @prev_min.to_i
+                @prev_min = ct.start_time.strftime("%H%M")
+                @prev_min_main = ct.start_time
+              end
+              @temp_timing.start_time = @prev_min_main
+              @temp_timing.end_time = @prev_max_main
+              @all_timing_id[@running_id] << ct.id
+            else
+              if @i != 0
+                @new_class_timing << @temp_timing
+                @prev_max = ct.end_time.strftime("%H%M")
+                @prev_min = ct.start_time.strftime("%H%M")
+                @prev_max_main = ct.end_time
+                @prev_min_main = ct.start_time
+              end
+              @temp_timing = ct
+              @running_id = ct.id
+              @all_timing_id[ct.id]=[]
+            end
+            j = @i+1
+            if j == @all_classtimings.size
+              @new_class_timing << @temp_timing
+            end
+
+            @i = @i+1
+          end
+          @all_classtimings = @new_class_timing
+
+
+          @all_timetable_entries.each do |tte, i|
+            if !@all_timing_id.blank? and !@all_timing_id[tte.class_timing_id].blank?
+              @timetable_entries[tte.weekday_id][tte.class_timing_id][i]=tte
+              @main_time_table_id[tte.weekday_id][tte.class_timing_id]=tte.class_timing_id
+            else
+              new_ct = tte.class_timing_id
+              if !@all_timing_id.blank?
+                @all_timing_id.each do |k,at|
+                    if at.include?(tte.class_timing_id)
+                      new_ct = k
+                    end
+                end
+              end
+              @timetable_entries[tte.weekday_id][new_ct][i]=tte
+              @main_time_table_id[tte.weekday_id][new_ct]=tte.class_timing_id
+            end  
+          end
+        else
+          @all_timetable_entries.each_with_index do |tt , i|
+            @timetable_entries[tt.weekday_id][tt.class_timing_id][i] = tt
+          end
+        end   
+        
+      
       else
         flash[:notice]=t('no_entries_found')
       end
@@ -428,6 +578,7 @@ class TimetableController < ApplicationController
       @timetables=Timetable.find timetable_ids      
       @current=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ? and id IN (?)",@local_tzone_time.to_date,@local_tzone_time.to_date,timetable_ids])
       @timetable_entries = Hash.new { |l, k| l[k] = Hash.new(&l.default_proc) }
+      @main_time_table_id = Hash.new { |l, k| l[k] = Hash.new(&l.default_proc) }
       
       unless @current.nil?
         @class_timings = TimeTableClassTiming.find_by_batch_id_and_timetable_id(@batch.try(:id),@current.try(:id)).try(:class_timing_set).class_timings.map(&:id)
@@ -443,16 +594,90 @@ class TimetableController < ApplicationController
           @class_timings_data = ClassTiming.find(:all,:conditions=>["id	= ?",ct.id])
           @all_classtimings << @class_timings_data
         end
-        
-#        @class_timings.each do |ct|
-#          @class_timings_data = ClassTiming.find(:all,:conditions=>["id	= ?",ct])
-#          @all_classtimings << @class_timings_data
-#        end        
-        
         @all_teachers = @all_timetable_entries.collect(&:employee).uniq
-        @all_timetable_entries.each do |tt|
-          @timetable_entries[tt.weekday_id][tt.class_timing_id] = tt
-        end
+        if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+          @temp_timing = {}
+          @all_timing_id = {}
+          @i = 0
+          @new_class_timing = []
+          @running_id = 0
+          @all_classtimings.each do |ct|
+
+            if @prev_max.blank?
+              @prev_max = ct[0].end_time.strftime("%H%M")
+              @prev_max_main = ct[0].end_time
+            end
+
+            if @prev_min.blank?
+              @prev_min = ct[0].start_time.strftime("%H%M")
+              @prev_min_main = ct[0].start_time
+            end
+
+
+            if @prev_max.to_i != ct[0].start_time.strftime("%H%M").to_i and @i != 0
+              if ct[0].end_time.strftime("%H%M").to_i > @prev_max.to_i
+                @prev_max = ct[0].end_time.strftime("%H%M")
+                @prev_max_main = ct[0].end_time
+              end
+              if ct[0].start_time.strftime("%H%M").to_i < @prev_min.to_i
+                @prev_min = ct[0].start_time.strftime("%H%M")
+                @prev_min_main = ct[0].start_time
+              end
+              @temp_timing.start_time = @prev_min_main
+              @temp_timing.end_time = @prev_max_main
+              @all_timing_id[@running_id] << ct[0].id
+            else 
+              if @i != 0
+                @new_class_timing << @temp_timing
+                @prev_max = ct[0].end_time.strftime("%H%M")
+                @prev_min = ct[0].start_time.strftime("%H%M")
+                @prev_max_main = ct[0].end_time
+                @prev_min_main = ct[0].start_time
+              end
+              @temp_timing = ct[0]
+              @running_id = ct[0].id
+              @all_timing_id[ct[0].id]=[]
+            end
+
+            j = @i+1
+            if j == @all_classtimings.size
+              @new_class_timing << @temp_timing
+            end
+
+
+            @i = @i+1
+          end
+
+
+
+
+          @all_classtimings = @new_class_timing
+
+
+
+          
+          @all_timetable_entries.each do |tte|
+             if !@all_timing_id.blank? and !@all_timing_id[tte.class_timing_id].blank?
+              @timetable_entries[tte.weekday_id][tte.class_timing_id]=tte
+              @main_time_table_id[tte.weekday_id][tte.class_timing_id]=tte.class_timing_id
+            else
+              new_ct = tte.class_timing_id
+              if !@all_timing_id.blank?
+                @all_timing_id.each do |k,at|
+                    if at.include?(tte.class_timing_id)
+                      new_ct = k
+                    end
+                end
+              end
+              @timetable_entries[tte.weekday_id][new_ct]=tte
+              @main_time_table_id[tte.weekday_id][new_ct]=tte.class_timing_id
+            end 
+          end
+        else
+          @all_timetable_entries.each do |tt|
+            @timetable_entries[tt.weekday_id][tt.class_timing_id] = tt
+          end
+        end  
       end
     else
       flash[:notice] = t('timetable_not_set')

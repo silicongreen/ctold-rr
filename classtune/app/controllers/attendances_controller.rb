@@ -81,7 +81,7 @@ class AttendancesController < ApplicationController
       @subjects = @batch.subjects
       @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
       
-      @weekday_id = @date_to_use.strftime("%w")
+      
       unless @current_timetable.blank?
         @subjects = []
         if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")

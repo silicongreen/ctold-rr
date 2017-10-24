@@ -39,12 +39,20 @@
         <td class="td-blank"></td>
         <% @all_classtimings.each do |pt| %>
         <td class="td themed_text">
-          <div style="background: #E7E7E7;color:#000;height: 40px;padding: 10px 10px 0px;text-align: center"><%= pt.name %></div>
+          <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" %>
+            <div style="background: #E7E7E7;color:#000;height: 40px;padding: 10px 10px 0px;text-align: center"><%= pt.name %></div>
+          <% else %>
+            <div style="background: #E7E7E7;color:#000;height: 40px;padding: 10px 10px 0px;text-align: center"><%= pt[0].name %></div>
+          <% end %>
           
           <%  if Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').present? and Configuration.find_by_config_key('RountineViewPeriodNameNoTiming').config_value=="1" %>
               <!-- DO nothing -->
-          <% else %>    
-          <div class="top themed_text"><%= pt.start_time.strftime("%I:%M%p")  unless pt.start_time.nil? %> - <%= pt.end_time.strftime("%I:%M%p")  unless pt.end_time.nil? %></div>
+          <% else %> 
+            <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" %>
+              <div class="top themed_text"><%= pt.start_time.strftime("%I:%M%p")  unless pt.start_time.nil? %> - <%= pt.end_time.strftime("%I:%M%p")  unless pt.end_time.nil? %></div>
+            <% else %>
+              <div class="top themed_text"><%= pt[0].start_time.strftime("%I:%M%p")  unless pt[0].start_time.nil? %> - <%= pt[0].end_time.strftime("%I:%M%p")  unless pt[0].end_time.nil? %></div>
+            <% end %>
           <% end %>
         </td>
         <% end %>
@@ -169,6 +177,7 @@
 <% else %>
   <p class="flash-msg"><%= t('no_entries_found') %></p>
 <% end %>
+
 <style>
     td .name
     {
@@ -183,4 +192,5 @@
        height: 32px;
     }
     
-</style>    
+</style>  
+

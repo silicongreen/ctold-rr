@@ -289,7 +289,6 @@ class TimetableController < ApplicationController
   end
 
   def update_timetable_view
-    
     if(params[:course_id] == "" || params[:course_id].nil? or params[:timetable_id] == "" or params[:timetable_id].nil?)
       if((params[:course_id] == "" or params[:course_id].nil?) and params[:timetable_id].present?)
         @courses=Batch.all(:joins=>[:timetable_entries,{:time_table_class_timings=>:timetable}],:conditions=>["timetables.id=#{params[:timetable_id]} and batches.class_timing_set_id is NOT NULL and batches.weekday_set_id is NOT NULL "],:include=>:course).uniq
@@ -322,7 +321,9 @@ class TimetableController < ApplicationController
     @timetable_entries=TimetableEntry.find(:all,:conditions=>{:batch_id=>@batch.id,:timetable_id=>@tt.id},:include=>[:subject,:employee])
     @timetable= Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
     
+    
     if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+  
       @main_time_table_id = Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
       @temp_timing = {}
       @all_timing_id = {}
@@ -445,6 +446,7 @@ class TimetableController < ApplicationController
         @all_teachers = @all_timetable_entries.collect(&:employee).uniq
         
         if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+         
           @main_time_table_id = Hash.new { |h, k| h[k] = Hash.new(&h.default_proc)}
           @temp_timing = {}
           @all_timing_id = {}
@@ -516,6 +518,7 @@ class TimetableController < ApplicationController
             end  
           end
         else
+         
           @all_timetable_entries.each_with_index do |tt , i|
             @timetable_entries[tt.weekday_id][tt.class_timing_id][i] = tt
           end
@@ -596,6 +599,7 @@ class TimetableController < ApplicationController
         end
         @all_teachers = @all_timetable_entries.collect(&:employee).uniq
         if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1"
+       
           @temp_timing = {}
           @all_timing_id = {}
           @i = 0
@@ -649,12 +653,7 @@ class TimetableController < ApplicationController
           end
 
 
-
-
           @all_classtimings = @new_class_timing
-
-
-
           
           @all_timetable_entries.each do |tte|
              if !@all_timing_id.blank? and !@all_timing_id[tte.class_timing_id].blank?

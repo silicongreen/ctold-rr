@@ -62,21 +62,34 @@
       <%- @weekday.sort.each do |weekday| -%>
         <td class="td-blank"></td>
         <%- @class_timing.each do |ct| -%>
-          
           <td class="td">
             <div class="drop">
               <div class="tt-subject">
                 <% if  @timetable[weekday][ct.id].present? %>
-                  
+                  <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" and !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
+                 
+                      <% main_class_timming = @main_time_table_id[weekday][ct.id] %>
+                      <% main_timing = ClassTiming.find_by_id(main_class_timming) %>
+                    
+                  <% end %>
                   <% unless  @timetable[weekday][ct.id].subject.elective_group.nil? %>
                     <div class="subject themed_text">
                       <span class="sub-line"><%= shorten_string(@timetable[weekday][ct.id].subject.elective_group.name.to_s,10) %></span>
-                      <span class="sub-line"><%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %></span>
+                      <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" and !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
+                          <div class="sub-line">
+                              <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
+                          </div>
+                        <% end %>
                       <span class="themed_text">
                         <% @timetable[weekday][ct.id].subject.elective_group.subjects.active.each do |s| %>
                           <% @sub_emp = s.employees %>
                           <% unless @sub_emp.empty? %>
                             <%= s.name unless s.nil? %>
+                            <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" and !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
+                              <div class="emp-name">
+                                  <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
+                              </div>
+                            <% end %>
                             <% @sub_emp.each do |e| %>
                               <div class="emp-name">
                                 <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
@@ -95,13 +108,7 @@
                             <% end %>
                           <% end %>
                         <% end %>
-                        <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" %>
-                          <% main_class_timming = @main_time_table_id[weekday][ct.id] %>
-                          <% main_timing = ClassTiming.find_by_id(main_class_timming) %>
-                          <div class="emp-name">
-                              <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
-                          </div>
-                        <% end %>  
+                         
                       </span>
                     </div>
                     <div class="employee">
@@ -112,22 +119,29 @@
                       <span class="sub-line">
                         <%= shorten_string(@timetable[weekday][ct.id].subject.code.to_s,10) %>
                       </span>
-                      <span class="sub-line"><%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %></span>
+                      <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" and !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
+                   
+                        <div class="sub-line">
+                            <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
+                        </div>
+                      <% end %>
                       <span class="themed_text">
                         <%= @timetable[weekday][ct.id].subject.name %>
+                        <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" and !@main_time_table_id.blank? and !@main_time_table_id[weekday].blank? and !@main_time_table_id[weekday][ct.id].blank? %>
+                          <div class="emp-name">
+                              <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
+                          </div>
+                        <% end %>
                         <div class="emp-name">
                           
                            <%= @timetable[weekday][ct.id].employee.full_name unless @timetable[weekday][ct.id].employee.nil? %>
                         
                           
                         </div>
-                        <div class="emp-name">
-                            <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
-                        </div>
                       </span>
                     </div>
-                    <div class="emp-name">
-                       <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1"  %>
+                    <div class="employee">
+                       <%  if Configuration.find_by_config_key('RoutineViewTeacherShortCode').present? and Configuration.find_by_config_key('RoutineViewTeacherShortCode').config_value=="1" %>
                               <% if !@timetable[weekday][ct.id].employee.nil? %>
                                 <% if !@timetable[weekday][ct.id].employee.short_code.blank? %>
                                   <%= @timetable[weekday][ct.id].employee.short_code %>
@@ -141,14 +155,8 @@
                       
                     <% end %>
                   </div>
-                  <%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" %>
-                    <% main_class_timming = @main_time_table_id[weekday][ct.id] %>
-                    <% main_timing = ClassTiming.find_by_id(main_class_timming) %>
-                    <div class="emp-name">
-                        <%=main_timing.start_time.strftime("%I:%M%p")  unless main_timing.start_time.nil? %> - <%= main_timing.end_time.strftime("%I:%M%p")  unless main_timing.end_time.nil? %>
-                    </div>
-                    <% end %> 
-                  <% else %>
+                   
+                <% else %>
 
                   <div class="subject">
                   </div>
@@ -168,6 +176,7 @@
 <%= link_to " ► #{t('pdf_report')}",
   {:controller => "timetable", :action => "timetable_pdf", :course_id => @batch.id, :timetable_id=>@tt.id},:target => '_blank', :class=> 'user_button' %>
 
+<%  if Configuration.find_by_config_key('ViewSmallRoutine').present? and Configuration.find_by_config_key('ViewSmallRoutine').config_value=="1" %>
 <style>
     td .name
     {
@@ -186,5 +195,14 @@
     {
       height: 46px;
     }
+    .subject:hover span.themed_text
+    {
+        margin-top: -54px;
+    }
+    .subject span.themed_text
+    {
+        max-height: 37px;
+    }
     
-</style>    
+</style>
+<% end %>

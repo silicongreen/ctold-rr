@@ -31,7 +31,7 @@
   <tr class="even left"><td><%= t('job_title') %></td><td class="right"><%= @employee.job_title %></td></tr>
 
   <tr class="odd left">
-    <td><%= t('manager') %></td>
+    <td><%= "Line Manager" %></td>
     <td class="right">
       <% if @reporting_manager.present? and @reporting_manager.employee_record.present? %>
         <% if permitted_to? :profile, :employee %>

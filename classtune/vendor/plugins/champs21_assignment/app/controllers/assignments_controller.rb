@@ -911,8 +911,10 @@ class AssignmentsController < ApplicationController
         end
 
         # remove all by assignment id
+        prev_students_ids = []
         rows = AssignmentDefaulterList.find_all_by_assignment_id(@assignment.id)
         rows.each do |row|
+          prev_students_ids << row.student_id
           row.destroy
         end
          
@@ -925,26 +927,40 @@ class AssignmentsController < ApplicationController
         student_ids2 = {}
         
         #insert checked in checkbox
+        @mobile_number_sms = []
         unless student_ids.blank?
           student_ids.each do |s|
             row = AssignmentDefaulterList.new(:assignment_id => @assignment.id, :student_id => s)
             row.save
-            @student = Student.find(s)
-            available_user_ids << @student.user_id
-            batch_ids[@student.user_id] = @student.batch_id
-            std_ids[@student.user_id] = @student.id
-            unless @student.student_guardian.empty?
-              guardians = @student.student_guardian
-              guardians.each do |guardian|
-                #            guardian = Guardian.find(@student.immediate_contact_id)
+            unless prev_students_ids.include?(s)
+              @student = Student.find(s)
+              available_user_ids << @student.user_id
+              batch_ids[@student.user_id] = @student.batch_id
+              std_ids[@student.user_id] = @student.id
+              
+              immediate_contact_guardian = @student.immediate_contact
+              unless immediate_contact_guardian.nil?
+                @mobile_number_sms.push immediate_contact_guardian.mobile_phone unless (immediate_contact_guardian.mobile_phone.nil? or immediate_contact_guardian.mobile_phone == "") 
+              end
+              
+              unless @student.student_guardian.empty?
+                guardians = @student.student_guardian
+                guardians.each do |guardian|
+                  #            guardian = Guardian.find(@student.immediate_contact_id)
 
-                unless guardian.user_id.nil?
-                  available_user_ids2 << guardian.user_id
-                  batch_ids2[guardian.user_id] = @student.batch_id
-                  student_ids2[guardian.user_id] = @student.id
-                end
-              end  
+                  unless guardian.user_id.nil?
+                    available_user_ids2 << guardian.user_id
+                    batch_ids2[guardian.user_id] = @student.batch_id
+                    student_ids2[guardian.user_id] = @student.id
+                  end
+                end  
+              end
             end
+          end
+          
+          if !@mobile_number_sms.blank? and MultiSchool.current_school.id == 312
+            message = "Your child did not submit the homework '#{@assignment.title}' for '#{@assignment.subject.name}'"
+            Delayed::Job.enqueue(SmsManager.new(message,recipients))
           end
           
           unless available_user_ids.blank?

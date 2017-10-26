@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -31,6 +31,37 @@ class HomeworkController extends Controller
             ),
         );
     }
+    public function actionGetSubjectStudents()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $subject_id)
+        { 
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);
+            $all_student = array();
+            if($sub_data->elective_group_id)
+            {
+                $stdObj = new StudentsSubjects();
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
+            }
+            else
+            {
+                $student = new Students();
+                $all_student = $student->getBatchStudentFull($sub_data->batch_id);
+            }
+            $response['data']['students'] = $all_student;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }    
 
     public function actionTeacherIntelligence()
     {
@@ -1019,17 +1050,21 @@ class HomeworkController extends Controller
         $is_draft = Yii::app()->request->getPost('is_draft');
         $assignment_type = Yii::app()->request->getPost('type');
         $duedate = Yii::app()->request->getPost('duedate');
+        $students_array = Yii::app()->request->getPost('students');
         $school_id = Yii::app()->user->schoolId;
         $id = Yii::app()->request->getPost('id');
 
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $subject_ids && $content && $title && $duedate && $school_id && $assignment_type)
         {
-
+            if($students_array)
+            {
+                $students_per_subject = explode("|", $students_array);
+            }
 
             $subject_id_array = explode(",", $subject_ids);
             if ($subject_id_array)
             {
-                foreach ($subject_id_array as $subject_id)
+                foreach ($subject_id_array as $key=>$subject_id)
                 {
                     if ($subject_id)
                     {
@@ -1078,11 +1113,17 @@ class HomeworkController extends Controller
 
 
                         $stdobj = new Students();
-
-                        $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
-                        $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
-
-                        $students = array_unique(array_merge($students1, $students2));
+                        
+                        if(isset($students_per_subject) && isset($students_per_subject[$key]))
+                        {
+                            $students = $students_per_subject[$key];
+                        }
+                        else
+                        {
+                            $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
+                            $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
+                            $students = array_unique(array_merge($students1, $students2));
+                        }
                         $homework->student_list = implode(",", $students);
                         $homework->save();
 

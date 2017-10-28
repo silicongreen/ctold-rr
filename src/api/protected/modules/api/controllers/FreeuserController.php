@@ -65,6 +65,65 @@ class FreeuserController extends Controller
             }
         }
     }
+    public function actionDownloadLessonplan()
+    {
+
+        $id = $_GET['id'];
+        if ($id)
+        {
+            $lessonplan = new Lessonplan();
+            $lessonplantobj = $lessonplan->findByPk($id);
+            if ($lessonplantobj->attachment_file_name)
+            {
+                $attachment_datetime_chunk = explode(" ", $lessonplantobj->updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+                $url = Settings::$paid_image_path . "uploads/lessonplans/attachments/" . $id . "/original/" . str_replace(" ", "+", $lessonplantobj->attachment_file_name) . "?" . $attachment_extra;
+
+                header("Content-Disposition: attachment; filename=" . $lessonplantobj->attachment_file_name);
+                header("Content-Type: {$lessonplantobj->attachment_content_type}");
+                header("Content-Length: " . $lessonplantobj->attachment_file_size);
+                readfile($url);
+            }
+        }
+    }
+
+    public function actionDownloadAttachment()
+    {
+
+        $id = $_GET['id'];
+        if ($id)
+        {
+            $assignment = new Assignments();
+            $assignmentobj = $assignment->findByPk($id);
+            if ($assignmentobj->attachment_file_name)
+            {
+                $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
+
+                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
+                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
+
+                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
+                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
+
+                $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
+
+                header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
+                header("Content-Type: {$assignmentobj->attachment_content_type}");
+                header("Content-Length: " . $assignmentobj->attachment_file_size);
+                readfile($url);
+            }
+            else
+            {
+                echo "File not found. Please Contact Support";
+            }    
+        }
+    }
 
     public function actionrunMusic()
     {
@@ -382,83 +441,7 @@ class FreeuserController extends Controller
         Yii::app()->end();
     }
 
-    public function actionDownloadLessonplan()
-    {
-
-        $id = $_GET['id'];
-        if ($id)
-        {
-            $lessonplan = new Lessonplan();
-            $lessonplantobj = $lessonplan->findByPk($id);
-            if ($lessonplantobj->attachment_file_name)
-            {
-                $attachment_datetime_chunk = explode(" ", $lessonplantobj->updated_at);
-
-                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
-                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
-
-                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
-                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
-
-                $url = Settings::$paid_image_path . "uploads/lessonplans/attachments/" . $id . "/original/" . str_replace(" ", "+", $lessonplantobj->attachment_file_name) . "?" . $attachment_extra;
-
-                header("Content-Disposition: attachment; filename=" . $lessonplantobj->attachment_file_name);
-                header("Content-Type: {$lessonplantobj->attachment_content_type}");
-                header("Content-Length: " . $lessonplantobj->attachment_file_size);
-                readfile($url);
-            }
-        }
-    }
-
-    public function actionDownloadAttachment()
-    {
-
-        $id = $_GET['id'];
-        if ($id)
-        {
-            $assignment = new Assignments();
-            $assignmentobj = $assignment->findByPk($id);
-            if ($assignmentobj->attachment_file_name)
-            {
-                $attachment_datetime_chunk = explode(" ", $assignmentobj->updated_at);
-
-                $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
-                $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
-
-                $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
-                $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
-
-                $url = Settings::$paid_image_path . "uploads/assignments/attachments/" . $id . "/original/" . urlencode($assignmentobj->attachment_file_name) . "?" . $attachment_extra;
-
-                header("Content-Disposition: attachment; filename=" . $assignmentobj->attachment_file_name);
-                header("Content-Type: {$assignmentobj->attachment_content_type}");
-                header("Content-Length: " . $assignmentobj->attachment_file_size);
-                readfile($url);
-            }
-            else
-            {
-                $classwork = new Classworks();
-                $classworkobj = $classwork->findByPk($id);
-                if ($classworkobj->attachment_file_name)
-                {
-                    $attachment_datetime_chunk = explode(" ", $classworkobj->updated_at);
-
-                    $attachment_date_chunk = explode("-", $attachment_datetime_chunk[0]);
-                    $attachment_time_chunk = explode(":", $attachment_datetime_chunk[1]);
-
-                    $attachment_extra = $attachment_date_chunk[0] . $attachment_date_chunk[1] . $attachment_date_chunk[2];
-                    $attachment_extra.= $attachment_time_chunk[0] . $attachment_date_chunk[1] . $attachment_time_chunk[2];
-
-                    $url = Settings::$paid_image_path . "uploads/classworks/attachments/" . $id . "/original/" . urlencode($classworkobj->attachment_file_name) . "?" . $attachment_extra;
-
-                    header("Content-Disposition: attachment; filename=" . $classworkobj->attachment_file_name);
-                    header("Content-Type: {$classworkobj->attachment_content_type}");
-                    header("Content-Length: " . $classworkobj->attachment_file_size);
-                    readfile($url);
-                }
-            }    
-        }
-    }
+    
 
     public function actionShareSchoolFeed()
     {

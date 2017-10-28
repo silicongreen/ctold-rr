@@ -1120,7 +1120,7 @@ class HomeworkController extends Controller
                         {
                             if(isset($students_per_subject) && isset($students_per_subject[$key]))
                             {
-                                $students = $students_per_subject[$key];
+                                $students = explode(",",$students_per_subject[$key]);
                             }
                             else
                             {

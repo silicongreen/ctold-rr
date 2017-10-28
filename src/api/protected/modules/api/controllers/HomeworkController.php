@@ -1130,6 +1130,10 @@ class HomeworkController extends Controller
                             }
                             $homework->student_list = implode(",", $students);
                         }
+                        else
+                        {
+                            $students = explode(",",$homework->student_list);
+                        }    
                         $homework->save();
 
                         if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))

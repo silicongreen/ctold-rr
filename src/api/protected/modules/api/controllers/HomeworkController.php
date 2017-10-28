@@ -1068,10 +1068,12 @@ class HomeworkController extends Controller
                 {
                     if ($subject_id)
                     {
+                        $old_subject_id = 0;
                         if ($id)
                         {
                             $objhomework = new Assignments();
                             $homework = $objhomework->findByPk($id);
+                            $old_subject_id = $homework->subject_id;
                         } else
                         {
                             $homework = new Assignments();
@@ -1114,17 +1116,20 @@ class HomeworkController extends Controller
 
                         $stdobj = new Students();
                         
-                        if(isset($students_per_subject) && isset($students_per_subject[$key]))
+                        if($old_subject_id != $homework->subject_id)
                         {
-                            $students = $students_per_subject[$key];
+                            if(isset($students_per_subject) && isset($students_per_subject[$key]))
+                            {
+                                $students = $students_per_subject[$key];
+                            }
+                            else
+                            {
+                                $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
+                                $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
+                                $students = array_unique(array_merge($students1, $students2));
+                            }
+                            $homework->student_list = implode(",", $students);
                         }
-                        else
-                        {
-                            $students1 = $stdobj->getStudentByBatch($subject_details->batch_id);
-                            $students2 = $studentsubjectobj->getSubjectStudent($subject_id);
-                            $students = array_unique(array_merge($students1, $students2));
-                        }
-                        $homework->student_list = implode(",", $students);
                         $homework->save();
 
                         if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name']))

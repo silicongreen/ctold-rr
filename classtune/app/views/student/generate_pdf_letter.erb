@@ -67,6 +67,8 @@
      
       formContent = formContent.gsub("{he/she}", result[6])
       formContent = formContent.gsub("{his/her}", result[7])
+      
+      
    
       
     elsif @formData.form_type_text == "noc_letter" 
@@ -151,6 +153,12 @@
     formContent = formContent.gsub("studing", "studying")
     formHead = result[8]
     end 
+  
+    formContent = formContent.gsub(".he", ".He")
+    formContent = formContent.gsub(". he", ". He")
+      
+    formContent = formContent.gsub(".she", ".She")
+    formContent = formContent.gsub(". she", ". She")
   %>
   
   

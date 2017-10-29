@@ -744,7 +744,13 @@ class AttendanceReportsController < ApplicationController
     else
       @report = ''
     end
-    render :pdf => 'report_pdf'
+    render :pdf => 'report_pdf',
+      :margin => {:top=> 40,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
 
   def filter_report_pdf
@@ -840,7 +846,13 @@ class AttendanceReportsController < ApplicationController
     else
       @report = ''
     end
-    render :pdf => 'filter_report_pdf'
+    render :pdf => 'report_pdf',
+      :margin => {:top=> 40,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
 
 

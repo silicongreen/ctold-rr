@@ -1,8 +1,8 @@
 <!--start before navigation-->
-<div class="nicdark_section nicdark_bg_green nicdark_displaynone_responsive">
+<div class="nicdark_section nicdark_bg_green">
     <div class="nicdark_container nicdark_clearfix">
         
-        <div class="grid grid_6">
+        <div class="grid grid_6 hidden-xs ">
             <div class="nicdark_focus">
                 <?php $topheader_left_content = __($redux_demo['topheader_left_content'],'babykids'); ?>
                 <?php echo $topheader_left_content; ?>
@@ -18,6 +18,7 @@
     </div>
 </div>
 <!--end before navigation-->
+
 
 
 

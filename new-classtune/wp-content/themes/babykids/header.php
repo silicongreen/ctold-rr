@@ -34,8 +34,32 @@
           <h4 class="modal-title">Feedback</h4>
         </div>
         <div class="modal-body">
-            Please Give Us a Feedback
+            <h3>Please Give Us a Feedback</h3>
             <?php echo do_shortcode( "[ninja_form id=7]" ); ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+    
+<div class="modal fade visible-xs-block" id="loginModal" role="dialog">
+    <div class="modal-dialog">
+        
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+            <input type="text" title="Please Fill Out This Field" placeholder="Username*">
+            <input type="text" title="Please Fill Out This Field" placeholder="Password*">
+            <a class="row col-sm-12 forgot-password" href="#">Forgot Password?</a>
+            <button class="btn btn-lg btn-success btn-proceed">Proceed</button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

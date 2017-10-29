@@ -79,8 +79,11 @@
       <div id="employee-options" >
         <div id="action_buttons">
           <% if @assignment.is_published == 2 %>
-          <%= link_to "► Publish Homework", { :action => 'publisher_homework', :id =>params[:id]},
-              :confirm => "Do You realy want to publish this homework?", :class => "user_button" %>
+          <%= link_to "► Approve Homework", { :action => 'publisher_homework', :id =>params[:id]},
+              :confirm => "Do You realy want to Approve this homework?", :class => "user_button" %>
+          <%= link_to "► #{t('edit_text')}",
+              edit_assignment_path(@assignment), :class => "user_button"%>
+         
           <% end %>  
           
         </div>

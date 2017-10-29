@@ -34,8 +34,14 @@
 
                 </li>
                 <% end %>
-                
-            </ul>
+                <% if !@current_user.admin? %>
+                   <% if  permitted_to? :new,:assignments %>
+                    <li>          
+                      <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new"}, :class => 'f2' %>
+                    </li>
+                  <% end %>
+                <% end %>    
+              </ul>
         </div>
   
     <% if @current_user.employee?  %> 
@@ -78,7 +84,7 @@
         <div class="text-input-bg">
           
             <%= select :assignment, :is_published,
-              [['Active', 1], ['Draft', 0]],
+              [['Published', 1], ['Draft', 0], ['Pending', 2], ['Approved', 3]],
               {:prompt => "Select Homework Status"},
               {:onChange => "#{remote_function(:url => {:action => "subject_assignments"},
               :with => "'is_published='+ value +'&due_date='+ $('assignment_duedate').value+'&subject_id='+ $('assignment_subject').value",
@@ -102,7 +108,7 @@
               @subjects.map {|s| ["#{s.name}",s.id]},
               {:prompt => "#{t('select_a_subject')}"},
               {:onChange => "#{remote_function(:url => {:action => "subject_assignments2"},
-              :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value",
+              :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value+'&is_published='+ $('assignment_is_published').value",
               :before => "Element.show('loader')",
               :success => "Element.hide('loader')"
               )}"} %>
@@ -134,18 +140,7 @@
     <% end %>
  
   <div class="clearfix"></div>
-  <% if !@current_user.admin? %>
-
-    <% if  permitted_to? :new,:assignments %>
-      <div class="tabbed-header-wrapper">    
-        <ul class="header-tabs">
-          <li>          
-            <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new"}, :class => 'f2' %>
-          </li>      
-        </ul>
-      </div>
-    <% end %>
-  <% end %>
+ 
 </div>  
   <% if @current_user.employee?  %>
     <div id="page-yield" class="bg-disable">

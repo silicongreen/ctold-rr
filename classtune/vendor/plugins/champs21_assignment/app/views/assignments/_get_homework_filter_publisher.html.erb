@@ -19,6 +19,9 @@
         <%= "#{t('teacher_name')}"%>
       </th>
       <th>
+        <%= "Status"%>
+      </th>
+      <th>
         <%= "#{t('due_date')}"%>
       </th>
      
@@ -42,6 +45,13 @@
             <% unless assignment.employee.blank?  %>
               <%=  assignment.employee.full_name %>
             <% end %>
+          </td>
+          <td class="col-2">
+            <% if assignment.is_published == 2  %>
+              Pending
+            <% elsif assignment.is_published == 3 %>
+              Approved
+            <% end %>  
           </td>
           
           <td class="col-4">

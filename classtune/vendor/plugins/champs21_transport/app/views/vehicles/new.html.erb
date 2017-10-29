@@ -32,6 +32,39 @@
         <label for="vehicle_no"><%= t('no_of_seats') %><span class="necessary-field">*</span> </label>
         <div class="text-input-bg"><%= v.text_field :no_of_seats %></div>
       </div>
+      <% @employees = Employee.all %>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "Driver" %><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+
+        <%= select_tag   "vehicle[driver]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
+  
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "Bus Mother" %><span class="necessary-field">*</span> </label>
+        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+
+        <%= select_tag   "vehicle[bus_mother]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
+  
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "Aya" %> </label>
+        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+
+        <%= select_tag   "vehicle[aya]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
+  
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="vehicle_no"><%= "Support Staff" %></label>
+        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+
+        <%= select_tag   "vehicle[support_staff]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
+  
+        </div>
+      </div>
 
 
       <div class="label-checkbox-pair">
@@ -50,3 +83,22 @@
 
   </div>
 </div>
+
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq('.js-example-basic-single').select2();
+  });
+  
+</script> 
+<style>
+    .category-list li span
+    {
+      float: none;
+      margin-right: 0px;
+      text-align:inherit;
+      width:auto;
+     
+    }
+    
+</style>

@@ -30,9 +30,9 @@
     <% else %>
       <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('inbox')}", :controller=>"reminder", :action=>"index"%></li>
     <% end %>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('sent')}", :controller=>"reminder", :action=>"sent_reminder"%></li>
-    <% unless @current_user.parent? or @current_user.student?  %>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('create_text')}", :controller=>"reminder", :action=>"create_reminder"%></li>
+    <% if !@current_user.parent? and !@current_user.student?  %>
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('sent')}", :controller=>"reminder", :action=>"sent_reminder"%></li>  
+      <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('create_text')}", :controller=>"reminder", :action=>"create_reminder"%></li>
     <% end %>
   </ul>
 </div>

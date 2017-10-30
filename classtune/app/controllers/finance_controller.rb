@@ -365,7 +365,7 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
-                  @all_fees_particulers << fee_particular.name
+                  @all_fees_particulers << fee_particular.name.gsub(" 7.5%","")
                 end
               end
             end
@@ -421,7 +421,7 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
-                  @all_fees_particulers << fee_particular.name
+                  @all_fees_particulers << fee_particular.name.gsub(" 7.5%","")
                 end
               end
             end

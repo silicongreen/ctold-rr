@@ -354,7 +354,7 @@ class FinanceController < ApplicationController
       unless @start_date > @end_date
         finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
         @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fee"
+        @all_fees_particulers << "Tuition Fees"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category
@@ -407,7 +407,7 @@ class FinanceController < ApplicationController
       unless @start_date > @end_date
         finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
         @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fee"
+        @all_fees_particulers << "Tuition Fees"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category

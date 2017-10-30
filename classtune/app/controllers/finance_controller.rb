@@ -361,7 +361,7 @@ class FinanceController < ApplicationController
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fee").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
@@ -414,7 +414,7 @@ class FinanceController < ApplicationController
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fee").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end

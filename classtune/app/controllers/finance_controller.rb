@@ -365,13 +365,15 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("Vat").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
             end
           end
         end
+        @all_fees_particulers << "Fine"
+        @all_fees_particulers << "Vat"
         @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
         
       else
@@ -423,13 +425,16 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("Vat").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
             end
           end
         end
+        @all_fees_particulers << "Fine"
+        @all_fees_particulers << "Vat"
+        
         @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
        
         render :pdf => 'transaction_pdf_fees',

@@ -63,13 +63,12 @@
             <% @transactions.each do |trans| %>
               
               <% if trans.transaction_date == day %>
-              
+                <% if fees_particuler!="Fine" %>
                 <%
                   finance_fees = FinanceFee.find_by_id(trans.finance_id)
                   if !finance_fees.blank? and finance_fees.balance.to_i == 0
                     fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
                     unless fee_particulars.blank?
-                     
                       fee_particulars.each do |fee_particular_new|
                         unless fee_particular_new.name.index(fees_particuler).nil?
                          fee_amount = fee_amount.to_f+fee_particular_new.amount
@@ -79,6 +78,9 @@
                     
                   end
                 %>
+                <% else %>
+                  <%  fee_amount = fee_amount.to_f+trans.fine_amount %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>

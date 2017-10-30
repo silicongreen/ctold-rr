@@ -365,7 +365,7 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("Vat").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
@@ -373,7 +373,7 @@ class FinanceController < ApplicationController
           end
         end
         @all_fees_particulers << "Fine"
-        @all_fees_particulers << "Vat"
+        @all_fees_particulers << "VAT"
         @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
         
       else
@@ -425,7 +425,7 @@ class FinanceController < ApplicationController
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
                 fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("Vat").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
@@ -433,7 +433,7 @@ class FinanceController < ApplicationController
           end
         end
         @all_fees_particulers << "Fine"
-        @all_fees_particulers << "Vat"
+        @all_fees_particulers << "VAT"
         
         @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
        
@@ -1658,7 +1658,7 @@ class FinanceController < ApplicationController
 
 
     bal=(@total_payable-@total_discount).to_f
-    days=(Date.today-@date.due_date.to_date).to_i
+    days=(params[:fees][:transaction_date].to_date-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     if days > 0 and auto_fine
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
@@ -1692,6 +1692,7 @@ class FinanceController < ApplicationController
           transaction.finance = @financefee
           transaction.transaction_date = Date.today
           transaction.payment_mode = params[:fees][:payment_mode]
+          transaction.transaction_date = params[:fees][:transaction_date]
           transaction.payment_note = params[:fees][:payment_note]
           transaction.save
 

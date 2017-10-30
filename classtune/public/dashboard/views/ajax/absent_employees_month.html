@@ -1,9 +1,9 @@
 <div ng-if="sizeOf(employees_absent_month)">
     <data-owl-carousel  class="owl-carousel" data-options="{
-            autoPlay: 5000,
+            autoPlay: 10000,
             stopOnHover: true,
-            slideSpeed : 300,
-            paginationSpeed : 400,
+            slideSpeed : 900,
+            paginationSpeed : 1000,
             singleItem : true}">
         <div div owl-carousel-item="" class="media social-feed" ng-repeat="employees in employees_absent_month track by $index">
             <div class="col-lg-12" style="border-bottom: 1px dotted #ccc;">
@@ -12,9 +12,10 @@
                         <img class="media-object img-circle" src="{{employee.photo_file_name}}" alt="">
                     </div>
                     <div class="media-body" style="padding-left: 20px;">
-                        <h4 class="media-heading mb-0"><strong>{{employee.name}}</strong></h4>
+                        <h4 class="media-heading mb-0"><strong><a href="{{server_link}}employee/profile/{{employee.id}}">{{employee.name}}</a></strong></h4>
                         <small>Employee Number: <b>{{employee.employee_number}}</b></small><br />
                         <small><b>{{employee.employee_position}}</b></small><br />
+                        <small><i class="fa fa-mobile-phone">&nbsp;&nbsp;</i><b>{{employee.mobile_phone}}</b></small><br />
                         <small class="text-lightred"><b>{{employee.count_absent}} Day Absent</b></small><br /><br />
                     </div>
                 </div>
@@ -22,4 +23,11 @@
         </div>
     </data-owl-carousel>
 </div>
-<div ng-if="!sizeOf(employees_absent_month)" class="col-md-12" style="text-align: center; font-weight: bold;">[ All Students are present this month ]</div>
+<div ng-if="!sizeOf(employees_absent_month)" class="col-md-12" style="text-align: center; font-weight: bold;">
+    <div ng-if="class_employee">
+        [ All Employees are present this month ]
+    </div>
+    <div ng-if="!class_employee">
+        [No class found for this month]
+    </div>
+</div>

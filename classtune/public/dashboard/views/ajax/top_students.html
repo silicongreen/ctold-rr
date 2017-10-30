@@ -12,9 +12,10 @@
                         <img class="media-object img-circle" src="{{student.photo_file_name}}" alt="">
                     </div>
                     <div class="media-body" style="padding-left: 20px;">
-                        <h4 class="media-heading mb-0"><strong>{{student.name}}</strong></h4>
+                        <h4 class="media-heading mb-0"><strong><a href="{{server_link}}student/profile/{{student.id}}">{{student.name}}</a></strong></h4>
                         <small>Admission No: <b>{{student.admission_no}}</b></small><br />
                         <small><b>{{student.class_name}}, Section: {{student.section_name}}</b></small><br />
+                        <small><i class="fa fa-mobile-phone">&nbsp;&nbsp;</i><b>{{student.phone}}</b></small><br />
                         <small class="text-lightred"><b>100% Present</b></small><br /><br />
                     </div>
                 </div>
@@ -22,4 +23,11 @@
         </div>
     </data-owl-carousel>
 </div>
-<div ng-if="!sizeOf(students_top)" class="col-md-12" style="text-align: center; font-weight: bold;">[ No Students found with 100% Attendance ]</div>
+<div ng-if="!sizeOf(students_top)" class="col-md-12" style="text-align: center; font-weight: bold;">
+    <div ng-if="class_month">
+        [ No Students found with 100% Attendance ]
+    </div>
+    <div ng-if="!class_month">
+        [No attendance record found for this month]
+    </div>
+</div>

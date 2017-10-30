@@ -3,11 +3,17 @@
 
     <uib-accordion-group is-open="status.isFirstOpen" ng-class="{'open': status.isFirstOpen, 'closed': !status.isFirstOpen}">
       <uib-accordion-heading>
-        Navigation <i class="pull-right fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
+        Quick Links <i class="pull-right fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
       </uib-accordion-heading>
       <ul id="navigation" nav-collapse ripple>
-        <li ui-sref-active="active">
-            <a href="{{menu.link}}" ng-repeat="menu in menus track by $index"><fa name="{{menu.fa_icon}}"></fa> <span>{{ menu.menu_name }}</span></a>
+        <li ui-sref-active="active" ng-class="{'dropdown menu_dropdown': sizeOf(menu.sub_menus) > 0, '': sizeOf(menu.sub_menus) == 0}" ng-repeat="menu in menus track by $index">
+            <a ng-if="sizeOf(menu.sub_menus) == 0" href="{{menu.link}}"><fa name="{{menu.fa_icon}}"></fa> <span>{{ menu.menu_name }}</span></a>
+            <a ng-if="sizeOf(menu.sub_menus) > 0" style="cursor: pointer;" id="a_menu_{{menu.id}}" ng-click="open_menu(menu.id)"><i class="fa fa-{{menu.fa_icon}}" name="{{menu.fa_icon}}"></i> <span class="ng-binding">{{ menu.menu_name }}</span><i class="fa fa-plus"></i></a>
+            <ul ng-if="sizeOf(menu.sub_menus) > 0">
+                <li ng-repeat="submenu in menu.sub_menus track by $index">
+                    <a href="{{submenu.link}}"><fa name="{{submenu.fa_icon}}"></fa> <span>{{ submenu.menu_name }}</span></a>
+                </li>
+            </ul>
         </li>
       </ul>
     </uib-accordion-group>

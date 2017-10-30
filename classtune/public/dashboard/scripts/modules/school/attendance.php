@@ -2,7 +2,7 @@
     include '../config.php';
     
     $params = $_GET;
-    $type_attendance = $params['type_attendance'];
+    
     $school_id = $params['school_id'];
 
     $draw = $params['draw'];
@@ -40,18 +40,8 @@
     //$start_date = $current_date;
     
     
-    if ( $type_attendance == 1 )
-    {
-        $result = $conn->query("SELECT * FROM `courses` WHERE school_id = " . $school_id . " GROUP by course_name");
-    }
-    else
-    {
-        $result = $conn->query("SELECT sd.id FROM `employee_attendance_district` sd 
-                                INNER JOIN districts d ON sd.district_id = d.id
-                                WHERE sd.district_id IN (SELECT id from districts WHERE division_id = " . $division_id . ") and 
-                                sd.date_of_present BETWEEN '" . $start_date . "' and '" . $end_date . "'
-                                GROUP BY d.id");
-    }
+    $result = $conn->query("SELECT * FROM `courses` WHERE school_id = " . $school_id . " GROUP by course_name");
+    
         
     if ( $result->num_rows == 0)
     {
@@ -62,24 +52,12 @@
         $record_total = $result->num_rows;
     }
     
-    if ( $type_attendance == 1 )
-    {
-        $result = $conn->query("SELECT c.id, c.course_name, AVG(ar.total) as total, AVG(ar.present) as present, AVG(ar.absent) as absent, AVG(ar.late) as late
-                                FROM `attendance_registers` ar 
-                                INNER JOIN batches b ON ar.batch_id = b.id
-                                INNER JOIN courses c ON b.course_id = c.id
-                                WHERE ar.school_id = " . $school_id . " and ar.attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
-                                GROUP BY c.course_name ORDER BY " . $order_id . " " . $order_dir . " LIMIT " . $start . ", " . $length);
-    }
-    else
-    {
-        $result = $conn->query("SELECT d.id, d.name, sd.num_school, sum(sd.present) as present, sum(sd.absent) as absent 
-                                FROM `employee_attendance_district` sd 
-                                INNER JOIN districts d ON sd.district_id = d.id
-                                WHERE sd.district_id IN (SELECT id from districts WHERE division_id = " . $division_id . ") and 
-                                sd.date_of_present BETWEEN '" . $start_date . "' and '" . $end_date . "'
-                                GROUP BY d.id ORDER BY " . $order_id . " " . $order_dir . " LIMIT " . $start . ", " . $length);
-    }
+    $result = $conn->query("SELECT c.id, c.course_name, AVG(ar.total) as total, AVG(ar.present) as present, AVG(ar.absent) as absent, AVG(ar.late) as late
+                            FROM `attendance_registers` ar 
+                            INNER JOIN batches b ON ar.batch_id = b.id
+                            INNER JOIN courses c ON b.course_id = c.id
+                            WHERE ar.school_id = " . $school_id . " and ar.attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
+                            GROUP BY c.course_name ORDER BY " . $order_id . " " . $order_dir . " LIMIT " . $start . ", " . $length);
     
     
     $outp = array();
@@ -116,21 +94,10 @@
         $chart = array();
         $chart['color'] = "#" . dechex(rand(0x000000, 0xFFFFFF));
         
-        if ( $type_attendance == 1 )
-        {
-            $subresult = $conn->query("SELECT attendance_date, AVG(present) as present, AVG(late) as late FROM `attendance_registers` 
-                                       WHERE batch_id IN (SELECT id from batches WHERE course_id = " . $id . ")  and 
-                                       attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
-                                       GROUP BY attendance_date ORDER BY attendance_date");
-            
-        }
-        else
-        {
-            $subresult = $conn->query("SELECT present FROM `employee_attendance_district` 
-                                       WHERE district_id = " . $id . "  and 
-                                       date_of_present BETWEEN '" . $start_date . "' and '" . $end_date . "'
-                                       ORDER BY date_of_present");
-        }
+        $subresult = $conn->query("SELECT attendance_date, AVG(present) as present, AVG(late) as late FROM `attendance_registers` 
+                                    WHERE batch_id IN (SELECT id from batches WHERE course_id = " . $id . ")  and 
+                                    attendance_date BETWEEN '" . $start_date . "' and '" . $end_date . "'
+                                    GROUP BY attendance_date ORDER BY attendance_date");
         
         $chart['data'] = array();
         $date = array();
@@ -167,10 +134,20 @@
         
         $a_options = array("type" => "bar", "barColor" => $chart['color'], "barWidth" => "10%", "height" => "28px");
         $tmp['graph_attendance'] = "<span class='attendance_chart' sparkline data='" . json_encode($chart['data']) . "' options='" . json_encode($a_options) . "'  watch-me='numberOfPages'>
-                                    </span>";
+                                    </span>"; 
         $outp[] = $tmp;
         $i++;
     }
+    
+    if ( empty($outp) )
+    {
+        $record_total = 0;
+    }
+    else
+    {
+        $record_total = count($outp);
+    }
+    
     $a_data = array(
         'draw'              => $draw,
         'recordsTotal'      => $record_total,

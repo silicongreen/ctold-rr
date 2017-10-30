@@ -1,25 +1,35 @@
 <data-owl-carousel  class="owl-carousel" data-options="{
-        autoPlay: 5000,
+        autoPlay: 20000,
         stopOnHover: true,
-        slideSpeed : 300,
-        paginationSpeed : 400,
+        slideSpeed : 900,
+        paginationSpeed : 1000,
         singleItem : true}">
     <div div owl-carousel-item="" class="media social-feed" ng-repeat="course in courses track by $index">
-        <div class="col-sm-12" style="text-align: center;"><h3>{{course.course_name}}</h3><hr /></div>
+        {{$indexCourse=$index;""}}
+        <div class="col-sm-12" style="text-align: center;"><h3>{{course.course_name}}</h3></div>
+        <div style="width: 100%; text-align: center;"  ng-style="{true: {display: 'block'}, false: {display: 'none'}}[sizeOf(course.sections) > 2]">
+            <label class="btn btn-default btn-section-radio-{{$indexCourse}}" id="section-radio-{{$indexCourse}}-{{section.id}}" ng-repeat="section in course.sections track by $index" ng-style="{true: {background: '#fff'}, false: {background: '#e5e5e5'}}[$index > 0]">
+                <input name="sections" id="radio-{{$indexCourse}}-{{section.id}}" type="radio" class="section_radio" ng-model="radioModel" ng-value="{{section}}" ng-click='getDonutData(radioModel, $indexCourse)' style="margin-right: 20px; display: none;"><span>{{section.section_name}}</span>
+            </label>
+        </div>
+        <hr />
         <div class="clearfix"></div>
         <div class="media-body">
-            <table class="table table-no-border m-0">
-                <tbody>
-                  <tr ng-repeat="data in course.donutData track by $index">
-                    <td>{{$index+1}}</td>
-                    <td>{{data.label}}</td>
-                    <td>{{data.value}}</td>
+            <table id="donut-summary-{{$indexCourse}}-{{section.id}}" style="width: 100%; border: 1px solid #ccc; border-left: 0px; border-right: 0px;" class="table table-no-border m-0 donut-table-summary-{{$indexCourse}}" ng-repeat="section in course.sections track by $index" ng-style="{true: {display: 'none'}, false: {display: 'block'}}[$index > 0]">
+                <tbody ng-repeat="donuts in section.donutData track by $index">
+                  <tr style="border-bottom: 1px solid #ccc;"  ng-style="{true: {display: 'table-row'}, false: {display: 'none'}}[sizeOf(course.sections) > 2]">
+                      <td colspan="3" style="text-align: center;">Section: <b>{{section.section_name}}</b></td>
+                  </tr>
+                  <tr ng-repeat="data in donuts track by $index">
+                    <td style="width: 15%; border-right: 1px solid #ccc;">{{$index+1}}.</td>
+                    <td style="width: 80%; border-right: 1px solid #ccc;">{{data.label}}</td>
+                    <td style="width: 20%; text-align: right; border-right: 0px solid #ccc;">{{data.value}}</td>
                   </tr>
                 </tbody>
             </table>
             <hr />
-            <div id="donut_data">
-                <div id="donutGraph" class="donutGraph" morris-donut-chart donut-data='course.donutData' style="height: 250px"></div>
+            <div id="donut-data-{{$indexCourse}}-{{section.id}}" class="donut-data-{{$indexCourse}}" ng-repeat="section in course.sections track by $index" ng-style="{true: {opacity: 0, height: '0px'}, false: {opacity: 1, height: 'auto'}}[$index > 0]">
+                <div id="donutGraph" class="donutGraph" morris-donut-chart donut-data='donuts' style="height: 250px" ng-repeat="donuts in section.donutData track by $index"></div>
             </div>
         </div>
     </div>

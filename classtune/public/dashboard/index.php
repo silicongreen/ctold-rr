@@ -1,4 +1,4 @@
-<?php
+<?php 
     include 'scripts/modules/config.php';
     
     if ( !isset($_GET['dom']) && empty($_GET['dom'])) 

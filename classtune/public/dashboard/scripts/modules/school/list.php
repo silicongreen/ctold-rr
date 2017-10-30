@@ -6,6 +6,7 @@
     $table_info = $params['table_info'];
     $school_id = $params['school_id'];
     $school_domain = $params['school_domain'];
+    $server = $params['server'];
     
     $draw = $params['draw'];
     $start = $params['start'];
@@ -55,7 +56,7 @@
     }
     
     $result = $conn->query("SELECT e.employee_number, e.first_name, e.last_name, ep.name,
-                            b.name as batch_name, c.course_name, c.section_name, t.title, t.content, 
+                            b.name as batch_name, c.course_name, c.section_name, t.id, t.title, t.content, 
                             s.name as subject_name, s.icon_number " . $s_extra_fields . " FROM " . $table_info . " t 
                             INNER JOIN employees e ON t.employee_id = e.id 
                             INNER JOIN employee_positions ep on ep.id = e.employee_position_id
@@ -109,11 +110,11 @@
         $s_homework_info  = '<div class="col-lg-12"> <dl class="text-sm">';
         if ( $table_info == "assignments" )
         {
-            $s_homework_info .= '<dt><h4>' . $rs['title'] . '</h4></dt><dt>Due Date: ' . date("Y-m-d", strtotime($rs['duedate'])) . '</dt><dd>' . $content . '</dd>';
+            $s_homework_info .= '<dt><h4><a href="' . $server . '/assignments/' . $rs['id'] . '">' . $rs['title'] . '</a></h4></dt><dt>Due Date: ' . date("Y-m-d", strtotime($rs['duedate'])) . '</dt><dd>' . $content . '</dd>';
         }
         else
         {
-            $s_homework_info .= '<dt><h4>' . $rs['title'] . '</h4></dt><dd>' . $content . '</dd>';
+            $s_homework_info .= '<dt><h4><a href="' . $server . '/assignments/' . $rs['id'] . '">' . $rs['title'] . '</a></h4></dt><dd>' . $content . '</dd>';
         }
         $s_homework_info .= '</dl></div>';
         

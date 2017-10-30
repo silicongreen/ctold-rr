@@ -12,9 +12,10 @@
                         <img class="media-object img-circle" src="{{employee.photo_file_name}}" alt="">
                     </div>
                     <div class="media-body" style="padding-left: 20px;">
-                        <h4 class="media-heading mb-0"><strong>{{employee.name}}</strong></h4>
+                        <h4 class="media-heading mb-0"><strong><a href="{{server_link}}employee/profile/{{employee.id}}">{{employee.name}}</a></strong></h4>
                         <small>Employee Number: <b>{{employee.employee_number}}</b></small><br />
                         <small><b>{{employee.employee_position}}</b></small><br />
+                        <small><i class="fa fa-mobile-phone">&nbsp;&nbsp;</i><b>{{employee.mobile_phone}}</b></small><br />
                         <small class="text-lightred"><b>100% Present</b></small><br /><br />
                     </div>
                 </div>
@@ -22,4 +23,11 @@
         </div>
     </data-owl-carousel>
 </div>
-<div ng-if="!sizeOf(employees_top)" class="col-md-12" style="text-align: center; font-weight: bold;">[ No Employee found with 100% Attendance ]</div>
+<div ng-if="!sizeOf(employees_top)" class="col-md-12" style="text-align: center; font-weight: bold;">
+    <div ng-if="class_month">
+        [ No Employee found with 100% Attendance ]
+    </div>
+    <div ng-if="!class_month">
+        [No attendance record found for this month]
+    </div>
+</div>

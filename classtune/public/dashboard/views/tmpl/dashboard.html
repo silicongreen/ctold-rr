@@ -40,7 +40,7 @@
     <!-- col -->
     <div class="card-container col-lg-3">
       <div class="card">
-        <div class="front bg-greensea">
+        <div class="front bg-white"> 
 
             <!-- row -->
             <div class="row">
@@ -68,13 +68,13 @@
             <!-- /row -->
 
         </div>
-        <div class="back bg-greensea">
+        <div class="back bg-white">
 
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-12">
-              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+              <a href="{{server_link}}student/view_all"><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
             </div>
             <!-- /col -->
           </div>
@@ -88,7 +88,7 @@
     <!-- col -->
     <div class="card-container col-lg-3">
       <div class="card">
-        <div class="front bg-drank">
+        <div class="front bg-white">
 
             <!-- row -->
             <div class="row">
@@ -119,13 +119,13 @@
             <!-- /row -->
 
         </div>
-        <div class="back bg-drank">
+        <div class="back bg-white">
 
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-12">
-              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+              <a href="{{server_link}}attendances#class_report"><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
             </div>
             <!-- /col -->
           </div>
@@ -139,7 +139,7 @@
     <!-- col -->
     <div class="card-container col-lg-4">
       <div class="card">
-        <div class="front bg-lightred">
+        <div class="front bg-white">
 
             <!-- row -->
             <div class="row">
@@ -173,13 +173,13 @@
             <!-- /row -->
 
         </div>
-        <div class="back bg-lightred">
+        <div class="back bg-white">
 
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-12">
-              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+              <a href="{{server_link}}empattendance"><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
             </div>
             <!-- /col -->
           </div>
@@ -193,7 +193,7 @@
     <!-- col -->
     <div class="card-container col-lg-2">
       <div class="card">
-        <div class="front bg-cyan">
+        <div class="front  bg-white">
 
             <!-- row -->
             <div class="row">
@@ -221,13 +221,13 @@
             <!-- /row -->
 
         </div>
-        <div class="back bg-cyan">
+        <div class="back bg-white">
 
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-12">
-              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+              <a href="{{server_link}}assignments"><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
             </div>
             <!-- /col -->
           </div>
@@ -255,65 +255,75 @@
         <!-- /tile header -->
 
         <div class="tile-body table-custom" style="padding: 0;">
-            <wrap-owlcarousel class="owl-carousel" data-options="{
-          autoPlay: 5000,
+            <!--wrap-owlcarousel class="owl-carousel" data-options="{
+          autoPlay: 20000,
           stopOnHover: true,
-          slideSpeed : 300,
-          paginationSpeed : 400,
-          singleItem : true}">
-
-            <div id="attendance_table" style="padding: 20px;"></div> 
-
-            <div class="tile-widget bg-greensea">
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Details): </h3>
-                <hr />
-                <flot dataset="dataset" options="options" height="350px"></flot>
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Present/Absent/Late): </h3>
-                <hr />
-                <flot dataset="datasetAttendance" options="optionsAttendance" height="350px"></flot>
+          slideSpeed : 700,
+          paginationSpeed : 800,
+          singleItem : true}"-->
+            <div class="tmp" style="height: 900px; background: #fff; padding: 20px;">
+                <h3 style="margin-top: 0;">{{attendace_type}} Attendace</h3><hr />
             </div>
+            <div class="owl-carousel-new" style="display: none;">    
+                <div id="attendance_table" style="padding: 20px;"></div> 
 
-            <div style="padding: 20px;">
-                <h2>Student Attendance Summary</h2>
-                <hr />
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;This Month Statistics: </h3>
-                <hr />
-                <div id="attendance_statistics" class="row"></div>
-                <hr />
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Absent Student: </h3><small>Today</small>
-                <hr />
-                <div id="absent_students" style="padding: 10px;"></div>
-                <hr />
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Maximum Absent Student: </h3><small>This month</small>
-                <hr />
-                <div id="absent_students_month" style="padding: 10px;"></div>
-                <hr />
-                <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Top 10 Student (100% Present): </h3><small>This Month</small>
-                <hr />
-                <div id="top_students" style="padding: 10px;"></div>
-            </div>
-            
-            <div style="padding: 20px;">
-                <h2>Employee Attendance Summary</h2>
-                <hr />
-                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;This Month Statistics: </h3>
-                <hr />
-                <div id="attendance_statistics_employee" class="row"></div>
-                <hr />
-                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Absent Teacher </h3><small>Today</small>
-                <hr />
-                <div id="absent_employees" style="padding: 10px;"></div>
-                <hr />
-                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Maximum Absent Teacher: </h3><small>This month</small>
-                <hr />
-                <div id="absent_employees_month" style="padding: 10px;"></div>
-                <hr />
-                <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Top 10 Teacher (100% Present): </h3><small>This Month</small>
-                <hr />
-                <div id="top_employees" style="padding: 10px;"></div>
-            </div>
+                <div id="attendance_graph" class="tile-widget bg-greensea">
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Details): </h3>
+                    <hr />
+                    <flot dataset="dataset" options="options" height="350px"></flot>
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Attendance Information(Present/Absent/Late): </h3>
+                    <hr />
+                    <flot dataset="datasetAttendance" options="optionsAttendance" height="350px"></flot>
+                </div>
 
-          </wrap-owlcarousel>   
+                <div style="padding: 20px;">
+                    <h2>Student Attendance Summary</h2>
+                    <hr />
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;This Month Statistics: </h3>
+                    <hr />
+                    <div id="attendance_statistics" class="row"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Absent Student: </h3><small>Today</small>
+                    <hr />
+                    <div id="absent_students" style="padding: 10px;"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Maximum Absent Student: </h3><small>This month</small>
+                    <hr />
+                    <div id="absent_students_month" style="padding: 10px;"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa fa-user-plus"></i>&nbsp;&nbsp;Top 10 Student (100% Present): </h3><small>This Month</small>
+                    <hr />
+                    <div id="top_students" style="padding: 10px;"></div>
+                </div>
+
+                <div style="padding: 20px;">
+                    <h2>Employee Attendance Summary</h2>
+                    <hr />
+                    <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;This Month Statistics: </h3>
+                    <hr />
+                    <div id="attendance_statistics_employee" class="row"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Absent Teacher </h3><small>Today</small>
+                    <hr />
+                    <div id="absent_employees" style="padding: 10px;"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Maximum Absent Teacher: </h3><small>This month</small>
+                    <hr />
+                    <div id="absent_employees_month" style="padding: 10px;"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                    <hr />
+                    <h3><i class="fa graduation-cap"></i>&nbsp;&nbsp;Top 10 Teacher (100% Present): </h3><small>This Month</small>
+                    <hr />
+                    <div id="top_employees" style="padding: 10px;"></div>
+                    <div style="clear: both; height: 10px;"></div>
+                </div>
+            </div>
+          <!--/wrap-owlcarousel-->   
         </div>
         <!-- /tile body -->
 
@@ -358,7 +368,7 @@
       </div>
       <div class="tile-body">
         <div ng-repeat="notice in noticeData track by $index" class="task-container priority-high">
-          <h3 class="task-name">{{notice.title}}</h3>
+            <h3 class="task-name" onclick="location.href = '{{server + '/news/view/' + notice.id}}';" style="cursor: pointer; padding-bottom: 10px;"><a style="cursor: pointer; color: #000; text-decoration: none; font-weight: bold; font-size: 18px; margin-bottom: 10px;" href="{{server + '/news/view/' + notice.id}}">{{notice.title}}</a></h3>
           <p class="task-meta">
             <strong>Publish Date:</strong> {{notice.created_at}},
             <strong>Published By:</strong> {{notice.name}}

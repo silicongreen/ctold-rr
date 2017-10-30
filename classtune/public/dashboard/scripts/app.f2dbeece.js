@@ -147,10 +147,10 @@ app
     $scope.main = {
       title: school_name,
       settings: {
-        navbarHeaderColor: 'scheme-lightred',
-        sidebarColor: 'scheme-greensea',
-        brandingColor: 'scheme-lightred',
-        activeColor: 'greensea-scheme-color',
+        navbarHeaderColor: 'scheme-default',
+        sidebarColor: 'scheme-default',
+        brandingColor: 'scheme-default',
+        activeColor: 'default-scheme-color',
         headerFixed: true,
         asideFixed: true,
         rightbarShow: false
@@ -180,6 +180,7 @@ app.controller('CountController', function($scope, $http){
            if ( school_id > 0 )
            {
                 clearInterval(schoolSelectInterval);
+                $scope.server_link = classtune_server + "/";
                 $scope.loadData(school_id);
            }
     }, 200);  
@@ -485,7 +486,9 @@ app
                 $scope.loadData(school_id);
            }
     }, 200);          
-              
+             
+    $scope.radioModel = 0;
+    
     $scope.oneAtATime = true;
     
     $scope.status = {
@@ -502,14 +505,14 @@ app
             url: '/scripts/modules/school/courses.php',
             method: "PUT",
             data: { 'school_id' : school_id, 'school_domain' : school_domain }
-        })
+        }) 
         .then(function(response) {
             $scope.courses = response.data;
-            console.log($scope.courses);
+            $scope.radioModel = $scope.courses[0].sections[0];
             var templateUrl = $sce.getTrustedResourceUrl('/views/ajax/courses.html');
             $templateRequest(templateUrl).then(function(template) {
                 // template is the HTML template as a string
-
+  
                 // Let's put it into an HTML element and parse any directives and expressions
                 // in the code. (Note: This is just an example, modifying the DOM from within
                 // a controller is considered bad style.)
@@ -521,6 +524,30 @@ app
         function(response) { // optional
                 // failed
         }); 
+    };
+    
+    $scope.getDonutData = function(radio_value, index){
+        angular.element(".btn-section-radio-" + index).css("background", "#fff");
+        angular.element("#section-radio-" + index + "-" + radio_value.id).css("background", "#e5e5e5");
+        
+        angular.element(".donut-table-summary-" + index).css("display", "none");
+        angular.element("#donut-summary-" + index + "-" + radio_value.id).css("display", "block");
+        
+        angular.element(".donut-data-" + index).css("opacity", "0");
+        angular.element(".donut-data-" + index).css("height", "0px");
+        angular.element("#donut-data-" + index + "-" + radio_value.id).css("height", "auto");
+        angular.element("#donut-data-" + index + "-" + radio_value.id).css("opacity", "1");
+    }
+    
+    $scope.sizeOf = function(obj) {
+        if ( obj == undefined || typeof(obj) == undefined || obj == null )
+        {
+            return false;
+        }
+        else
+        {
+            return Object.keys(obj).length;
+        }
     };
   })
   
@@ -543,6 +570,8 @@ app
 })
   
 .controller("AttendanceTypeCtrl", function($scope, $templateRequest, $sce, $compile, DTOptionsBuilder, DTColumnBuilder, DTAjaxRenderer, $http) {    
+        $scope.server_link = classtune_server + "/";
+
         $scope.dataset = [{
           data: [],
           label: 'Present',
@@ -695,7 +724,35 @@ app
                                     .withOption('ajax', {
                                              url: '/scripts/modules/school/attendance.php',
                                              type: 'GET',
-                                             data: {school_id: school_id, type_attendance: item.key }
+                                             data: {school_id: school_id },
+                                             complete: function(jqXHR, textStatus) {
+                                                 var dtRespnse = JSON.parse(jqXHR.responseText);
+                                                 if ( dtRespnse.recordsTotal == 0 )
+                                                 {
+                                                     angular.element('#attendance_graph').remove();
+                                                     var options = {
+                                                            autoPlay: 20000,
+                                                            stopOnHover: true,
+                                                            slideSpeed : 700,
+                                                            paginationSpeed : 800,
+                                                            singleItem : true
+                                                     };
+                                                     angular.element('.tmp').remove();
+                                                     angular.element('.owl-carousel-new').owlCarousel(options);
+                                                 }
+                                                 else
+                                                 {
+                                                     var options = {
+                                                            autoPlay: 20000,
+                                                            stopOnHover: true,
+                                                            slideSpeed : 700,
+                                                            paginationSpeed : 800,
+                                                            singleItem : true
+                                                     };
+                                                     angular.element('.tmp').remove();
+                                                     angular.element('.owl-carousel-new').owlCarousel(options);
+                                                 }
+                                             }
                                      })
                                      .withOption('responsive', true)
                                      .withOption('autoWidth', true)
@@ -703,7 +760,7 @@ app
                                      .withOption('bLengthChange', false)
                                      .withOption('bFilter', false)
                                      .withDataProp('data')
-                                     .withOption('scrollY', 650)
+                                     .withOption('scrollY', 800)
                                      .withScroller()
                                      .withOption('serverSide', true)
                                      .withBootstrap()
@@ -775,9 +832,13 @@ app
                                             $scope.students_top = response.data.students_top;
                                             $scope.employees_top = response.data.employees_top;
                                             $scope.students_absent_today = response.data.students_absent_today;
+                                            $scope.class_today = response.data.class_today;
                                             $scope.employees_absent_today = response.data.employees_absent_today;
+                                            $scope.class_employee = response.data.class_employee;
                                             $scope.students_absent_month = response.data.students_absent_month;
+                                            $scope.class_month = response.data.class_month;
                                             $scope.employees_absent_month = response.data.employees_absent_month;
+                                            $scope.class_employee_month = response.data.class_employee_month;
 
                                             var templateUrl = $sce.getTrustedResourceUrl('/views/ajax/attendance_statistics.html');
                                             $templateRequest(templateUrl).then(function(template) {
@@ -903,7 +964,7 @@ app
                                     .withOption('ajax', {
                                              url: '/scripts/modules/school/list.php',
                                              type: 'GET',
-                                             data: {table_info: options.table, school_id : school_id, 'school_domain' : school_domain}
+                                             data: {table_info: options.table, school_id : school_id, 'school_domain' : school_domain, 'server' : classtune_server}
                                      })
                                      .withOption('responsive', true)
                                      .withOption('autoWidth', true)
@@ -994,7 +1055,31 @@ app
                  $scope.menus = response.data;
              });
         }
-     }, 200);
+    }, 200);
+     
+    $scope.sizeOf = function(obj) {
+        if ( obj == undefined || typeof(obj) == undefined || obj == null )
+        {
+            return false;
+        }
+        else
+        {
+            return Object.keys(obj).length;
+        }
+    }; 
+    
+    $scope.open_menu = function(menu_id) {
+        if ( ! angular.element("#a_menu_" + menu_id).parent().hasClass("open") )
+        {
+            angular.element(".menu_dropdown").removeClass("open");
+            angular.element("#a_menu_" + menu_id).parent().addClass("open");
+        }
+        else
+        {
+            angular.element("#a_menu_" + menu_id).parent().removeClass("open");
+        }
+        angular.element("#a_menu_" + menu_id).parent().find('>ul').slideToggle();
+    }; 
 });
 
 'use strict';

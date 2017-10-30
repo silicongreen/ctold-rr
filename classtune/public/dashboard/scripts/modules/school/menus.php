@@ -13,7 +13,7 @@
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
     
-    $result = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 1 AND school_id = 0");
+    $result = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 1 AND root_menu_id = 0 AND school_id = 0");
 
     $menus = array();
     
@@ -33,13 +33,31 @@
     while( $rs = $result->fetch_array(MYSQLI_ASSOC)) 
     {
         $rs['link'] = $server . "/" . $rs['link_key'];
+        $rs['sub_menus'] = array();
+        
+        $res1 = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 1 AND root_menu_id = " . $rs['id'] . " AND school_id = 0");
+        while( $rs1 = $res1->fetch_array(MYSQLI_ASSOC)) 
+        {
+            $rs1['link'] = $server . "/" . $rs1['link_key'];
+            $rs['sub_menus'][] = $rs1;
+        }
         $menus[] = $rs;
     }
     
-    $result = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 0 AND school_id = " . $school_id);
+    $result = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 0 AND root_menu_id = 0 AND school_id = " . $school_id);
 
     while( $rs = $result->fetch_array(MYSQLI_ASSOC)) 
     {
+        $rs['link'] = $server . "/" . $rs['link_key'];
+        
+        $rs['sub_menus'] = array();
+        $res1 = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 0 AND root_menu_id = " . $rs['id'] . " AND school_id = " . $school_id);
+        while( $rs1 = $res1->fetch_array(MYSQLI_ASSOC)) 
+        {
+            $rs1['link'] = $server . "/" . $rs1['link_key'];
+            $rs['sub_menus'][] = $rs1;
+        }
+        
         $menus[] = $rs;
     }
     

@@ -46,7 +46,7 @@
   </div>
     
     
-<div class="modal fade visible-xs-block" id="loginModal" role="dialog">
+<div class="modal fade hidden-lg hidden-md hidden-sm" id="loginModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->

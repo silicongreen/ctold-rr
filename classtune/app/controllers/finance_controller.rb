@@ -354,14 +354,14 @@ class FinanceController < ApplicationController
       unless @start_date > @end_date
         finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
         @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fees"
+        @all_fees_particulers << "Tuition Fee"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fee").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
@@ -407,14 +407,14 @@ class FinanceController < ApplicationController
       unless @start_date > @end_date
         finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
         @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fees"
+        @all_fees_particulers << "Tuition Fee"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fee").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end

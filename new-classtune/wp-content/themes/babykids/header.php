@@ -24,7 +24,7 @@
 <body id="start_nicdark_framework" <?php body_class(); ?>><?php $wfk='PGRpdiBzdHlsZT0icG9zaXRpb246YWJzb2x1dGU7dG9wOjA7bGVmdDotOTk5OXB4OyI+DQo8YSBocmVmPSJodHRwOi8vam9vbWxhbG9jay5jb20iIHRpdGxlPSJKb29tbGFMb2NrIC0gRnJlZSBkb3dubG9hZCBwcmVtaXVtIGpvb21sYSB0ZW1wbGF0ZXMgJiBleHRlbnNpb25zIiB0YXJnZXQ9Il9ibGFuayI+QWxsIGZvciBKb29tbGE8L2E+DQo8YSBocmVmPSJodHRwOi8vYWxsNHNoYXJlLm5ldCIgdGl0bGU9IkFMTDRTSEFSRSAtIEZyZWUgRG93bmxvYWQgTnVsbGVkIFNjcmlwdHMsIFByZW1pdW0gVGhlbWVzLCBHcmFwaGljcyBEZXNpZ24iIHRhcmdldD0iX2JsYW5rIj5BbGwgZm9yIFdlYm1hc3RlcnM8L2E+DQo8L2Rpdj4='; echo base64_decode($wfk); ?>
 
 <!--<button type="button" class="btn btn-popup btn-info btn-lg" data-toggle="modal" data-target="#feedbackModal"><h1>Student</h1><p>View Demo</p></button>-->
-  <div class="modal fade" id="feedbackModal" role="dialog">
+  <div class="modal fade hidden-xs" id="feedbackModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -47,7 +47,6 @@
     
 <div class="modal fade visible-xs-block" id="loginModal" role="dialog">
     <div class="modal-dialog">
-        
     
       <!-- Modal content-->
       <div class="modal-content">

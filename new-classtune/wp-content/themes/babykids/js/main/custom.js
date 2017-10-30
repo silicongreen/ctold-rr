@@ -33,7 +33,6 @@
 
 
 
-
 jQuery("#login-form").hide().click(function(){
     return false;
 });
@@ -44,6 +43,14 @@ jQuery("#login-button").show().click(function(){
 jQuery(document).click(function(){
     jQuery("#login-form").slideUp();
 });
+
+
+//Mobile Login
+
+jQuery(document).ready(function(){     
+   jQuery('#loginModal').modal('show');
+}); 
+
 
 //=================Login End======================
 

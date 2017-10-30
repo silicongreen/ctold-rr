@@ -352,9 +352,9 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate')
-        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate')
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date}' and due_date <= '#{@fin_end_date}'"] )
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
         @all_fees_particulers = []
         @all_fees_particulers << "Tuition Fees"
         @all_fees_particulers << "Yearly Session Charge"
@@ -364,8 +364,9 @@ class FinanceController < ApplicationController
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
+                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
                 if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
-                  @all_fees_particulers << fee_particular.name.gsub(" 7.5%","")
+                  @all_fees_particulers << fee_particular.name
                 end
               end
             end
@@ -408,9 +409,10 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate')
-        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate')
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date}' and due_date <= '#{@fin_end_date}'"] )
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+       
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
         @all_fees_particulers = []
         @all_fees_particulers << "Tuition Fees"
         @all_fees_particulers << "Yearly Session Charge"
@@ -420,8 +422,9 @@ class FinanceController < ApplicationController
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
+                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
                 if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
-                  @all_fees_particulers << fee_particular.name.gsub(" 7.5%","")
+                  @all_fees_particulers << fee_particular.name
                 end
               end
             end

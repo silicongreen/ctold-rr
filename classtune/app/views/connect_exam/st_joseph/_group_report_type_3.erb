@@ -37,7 +37,7 @@
                       <td class="col-pdf"><b><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% @top_exam_group.each do |top_exam| %>
-                          <td class="col-pdf group_exam" colspan="3"><%= top_exam %></td>
+                          <td class="col-pdf group_exam" colspan="2"><%= top_exam %></td>
                         <% end %>
                       <% end %>
                       

@@ -348,6 +348,34 @@ class FinanceController < ApplicationController
 
   #transaction-----------------------
 
+  def update_monthly_report_fees
+    fixed_category_name
+    if date_format_check
+      unless @start_date > @end_date
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
+        @all_fees_particulers = []
+        @all_fees_particulers << "Tuition Fees"
+        unless finance_fee_collections.blank?
+          finance_fee_collections.each do |fee_collection|
+            fee_category = fee_collection.fee_category
+            fee_particulars = fee_category.fee_particulars
+            unless fee_particulars.blank?
+              fee_particulars.each do |fee_particular|
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                  @all_fees_particulers << fee_particular.name
+                end
+              end
+            end
+          end
+        end
+        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+        
+      else
+        flash[:warn_notice] = "#{t('flash17')}"
+        redirect_to :action=>:monthly_report_fees
+      end
+    end
+  end
 
   def update_monthly_report
 
@@ -373,6 +401,39 @@ class FinanceController < ApplicationController
     end
   end
 
+  def transaction_pdf_fees
+    fixed_category_name
+    if date_format_check
+      unless @start_date > @end_date
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
+        @all_fees_particulers = []
+        @all_fees_particulers << "Tuition Fees"
+        unless finance_fee_collections.blank?
+          finance_fee_collections.each do |fee_collection|
+            fee_category = fee_collection.fee_category
+            fee_particulars = fee_category.fee_particulars
+            unless fee_particulars.blank?
+              fee_particulars.each do |fee_particular|
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                  @all_fees_particulers << fee_particular.name
+                end
+              end
+            end
+          end
+        end
+        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+       
+        render :pdf => 'transaction_pdf_fees',
+        :margin => {:top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :orientation => 'Landscape',
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        end
+    end
+  end
 
   def transaction_pdf
     fixed_category_name

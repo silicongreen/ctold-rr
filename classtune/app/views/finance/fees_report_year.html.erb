@@ -33,11 +33,12 @@
       <div class="fees-table-description"><%= t('description') %></div>
       <div class="fees-table-expenses"><%= t('amount') %></div>
     </div>
-
+    <% @batchs = Batch.active %>
+      
     <% @batchs.each do |c| %>
 
       <% sids = c.students(&:id) %>
-      <% s = FinanceTransaction.find_all_by_student_id(sids, :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@last_date}'and category_id ='#{3}'"]) %>
+      <% s = FinanceTransaction.find_all_by_student_id(sids, :conditions => ["transaction_date >= '2016-05-06' and transaction_date <= '2018-05-06'and category_id ='#{3}'"]) %>
 
       <% s.each do |t| %>
         <% amount += t.amount %>

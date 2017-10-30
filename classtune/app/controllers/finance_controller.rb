@@ -352,16 +352,19 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate')
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate')
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date}' and due_date <= '#{@fin_end_date}'"] )
         @all_fees_particulers = []
         @all_fees_particulers << "Tuition Fees"
+        @all_fees_particulers << "Yearly Session Charge"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end
@@ -405,16 +408,19 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '2017-06-01' and due_date <= '2018-06-31'"] )
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate')
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate')
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date}' and due_date <= '#{@fin_end_date}'"] )
         @all_fees_particulers = []
         @all_fees_particulers << "Tuition Fees"
+        @all_fees_particulers << "Yearly Session Charge"
         unless finance_fee_collections.blank?
           finance_fee_collections.each do |fee_collection|
             fee_category = fee_collection.fee_category
             fee_particulars = fee_category.fee_particulars
             unless fee_particulars.blank?
               fee_particulars.each do |fee_particular|
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil?
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil?
                   @all_fees_particulers << fee_particular.name
                 end
               end

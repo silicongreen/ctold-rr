@@ -61,6 +61,16 @@
     </div>
     <%= f.text_area "description" %>
     <div class="label-field-pair">
+      <label for="event_send_notification">Send Notification?</label>
+      <input name="event[send_notification]" type="hidden" value="0">
+      <input id="event_send_notification" name="event[send_notification]" type="checkbox" value="1">
+      <% if @event.notification_already_send.to_i == 1 %>
+        <font color="green">Notification Already Send For This Event</span>
+      <% else %>
+        <font color="red">Notification Yet Not Send For This Event</span>
+      <% end %>  
+    </div>
+    <div class="label-field-pair">
       <label for="is-holiday"><%= t('is_holiday') %></label>
       <%= f.check_box :is_holiday %>
     </div>
@@ -78,3 +88,11 @@
 
     });
 </script>
+
+<style>
+    .label-field-pair input[type='checkbox']
+    {
+        width: 20px;
+    }
+    
+</style>    

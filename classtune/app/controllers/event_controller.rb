@@ -322,14 +322,18 @@ class EventController < ApplicationController
         Delayed::Job.enqueue(SmsManager.new(message,recipients))
       end
     end
-    Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-        :recipient_ids => reminder_recipient_ids,
-        :subject=>reminder_subject,
-        :rtype=>1,
-        :rid=>event.id,
-        :student_id => student_ids,
-        :batch_id => batch_ids,
-        :body=>reminder_body ))
+    if event.send_notification.to_i == 1 and !reminder_recipient_ids.blank?
+      event.notification_already_send = 1
+      event.save
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+          :recipient_ids => reminder_recipient_ids,
+          :subject=>reminder_subject,
+          :rtype=>1,
+          :rid=>event.id,
+          :student_id => student_ids,
+          :batch_id => batch_ids,
+          :body=>reminder_body ))
+    end
     redirect_to :controller=>'calendar',:action=>'index'
   end
 

@@ -94,6 +94,8 @@
       <label >Upload Icon (500 KB, 100w*100h)</label>
       <div class="text-input-bg" id="event-image"><%= f.file_field :icon %></div>
     </div>
+    
+  
 
     <div class="label-field-pair">
       <label for="description"><%= t('description') %>:</label>
@@ -101,9 +103,16 @@
 
     <%= f.text_area "description" %>
     <div class="label-field-pair">
+      <label for="event_send_notification">Send Notification?</label>
+      <input name="events[send_notification]" type="hidden" value="0">
+      <input id="events_send_notification" name="events[send_notification]" type="checkbox" value="1">
+    </div>
+    <div class="label-field-pair">
       <label for="is-holiday"><%= t('is_holiday') %>?</label>
       <%= f.check_box :is_holiday %>
     </div>
+    
+    
 
     <div class="label-field-pair">
       <label for="end-date"><%= t('common_event') %></label>
@@ -142,3 +151,11 @@
 <% content_for :head do %>
   <%= javascript_include_tag "minicolorpicker/jquery.minicolors" %>
 <% end %>
+
+<style>
+    .label-field-pair input[type='checkbox']
+    {
+        width: 20px;
+    }
+    
+</style> 

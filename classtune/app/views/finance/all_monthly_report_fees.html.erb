@@ -26,6 +26,8 @@
   <ul>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('pdf_report')}",
         {:controller => "finance", :action => "transaction_pdf_fees_month", :start_date => @start_date, :end_date=>@end_date},:target => '_blank' %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "CSV REPORT",
+        {:controller => "finance", :action => "transaction_pdf_fees_month_csv", :start_date => @start_date, :end_date=>@end_date},:target => '_blank' %></li>
   </ul>
 </div>
 </div>

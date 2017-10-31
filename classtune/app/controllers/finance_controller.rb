@@ -384,6 +384,240 @@ class FinanceController < ApplicationController
     end
   end
   
+  
+  def transaction_pdf_fees_csv
+    fixed_category_name
+    if date_format_check
+      unless @start_date > @end_date
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+       
+        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
+        @all_fees_particulers = []
+        @all_fees_particulers << "Tuition Fees"
+        @all_fees_particulers << "Yearly Session Charge"
+        unless finance_fee_collections.blank?
+          finance_fee_collections.each do |fee_collection|
+            fee_category = fee_collection.fee_category
+            fee_particulars = fee_category.fee_particulars
+            unless fee_particulars.blank?
+              fee_particulars.each do |fee_particular|
+                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
+                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
+                  @all_fees_particulers << fee_particular.name
+                end
+              end
+            end
+          end
+        end
+        @all_fees_particulers << "Fine"
+        @all_fees_particulers << "VAT"
+        
+        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+    
+    end
+    end
+    
+   
+    csv = FasterCSV.generate do |csv|
+      cols = []
+      cols << "Month"
+      @all_fees_particulers.each do |fees_particuler|
+        cols << fees_particuler
+      end
+      cols << "Total Collection"
+      csv << cols
+      fee_total = {}
+      grand_total = 0.0
+      (@start_date.to_date..@end_date.to_date).each do |day|
+        total_fees = 0.0
+        cols = []
+        cols << day
+        @all_fees_particulers.each do |fees_particuler|
+          fee_amount = 0.0
+          i = 0
+          unless @transactions.blank?
+            @transactions.each do |trans|
+              if trans.transaction_date == day
+                if fees_particuler!="Fine"
+                  finance_fees = FinanceFee.find_by_id(trans.finance_id)
+                  if !finance_fees.blank? and finance_fees.balance.to_i == 0
+                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    unless fee_particulars.blank?
+                      fee_particulars.each do |fee_particular_new|
+                        unless fee_particular_new.name.index(fees_particuler).nil?
+                         fee_amount = fee_amount.to_f+fee_particular_new.amount
+                        end  
+                      end  
+                    end
+
+                  end
+                else
+                  fee_amount = fee_amount.to_f+trans.fine_amount
+                end  
+              end
+            end
+          end
+          total_fees = total_fees.to_f+fee_amount.to_f
+          if fee_amount!=0
+            cols << fee_amount.to_s
+          else
+            cols << "-"
+          end  
+          if fee_total[i].blank?
+            fee_total[i] = 0
+          end
+          fee_total[i] = fee_total[i]+fee_amount 
+          grand_total = grand_total.to_f+fee_amount.to_f
+          i = i+1
+        end
+        if total_fees!=0
+            cols << total_fees.to_s
+        else
+          cols << "-"
+        end
+        
+        csv << cols
+      end
+      cols = []
+      cols << "Total Collection"
+      i = 0
+      @all_fees_particulers.each do |fees_particuler|
+        if fee_total[i].blank? or fee_total[i] == 0
+            cols << "-"
+        else
+          cols << fee_total[i].to_s
+        end
+        i = i+1
+      end
+      if grand_total!=0
+        cols << grand_total.to_s
+      else
+        cols << "-"
+      end
+      csv << cols
+    end
+    filename = "monthly-report-#{Time.now.to_date.to_s}.csv"
+    send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+  end
+  
+  def transaction_pdf_fees_month_csv
+    fixed_category_name
+    @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+    @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
+    @all_fees_particulers = []
+    @all_fees_particulers << "Tuition Fees"
+    @all_fees_particulers << "Yearly Session Charge"
+    unless finance_fee_collections.blank?
+      finance_fee_collections.each do |fee_collection|
+        fee_category = fee_collection.fee_category
+        fee_particulars = fee_category.fee_particulars
+        unless fee_particulars.blank?
+          fee_particulars.each do |fee_particular|
+            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
+            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
+              @all_fees_particulers << fee_particular.name
+            end
+          end
+        end
+      end
+    end
+    @all_fees_particulers << "Fine"
+    @all_fees_particulers << "VAT"
+    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+    
+    start_date = @fin_start_date.to_date
+    end_date = Date.today.to_date
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    @dates = number_of_months.times.each_with_object([]) do |count, array|
+      month_name_count = start_date.beginning_of_month + count.months
+      month_name = month_name_count.to_date.strftime("%b, %y")
+      array << [start_date.beginning_of_month + count.months,
+                start_date.end_of_month + count.months,month_name]
+    end
+    csv = FasterCSV.generate do |csv|
+      cols = []
+      cols << "Month"
+      @all_fees_particulers.each do |fees_particuler|
+        cols << fees_particuler
+      end
+      cols << "Total Collection"
+      csv << cols
+      fee_total = {}
+      grand_total = 0.0
+      @dates.each do |day|
+        total_fees = 0.0
+        cols = []
+        cols << day.last
+        @all_fees_particulers.each do |fees_particuler|
+          fee_amount = 0.0
+          i = 0
+          unless @transactions.blank?
+            @transactions.each do |trans|
+              if trans.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y")
+                if fees_particuler!="Fine"
+                  finance_fees = FinanceFee.find_by_id(trans.finance_id)
+                  if !finance_fees.blank? and finance_fees.balance.to_i == 0
+                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    unless fee_particulars.blank?
+                      fee_particulars.each do |fee_particular_new|
+                        unless fee_particular_new.name.index(fees_particuler).nil?
+                         fee_amount = fee_amount.to_f+fee_particular_new.amount
+                        end  
+                      end  
+                    end
+
+                  end
+                else
+                  fee_amount = fee_amount.to_f+trans.fine_amount
+                end  
+              end
+            end
+          end
+          total_fees = total_fees.to_f+fee_amount.to_f
+          if fee_amount!=0
+            cols << fee_amount.to_s
+          else
+            cols << "-"
+          end  
+          if fee_total[i].blank?
+            fee_total[i] = 0
+          end
+          fee_total[i] = fee_total[i]+fee_amount 
+          grand_total = grand_total.to_f+fee_amount.to_f
+          i = i+1
+        end
+        if total_fees!=0
+            cols << total_fees.to_s
+        else
+          cols << "-"
+        end
+        
+        csv << cols
+      end
+      cols = []
+      cols << "Total Collection"
+      i = 0
+      @all_fees_particulers.each do |fees_particuler|
+        if fee_total[i].blank? or fee_total[i] == 0
+            cols << "-"
+        else
+          cols << fee_total[i].to_s
+        end
+        i = i+1
+      end
+      if grand_total!=0
+        cols << grand_total.to_s
+      else
+        cols << "-"
+      end
+      csv << cols
+    end
+    filename = "monthly-report-#{Time.now.to_date.to_s}.csv"
+    send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+  end
+  
   def transaction_pdf_fees_month
     fixed_category_name
     @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value

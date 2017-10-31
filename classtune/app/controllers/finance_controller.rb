@@ -347,7 +347,91 @@ class FinanceController < ApplicationController
   end
 
   #transaction-----------------------
-
+  def all_monthly_report_fees
+    fixed_category_name
+    @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+    @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
+    @all_fees_particulers = []
+    @all_fees_particulers << "Tuition Fees"
+    @all_fees_particulers << "Yearly Session Charge"
+    unless finance_fee_collections.blank?
+      finance_fee_collections.each do |fee_collection|
+        fee_category = fee_collection.fee_category
+        fee_particulars = fee_category.fee_particulars
+        unless fee_particulars.blank?
+          fee_particulars.each do |fee_particular|
+            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
+            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
+              @all_fees_particulers << fee_particular.name
+            end
+          end
+        end
+      end
+    end
+    @all_fees_particulers << "Fine"
+    @all_fees_particulers << "VAT"
+    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+    
+    start_date = @fin_start_date.to_date
+    end_date = Date.today.to_date
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    @dates = number_of_months.times.each_with_object([]) do |count, array|
+      month_name_count = start_date.beginning_of_month + count.months
+      month_name = month_name_count.to_date.strftime("%b, %y")
+      array << [start_date.beginning_of_month + count.months,
+                start_date.end_of_month + count.months,month_name]
+    end
+  end
+  
+  def transaction_pdf_fees_month
+    fixed_category_name
+    @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+    @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
+    @all_fees_particulers = []
+    @all_fees_particulers << "Tuition Fees"
+    @all_fees_particulers << "Yearly Session Charge"
+    unless finance_fee_collections.blank?
+      finance_fee_collections.each do |fee_collection|
+        fee_category = fee_collection.fee_category
+        fee_particulars = fee_category.fee_particulars
+        unless fee_particulars.blank?
+          fee_particulars.each do |fee_particular|
+            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
+            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
+              @all_fees_particulers << fee_particular.name
+            end
+          end
+        end
+      end
+    end
+    @all_fees_particulers << "Fine"
+    @all_fees_particulers << "VAT"
+    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+    
+    start_date = @fin_start_date.to_date
+    end_date = Date.today.to_date
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    @dates = number_of_months.times.each_with_object([]) do |count, array|
+      month_name_count = start_date.beginning_of_month + count.months
+      month_name = month_name_count.to_date.strftime("%b, %y")
+      array << [start_date.beginning_of_month + count.months,
+                start_date.end_of_month + count.months,month_name]
+    end
+    render :pdf => 'transaction_pdf_fees_month',
+        :margin => {:top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :orientation => 'Landscape',
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+   
+  end
+  
+  
+  
   def update_monthly_report_fees
     fixed_category_name
     if date_format_check
@@ -1658,7 +1742,7 @@ class FinanceController < ApplicationController
 
 
     bal=(@total_payable-@total_discount).to_f
-    days=(params[:fees][:transaction_date].to_date-@date.due_date.to_date).to_i
+    days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     if days > 0 and auto_fine
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')

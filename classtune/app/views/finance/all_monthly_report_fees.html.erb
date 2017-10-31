@@ -1,0 +1,126 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('transactions') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('finance_transactions_view') %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('pdf_report')}",
+        {:controller => "finance", :action => "transaction_pdf_fees_month", :start_date => @start_date, :end_date=>@end_date},:target => '_blank' %></li>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+  <div class="bread_crumb">
+
+    <%= link_to 'Fees', :controller => "finance", :action=>"fees_index" %> <div class = "bread-crumb-separator"> > </div>
+    <%= link_to "Fees Report", :controller => "finance", :action => "fees_reports" %><div class = "bread-crumb-separator"> > </div>
+
+    <%= t('finance_transactions_view') %>
+  </div>
+  <% unless @all_fees_particulers.blank? %>  
+  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+
+    <tr class="tr-head">
+      <td>Month</td>
+      <% @all_fees_particulers.each do |fees_particuler| %>
+      <td><%= fees_particuler %></td>
+      <% end %>
+      <td>Total Collection</td>
+    </tr>
+    <% fee_total = {} %>
+    <% grand_total = 0.0 %>
+    
+    <% @dates.each do |day| %>
+    <tr class="tr-odd">
+      <td style="white-space: nowrap;"><%= day.last %></td>
+      <% total_fees = 0.0 %>
+      <% i = 0 %>
+      <% @all_fees_particulers.each do |fees_particuler| %>
+      
+          <% fee_amount = 0.0 %>
+          <% unless @transactions.blank? %>
+            <% @transactions.each do |trans| %>
+              
+              <% if trans.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") %>
+                <% if fees_particuler!="Fine" %>
+                <%
+                  finance_fees = FinanceFee.find_by_id(trans.finance_id)
+                  if !finance_fees.blank? and finance_fees.balance.to_i == 0
+                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    unless fee_particulars.blank?
+                      fee_particulars.each do |fee_particular_new|
+                        unless fee_particular_new.name.index(fees_particuler).nil?
+                         fee_amount = fee_amount.to_f+fee_particular_new.amount
+                        end  
+                      end  
+                    end
+                    
+                  end
+                %>
+                <% else %>
+                  <%  fee_amount = fee_amount.to_f+trans.fine_amount %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% total_fees = total_fees.to_f+fee_amount.to_f  %>
+          
+          <td><%= (fee_amount==0) ? "-" : fee_amount %></td>
+          <% if fee_total[i].blank? %>
+              <% fee_total[i] = 0 %>
+          <% end %>
+          <%  
+          fee_total[i] = fee_total[i]+fee_amount 
+          grand_total = grand_total.to_f+fee_amount.to_f
+        
+          %>
+          <% i = i+1 %>
+      <% end %>
+      <td><%= (total_fees==0) ? "-" : total_fees %></td>
+    </tr>
+    <% end %>
+    <tr class="tr-even">
+        <td style="white-space: nowrap;">Total Collection</td>
+        <% i = 0 %>
+        <% @all_fees_particulers.each do |fees_particuler| %>
+          <td><%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : fee_total[i] %></td>
+        <% i = i+1 %>
+        <% end %>
+        <td><%= (grand_total==0) ? "-" : grand_total %></td>
+    </tr>    
+  </table>
+  <% end %>  
+
+</div>
+<style>
+    table#listing
+    {
+       padding: 0px;
+       width: 100%;
+       overflow-x: auto;
+    }
+    table#listing tr td
+    {
+       padding: 10px;
+    }
+</style>    

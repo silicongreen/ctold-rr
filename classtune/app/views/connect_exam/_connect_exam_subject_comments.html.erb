@@ -136,7 +136,7 @@
         <% time_updated = @updated_at.to_time + 6*60*60+16*60 %>
         <h3> Last Updated : <%= I18n.l(time_updated, :format=>'%A, %d %B %Y %l:%M %p') %> </h3>
         <% end %>
-        <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
+        <div id="sub-button" style="float:right; clear:both;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
       <% end %> 
         
     <% end %>

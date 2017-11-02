@@ -13,69 +13,75 @@
     </head>
     <body>
         <% i = 0 %>
-        <% j = 0 %>
+        <% j = 1 %>
         <% @student_ids.each do |std_id| %>
         
         <% std_info = Student.find(std_id) %>
-        <% i = i+1 %>
-        <% j = j+1 %>
-        <% if i > 2 %>
-          <% i = 1 %>
-          <div style="float:left;clear:both; width:100%; height:12px;"></div>
+        <% i += 1 %>
+        
+        <% unless i % 2 == 0 %>
+          <div style="float:left;clear:both; width:100%; height:10mm;"></div>
         <% end %>
-        <% if j > 4 %>
-          <% j = 1 %>
-          <div style="float:left;clear:both; width:100%; height:5px;"></div>
-        <% end %>
-        <div class="col-xs-6" style="border:1px solid black; padding:0px; margin-left: 20px; width: 47%;">
+        <div class="col-xs-6" style="border:1px solid black; padding:0px; margin-left: 5%; margin-right: 5%; width: 90%;">
             
             <div class="col-xs-12" style="padding:0px;">
-              <div class="col-xs-12" style="padding:0px;"><center><img style='margin-top:5px; height:40px;' src='/images/school_logo/246/cherry-logo.png' /></center></div>
-              <div class="col-xs-12"><center><h4><b><font size="2"><%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
-              <div class="col-xs-12"><center><font size="1">Play Group - 'A' Level, Edexcel Center No- 96440, UK</font></center></div>
+              <div class="col-xs-12" style="padding:0px;"><center><img style='margin-top:5px; height:60px;' src='<%= current_school_detail.logo.url  %> ' /></center></div>
+              <div class="col-xs-12"><center><h4><b><font size="5"><%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
+              <div class="col-xs-12"><center><font size="3"><%= j %> Play Group - 'A' Level, Edexcel Center No- 96440, UK</font></center></div>
             
-              <div class="col-xs-12 black-back border-top-bottom"><center><font size="1"><%= @exam_name %> <%= @term_year %></font></center></div>
+              <div class="col-xs-12 black-back border-top-bottom"><center><font size="4"><%= @exam_name %> <%= @term_year %></font></center></div>
              
-              <div class="col-xs-12 border-bottom"><center><font size="1">Statement of Entry</font></center></div>
+              <div class="col-xs-12 border-bottom"><center><font size="4">Statement of Entry</font></center></div>
           
-              <div class="col-xs-12 border-bottom"><center><b><font size="1"><%= std_info.batch.course.course_name %></font></b></center></div>
+              <div class="col-xs-12 border-bottom"><center><b><font size="4"><%= std_info.batch.course.course_name %></font></b></center></div>
              
             </div>
             
-            <div class="col-xs-12" style="margin-top:5px;padding:0px;">
+            <div class="col-xs-12" style="margin-top:5px;padding:5px;">
               <table class="table table-user-information" width="90%">
                     <tbody>
                      
                       <tr>
-                        <td>Name Of Student:</td>
-                        <td colspan="3"><b>&nbsp;:&nbsp;<%= std_info.full_name %></b></td>
+                          <td><font size="4">Name Of Student:</font></td>
+                          <td colspan="3"><b><font size="4">&nbsp;:&nbsp;<%= std_info.full_name %></font></b></td>
                         <td></td>
                       </tr>
                       <tr>
-                        <td>Roll No:</td>
-                        <td>&nbsp;:&nbsp;<%= std_info.class_roll_no %></td>
+                        <td><font size="4">Roll No:</td>
+                        <td><font size="4">&nbsp;:&nbsp;<%= std_info.class_roll_no %></font></td>
                         <td></td>
-                        <td style="text-align:right;">ID No</td>
-                        <td>&nbsp;:&nbsp;<%= std_info.admission_no %></td>
+                        <td style="text-align:right;"><font size="4">ID No</font></td>
+                        <td><font size="4">&nbsp;:&nbsp;<%= std_info.admission_no %></font></td>
                       </tr>
                       
                     </tbody> 
               </table>       
             </div>
-            <div class="col-xs-12" style="margin-top:0px; font-size:10px;">
+            <div class="col-xs-12" style="margin-top:0px; font-size:10px; ">
                 <p><img src="/images/school_logo/246/principal_signature.png" /></p>
-                <p>Dr. Shaleha Kader</p>
-                <p>Founder Principal & Chairman</p>
+                <p><font size="4">Dr. Shaleha Kader</font></p>
+                <p><font size="4">Founder Principal & Chairman</font></p>
                 
             </div>
             
             <div class="col-xs-12 border-top" style="margin-top:0px; font-size:10px;">
-                &nbsp;&nbsp;Web: www.cherryblossomsint.com,   &nbsp;&nbsp;e-mail: cherryblossomsint@gmail.com
+                <div style="float: left; width: 45%; text-align: left;">
+                  <font size="4">&nbsp;&nbsp;Web: www.cherryblossomsint.com</font>
+                </div>
+                <div style="float: left; width: 55%; text-align: right;">
+                  <font size="4">&nbsp;&nbsp;e-mail: cherryblossomsint@gmail.com;</font>
+                </div>
             </div>
             
             
             
-        </div>   
+        </div> 
+        
+        <% if i % 2 == 0 %>
+          <div style="float:left;clear:both; width:100%; height:10mm;"></div>
+        <% else %>
+          <div style="float:left;clear:both; width:100%; height:15mm;"></div>
+        <% end %>
         <% end %>
     </body>
 </html>
@@ -128,7 +134,9 @@ ul li
 }
 </style>
 <style type="text/css" media="print">
-  @page { size: landscape; }
+  @page {
+      size: A4 portrait;
+  }
 </style>
 <script>
   window.print();

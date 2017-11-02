@@ -13,20 +13,26 @@
     </head>
     <body>
         <% i = 0 %>
-        <% j = 1 %>
+        <% j = 0   %>
         <% @student_ids.each do |std_id| %>
         
         <% std_info = Student.find(std_id) %>
+        <% if i % 2 == 0 %>
+          <% j += 1 %>
+        <% end %>
         <% i += 1 %>
         
         <% unless i % 2 == 0 %>
           <div style="float:left;clear:both; width:100%; height:10mm;"></div>
         <% end %>
+        <% if j % 3 == 0 %>
+          <div style="float:left;clear:both; width:100%; height:5mm;"></div>
+        <% end %>
         <div class="col-xs-6" style="border:1px solid black; padding:0px; margin-left: 5%; margin-right: 5%; width: 90%;">
             
             <div class="col-xs-12" style="padding:0px;">
               <div class="col-xs-12" style="padding:0px;"><center><img style='margin-top:5px; height:60px;' src='<%= current_school_detail.logo.url  %> ' /></center></div>
-              <div class="col-xs-12"><center><h4><b><font size="5"><%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
+              <div class="col-xs-12"><center><h4><b><font size="5"><%= j  %> <%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
               <div class="col-xs-12"><center><font size="3"><%= j %> Play Group - 'A' Level, Edexcel Center No- 96440, UK</font></center></div>
             
               <div class="col-xs-12 black-back border-top-bottom"><center><font size="4"><%= @exam_name %> <%= @term_year %></font></center></div>
@@ -80,7 +86,7 @@
         <% if i % 2 == 0 %>
           <div style="float:left;clear:both; width:100%; height:10mm;"></div>
         <% else %>
-          <div style="float:left;clear:both; width:100%; height:15mm;"></div>
+          <div style="float:left;clear:both; width:100%; height:12mm;"></div>
         <% end %>
         <% end %>
     </body>

@@ -853,6 +853,46 @@ class ExamController < ApplicationController
     redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch_id
   end
   
+  def publish_connect_exam    
+    @exam_connect = ExamConnect.active.find_by_id(params[:id])    
+    #abort @exam_connect.inspect
+    @batch_id = @exam_connect.batch_id
+    @exam_connect.is_published = 1
+    if @exam_connect.save
+      available_user_ids = []
+      batch_ids = {}
+      student_ids = {}
+
+      students = Student.find_all_by_batch_id(@batch_id)
+
+      students.each do |st|
+        available_user_ids << st.user_id
+        batch_ids[st.user_id] = st.batch_id
+        student_ids[st.user_id] = st.id
+        unless st.immediate_contact.nil? 
+          available_user_ids << st.immediate_contact.user_id
+          batch_ids[st.immediate_contact.user_id] = st.batch_id
+          student_ids[st.immediate_contact.user_id] = st.id
+        end
+
+      end
+      unless available_user_ids.blank?
+      Delayed::Job.enqueue(
+          DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => available_user_ids,
+            :subject=>"#{t('result_published')}",
+            :rtype=>2001,
+            :student_id => student_ids,
+            :batch_id => batch_ids,
+            :rid=>@exam_connect.id,
+            :body=>"#{@exam_connect.name} #{t('result_has_been_published')}  <br/>#{t('view_reports')}")
+        )
+      end  
+    end
+    flash[:notice] = "Exam Successfully Published"
+    redirect_to :controller=>"exam", :action=>"exam_connect_list", :id=>@batch_id
+  end
+  
   def grouping
     @batch = Batch.find(params[:id])
     @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)

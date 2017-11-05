@@ -96,7 +96,7 @@
             <% c =cycle('even','odd ') %>
             <% if @leaves[student.id]['percent'].round(2) < @value.to_f and @range == 'Below' %>
               <%  std_count = std_count+1; %>
-              <% if std_count>24 && extender ==0 %>
+              <% if std_count>25 && extender ==0 %>
                   <% std_count = 0 %>
                   <% extender = 1 %>
                   <tr class="page-break">

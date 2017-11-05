@@ -152,11 +152,17 @@
               <% unless @exam_group.exam_type == 'Grades' %>
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg">
-                      <% if markexam==1 %>
-                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
+                      <% if @exam_group.marks_entry.to_i == 1 %>
+                        <% if markexam==1 %>
+                          <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
+                        <% else %>
+                          <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
+                        <% end %>   
                       <% else %>
-                        <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
-                      <% end %>   
+                        <% if markexam!=1 %>
+                         <%= @exam_score.marks %>
+                        <% end %> 
+                      <% end %>  
                     </div></div></td>
               <% else %>
                 <td class="col-2"  <%=styletext%>><div class="label-field-pair">
@@ -221,7 +227,11 @@
                                  
                   <% else %>
                     <td class="col-2">
-                    <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
+                    <% if @exam_group.marks_entry.to_i == 1 %>
+                        <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
+                    <% else %>
+                        <%= @exam_score.remarks %>
+                    <% end %>    
                     </td>    
                   <% end %>
           
@@ -233,7 +243,9 @@
           <% end %>
 
         </table>
+        <% if @exam_group.marks_entry.to_i == 1 %>
         <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :onClick => "if(check_blanks()==true) return true; else return false;" %></div>
+        <% end %>
       <% end %>
     <% else %>
       <p class="flash-msg"> <%= t('no_students_found') %> </p>

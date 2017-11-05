@@ -1630,32 +1630,8 @@ end
       @student = Student.find_by_id(target) 
     end
     @batch = @student.batch
-    @all_connect_exam = []
-    @all_connect_exams = ExamConnect.active.find_all_by_batch_id(@batch.id);
+    @all_connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id,:conditions=>"is_published = 1")
     
-    
-    if !@all_connect_exams.blank?
-      @all_connect_exams.each do |examconnect|
-        @result_publish = true
-        @grouped_exam = GroupedExam.find_all_by_connect_exam_id(examconnect.id);
-        if !@grouped_exam.blank?
-          @grouped_exam.each do |groupexam|
-            @examgroup = ExamGroup.active.find(groupexam.exam_group_id)
-            if @examgroup.result_published==false
-              @result_publish = false
-              break
-            end
-          end
-        else
-          @result_publish = false
-        end   
-           
-        
-        if @result_publish
-          @all_connect_exam<<examconnect
-        end
-      end
-    end
     render :partial=>"combined_exam"
   end
   

@@ -944,7 +944,7 @@ class AssignmentsController < ApplicationController
           
           if !@mobile_number_sms.blank? and MultiSchool.current_school.id == 312
             message = "Your child did not submit the homework '#{@assignment.title}' for '#{@assignment.subject.name}'"
-            Delayed::Job.enqueue(SmsManager.new(message,recipients))
+            Delayed::Job.enqueue(SmsManager.new(message,@mobile_number_sms))
           end
           
           unless available_user_ids.blank?

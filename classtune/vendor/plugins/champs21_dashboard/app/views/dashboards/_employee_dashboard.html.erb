@@ -121,7 +121,7 @@ employee_id = @current_user.employee_record.id
       <div style="clear:both;height: 20px;"></div>
       <% if @current_user.admin? %>
         <% unless session[:access_token].blank? %>
-          <a href="http://dashboard.classtune.com?access_token=<%=session[:access_token]%>&dom=<%=MultiSchool.current_school.code%>&username=<%=current_user.username%>" ><div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>New Dashboard</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div></a>
+          <a href="http://dashboard.classtune.com?access_token=<%=session[:access_token]%>&dom=<%=MultiSchool.current_school.code%>&username=<%=@current_user.username%>" ><div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>New Dashboard</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div></a>
         <% end %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#CFB53B; color:white;'><span style='text-align:center;width:80%; float:left;'>Employee Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'empattendance', :action => 'index' %>
      

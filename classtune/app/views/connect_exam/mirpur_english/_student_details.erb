@@ -1,22 +1,22 @@
 <table class="std_info_table" width="100%" cellspacing="0">
 
     <tr>
-        <td colspan="2">Student's Name </td><td colspan="6" class="font-light">:<%= @student.full_name %></td>
+        <td colspan="2">Student's Name </td><td colspan="6" class="font-light">: <%= @student.full_name %></td>
     </tr>
     <tr>
-        <td colspan="2">Class </td><td colspan="6" class="font-light">:<%= @batch.course.course_name %></td>
+        <td colspan="2">Class </td><td colspan="6" class="font-light">: <%= @batch.course.course_name %></td>
     </tr>
     <tr>
-        <td colspan="2">Roll </td><td colspan="6" class="font-light">:<%= @student.class_roll_no %></td>
+        <td colspan="2">Roll </td><td colspan="6" class="font-light">: <%= @student.class_roll_no %></td>
     </tr>
     <tr>
-        <td colspan="2">Section </td><td class="font-light" colspan="3">:<%= @batch.course.section_name %></td>
+        <td colspan="2">Section </td><td class="font-light" colspan="3">: <%= @batch.course.section_name %></td>
         <td>Shift </td><td class="font-light"  colspan="2">:<%= @batch.name %></td>
 
     </tr>
     <tr>
-        <td colspan="2">Session </td><td colspan="2" class="font-light">:<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
-        <td colspan="2">Version </td><td colspan="2" class="font-light">:English</td>
+        <td colspan="2">Session </td><td colspan="2" class="font-light">: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+        <td colspan="2">Version </td><td colspan="2" class="font-light">: English</td>
     </tr> 
 
     <tr>

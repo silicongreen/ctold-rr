@@ -44,7 +44,82 @@ class SubjectsController < ApplicationController
         }
     end
   end
-
+  def subgroups
+    @subject_id = params[:subject_id]
+    @subject = Subject.find_by_id(@subject_id)
+    unless @subject.blank?
+      @batch = @subject.batch
+      @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject_id)
+      
+    else
+      
+    end   
+    
+  end
+  def new_subgroup
+    @subject_subgroup = SubjectSubgroup.new
+    @subject = Subject.find params[:subject_id]
+    @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject.id)
+    respond_to do |format|
+      format.js { render :action => 'new_subgroup' }
+    end
+  end
+  def create_group
+    @subject = Subject.find params[:subject_id]
+    @subject_subgroup = SubjectSubgroup.new(params[:subject_subgroup])
+    @subject_subgroup.subject_id = @subject.id
+    if @subject_subgroup.save
+      @error = false
+      @batch = @subject.batch
+      @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject.id)
+      flash[:notice] = "Subject Group Created Succesfully"
+    else
+      @error = true
+    end 
+    respond_to do |format|
+      format.js { render :action => 'create_group' }
+    end
+    
+  end
+  
+  def edit_subgroup
+    @subject_subgroup = SubjectSubgroup.find params[:id]
+    @subject = @subject_subgroup.subject
+    @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject.id,:conditions=>["id!=? and parent_id!=?",@subject_subgroup.id,@subject_subgroup.id])
+    respond_to do |format|
+      format.js { render :action => 'edit_subgroup' }
+    end
+  end
+  def update_group
+    @subject = Subject.find params[:subject_id]
+    @subject_subgroup = SubjectSubgroup.find params[:id]
+    @subject_subgroup.parent_id = params[:subject_subgroup][:parent_id]
+    @subject_subgroup.name = params[:subject_subgroup][:name]
+    @subject_subgroup.priority = params[:subject_subgroup][:priority]
+    if @subject_subgroup.save
+      @error = false
+      @batch = @subject.batch
+      @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject.id)
+      flash[:notice] = "Subject Group Saved Succesfully"
+    else
+      @error = true
+    end 
+    respond_to do |format|
+      format.js { render :action => 'update_group' }
+    end
+    
+  end
+  def delete_subgroup
+    @subject_subgroup = SubjectSubgroup.find params[:id]
+    @subject = @subject_subgroup.subject
+    @subject_subgroups = SubjectSubgroup.find_all_by_subject_id(@subject.id)
+    @subject_subgroup.destroy
+    flash[:notice] = "Subject Group Deleted Succesfully"
+  end
+  
+  
+  
+  
   def new
     @subject = Subject.new
     @batch = Batch.find params[:id] if request.xhr? and params[:id]
@@ -664,6 +739,7 @@ class SubjectsController < ApplicationController
       format.js { render :action => partial_path + 'assign' }
     end
   end
+  
   
   def show
     @show_batch_subject = true

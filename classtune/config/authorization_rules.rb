@@ -1084,7 +1084,7 @@ authorization do
     has_permission_on [:configuration], :to => [:index]
     has_permission_on [:courses], :to => [:index,:manage_course, :add_section, :save_batches, :edit_batches, :update_section, :back_add_section, :get_batches_classes, :edit_section, :delete_section, :save_section, :manage_batches,:find_course, :new, :create,:destroy,:edit,:update, :show, :update_batch,:grouped_batches,:create_batch_group,:edit_batch_group,:update_batch_group,:delete_batch_group,:assign_subject_amount,:edit_subject_amount,:destroy_subject_amount]
     has_permission_on [:batches], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :init_data,:assign_tutor,:update_employees,:assign_employee,:batches_ajax]
-    has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group]
+    has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group]
     has_permission_on [:elective_groups],  :to => [:index,:new,:create,:destroy,:edit, :update,:show,:new_elective_subject,:create_elective_subject, :edit_elective_subject, :update_elective_subject]
     has_permission_on [:student], :to => [:electives, :assign_students, :unassign_students, :assign_all_students, :unassign_all_students, :profile, :guardians, :show_previous_details]
     has_permission_on [:batch_transfers],
@@ -1106,7 +1106,7 @@ authorization do
   role :subject_master do
     has_permission_on [:configuration], :to => [:index]
     has_permission_on [:student], :to => [:electives, :assign_students, :unassign_students, :assign_all_students, :unassign_all_students]
-    has_permission_on [:subjects],        :to => [:index,:new,:create,:destroy,:edit, :update,:show, :assign, :assign_elective_group]
+    has_permission_on [:subjects],        :to => [:index,:new,:create,:destroy,:edit, :update,:show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group]
     has_permission_on [:elective_groups],  :to => [:index,:new,:create,:destroy,:edit, :update,:show]
   end
 
@@ -1819,7 +1819,7 @@ authorization do
     has_permission_on [:student_attendance], :to => [:index, :student, :month, :student_report]
     has_permission_on [:configuration], :to => [:index,:settings,:permissions, :add_weekly_holidays, :delete]
     has_permission_on [:single_access_tokens], :to => [:index,:new,:create,:destroy]
-    has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group]
+    has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group]
     has_permission_on [:elective_groups],  :to => [:index,:new,:create,:destroy,:edit, :update,:show,:new_elective_subject,:create_elective_subject, :edit_elective_subject, :update_elective_subject]
     has_permission_on [:courses],
       :to => [
@@ -2632,6 +2632,12 @@ authorization do
     has_permission_on [:subject],
       :to => [
       :index,
+      :subgroups,
+      :new_subgroup,
+      :delete_subgroup,
+      :edit_subgroup,
+      :update_group,
+      :create_group,
       :create,
       :delete,
       :edit,

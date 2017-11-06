@@ -1,0 +1,2 @@
+page.replace_html 'modal-box', :partial => 'new_subgroup'
+page << "Modalbox.show($('modal-box'), {title: 'Add New Subgroup', width: 500});"

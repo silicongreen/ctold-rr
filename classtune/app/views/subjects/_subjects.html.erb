@@ -73,7 +73,11 @@
               <%= image_tag "/images/icons/subjects/#{subject.icon_number}", :class => 'custom_icon', :style=> "float: left; margin-right: 5px;" %>
             <% end %>   
             <div style="display: inline-table; vertical-align: top; margin-left: 10px; margin-top: 15px;">
-              <%= truncate(subject.name, :length => 30)  %>
+              <% if @show_batch_subject %> 
+                <%= link_to truncate(subject.name, :length => 30),:controller=>"subjects",:action => 'subgroups', :subject_id => subject.id %>
+              <% else %>  
+                <%= truncate(subject.name, :length => 30)  %>
+              <% end %>  
               <% a_message = s_message.split("|||")  %>  
               <% if a_message.length > 1 %>  
               <br /><%= a_message[0] %><Br />

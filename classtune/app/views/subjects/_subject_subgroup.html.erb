@@ -1,0 +1,43 @@
+
+  <h4>Subject Subgroups for <%= @batch.full_name %>, Subject: <%= @subject.name  %>  </h4>    
+  <div class="add_sub"  style="margin-left:0px; width:100%">
+      <%= link_to_remote "Add Subject Subgroup", :url => { :action => 'new_subgroup', :subject_id => @subject.id} %>
+  </div> 
+  <% unless @subject_subgroups.blank? %>
+    <% @subject_subgroups.each do |subgroup| %>
+      <ul id="category-list">
+        <li id="subject-<%= subgroup.id %>" class="list<%= cycle('even','odd')%> listdata">
+            <div class="category-name" style="width: 30%;">
+
+                <div style="display: inline-table; vertical-align: top; margin-left: 10px;">
+                  <%= truncate(subgroup.name, :length => 30)  %> (Priority : <%= subgroup.priority %>)
+                </div>
+            </div> 
+            <div class="opt">
+                <div class="category-code">
+                  <% if subgroup.parent_id.blank? or subgroup.parent_id == 0 %>
+                    <%= "Parent Group" %>
+                  <% else %>
+                    <% subgroup_name =  SubjectSubgroup.find_by_id(subgroup.parent_id) %>
+                    <% unless subgroup_name.blank? %>
+                      <%= subgroup_name.name %>
+                    <% end %>
+
+                  <% end %>  
+                </div>
+                <div class="category-edit">
+                  <%= link_to_remote(t('edit_text'),
+                    :url => { :controller=>"subjects",:action => 'edit_subgroup', :id =>subgroup.id},
+                    :method => 'get' ) %> &nbsp;&nbsp;&nbsp;
+                   <%= link_to_remote(t('delete_text'),
+                    :url => { :controller=>"subjects",:action => 'delete_subgroup', :id =>subgroup.id},
+                    :method => 'delete',
+                    :confirm => t('delete_confirm_msg'),
+                    :update => "subject-#{subgroup.id}") %>
+                </div>
+            </div>
+        </li> 
+      </ul>
+
+    <% end %>
+  <% end %>

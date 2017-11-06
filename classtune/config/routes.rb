@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :class_timing_sets,
     :member => {:new_class_timings => [:post],:create_class_timings => [:post],:edit_class_timings => [:post],:update_class_timings => [:post],:delete_class_timings => [:post,:delete]},
     :collection => {:new_batch_class_timing_set => [:get],:list_batches => [:post],:add_batch => [:post]}
-  map.resources :subjects
+  map.resources :subjects,:collection=>{:subgroups=>[:get],:new_subgroup=>[:get],:create_group=>[:post],:edit_subgroup=>[:get],:update_group=>[:post],:delete_subgroup=>[:post,:delete]}
  
   map.resources :attendances, :collection=>{:rollcall=>:get,:subjects=>:get,:get_subject_student=>:get,:save_attendance_subject=>:post,:graph_code=>:get,:daily_register=>:get,:subject_wise_register=>:get,:get_subject_report_pdf=>:get}
   map.resources :employee_attendances

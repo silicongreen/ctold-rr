@@ -27,8 +27,12 @@
                       <td class="col-pdf"><%= "End" %></td>
                   </tr>
                   <tr class="tr-blank"></tr>
+                  <% unless @student.blank? %>
+                    <% std_subjects = @student.subjects.map(&:subject_id) %>
+                  <% end %>
                   <% @exam_group.exams.each do |exam| %>
-                    <% @exam = exam %>          
+                    <% @exam = exam %>    
+                    <% if @student.blank? or !exam.subject.elective_group_id.nil? or std_subjects.include?(exam.subject.id) %>
                     <tr class="<%= cycle('even' , 'odd') %>">
                         <% @exam = exam %>
                         <td class="col-pdf"><%= exam.subject.name %></td>
@@ -42,7 +46,8 @@
                           <td class="col-pdf">N/A</td>
                         <% end %>
 
-                    </tr>          
+                    </tr>  
+                    <% end %>
                   <% end %>
               </table>
 

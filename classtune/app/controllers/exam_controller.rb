@@ -522,14 +522,14 @@ class ExamController < ApplicationController
   def student_exam_schedule
     @current_user = current_user   
     if @current_user.student?
-      student = current_user.student_record        
-      @batch = student.batch
+      @student = current_user.student_record        
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_groups = @batch.exam_groups      
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
-      student = Student.find_by_id(target)
-      @batch = student.batch
+      @student = Student.find_by_id(target)
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_groups = @batch.exam_groups
     else
@@ -540,15 +540,15 @@ class ExamController < ApplicationController
   def student_exam_schedule_view
     @current_user = current_user
     if @current_user.student?
-      student = current_user.student_record   
-      @batch = student.batch
+      @student = current_user.student_record   
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_group = ExamGroup.active.find(params[:id], :include => :exams) 
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 2,current_user.id])
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
-      student = Student.find_by_id(target)
-      @batch = student.batch
+      @student = Student.find_by_id(target)
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
       Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 2,current_user.id])
@@ -558,14 +558,14 @@ class ExamController < ApplicationController
   def exam_schedule_pdf
     @current_user = current_user
     if @current_user.student?
-      student = current_user.student_record   
-      @batch = student.batch
+      @student = current_user.student_record   
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_group = ExamGroup.active.find(params[:id], :include => :exams) 
     elsif    @current_user.parent?
       target = @current_user.guardian_entry.current_ward_id      
-      student = Student.find_by_id(target)
-      @batch = student.batch
+      @student = Student.find_by_id(target)
+      @batch = @student.batch
       @course = @batch.course unless @batch.nil?
       @exam_group = ExamGroup.active.find(params[:id], :include => :exams)
     elsif    @current_user.employee?

@@ -63,16 +63,29 @@
           <% fee_amount = 0.0 %>
           <% unless @transactions.blank? %>
             <% @transactions.each do |trans| %>
+             
+              
+                    
               
               <% if trans.transaction_date == day %>
+                
                 <% if fees_particuler!="Fine" %>
                 <%
                   finance_fees = FinanceFee.find_by_id(trans.finance_id)
+               
                   if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    
+                    student_data = Student.find finance_fees.student_id
+                    fee_collection = finance_fees.finance_fee_collection
+                    
+                    fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
+                   
                     unless fee_particulars.blank?
+                       
                       fee_particulars.each do |fee_particular_new|
+                        
                         unless fee_particular_new.name.index(fees_particuler).nil?
+                        
                          fee_amount = fee_amount.to_f+fee_particular_new.amount
                         end  
                       end  

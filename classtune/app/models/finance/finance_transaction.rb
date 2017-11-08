@@ -43,6 +43,7 @@ class FinanceTransaction < ActiveRecord::Base
   def verify_precision
     self.amount = Champs21Precision.set_and_modify_precision self.amount
     self.fine_amount = Champs21Precision.set_and_modify_precision self.fine_amount
+    self.vat_amount = Champs21Precision.set_and_modify_precision self.vat_amount
   end
 
   def self.report(start_date,end_date,page)
@@ -311,7 +312,7 @@ INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id",
     if finance_type=="FinanceFee"
       update_attributes(:batch_id=>"#{payee.batch_id}")
       FeeTransaction.create(:finance_fee_id=>finance.id,:finance_transaction_id=>id)
-      balance=finance.balance+fine_amount-(amount)
+      balance=finance.balance+fine_amount+vat_amount-(amount)
       finance.update_attributes(:balance=>balance)
     end
 

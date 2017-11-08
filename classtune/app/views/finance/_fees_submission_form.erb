@@ -74,8 +74,8 @@
 <br />
 
 <% unless @financefee.is_paid == true or (@total_payable-@total_discount==0)%>
-  <%= render :partial => "student_fine_submission" if @fine.nil? %>
-  <%= render :partial => "student_vat_submission" if @vat.nil? %>
+  <%= render :partial => "student_fine_submission" if @fine.nil? or @fine.to_i==0 %>
+  <%= render :partial => "student_vat_submission" if @vat.nil? or @vat.to_i==0 %>
 <% end %>
 
 <div class="height-fixer"> </div>
@@ -147,7 +147,7 @@
 
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
-      <% unless @vat.nil? %>
+      <% if !@vat.nil? and @vat.to_i != 0 %>
         <tr class="tr-<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
           <td class="col-2"><span class="themed_text"><%= "VAT" %></span></td>
@@ -161,8 +161,7 @@
           <% total_fees = @vat %>
         <% end %>
       <% end %>
-        
-      <% unless @fine.nil? %>
+       <% if !@fine.nil? and @fine.to_i != 0 %> 
         <tr class="tr-<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
           <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= Date.today %></span></td>
@@ -187,6 +186,16 @@
                 </td>
               </tr>
               <% total_fees += trans.fine_amount.to_f %>
+            <% end %>
+            <% if trans.vat_included %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i+=1 %></td>
+                <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>
+                <td class="col-6">
+                  <%= precision_label(trans.vat_amount) %>
+                </td>
+              </tr>
+              <% total_fees += trans.vat_amount.to_f %>
             <% end %>
           <% end %>
         <% end %>

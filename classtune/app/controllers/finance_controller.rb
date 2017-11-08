@@ -442,7 +442,9 @@ class FinanceController < ApplicationController
                 if fees_particuler!="Fine"
                   finance_fees = FinanceFee.find_by_id(trans.finance_id)
                   if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    student_data = Student.find finance_fees.student_id
+                    fee_collection = finance_fees.finance_fee_collection
+                    fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
                     unless fee_particulars.blank?
                       fee_particulars.each do |fee_particular_new|
                         unless fee_particular_new.name.index(fees_particuler).nil?
@@ -562,7 +564,9 @@ class FinanceController < ApplicationController
                 if fees_particuler!="Fine"
                   finance_fees = FinanceFee.find_by_id(trans.finance_id)
                   if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                    fee_particulars = finance_fees.finance_fee_collection.fee_category.fee_particulars
+                    student_data = Student.find finance_fees.student_id
+                    fee_collection = finance_fees.finance_fee_collection
+                    fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
                     unless fee_particulars.blank?
                       fee_particulars.each do |fee_particular_new|
                         unless fee_particular_new.name.index(fees_particuler).nil?
@@ -2157,6 +2161,10 @@ class FinanceController < ApplicationController
       else
         @financefee.errors.add_to_base("#{t('flash24')}")
       end
+      
+      unless params[:vat][:fine].to_f < 0
+         @fine = (params[:vat][:fine])
+      end
 
       @due_date = @fee_collection.due_date
 
@@ -2198,6 +2206,10 @@ class FinanceController < ApplicationController
         @fine = (params[:fine][:fee])
       else
         @financefee.errors.add_to_base("#{t('flash24')}")
+      end
+      
+      unless params[:fine][:vat].to_f < 0
+         @vat = (params[:fine][:vat])
       end
 
       @due_date = @fee_collection.due_date
@@ -2297,6 +2309,9 @@ class FinanceController < ApplicationController
     else
       flash[:notice] = "#{t('flash24')}"
     end
+    unless params[:vat][:fine].to_f < 0
+      @fine = (params[:vat][:fine])
+    end
     @paid_fees = @financefee.finance_transactions
     @due_date = @fee_collection.due_date
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
@@ -2329,6 +2344,9 @@ class FinanceController < ApplicationController
     else
       flash[:notice] = "#{t('flash24')}"
     end
+    unless params[:fine][:vat].to_f < 0
+      @vat = (params[:fine][:vat])
+    end  
     @paid_fees = @financefee.finance_transactions
     @due_date = @fee_collection.due_date
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])

@@ -28,6 +28,7 @@
           <%= form.text_field :vat_amount, :value=>'' ,:id=>"fine_fee", :class=>'precision_text' %></div></div>
             <%= form.hidden_field :student, :value => @student.id %>
             <%= form.hidden_field :date, :value => @date.id %>
+            <%= form.hidden_field :fine, :value => @fine %>
        
         <%=  submit_tag "► Add Vat",:class=>'submit_button2',:id => 'fine_button' %>
       <% end %>

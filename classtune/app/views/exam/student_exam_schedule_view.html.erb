@@ -105,7 +105,7 @@
         <% @exam_group.exams.each do |exam| %>
         <% no_exams = exam.subject.no_exams %>
         
-          <% if !exam.subject.elective_group_id.nil? or std_subjects.include?(exam.subject.id) %>
+          <% if exam.subject.elective_group_id.nil? or std_subjects.include?(exam.subject.id) %>
             <% @exam = exam %>          
               <tr class="tr-<%= cycle('odd', 'even') %>">
                 <% @exam = exam %>

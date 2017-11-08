@@ -32,7 +32,7 @@
                   <% end %>
                   <% @exam_group.exams.each do |exam| %>
                     <% @exam = exam %>    
-                    <% if @student.blank? or !exam.subject.elective_group_id.nil? or std_subjects.include?(exam.subject.id) %>
+                    <% if @student.blank? or exam.subject.elective_group_id.nil? or std_subjects.include?(exam.subject.id) %>
                     <tr class="<%= cycle('even' , 'odd') %>">
                         <% @exam = exam %>
                         <td class="col-pdf"><%= exam.subject.name %></td>

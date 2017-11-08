@@ -567,7 +567,7 @@ class Exams extends CActiveRecord
                 {
                     if($rows->Subjects->elective_group_id)
                     {
-                        if($rows->Subjects->studentSubject->student_id!=$student_id)
+                        if($rows->Subjects->studentSubject[0]->student_id!=$student_id)
                         {
                             continue;
                         }

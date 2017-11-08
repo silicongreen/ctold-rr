@@ -442,7 +442,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
@@ -459,7 +459,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
@@ -481,7 +481,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
@@ -498,7 +498,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
@@ -520,7 +520,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"
@@ -537,7 +537,7 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              AND electiveGroup.is_deleted = 0
+                              electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
                        )"

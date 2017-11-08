@@ -64,7 +64,7 @@ class ExamConnect extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
-        $criteria->addCondition('t.published_date<="'.date("Y-m-d").'"');
+        $criteria->compare('t.is_published', 1);
         $criteria->select = 't.*';
         $criteria->order = "published_date DESC";
         $connect_exam = $this->findAll($criteria);

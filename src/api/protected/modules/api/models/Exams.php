@@ -442,8 +442,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
@@ -461,8 +459,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
@@ -485,8 +481,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
@@ -504,8 +498,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
@@ -528,8 +520,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )
@@ -547,8 +537,6 @@ class Exams extends CActiveRecord
                               AND Subjects.school_id = ".$school_id."
                           )
                           OR (
-                              studentSubject.student_id = ".$student_id."
-                              AND studentSubject.batch_id = ".$batch_id."
                               AND electiveGroup.is_deleted = 0
                               AND electiveGroup.school_id = ".$school_id."
                           )

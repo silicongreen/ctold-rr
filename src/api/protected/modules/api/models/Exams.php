@@ -412,7 +412,7 @@ class Exams extends CActiveRecord
         $criteria->compare('Examgroup.is_deleted', 0);
         $criteria->with = array(
             'Subjects' => array(
-                'select' => 'Subjects.name,Subjects.no_exams',
+                'select' => 'Subjects.name,Subjects.no_exams,Subjects.elective_group_id,Subjects.batch_id',
                 'with' => array(
                     'electiveGroup' => array(
                         'select' => 'electiveGroup.id',
@@ -423,7 +423,7 @@ class Exams extends CActiveRecord
                 'select' => 'Examgroup.name',
             ),
             'studentSubject' => array(
-                'select' => 'studentSubject.id',
+                'select' => 'studentSubject.id,studentSubject.student_id',
             ),
         );
         $criteria->order = "t.start_time ASC";
@@ -548,15 +548,33 @@ class Exams extends CActiveRecord
 
         $data = $this->findAll($criteria);
 
-        return (!empty($data)) ? $this->formatExamRoutine($data) : false;
+        return (!empty($data)) ? $this->formatExamRoutine($data,$batch_id,$student_id) : false;
     }
 
-    public function formatExamRoutine($obj_exam_routine)
+    public function formatExamRoutine($obj_exam_routine,$batch_id = null, $student_id = null)
     {
 
         $formatted_exams = array();
         foreach ($obj_exam_routine as $rows)
         {
+            if($batch_id)
+            {
+                if($batch_id!=$rows->Subjects->batch_id)
+                {
+                    continue;
+                } 
+                if($student_id)
+                {
+                    if($rows->Subjects->elective_group_id)
+                    {
+                        if($rows->studentSubject->student_id!=$student_id)
+                        {
+                            continue;
+                        }
+                    } 
+                }
+                
+            }
             $_data['exam_subject_id'] = $rows->subject_id;
             $_data['exam_subject_name'] = $rows->Subjects->name;
             $_data['no_exams'] = $rows->Subjects->no_exams;

@@ -75,12 +75,13 @@
 
 <% unless @financefee.is_paid == true or (@total_payable-@total_discount==0)%>
   <%= render :partial => "student_fine_submission" if @fine.nil? %>
+  <%= render :partial => "student_vat_submission" if @vat.nil? %>
 <% end %>
 
 <div class="height-fixer"> </div>
 <div class="extender"></div>
 <% total_fees =0 %>
-<% form_remote_for :fees, :id=> 'fees_form', :url => {:action => 'fees_submission_save', :student => @student.id,:date => @date.id, :fine=>@fine,:special_fine=>@fine_amount},:html => {:id => "fees_form"},:before=>"prev_double()",:complete=>"set_back()" do |form| %>
+<% form_remote_for :fees, :id=> 'fees_form', :url => {:action => 'fees_submission_save', :student => @student.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount},:html => {:id => "fees_form"},:before=>"prev_double()",:complete=>"set_back()" do |form| %>
 
   <% unless @fee_particulars.nil? %>
     <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
@@ -146,7 +147,21 @@
 
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
-
+      <% unless @vat.nil? %>
+        <tr class="tr-<%= cycle("odd","even") %>">
+          <td class="col-1"><%= i+=1 %></td>
+          <td class="col-2"><span class="themed_text"><%= "VAT" %></span></td>
+          <td class="col-6">
+            <%= precision_label(@vat.to_f) %>
+          </td>
+        </tr>
+        <% unless @financefee.is_paid? == true %>
+          <% total_fees += @vat.to_f %>
+        <% else %>
+          <% total_fees = @vat %>
+        <% end %>
+      <% end %>
+        
       <% unless @fine.nil? %>
         <tr class="tr-<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
@@ -199,7 +214,7 @@
           </td>
         </tr>
       <% end %>
-      <%balance=@financefee.balance.to_f+@fine.to_f%>
+      <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>
       <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">

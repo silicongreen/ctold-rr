@@ -452,6 +452,9 @@ class FinanceController < ApplicationController
                     end
 
                   end
+                  if fees_particuler=="VAT"
+                    fee_amount = fee_amount.to_f+trans.vat_amount
+                  end
                 else
                   fee_amount = fee_amount.to_f+trans.fine_amount
                 end  
@@ -568,6 +571,9 @@ class FinanceController < ApplicationController
                       end  
                     end
 
+                  end
+                  if fees_particuler=="VAT"
+                    fee_amount = fee_amount.to_f+trans.vat_amount
                   end
                 else
                   fee_amount = fee_amount.to_f+trans.fine_amount
@@ -1991,6 +1997,14 @@ class FinanceController < ApplicationController
       end
     end
     
+    unless params[:vat].nil?
+      unless @financefee.is_paid == true
+        total_fees += params[:vat].to_f
+      else
+        total_fees = params[:vat].to_f
+      end
+    end
+    
     
     unless params[:fees][:fees_paid].to_f <= 0
       unless params[:fees][:payment_mode].blank?
@@ -2002,6 +2016,8 @@ class FinanceController < ApplicationController
           transaction.amount = params[:fees][:fees_paid].to_f
           transaction.fine_amount = params[:fine].to_f
           transaction.fine_included = true  unless params[:fine].nil?
+          transaction.vat_amount = params[:vat].to_f
+          transaction.vat_included = true  unless params[:vat].nil?
           if params[:special_fine] and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
             transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
             transaction.fine_included = true
@@ -2122,6 +2138,48 @@ class FinanceController < ApplicationController
     #        end
 
   end
+  
+  def update_vat_ajax
+    if request.post?
+      @date = @fee_collection = FinanceFeeCollection.find(params[:vat][:date])
+      @batch   = Batch.find(params[:vat][:batch_id])
+      student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
+      @dates = @batch.finance_fee_collections
+      @student = Student.find(params[:vat][:student]) if params[:vat][:student]
+      @student ||= FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}",:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').student
+      @prev_student = @student.previous_fee_student(@date.id,student_ids)
+      @next_student = @student.next_fee_student(@date.id, student_ids)
+
+      @financefee = @student.finance_fee_by_date @date
+      @paid_fees = @financefee.finance_transactions
+      unless params[:vat][:vat_amount].to_f < 0
+        @vat = (params[:vat][:vat_amount])
+      else
+        @financefee.errors.add_to_base("#{t('flash24')}")
+      end
+
+      @due_date = @fee_collection.due_date
+
+      @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
+      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+      @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+
+      @total_discount = 0
+      @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+      @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+      bal=(@total_payable-@total_discount).to_f
+      days=(Date.today-@date.due_date.to_date).to_i
+      auto_fine=@date.fine
+      if days > 0 and auto_fine
+        @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+        @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+      end
+      render :update do |page|
+        page.replace_html "student", :partial => "student_fees_submission", :with => @fine
+
+      end
+    end
+  end
 
   def update_fine_ajax
     if request.post?
@@ -2227,6 +2285,38 @@ class FinanceController < ApplicationController
 
 
   end
+  
+  def update_student_vat_ajax
+
+    @student = Student.find(params[:vat][:student])
+    @date = @fee_collection = FinanceFeeCollection.find(params[:vat][:date])
+    @financefee = @student.finance_fee_by_date(@date)
+    unless params[:vat][:vat_amount].to_f < 0
+      @vat = (params[:vat][:vat_amount])
+      flash[:notice] = nil
+    else
+      flash[:notice] = "#{t('flash24')}"
+    end
+    @paid_fees = @financefee.finance_transactions
+    @due_date = @fee_collection.due_date
+    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+    @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+    @total_discount = 0
+    @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+    @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+    bal=(@total_payable-@total_discount).to_f
+    days=(Date.today-@date.due_date.to_date).to_i
+    auto_fine=@date.fine
+    if days > 0 and auto_fine
+      @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+      @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+    end
+    render :update do |page|
+      page.replace_html "fee_submission", :partial => "fees_submission_form"
+    end
+
+  end
 
   def update_student_fine_ajax
 
@@ -2288,6 +2378,9 @@ class FinanceController < ApplicationController
     unless params[:fine].nil?
       total_fees += Champs21Precision.set_and_modify_precision(params[:fine]).to_f
     end
+    unless params[:vat].nil?
+      total_fees += Champs21Precision.set_and_modify_precision(params[:vat]).to_f
+    end
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
@@ -2311,6 +2404,8 @@ class FinanceController < ApplicationController
             transaction.fine_included = true  unless params[:fine].nil?
             transaction.amount = params[:fees][:fees_paid].to_f
             transaction.fine_amount = params[:fine].to_f
+            transaction.vat_amount = params[:vat].to_f
+            transaction.vat_included = true  unless params[:vat].nil?
             if params[:special_fine] and total_fees==params[:fees][:fees_paid].to_f
               transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
               transaction.fine_included = true

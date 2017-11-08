@@ -86,6 +86,9 @@
 
                               end
                             %>
+                            <% if fees_particuler=="VAT" %>
+                                <%  fee_amount = fee_amount.to_f+trans.vat_amount %>
+                            <% end %>
                             <% else %>
                               <%  fee_amount = fee_amount.to_f+trans.fine_amount %>
                             <% end %>

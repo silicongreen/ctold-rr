@@ -178,6 +178,16 @@
                         </tr>
                         <% total_fees += trans.fine_amount.to_f %>
                       <% end %>
+                      <% if trans.vat_included %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <%k+=1%>
+                            
+                            <td class="col-2"  colspan="2"><span><%= "Vat"  %></span></td>
+
+                            <td class="col-4"><%= "#{precision_label(trans.vat_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.vat_amount.to_f %>
+                      <% end %>
                     <% end %>
                   <% end %>
                 <%end%>

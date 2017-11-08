@@ -165,6 +165,10 @@ h5 {
     margin-top: -2px!important;
 
 }
+#vat_fee{
+    background : #eee;
+    /*    width:100px;*/
+}
 #fine_fee{
     background : #eee;
     /*    width:100px;*/

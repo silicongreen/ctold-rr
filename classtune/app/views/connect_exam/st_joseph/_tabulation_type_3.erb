@@ -42,6 +42,7 @@
             <% 
              @all_subject_id = []
              @has_exam_score = []
+             @all_exam_groups = []
              @all_group_exams = GroupedExam.find(
                 :all,
                 :conditions => [
@@ -57,6 +58,10 @@
                 :all,
                 :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
               )
+              @all_exam_groups = ExamGroup.find(
+                :all,
+                :conditions => ["id IN (?)", @all_exam_group_id]
+                )
             
               
               unless @all_exams.blank?

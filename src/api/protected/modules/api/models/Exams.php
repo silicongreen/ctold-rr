@@ -417,14 +417,14 @@ class Exams extends CActiveRecord
                     'electiveGroup' => array(
                         'select' => 'electiveGroup.id',
                     ),
+                    'studentSubject' => array(
+                        'select' => 'studentSubject.id,studentSubject.student_id',
+                    ),
                 ),
             ),
             'Examgroup' => array(
                 'select' => 'Examgroup.name',
-            ),
-            'studentSubject' => array(
-                'select' => 'studentSubject.id,studentSubject.student_id',
-            ),
+            )
         );
         $criteria->order = "t.start_time ASC";
         if ($exam_id)
@@ -567,7 +567,7 @@ class Exams extends CActiveRecord
                 {
                     if($rows->Subjects->elective_group_id)
                     {
-                        if($rows->studentSubject->student_id!=$student_id)
+                        if($rows->Subjects->studentSubject->student_id!=$student_id)
                         {
                             continue;
                         }

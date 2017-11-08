@@ -63,7 +63,8 @@ class Subjects extends CActiveRecord
             'electiveGroup' => array(self::BELONGS_TO, 'ElectiveGroups', 'elective_group_id',
                 'joinType' => 'LEFT JOIN',
             ),
-            'employee' => array(self::HAS_MANY, 'EmployeesSubjects', 'subject_id')
+            'employee' => array(self::HAS_MANY, 'EmployeesSubjects', 'subject_id'),
+            'studentSubject' => array(self::HAS_MANY, 'StudentsSubjects', 'subject_id')
         );
     }
 

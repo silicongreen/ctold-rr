@@ -101,7 +101,7 @@
             <% end %>
           </tr>
         </thead>
-        <% std_subjects = @student.subjects.map(&:subject_id) %>
+        <% std_subjects = @student.subjects.map(&:id) %>
         <% @exam_group.exams.each do |exam| %>
         <% no_exams = exam.subject.no_exams %>
         

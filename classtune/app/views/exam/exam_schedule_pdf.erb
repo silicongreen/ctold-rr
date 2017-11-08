@@ -28,7 +28,7 @@
                   </tr>
                   <tr class="tr-blank"></tr>
                   <% unless @student.blank? %>
-                    <% std_subjects = @student.subjects.map(&:subject_id) %>
+                    <% std_subjects = @student.subjects.map(&:id) %>
                   <% end %>
                   <% @exam_group.exams.each do |exam| %>
                     <% @exam = exam %>    

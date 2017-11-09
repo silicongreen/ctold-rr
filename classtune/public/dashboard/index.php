@@ -49,7 +49,8 @@
         //execute post
         $result = curl_exec($ch);
         $res = json_decode($result);
-
+        print_r($result);
+        exit;
         //close connection
         curl_close($ch);
         $token = $res->access_token;

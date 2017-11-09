@@ -68,10 +68,22 @@
         </div>
       </div>
       </br></br>
+      <% content = "" %>
+      <% if MultiSchool.current_school.id == 246 %>
+      <%
+        sign = '<p>&nbsp;</p><p>&nbsp;</p><p>Best Regards</p><img src="http://'+MultiSchool.current_school.code+'.classtune.com/images/school_logo/246/principal_signature.png" width="8%" />'
+        @news.content = "<p>"+sign+"</p><p>Dr. Shaleha Kader</p><p>Chairman & Principal</p>"
+    
+      %>
+      <%= @news.content %>
+      
+      <% end %>
+      
       <div class="news_label_field">
         <label for="news_content"><%= t('content') %></label>
         <div id="news_content_text_field_bg">
-          <%= fckeditor_textarea :news, :content %>
+            
+          <%= fckeditor_textarea :news, :content, :value => @news.content %>
         </div>
       </div>
       <div class="news_label_field" >

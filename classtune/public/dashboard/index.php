@@ -26,6 +26,7 @@
                 'password' => 'cbis81',
                 'redirect_uri' => $server_name . '/authenticate'
         );
+        print_r($fields);
 //         $fields = array(
 //                'client_id' => '900dbcba0d3320a2fd3ded6f0fe93b68e41e87ce',
 //                'client_secret' => 'f943d664fbbb19778c63d059d5d7d35a98f72102',

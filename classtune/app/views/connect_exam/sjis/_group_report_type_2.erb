@@ -1,6 +1,6 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-              <table id="pdf-table" width="99.8%" cellspacing="0">
+             <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                   <% top_exam_first = "" %>
@@ -228,26 +228,25 @@
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
-                            <% total_colspan = 0 %>
-                            <% if group_count > 1 %>
+                           <% if group_count > 1 %>
                             <% unless @report_data['report']['exams'].blank? %> 
                               <% jloop = 0 %>
                               <% @top_exam_group.each do |top_exam| %>
                                 <% colspan = @top_exam_group_count[jloop]-1 %>
-                                <% total_colspan = total_colspan+colspan %>
-
+                                
+                                  <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                   <% jloop = jloop+1 %>
                                   <% if jloop == 1 %>
-                                    <% total_colspan = total_colspan+1 %>
+                                    <td class="col-pdf"></td>
                                   <% else %>
-                                     <% total_colspan = total_colspan+1 %>
+                                    <td class="col-pdf"></td>
                                   <% end %>
                               <% end %>
                             <% end %>  
                            <% else %>
-                              <% total_colspan = @top_exam_group_count[0]-1  %>  
+                              <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>  
                            <% end %>
-                         <td class="col-pdf group_exam" colspan="<%= total_colspan+1 %>"></td> 
+                          <td class="col-pdf"></td> 
                           
                           <td class="col-pdf"><%= report['subject_comment'] %></td>
                           <td class="col-pdf border-right-none"></td>
@@ -285,5 +284,5 @@
                       </tr>   
 
               </table>
-          
+       
 <% end %>

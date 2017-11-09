@@ -189,7 +189,7 @@ app.controller('CountController', function($scope, $http){
         $http({ 
             url: '/scripts/modules/school/counts.php',
             method: "PUT",
-            data: { 'school_id' : school_id, is_thai_school: thai_school }
+            data: { 'school_id' : school_id, is_thai_school: thai_school, school_modified_id : school_modified_id }
         })
         .then(function(response) {
             $scope.counts = response.data;

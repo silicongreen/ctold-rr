@@ -12,6 +12,7 @@
     $thai_school = 0;
     //Temporary Code, When Done please remove
     //Indent to pass the token using $_GET parameter
+    $school_modified_id = 0;
     if ( isset($_GET['modified_id']) && !empty ($_GET['modified_id']) )
     {
         $thai_school = 1;
@@ -121,6 +122,7 @@
         var admin_username = '';
         var dashboard_link = '<?php echo $current_server; ?>';
         var thai_school = <?php echo $thai_school; ?>;
+        var school_modified_id = '<?php echo $school_modified_id; ?>';
     </script>    
     <script>
         var classtune_server = '<?php echo $server_name; ?>';

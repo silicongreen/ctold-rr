@@ -23,12 +23,12 @@
             <% ilooop = 0 %>  <% @group_loop = 0 %>                    
             <% subject_groups.each do |group_name| %>
               <% groupCount = 1 %>
-              <% subject_subgroup = get_subject_sub_group(subjects['id'],ilooop) %>
+              <% subject_subgroup = get_subject_sub_group(group_name.id) %>
 
               <% if subject_subgroup %>
                 <% groupCount = subject_subgroup.count %>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td class="text_left" rowspan="<%=groupCount.to_i %>" colspan="1"><%= group_name.to_s %><%=groupCount.to_i %></td>  
+                    <td class="text_left" rowspan="<%=groupCount.to_i %>" colspan="1"><%= group_name.name.to_s %><%=groupCount.to_i %></td>  
                     <% isublooop = 0 %>
                     <% subject_subgroup.each do |sub_group_name| %>
                       <% if isublooop > 0 %>

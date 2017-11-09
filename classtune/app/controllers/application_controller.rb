@@ -113,22 +113,17 @@ class ApplicationController < ActionController::Base
   
   def get_subject_group(subject_id)
     require "yaml"
-    vreturn = false
-    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
-    all_group = subject_config['group_'+subject_id.to_s].split(",")
-    return all_group  
+    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id],:order=>"priority ASC")   
+    return subject_subgroup  
   end
   
-  def get_subject_sub_group(subject_id,loop)
+  def get_subject_sub_group(subject_subgroup_id)
     require "yaml"
     vreturn = false
-    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
-    unless subject_config['group_sub_'+subject_id.to_s].blank?
-      all_sub_group = subject_config['group_sub_'+subject_id.to_s].split("|")
-      unless all_sub_group[loop.to_i].blank?
-        vreturn = all_sub_group[loop.to_i].split(",")
-      end
-    end  
+    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["parent_id = ?",subject_subgroup_id],:order=>"priority ASC")
+    unless subject_subgroup.blank?
+      vreturn = subject_subgroup.map(&:name)
+    end    
     return vreturn  
   end
   
@@ -136,12 +131,11 @@ class ApplicationController < ActionController::Base
   def has_subject_group(subject_id)
     require "yaml"
     vreturn = false
-    subject_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/subject_sub.yml")['subjects']
-    all_subject = subject_config['numbers'].split(",")
-    if all_subject.include?(subject_id.to_s)
+    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id])
+    unless subject_subgroup.blank?
       vreturn = true
-    end
-    return vreturn
+    end   
+    return vreturn 
   end
   
   def school_mock_test?

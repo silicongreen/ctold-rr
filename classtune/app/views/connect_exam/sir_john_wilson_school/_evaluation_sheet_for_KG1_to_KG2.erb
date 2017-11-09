@@ -65,13 +65,13 @@
           <% ilooop = 0 %>
           <% groupCount = subject_groups.count %>
           <% subject_groups.each do |group_name| %>
-            <% subject_subgroup = get_subject_sub_group(@subject.id,ilooop) %>
+            <% subject_subgroup = get_subject_sub_group(group_name.id) %>
             <% subGroupCount = 1 %>
             <% if subject_subgroup %>
               <% subGroupCount = subject_subgroup.count %>
-              <td colspan="<%=subGroupCount.to_i * 3 %>" class="word_break" ><%= group_name.to_s %></td>  
+              <td colspan="<%=subGroupCount.to_i * 3 %>" class="word_break" ><%= group_name.name.to_s %></td>  
             <% else %>
-              <td colspan="3" rowspan="3" class="word_break" ><%= group_name.to_s %></td>  
+              <td colspan="3" rowspan="3" class="word_break" ><%= group_name.name.to_s %></td>  
             <% end %> 
             
             <% ilooop = ilooop+1 %>   

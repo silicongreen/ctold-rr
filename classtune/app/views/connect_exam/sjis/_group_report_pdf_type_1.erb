@@ -242,12 +242,27 @@
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf border-left-none  align-left-baf"><%= report['subject_name'].upcase %></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                              <% @report_data['report']['exams'].each do |report1| %>
-                                  <td></td>
+                            <% total_colspan = 0 %>
+                            <% if group_count > 1 %>
+                            <% unless @report_data['report']['exams'].blank? %> 
+                              <% jloop = 0 %>
+                              <% @top_exam_group.each do |top_exam| %>
+                                <% colspan = @top_exam_group_count[jloop]-1 %>
+                                <% total_colspan = total_colspan+colspan %>
+
+                                  <% jloop = jloop+1 %>
+                                  <% if jloop == 1 %>
+                                    <% total_colspan = total_colspan+1 %>
+                                  <% else %>
+                                     <% total_colspan = total_colspan+1 %>
+                                  <% end %>
                               <% end %>
-                           <% end %> 
-                          <td class="col-pdf"></td>
+                            <% end %>  
+                           <% else %>
+                              <% total_colspan = @top_exam_group_count[0]-1  %>  
+                           <% end %>
+                         <td class="col-pdf group_exam" colspan="<%= total_colspan+1 %>"></td> 
+                          
                           <td class="col-pdf"><%= report['subject_comment'] %></td>
                           <td class="col-pdf border-right-none"></td>
                           </tr>

@@ -107,7 +107,9 @@
 
         <table id="listing" width="100%">
           <tr class="tr-head">
+            <% if @exam_group.exam_category != 4 or !has_subject_group(@exam.subject.id) %>
             <td><%= "Roll" %></td>
+            <% end %>
             <td><%= t('name') %></td>
             <% unless @exam_group.exam_type == 'Grades' %>
               <td  <%=styletext%>><%= t('marks') %> (<%= @exam.maximum_marks %>)</td>
@@ -115,21 +117,31 @@
               <td  <%=styletext%>><%= t('grades') %></td>
             <% end %>
             <% if @exam_group.exam_category == 4 && has_subject_group(@exam.subject.id) %>
-             
               <% subject_groups = get_subject_group(@exam.subject.id) %>
+              
               <% iloop = 0 %>
               <% subject_groups.each do |group_name| %>
                       
                         
-                        <% subject_subgroup = get_subject_sub_group(@exam.subject.id,iloop) %>
+                        <% subject_subgroup = get_subject_sub_group(group_name.id) %>
                         <% if subject_subgroup %>
-                          
-                            <% subject_subgroup.each do |sub_group_name| %>
-                                  <td><%= group_name %><hr/><%= sub_group_name %></td>
-                            <% end %>      
+                          <td style="padding:0px;"><table width="100%">
+                                <tr><td colspan="100" style="text-align:center;padding:3px;"><%= group_name.name %><hr/></td></tr>
+                                <tr>
+                                  <% isubgroup = 0 %>
+                                  <% subject_subgroup.each do |sub_group_name| %>
+                                        <% if isubgroup == 0 %>
+                                          <td style="text-align:center;padding:3px;font-size: 11px;"><%= sub_group_name %></td>
+                                        <% else %>
+                                          <td style="text-align:center;padding:3px;font-size: 11px; width:60px; border-left: 1px solid #D7D7D7;"><%= sub_group_name %></td>
+                                        <% end %>
+                                        <% isubgroup = isubgroup+1 %>
+                                  <% end %> 
+                                </tr>
+                           </table></td>   
                          
                         <% else %>
-                          <td><%= group_name %></td>
+                          <td><%= group_name.name %></td>
                         <% end %>   
                        
                 <% iloop = iloop+1 %>      
@@ -145,7 +157,9 @@
           </tr>
           <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
-               <td class="col-2"><%= student.class_roll_no %> </td>
+              <% if @exam_group.exam_category != 4 or !has_subject_group(@exam.subject.id) %>
+              <td class="col-2"><%= student.class_roll_no %> </td>
+              <% end %>
               <td class="col-2"><%= student.full_name %> </td>
               
               <% @exam_score = @exam.score_for(student) %>
@@ -184,11 +198,12 @@
                         <% subject_groups.each do |group_name| %>
                                  
                                  
-                                    
                                   
-                                  <% subject_subgroup = get_subject_sub_group(@exam.subject.id,iloop) %>
+                                  
+                                  <% subject_subgroup = get_subject_sub_group(group_name.id) %>
                                   <% unless subject_subgroup.blank? %>
-                                       
+                                      <td style="padding:0px;"><table width="100%">
+                                        <tr>
                                       <% subject_subgroup.each do |sub_group_name| %>
                                             <% exam_group_remarks = "" %>
                                             <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
@@ -198,14 +213,16 @@
                                                 <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                               <% end %>
                                             <% end %>
-                                            <td  class="col-2 td-mark" style="text-align:center;">
-                                                <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
-                                                <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name+">>"+sub_group_name %></div></span></div>
+                                            <td  class="col-2 td-mark" style="text-align:center; width:60px;">
+                                                <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '4' %>
+                                                <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name.name.to_s+">>"+sub_group_name %></div></span></div>
                                             </td>
                                             <% @group_loop = @group_loop+1 %>
                                             
-                                      <% end %>      
-                                      
+                                      <% end %>
+                                            
+                                      </tr>
+                                      </table></td>
                                   <% else %>
                                      <% exam_group_remarks = "" %>
                                       <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
@@ -217,7 +234,7 @@
                                       <% end %>
                                      <td  class="col-2 td-mark" style="text-align:center;">
                                             <%= text_field_tag "exam[#{student.id}][remarks][]", exam_group_remarks, :size => '10' %>
-                                            <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name %></div></span></div>
+                                            <div class="date" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name.name.to_s %></div></span></div>
                                      </td>
                                      <% @group_loop = @group_loop+1 %>
                                   <% end %>  

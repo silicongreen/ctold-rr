@@ -7,6 +7,8 @@
     $division_id = $request->division_id;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     if ( $division_id > 0 )
     {
         $result = $conn->query("SELECT * FROM districts WHERE division_id = " . $division_id);

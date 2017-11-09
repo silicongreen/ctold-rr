@@ -8,6 +8,8 @@
     $class_id  = $request->class_id;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     
     if ( $district_id == 0 )
     {

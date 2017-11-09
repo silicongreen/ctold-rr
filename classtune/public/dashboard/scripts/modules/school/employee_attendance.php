@@ -4,6 +4,8 @@
     $params = $_GET;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT * FROM (SELECT u.name, u.id, a.date, a.present, a.absent   FROM `universities` u INNER JOIN employee_attendance a ON u.id = a.university_id order by a.date DESC) AS t group by id order by name");
     
     $outp = array();

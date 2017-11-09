@@ -7,6 +7,8 @@
     $department_id = $request->department_id;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT grade, COUNT( id ) as count
                             FROM `student_results` WHERE  `dept_id` = " . $department_id . "
                             AND university_id = " . $university_id . " 

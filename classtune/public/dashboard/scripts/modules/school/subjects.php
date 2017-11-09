@@ -7,6 +7,7 @@
     $class_id = $request->class_id;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
     
     $result = $conn->query("SELECT e.id, c.class_name, su.subject_name, es.subject_id, 
                             count(employee_id) as emp_count FROM `employee_subjects` es 

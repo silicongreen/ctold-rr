@@ -12,6 +12,7 @@
     $access_token = $request->token;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
     
     $result = $conn->query("SELECT *  FROM dashboards_links WHERE is_common = 1 AND root_menu_id = 0 AND school_id = 0");
 

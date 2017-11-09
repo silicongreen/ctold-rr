@@ -27,6 +27,7 @@
     }
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
     
     $current_date = date("Y-m-d 23:59:59");
     $start_date = date("Y-m-d 00:00:01", strtotime("-10 day", strtotime($current_date)));

@@ -7,6 +7,8 @@
     $school_domain = $request->school_domain;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT n.id, n.title, n.content, n.created_at, CONCAT(u.first_name, ' ', u.last_name) as name
                             FROM news n INNER JOIN users u ON u.id = n.author_id
                             WHERE n.school_id = " . $school_id . " ORDER BY n.id DESC LIMIT 3");

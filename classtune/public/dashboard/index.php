@@ -9,10 +9,60 @@
     $server_name = $_SERVER['SERVER_NAME'];
     $current_server = "http://" . $server_name;
     $server_name = "http://" . str_replace("dashboard", $_GET['dom'], $server_name);
-    
+    $thai_school = 0;
     //Temporary Code, When Done please remove
     //Indent to pass the token using $_GET parameter
-    if ( isset($target) && $target == "local" )
+    if ( isset($_GET['modified_id']) && !empty ($_GET['modified_id']) )
+    {
+        $thai_school = 1;
+        $school_modified_id = $_GET['modified_id'];
+        $url = $server_name . '/oauth/token';
+
+        $fields = array(
+                'client_id' => 'b2a74741527577417766c57ee66b998f03f8666c',
+                'client_secret' => '3955b8d770dbb0e2a5900e744d84c2f60e96a621',
+                'grant_type' => 'password',
+                'username' => 'cbis-admin',
+                'password' => 'cbis81',
+                'redirect_uri' => $server_name . '/authenticate'
+        );
+//         $fields = array(
+//                'client_id' => '900dbcba0d3320a2fd3ded6f0fe93b68e41e87ce',
+//                'client_secret' => 'f943d664fbbb19778c63d059d5d7d35a98f72102',
+//                'grant_type' => 'password',
+//                'username' => 'chs-admin',
+//                'password' => '123456',
+//                'redirect_uri' => $server_name . '/authenticate'
+//        );
+        $fields_string = '';
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        $fields_string = substr($fields_string, 0, -1);
+
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch,CURLOPT_POST, count($fields));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //execute post
+        $result = curl_exec($ch);
+        $res = json_decode($result);
+
+        //close connection
+        curl_close($ch);
+        $token = $res->access_token;
+        
+        $conn = new mysqli($db_m['host'],$db_m['username'], $db_m['password'], $db_m['dbname']);
+        $conn->set_charset("utf8");
+        
+        $result = $conn->query("SELECT * FROM schools WHERE id = " . $_GET['modified_id']);
+        $rs = $result->fetch_array(MYSQLI_ASSOC);
+        $school_name = $rs['institute_name'];
+        
+    }
+    else if ( isset($target) && $target == "local" )
     {
         $url = $server_name . '/oauth/token';
 
@@ -61,6 +111,7 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <link rel="stylesheet" href="styles/vendor.0cc3d200.css">
     <link rel="stylesheet" href="styles/main.1be6a35c.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script>
         var school_domain = 'chs';
         var school_name = '';
@@ -68,6 +119,7 @@
         var admin_name = '';
         var admin_username = '';
         var dashboard_link = '<?php echo $current_server; ?>';
+        var thai_school = <?php echo $thai_school; ?>;
     </script>    
     <script>
         var classtune_server = '<?php echo $server_name; ?>';
@@ -128,7 +180,14 @@
                         {
                             var parser = new DOMParser();
                             var xmlDoc = parser.parseFromString(evt.target.responseText,"text/xml");
-                            school_name = xmlDoc.getElementsByTagName("institute_name")[0].childNodes[0].nodeValue;
+                            if ( thai_school == 1 )
+                            {
+                                school_name = '<?php echo $school_name; ?>';
+                            }
+                            else
+                            {
+                                school_name = xmlDoc.getElementsByTagName("institute_name")[0].childNodes[0].nodeValue;
+                            }
                             school_id = xmlDoc.getElementsByTagName("institute_id")[0].childNodes[0].nodeValue;
                         }
                     }

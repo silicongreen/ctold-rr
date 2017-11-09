@@ -7,6 +7,8 @@
     $university_name = $request->university_name;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT ep.id as position_id, ep.name as employee_position_name,
                             count( e.id ) as emp_count FROM `employee_positions` ep
                             INNER JOIN employees e ON e.position_id = ep.id

@@ -2,6 +2,8 @@
     include '../config.php';
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT u.name as universityName, uc.name, uc.email, uc.phone_no, uc.profile_photo FROM universities u INNER JOIN university_contact uc ON u.id = uc.university_id");
     
     $outp = array();

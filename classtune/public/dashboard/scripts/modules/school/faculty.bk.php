@@ -7,6 +7,8 @@
     $university_name = $request->university_name;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT f.id, f.name AS faculty_name, d.id AS dept_id, d.name AS dept_name, ep.name as employee_position,
                             count( e.id ) as emp_count FROM `faculty` f
                             INNER JOIN departments d ON f.id = d.faculty_id

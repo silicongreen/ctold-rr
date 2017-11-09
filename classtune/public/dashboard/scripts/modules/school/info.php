@@ -7,6 +7,7 @@
     $district_name = $request->district_name;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], $db['dbname']);
+    $conn->set_charset("utf8");
     
     $result = $conn->query("SELECT count(*) as count from schools WHERE district_id = " . $district_id . ""); 
     if ( $result->num_rows == 0)

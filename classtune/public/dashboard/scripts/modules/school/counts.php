@@ -5,10 +5,22 @@
     $request = json_decode($postdata);
     
     $school_id = $request->school_id;
+    $is_thai_school = $request->is_thai_school;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
     
-    $result = $conn->query("SELECT count(*) as count FROM students WHERE school_id = " . $school_id);
+    $conn1 = new mysqli($db_m['host'],$db_m['username'], $db_m['password'], $db_m['dbname']);
+    $conn1->set_charset("utf8");
+    
+    if ( $is_thai_school == 0 )
+    {
+        $result = $conn->query("SELECT count(*) as count FROM students WHERE school_id = " . $school_id);
+    }
+    else
+    {
+        $result = $conn1->query("SELECT count(*) as count FROM students WHERE school_id = " . $school_id);
+    }
 
     if ( $result->num_rows == 0)
     {
@@ -20,7 +32,14 @@
         $student_record_total = $rs['count'];
     }
     
-    $result = $conn->query("SELECT count(*) as count FROM employees WHERE school_id = " . $school_id);
+    if ( $is_thai_school == 0 )
+    {
+        $result = $conn->query("SELECT count(*) as count FROM employees WHERE school_id = " . $school_id);
+    }
+    else
+    {
+        $result = $conn1->query("SELECT count(*) as count FROM employees WHERE school_id = " . $school_id);
+    }
 
     if ( $result->num_rows == 0)
     {

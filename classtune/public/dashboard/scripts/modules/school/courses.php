@@ -7,6 +7,7 @@
     $school_domain = $request->school_domain;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
     
     $result = $conn->query("SELECT * FROM `courses` WHERE school_id = " . $school_id . " GROUP by course_name ORDER BY code"); //and is_deleted = 0 
    

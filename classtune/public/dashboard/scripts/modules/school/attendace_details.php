@@ -7,6 +7,8 @@
     $school_domain = $request->school_domain;
     
     $conn = new mysqli($db['host'],$db['username'], $db['password'], "champs21_school");
+    $conn->set_charset("utf8");
+    
     $result = $conn->query("SELECT count( s.id ) as student_count, c.course_name, c.id
                             FROM `students` s
                             INNER JOIN batches b ON s.batch_id = b.id

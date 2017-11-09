@@ -2432,6 +2432,7 @@ class FinanceController < ApplicationController
             transaction.transaction_date = Date.today
             transaction.payment_mode = params[:fees][:payment_mode]
             transaction.payment_note = params[:fees][:payment_note]
+            transaction.transaction_date = params[:fees][:transaction_date]
             transaction.save
             is_paid = @financefee.balance==0 ? true : false
             @financefee.update_attributes(:is_paid=>is_paid)

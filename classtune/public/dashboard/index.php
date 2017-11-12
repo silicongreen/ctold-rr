@@ -13,12 +13,13 @@
     //Temporary Code, When Done please remove
     //Indent to pass the token using $_GET parameter
     $school_modified_id = 0;
+    $school_name = "";
     if ( isset($_GET['modified_id']) && !empty ($_GET['modified_id']) )
     {
         $thai_school = 1;
         $school_modified_id = $_GET['modified_id'];
         $url = $server_name . '/oauth/token';
-
+	//$school_name = "";
         $fields = array(
                 'client_id' => 'b2a74741527577417766c57ee66b998f03f8666c',
                 'client_secret' => '3955b8d770dbb0e2a5900e744d84c2f60e96a621',

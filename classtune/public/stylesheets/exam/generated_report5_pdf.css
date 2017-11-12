@@ -793,6 +793,17 @@ sfx  .table-header td{
 }
 
 
+.sfx table td.td-align-left
+{
+    text-align: left;
+}
+
+.sfx table td.td-align-right
+{
+    text-align: right;
+}
+
+
 
 
 ///baf shaheen

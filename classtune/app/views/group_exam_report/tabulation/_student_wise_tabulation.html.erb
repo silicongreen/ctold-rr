@@ -35,6 +35,7 @@
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
           <% end %>
+          <td class="col-pdf">Total</td>
           <td class="col-pdf">Rank</td>
         </tr>
   <% @students.each do |student| %>
@@ -61,7 +62,9 @@
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
           <% end %>
+          <td class="col-pdf">Total</td>
           <td class="col-pdf">Rank</td>
+          
         </tr>
     <% elsif std_count>16 && extender ==1 %>
         <% std_count = 0 %>
@@ -76,6 +79,7 @@
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
           <% end %>
+          <td class="col-pdf">Total</td>
           <td class="col-pdf">Rank</td>
         </tr>
     <% end %>
@@ -84,14 +88,19 @@
       <td class="name-std"><%= student.full_name %></td>
       <% @exams.each do |exam|  %>
           <td>
+          <% total = 0 %>
           <% exam_score.each do |es| %>
               <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
                 <%= es.marks.present? ? es.marks.to_f: '0' %><hr/>
+                <% if es.marks.present? %>
+                  <% total = total+es.marks.to_f %>
+                <% end %>
                 <%= es.grading_level.present? ? es.grading_level : "N/A" %>
               <% end %>
           <% end %>   
           </td>
       <% end %>
+      <td class="col-pdf"><%= total %></td>
       <td class="name-std"><%= j %></td>
  
     </tr> 

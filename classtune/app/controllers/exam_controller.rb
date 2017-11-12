@@ -1135,6 +1135,28 @@ class ExamController < ApplicationController
       exam = Exam.find_by_exam_group_id_and_subject_id(@exam_group.id,sub.id)
       @exams.push exam unless exam.nil?
     end
+    
+    @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id = ?",@exam_group.id],:joins=>[:exam,:student,:grading_level],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+    @tmp_students = []
+    unless @ranked_student.blank?
+      @ranked_student.each do |ras|
+        std_data = Student.find_by_id(ras.student_id)
+        if !std_data.blank? && !@tmp_students.include?(std_data)
+          @tmp_students << std_data
+        end
+      end
+    end
+    
+    unless @students.blank?
+      @ranked_student.each do |std|
+        unless @tmp_students.include?(std)
+          @tmp_students << std
+        end
+      end
+    end
+    
+    @students = @tmp_students
+    
     render :pdf => 'student_wise_tabulation',
       :orientation => 'Landscape', :zoom => 1.00,
       :margin => {    :top=> 10,

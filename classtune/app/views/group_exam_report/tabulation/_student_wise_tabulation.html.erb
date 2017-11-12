@@ -34,7 +34,8 @@
        
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
-          <% end %>         
+          <% end %>
+          <td class="col-pdf">Rank</td>
         </tr>
   <% @students.each do |student| %>
   <% 
@@ -59,7 +60,8 @@
        
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
-          <% end %>        
+          <% end %>
+          <td class="col-pdf">Rank</td>
         </tr>
     <% elsif std_count>16 && extender ==1 %>
         <% std_count = 0 %>
@@ -73,7 +75,8 @@
        
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
-          <% end %>         
+          <% end %>
+          <td class="col-pdf">Rank</td>
         </tr>
     <% end %>
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -89,8 +92,9 @@
           <% end %>   
           </td>
       <% end %>
+      <td class="name-std"><%= j %></td>
  
-     
+    </tr> 
 
 <% end %>
 <% end %>

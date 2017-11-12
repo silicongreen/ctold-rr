@@ -11,11 +11,11 @@
           <tr class="even">
               <% if @batch.course.course_name=="AS"%>
                 <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
-                <td class="td-align-right">Class : <input type="checkbox" checked="checked" />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" />A2 Level</td>
+                <td class="td-align-right">Class : <input type="checkbox" checked="checked" />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" />&nbsp;A2 Level</td>
               
               <% elsif @batch.course.course_name=="A2" %>
                 <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
-                <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />A2 Level</td>
+                <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />&nbsp;A2 Level</td>
               
               <% else %>
               <td>Name : <b><%= @student.full_name %></b></td>

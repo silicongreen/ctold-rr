@@ -1148,7 +1148,7 @@ class ExamController < ApplicationController
     end
     
     unless @students.blank?
-      @ranked_student.each do |std|
+      @students.each do |std|
         unless @tmp_students.include?(std)
           @tmp_students << std
         end

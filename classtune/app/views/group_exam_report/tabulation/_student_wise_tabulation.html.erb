@@ -27,6 +27,8 @@
   <% std_count = 0 %>
   <% c  = 'even' %>
   <% j = 0 %>
+  <% rank = 1 %>  
+  <% last_mark = 0 %>
   <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
           <td class="col-pdf">Roll</td>
@@ -101,8 +103,12 @@
           <% end %>   
           </td>
       <% end %>
+      <% if total != last_mark %>
+          <% rank = rank+1 %>
+          <% last_mark = total %>
+      <% end %>    
       <td class="col-pdf"><%= total %></td>
-      <td class="name-std"><%= j %></td>
+      <td class="name-std"><%= rank %></td>
  
     </tr> 
 

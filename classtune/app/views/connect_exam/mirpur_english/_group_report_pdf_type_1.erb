@@ -90,6 +90,7 @@
 
                           <td class="col-pdf border-left-none no-warp"><%= i %></td>
                           <td class="col-pdf no-warp"><%= subjects['name'] %></td>
+                          <% subject_grade_per = "" %>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                             
@@ -98,6 +99,18 @@
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                         <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                         <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% if @batch.course.course_name == "Level -X" %>
+                                            <% main_mark_sub = (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f/report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f)*100 %>
+                                            <% grade = GradingLevel.percentage_to_grade(main_mark_sub, @batch.id) %>
+                                            <% if !grade.blank? and !grade.name.blank? %>
+                                              <% if grade.name == "F" %>
+                                              <%
+                                                subject_grade_per = "F"
+                                              %>
+                                            <% end %>
+                                            
+                                            <% end %>
+                                        <% end %>
                                       <% else %>
                                         N/A
                                       <% end %>
@@ -145,19 +158,28 @@
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", highest_mark)%> </td>
-                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <td class="col-pdf"><b><%= grade.name %></b></td>
-                              <% if grade.name == "F" %>
+                            <% unless subject_grade_per.blank? %>
+                              <td class="col-pdf"><b><%= subject_grade_per %></b></td>
                               <%
                                 final_grade = 0.0
                                 letter_grade = "F"
-                                
-                              %>
-                              <% end %>
+
+                               %>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
-                            <% end %>
+                              <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <td class="col-pdf"><b><%= grade.name %></b></td>
+                                <% if grade.name == "F" %>
+                                <%
+                                  final_grade = 0.0
+                                  letter_grade = "F"
+
+                                %>
+                                <% end %>
+                              <% else %>
+                                <td class="col-pdf"><b>N/A</b></td>
+                              <% end %>
+                            <% end %>  
                               
                             <% if !grade.blank? and !grade.credit_points.blank? %>
                               <% total_credit_point = total_credit_point+grade.credit_points.to_f %>

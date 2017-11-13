@@ -81,8 +81,15 @@
             <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
             <%
             if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank? and @check_exam_score==true
-               subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i
-               subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
+                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i
+                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
+                main_mark_sub = (rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_f)*100
+                grade = GradingLevel.percentage_to_grade(main_mark_sub, @batch.id)
+                if !grade.blank? and !grade.name.blank?
+                  if grade.name == "F"
+                    ranked_std = false
+                  end
+                end
             end
              
           end

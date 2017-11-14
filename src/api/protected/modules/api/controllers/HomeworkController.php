@@ -205,7 +205,9 @@ class HomeworkController extends Controller
                 
                 
             }
-            
+           $response['data']['msg'] = "Successfully Saved";
+           $response['status']['code'] = 200;
+           $response['status']['msg'] = "Success";  
             
             
         }

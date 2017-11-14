@@ -525,6 +525,15 @@ class Students extends CActiveRecord
 
         return $students_array;
     }
+    
+    public function getFindAllByStdIds($std_ids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->addInCondition('id', $std_ids);
+        $students = $this->findAll($criteria);
+        return $students;
+    }
 
     public function getMechineStd($school_id, $all_std_admission)
     {

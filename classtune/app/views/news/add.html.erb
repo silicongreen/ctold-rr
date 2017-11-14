@@ -69,10 +69,10 @@
       </div>
       </br></br>
       <% content = "" %>
-      <% if MultiSchool.current_school.id == 246 %>
+      <% if MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 2 %>
       <%
-        sign = '<p>&nbsp;</p><p>&nbsp;</p><p>Best Regards</p><img src="http://'+MultiSchool.current_school.code+'.classtune.com/images/school_logo/246/principal_signature.png" width="8%" />'
-        @news.content = "<p>"+sign+"</p><p>Dr. Shaleha Kader</p><p>Founder Principal & Chairman</p>"
+        sign = '<p>&nbsp;</p><p>&nbsp;</p><p>Best Regards</p><p><img src="http://'+MultiSchool.current_school.code+'.classtune.com/images/school_logo/246/principal_signature.png" width="8%" /></p>'
+        @news.content = sign+"<p>Dr. Shaleha Kader</p><p>Founder Principal & Chairman</p>"
     
       %>
       

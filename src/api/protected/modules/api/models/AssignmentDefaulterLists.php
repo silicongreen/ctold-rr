@@ -128,7 +128,7 @@ class AssignmentDefaulterLists extends CActiveRecord
                     $i_loop = 0;
                     foreach($assignment_students as $svalue)
                     {
-                        $std_list[$i_loop]['student_id'] = $svalue->class_roll_no;
+                        $std_list[$i_loop]['student_id'] = $svalue->id;
                         $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->first_name." ".$svalue->last_name;
                         $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                         $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;

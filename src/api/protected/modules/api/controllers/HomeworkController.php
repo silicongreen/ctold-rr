@@ -106,8 +106,8 @@ class HomeworkController extends Controller
                 $assingmentRegistrationObj->save();
                 
             }  
-            
-            if($student_ids)
+            $student_id_new = $student_ids;
+            if($student_id_new)
             {
                 $reminderrecipients = [];
                 $batch_ids =[];
@@ -119,10 +119,9 @@ class HomeworkController extends Controller
                 $student_ids2 = [];
                 
                 $notification_ids = array();
-                foreach($student_ids as $std_id_h)
+                foreach($student_id_new as $std_id_h)
                 {
-                    echo $std_id_h;
-                    exit;
+                  
                     $assingmentList = new AssignmentDefaulterLists();
                     $assingmentList->assignment_id = $id;
                     $assingmentList->student_id = $std_id_h;

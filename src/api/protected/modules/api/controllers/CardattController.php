@@ -379,7 +379,7 @@ class CardattController extends Controller
 
                        if((!isset($newattendence->is_leave) || $newattendence->is_leave!=1) && !in_array($student_id, $students_ids))
                        {
-                           //$this->sendnotificationAttendence($student_id, $newattendence, 0);
+                           $this->sendnotificationAttendence($student_id, $newattendence, 0);
                            $students_ids[] = $student_id;
                        }
                    }

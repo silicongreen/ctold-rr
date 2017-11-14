@@ -89,6 +89,7 @@
       <td class="name-std"><%= student.class_roll_no %></td>
       <td class="name-std"><%= student.full_name %></td>
       <% total = 0 %>
+      <% off_rank  = false %>
       <% @exams.each do |exam|  %>
           <td>
           
@@ -99,16 +100,23 @@
                   <% total = total+es.marks.to_f %>
                 <% end %>
                 <%= es.grading_level.present? ? es.grading_level : "N/A" %>
+                <% if !es.grading_level.present? or es.grading_level == "F" %>
+                    <% off_rank = true %>
+                <% end %>
               <% end %>
           <% end %>   
           </td>
       <% end %>
-      <% if total != last_mark %>
+      <% if total != last_mark && off_rank == false %>
           <% rank = rank+1 %>
           <% last_mark = total %>
       <% end %>    
       <td class="col-pdf"><%= total %></td>
-      <td class="name-std"><%= rank %></td>
+      <% if off_rank == false %>
+        <td class="name-std"><%= rank %></td>
+      <% else %>
+        <td class="name-std"><%= "N/A" %></td>
+      <% end %>  
  
     </tr> 
 

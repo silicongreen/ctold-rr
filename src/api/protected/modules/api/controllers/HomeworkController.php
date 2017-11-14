@@ -121,6 +121,8 @@ class HomeworkController extends Controller
                 $notification_ids = array();
                 foreach($student_ids as $std_id_h)
                 {
+                    echo $std_id_h;
+                    exit;
                     $assingmentList = new AssignmentDefaulterLists();
                     $assingmentList->assignment_id = $id;
                     $assingmentList->student_id = $std_id_h;

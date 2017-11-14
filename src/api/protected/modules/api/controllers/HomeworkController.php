@@ -84,6 +84,17 @@ class HomeworkController extends Controller
             AssignmentDefaulterLists::model()->deleteAll(
                "`assignment_id` =:assignment_id", array(':assignment_id' => $id)
             );
+            $assignmentObj = new Assignments();
+            $assData = $assignmentObj->findByPk($id);
+            $total_std_ids = explode(",",$assData['student_list']);
+            
+            if($asregData)
+            {
+                $asregData->assignment_not_given = count($student_ids);
+                $asregData->assignment_given = count($total_std_ids)-count($student_ids);
+                $asregData->save();
+            }
+            
             
             
         }

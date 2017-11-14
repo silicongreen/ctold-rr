@@ -96,6 +96,7 @@ class HomeworkController extends Controller
             }
             else
             {
+                $assingmentRegistrationObj->assignment_id = $id;
                 $assingmentRegistrationObj->assignment_not_given = count($student_ids);
                 $assingmentRegistrationObj->assignment_given = count($total_std_ids)-count($student_ids);
                 $assingmentRegistrationObj->created_at = date("Y-m-d H:i:s");

@@ -127,6 +127,7 @@ class HomeworkController extends Controller
                     $assingmentList->student_id = $std_id_h;
                     $assingmentList->save();
                     
+                    $stdobj = new Students();
                     $studentsobj = $stdobj->findByPk($std_id_h);
                     $reminderrecipients[] = $studentsobj->user_id;
                     $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;

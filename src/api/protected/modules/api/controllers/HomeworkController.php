@@ -188,7 +188,7 @@ class HomeworkController extends Controller
                         $reminder->body = "Your child did not submit the homework '" . $assData->title . "'";
                         $reminder->recipient = $value2;
                         $reminder->school_id = Yii::app()->user->schoolId;
-                        $reminder->rid = $ehomework->id;
+                        $reminder->rid = $assData->id;
                         $reminder->rtype = 4;
                         $reminder->batch_id = $batch_ids2[$value2];
                         $reminder->student_id = $student_ids2[$value2];

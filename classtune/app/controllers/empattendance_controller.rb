@@ -283,9 +283,11 @@ class EmpattendanceController < ApplicationController
             employee_image = "<img src='"+@emp.photo.url+"' width='100px' />"
           end
           if @report_type.to_i != 4 or is_late == "Late" 
-            emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => is_late }
-            data[k] = emp
-            k += 1
+            if !employee.black? and !@month.blank? and !@year.blank? and !employee.employee_info.blank?
+              emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => is_late }
+              data[k] = emp
+              k += 1
+            end
           end
         end
       end

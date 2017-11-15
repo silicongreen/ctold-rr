@@ -1,7 +1,7 @@
 <?php
  //,{CL~Sk~&m(u
 
-
+echo phpinfo();
 require 'phpmailer/PHPMailerAutoload.php';
 
 

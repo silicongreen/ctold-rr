@@ -1099,7 +1099,10 @@ class ExamController < ApplicationController
       allExam.each do |exams|
         score_data = exams.exam_scores
         score_data.each do |sd|
-          student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
+          std = Student.find_by_id(sd.student_id)
+          if !std.blank? and std.batch_id == exams.batch_id
+            student_list.push(sd.student_id) unless student_list.include?(sd.student_id)
+          end
         end          
       end
       if student_list.nil?

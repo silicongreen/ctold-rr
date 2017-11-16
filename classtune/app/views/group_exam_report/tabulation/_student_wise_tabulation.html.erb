@@ -101,7 +101,7 @@
                 <% end %>
                 <%= es.grading_level.present? ? es.grading_level : "N/A" %>
                 <hr/><%= es.grading_level %>
-                <% if es.grading_level.blank? or es.grading_level == "F" %>
+                <% if es.grading_level.blank? or es.grading_level.name == "F" %>
                     <% off_rank = true %>
                     <hr/>1
                 <% end %>

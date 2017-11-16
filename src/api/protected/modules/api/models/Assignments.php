@@ -601,6 +601,14 @@ class Assignments extends CActiveRecord
                 {
                     $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
                 }
+                $marge['defaulter_registration'] = 0;
+                $assingmentRegistrationObj = new AssignmentDefaulterRegistrations();
+                $asregData = $assingmentRegistrationObj->findByAssignmentId($value->id);
+                if($asregData)
+                {
+                   $marge['defaulter_registration'] = 1; 
+                }
+                
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));

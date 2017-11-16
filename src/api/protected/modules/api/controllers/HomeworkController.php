@@ -23,7 +23,7 @@ class HomeworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'homeworkintelligence','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
+                'actions' => array('index', 'homeworkintelligence','defaulterList','getdefaulterlist','adddefaulter','getsubjectstudents', 'teacherintelligence', 'Done', 'subjects', 'publishhomework', 'singleteacher', 'assessmentscore', 'singlehomework', 'saveassessment', 'assessment', 'getassessment', 'getproject', 'getsubject', 'addhomework', 'teacherhomework', 'homeworkstatus', 'teacherQuiz'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -31,6 +31,41 @@ class HomeworkController extends Controller
             ),
         );
     }
+    public function actionDefaulterList()
+    {
+       $user_secret = Yii::app()->request->getPost('user_secret');
+       $id = Yii::app()->request->getPost('id');
+       if(Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $id)
+       {
+          $assingmentRegistrationObj = new AssignmentDefaulterRegistrations();
+          $asignment_given = 0;
+          $assignment_register = 0;
+          $assignment_not_given = 0;
+          $asregData = $assingmentRegistrationObj->findByAssignmentId($id);
+          if($asregData)
+          {
+              $assignment_register = 1;
+              $asignment_given = $asregData->assignment_given;
+              $assignment_not_given = $asregData->assignment_not_given;
+          }
+          $deListObj = new AssignmentDefaulterLists();
+          $deList = $deListObj->findAllByAssignmentId($id,$assignment_register,1);
+          $response['data']['assignment_register'] = $assignment_register;
+          $response['data']['assignment_not_given'] = $assignment_not_given;
+          $response['data']['asignment_given'] = $asignment_given;
+          $response['data']['d_list'] = $deList;
+          $response['status']['code'] = 200;
+          $response['status']['msg'] = "Data Found";
+          
+       }
+       else
+       {
+           $response['status']['code'] = 400;
+           $response['status']['msg'] = "Bad Request";
+       }  
+       echo CJSON::encode($response);
+       Yii::app()->end();
+    }        
     public function actionGetDefaulterList()
     {
        $user_secret = Yii::app()->request->getPost('user_secret');

@@ -97,7 +97,7 @@ class AssignmentDefaulterLists extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function findAllByAssignmentId($assignment_id,$register = 0)
+        public function findAllByAssignmentId($assignment_id,$register = 0,$only_defaulter = 0)
         {
             $std_list = [];
             $assignmentObj = new Assignments();
@@ -128,16 +128,19 @@ class AssignmentDefaulterLists extends CActiveRecord
                     $i_loop = 0;
                     foreach($assignment_students as $svalue)
                     {
-                        $std_list[$i_loop]['student_id'] = $svalue->id;
-                        $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->first_name." ".$svalue->last_name;
-                        $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
-                        $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
-                        $std_list[$i_loop]['defaulter'] = 0;
-                        if(in_array($svalue->id, $d_list))
+                        if($only_defaulter==0 || in_array($svalue->id, $d_list))
                         {
-                            $std_list[$i_loop]['defaulter'] = 1;
+                            $std_list[$i_loop]['student_id'] = $svalue->id;
+                            $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->first_name." ".$svalue->last_name;
+                            $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
+                            $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
+                            $std_list[$i_loop]['defaulter'] = 0;
+                            if(in_array($svalue->id, $d_list))
+                            {
+                                $std_list[$i_loop]['defaulter'] = 1;
+                            }
+                            $i_loop++;
                         }
-                        $i_loop++;
                         
                     }
                     

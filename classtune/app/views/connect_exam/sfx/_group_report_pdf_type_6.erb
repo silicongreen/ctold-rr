@@ -66,8 +66,8 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                      <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,subjects['id'].to_i) %>
-                      <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
                             
                       <% else %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

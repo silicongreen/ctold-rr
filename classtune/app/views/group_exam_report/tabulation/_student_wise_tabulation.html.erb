@@ -100,6 +100,7 @@
                   <% total = total+es.marks.to_f %>
                 <% end %>
                 <%= es.grading_level.present? ? es.grading_level : "N/A" %>
+                <hr/><%= es.grading_level %>
                 <% if !es.grading_level.present? or es.grading_level == "F" %>
                     <% off_rank = true %>
                     <hr/>1

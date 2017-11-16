@@ -761,6 +761,13 @@ class Assignments extends CActiveRecord
                 {
                     $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
                 }
+                $marge['defaulter_registration'] = 0;
+                $assingmentRegistrationObj = new AssignmentDefaulterRegistrations();
+                $asregData = $assingmentRegistrationObj->findByAssignmentId($value->id);
+                if($asregData)
+                {
+                   $marge['defaulter_registration'] = 1; 
+                }
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
@@ -866,6 +873,13 @@ class Assignments extends CActiveRecord
                     {
                         $marge['teacher_name'] = rtrim($value["employeeDetails"]->first_name.' '.$middle_name.$value["employeeDetails"]->last_name);
                         $marge['teacher_id']   = $value["employeeDetails"]->id;
+                    }
+                    $marge['defaulter_registration'] = 0;
+                    $assingmentRegistrationObj = new AssignmentDefaulterRegistrations();
+                    $asregData = $assingmentRegistrationObj->findByAssignmentId($value->id);
+                    if($asregData)
+                    {
+                       $marge['defaulter_registration'] = 1; 
                     }
                     $marge['subjects'] = $value["subjectDetails"]->name;
                     $marge['subjects_id'] = $value["subjectDetails"]->id;

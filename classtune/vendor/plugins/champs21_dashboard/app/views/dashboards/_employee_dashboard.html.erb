@@ -131,7 +131,7 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#A1C935; color:white;'><span style='text-align:center;width:80%; float:left;'>Print Admit Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'admit_card' %>
       <% end %>
       <% if @current_user.admin? and (MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 2) %>
-        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#A1C935; color:white;'><span style='text-align:center;width:80%; float:left;'>Confidencial Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'student_record' %>
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#A1C935; color:white;'><span style='text-align:center;width:80%; float:left;'>Confidential Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'student_record' %>
       <% end %>
       <%  if (@current_user.admin? || @current_user.privileges.include?(Privilege.find_by_name('SMSManagement'))) && sms_enable? %> 
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Students</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'students' %>

@@ -129,26 +129,29 @@ class HomeworkController extends Controller
                     
                     $stdobj = new Students();
                     $studentsobj = $stdobj->findByPk($std_id_h);
-                    $reminderrecipients[] = $studentsobj->user_id;
-                    $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
-                    $student_ids[$studentsobj->user_id] = $studentsobj->id;
-
-                    $gstudent = new GuardianStudent();
-                    $all_g = $gstudent->getGuardians($studentsobj->id);
-
-                    if ($all_g)
+                    if($studentsobj && $studentsobj->user_id)
                     {
-                        foreach ($all_g as $value)
+                        $reminderrecipients[] = $studentsobj->user_id;
+                        $batch_ids[$studentsobj->user_id] = $studentsobj->batch_id;
+                        $student_ids[$studentsobj->user_id] = $studentsobj->id;
+
+                        $gstudent = new GuardianStudent();
+                        $all_g = $gstudent->getGuardians($studentsobj->id);
+
+                        if ($all_g)
                         {
-                            $gr = new Guardians();
-                            if (isset($value['guardian']) && isset($value['guardian']->id))
+                            foreach ($all_g as $value)
                             {
-                                $grdata = $gr->findByPk($value['guardian']->id);
-                                if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients2))
+                                $gr = new Guardians();
+                                if (isset($value['guardian']) && isset($value['guardian']->id))
                                 {
-                                    $reminderrecipients2[] = $grdata->user_id;
-                                    $batch_ids2[$grdata->user_id] = $studentsobj->batch_id;
-                                    $student_ids2[$grdata->user_id] = $studentsobj->id;
+                                    $grdata = $gr->findByPk($value['guardian']->id);
+                                    if($grdata && $grdata->user_id && !in_array($grdata->user_id, $reminderrecipients2))
+                                    {
+                                        $reminderrecipients2[] = $grdata->user_id;
+                                        $batch_ids2[$grdata->user_id] = $studentsobj->batch_id;
+                                        $student_ids2[$grdata->user_id] = $studentsobj->id;
+                                    }
                                 }
                             }
                         }

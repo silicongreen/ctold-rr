@@ -80,6 +80,15 @@
         <label for="parent_detail_occupation"><%= t('occupation') %></label>
         <div class="text-input-bg"><%= s.text_field :occupation, :value => @parent.occupation %></div>
       </div>
+      <div class="label-field-pair">
+        <label for="parent_detail_education"><%= "Designation" %></label>
+        <div class="text-input-bg"><%= s.text_field :designation, :value => @parent.designation %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <label for="parent_detail_occupation"><%= "Passport" %></label>
+        <div class="text-input-bg"><%= s.text_field :passport, :value => @parent.passport %></div>
+      </div>
 
       <div class="label-field-pair">
         <label for="parent_detail_income"><%= t('income') %></label>

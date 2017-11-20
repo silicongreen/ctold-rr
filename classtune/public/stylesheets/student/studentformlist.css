@@ -90,7 +90,7 @@
 .row_label {
     
     float: left;
-    width: 25%;
+    width: 20%;
     min-height: 120px;
 }
 .row_wrapper .row .row_data {
@@ -100,15 +100,24 @@
     border-left: 1px solid #DFE1E2;
     min-height: 120px;
 }
+.row_action2 {
+    float: left;
+    width: 18%;
+    border-right: 1px solid #DFE1E2; 
+    min-height: 120px;
+}
+ .row_action2 div {
+    padding: 10px;
+}
 .row_status {
     float: left;
-    width: 20%;
+    width: 10%;
     border-right: 1px solid #DFE1E2; 
     min-height: 120px;
 }
 .row_action {
     float: right;
-    width: 23%;
+    width: 18%;
     
 }
 
@@ -135,20 +144,24 @@
     color: #fff;
     text-decoration: none;
 }
+.row_action2 div a {
+    color: #fff;
+    text-decoration: none;
+}
 .row_status div a {
     color: #fff;
     text-decoration: none;
 }
-.row_data div a:active, .row_action div a:active, .row_status div a:active {
+.row_data div a:active, .row_action div a:active, .row_action2 div a:active, .row_status div a:active {
     color: #000;
     text-decoration: none;
 }
-.row_data div a:hover , .row_action div a:hover {
+.row_data div a:hover , .row_action div a:hover, .row_action2 div a:hover {
     color: #000;
     text-decoration: none;
 }
 .row_data div span, .row_action div span {
-    float: right;
+    float: left;
 }
 #guardian_detail {
     background-color: #ffffff;

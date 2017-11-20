@@ -45,7 +45,6 @@
             <div class="col-xs-12">&nbsp;</div>
             <div class="col-xs-12 font-size-12">
                 <div class="col-xs-12 data-group" style="padding:0px;">
-                  <div class="col-xs-11" style="padding:0px;">
                     <div class="col-xs-1" >Name :</div>
                     <div class="col-xs-3 underline" ><%= std_info.full_name %></div>
                     <div class="col-xs-2" >Class & Section :</div>
@@ -53,7 +52,7 @@
                     <div class="col-xs-2 underline" ><%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></div>
                     <div class="col-xs-2" >Nationality :</div>
                     <div class="col-xs-2 underline" ><%= std_info.nationality.name unless std_info.nationality_id.nil? %></div>
-                  </div>
+                  
                 </div>
                 <div class="col-xs-12 data-group">
                   <div class="col-xs-11" style="padding:0px;">
@@ -77,20 +76,20 @@
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-11" style="padding:0px;">
                               <div class="col-xs-2" >Father's Name :</div>
-                              <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                              <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                               <div class="col-xs-2" >Qualification:</div>
                               <div class="col-xs-1 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                               <div class="col-xs-2" >Occupation :</div>
-                              <div class="col-xs-2 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                              <div class="col-xs-1 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
                             </div>
                             
                           </div>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-11" style="padding:0px;">
                               <div class="col-xs-2" >Designation :</div>
-                              <div class="col-xs-2 underline" ></div>
+                              <div class="col-xs-2 underline" ><%=  gurdian.designation  unless gurdian.occupation.blank? %></div>
                               <div class="col-xs-2" >Passport / ID No :</div>
-                              <div class="col-xs-6 underline" ></div>
+                              <div class="col-xs-6 underline" ><%=  gurdian.passport  unless gurdian.occupation.blank? %></div>
                             </div>
                           </div>
                           <% father_mobile = gurdian.mobile_phone %>
@@ -107,19 +106,19 @@
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-11" style="padding:0px;">
                               <div class="col-xs-2" >Mother's Name :</div>
-                              <div class="col-xs-3 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
+                              <div class="col-xs-4 underline" ><%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
                               <div class="col-xs-2" >Qualification:</div>
                               <div class="col-xs-1 underline" ><%= gurdian.education unless gurdian.education.blank? %></div>
                               <div class="col-xs-2" >Occupation :</div>
-                              <div class="col-xs-2 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
+                              <div class="col-xs-1 underline" ><%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
                             </div>
                           </div>
                           <div class="col-xs-12 data-group">
                             <div class="col-xs-11" style="padding:0px;">
                               <div class="col-xs-2" >Designation :</div>
-                              <div class="col-xs-2 underline" ></div>
+                              <div class="col-xs-2 underline" ><%=  gurdian.designation  unless gurdian.occupation.blank? %></div>
                               <div class="col-xs-2" >Passport / ID No :</div>
-                              <div class="col-xs-6 underline" ></div>
+                              <div class="col-xs-6 underline" ><%=  gurdian.passport  unless gurdian.occupation.blank? %></div>
                             </div>
                           </div>
                           <% mother_mobile = gurdian.mobile_phone %>

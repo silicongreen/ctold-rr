@@ -2026,6 +2026,8 @@ end
       else
         extra_condition+= " and student_forms.is_delete=true"
       end  
+    elsif @current_user.employee?
+        extra_condition+= " and student_forms.employee_id="+@current_user.employee_record.id
     else
       extra_condition+= " and student_forms.is_delete=true"
     end  
@@ -2040,9 +2042,14 @@ end
     if !@form_type.blank? and @form_type!=""
       extra_condition += " and student_forms.form_type_text = '#{@form_type}'"
     end
-    @formData = StudentForm.paginate :conditions=>"student_forms.school_id = #{school_id} and student_forms.is_delete=false"+extra_condition, :order=>"student_forms.created_at desc",:include=>[:student], :page=>params[:page], :per_page => 2
+    @formData = StudentForm.paginate :conditions=>"student_forms.school_id = #{school_id} and student_forms.is_delete=false"+extra_condition, :order=>"student_forms.created_at desc",:include=>[:student], :page=>params[:page], :per_page => 10
   end
   
+  def forward_form
+    @formData = StudentForm.find_by_id(params[:aid])
+    @formData.update_attributes(:forwarded => 1)
+    @formData.update_attributes(:employee_id => params[:content_editor])
+  end
   def generate_pdf_letter
     unless params[:st_content].nil?      
       @formData = StudentForm.find_by_id(params[:aid])

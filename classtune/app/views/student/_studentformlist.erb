@@ -48,46 +48,89 @@
                   <% if a.status == 22 %>
                     <span class="rejected">Rejected</span>
                   <% end %>
+                    <div>
+                      <% if a.employee_id!=0 %>
+                        <% current_employee = Employee.find_by_id(a.employee_id) %>
+                         Current Desk : <%= current_employee.full_name %>
+                      <% else %>
+                         Current Desk : Section Office
+                      <% end %>  
+                    </div>    
                 </div>
             </div>
+            
             <div class="row_action">
+             
               <div>
-                <% if a.status == 1 %>
-                  <span class="apply_tag">
-                      <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                  </span>  
-                <% end %>
-                
-                <% if a.status == 2 %>                  
-                <span class="Processing">
-                  <%= link_to "Complete Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3,:page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                </span>
-                <% end %>
-                <% if a.status == 3 %> 
-                  
-                <% end %>
-                
-                <% if a.status == 22 %>
-                
-                <% elsif a.status == 3 %>
-                
-                <% else %>
-                <span class="Denied">
-                  <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
-                </span>
-                <% end %>
-                <% if a.status != 22 %>
-                  <span class="generate_pdf">
-                  <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
+                <% if a.status != 1 or @current_user.admin? or a.employee_id == @current_user.employee_record.id %>
+                  <% if a.status == 1 %>
+                    <span class="apply_tag">
+                        <%= link_to "Start Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 2, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                    </span>  
+                  <% end %>
+
+                  <% if a.status == 2 and (@current_user.admin? or @current_user.employee_record.meeting_forwarder.to_i == 1) %>                  
+                  <span class="Processing">
+                    <%= link_to "Complete Processing", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 3,:page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
                   </span>
-                  <% if !a.generated_form.nil? %>
+                  <% end %>
+                  <% if a.status == 3 %> 
+
+                  <% end %>
+
+                  <% if a.status == 22 %>
+
+                  <% elsif a.status == 3 %>
+
+                  <% else %>
+                  <span class="Denied">
+                    <%= link_to "Deney", { :controller=>"student",:action => 'update_letter_status', :aid => a.id, :id => a.student_id, :status => 22, :page => params[:page],:batch_id =>@batch_id,:status_id =>@status_id,:form_type =>@form_type},:confirm=>"#{t('delete_confirm_msg')}",:class=>"delete" %>
+                  </span>
+                  <% end %>
+                  <% if a.status != 22 %>
                     <span class="generate_pdf">
-                    <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
+                    <%= link_to "Generate PDF", { :controller=>"student",:action => 'generate_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
                     </span>
+                    <% if !a.generated_form.nil? %>
+                      <span class="generate_pdf">
+                      <%= link_to "View PDF", { :controller=>"student",:action => 'view_pdf_letter', :aid => a.id, :id => a.student_id}, :target => "_blank" %>
+                      </span>
+                    <% end %>
                   <% end %>
                 <% end %>
+                
               </div>
+              
+              
             </div>
+            <div class="row_action2">
+                <div>
+                  <% if a.forwarded == 0 or @current_user.admin? or a.employee_id == @current_user.employee_record.id %>
+                   <% form_for :studentfrom, :url => {:action=> 'forward_form', :aid => a.id, :id => a.student_id} do |f| %>
+                    <%
+                      desig_ids = [1610,1611,1612]
+                      employees = Employee.find(:all,:conditions=>["employee_position_id in (?) and id!=?",desig_ids,@current_user.employee_record.id],:order=>"employee_position_id DESC")
+                    %>
+                    <% unless employees.blank? %>
+                    Forward To: 
+                    <select name="emp" id="emp" style="height: 22px;width: 96%;margin-top: 5px; margin-left:0px;" >
+                        <option value="0">Select Employee</option>
+                        <% employees.each do |emp| %>
+                          <span class="apply_tag" style="float:left; claer:both; margin-top:10px;">
+                              <option value="<%= emp.id %>"><%= emp.first_name+"("+emp.employee_position.name+")"%> </option>
+                          </span>
+                        <% end %>
+                    </select>    
+                    <% end %>
+                    <div style="margin: 5px 0px; padding:0px;" >
+                      <%= f.submit "#{t('submit')}"  %>
+                    </div>    
+                    <% end %>
+                   <% end %> 
+                </div>    
+             
+            </div>
+            
         </div>
       <% end %>
   <% posted_params = params %>

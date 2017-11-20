@@ -2027,7 +2027,7 @@ end
         extra_condition+= " and student_forms.is_delete=true"
       end  
     elsif @current_user.employee?
-        extra_condition+= " and student_forms.employee_id="+@current_user.employee_record.id
+        extra_condition+= " and student_forms.employee_id="+@current_user.employee_record.id.to_s
     else
       extra_condition+= " and student_forms.is_delete=true"
     end  
@@ -2048,7 +2048,10 @@ end
   def forward_form
     @formData = StudentForm.find_by_id(params[:aid])
     @formData.update_attributes(:forwarded => 1)
-    @formData.update_attributes(:employee_id => params[:content_editor])
+    @formData.update_attributes(:employee_id => params[:emp])
+    forwarder_notification(params[:emp])
+    flash[:warn_notice]="<p>Form Forwarded.</p>"
+    redirect_to :action=>'studentformlist'
   end
   def generate_pdf_letter
     unless params[:st_content].nil?      
@@ -2272,6 +2275,7 @@ end
     @formData.update_attributes(:status => params[:status])
     
     send_guardian_notification
+    send_notification_section_manager_update
     
     flash[:warn_notice]="<p>Request is Updated.</p>"
     redirect_to :action=>'studentformlist', :id => params[:id], :page => params[:page], :status_id => params[:status_id], :batch_id => params[:batch_id], :form_type => params[:form_type]
@@ -3698,7 +3702,7 @@ end
     elsif @formData.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
     elsif @formData.form_type_text == "recommendation_letter"
-      style = "recommendation_letter"
+      title = "Recommendation Certificate Letter"
     elsif @formData.form_type_text == "studentship_letter" 
       title = "Studentship Letter"
     elsif @formData.form_type_text == "visa_recommendation_letter" 
@@ -3710,11 +3714,79 @@ end
       :recipient_ids => reminderrecipients,
       :subject=>"Your application status for "+title+" is updated",
       :rtype=>1000,
-      :rid=>@studentForm.id,
+      :rid=>@formData.id,
       :student_id => student_ids,
       :batch_id => batch_ids,
       :body=>"Your application status for "+title+" is updated. please check student profile form." ))
     end
+    
+  end
+  
+  def forwarder_notification(id)
+    available_user_ids = []
+    employee = Employee.find_by_id(id.to_i)
+    available_user_ids << employee.user_id
+    title = ""
+    if @formData.form_type_text == "transfer_letter" 
+      title = "Transfer Certificate Letter"
+    elsif @formData.form_type_text == "noc_letter" 
+      title = "No Objection Certificate Letter"
+    elsif @formData.form_type_text == "recommendation_letter"
+      title = "Recommendation Certificate Letter"
+    elsif @formData.form_type_text == "studentship_letter" 
+      title = "Studentship Letter"
+    elsif @formData.form_type_text == "visa_recommendation_letter" 
+      title = "VISA Recommendation Certificate Letter"
+    end
+    
+    unless available_user_ids.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+      :recipient_ids => available_user_ids,
+      :subject=>title+" Need Your Action",
+      :rtype=>1000,
+      :rid=>@formData.id,
+      :body=>title+" is forwarded to you. Need your action" ))
+    end
+    
+  end
+  
+  def send_notification_section_manager_update
+    batch = @formData.student.batch       
+    unless batch.blank?
+      batch_tutor = batch.employees
+      available_user_ids = []
+      unless batch_tutor.blank?
+        batch_tutor.each do |employee|
+          if employee.meeting_forwarder == 1
+            available_user_ids << employee.user_id
+          end
+        end
+      end
+    end
+    
+     
+    if @formData.form_type_text == "transfer_letter" 
+      title = "Transfer Certificate Letter"
+    elsif @formData.form_type_text == "noc_letter" 
+      title = "No Objection Certificate Letter"
+    elsif @formData.form_type_text == "recommendation_letter"
+      title = "Recommendation Certificate Letter"
+    elsif @formData.form_type_text == "studentship_letter" 
+      title = "Studentship Letter"
+    elsif @formData.form_type_text == "visa_recommendation_letter" 
+      title = "VISA Recommendation Certificate Letter"
+    end 
+        
+    
+    unless available_user_ids.nil?
+      Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+      :recipient_ids => available_user_ids,
+      :subject=>title+" Status Updated",
+      :rtype=>1000,
+      :rid=>@formData.id,
+      :body=>title+" Status Updated. Need your action" ))
+    end
+    
     
   end
   
@@ -3738,7 +3810,7 @@ end
     elsif @studentForm.form_type_text == "noc_letter" 
       title = "No Objection Certificate Letter"
     elsif @studentForm.form_type_text == "recommendation_letter"
-      style = "recommendation_letter"
+      title = "Recommendation Certificate Letter"
     elsif @studentForm.form_type_text == "studentship_letter" 
       title = "Studentship Letter"
     elsif @studentForm.form_type_text == "visa_recommendation_letter" 

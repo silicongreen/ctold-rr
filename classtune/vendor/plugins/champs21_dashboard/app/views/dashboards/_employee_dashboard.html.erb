@@ -141,7 +141,7 @@ employee_id = @current_user.employee_record.id
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#000000; color:white;'><span style='text-align:center;width:80%; float:left;'>Marks Entry</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'marks', :action => 'connect_exam' %>
       <% end %>
-      <% if school_form_apply? and ( @current_user.admin? or (@current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1 and permitted_to? :form_to_apply, :student) ) %>
+      <% if school_form_apply? and ( @current_user.admin? or (@current_user.employee? and permitted_to? :studentformlist, :student) ) %>
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:royalblue; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Form</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'student', :action => 'studentformlist' %>
       <% end %>
       <%  if @current_user.admin? %>

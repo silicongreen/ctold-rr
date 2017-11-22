@@ -33,7 +33,7 @@ class OtherController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids)
+      @students = Student.find_all_by_batch_id(batch_ids,:order=>"first_name asc, last_name asc")
     end
   end
   def print_student_record

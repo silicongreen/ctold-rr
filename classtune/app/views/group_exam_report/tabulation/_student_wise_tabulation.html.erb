@@ -51,9 +51,18 @@
   %>
     <% j = j+1 %>
     <%  std_count = std_count+1; %>
-    <% if std_count>15 && extender ==0 %>
+    <% if std_count>13 && extender ==0 %>
         <% std_count = 0 %>
         <% extender = 1 %>
+        <tr class="page-break4">
+            <td colspan="100">&nbsp;</td>
+        </tr>
+        <tr class="even">
+            <td colspan="<%= colspan_fourth_int %>">Class Teacher Signature</td>
+            <td colspan="<%= colspan_fourth_int %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="<%= colspan_fourth_int %>">Principal Signature</td>
+            <td colspan="<%= last_colspan %>"><br/><br/><br/><br/></td>
+        </tr>
         <tr class="page-break1">
             <td colspan="100">&nbsp;</td>
         </tr> 
@@ -68,9 +77,18 @@
           <td class="col-pdf">Position</td>
           
         </tr>
-    <% elsif std_count>16 && extender ==1 %>
+    <% elsif std_count>15 && extender ==1 %>
         <% std_count = 0 %>
         <% extender = 1 %>
+        <tr class="page-break4">
+            <td colspan="100">&nbsp;</td>
+        </tr>
+        <tr class="even">
+            <td colspan="<%= colspan_fourth_int %>">Class Teacher Signature</td>
+            <td colspan="<%= colspan_fourth_int %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td colspan="<%= colspan_fourth_int %>">Principal Signature</td>
+            <td colspan="<%= last_colspan %>"><br/><br/><br/><br/></td>
+        </tr>
         <tr class="page-break2">
             <td colspan="100">&nbsp;</td>
         </tr> 
@@ -120,7 +138,19 @@
         <td class="name-std"><%= "N/A" %></td>
       <% end %>  
  
-    </tr> 
+    </tr>
+    
+    <% if student.equal? @students.last %>
+      <tr class="page-break4">
+          <td colspan="100">&nbsp;</td>
+      </tr>
+      <tr class="even">
+          <td colspan="<%= colspan_fourth_int %>">Class Teacher Signature</td>
+          <td colspan="<%= colspan_fourth_int %>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td colspan="<%= colspan_fourth_int %>">Principal Signature</td>
+          <td colspan="<%= last_colspan %>"><br/><br/><br/><br/></td>
+      </tr>
+    <% end %>
 
 <% end %>
 <% end %>

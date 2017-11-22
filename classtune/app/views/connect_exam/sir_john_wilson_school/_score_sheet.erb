@@ -25,7 +25,7 @@
   <% @report_data['result']['ALL'].each do |rs| %> 
       <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
         <% total_std = total_std.to_f+rs['students'][std['id']]['score'].to_f %>
-      <% else %>
+      <% end %>
   <% end %>
   <% if total_std > heighest_mark.to_f %>
     <% heighest_mark = total_std %>
@@ -77,7 +77,7 @@
             <% else %>
               <p><b>Teacher's Name : ..............................</b></p> 
             <% end %> 
-            <p><b>Highest Score : 89</b></p>
+            <p><b>Highest Score : <%= heighest_mark %></b></p>
           </td>
         </tr>
         

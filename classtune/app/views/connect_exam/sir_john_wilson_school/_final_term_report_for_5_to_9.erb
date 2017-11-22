@@ -1,5 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 sjws">
+  <div id="page-yield"  class="available_sections1 sjws sjws-final-term">
     <div class="page1"> 
         <div class="logo_left">
           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '80%' %>
@@ -35,21 +35,19 @@
                       <td class="" colspan="4"><center>Second Term</center></td>
                       <td class="" colspan="4"><center>Overall Final</center></td>
                   </tr>
-                  <tr class="table-header t_head">
-                      <td class="">Class<br />Assessment<br />Mark(40%)</td>
-                      <td class="">Half Yearly Exam <br />(60%)</td>
-                      <td class="">Overall<br />Term Mark<br />(%)</td>
-                      <td class="">H.W.</td>
+                  <tr class="table-header t_head t-small">
+                      <td class="">CA(40%)</td>
+                      <td class="">HYE(60%)</td>
+                      <td class="">Overall(100%)</td>
                       
-                      <td class="">Class<br />Assessment<br />Mark(40%)</td>
-                      <td class="">Final Exam <br />(60%)</td>
-                      <td class="">Overall<br />Term Mark<br />(%)</td>
-                      <td class="">H.W.</td>
+                      <td class="">CA(40%)</td>
+                      <td class="">HY(60%)</td>
+                      <td class="">Overall(100%)</td>
                       
-                      <td class="">40% of First<br />Term Mark</td>
-                      <td class="">60% of Second<br />Term Mark</td>
-                      <td class="">Total Mark(%)</td>
-                      <td class="">Final Grade</td>
+                      <td class="">1st Term(40%)</td>
+                      <td class="">2nd Term(60%)</td>
+                      <td class="">Total(100%)</td>
+                      <td class="">Grade</td>
                       
                   </tr>
                   <%#= debug @report_data %>
@@ -165,12 +163,11 @@
                           %>
                           
                           <td class="col-pdf"><center><%= (main_mark + main_mark2).to_i %></center></td>
-                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td> 
+                          
   
                           <td class="col-pdf"><center><%=main_mark3.to_i %>  <%#=exam_priority%></center></td>                          
                           <td class="col-pdf"><center><%= main_mark4.to_i %></center></td>
                           <td class="col-pdf"><center><%= (main_mark3 + main_mark4).to_i %></center></td>
-                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>
                           <% final40Mark = ((main_mark.to_f + main_mark2.to_f)/100)*40 %>
                           <% final60Mark = ((main_mark3.to_f + main_mark4.to_f)/100)*60 %>
                           <% finalMark = final40Mark.to_f + final60Mark.to_f %>
@@ -210,7 +207,7 @@
 
               </table-->
               <br />
-              <div class="footer">
+            
                 <table class='sjws_table_intro' width="100%" >                 
                         <tr>
                             <td width="40%">
@@ -238,11 +235,7 @@
                             </td>                          
                             <td class="term_remark" width='60%'>
                               <i>
-                                <% if !@exam_comment.nil? %>
-                                  <%=@exam_comment.comments%>
-                                <% else %>
-                                  &nbsp;
-                                <% end %>
+                               
                               </i>
                             
                             
@@ -274,7 +267,7 @@
                 </table>
 
                 <div>Note : Grading scale for Mock examinations: Edexcel IGCSE grade boundaries have been used. </div>
-              </div>
+              
           </div>
       </div>
   </div>

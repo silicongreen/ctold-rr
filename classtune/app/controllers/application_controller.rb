@@ -196,14 +196,28 @@ class ApplicationController < ActionController::Base
   
   def get_exam_result_type()
     require "yaml"
-    vreturn = []
+    vreturn = {}
     type_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/other.yml")['resulttype']
     all_schools = type_config['numbers'].split(",")
     current_school = MultiSchool.current_school.id
     if all_schools.include?(current_school.to_s)
-      vreturn = type_config['type_'+current_school.to_s].split(",")
+      all_types = type_config['type_'+current_school.to_s].split(",")
+      il = 0
+      all_types.each do |examtype|
+        
+        il = il+1
+        if current_school != 340 or (il!=2 and  il!=3 and  il!=9 and  il!=12) 
+          vreturn[il.to_s] = examtype
+        end  
+      end
+      
     else
-      vreturn = type_config['default'].split(",")     
+      all_types = type_config['default'].split(",") 
+      il = 0
+      all_types.each do |examtype|
+        il = il+1
+        vreturn[il.to_s] = examtype
+      end
     end  
     return vreturn
   end

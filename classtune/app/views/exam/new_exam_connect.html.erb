@@ -134,10 +134,10 @@
         <div class="text-input-bg">
             
           <select name="exam_grouping[result_type]"  >
-            <% i = 1 %>
-            <% exam_type.each do |type| %>
+            
+            <% exam_type.each_with_index do |i,type| %>
               <option value="<%= i %>"><%= type %></option>
-              <% i = i+1 %>
+            
             <% end %>  
           </select>
         </div>

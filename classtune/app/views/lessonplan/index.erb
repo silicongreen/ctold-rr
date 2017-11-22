@@ -383,7 +383,11 @@
                 </div>                                           
                 <div class="subcontent-info">
                     <% unless r.author.blank?  %>
-                      <%= r.author.first_name+" "+r.author.last_name %> <%= '- admin' if r.author.admin==true%>
+                      <% unless r.author.last_name.blank? %>
+                        <%= r.author.first_name+" "+r.author.last_name %> <%= '- admin' if r.author.admin==true%>
+                      <% else %>
+                        <%= r.author.first_name %> <%= '- admin' if r.author.admin==true%>
+                      <% end %>  
                     <% else %>
                      <%= t('user_deleted') %>
                     <% end %>  

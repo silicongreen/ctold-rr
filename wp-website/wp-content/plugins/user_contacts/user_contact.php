@@ -220,7 +220,7 @@ if (!function_exists('check_login_paid'))
 {
     function check_login_paid($user_name, $password) 
     {   
-        $schools_applicable = array(312);
+        $schools_applicable = array(312,3);
         $mydb = new wpdb('champs21_champ', '1_84T~vADp2$', 'champs21_school', 'localhost');
         $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)", $user_name));
 

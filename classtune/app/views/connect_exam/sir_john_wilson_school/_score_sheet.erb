@@ -18,6 +18,22 @@
 #under the License. -%>
 <% grades = [] %>
 <% grade_count = {} %>
+<% heighest_mark = 0 %>
+<% unless @report_data['result']['al_students'].blank? %>
+<% @report_data['result']['al_students'].each do |std| %>
+  <% total_std = 0 %>
+  <% @report_data['result']['ALL'].each do |rs| %> 
+      <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
+        <% total_std = total_std.to_f+rs['students'][std['id']]['score'].to_f %>
+      <% else %>
+  <% end %>
+  <% if total_std > heighest_mark.to_f %>
+    <% heighest_mark = total_std %>
+  <% end %>
+  
+<% end %>
+<% end %>
+
 <div id="page-yield" class="available_sections1">
   <div class="page1 sjws"> 
       <div class="logo_left">&nbsp;</div>

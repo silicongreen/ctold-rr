@@ -641,13 +641,31 @@ class ExamController < ApplicationController
           @exam = Exam.find_by_id(exam_id)
           stdetails.each_pair do |student_id, details|
             @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
+            if details[:marks].nil?
+               details[:marks] = 0
+            end
             if @exam_score.nil?
+              
               unless details[:marks].nil? 
                 if details[:marks].to_f <= @exam.maximum_marks.to_f
-                  ExamScore.create do |score|
-                    score.exam_id          = @exam.id
-                    score.student_id       = student_id
-                    score.marks            = details[:marks]
+                  
+                  unless details[:remarks].blank?
+                    if details[:remarks].kind_of?(Array)
+                      remarks_details = details[:remarks].join("|")
+                      ExamScore.create do |score|
+                        score.exam_id          = @exam.id
+                        score.student_id       = student_id
+                        score.marks            = details[:marks]
+                        score.remarks          = remarks_details
+                      end
+                      
+                    end
+                  else
+                    ExamScore.create do |score|
+                      score.exam_id          = @exam.id
+                      score.student_id       = student_id
+                      score.marks            = details[:marks]
+                    end
                   end
                 else
                   @error = true
@@ -655,12 +673,18 @@ class ExamController < ApplicationController
               end
             else
               if details[:marks].to_f <= @exam.maximum_marks.to_f
-                
+                  unless details[:remarks].blank?
+                    if details[:remarks].kind_of?(Array)
+                      remarks_details = details[:remarks].join("|")
+                      details[:remarks] = remarks_details
+                    end
+                  end   
                   if @exam_score.update_attributes(details)
                   else
                     flash[:warn_notice] = "#{t('flash4')}"
                     @error = nil
                   end
+                   
                  
               else
                 @error = true
@@ -681,7 +705,7 @@ class ExamController < ApplicationController
             score.exam_connect_id  = exam_subject_id_array[0]
             score.employee_id      = current_user.employee_record.id
             score.comments         = details[:comments]
-            score.effort         = details[:effort] # For Sir John Wilson School
+            score.effort           = details[:effort] # For Sir John Wilson School
           end
         else
           @exam_comments.update_attributes(details)
@@ -2753,23 +2777,23 @@ class ExamController < ApplicationController
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['from']
     
-    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}") && api_from != "local"
-      FileUtils.chown 'champs21','champs21',file_name
-      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
-    else
+#    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}") && api_from != "local"
+#      FileUtils.chown 'champs21','champs21',file_name
+#      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+#    else
       @grades = @batch.grading_level_list
 
       @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
       if !@employee_sub.nil?
         @employee = Employee.find(@employee_sub.employee_id)
       end
-      @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
+      
       get_subject_mark_sheet(@id,@subject_id)
       @report_data = []
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-      }    
+         
       render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'Legal',
@@ -2779,7 +2803,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-    end
+    
   end
   
   def effot_gradesheet    

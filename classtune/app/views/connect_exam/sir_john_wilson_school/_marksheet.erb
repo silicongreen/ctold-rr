@@ -60,8 +60,10 @@
                           <p></p>
                       </td>
                       <% @report_data['result']['ALL'].each do |rs| %>
-                        <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['alternative_title'] %></span></div></td>
-                        <% colspan = colspan+1 %>          
+                        <% if rs['exam_category'].to_i!=4 %>
+                        <td class="rotate"><div><span><%=  rs['exam_date'].to_s %><br /></span><span><%=  rs['alternative_title'] %></span></div></td>
+                        <% colspan = colspan+1 %>  
+                        <% end %>
                       <% end %> 
                       <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
@@ -76,9 +78,11 @@
                       <td class="sl"><b>SL.</b></td>
                       <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
                       <% @report_data['result']['ALL'].each do |rs| %>
+                        <% if rs['exam_category'].to_i!=4 %>
                         <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
 
                         <% colspan = colspan+1 %>
+                        <% end %>
                       <% end %>  
                       <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
                       <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
@@ -95,98 +99,107 @@
                       <% std_count_main = std_count_main+1 %>
                       <%  std_count = std_count+1; %>
                       <% colspan = colspan+4 %>
-                      <% if std_count>14 && extender ==0 %>
+                      <% if std_count>11 && extender ==0 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">
                             <td colspan="<%= colspan %>">&nbsp;</td>
                         </tr>    
                         <tr class="sjws-table-header">
-                            <td colspan="2">
-                                <h3><i>SENOIR SECTION</i></h3>
-                                <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
-                                <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
-                                <% if !@employee.nil? %> 
-                                  <p><b>Subject : <%= @subject.name %></b></p>
-                                  <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
-                                <% else %>
-                                  <p><b>Subject : <%= @subject.name %></b></p>
-                                <% end %> 
-                                <p></p>
-                            </td>
-                            <% @report_data['result']['ALL'].each do |rs| %>
-                              <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['alternative_title'] %></span></div></td>
-                              <% colspan = colspan+1 %>          
-                            <% end %> 
-                            <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                      <td colspan="2">
+                          <h3><i>SENOIR SECTION</i></h3>
+                          <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
+                          <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+                          <% if !@employee.nil? %> 
+                            <p><b>Subject : <%= @subject.name %></b></p>
+                            <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
+                          <% else %>
+                            <p><b>Subject : <%= @subject.name %></b></p>
+                          <% end %> 
+                          <p></p>
+                      </td>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <% if rs['exam_category'].to_i!=4 %>
+                        <td class="rotate"><div><span><%=  rs['exam_date'] %><br /></span><span><%=  rs['alternative_title'] %></span></div></td>
+                        <% colspan = colspan+1 %>  
+                        <% end %>
+                      <% end %> 
+                      <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
-                            <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box"><%=assignmentCount%></span></div></td>
-                            <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
-                            <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
-                            <td class="rotate"><center><div><span>GRADE</span></div></center></td>
-                        </tr>
+                      <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box"><%=assignmentCount%></span></div></td>
+                      <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
+                      <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
+                      <td class="rotate"><center><div><span>GRADE</span></div></center></td>
+                  </tr>
 
 
-                        <tr class="sjws-table-header">
-                            <td class="sl"><b>SL.</b></td>
-                            <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
-                            <% @report_data['result']['ALL'].each do |rs| %>
-                              <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
+                  <tr class="sjws-table-header">
+                      <td class="sl"><b>SL.</b></td>
+                      <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                      
+                        <% if rs['exam_category'].to_i!=4 %>
+                        <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
 
-                              <% colspan = colspan+1 %>
-                            <% end %>  
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
-                            <td>&nbsp;</td>
-                            <td></td>
+                        <% colspan = colspan+1 %>
+                        <% end %>
+                      <% end %>  
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
+                      <td>&nbsp;</td>
+                      <td></td>
 
-                        </tr>
-                      <% elsif std_count>16 && extender ==1 %>
+                  </tr>
+                      <% elsif std_count>11 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">
                             <td colspan="<%= colspan %>">&nbsp;</td>
                         </tr> 
                         <tr class="sjws-table-header">
-                            <td colspan="2">
-                                <h3><i>SENOIR SECTION</i></h3>
-                                <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
-                                <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
-                                <% if !@employee.nil? %> 
-                                  <p><b>Subject : <%= @subject.name %></b></p>
-                                  <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
-                                <% else %>
-                                  <p><b>Subject : <%= @subject.name %></b></p>
-                                <% end %> 
-                                <p></p>
-                            </td>
-                            <% @report_data['result']['ALL'].each do |rs| %>
-                              <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['alternative_title'] %></span></div></td>
-                              <% colspan = colspan+1 %>          
-                            <% end %> 
-                            <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                      <td colspan="2">
+                          <h3><i>SENOIR SECTION</i></h3>
+                          <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
+                          <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+                          <% if !@employee.nil? %> 
+                            <p><b>Subject : <%= @subject.name %></b></p>
+                            <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
+                          <% else %>
+                            <p><b>Subject : <%= @subject.name %></b></p>
+                          <% end %> 
+                          <p></p>
+                      </td>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <% if rs['exam_category'].to_i!=4 %>
+                        <td class="rotate"><div><span>05/05/17<br /></span><span><%=  rs['alternative_title'] %></span></div></td>
+                        <% colspan = colspan+1 %>  
+                        <% end %>
+                      <% end %> 
+                      <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
-                            <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box"><%=assignmentCount%></span></div></td>
-                            <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
-                            <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
-                            <td class="rotate"><center><div><span>GRADE</span></div></center></td>
-                        </tr>
+                      <td class="rotate"><div><span>TOTAL NUM. OF H.W.</span><span class="rotate_box"><%=assignmentCount%></span></div></td>
+                      <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><br /><span> MRKS OUT OF</span><br /></div></td>
+                      <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
+                      <td class="rotate"><center><div><span>GRADE</span></div></center></td>
+                  </tr>
 
 
-                        <tr class="sjws-table-header">
-                            <td class="sl"><b>SL.</b></td>
-                            <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
-                            <% @report_data['result']['ALL'].each do |rs| %>
-                              <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
+                  <tr class="sjws-table-header">
+                      <td class="sl"><b>SL.</b></td>
+                      <td class="st_name"><b>STUDENTS' NAME / Out of</b></td>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <% if rs['exam_category'].to_i!=4 %>
+                        <td class="class_test"><b><%=  rs['maximum_marks'].to_i %></b></td>
 
-                              <% colspan = colspan+1 %>
-                            <% end %>  
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
-                            <td>&nbsp;</td>
-                            <td></td>
+                        <% colspan = colspan+1 %>
+                        <% end %>
+                      <% end %>  
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;</td>
+                      <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
+                      <td>&nbsp;</td>
+                      <td></td>
 
-                        </tr>
+                  </tr>
                       <% end %>    
 
 
@@ -197,6 +210,7 @@
                           <td class="sl"><%#= std['class_roll_no'] %><%= std_count_main %></td>
                           <td class="st_name"><%= std['name'] %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
+                          <% if rs['exam_category'].to_i!=4 %>
                             <td>
                                 <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                                   <%= rs['students'][std['id']]['score'].to_i %>
@@ -206,20 +220,20 @@
                                   AB
                                 <% end %>    
                             </td>
-
+                            <% end %>
                           <% end %> 
                           <td class="name">&nbsp;&nbsp;&nbsp;&nbsp;0</td>  
                           <td class="name">&nbsp;&nbsp;&nbsp;<%=total_mark.to_i %>&nbsp; /&nbsp; <%=full_mark.to_i %></td>  
                           <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-
-                          <td class="name"><%= sprintf( "%0.02f", main_mark) %> %</td>
+                          
+                          <td class="name"><% if total_mark > 0 %><%= sprintf( "%0.02f", main_mark) %> %<% else %>-<% end %></td>
 
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-2"><center><b><%= grade.name %></b></center></td>
                       <% else %>
                         <td class="col-2"><center><b>N/A</b></center></td>
-                          <% end %>
+                      <% end %>
                       </tr>
                     <% end %>
                   <% end %>

@@ -1473,7 +1473,7 @@ margin:10px;
 }
 .subject-result-landscape .sjws_table_head td.rotate div span
 {
-    padding: 3px !important;
+    padding: 5px !important;
 }
 .subject-result-landscape .sjws_table_head
 {
@@ -1607,11 +1607,12 @@ margin:10px;
 td.checkbox_inline p
 {
     float:left;
-    margin-left:10px;
+    margin-left:7px;
     padding:0px;
+    font-size:16px;
 }
 .sjws_table_head td.rotate {
-  height: 220px;
+  height: 250px;
   white-space: nowrap; 
   line-height: 20px;
   font-weight: 500;

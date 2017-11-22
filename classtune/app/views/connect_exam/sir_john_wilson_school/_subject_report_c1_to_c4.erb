@@ -60,29 +60,32 @@
 
                       <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
                       <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
-                      <% if mark_percentage.to_f > 80 %>
+                      <% if mark_percentage.to_f < 50 %>
                         <td class="col-pdf text_center">
                             *
                         </td>
                         <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                      <% elsif  mark_percentage.to_f > 60 %>                          
+                      <% elsif  mark_percentage.to_f >= 50 && mark_percentage.to_f < 70 %>                          
                         <td class="col-pdf text_center">&nbsp;</td>
                         <td class="col-pdf text_center">
                             *
                         </td>
                         <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                      <% elsif  mark_percentage.to_f > 40 %>
+                      <% elsif  mark_percentage.to_f >= 70 && mark_percentage.to_f < 85 %> 
                         <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
                         <td class="col-pdf text_center">
                             *
                         </td>
                         <td class="col-pdf text_center">&nbsp;</td>
-                      <% elsif  mark_percentage.to_f <= 40 %>
+                      <% elsif  mark_percentage.to_f >= 85 %>
                         <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
                         <td class="col-pdf text_center">
                             *
                         </td>
-                      <% end %>
+                      <% else %>
+                        
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% end %>  
                       <% @group_loop = @group_loop+1 %>
                     </tr>
                     <% isublooop = isublooop+1 %>   
@@ -109,34 +112,37 @@
                   <% end %>  
                 <% end %>  
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td colspan="2" class="text_left"><%= group_name.to_s %></td> 
+                    <td colspan="2" class="text_left"><%= group_name.name.to_s %></td> 
 
                     <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
                     <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
 
-                    <% if mark_percentage.to_f > 80 %>
-                      <td class="col-pdf text_center">
-                          *
-                      </td>
-                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                    <% elsif  mark_percentage.to_f > 60 %>
-                      <td class="col-pdf text_center">&nbsp;</td>
-                      <td class="col-pdf text_center">
-                          *
-                      </td>
-                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                    <% elsif  mark_percentage.to_f > 40 %>
-                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                      <td class="col-pdf text_center">
-                          *
-                      </td>
-                      <td class="col-pdf text_center">&nbsp;</td>
-                    <% elsif  mark_percentage.to_f < 40 %>
-                      <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                      <td class="col-pdf text_center">
-                          *
-                      </td>
-                    <% end %>
+                      <% if mark_percentage.to_f < 50 %>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f >= 50 && mark_percentage.to_f < 70 %>                          
+                        <td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f >= 70 && mark_percentage.to_f < 85 %> 
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                        <td class="col-pdf text_center">&nbsp;</td>
+                      <% elsif  mark_percentage.to_f >= 85 %>
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center">
+                            *
+                        </td>
+                      <% else %>
+                        
+                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                      <% end %> 
 
                 </tr>  
               <% end %>

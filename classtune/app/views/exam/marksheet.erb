@@ -20,7 +20,11 @@
 <% if MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
   <%= render  :partial=>"/connect_exam/south_point/marksheet" %>  
 <% elsif MultiSchool.current_school.id == 340 %>
-  <%= render  :partial=>"/connect_exam/sir_john_wilson_school/marksheet" %>  
+  <% if @connect_exam_obj.result_type == 14 && !params[:evaluation].blank? %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/evaluation_sheet_for_KG1_to_KG2" %>  
+  <% else %>
+    <%= render  :partial=>"/connect_exam/sir_john_wilson_school/marksheet" %>  
+  <% end %>
 <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_marksheet.erb")) %>
     <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/marksheet" %>
 <% else %>

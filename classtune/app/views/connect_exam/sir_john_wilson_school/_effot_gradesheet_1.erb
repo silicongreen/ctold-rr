@@ -102,17 +102,19 @@
         
         <% extender = 0 %>
         <% std_count = 0 %>
+        <% main_count = 0 %>
         <% unless @report_data['result']['al_students'].blank? %>
         <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
+          <%  main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>17 && extender ==0 %>
+          <% if std_count>16 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>22 && extender ==1 %>
+          <% elsif std_count>20 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -134,7 +136,7 @@
            
           <% end %>     
           <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
-            <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
+            <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>
             
             <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>

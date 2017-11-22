@@ -86,7 +86,7 @@
         <tr class="sjws-table-header">        
             <% iloop = 0 %>
             <% subject_groups.each do |group_name| %>
-              <% subject_subgroup = get_subject_sub_group(@subject.id,iloop) %>
+              <% subject_subgroup = get_subject_sub_group(@subject.id) %>
                 <% if subject_subgroup %>
                   <% subject_subgroup.each do |sub_group_name| %>
             <td class="word_break" colspan="3" rowspan="2"> 
@@ -106,17 +106,19 @@
         
         <% extender = 0 %>
         <% std_count = 0 %>
+        <% main_count = 0 %>
         <% unless @report_data['result']['al_students'].blank? %>
         <% @report_data['result']['al_students'].each do |std| %>
-          <%  std_count = std_count+1; %>
+          <% std_count = std_count+1; %>
+          <% main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>17 && extender ==0 %>
+          <% if std_count>13 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>22 && extender ==1 %>
+          <% elsif std_count>18 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -130,7 +132,7 @@
           <%#= debug @report_data['result']['ALL'][0]['students'][std['id']]['remarks'] %> 
           
           <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
-            <td class="sl"><%#= std['class_roll_no'] %><%= std_count %></td>
+            <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>            
             <% @examScore1 = [] %>
             <% loopCounter = @report_data['result']['ALL'].count %>
@@ -141,7 +143,7 @@
 					
               <% iloooop = 0 %><% @group_loop = 0 %><% all_total_mark = 0 %><% all_full_mark = 0 %>
               <% subject_groups.each do |group_name| %>
-                <% subject_subgroup = get_subject_sub_group(@subject.id,iloooop) %>
+                <% subject_subgroup = get_subject_sub_group(@subject.id) %>
 
                       <% unless subject_subgroup.blank? %>
                         <% subject_subgroup.each do |sub_group_name| %>
@@ -185,21 +187,25 @@
                           <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
                           <% @report_data['result']['ALL'].each do |rs| %>
                                 <% wordString = rs['students'][std['id']]['remarks'] %>
-                                <% wordString_split = wordString.split("|") %>
-                                <% exam_group_remarks = "" %>
-                                <% unless rs['students'][std['id']]['remarks'].blank?  %>
-                                  <% unless wordString_split[iloooop.to_i].blank? %>
-                                        <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
-                                        <% total_mark = total_mark + exam_group_remarks.to_i %>
-                                        <% avg_counter = avg_counter +1 %>
+                                <% unless wordString.nil? %>
+                                  <% wordString_split = wordString.split("|") %>
+                                  <% exam_group_remarks = "" %>
+                                  <% unless rs['students'][std['id']]['remarks'].blank?  %>
+                                    <% unless wordString_split[iloooop.to_i].blank? %>
+                                          <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
+                                          <% total_mark = total_mark + exam_group_remarks.to_i %>
+                                          <% avg_counter = avg_counter +1 %>
 
-                                        <% all_total_mark = all_total_mark + exam_group_remarks.to_i %>
-                                        <% all_full_mark = all_full_mark + 5 %>
-                                  <% end %>                                                            
+                                          <% all_total_mark = all_total_mark + exam_group_remarks.to_i %>
+                                          <% all_full_mark = all_full_mark + 5 %>
+                                    <% end %>                                                            
+                                  <% end %>
+                                
+                                  <td> 
+                                        <%= exam_group_remarks %>
+                                  </td>
                                 <% end %>
-                                <td> 
-                                      <%= exam_group_remarks %>
-                                </td>
+                                
                           <% end %>  
                           <td> 
                                 <% total_avg = total_mark.to_f/avg_counter.to_i %>
@@ -220,9 +226,20 @@
                 <% iloooop = iloooop+1 %>      
               <% end %>
               <% if @subject.no_exams_sjws.to_i == 1 %>
-                <td colspan="1" rowspan="1"><b><%= all_total_mark %>/<%= all_full_mark %></b></td> 
+                <% if all_total_mark > 0  %>
+                  <td colspan="1" rowspan="1"><b><%= all_total_mark %>/<%= all_full_mark %></b></td> 
+                <% else %>
+                  <td colspan="1" rowspan="1"><b>-</b></td> 
+                <% end %>
+                <% all_mark_percentage = 0 %>
+                <% if all_total_mark > 0  %>
                 <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
-                <td colspan="1" rowspan="1"><b><%= all_mark_percentage %></b></td> 
+                <% end %>
+                <% unless all_mark_percentage == 0 %>
+                <td colspan="1" rowspan="1"><b><%= all_mark_percentage %></b></td>
+                <% else %>
+                <td colspan="1" rowspan="1"><b>-</b></td>
+                <% end %>
                 <%
                   #exam_comment = ""
                   exam_effort = ""

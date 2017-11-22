@@ -33,13 +33,18 @@
         <tr class="table-header">
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Name</td>
-       
+          <% total_subject = 0 %>
           <% @exams.each do |exam|  %>
             <td><%= exam.subject.code %></td>
+            <% total_subject = total_subject+1 %>
           <% end %>
           <td class="col-pdf">Total</td>
           <td class="col-pdf">Position</td>
         </tr>
+        <% colspan_total = total_subject+4 %>
+        <% colspan_fourth = colspan_total.to_f/4 %>
+        <% colspan_fourth_int = colspan_fourth.to_i %>
+        <% last_colspan = colspan_total-(colspan_fourth_int*3) %>
   <% @students.each do |student| %>
   <% 
     @student = student

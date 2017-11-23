@@ -557,6 +557,7 @@ class Exams extends CActiveRecord
         $formatted_exams = array();
         foreach ($obj_exam_routine as $rows)
         {
+            $subject_found = true;
             if($batch_id)
             {
                 if($batch_id!=$rows->Subjects->batch_id)
@@ -567,14 +568,27 @@ class Exams extends CActiveRecord
                 {
                     if($rows->Subjects->elective_group_id)
                     {
-                        if($rows->Subjects->studentSubject[0]->student_id!=$student_id)
+                        $subject_found = false;
+                        if($rows->Subjects->studentSubject)
                         {
-                            continue;
+                            foreach($rows->Subjects->studentSubject as $svalue)
+                            {
+                                if($svalue->student_id == $student_id)
+                                {
+                                    $subject_found = true;
+                                    break;
+                                }
+                            }    
                         }
+                       
                     } 
                 }
                 
             }
+            if($subject_found == false)
+            {
+                continue;
+            }    
             $_data['exam_subject_id'] = $rows->subject_id;
             $_data['exam_subject_name'] = $rows->Subjects->name;
             $_data['no_exams'] = $rows->Subjects->no_exams;

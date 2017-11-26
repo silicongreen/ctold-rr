@@ -66,6 +66,7 @@
             
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
+              <% if exam.exam_group.show_in_connect.to_i == 1 %>
               <td>
                   <b><%= exam.exam_group.name %></b>
                   <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
@@ -81,6 +82,7 @@
                    
                   <% end %> 
               </td>
+              <% end %>
             <% end %>
             <% end %> 
             <% if MultiSchool.current_school.id == 312 && @exam_connect.result_type == 2 && !@exams.blank? %>
@@ -104,6 +106,7 @@
                 <% elsif @updated_at < @exam_score.updated_at.to_s %>
                   <% @updated_at = @exam_score.updated_at.to_s %>
                 <% end %>
+                <% if exam.exam_group.show_in_connect.to_i == 1 %>
                 <td class="col-2 td-mark">
 
                     <div class="label-field-pair2">
@@ -122,6 +125,7 @@
                     </div>
                     <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
                 </td>
+                <% end %>
               <% end %>
               <% end %> 
                <%

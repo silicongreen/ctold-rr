@@ -3917,7 +3917,7 @@ class ExamController < ApplicationController
             :save_only    => for_save,
             :orientation => 'Landscape'
         elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
-          if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5)
+          if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7)
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,

@@ -5,7 +5,7 @@ resulttype:
  type_325: "Summer,Spring,Fall,Test"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_340: "QUARTER (CLASS 5-9),TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM EXAM (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM (SECOND HALF) EFFORT/GRADE SHEET (CLASS 10-12),HALL EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT (CLASS 5-9),TERM REPORT CARD(CLASS 10-12),ASSESMENT(KG 1-CLASS 4),REPORT CARD(KG 1-KG 2),REPORT CARD(CLASS 1-CLASS 4)"
- default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6"
+ default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6,Type 7"
 resulttype2:
  numbers: "323,2,325,340,342"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment"

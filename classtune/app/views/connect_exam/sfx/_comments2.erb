@@ -1,0 +1,174 @@
+<table id="pdf-table" class="margin-top-20" width="100%" cellspacing="0">
+    <tr class="even">
+        <td width="10%"><b>Code No</b></td>
+        <td width="90%"><center><b>Remarks</b></center></td>    
+</tr>
+<tr class="odd">
+    <td width="10%"><center>1</center></td>
+<td width="90%" class="remarks_code_table">
+    <span><b>CONDUCT</b></span>
+    <table width="100%">
+        <tr>
+            <td width="32%"><input type="checkbox" >&nbsp;&nbsp;Very Good</td>
+            <td width="32%"><input type="checkbox" >&nbsp;&nbsp;Good</td>
+            <td width="32%"><input type="checkbox" >&nbsp;&nbsp;Fair</td>
+        </tr>
+    </table>    
+
+</td>    
+</tr>
+<tr class="odd">
+    <td width="10%"><center>2</center></td>
+<td width="90%" class="remarks_code_table">
+    <span><b>CLASS PERFORMANCE</b></span>
+    <table width="100%" >
+        <tr>
+            <td width="32%">a. Very good</td>
+            <td width="25%">b. Too Talkative</td>
+            <td width="18%">c. Shy</td>
+             <td width="25%">d. Disturbs the class</td>
+        </tr>
+        <tr>
+           
+            <td width="32%">e. Lacks interest & concentration</td>
+            <td width="25%">f. Organized in class</td>
+            <td width="18%">g. Disorganized</td>
+            <td width="25%">h. Hard Working</td>
+        </tr>
+    </table>    
+
+</td>    
+</tr>
+<tr class="odd">
+    <td width="10%"><center>3</center></td>
+<td width="90%" class="remarks_code_table">
+    <span><b>LANGUAGE</b></span>
+    <table width="100%">
+        <tr>
+            <td width="50%">a. Spelling needs attention</td>
+            <td width="50%">b. Grammar and vocabulary weak</td>
+        </tr>
+        <tr>
+            <td width="50%">c. Weak in expression</td>
+            <td width="50%">d. Needs to read on widely</td>
+        </tr>
+    </table>    
+
+</td>    
+</tr>
+<tr class="odd">
+    <td width="10%"><center>4</center></td>
+<td width="90%" class="remarks_code_table">
+    <span><b>SCIENCE/MATHS/BUSINESS/HUMANITIES</b></span>
+    <table width="100%" >
+        <tr>
+            <td width="33%">a. Capable but more effort required</td>
+            <td width="33%">b. Diagrams should be labeled </td>
+            <td width="33%">c. Answers need to be to the point</td>
+        </tr>
+        <tr>
+            <td width="33%">d. Should read the questions carefully</td>
+            <td width="33%">e. Makes careless mistakes </td>
+            <td width="33%">f. Expression in English needs attention </td>
+        </tr>
+         <tr>
+            <td width="33%">g. Basic maths needs attention</td>
+            <td width="33%">h. Units are missing </td>
+            <td width="33%">i. More Practice needed </td>
+        </tr>
+        <tr>
+            <td width="33%">j. Handwriting needs attention</td>
+            <td width="33%">&nbsp;</td>
+            <td width="33%">&nbsp;</td>
+        </tr>
+    </table>    
+
+</td>    
+</tr>
+<tr class="odd">
+    <td width="10%"><center>5</center></td>
+<td width="90%" class="remarks_code_table">
+    <span><b>GENERAL</b></span>
+    <table width="100%">
+        <tr>
+            <td width="33%">a. Very Good</td>
+            <td width="33%">b. Good</td>
+            <td width="33%">c. Satisfactory</td>
+        </tr>
+        <tr>
+            
+            <td width="33%">d. Careless regarding school uniform</td>
+            <td width="33%">e. Irregular and comes late for school</td>
+            <td width="33%">f. has shown great improvement</td>
+        </tr>
+    </table>    
+
+</td>    
+</tr>
+
+
+</table>
+
+<table id="pdf-table" class="margin-top-20" width="100%" cellspacing="0">
+    <tr class="even">
+        <td width="100%"><b>EXTRA CURRICULAR ACTIVITIES</b></td>   
+    </tr>
+    <tr class="odd">
+      <td width="100%" class="remarks_code_table">
+          <table width="100%">
+            <tr>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Green world Earth Club</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Science Club</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Computer Club</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Bangla Club</td>
+            </tr>
+            <tr>
+                
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Debating Society</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Sport</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Writer's Club</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;GH Theater </td>
+                
+            </tr>
+            <tr>
+                
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Scout</td>
+                <td width="25%"><input type="checkbox" >&nbsp;&nbsp;Maths Club</td>
+                <td width="25%">&nbsp;&nbsp;</td>
+                <td width="25%">&nbsp;&nbsp;</td>
+            </tr>
+           
+          </table>  
+      </td>    
+    </tr>
+</table>
+
+<table id="pdf-table" class="margin-top-20 td-align-left text-size-18" width="100%" cellspacing="0">
+    <tr class="even">
+        <td class="no-warp" colspan="1">&nbsp;Total Working Days</td>
+        <td class="no-warp" colspan="1">&nbsp;<%= @report_data['total'] %></td>
+        <td class="no-warp" colspan="1">&nbsp;Present</td>
+        <td class="no-warp" colspan="1"><%= @report_data['present'] %></td>
+        <td class="no-warp" colspan="1">&nbsp;Absent</td>
+        <td class="no-warp" colspan="1"><%= @report_data['total']-@report_data['present'] %></td>
+    </tr>
+</table>
+
+
+
+<%= render  :partial=>"/connect_exam/sfx/grading_level_2_column_qualifying" %>
+
+<table id="pdf-table" class="margin-top-20 left-table" width="100%" cellspacing="0">
+    <tr class="odd">
+        <td class='td-align-left' width='20%'>Class Teacher's Signature</td>
+        <td width='80%'><br/><br/><br/></td>
+    </tr>
+    <tr class="odd">
+        <td class='td-align-left' width='20%'>Section In-Charge's Signature</td>
+        <td width='80%'><br/><br/><br/></td>
+    </tr>
+    <tr class="odd">
+        <td class='td-align-left' width='20%'>Principal's Signature</td>
+        <td width='80%'><br/><br/><br/></td>
+    </tr>
+</table>

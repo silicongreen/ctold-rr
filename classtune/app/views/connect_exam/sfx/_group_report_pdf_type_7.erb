@@ -1,0 +1,174 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <div id="page-yield"  class="available_sections1 sfx sfx-with-comment">
+  
+      <h2 align="center"><%= @connect_exam_obj.name %></h2>
+
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                  <tr class="table-header">
+                      <td class="col-pdf td-align-left"><%= "SUBJECTS" %></b></td>
+                      <td class="col-pdf no-warp">
+                        CLASS TEST (30%)
+                      </td>
+                      <td class="col-pdf no-warp">
+                        EXAM SCORE (70%)
+                      </td>
+                      
+                      
+
+                      <td class="col-pdf no-warp">TOTAL (100%)</td>
+                      <td class="col-pdf no-warp">GRADE</td>
+                      <td class="col-pdf no-warp">REMARKS CODE</td>
+                  </tr>
+
+                  <% total_parcent = 0 %>
+                  <% total_subject = 0 %>
+                  <% exam_marks = 0 %>
+                  
+                  
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                          
+                      <% else %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% weightage_mark = 0 %>
+                          <% class_test_mark = 0 %>
+                          <% class_test_total = 0 %>
+                          <% exam_mark = 0 %>
+                          <% exam_total = 0 %>
+                          
+                          <% exam_mark_70 = 0 %>
+                          <% class_test_30 = 0 %>
+                          
+                          
+                          <% full_mark = 0 %>
+                          <% exam_marks = 0 %>
+                          <% grade_i = false %>
+                          <% grade_w = false %>
+
+                          <td class="col-pdf td-align-left"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <%  if report['exam_category'] == '1' %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% class_test_mark = class_test_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% class_test_total = class_test_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                              <% else %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% exam_mark = exam_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% exam_total = exam_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                  <% end %>
+                              <% end %>
+                             <% end %>
+                             <% unless class_test_mark.blank?  %>
+                              <% class_test_30 = (class_test_mark.to_f/class_test_total.to_f)*30 %>
+                             <% end %>
+                             <% unless exam_mark.blank?  %>
+                              <% exam_mark_70 = (exam_mark.to_f/exam_total.to_f)*70 %>
+                             <% end %>
+                             
+                          <% end %>
+
+
+
+
+
+                          <% 
+                            main_mark = class_test_30.to_f+exam_mark_70.to_f 
+                          %>
+
+                        
+                            <td class="col-pdf"><%= sprintf( "%0.02f", class_test_30.to_f)%></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", exam_mark_70.to_f)%></td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", main_mark.to_f)%></td>
+                            
+                            <td class="col-pdf">
+                            
+                              <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                              <%= grade.name %>
+                              <% else %>
+                              N/A
+                              <% end %>
+                         
+                            </td>   
+                            <td class="col-pdf">
+                            <% unless @report_data['report']['comments'].blank? %>
+                              <% unless @report_data['report']['comments'][subjects['id']].blank? %>
+                                <%= @report_data['report']['comments'][subjects['id']] %> 
+                              <% end %>
+                            <% end %>
+                            </td>
+                            
+                            
+
+                            <% total_parcent= exam_marks = total_parcent+main_mark %>
+                            <% total_subject = total_subject+1 %>
+                                
+
+                      </tr> 
+                      <% end %>
+                    <% end %>  
+                  <% end %>     
+
+              </table>
+              <%= render  :partial=>"/connect_exam/sfx/comments2", :locals=>{:exam_marks=>exam_marks} %>
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+            html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>)
+    var page = new Element('div', {'class': 'page1'});
+    var pageBreak = new Element('div', {'class': 'page-break1'});
+    var insertPageBreak = function () {
+        body.appendChild(pageBreak.cloneNode(true))
+    };
+    var insertPage = function () {
+        body.appendChild(page.cloneNode(true));
+    };
+    var currPage = function () {
+        return $$('.page1').last()
+    };
+    var current_page_height = 0
+    var i = 0
+    $$('.available_sections1 .section1').each(function (el) {
+        a = parseInt(el.getHeight());
+        c = current_page_height + a;
+        current_page_height = c;
+        if (c > pg_height) {
+            current_page_height = a
+            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+            i += 1
+            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+            insertPageBreak();
+            insertPage();
+        }
+        currPage().appendChild(el);
+    });
+  </script>
+<% end %>

@@ -228,6 +228,24 @@ class GroupedExams extends CActiveRecord
                 {
                     $sub_id_with_exam[] =$value['id']; 
                 }
+                
+                if($connect_exam->result_type==1)
+                {
+                    $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
+                    if($first_term_id_for_class_performance)
+                    {
+                        $sub_comments = $cmt_connect->getCommentAllSubjects($first_term_id_for_class_performance,$sub_id_with_exam,$batch_student);
+                        foreach($batch_student as $student)
+                        {
+                           foreach($all_subject_without_no_exam as $value)
+                           {
+                                $results['exam_comments'][$student]['comments2'][$value['id']]=$sub_comments[$student][$value['id']];
+                           } 
+
+                        }
+                    }
+                }
+               
                 $sub_comments = $cmt_connect->getCommentAllSubjects($connect_exam_id,$sub_id_with_exam,$batch_student);
                 foreach($batch_student as $student)
                 {
@@ -642,7 +660,21 @@ class GroupedExams extends CActiveRecord
                        $subject_comment = $cmt_connect->getComment($connect_exam_id,$student_id,$value['id']);
                        $results['comments'][$value['id']] = $subject_comment;
                      
-                }    
+                } 
+                $results['comments2'] = array();
+                if($connect_exam->result_type==1)
+                {
+                    $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
+                    if($first_term_id_for_class_performance)
+                    {
+                        foreach($all_subject_without_no_exam as $value)
+                        {
+                             $subject_comment = $cmt_connect->getComment($first_term_id_for_class_performance,$student_id,$value['id']);
+                             $results['comments2'][$value['id']] = $subject_comment;
+                        } 
+
+                    }
+                }
                 
                 
                 $results['no_exam_subject_resutl'] = array();

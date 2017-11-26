@@ -83,7 +83,11 @@
               </td>
             <% end %>
             <% end %> 
-            <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
+            <% if MultiSchool.current_school.id == 312 && @exam_connect.result_type == 2 && !@exams.blank? %>
+              <td><b><%= "Class Performance" %></b></td>
+            <% else %>  
+              <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
+            <% end %>
             
           </tr>
           <% @students.each do |student| %>
@@ -132,7 +136,13 @@
                   <div class="label-field-pair2">
                   
                   <div class="text-input-bg2">
-                    <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
+                    <% if MultiSchool.current_school.id == 312 && @exam_connect.result_type == 2 && !@exams.blank? %>
+                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '4', :onkeyup => "checkValueMax(#{50},this)",:onkeydown => "checkValueMax(#{50},this)" %>
+                    <% else %>  
+                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %>
+                    <% end %>
+                  
+                  </div>
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td>
@@ -194,6 +204,15 @@
    }
 </script>  
 <style>
+    #page-yield {
+    margin: 0px 0px;
+    float: left;
+    width: 100%;
+}
+    form 
+    {
+        float:left;
+    }
     .red_class
     {
       color:red;

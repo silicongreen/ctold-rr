@@ -129,19 +129,16 @@
           </div>
         </div>
       <% exam_type = get_exam_result_type() %>
-       <div class="label-field-pair">
+      <% exam_type =exam_type.sort_by{|k,v| v} %>
+      <div class="label-field-pair">
         <label for="title">Result Type</label>
         <div class="text-input-bg">
-            
-          <select name="exam_grouping[result_type]"  >
-            
-            <% exam_type.each_with_index do |i,type| %>
-              <option value="<%= i %>"><%= type %></option>
-            
-            <% end %>  
-          </select>
+         
+            <%= select :exam_grouping,:result_type,options_from_collection_for_select(exam_type, :first, :last,0) %>
+         
         </div>
       </div>
+      
       <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate">Publish Date</label>
           <div  class="text-input-bg">

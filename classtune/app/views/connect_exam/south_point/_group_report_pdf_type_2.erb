@@ -31,8 +31,10 @@
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
+                  <% class_performance = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_subject = total_subject+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% obtained_mark = 0 %>
                           <% full_mark = 0 %>
@@ -205,6 +207,10 @@
                               <%= @subject_highest_mark_first_term[subjects['id'].to_i].to_i %>
                             <% end %> 
                           </td>
+                          
+                          <% unless @report_data['report']['comments'][subjects['id'].to_s].blank? %>  
+                             <% class_performance = class_performance+@report_data['report']['comments'][subjects['id'].to_s].to_i %>
+                          <% end %>
                                
 
                       </tr> 
@@ -246,6 +252,30 @@
                       <% end %>
                     <% end %>
                   <% end %>
+                        <% class_per_grade = "U" %>
+                        <% class_per_percentize = 0 %>
+                        <% if class_performance > 0 %>
+                          <% class_per_percentize = class_performance.to_f/total_subject.to_f %>
+                          <% 
+                            class_per_percentize = class_per_percentize.round();
+                            grade = GradingLevel.percentage_to_grade(class_per_percentize, @batch.id)
+                            if !grade.blank? and !grade.name.blank?
+                              class_per_grade = grade.name
+                            end
+                          %>
+                        <% end %>
+                        <tr class="odd">
+                        
+                        <td class="col-pdf td-align-left"><%= "Class Performance" %></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"></td>
+                        <td class="col-pdf"><%= class_per_percentize %></td>
+                        
+                        <td class="col-pdf"><%= class_per_grade%></td>
+                        <td class="col-pdf"></td>
+                        </tr>
 
               </table>
 

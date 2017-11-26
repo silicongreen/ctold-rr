@@ -48,8 +48,11 @@
 
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
+                  <% class_performance = 0 %>
+                  <% class_performance2 = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_subject = total_subject+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% obtained_mark = 0 %>
                           <% full_mark = 0 %>
@@ -391,6 +394,13 @@
                           <% else %>
                             <td class="col-pdf"><b>N/A</b></td>
                           <% end %>
+                          <% unless @report_data['report']['comments'][subjects['id'].to_s].blank? %>  
+                             <% class_performance = class_performance+@report_data['report']['comments'][subjects['id'].to_s].to_i %>
+                          <% end %>
+                            
+                          <% unless @report_data['report']['comments2'][subjects['id'].to_s].blank? %>  
+                             <% class_performance2 = class_performance2+@report_data['report']['comments2'][subjects['id'].to_s].to_i %>
+                          <% end %>
 
 
                       </tr> 
@@ -433,6 +443,45 @@
                       <% end %>
                     <% end %>
                   <% end %>
+                     
+                  <% class_per_grade = "U" %>
+                  <% class_per_percentize = 0 %>
+                  <% class_per_grade2 = "U" %>
+                  <% class_per_percentize2 = 0 %>
+                  <% if class_performance > 0 %>
+                    <% class_per_percentize = class_performance.to_f/total_subject.to_f %>
+                    <% 
+                      class_per_percentize = class_per_percentize.round();
+                      grade = GradingLevel.percentage_to_grade(class_per_percentize, @batch.id)
+                      if !grade.blank? and !grade.name.blank?
+                        class_per_grade = grade.name
+                      end
+                    %>
+                  <% end %>
+                        
+                  <% if class_performance2 > 0 %>
+                    <% class_per_percentize2 = class_performance2.to_f/total_subject.to_f %>
+                    <% 
+                      class_per_percentize2 = class_per_percentize2.round();
+                      grade = GradingLevel.percentage_to_grade(class_per_percentize2, @batch.id)
+                      if !grade.blank? and !grade.name.blank?
+                        class_per_grade2 = grade.name
+                      end 
+                    %>
+                  <% end %>
+                        
+                  <tr class="odd">
+                      <td class="col-pdf"><%= "Class Performance" %></td>
+                      <td class="col-pdf" colspan="4"></td>
+                      <td class="col-pdf">
+                          <%= class_per_percentize2 %>    
+                      </td>
+                      <td class="col-pdf"><%= class_per_grade2 %> </td>
+                      <td class="col-pdf" colspan="5"></td>
+                      <td class="col-pdf"><%= class_per_percentize2 %></td>
+                      <td class="col-pdf"><%= class_per_grade %> </td>
+                      <td class="col-pdf" colspan="3"></td>
+                  </tr>
 
               </table>
 

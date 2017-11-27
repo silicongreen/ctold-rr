@@ -28,7 +28,7 @@
       <table width="100%" >
             <thead>
                 <tr>
-                    <td><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %> </b></td>
+                    <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
                     <td align="right"><b>Class : 
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
@@ -68,16 +68,16 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>11 && extender ==0 %>
+          <% if std_count>5 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break5">
+              <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
               </tr>    
-          <% elsif std_count>14 && extender ==1 %>
+          <% elsif std_count>6 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break6">
+              <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
               </tr> 
           <% end %>    

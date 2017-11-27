@@ -49,10 +49,14 @@ h4{margin: 5px;}
 }
 tr.even{
     border: 1px solid #000000;
+    page-break-inside: avoid !important; 
+    display: "inline-block";
 }
 
 tr.odd{
     border: 1px solid #000000;
+    page-break-inside: avoid !important; 
+    display: "inline-block";
 }
 
 .even td{

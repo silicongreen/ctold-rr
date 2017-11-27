@@ -118,7 +118,7 @@
       </li>
       <% unless @total_leave_count == 0 %>
         <li>
-          <%= link_to_remote "#{t('new_leaves')} (#{@total_leave_employee})",
+          <%= link_to_remote "#{t('new_leaves')} (#{@total_leave_count})",
             :update => "data_div",
             :url => {:action => "new_leave_applications", :id=>@employee.id},
             :html => {:class => 'f2'}%>

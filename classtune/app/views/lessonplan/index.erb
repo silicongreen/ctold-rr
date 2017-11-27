@@ -46,7 +46,7 @@
                 <label for="assignment_subject"><%= "Category"%></label>
                 <div class="text-input-bg">
 
-                    <%= select :lessonplan, :id,
+                    <%= select :assignment, :subject,
                       @lessonplan_categories.map {|s| ["#{s.name}",s.id]},
                       {:prompt => "#{t('select_a_lessonplan_category')}"},
                       {:onChange => "#{remote_function(:url => {:action => "category_wise_lessonplan"},
@@ -54,6 +54,8 @@
                       :before => "Element.show('loader')",
                       :success => "Element.hide('loader')"
                       )}"} %>
+                    
+                   
 
                   </div>
                   <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
@@ -359,65 +361,11 @@
               </div>
             </div>
           </div>  
-          <div id="syllabus" class="row"></div>
+          <div id="syllabus" class="row" style="clear:both; margin-top:10px;"></div>
         </div>
         <% end %><%# FORM END%>  
         <div id="all_news">
-        <% unless @lessonplan.nil? %> 
-            <% @lessonplan.each_with_index do |r,i| %>        
-              <% link_value = r.title %>
-              <% unless r.subject_ids.nil? %>  
-                <% @sdata = [] %>
-                <% data = r.subject_ids.split(/,/) %>                    
-                    <%  data.each do |w|%>                           
-                      <% @sdata << w %>
-                    <% end %>
-              <% end %>
-              <div class="portlet-subcontent" style="width:100%">     
-              <div class="timetable_left">
-                 <span class="f2" style="font-size:20px;margin-left:40px;"><%= i+1 %></span>
-              </div>
-              <div class="timetable_right"  style="float:left;height: 80px;width: 40%;padding:5px 0;">
-                <div class="subcontent-header themed_text">
-                    <%=  link_to link_value, :controller => 'lessonplan', :action => 'view', :id => r.id%>
-                </div>                                           
-                <div class="subcontent-info">
-                    <% unless r.author.blank?  %>
-                      <% unless r.author.last_name.blank? %>
-                        <%= r.author.first_name+" "+r.author.last_name %> <%= '- admin' if r.author.admin==true%>
-                      <% else %>
-                        <%= r.author.first_name %> <%= '- admin' if r.author.admin==true%>
-                      <% end %>  
-                    <% else %>
-                     <%= t('user_deleted') %>
-                    <% end %>  
-                </div>   
-                <div class="subcontent-info">
-                    Post on &nbsp;<%= r.publish_date %>(<%= time_ago_in_words(r.created_at) %>)
-                </div>  
-              </div>
-              <div class="timetable_right"  style="float:left;height: 80px;width: 30%;padding: 5px 0;border-left:1px dotted #cccccc">                            
-                <div class="subcontent-date">
-                  <% unless @subjects.nil? %>
-                    <% @subjects.each_with_index do |s,x| %>  
-                      <% if s.batch_id == @batch.id %>
-                        <%= (@sdata.include? s.id.to_s) ? "<div class='subject_tag'>#{s.name}</div>" :"" %>
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-              <div class="answer">              
-                  <div class='header-right-button'><%=  link_to "View", :controller => 'lessonplan', :action => 'view', :id => r.id%></div>                
-              </div>
-            </div>
-            <div style="float: left; margin: 7px; width: 95%;"></div> 
-            <% end %>
-          
-          <%= will_paginate @lessonplan %>
-        <% else %>
-              <h2>No Lesson plan Found</h2>
-        <% end %>
+        <%= render :partial => 'lessonplan/subject_lessonplan' %>
 
         </div>    
     <% end %>
@@ -426,6 +374,14 @@
 <%= stylesheet_link_tag 'tadded-header' %>
 
 <style>
+    .pagination
+    {
+        margin-top:10px;
+    }
+    .row_data .custom_drop_wrapper select
+    {
+        width:107% !important;
+    }
     .label-field-pair label {
     width: 80px;
 }

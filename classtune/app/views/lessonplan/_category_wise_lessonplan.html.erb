@@ -63,8 +63,12 @@
           </div>
           <div style="float: left; margin: 7px; width: 95%;"></div> 
         <% end %>
-
-      <%= will_paginate @lessonplan %>
+      <div class="pagination_div"><div class="div1"><%= will_paginate @lessonplan, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer' ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  }, :params => {:controller=>:lessonplan,:action => "category_wise_lessonplan",:lessonplan_category_id=>params[:lessonplan_category_id]} %></div><div class="div2"><%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader_paginate",
+          :style =>"display: none;" ) %></div></div>
+  
     <% end %>
   <% else %>
         <h2>No Lesson plan Found</h2>

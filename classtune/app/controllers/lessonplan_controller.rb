@@ -377,8 +377,12 @@ class LessonplanController < ApplicationController
   
   def category_wise_lessonplan
     
-    @lessonplan_categories = LessonplanCategory.active_for_current_user(current_user.id)    
-    @lessonplan = Lessonplan.paginate :conditions=>"lessonplan_category_id=#{params[:lessonplan_category_id].to_s} and author_id=#{current_user.id.to_s}", :page => params[:page]   
+    @lessonplan_categories = LessonplanCategory.active_for_current_user(current_user.id)   
+    unless params[:lessonplan_category_id].blank?
+      @lessonplan = Lessonplan.paginate :conditions=>"lessonplan_category_id=#{params[:lessonplan_category_id].to_s} and author_id=#{current_user.id.to_s}", :page => params[:page] 
+    else
+      @lessonplan = Lessonplan.paginate :conditions=>"author_id=#{current_user.id.to_s}", :page => params[:page] 
+    end  
     render(:update) do |page|
       page.replace_html 'all_news', :partial=>'category_wise_lessonplan'
     end

@@ -397,19 +397,19 @@ class EmployeeAttendanceController < ApplicationController
     @total_leave_count = 0
     @reporting_employees.each do |e|
       puts e.id
-      @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND viewed_by_manager =?", e.id, false])
+      @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false])
       @total_leave_count = @total_leave_count + @app_leaves
     end
     
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
-      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher=?",false])
       @total_leave_count = @total_leave_count + @app_leaves
     elsif @current_user.employee_record.meeting_forwarder.to_i == 1
 
       @employee_batches = @current_user.employee_record.batches
       batch_ids = @employee_batches.map(&:id)
-      @app_leaves = ApplyLeaveStudent.count(:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student])
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student])
       @total_leave_count = @total_leave_count + @app_leaves
     end 
     

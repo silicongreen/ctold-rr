@@ -20,10 +20,10 @@
 
   <% unless @reporting_employees == [] %>
     <% @reporting_employees.each do |e| %>
-      <% @applied_leaves = ApplyLeave.find_all_by_employee_id(e.id, :order=>"start_date DESC") %>
+      <% @applied_leaves = ApplyLeave.find(:all,:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false], :order=>"start_date DESC") %>
       <% unless @applied_leaves == [] %>
         <% @applied_leaves.each do |l| %>
-          <% if l.viewed_by_manager == false %>
+          
 
             <div class="new_leave_row">
 
@@ -65,7 +65,7 @@
 
             </div>
 
-          <% end %><!-- if -->
+      
         <% end %><!-- |l| -->
       <% else %>
       <% end %><!-- unless -->

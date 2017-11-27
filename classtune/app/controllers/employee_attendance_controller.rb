@@ -396,7 +396,6 @@ class EmployeeAttendanceController < ApplicationController
  
     @total_leave_count = 0
     @reporting_employees.each do |e|
-      puts e.id
       @app_leaves = ApplyLeave.count(:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false])
       @total_leave_count = @total_leave_count + @app_leaves
     end

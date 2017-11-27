@@ -17,11 +17,11 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <div class="wrapper">
-
-  <% unless @reporting_employees == [] %>
+    <%= @total_leave_employee %>
+  <% unless @reporting_employees.blank? %>
     <% @reporting_employees.each do |e| %>
       <% @applied_leaves = ApplyLeave.find(:all,:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false], :order=>"start_date DESC") %>
-      <% unless @applied_leaves == [] %>
+      <% unless @applied_leaves.blank? %>
         <% @applied_leaves.each do |l| %>
           
 

@@ -400,6 +400,8 @@ class EmployeeAttendanceController < ApplicationController
       @total_leave_count = @total_leave_count + @app_leaves
     end
     
+    @total_leave_employee = @total_leave_count
+    
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
       @app_leaves = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher=?",false])

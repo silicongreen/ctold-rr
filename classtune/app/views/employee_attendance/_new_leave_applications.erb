@@ -77,11 +77,11 @@
    <%   
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
-      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL"])
+      @count_student = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false])
     else
       @employee_batches = @current_user.employee_record.batches
       batch_ids = @employee_batches.map(&:id)
-      @count_student = ApplyLeaveStudent.count(:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student])
+      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student])
     end 
  %>
 
@@ -92,7 +92,7 @@
       <% 
         @employee_batches = @current_user.employee_record.batches
         batch_ids = @employee_batches.map(&:id)
-        @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["approved is NULL AND students.batch_id in (?) and forward = ?",batch_ids,false],:include=>[:student]) 
+        @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student]) 
       %>
     <% end %>
     

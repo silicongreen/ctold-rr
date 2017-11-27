@@ -87,7 +87,7 @@
 
   <% if @count_student > 0 %>
     <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) %>
-      <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>{ :approved=> nil},:order=>"start_date DESC") %>
+      <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false],:order=>"start_date DESC") %>
     <% else %>
       <% 
         @employee_batches = @current_user.employee_record.batches

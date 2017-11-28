@@ -122,6 +122,17 @@
               end
               end
             
+              @top_exam_group = []
+              unless @all_exam_groups.blank?
+                @all_exam_groups.each do |exam_group|
+                   if !exam_group.name.index('Sub').nil?
+                     exam_group_name_array = exam_group.name.split(" ")
+                     @top_exam_group << exam_group_name_array[0]+" "+exam_group_name_array[1]
+                   end
+                end  
+              end
+              @top_exam_group_count = @top_exam_group.count
+            
              
           %>
             <% unless @report_data.blank? %>
@@ -156,6 +167,17 @@
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @subjective_marks[sub['id'].to_i] %>
+                                      <hr/>
+                                      <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
+                                        <% pass_mark = 45*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 70 %>
+                                        <% pass_mark = 32*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 50 %>
+                                        <% pass_mark = 22*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% end %>
                                    <% end %>
                                 </td>
                               <% end %>
@@ -168,6 +190,14 @@
                                 <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
                                     <%= @objective_marks[sub['id'].to_i] %>
+                                    <hr/>
+                                    <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
+                                      <% pass_mark = 14*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
+                                    <% elsif @objective_marks[sub['id'].to_i].to_i == 25 %>
+                                      <% pass_mark = 12*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
+                                    <% end %>
                                 <% end %>
                                </td>
                               <% end %>
@@ -180,6 +210,9 @@
                                 <% unless @practical_marks[sub['id'].to_i].nil? %>
                                     <hr/>
                                     <%= @practical_marks[sub['id'].to_i] %>
+                                    <hr/>
+                                    <% pass_mark = 12*@top_exam_group_count %>
+                                    <%= "P: "+pass_mark.to_s  %>
                                 <% end %>
                                 </td>
                               <% end %>
@@ -208,25 +241,26 @@
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
-                          <td class="col-pdf">Roll</td>
-                          <td class="col-pdf">Students Name</td>
-                          <% @report_data['report']['subjects'].each do |sub| %>
-                            <% has_exam = false %>
-                            <% if @all_subject_id.include?(sub['id'].to_i) %>
-                              <% has_exam = true %>
-                            <% end %>
-                            <% if has_exam == true %>
-                              <% 
-                              subjective = false
-                              objective = false
-                              practical = false
+
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <% 
+                          subjective = false
+                          objective = false
+                          practical = false
 
 
-                            %>
-                              <% @all_exam_groups.each do |exam_group| %>
-                                <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
-                                <% unless examfound.blank? %>
-                                  <% if !exam_group.name.index('Sub').nil? && subjective == false %>
+                        %>
+                          <% @all_exam_groups.each do |exam_group| %>
+                            <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
+                            <% unless examfound.blank? %>
+                              <% if !exam_group.name.index('Sub').nil? && subjective == false %>
                                 <% subjective = true %>
                                 <td>
                                    <%=  sub['code'] %>
@@ -235,43 +269,65 @@
                                    <% unless @subjective_marks[sub['id'].to_i].nil? %>
                                       <hr/>
                                       <%= @subjective_marks[sub['id'].to_i] %>
+                                      <hr/>
+                                      <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
+                                        <% pass_mark = 45*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 70 %>
+                                        <% pass_mark = 32*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 50 %>
+                                        <% pass_mark = 22*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% end %>
                                    <% end %>
                                 </td>
-                                <% end %>
+                              <% end %>
 
-                                <% if !exam_group.name.index('Obj').nil? && objective == false %>
-                                  <% objective = true %>
-                                  <td><%=  sub['code'] %>
-                                  <hr/>
-                                  Obj
-                                  <% unless @objective_marks[sub['id'].to_i].nil? %>
-                                      <hr/>
-                                      <%= @objective_marks[sub['id'].to_i] %>
-                                  <% end %>
-                                 </td>
+                              <% if !exam_group.name.index('Obj').nil? && objective == false %>
+                                <% objective = true %>
+                                <td><%=  sub['code'] %>
+                                <hr/>
+                                Obj
+                                <% unless @objective_marks[sub['id'].to_i].nil? %>
+                                    <hr/>
+                                    <%= @objective_marks[sub['id'].to_i] %>
+                                    <hr/>
+                                    <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
+                                      <% pass_mark = 14*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
+                                    <% elsif @objective_marks[sub['id'].to_i].to_i == 25 %>
+                                      <% pass_mark = 12*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
+                                    <% end %>
                                 <% end %>
+                               </td>
+                              <% end %>
 
-                                <% if !exam_group.name.index('Prac').nil? && practical == false %>
-                                  <% practical = true %>
-                                  <td><%=  sub['code'] %>
-                                  <hr/>
-                                  Prac
-                                  <% unless @practical_marks[sub['id'].to_i].nil? %>
-                                      <hr/>
-                                      <%= @practical_marks[sub['id'].to_i] %>
-                                  <% end %>
-                                  </td>
+                              <% if !exam_group.name.index('Prac').nil? && practical == false %>
+                                <% practical = true %>
+                                <td><%=  sub['code'] %>
+                                <hr/>
+                                Prac
+                                <% unless @practical_marks[sub['id'].to_i].nil? %>
+                                    <hr/>
+                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <hr/>
+                                    <% pass_mark = 12*@top_exam_group_count %>
+                                    <%= "P: "+pass_mark.to_s  %>
                                 <% end %>
-                                <% end %>
-
+                                </td>
                               <% end %>
                             <% end %>
+
                           <% end %>
+                        <% end %>
+                      <% end %>
 
-                          <td>Total</td>
-                          <td class="col-pdf">Rank</td>
+                      <td>Total</td>
+                      <td class="col-pdf">Rank</td>
 
-                      </tr>
+                  </tr>
                     <% elsif std_count>12 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
@@ -279,70 +335,93 @@
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">
-                          <td class="col-pdf">Roll</td>
-                          <td class="col-pdf">Students Name</td>
-                          <% @report_data['report']['subjects'].each do |sub| %>
-                            <% has_exam = false %>
-                            <% if @all_subject_id.include?(sub['id'].to_i) %>
-                              <% has_exam = true %>
-                            <% end %>
-                            <% if has_exam == true %>
-                              <% 
-                              subjective = false
-                              objective = false
-                              practical = false
+
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <% @report_data['report']['subjects'].each do |sub| %>
+                        <% has_exam = false %>
+                        <% if @all_subject_id.include?(sub['id'].to_i) %>
+                          <% has_exam = true %>
+                        <% end %>
+                        <% if has_exam == true %>
+                          <% 
+                          subjective = false
+                          objective = false
+                          practical = false
 
 
-                            %>
-                              <% @all_exam_groups.each do |exam_group| %>
-                                <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
-                                <% unless examfound.blank? %>
-                                  <% if !exam_group.name.index('Sub').nil? && subjective == false %>
-                                  <% subjective = true %>
-                                  <td>
-                                     <%=  sub['code'] %>
-                                     <hr/>
-                                     Sub
-                                     <% unless @subjective_marks[sub['id'].to_i].nil? %>
-                                        <hr/>
-                                        <%= @subjective_marks[sub['id'].to_i] %>
-                                     <% end %>
-                                  </td>
-                                  <% end %>
+                        %>
+                          <% @all_exam_groups.each do |exam_group| %>
+                            <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
+                            <% unless examfound.blank? %>
+                              <% if !exam_group.name.index('Sub').nil? && subjective == false %>
+                                <% subjective = true %>
+                                <td>
+                                   <%=  sub['code'] %>
+                                   <hr/>
+                                   Sub
+                                   <% unless @subjective_marks[sub['id'].to_i].nil? %>
+                                      <hr/>
+                                      <%= @subjective_marks[sub['id'].to_i] %>
+                                      <hr/>
+                                      <% if @subjective_marks[sub['id'].to_i].to_i == 100 %>
+                                        <% pass_mark = 45*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 70 %>
+                                        <% pass_mark = 32*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 50 %>
+                                        <% pass_mark = 22*@top_exam_group_count %>
+                                        <%= "P: "+pass_mark.to_s  %>
+                                      <% end %>
+                                   <% end %>
+                                </td>
+                              <% end %>
 
-                                  <% if !exam_group.name.index('Obj').nil? && objective == false %>
-                                    <% objective = true %>
-                                    <td><%=  sub['code'] %>
+                              <% if !exam_group.name.index('Obj').nil? && objective == false %>
+                                <% objective = true %>
+                                <td><%=  sub['code'] %>
+                                <hr/>
+                                Obj
+                                <% unless @objective_marks[sub['id'].to_i].nil? %>
                                     <hr/>
-                                    Obj
-                                    <% unless @objective_marks[sub['id'].to_i].nil? %>
-                                        <hr/>
-                                        <%= @objective_marks[sub['id'].to_i] %>
-                                    <% end %>
-                                   </td>
-                                  <% end %>
-
-                                  <% if !exam_group.name.index('Prac').nil? && practical == false %>
-                                    <% practical = true %>
-                                    <td><%=  sub['code'] %>
+                                    <%= @objective_marks[sub['id'].to_i] %>
                                     <hr/>
-                                    Prac
-                                    <% unless @practical_marks[sub['id'].to_i].nil? %>
-                                        <hr/>
-                                        <%= @practical_marks[sub['id'].to_i] %>
+                                    <% if @objective_marks[sub['id'].to_i].to_i == 30 %>
+                                      <% pass_mark = 14*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
+                                    <% elsif @objective_marks[sub['id'].to_i].to_i == 25 %>
+                                      <% pass_mark = 12*@top_exam_group_count %>
+                                      <%= "P: "+pass_mark.to_s  %>
                                     <% end %>
-                                    </td>
-                                  <% end %>
                                 <% end %>
+                               </td>
+                              <% end %>
 
+                              <% if !exam_group.name.index('Prac').nil? && practical == false %>
+                                <% practical = true %>
+                                <td><%=  sub['code'] %>
+                                <hr/>
+                                Prac
+                                <% unless @practical_marks[sub['id'].to_i].nil? %>
+                                    <hr/>
+                                    <%= @practical_marks[sub['id'].to_i] %>
+                                    <hr/>
+                                    <% pass_mark = 12*@top_exam_group_count %>
+                                    <%= "P: "+pass_mark.to_s  %>
+                                <% end %>
+                                </td>
                               <% end %>
                             <% end %>
+
                           <% end %>
+                        <% end %>
+                      <% end %>
 
-                          <td>Total</td>
-                          <td class="col-pdf">Rank</td>
+                      <td>Total</td>
+                      <td class="col-pdf">Rank</td>
 
-                      </tr>
+                  </tr>
                     <% end %>    
 
 

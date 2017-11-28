@@ -36,9 +36,9 @@
     <% if MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
       <%= render  :partial=>"/connect_exam/south_point/comment_tabulation" %>  
     <% elsif MultiSchool.current_school.id == 340 %>
-      <%= render  :partial=>"/connect_exam/comment_tabulation" %>
+      <%= render  :partial=>"/connect_exam/sir_john_wilson_school/comment_tabulation" %>  
     <% else %>
-      <%= render  :partial=>"/connect_exam/sir_john_wilson_school/comment_tabulation" %>
+      <%= render  :partial=>"/connect_exam/comment_tabulation" %>
     <% end %>
   </div>
 <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><div id="success-messege" style ="display: none; margin-bottom:10px; color: green;">Successfully Saved...</div><input type="button" value="Save Comments" name="exam_comment_save_all" id="exam_comment_save_all" />

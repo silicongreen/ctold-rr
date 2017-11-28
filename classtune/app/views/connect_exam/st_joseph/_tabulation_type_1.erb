@@ -132,10 +132,10 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>11 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break70">
+                      <tr class="page-break85">
                           <td colspan="100">&nbsp;</td>
                       </tr>  
                       <tr class="table-header">
@@ -164,10 +164,10 @@
                           <td class="col-pdf">Ranking</td>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>12 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
-                      <tr class="page-break70">
+                      <tr class="page-break85">
                           <td colspan="100">&nbsp;</td>
                       </tr> 
                       <tr class="table-header">

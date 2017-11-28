@@ -193,12 +193,24 @@
                      if report['quarter'] == '5'
                        if !report['maximum_marks'].blank?
                           first_term_full_mark = report['maximum_marks'].to_i
+                          if(first_term_full_mark == 100)
+                            first_term_full_mark = 40
+                          else
+                            first_term_full_mark = 20
+                          end
                        end
                        if !report['students'].blank? && !report['students'][std['id']].blank? && !report['students'][std['id']]['score'].blank?
                           first_term_mark = report['students'][std['id']]['score'].to_f
                        else
                           first_term_ab = true
                        end
+                       unless first_term_ab == true
+                          if first_term_full_mark == 40
+                            first_term_mark = (first_term_mark/100)*40
+                          else
+                            first_term_mark = (first_term_mark/100)*20
+                          end
+                        end
 
                      end
                 end 

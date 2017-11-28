@@ -1017,7 +1017,7 @@ div.baf_shaheen
 .south-point-protrait #grouped_exam_report table#pdf-table tr.even td,
 .south-point-protrait #grouped_exam_report table#pdf-table tr.odd td
 {
-    font-size: 25px !important;
+    font-size: 27px !important;
 }
 
 .south-point-protrait table tr.even td, .south-point-protrait table tr.odd td
@@ -1028,7 +1028,7 @@ div.baf_shaheen
 
 .south-point-protrait table thead tr td
 {
-    font-size: 25px !important;
+    font-size: 27px !important;
 }
 .south-point-protrait margin-top-bottom-10
 {
@@ -1036,17 +1036,17 @@ div.baf_shaheen
 }
 .south-point-protrait .academia_box table th
 {
-    font-size:24px !important;
+    font-size:26px !important;
 }
 
 .south-point-protrait .academia_box table td
 {
-    font-size:24px;
+    font-size:26px;
 
 }
 .potrait_header_south_point h4
 {
-    font-size:23px;
+    font-size:25px;
 }
 .potrait_header_south_point h5
 {
@@ -1054,12 +1054,12 @@ div.baf_shaheen
 }
 .south-point-protrait h2
 {
-    font-size:32px;
+    font-size:34px;
 }
 
 .south-point-protrait table td
 {
-    font-size:22px;
+    font-size:24px;
     padding: 12px 12px 12px 12px;   
 }
 
@@ -1080,7 +1080,7 @@ div.baf_shaheen
 .south-point-protrait table tr td.comment_section_final
 {
     font-weight: normal;
-    font-size: 25px !important;
+    font-size: 27px !important;
 }
 
 

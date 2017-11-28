@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+  <%= javascript_include_tag 'jquery_spellcheck/include.js' %>
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
@@ -146,5 +146,12 @@
       <% end %>
     </center>
   </div>
+  
+  <script type="text/javascript">
+      var s = jQuery.noConflict();
+      s(document).ready(function() {
+        s('#comment_input_box_connect_exam').spellAsYouType();
+      });
+  </script>    
   
 

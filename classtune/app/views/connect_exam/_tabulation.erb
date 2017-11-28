@@ -243,7 +243,13 @@
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
+                        <% if !std['first_name'].blank? and !std['last_name'].blank?  %>
                         <td class="name-std"><%= std['first_name']+" "+std['last_name'] %></td>
+                        <% elsif !std['first_name'].blank? %>
+                        <td class="name-std"><%= std['first_name'] %></td>
+                        <% else %>
+                        <td class="name-std"><%= "-" %></td>
+                        <% end %>
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>

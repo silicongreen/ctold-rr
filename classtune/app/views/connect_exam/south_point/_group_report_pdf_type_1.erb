@@ -232,28 +232,58 @@
                               #Calculation First Term (40/20) Mark
                               if report['quarter'] == '5'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                  first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  end
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                                  first_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  else
-                                  first_term_ab = true
-                                end
+                                   first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                   if(first_term_full_mark == 100)
+                                     first_term_full_mark = 40
+                                   else
+                                     first_term_full_mark = 20
+                                   end
 
                                 end
-
-                              #Calculation Final Term Mark
-                              if report['quarter'] == '6'
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                  final_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-                                  end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                                  final_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                   first_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                else
+                                   first_term_ab = true
+                                end
+
+                                unless first_term_ab == true
+                                  if first_term_full_mark == 40
+                                    first_term_mark = (first_term_mark/100)*40
                                   else
-                                  final_term_ab = true
+                                    first_term_mark = (first_term_mark/100)*20
+                                  end
                                 end
 
                               end
+                            
+                              #Calculation Final Term Mark
+                              if report['quarter'] == '6'
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+                                   final_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                   if(final_term_full_mark == 100)
+                                     final_term_full_mark = 40
+                                   else
+                                     final_term_full_mark = 20
+                                   end
+                                end
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                                   final_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                else
+                                   final_term_ab = true
+                                end
+
+                                unless final_term_ab == true
+                                  if final_term_full_mark == 40
+                                    final_term_mark = (final_term_mark/100)*40
+                                  else
+                                    final_term_mark = (final_term_mark/100)*20
+                                  end
+                                end
+
+                              end
+
+                              
+                              
 
 
                             end

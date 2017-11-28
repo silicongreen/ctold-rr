@@ -132,11 +132,25 @@
                                    if report['quarter'] == '5'
                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                         first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
+                                        if(first_term_full_mark == 100)
+                                          first_term_full_mark = 40
+                                        else
+                                          first_term_full_mark = 20
+                                        end
+                                          
                                      end
                                      if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                         first_term_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                      else
                                         first_term_ab = true
+                                     end
+                                     
+                                     unless first_term_ab == true
+                                       if first_term_full_mark == 40
+                                         first_term_mark = (first_term_mark/100)*40
+                                       else
+                                         first_term_mark = (first_term_mark/100)*20
+                                       end
                                      end
                                      
                                    end

@@ -750,7 +750,7 @@ class ExamController < ApplicationController
       end
      
     else
-      assigned_students = StudentsSubject.find_all_by_subject_id(@exam_subject.id)
+      assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@exam_subject.id,@exam_subject.batch_id)
       @students = []
       @studentids = []
       assigned_students.each do |s|
@@ -3343,7 +3343,7 @@ class ExamController < ApplicationController
         @students = @batch.students.by_roll_number_name
       end
     else
-      assigned_students = StudentsSubject.find_all_by_subject_id(exam_subject.id)
+      assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(exam_subject.id,exam_subject.batch_id)
       @students = []
       assigned_students.each do |s|
         student = Student.find_by_id(s.student_id)

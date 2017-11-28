@@ -883,7 +883,7 @@ def show_before
     @sub =Subject.find params[:subject_id]
     @batch=Batch.find(@sub.batch_id)
     unless @sub.elective_group_id.nil?
-      elective_student_ids = StudentsSubject.find_all_by_subject_id(@sub.id).map { |x| x.student_id }
+      elective_student_ids = StudentsSubject.find_all_by_subject_id_and_batch_id(@sub.id,@sub.batch_id).map { |x| x.student_id }
       @students = Student.find_all_by_batch_id(@batch, :conditions=>"FIND_IN_SET(id,\"#{elective_student_ids.split.join(',')}\")")
     else
       @students = Student.find_all_by_batch_id(@batch)
@@ -911,7 +911,7 @@ def subject_wise_register
     end      
     @today = params[:next].present? ? params[:next].to_date : @local_tzone_time.to_date
     unless @sub.elective_group_id.nil?
-      elective_student_ids = StudentsSubject.find_all_by_subject_id(@sub.id).map { |x| x.student_id }
+      elective_student_ids = StudentsSubject.find_all_by_subject_id_and_batch_id(@sub.id,@sub.batch_id).map { |x| x.student_id }
       @students = @batch.students.by_first_name.with_full_name_only.all(:conditions=>"FIND_IN_SET(id,\"#{elective_student_ids.split.join(',')}\")")
     else
       @students = @batch.students.by_first_name.with_full_name_only

@@ -396,7 +396,7 @@ class AssignmentsController < ApplicationController
       if @subject.elective_group_id.nil?
         @students = @subject.batch.students
       else
-        assigned_students = StudentsSubject.find_all_by_subject_id(@subject.id)
+        assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@subject.id,@subject.batch_id)
         @students = assigned_students.map{|s| s.student}
         @students=@students.compact
       end

@@ -17,26 +17,38 @@
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-
+                   
               <table id="pdf-table" width="100%" cellspacing="0">
+                  <% first_term_exam_name = "First Term" %>
+                  <% final_term_exam_name = "Final" %>
+                  <%  
+                  @report_data['report']['exams'].each do |report|
+                   if report['quarter'] == '5'
+                     first_term_exam_name = report['exam_name']
+                   end
+                   if report['quarter'] == '6'
+                     final_term_exam_name = report['exam_name']
+                   end
+                  end  
+                  %>
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf" colspan="8">First-Term Examination</td>
-                      <td class="col-pdf" colspan="7">Final Examination</td>
+                      <td class="col-pdf" colspan="8"><%= first_term_exam_name %> Examination</td>
+                      <td class="col-pdf" colspan="7"><%= final_term_exam_name %> Examination</td>
                       <td class="col-pdf" colspan="2">Combined Result</td>
                   </tr>    
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></td>
                       <td class="col-pdf">1<sup>st</sup> Quarter (30/15)</td>
                       <td class="col-pdf">2<sup>nd</sup> Quarter (30/15)</td>
-                      <td class="col-pdf">First Term (40/20)</td>
+                      <td class="col-pdf"><%= first_term_exam_name %> (40/20)</td>
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total</td>
                       <td class="col-pdf">Grade</td>
                       <td class="col-pdf">Highest Mark</td>
                       <td class="col-pdf">3<sup>rd</sup> Quarter(30/15)</td>
                       <td class="col-pdf">4<sup>th</sup> Quarter (30/15)</td>
-                      <td class="col-pdf">Final(40/20)</td>
+                      <td class="col-pdf"><%= final_term_exam_name %> (40/20)</td>
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total</td>
                       <td class="col-pdf">Grade</td>

@@ -4,11 +4,19 @@
   
   <table id="pdf-table" width="100%" cellspacing="0">
                   <% c = 'even'  %>
+                  <% first_term_exam_name = "First Term" %>
+                  <%  
+                  @report_data['report']['exams'].each do |report|
+                   if report['quarter'] == '5'
+                     first_term_exam_name = report['exam_name']
+                   end   
+                  end  
+                  %>  
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></td>
                       <td class="col-pdf">1<sup>st</sup> Quarter (30/15)</td>
                       <td class="col-pdf">2<sup>nd</sup> Quarter (30/15)</td>
-                      <td class="col-pdf">First Term (40/20)</td>
+                      <td class="col-pdf"><%= first_term_exam_name %> (40/20)</td>
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total Marks Obtain</td>
                       <td class="col-pdf">Grade</td>
@@ -277,5 +285,5 @@
                         <td class="col-pdf"></td>
                         </tr>
 
-              </table>   
+              </table>
 <% end %>

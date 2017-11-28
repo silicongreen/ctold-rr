@@ -662,7 +662,7 @@ class GroupedExams extends CActiveRecord
                      
                 } 
                 $results['comments2'] = array();
-                if($connect_exam->result_type==1)
+                if($exm_connect_data->result_type==1)
                 {
                     $first_term_id_for_class_performance = $cont_exam->getConnectExamByBatch($batch_id,2);
                     if($first_term_id_for_class_performance)

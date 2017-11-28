@@ -247,7 +247,7 @@
                   </tr>
                   <tr>
                       <td>
-                          &nbsp;<br /><br />&nbsp;<br /><br /><br />
+                          <% if !@exam_comment.blank? %><b>&nbsp;<%= @exam_comment.comments %></b><% else %><br/>&nbsp;<br/><br/>&nbsp;<br/><% end %>
                       </td>                      
                   </tr>
               </table>

@@ -358,6 +358,7 @@ class AssignmentsController < ApplicationController
           else
             assigned_students = StudentsSubject.find_all_by_subject_id(subject.id)
             @students = assigned_students.map{|s| Student.find s}
+            @students.reject!{|e| e.batch_id!=@subject.batch_id}
           end
           @assignment = subject.assignments.build
         end
@@ -382,6 +383,7 @@ class AssignmentsController < ApplicationController
             @students << s
             @assigned_students << s
           end
+          @students.reject!{|e| e.batch_id!=@subject.batch_id}
         end
       end
 
@@ -398,6 +400,7 @@ class AssignmentsController < ApplicationController
       else
         assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@subject.id,@subject.batch_id)
         @students = assigned_students.map{|s| s.student}
+        @students.reject!{|e| e.batch_id!=@subject.batch_id}
         @students=@students.compact
       end
     end

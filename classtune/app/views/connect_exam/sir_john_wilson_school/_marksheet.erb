@@ -206,7 +206,7 @@
                       <% total_mark = 0 %>
                       <% full_mark = 0 %>
 
-                      <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+                      <tr  class="sjws-table-header">
                           <td class="sl"><%#= std['class_roll_no'] %><%= std_count_main %></td>
                           <td class="st_name"><%= std['name'] %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
@@ -217,7 +217,7 @@
                                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                                   <% full_mark = full_mark+rs['maximum_marks'].to_i %>
                                 <% else %>
-                                  AB
+                                  -
                                 <% end %>    
                             </td>
                             <% end %>

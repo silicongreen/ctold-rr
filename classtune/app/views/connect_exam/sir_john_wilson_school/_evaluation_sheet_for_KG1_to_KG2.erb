@@ -187,10 +187,9 @@
                           <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
                           <% @report_data['result']['ALL'].each do |rs| %>
                                 <% wordString = rs['students'][std['id']]['remarks'] %>
-                                <% exam_group_remarks = "" %>
                                 <% unless wordString.nil? %>
                                   <% wordString_split = wordString.split("|") %>
-                                  
+                                  <% exam_group_remarks = "" %>
                                   <% unless rs['students'][std['id']]['remarks'].blank?  %>
                                     <% unless wordString_split[iloooop.to_i].blank? %>
                                           <% exam_group_remarks = wordString_split[@group_loop.to_i] %>

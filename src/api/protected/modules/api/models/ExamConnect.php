@@ -320,19 +320,39 @@ class ExamConnect extends CActiveRecord
                 } 
               $result['max_mark_ct'] = $max_mark_ct;
               $result['max_mark_st'] = $max_mark_st;
+               if (Yii::app()->user->schoolId == "340")
+                {
+                   if(isset($result['students']))
+                    {
+
+                      usort($result['students'], function($a, $b) {
+                            return $a['name'] - $b['name'];
+                      });
+                    }
+                    if(isset($result['al_students']))
+                    {
+                      usort($result['al_students'], function($a, $b) {
+                            return $a['name'] - $b['name'];
+                      });
+                    } 
+                }
+                else
+                {
               
-              if(isset($result['students']))
-              {
-                usort($result['students'], function($a, $b) {
-                      return $a['class_roll_no'] - $b['class_roll_no'];
-                });
-              }
-              if(isset($result['al_students']))
-              {
-                usort($result['al_students'], function($a, $b) {
-                      return $a['class_roll_no'] - $b['class_roll_no'];
-                });
-              }
+                    if(isset($result['students']))
+                    {
+
+                      usort($result['students'], function($a, $b) {
+                            return $a['class_roll_no'] - $b['class_roll_no'];
+                      });
+                    }
+                    if(isset($result['al_students']))
+                    {
+                      usort($result['al_students'], function($a, $b) {
+                            return $a['class_roll_no'] - $b['class_roll_no'];
+                      });
+                    }
+                }
                 
             }
             

@@ -293,7 +293,15 @@ class EmployeeAttendanceController < ApplicationController
       end
       @emp_attendance = CardAttendance.all(:select=>'max(time) as maxtime,min(time) as mintime,date',:conditions=>{:profile_id=>params[:employee_id],:date => @start_date..@end_date,:type=>1},:order=>"date ASC",:group=>:date)
     end
-    render :pdf => 'card_attendance_pdf'
+    render    :pdf => "card_attendance_pdf",
+              :orientation => 'Portrait',
+              :margin => {    :top=> 10,
+              :bottom => 10,
+              :left=> 10,
+              :right => 10},
+              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+   
   end
   def report_card_generate
     if !params[:month].blank? and !params[:year].blank? and !params[:employee_id].blank?

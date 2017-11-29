@@ -51,7 +51,7 @@
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% check_subject_exam = true %>
+                      <% check_subject_exam = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf"><%= subjects['name'] %></td>
@@ -59,11 +59,11 @@
                               <% @report_data['report']['exams'].each do |report| %>
                           
                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
-                                    <% check_exam = true %>
+                                    <% check_exam = false %>
                                     <% unless @examobj.blank?  %>
                                     <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
                                       <% if @exam_score_all.blank? %>
-                                        <% check_exam = true %>
+                                        <% check_exam = false %>
                                       <% else %>
                                       <% @exam_score_all.each do |score| %>
                                       <%
@@ -75,6 +75,14 @@
                                       %>
                                       <% end %>
                                     <% end %>
+                                <% end %>
+                          
+                                <% groupExamObj = ExamGroup.find_by_id(report['exam_id'].to_i) %>
+                                <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                                  <%
+                                      check_exam = true
+                                      check_subject_exam = true
+                                  %>
                                 <% end %>
                                 <% if check_exam == true %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>

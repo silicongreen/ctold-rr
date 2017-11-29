@@ -89,7 +89,7 @@
               <% subject_subgroup = get_subject_sub_group(@subject.id) %>
                 <% if subject_subgroup %>
                   <% subject_subgroup.each do |sub_group_name| %>
-            <td class="word_break" colspan="3" rowspan="2"> 
+                      <td class="word_break" colspan="3" rowspan="2"> 
                         <%= sub_group_name %>
                       </td>
                   <% end %>
@@ -112,7 +112,7 @@
           <% std_count = std_count+1; %>
           <% main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>13 && extender ==0 %>
+          <% if std_count>12 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

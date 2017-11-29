@@ -48,7 +48,7 @@
 
                   <tr class="sjws-table-header">
                       <td colspan="2">
-                          <h3><i>SENOIR SECTION</i></h3>
+                         
                           <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
                           <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
                           <% if !@employee.nil? %> 
@@ -99,7 +99,7 @@
                       <% std_count_main = std_count_main+1 %>
                       <%  std_count = std_count+1; %>
                       <% colspan = colspan+4 %>
-                      <% if std_count>11 && extender ==0 %>
+                      <% if std_count>10 && extender ==0 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">

@@ -131,13 +131,13 @@
           <% if std_count>15 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr class="page-break-new">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
           <% elsif std_count>20 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr class="page-break-new">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr> 
           <% end %>    
@@ -148,16 +148,20 @@
           <% main_mark = 0 %>
           
           <% @report_data['result']['ALL'].each do |rs| %>            
-           
-            <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
-                <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+            <% if rs['exam_category'] == '1' %>
+              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
+                  <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+
+              <% else %>
+
+              <% end %> 
+              <% if !rs['maximum_marks'].blank? %>
                 <% full_mark = full_mark+rs['maximum_marks'].to_i %>
-            <% else %>
-                
-            <% end %>              
+              <% end %> 
+            <% end %>
           <% end %>     
           
-          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+          <tr class="sjws-table-header">
             <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %><div class="mark_with_std"><%=total_mark.to_i %><hr><%=full_mark.to_i %></div></td>            
             <% main_mark = (total_mark/full_mark)*100 %>
@@ -183,10 +187,13 @@
             %>
             
             <td class="name"><center><%= exam_effort %></center></td>
-            <td class="st_name"><%= exam_comment %></td>
+            <td><%= exam_comment %></td>
           </tr>
         <% end %>
         <% end %>
+          <tr class="tr-bottom">
+            <td colspan="100">&nbsp;</td>
+          </tr>
       </table>
       <% end %>
     </center>

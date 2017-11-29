@@ -206,7 +206,7 @@ class ApplicationController < ActionController::Base
       all_types.each do |examtype|
         
         il = il+1
-        if current_school != 340 or (il!=2 and  il!=3 and  il!=9 and  il!=12) 
+        if current_school != 340 or (il!=2 and  il!=3 and  il!=9 and  il!=12 and  il!=5 and  il!=11) 
           vreturn[il.to_s] = examtype
         end  
       end

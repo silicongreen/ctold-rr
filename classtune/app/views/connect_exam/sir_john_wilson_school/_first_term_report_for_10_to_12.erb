@@ -217,8 +217,8 @@
                               </p>
                           </td>                          
                           <td class="col-pdf" width='35%'><i>
-                            <% if !@exam_comment.nil? %>
-                              <%=@exam_comment.comments%>
+                            <% unless @exam_comment.blank? %>
+                              <%=  @exam_comment.comments%>
                             <% end %>
                           </i></td>                          
                           <td class="col-pdf" width='35%'>&nbsp;</td>                          

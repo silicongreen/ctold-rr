@@ -51,7 +51,7 @@
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% check_subject_exam = false %>
+                      <% check_subject_exam = true %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf"><%= subjects['name'] %></td>
@@ -59,11 +59,11 @@
                               <% @report_data['report']['exams'].each do |report| %>
                           
                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
-                                    <% check_exam = false %>
+                                    <% check_exam = true %>
                                     <% unless @examobj.blank?  %>
                                     <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
                                       <% if @exam_score_all.blank? %>
-                                        <% check_exam = false %>
+                                        <% check_exam = true %>
                                       <% else %>
                                       <% @exam_score_all.each do |score| %>
                                       <%

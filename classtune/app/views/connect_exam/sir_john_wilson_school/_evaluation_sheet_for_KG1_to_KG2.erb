@@ -185,7 +185,7 @@
                         <% end %>
                       <% else %>
                           <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
-                            <% @report_data['result']['ALL'].each do |rs| %>
+                          <% @report_data['result']['ALL'].each do |rs| %>
                                 <% wordString = rs['students'][std['id']]['remarks'] %>
                                 <% exam_group_remarks = "" %>
                                 <% unless wordString.nil? %>
@@ -202,11 +202,10 @@
                                     <% end %>                                                            
                                   <% end %>
                                 
-                                  
+                                  <td> 
+                                        <%= exam_group_remarks %>
+                                  </td>
                                 <% end %>
-                                <td> 
-                                     <%= exam_group_remarks %>
-                               </td>
                                 
                           <% end %>  
                           <td> 

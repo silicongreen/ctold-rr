@@ -4,6 +4,10 @@ body{
 }
 .bnla{
 }
+.align-right-address
+{
+    text-align:right;
+}
 #pdf-header{
     width:1250px;
     padding-top: 10px;

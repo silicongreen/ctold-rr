@@ -73,13 +73,13 @@
           <thead>          
 
               <tr>
-                  <td class="">
+                  <td class="" colspan="8">
                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/280/principal.jpg")),:width=> '16%' %><br />
                        <%= "------------------------------------------" %><br />
                       <font size='3'><%= "Principal's Signature" %></font>
                   </td>
 
-                  <td class=""><center>
+                  <td class=""  colspan="8"><center>
               <br /><br /><br />
               <%= "------------------------------------------" %><br />
               <font size='3'><%= "Teacher's Signature" %></font></center>
@@ -166,12 +166,22 @@
         <% end %>
         <% if MultiSchool.current_school.id == 280 %>
           <tr>
-              <td colspan="2" class="academia_border"></td>
+              <td colspan="16" class="academia_border"></td>
           </tr>
           <tr>
-              <td colspan="2">
+              <td colspan="5" class="align-right-address">
+                  <font size='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+              </td>
+              <td colspan="9" class="align-right-address">
                   <font size='2'>97, Asad Avenue, Mohammedpur, Dhaka-1207<br />
                   web: www.sjs.edu.bd</font>
+              </td>
+              
+              <td colspan="2">
+                  <font size='1'>Print Date: <%= Time.now.strftime("%Y/%m/%d") %></font>
               </td>
           </tr>
           </thead>  

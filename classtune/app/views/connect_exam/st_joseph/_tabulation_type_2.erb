@@ -177,6 +177,9 @@
                                       <% elsif @subjective_marks[sub['id'].to_i].to_i == 50 %>
                                         <% pass_mark = 22*@top_exam_group_count %>
                                         <%= "P-"+pass_mark.to_s  %>
+                                      <% elsif @subjective_marks[sub['id'].to_i].to_i == 25 %>
+                                        <% pass_mark = 12*@top_exam_group_count %>
+                                        <%= "P-"+pass_mark.to_s  %>
                                       <% end %>
                                    <% end %>
                                 </td>

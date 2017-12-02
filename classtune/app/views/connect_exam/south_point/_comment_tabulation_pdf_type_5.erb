@@ -28,7 +28,7 @@
       <table width="100%" >
             <thead>
                 <tr>
-                    <td><b>Year : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %> </b></td>
+                    <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
                     <td align="right"><b>Class : 
                         <% if @batch.name == "General" %>
                         <%= @batch.course.full_name %>
@@ -117,6 +117,13 @@
                           %>
                           <% end %>
                         <% end %>
+                      <% end %>
+                      <% groupExamObj = ExamGroup.find_by_id(rs['exam_id'].to_i) %>
+                        <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                          <%
+                              check_exam = true
+                              check_subject_exam = true
+                          %>
                       <% end %>
                       <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
 

@@ -1,101 +1,251 @@
+<%
+  personal_and_social = ['Complete works in time','Does home-work regularly','Does work neatly','Eagerly participates in class','Express good behaviour','Is attentive to work','Punctual in class','Takes interest in game','Understand and follows instruction','Works cooperatively with peers']
+%>
+<% 
+  all_comments_array = []
+  if !@exam_comment.blank?
+    all_comments = @exam_comment.comments
+    if !all_comments.blank?
+      all_comments_array = all_comments.split("**")
+    end
+  end
 
+  @first_term_connect = ExamConnect.find_by_batch_id_and_is_deleted_and_result_type(@batch.id,false,5)
+  
+  all_comments_array2 = []
+  unless @first_term_connect.blank?
+    @exam_comments_first_term = ExamConnectComment.find_by_exam_connect_id_and_student_id(@first_term_connect.id,@student.id)
+    if !@exam_comments_first_term.blank?
+      all_comments = @exam_comments_first_term.comments
+      if !all_comments.blank?
+        all_comments_array2 = all_comments.split("**")
+      end
+    end
+  end
+%>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <table id="pdf-table" width="100%" cellspacing="0">
-      <% c = 'even'  %>
-      <tr class="table-header">
-          <td class="col-pdf"><%= "SL." %></td>
-          <td class="col-pdf"><%= "Subject" %></td>
-          <td class="col-pdf">First Term Grade</td>
-          <td class="col-pdf">Final Term Grade</td>
-
-      </tr>
-
-
-      <% i = 0 %>
-      
-      <% unless @report_data['report']['subjects'].blank? %> 
-        <% @report_data['report']['subjects'].each do |subjects| %>
-          <% i = i+1 %>
-          
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-
-              <td class="col-pdf"><%= i %></td>
-              <td class="col-pdf"><%= subjects['name'] %><% unless @current_user.student? or @current_user.parent? %>
-                    &nbsp;|&nbsp;&nbsp;&nbsp;<%= link_to "Mark Sheet",
-                      {:action => "marksheet", :subject_id => subjects['id'],:id=>@connect_exam_obj.id},:target => '_blank' %><% end %></td>
-              <% jloop = 0 %>
-              <% total_mark = 0 %>
-              <% full_mark = 0 %>
-              <% unless @report_data['report']['exams'].blank? %>  
-                <% @report_data['report']['exams'].each do |report| %>
-                  <% if jloop == 0 %>
-                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-
-                    <% end %>
-                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-
-                    <% end %>
+                  <% c = 'even'  %>
+                  <tr class="table-header">
+                      <td class="col-pdf" colspan="6">First Term</td>
+                      <td class="col-pdf" colspan="6">Final Term</td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf" colspan="2">Academic Performance</td>
+                      <td class="col-pdf" colspan="4">Personal and Social Development</td>
+                      <td class="col-pdf" colspan="2">Academic Performance</td>
+                      <td class="col-pdf" colspan="4">Personal and Social Development</td>
+                  </tr> 
+                  <tr class="table-header">
+                      <td class="col-pdf"><%= "Subject" %></td>
+                      <td class="col-pdf">Grade</td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf">Sometimes</td>
+                      <td class="col-pdf">Usually</td>
+                      <td class="col-pdf">Mostly</td>
+                      
+                      <td class="col-pdf"><%= "Subject" %></td>
+                      <td class="col-pdf">Grade</td>
+                      <td class="col-pdf"></td>
+                      <td class="col-pdf">Sometimes</td>
+                      <td class="col-pdf">Usually</td>
+                      <td class="col-pdf">Mostly</td>
                     
-                  <% end %>
-                  <% jloop = jloop+1 %>
-                <% end %>
-              <% end %>
-              <% 
-              if total_mark.to_f>0 and full_mark.to_f>0
-                main_mark = (total_mark.to_f/full_mark.to_f)*100 
-                else
-                main_mark = 0
-                end  
-             %>
-              <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                  </tr>
 
-              <% if !grade.blank? and !grade.name.blank?  %>
-                <td class="col-2"><b><%= grade.name %></b></td>
-              <% else %>
-                <td class="col-2"><b>-</b></td>
-              <% end %>
-                
-              <% jloop = 0 %>
-              <% total_mark = 0 %>
-              <% full_mark = 0 %>
-              <% unless @report_data['report']['exams'].blank? %>  
-                <% @report_data['report']['exams'].each do |report| %>
-                  <% if jloop == 1 %>
-                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                 
+                  <% i = 0 %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                          <td class="col-pdf"><%= subjects['name'] %></td>
+                            <% jloop = 0 %>
+                           <% total_mark = 0 %>
+                            <% full_mark = 0 %>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report| %>
+                                <% if jloop == 0 %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
 
-                    <% end %>
-                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
 
-                    <% end %>
-                    
-                  <% end %>
-                  <% jloop = jloop+1 %>
-                <% end %>
-              <% end %>
-              <% 
-              if total_mark.to_f>0 and full_mark.to_f>0
-                main_mark = (total_mark.to_f/full_mark.to_f)*100 
-                else
-                main_mark = 0
-                end  
-             %>
-              <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                  <% end %>
+                                <% end %>
+                          
+                                <% jloop = jloop+1 %>
+                              <% end %>
+                            <% end %>
+                            <% 
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              else
+                              main_mark = 0
+                              end  
+                           %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
-              <% if !grade.blank? and !grade.name.blank?  %>
-                <td class="col-2"><b><%= grade.name %></b></td>
-              <% else %>
-                <td class="col-2"><b>-</b></td>
-              <% end %>
+                            <% if !grade.blank? and !grade.name.blank?  %>
+                              <td class="col-2"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-2"><b>-</b></td>
+                            <% end %>
+                            <% unless personal_and_social[i].blank? %>
+                                <td class="col-2"><%= personal_and_social[i] %></td>
+                                <td class="col-2">
+                                  <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 1  %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 2  %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 3  %>
+                                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                            <% else %>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                              
+                            <% end %>  
+                                
+                                
+                           <td class="col-pdf"><%= subjects['name'] %></td>
+                            <% jloop = 0 %>
+                            <% total_mark = 0 %>
+                            <% full_mark = 0 %>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                              <% @report_data['report']['exams'].each do |report| %>
+                                <% if jloop == 1 %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
 
+                                  <% end %>
+                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
 
+                                  <% end %>
+                                <% end %>
+                          
+                                <% jloop = jloop+1 %>
+                              <% end %>
+                            <% end %>
+                            <% 
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                              else
+                              main_mark = 0
+                              end  
+                           %>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
-          </tr> 
-        <% end %>
-     <% end %>
+                            <% if !grade.blank? and !grade.name.blank?  %>
+                              <td class="col-2"><b><%= grade.name %></b></td>
+                            <% else %>
+                              <td class="col-2"><b>-</b></td>
+                            <% end %>
+                            <% unless personal_and_social[i].blank? %>
+                                <td class="col-2"><%= personal_and_social[i] %></td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 2  %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                                <td class="col-2">
+                                  <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 3  %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                  <% end %>
+                                </td>
+                            <% else %>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                                <td class="col-2"></td>
+                              
+                            <% end %>  
+                               
 
-    </table>       
+                      </tr> 
+                      <% i = i+1 %>
+                    <% end %>  
+                  <% end %> 
+                  <% if i<9 %>
+                     
+                      <% (i..9).each do |j| %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <td class="col-2"></td>
+                        <td class="col-2"></td>
+                        <% unless personal_and_social[i].blank? %>
+                            <td class="col-2"><%= personal_and_social[j] %></td>
+                            <td class="col-2">
+                              <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 1  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 2  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 3  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+
+                        <% end %> 
+                            
+                        <td class="col-2"></td>
+                        <td class="col-2"></td>
+                        <% unless personal_and_social[i].blank? %>
+                            <td class="col-2"><%= personal_and_social[j] %></td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 1  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 2  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                            <td class="col-2">
+                              <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 3  %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+                            <td class="col-2"></td>
+
+                        <% end %> 
+                        </tr>    
+                        
+                      <% end %>
+                      
+                  <% end %>     
+
+              </table>       
   <% end %>

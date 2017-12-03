@@ -20,12 +20,26 @@
 
 <% if MultiSchool.current_school.id == 246 %>
   <%#Cherry Blossoms International School%>
-<div id="pdf-header-south">
-  <center>
-  <center><h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '8%' %></h4></center>
-  <h3 align="center">Cherry Blossoms International School &amp; College</h3>
-  
-</div>  
+
+    <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
+    <div id="pdf-header-south" class="general-header">
+        <table width="100%">
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '8%' %></span></td>
+            <td class="name-td name-td-south">
+                  <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
+                  <h5 align="center">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
+                  <h5 align="center" class="bold-all step-1"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>  
+            </td>
+        </table>   
+    </div>
+    <% else %>
+    <div id="pdf-header-south">
+      <center>
+      <center><h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '8%' %></h4></center>
+      <h3 align="center">Cherry Blossoms International School &amp; College</h3>
+
+    </div>
+    <% end %>
 <% elsif MultiSchool.current_school.id == 283 %>
   <%#academia%>
   <div id="pdf-header">

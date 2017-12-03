@@ -20,6 +20,40 @@
 
 
 <% if MultiSchool.current_school.id == 246 %>
+  <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
+    <div id="pdf-footer" class="st-joshef-footer">
+
+      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+          <thead>          
+
+              <tr>
+                  <td class="" colspan="8">
+                       <br/> <br/> <br/>
+                       <%= "------------------------------------------" %><br />
+                      <font size='3'><%= "Teacher's Signature" %></font>
+                  </td>
+
+                  <td class=""  colspan="8"><center>
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/principal_signature.png")) %><br />
+              <%= "------------------------------------------" %><br />
+              <font size='3'><%= "Shaleha Kader (Chairman & Principal)" %></font></center>
+          </td>
+          </tr>
+          <tr>
+              <td colspan="16" class="academia_border"></td>
+          </tr>
+          <tr>
+              
+              <td colspan="16" class="align-right-address">
+                  <font size='2'>www.cherryblossomsint.com, Contact : +8801730073860<br />
+                  Email : cherryblossomsint@gmail.com</font>
+              </td>
+          </tr>
+          </thead>  
+
+      </table>
+  </div>
+  <% else %>
   <div id="pdf-footer">
 
       <table id="listing table-design"  width="100%"  style="margin-top:10px;">
@@ -36,6 +70,7 @@
 
       </table>
   </div>
+  <% end %>
 <% elsif MultiSchool.current_school.id == 325 %>
   <div id="pdf-footer">
 

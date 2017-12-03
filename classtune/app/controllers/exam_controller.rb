@@ -3916,7 +3916,7 @@ class ExamController < ApplicationController
             :save_to_file => file_name,
             :save_only    => for_save,
             :orientation => 'Landscape',
-            :margin => {:top=> 35,
+            :margin => {:top=> 45,
             :bottom => 40,
             :left=> 10,
             :right => 10}

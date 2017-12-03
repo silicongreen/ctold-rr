@@ -639,6 +639,13 @@ table#pdf-table{
 
 #pdf-header-south{
     width:1000px;
+    
+}
+.cbis-header
+{
+    padding-top: 40px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 

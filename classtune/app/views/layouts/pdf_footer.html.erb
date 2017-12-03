@@ -140,8 +140,41 @@
 
               </table>
           </div>
-        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2  %>
+        <% elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2  %>
+        <% elsif MultiSchool.current_school.id == 312 %>
           
+          <div id="pdf-footer">
+              
+              <table id="listing table-design"  width="100%">
+                  <thead>          
+
+                      <tr>
+                          <td class="">
+                              <br /><br /><br /><br /><br />
+                              <%= "----------------------------------------------------------" %><br />
+                              <font size='5'><b><%= "Class Teacher" %></b></font>
+                          </td>
+                          <td class="">
+                              <br /><br /><br /><br /><br />
+                              <%= "----------------------------------------------------------" %><br />
+                              <font size='5'><b><%= "Teacher In charge" %></b></font>
+                          </td>
+                          <td class="">
+                              <br /><br /><br /><br /><br />
+                              <%= "----------------------------------------------------------" %><br />
+                              <font size='5'><b><%= "Principal" %></b></font>
+                          </td>
+
+                          <td class=""><center>
+                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />
+                            <%= "----------------------------------------------------------" %><br />
+                            <font size='5'><b><%= "F. Principal" %></b></font>
+                            </center>
+                          </td>
+                  </tr>
+
+              </table>
+          </div>
         
         <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342 %>
           <div id="pdf-footer">

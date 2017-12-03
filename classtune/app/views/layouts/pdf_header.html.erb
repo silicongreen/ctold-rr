@@ -24,11 +24,11 @@
     <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
     <div id="pdf-header-south" class="general-header">
         <table width="100%">
-            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '100%' %></span></td>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '80%' %></span></td>
             <td class="name-td name-td-south">
-                  <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
-                  <h5 align="center">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
-                  <h5 align="center" class="bold-all step-1"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>  
+                  <h5 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
+                  <h6 align="center">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>
+                  <h6 align="center" class="bold-all step-1"><%= @connect_exam_obj.name+" Report : " %><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h5>  
             </td>
         </table>   
     </div>

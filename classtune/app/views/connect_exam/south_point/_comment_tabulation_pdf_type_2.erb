@@ -44,12 +44,11 @@
       <% c = 'even' %>
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-          <td class="col-pdf">Sl.</td>
           <td class="col-pdf">Roll</td>
           <td class="col-pdf">Students Name</td>
           <td class="col-pdf">Term</td>
           <% @report_data['report']['subjects'].each do |sub| %>
-            <td><%=  sub['code'] %><hr/>Marks&nbsp;&nbsp;|&nbsp;&nbsp;Grd</td>
+          <td><%=  sub['code'] %><hr/>Marks<hr/>Grd</td>
           <% end %> 
           <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
             <td><%=  sub['code'] %></td>
@@ -88,7 +87,7 @@
               
           
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="col-pdf"><%= j %></td>
+            
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <td class="name-std">FQ<hr/>SQ<hr/>FT<hr/>TTL</td>
@@ -434,7 +433,7 @@
                   <%= f_mark.round().to_s+"<hr/>" %> 
                   <%= tf_mark.round().to_s %>   
               </td>
-              <td>
+              <td class="no-warp">
                   <% i = 1 %>
                   <% total_grade_std = grades1.count  %>
                   <% grades1.each do |grade| %>
@@ -489,3 +488,9 @@
   
   
 </div>
+<style>
+  .no-warp
+  {
+     white-space: nowrap;
+  }
+</style>

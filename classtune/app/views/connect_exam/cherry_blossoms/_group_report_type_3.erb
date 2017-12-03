@@ -55,7 +55,7 @@
                   <% total_marks_student = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <tr  class="table-header">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>

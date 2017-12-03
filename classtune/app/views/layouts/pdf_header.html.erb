@@ -24,7 +24,7 @@
     <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
     <div id="pdf-header-south" class="general-header cbis-header">
         <table width="100%">
-            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-new.png")),:width=> '87%' %></span></td>
+            <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-bran-new.jpg")),:width=> '87%' %></span></td>
             <td class="name-td name-td-south">
                   <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
                   <h5 align="center">(PLAY GROUP-'A' LEVEL, EDEXCEL CENTRE NO. 96440, UK)</h5>

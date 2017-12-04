@@ -1338,16 +1338,21 @@ div.cbis-header table td.name-td-south h4
     float:left;
     font-size: 23px !important;
     font-family: sans-serif !important; 
-    margin-left: -10px;
+    margin-left: -20px;
     margin-top: -14px;
   
 }
+div.cbis-header
+{
+    margin-left:50px;
+}
+   
 
 
 div.cbis-header table td.name-td h5
 {
     font-size: 17px !important;
-    margin-left: -10px;
+   
     margin-top: 14px;
    
    

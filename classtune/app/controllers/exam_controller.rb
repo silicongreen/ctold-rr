@@ -2610,7 +2610,7 @@ class ExamController < ApplicationController
     i = 0
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @comments.each do |cmt|
-      @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam,@student_ids[i])
+      @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam.to_i,@student_ids[i].to_i)
       if !cmt.blank?     
         if @exam_comment_exists.blank?
           ecobj = ExamConnectComment.new
@@ -2629,9 +2629,7 @@ class ExamController < ApplicationController
         end
       elsif !@exam_comment_exists.blank?
         @exam_comment_exists.destroy
-      end  
-        
-        
+      end         
       i = i+1
     end
     render :text =>"Succesfully Saved" and return

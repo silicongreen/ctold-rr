@@ -1325,21 +1325,33 @@ table.grade_and_attendance tr td.grade_and_attendance_td
     font-weight: normal !important;
   
 }
+div.cbis-header table td.south-logo
+{
+    width:10% !important;
+}
+div.cbis-header table td.name-td
+{
+    width:90% !important;
+}
 div.cbis-header table td.name-td-south h4
 {
     float:left;
-    font-size: 22px !important;
+    font-size: 23px !important;
     font-family: sans-serif !important; 
+    margin-top:-3px;
   
 }
+
+
 div.cbis-header table td.name-td h5
 {
     font-size: 17px !important;
+   
 }
 #pdf-header-south table td.name-td h5.step-1, #pdf-header-south table td.name-td h5.step-2
 {
     float:left;
-    margin-top:-15px; 
+    margin-top:-17px; 
 }
 
 #pdf-header-south table td.name-td h5.bold-all

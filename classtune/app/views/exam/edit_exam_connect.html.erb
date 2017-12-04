@@ -47,18 +47,22 @@
     c=val.id;
     d=c.replace("check","weightage");
     p=c.replace("check","priority");
+    e=c.replace("check","show_in_connect");
     if(val.checked==true)
     {
       $(d).disabled=false;
       $(p).disabled=false;
+      $(e).disabled=false;
     }
     else
     {
       document.getElementById('chck1').checked = false;
       $(d).value="0";
       $(p).value="0";
-      $(d).disabled=true
+      $(e).value="1";
+      $(d).disabled=true;
       $(p).disabled=true;
+      $(e).disabled=true;
     }
     make_total(cnt);
 

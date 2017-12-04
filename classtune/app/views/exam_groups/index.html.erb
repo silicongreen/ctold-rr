@@ -127,9 +127,8 @@
                     <%
                       is_removable = true
                       exam_id = exam_group.id
-                      @exam_groups_data = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", exam_group.name, @batches, exam_group.exam_type, exam_group.exam_category, exam_group.exam_date]).map{|eg| eg.id}
-                      @exam_groups_data.each do |exam_group_id|
-                        tmp_exam_group = ExamGroup.active.find exam_group_id
+                      @exam_groups_data = ExamGroup.active.find(:all, :conditions => ["name LIKE ? and batch_id IN (?) and exam_type = ? and exam_category = ? and exam_date = ?", exam_group.name, @batches, exam_group.exam_type, exam_group.exam_category, exam_group.exam_date])
+                      @exam_groups_data.each do |tmp_exam_group|
                         unless tmp_exam_group.nil?
                           unless tmp_exam_group.removable?
                             is_removable = false

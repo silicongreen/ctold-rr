@@ -7,7 +7,7 @@
   end  
   %>
   <td colspan="100"><input type="text" placeholder="Enter Comment" class="comment_input_box_connect_exam" name="commentstd_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>" value="<%= cmt %>" style="width:100%; height:50px;" /></td>
-<% if MultiSchool.current_school.id == 319 %>
+<% if MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 246 %>
 <script>
   var jj = jQuery.noConflict();
   jj('#commentstd_<%= @std_id_comment %>').autoComplete({

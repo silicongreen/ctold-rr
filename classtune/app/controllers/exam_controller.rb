@@ -2609,29 +2609,41 @@ class ExamController < ApplicationController
     @connect_exam= params[:connect_exam]
     i = 0
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-    @comments.each do |cmt|
-      @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam.to_i,@student_ids[i].to_i)
-      if !cmt.blank?     
-        if @exam_comment_exists.blank?
-          ecobj = ExamConnectComment.new
-          ecobj.employee_id = current_user.employee_record.id
-          ecobj.created_at = now
-          ecobj.updated_at = now
-          ecobj.school_id = MultiSchool.current_school.id
-          ecobj.student_id = @student_ids[i]
-          ecobj.comments = cmt
-          ecobj.exam_connect_id = @connect_exam
-          ecobj.save
-        else
-          @exam_comment_exists.comments = cmt
-          @exam_comment_exists.updated_at = now
-          @exam_comment_exists.save          
+    unless @comments.blank? 
+      @comments.each do |cmt|
+        @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam.to_i,@student_ids[i].to_i)
+
+
+
+        if !cmt.blank?     
+          if @exam_comment_exists.blank?
+            ecobj = ExamConnectComment.new
+            ecobj.employee_id = current_user.employee_record.id
+            ecobj.created_at = now
+            ecobj.updated_at = now
+            ecobj.school_id = MultiSchool.current_school.id
+            ecobj.student_id = @student_ids[i]
+            ecobj.comments = cmt
+            ecobj.exam_connect_id = @connect_exam
+            ecobj.save
+          else
+            @exam_comment_exists.comments = cmt
+            @exam_comment_exists.updated_at = now
+            @exam_comment_exists.save          
+          end
+        elsif !@exam_comment_exists.blank?
+          @exam_comment_exists.destroy
+        end         
+        i = i+1
+      end
+    else
+      @student_ids.each do |std|
+        @exam_comment_exists = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam.to_i,std.to_i)
+        if !@exam_comment_exists.blank?
+          @exam_comment_exists.destroy
         end
-      elsif !@exam_comment_exists.blank?
-        @exam_comment_exists.destroy
-      end         
-      i = i+1
-    end
+      end
+    end  
     render :text =>"Succesfully Saved" and return
     
   end

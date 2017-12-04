@@ -177,6 +177,9 @@
               <%= "Priority" %>
             </td>
             <td class="col-3">
+              <%= "Show In Marks Entry" %>
+            </td>
+            <td class="col-3">
               <%= t('weightage') %>(%)
             </td>            
           </tr>
@@ -192,12 +195,14 @@
               <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
               <td class="col-2"><%= e.name %></td>
               <td class="col-2"><input type="number" id="priority<%=i%>" disabled="true" name="priority[]" value="0"></td>
+              <td class="col-2"><input type="number" id="show_in_connect<%=i%>" disabled="true" name="show_in_connect[]" value="1"></td>
               <% if is_already_grouped==true %>
                 <td class="col-3"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
                 <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
               <% else %>
                 <td class="col-3"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
-              <% end %>                
+              <% end %> 
+              
             </tr>
             <% i=i+1 %>
           <% end %>
@@ -206,7 +211,7 @@
             <td class="col-4" colspan="2">
               <%= t('total_weghtage') %>
             </td>
-            <td class="col-2" colspan="1">
+            <td class="col-2" colspan="2">
               
             </td>
             <td class="col-3">

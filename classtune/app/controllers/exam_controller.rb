@@ -721,7 +721,7 @@ class ExamController < ApplicationController
     @exams = []
     
     if @exam_subject.no_exams.blank?
-      @group_exam = GroupedExam.find_all_by_connect_exam_id(@exam_connect.id, :order=>"priority ASC")
+      @group_exam = GroupedExam.find_all_by_connect_exam_id_and_show_in_connect(@exam_connect.id,1, :order=>"priority ASC")
       unless @group_exam.blank?
         @group_exam.each do |group_exam|
           exam_group = ExamGroup.active.find(group_exam.exam_group_id)
@@ -797,6 +797,7 @@ class ExamController < ApplicationController
         unless params[:exam_grouping][:exam_group_ids].nil?
           weightages = params[:weightage]
           priority = params[:priority]
+          show_in_connect = params[:show_in_connect]
           total = 0
           weightages.map{|w| total+=w.to_f}          
           unless total=="100".to_f
@@ -812,7 +813,7 @@ class ExamController < ApplicationController
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
-                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i])
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i],:show_in_connect=>show_in_connect[i])
               end
             end            
           end
@@ -835,6 +836,7 @@ class ExamController < ApplicationController
         unless params[:exam_grouping][:exam_group_ids].nil?
           weightages = params[:weightage]
           priority = params[:priority]
+          show_in_connect = params[:show_in_connect]
           #abort params.inspect
           
           total = 0
@@ -854,7 +856,7 @@ class ExamController < ApplicationController
               GroupedExam.delete_all(:connect_exam_id=>@exam_connect_id)              
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
-                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i])
+                GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i],:show_in_connect=>show_in_connect[i])
               end
             end            
           end

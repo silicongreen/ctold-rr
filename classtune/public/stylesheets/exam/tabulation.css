@@ -185,19 +185,7 @@ table#pdf-table{
     border-bottom: 1px solid #ADACAB;
 }
 
-.page-break90 td{
-    height: 95px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
 
-.page-break90 td{
-    height: 100px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
 
 .page-break90 td{
     height: 90px;

@@ -1,3 +1,18 @@
+<% bottom_string = "<br/><br/>" %>
+<% bottom_string2 = "" %>
+<% unless params[:bottom].blank?  %>
+  <% bottom = params[:bottom].to_i %>
+  <%  
+    $i = 0
+    while $i < bottom  do
+       bottom_string = bottom_string.to_s+"<br/>"
+       bottom_string2 = bottom_string2.to_s+"<br/>"
+       $i +=1
+    end
+  %>>
+<% end %>
+
+
 
 <div id="pdf-footer">		
               		
@@ -6,22 +21,23 @@
  		
                       <tr>		
                           <td class="">		
-                              <br /><br />		
+                              <%= bottom_string %>		
                               <%= "--------------------------------" %><br />		
                               <font size='5'><b><%= "Class Teacher" %></b></font>		
                           </td>		
                           <td class="">		
-                              <br /><br />		
+                               <%= bottom_string %>		
                               <%= "--------------------------------" %><br />		
                               <font size='5'><b><%= "Teacher In charge" %></b></font>		
                           </td>		
                           <td class="">		
-                              <br /><br />		
+                               <%= bottom_string %>		
                               <%= "--------------------------------" %><br />		
                               <font size='5'><b><%= "Principal" %></b></font>		
                           </td>		
  		
                           <td class=""><center>	
+                            <%= bottom_string2 %>
                             <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />		
                             <%= "-------------------------------" %><br />		
                             <font size='5'><b><%= "F. Principal" %></b></font>		

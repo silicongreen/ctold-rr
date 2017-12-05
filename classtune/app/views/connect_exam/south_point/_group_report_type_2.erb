@@ -143,7 +143,7 @@
                                        if first_term_full_mark == 40
                                          first_term_mark = (first_term_mark/100)*40
                                        else
-                                         first_term_mark = (first_term_mark/100)*20
+                                         first_term_mark = (first_term_mark/50)*20
                                        end
                                      end
                                      
@@ -201,7 +201,7 @@
                           <td class="col-pdf td-align-left"><%= subjects['name'] %></td>
                           <td class="col-pdf"><%= obtained_mark1.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark2.round().to_s %></td>
-                          <td class="col-pdf"><%= (first_term_ab == true)?"AB":first_term_mark.round().to_s %></td>
+                          <td class="col-pdf"><%= (first_term_ab == true)?"0":first_term_mark.round().to_s %></td>
                           <td class="col-pdf"><%= full_mark.to_i  %></td>
                           <td class="col-pdf"><%= obtained_mark.round().to_s %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

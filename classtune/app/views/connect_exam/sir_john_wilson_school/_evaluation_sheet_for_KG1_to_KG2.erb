@@ -65,15 +65,22 @@
           <% subject_groups = get_subject_group(@subject.id) %>          
           <% ilooop = 0 %>
           <% groupCount = subject_groups.count %>
+          <% if @subject.no_exams_sjws.to_i == 1 %>
+            <% main_width_td = 70 %>
+          <% else %>
+            <% main_width_td = 80 %>
+          
+          <% end %>
+          <% width_td = main_width_td.to_f/groupCount.to_f %>
           <% subject_groups.each do |group_name| %>
             <% subject_subgroup = get_subject_sub_group(group_name.id) %>
             <% subGroupCount = 1 %>
             <% if subject_subgroup %>
               <% subGroupCount = subject_subgroup.count %>
-              <td colspan="<%=subGroupCount.to_i * 3 %>" class="word_break" ><%= group_name.name.to_s %></td> 
+              <td colspan="<%=subGroupCount.to_i * 3 %>" class="word_break" width="<%= width_td %>%" ><%= group_name.name.to_s %></td> 
               <% total_colspan_count = total_colspan_count+(subGroupCount.to_i * 3) %>
             <% else %>
-              <td colspan="3" rowspan="3" class="word_break" ><%= group_name.name.to_s %></td>
+              <td colspan="3" rowspan="3" class="word_break"  width="<%= width_td %>%" ><%= group_name.name.to_s %></td>
               <% total_colspan_count = total_colspan_count+3 %>
             <% end %> 
             
@@ -92,8 +99,10 @@
             <% subject_groups.each do |group_name| %>
               <% subject_subgroup = get_subject_sub_group(@subject.id) %>
                 <% if subject_subgroup %>
+                  <% subgroup_count = subject_subgroup.count %>
+                  <% width_td = width_td.to_f/subgroup_count %>
                   <% subject_subgroup.each do |sub_group_name| %>
-                      <td class="word_break" colspan="3" rowspan="2"> 
+                      <td class="word_break" colspan="3" rowspan="2"  width="<%= width_td %>%"> 
                         <%= sub_group_name %>
                       </td>
                   <% end %>
@@ -108,6 +117,8 @@
         
         </tr>
         
+        <% td_width_marks = width_td.to_f/3 %>
+        
         <% extender = 0 %>
         <% std_count = 0 %>
         <% main_count = 0 %>
@@ -116,13 +127,13 @@
           <% std_count = std_count+1; %>
           <% main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>13 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
               </tr>    
-          <% elsif std_count>18 && extender ==1 %>
+          <% elsif std_count>20 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -135,7 +146,7 @@
           
           <%#= debug @report_data['result']['ALL'][0]['students'][std['id']]['remarks'] %> 
           
-          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+          <tr class="sjws-table-header">
             <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>            
             <% @examScore1 = [] %>
@@ -166,12 +177,12 @@
                                     <% all_full_mark = all_full_mark + 5 %>
                               <% end %>
                             <% end %>
-                            <td> 
+                            <td  width="<%= td_width_marks %>%" class="center-class"> 
                                   <%= exam_group_remarks %>
                             </td>
                           <% end %>
 
-                          <td> 
+                          <td   width="<%= td_width_marks %>%"  class="center-class"> 
                                 <% total_avg = total_mark.to_f/avg_counter.to_i %>
 
                                 <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
@@ -206,7 +217,7 @@
                                             <% all_full_mark = all_full_mark + 5 %>
                                       <% end %>                                                            
                                     <% end %>
-                                    <td> 
+                                    <td   width="<%= td_width_marks %>%"  class="center-class"> 
                                       <%= exam_group_remarks %>
                                     </td>
                                 <% end %>
@@ -216,7 +227,7 @@
                                
                                 
                           <% end %>  
-                          <td> 
+                          <td width="<%= td_width_marks %>%"  class="center-class"> 
                                 <% total_avg = total_mark.to_f/avg_counter.to_i %>
 
                                 <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
@@ -279,8 +290,9 @@
   
 </div>
 <style>
-    table td
+  
+    .center-class
     {
-    
+       text-align:center !important;
     }
 </style>    

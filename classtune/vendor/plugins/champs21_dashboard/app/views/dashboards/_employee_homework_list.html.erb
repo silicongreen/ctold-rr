@@ -22,7 +22,7 @@
           <div class="subcontent-date">
              <%= link_to h['name'], :controller => "assignments", :action => "show", :id => h['id'] %>
           </div>
-          <div class="subcontent-date"><%= h['batch'] + ' ' + h['course'] %></div>
+          <div class="subcontent-date"><%= h['batch'] + ' ' + h['course']+ ' ' + h['section'] %></div>
           <div class="subcontent-date">Due Date <%= h['duedate'] %></div>
           <div class="subcontent-date">Submission Date: <%= h['assign_date'] %></div>
           <div class="subcontent-date">Done By: <%= h['done'] %></div>
@@ -43,6 +43,12 @@
     margin: 10px auto;
     padding: 10px;
     width: 90%;
+  }
+  .horizontal-list li {
+    float: left;
+    width: 32%;
+    height: 143px;
+    margin-bottom: 15px;
   }
   .suhheader-div div {
     color: #bebebe;

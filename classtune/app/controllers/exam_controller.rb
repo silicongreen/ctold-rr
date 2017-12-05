@@ -3955,13 +3955,23 @@ class ExamController < ApplicationController
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,
-            :orientation => 'Portrait'
+            :orientation => 'Portrait',
+            :margin => { :top=> 30,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
           else
             
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,
-            :orientation => 'Landscape'
+            :orientation => 'Landscape',
+            :margin => {  :top=> 30,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
           end
         elsif  MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 324
             render :pdf => template,

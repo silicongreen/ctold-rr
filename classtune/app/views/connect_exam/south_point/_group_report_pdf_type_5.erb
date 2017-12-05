@@ -46,11 +46,12 @@
                     
                   </tr>
 
-                  <% total_mark = 0 %>
-                  <% full_mark = 0 %>
+                  
                   <% i = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% total_mark = 0 %>
+                      <% full_mark = 0 %>
                       <% check_subject_exam = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         

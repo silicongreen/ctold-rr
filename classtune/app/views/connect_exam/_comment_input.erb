@@ -8,17 +8,28 @@
   %>
   <td colspan="100"><input type="text" placeholder="Enter Comment" class="comment_input_box_connect_exam" name="commentstd_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>" value="<%= cmt %>" style="width:100%; height:50px;" /></td>
 <% if MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 246 %>
+<%
+name = ""
+unless @std_info['first_name'].blank? 
+  name = name+@std_info['first_name']
+end 
+unless @std_info['last_name'].blank? 
+  name = name+@std_info['last_name']
+end  
+%>
 <script>
   var jj = jQuery.noConflict();
   jj('#commentstd_<%= @std_id_comment %>').autoComplete({
         minChars: 0,
         source: function(term, suggest){
             term = term.toLowerCase();
-            var choices = ['<%= @std_info['first_name']+" "+@std_info['last_name'] %>\'s performance is good. If s/he pays more attention to her studies s/he can do much better. Wish him/her all the best.', 
+            
+            
+            var choices = ['<%= name %>\'s performance is good. If s/he pays more attention to her studies s/he can do much better. Wish him/her all the best.', 
               'Do hard work. Try more & more.', 'Congratulations. Keep it up. Best wishes for you.', 'S/he needs to pay more & more attention in his/her study.',
               'Try hard to make a good result.', 'Study regularly. Best of luck.', 'If s/he tries s/he can do much better in the exam.', 
               'Extra care is needed to improve her overall performance.', 'Good! A little bit effort is needed to improve overall performance.',
-              '<%= @std_info['first_name']+" "+@std_info['last_name'] %> is capable of doing better. She is advised to be more active & hard working in studies.'];
+              '<%= name %> is capable of doing better. She is advised to be more active & hard working in studies.'];
             var suggestions = [];
             for (i=0;i<choices.length;i++)
                 if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);

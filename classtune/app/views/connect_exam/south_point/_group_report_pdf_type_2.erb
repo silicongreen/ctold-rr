@@ -47,6 +47,7 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% obtained_mark = 0 %>
                           <% full_mark = 0 %>
+                          <% full_mark_main = 0 %>
                           <% highest_mark = 0 %>
                           
                           
@@ -71,6 +72,7 @@
                           <% first_term_mark = 0 %>
                           <% first_term_ab = false %>
                           <% first_term_full_mark = 0 %>
+                          <% first_term_full_mark_main = 0 %>
                           <% first_term_avg_mark = 0 %>
                           
                             <% 
@@ -143,8 +145,12 @@
                                         first_term_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
                                         if(first_term_full_mark == 100)
                                           first_term_full_mark = 40
-                                        else
+                                          first_term_full_mark_main = 100
+                                        elsif(first_term_full_mark == 50) 
                                           first_term_full_mark = 20
+                                          first_term_full_mark_main = first_term_full_mark
+                                        else
+                                          first_term_full_mark_main = first_term_full_mark
                                         end
                                           
                                      end
@@ -208,6 +214,7 @@
                               
                               #Calculation First Term (40/20) Mark
                               full_mark = full_mark1+full_mark2+first_term_full_mark
+                              full_mark_main= full_mark1+full_mark2+first_term_full_mark_main
                               obtained_mark = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
                               main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
                             
@@ -226,8 +233,9 @@
                               <td class="col-pdf"><b>N/A</b></td>
                           <% end %>
                           <td class="col-pdf">
-                            <% if !@subject_highest_mark_first_term[subjects['id'].to_i].blank? %>  
-                              <%= @subject_highest_mark_first_term[subjects['id'].to_i].to_i %>
+                            <% if !@subject_highest_mark_first_term[subjects['id'].to_i].blank? %>
+                              <% h_mark = (@subject_highest_mark_first_term[subjects['id'].to_i].to_f*full_mark.to_f)/full_mark_main.to_f %>
+                              <%= h_mark.round().to_s %>
                             <% end %> 
                           </td>
                           

@@ -22,7 +22,7 @@
       <% if !all_comments_array[i].blank? && (all_comments_array[i].to_i ==1 || all_comments_array[i].to_i ==2 || all_comments_array[i].to_i ==3)   %>
         <% cmt = all_comments_array[i] %>
       <% end %>
-      <select name="commentstd_<%= @std_id_comment %>_<%= i %>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_<%= i %>" style="width:<%= width_percentize %>%;" >
+      <select name="commentstd_<%= @std_id_comment %>_<%= i %>" class="comment_input_box_connect_exam_multiple_<%= @std_id_comment %>" id="commentstd_<%= @std_id_comment %>_<%= i %>" style="width:<%= width_percentize %>%; margin:5px 5px 0px 0px;" >
               <option value=""><%= p_and_s %></option>
               <option value="1" <% if cmt.to_i == 1 %> selected='selected' <% end %>>Sometimes</option>
               <option value="2" <% if cmt.to_i == 2 %> selected='selected' <% end %>>Usually</option>

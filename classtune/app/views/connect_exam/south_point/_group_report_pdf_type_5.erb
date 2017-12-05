@@ -106,7 +106,7 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                             <% if !grade.blank? and !grade.name.blank? and check_subject_exam == true  %>
-                              <td class="col-2"><b><%= total_mark %><%= grade.name %></b></td>
+                              <td class="col-2"><b><%= grade.name %></b></td>
                             <% else %>
                               <td class="col-2"><b>-</b></td>
                             <% end %>

@@ -1,7 +1,27 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 sfx sfx-with-comment">
-  
-      <h2 align="center"><%= @connect_exam_obj.name %></h2>
+ 
+      
+     <h2 align="center"><%= @connect_exam_obj.name %></h2>
+    
+      <table id="pdf-table" class="margin-top-bottom-50" width="100%" cellspacing="0">
+          <tr class="even">
+              <% if @batch.course.course_name=="AS"%>
+                <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
+                <td class="td-align-right">Class : <input type="checkbox" checked="checked" />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" />&nbsp;A2 Level</td>
+              
+              <% elsif @batch.course.course_name=="A2" %>
+                <td class="td-align-left">Name : <b><%= @student.full_name %></b></td>
+                <td class="td-align-right">Class : <input type="checkbox"  />&nbsp;AS Level&nbsp;&nbsp;<input type="checkbox" checked="checked" />&nbsp;A2 Level</td>
+              
+              <% else %>
+              <td>Name : <b><%= @student.full_name %></b></td>
+              <td>Class : <b><%= @batch.course.course_name %></b></td>
+              <td>Section : <b><%= @batch.course.section_name %></b></td>
+              <td>Roll : <b><%= @student.class_roll_no %></b></td>
+              <% end %>
+          </tr>
+      </table>
 
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
@@ -73,10 +93,12 @@
                                   <% end %>
                               <% end %>
                              <% end %>
-                             <% unless class_test_mark.blank?  %>
+                             <% exam_mark_70 = 0 %> 
+                             <% class_test_30 = 0 %>
+                             <% unless class_test_mark.to_i == 0  %>
                               <% class_test_30 = (class_test_mark.to_f/class_test_total.to_f)*30 %>
                              <% end %>
-                             <% unless exam_mark.blank?  %>
+                             <% unless exam_mark.to_i == 0   %>
                               <% exam_mark_70 = (exam_mark.to_f/exam_total.to_f)*70 %>
                              <% end %>
                              

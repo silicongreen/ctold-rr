@@ -57,63 +57,16 @@ table#pdf-table{
     border-top: 1px solid #000000;
     border-collapse:collapse
 }
-#pdf-header-south{
-    width:1000px;
-    
-}
-
-#pdf-header-south table
+table td.name-td
 {
-    width: 100%;
-}
-#pdf-header-south table td.south-logo span
-{
-    margin-top:-40px;
-    float:left;
-}
-#pdf-header-south table td
-{
-    width: 10%;
-}
-#pdf-header-south table td.name-td
-{
-    width: 70%;
     text-align: left;
 }
 
-#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
-{
-    line-height: 0px !important;
-    width: 85%;
-}
-#pdf-header-south table td.name-td h5
-{
-    font-size: 18px !important;
-    font-weight: normal !important;
-  
-}
-#pdf-header-south table td.name-td h5.step-1, #pdf-header-south table td.name-td h5.step-2
-{
-    float:left;
-    margin-top:-15px; 
-}
 
-#pdf-header-south table td.name-td h5.bold-all
-{
-    font-weight: bold !important;
-    
-}
+
 #pdf-header-south h2
 {
     font-size: 35px;
-    font-family: sans-serif !important; 
-  
-}
-
-#pdf-header-south table td.name-td-south h4
-{
-    float:left;
-    font-size: 27px;
     font-family: sans-serif !important; 
   
 }

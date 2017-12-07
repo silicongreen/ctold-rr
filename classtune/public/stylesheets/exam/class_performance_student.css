@@ -103,6 +103,12 @@ table#pdf-table{
     font-weight: bold !important;
     
 }
+#pdf-header-south h2
+{
+    font-size: 35px;
+    font-family: sans-serif !important; 
+  
+}
 
 #pdf-header-south table td.name-td-south h4
 {

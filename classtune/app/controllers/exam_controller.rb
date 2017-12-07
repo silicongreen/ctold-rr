@@ -2753,7 +2753,7 @@ class ExamController < ApplicationController
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     render :pdf => "class_performance_student",
             :orientation => 'Portrait',
-            :margin => {    :top=> 10,
+            :margin => {:top=> 10,
             :bottom => 10,
             :left=> 10,
             :right => 10},

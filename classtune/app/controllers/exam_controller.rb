@@ -2736,7 +2736,29 @@ class ExamController < ApplicationController
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     end
     
-  end   
+  end 
+
+  def class_performance_student
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @assigned_employee=@batch.employees
+      
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end 
+
+    @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+    render :pdf => "class_performance_student",
+            :orientation => 'Portrait',
+            :margin => { :top=> 30,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
   
   def tabulation
     @id = params[:id]

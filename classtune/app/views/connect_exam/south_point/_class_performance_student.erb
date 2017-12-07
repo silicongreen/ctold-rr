@@ -1,0 +1,128 @@
+
+<% unless @report_data.blank? %>
+  <div id="page-yield"  class="available_sections1 south-point-protrait">
+      <h4 align="center">Class Performance</h4>  
+
+
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <tr class="table-header">
+                      <td class="col-pdf">Sl.</td>
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">Full Marks</td>
+                      <td class="col-pdf">Total Marks</td>
+                      <td class="col-pdf">Grade</td>
+                  </tr>
+                  <% extender = 0 %>
+                  <% std_count = 0 %>
+                  <% j = 0 %>
+
+                  <% @report_data['report']['students'].each do |std| %>
+
+                    <% j = j+1 %>
+                    <%  std_count = std_count+1; %>
+                    <% if std_count>12 && extender ==0 %>
+                        <% std_count = 0 %>
+                        <% extender = 1 %>
+                        <tr class="page-break5">
+                            <td colspan="100">&nbsp;</td>
+                        </tr>    
+                    <% elsif std_count>15 && extender ==1 %>
+                        <% std_count = 0 %>
+                        <% extender = 1 %>
+                        <tr class="page-break6">
+                            <td colspan="100">&nbsp;</td>
+                        </tr> 
+                    <% end %>
+                    <% c = 'even' %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf"><%= j %></td>
+                      <td class="name"><%= std['class_roll_no'] %></td>
+                      <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+                      <% total_subject = 0 %>
+                      <% class_performance = 0 %>
+                      <% @report_data['report']['subjects'].each do |subjects| %>
+                        <% total_subject = total_subject+1 %>
+                        <% unless @report_data['report']['comments'][subjects['id'].to_s].blank? %>  
+                            <% class_performance = class_performance+@report_data['report']['comments'][subjects['id'].to_s][std['id'].to_s].to_i %>
+                        <% end %>
+                      <% end %>
+                      <% class_per_grade = "U" %>
+                      <% class_per_percentize = 0 %>
+                      <% if class_performance > 0 %>
+                        <% class_per_percentize = class_performance.to_f/total_subject.to_f %>
+
+                        <% 
+                          class_per_percentize = class_per_percentize.round();
+                          class_per_percentize_main = (class_per_percentize.to_f/50)*100
+                          grade = GradingLevel.percentage_to_grade(class_per_percentize_main, @batch.id)
+                          if !grade.blank? and !grade.name.blank?
+                            class_per_grade = grade.name
+                          end
+                        %>
+                      <% end %>
+                      <td class="col-pdf">50</td>
+                      <td class="col-pdf"><%= class_per_percentize %></td>
+                      <td class="col-pdf"><%= class_per_grade %></td>
+                    </tr>
+
+                      
+
+              </table>
+              
+              
+              
+              <%= render  :partial=>"/connect_exam/south_point/sign_south_2" %>
+
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+            html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>)
+    var page = new Element('div', {'class': 'page1'});
+    var pageBreak = new Element('div', {'class': 'page-break1'});
+    var insertPageBreak = function () {
+        body.appendChild(pageBreak.cloneNode(true))
+    };
+    var insertPage = function () {
+        body.appendChild(page.cloneNode(true));
+    };
+    var currPage = function () {
+        return $$('.page1').last()
+    };
+    var current_page_height = 0
+    var i = 0
+    $$('.available_sections1 .section1').each(function (el) {
+        a = parseInt(el.getHeight());
+        c = current_page_height + a;
+        current_page_height = c;
+        if (c > pg_height) {
+            current_page_height = a
+            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+            i += 1
+            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+            insertPageBreak();
+            insertPage();
+        }
+        currPage().appendChild(el);
+    });
+  </script>
+<% end %>

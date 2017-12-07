@@ -292,9 +292,10 @@
                         <% class_per_percentize = 0 %>
                         <% if class_performance > 0 %>
                           <% class_per_percentize = class_performance.to_f/total_subject.to_f %>
+                          <% class_per_percentize_main = (class_per_percentize/50)*100 %>
                           <% 
                             class_per_percentize = class_per_percentize.round();
-                            grade = GradingLevel.percentage_to_grade(class_per_percentize, @batch.id)
+                            grade = GradingLevel.percentage_to_grade(class_per_percentize_main, @batch.id)
                             if !grade.blank? and !grade.name.blank?
                               class_per_grade = grade.name
                             end

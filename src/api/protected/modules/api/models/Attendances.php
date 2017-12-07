@@ -416,7 +416,7 @@ class Attendances extends CActiveRecord {
        
        foreach($data as $value)
        {
-           if($return[$value->student_id])
+           if(isset($return[$value->student_id]))
            {
                 $return[$value->student_id] = $return[$value->student_id]-$value->total;
                 $absent[$value->student_id] = $value->total;

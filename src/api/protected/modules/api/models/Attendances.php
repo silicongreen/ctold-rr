@@ -447,6 +447,19 @@ class Attendances extends CActiveRecord {
         $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
         $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end);
+        $number_of_days2 = $number_of_days;
+        
+        $stdobj = new Students();
+        $std_data = $stdobj->findByPk($student_id);
+        if($std_data)
+        {
+          $std_admission = $std_data->admission_date;
+          if($std_admission>$attandence_start)
+          {
+              $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end);
+              
+          }   
+        }
         
         $criteria = new CDbCriteria;
         $criteria->select="t.student_id,t.forenoon,t.afternoon,t.reason,t.is_leave";
@@ -475,8 +488,8 @@ class Attendances extends CActiveRecord {
        $data = $this->findAll($criteria);
        
        $present = $number_of_days-count($data);
-       
-       return array($number_of_days,$present);
+       $absent = count($data);
+       return array($number_of_days,$present,$number_of_days2,$absent);
         
     }        
     

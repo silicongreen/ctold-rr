@@ -236,12 +236,34 @@ class ReportController extends Controller
             {
                 $previous_exam = $first_term_id;
             }
+            $first_term_id_kg = 0;
+            if($this_term->result_type == 6)
+            {
+                $first_term_id_kg = $cont_exam->getConnectExamKgFirstTerm($batch_id);
+            } 
             
 
             $groupexam = new GroupedExams();
             $exam_report = $groupexam->getContinuesResult($batch_id,$connect_exam_id,$previous_exam);
             $attandence = new Attendances();
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
+            
+            $adata_first_term = array();
+            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+            {
+                $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report['students']);
+            }
+
+            if($first_term_id_kg)
+            {
+                $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id_kg, $exam_report['students']);
+            }
+            
+            
+        
+                
+                
+            
 
 
             if ($exam_report) {
@@ -251,6 +273,13 @@ class ReportController extends Controller
                 $response['data']['present_all'] = $adata[1];
                 $response['data']['absent_all'] = $adata[3];
                 $response['data']['total_new'] = $adata[2];
+                if($adata_first_term)
+                {
+                    $response['data']['first_term_total'] = $adata_first_term[0];
+                    $response['data']['first_term_present_all'] = $adata_first_term[1];
+                    $response['data']['first_term_absent_all'] = $adata_first_term[3];
+                    $response['data']['first_term_total_new'] = $adata_first_term[2]; 
+                }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "EXAM_REPORT_FOUND";
             } else {
@@ -428,10 +457,14 @@ class ReportController extends Controller
                     $response['data']['report'] = $exam_report;
                     $response['data']['total'] = $adata[0];
                     $response['data']['present'] = $adata[1];
+                    $response['data']['total_new_std'] = $adata[2];
+                    $response['data']['absent'] = $adata[3];
                     if($adata_first_term)
                     {
                         $response['data']['total_first_term'] = $adata_first_term[0];
                         $response['data']['present_first_term'] = $adata_first_term[1];
+                        $response['data']['total_new_std_first_term'] = $adata_first_term[2];
+                        $response['data']['absent_first_term'] = $adata_first_term[3];
                     }
                     
                     $response['status']['code'] = 200;

@@ -268,7 +268,7 @@
                         </td>
                         <td class="col-pdf">
                           <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id'].to_i].blank? && !@report_data['report']['quarter_result'][report['id'].to_i]['subject_comment2'].blank? && !@report_data['report']['quarter_result'][report['id'].to_i]['subject_comment2'][@student.id].blank? %>
-                            
+                            <%= @report_data['report']['quarter_result'][report['id'].to_i]['subject_comment2'][@student.id]  %>
                           <% end %> 
                         </td>
                         <td class="col-pdf">

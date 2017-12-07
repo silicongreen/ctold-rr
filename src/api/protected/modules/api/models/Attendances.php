@@ -385,19 +385,43 @@ class Attendances extends CActiveRecord {
         );
        $data = $this->findAll($criteria);
        $return = array();
+       $return2 = array();
+       $absent = array();
        foreach($students as $value)
        {
+          $stdobj = new Students();
+          $std_data = $stdobj->findByPk($value->id);
+          if($std_data)
+          {
+            $std_admission = $std_data->admission_date;
+            if($std_admission>$attandence_start)
+            {
+                $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end);
+                $return2[$value->id] = $number_of_days2;
+            }
+            else
+            {
+                $return2[$value->id] = $number_of_days; 
+            }    
+          } 
+          else 
+          {
+               
+               $return2[$value->id] = $number_of_days;
+          }
           $return[$value->id] = $number_of_days;
+          $absent[$value->id] = 0;
        }
        
-      
+       
        foreach($data as $value)
        {
-          $return[$value->student_id] = $number_of_days-$value->total;
+          $return[$value->student_id] = $return[$value->student_id]-$value->total;
+          $absent[$value->student_id] = $value->total;
        }
        
        
-       return array($number_of_days,$return);
+       return array($number_of_days,$return,$return2,$absent);
         
     }   
     

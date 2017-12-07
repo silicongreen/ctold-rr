@@ -249,6 +249,8 @@ class ReportController extends Controller
                 $response['data']['report'] = $exam_report;
                 $response['data']['total'] = $adata[0];
                 $response['data']['present_all'] = $adata[1];
+                $response['data']['absent_all'] = $adata[3];
+                $response['data']['total_new'] = $adata[2];
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "EXAM_REPORT_FOUND";
             } else {

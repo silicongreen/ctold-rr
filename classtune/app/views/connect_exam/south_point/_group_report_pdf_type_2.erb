@@ -273,7 +273,12 @@
                             <%= @report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student] %>
                           <% end %> 
                         </td>
-                        <td class="col-pdf"></td>
+                        <td class="col-pdf">
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student] %>
+                          <% end %> 
+                            
+                        </td>
                         <td class="col-pdf"></td>
                         <td class="col-pdf"></td>
                         

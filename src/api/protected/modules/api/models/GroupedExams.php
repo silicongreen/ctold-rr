@@ -288,7 +288,7 @@ class GroupedExams extends CActiveRecord
                         foreach($subject_no_exam as $value)
                         {
                           
-                            $results['no_exam_subject_resutl'][$j]['subject_comment3'] = $cmt_connect->getCommentAll($quarter_3_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment3'] = $cmt_connect->getCommentAll($quarter_3_id,$value['id'],$batch_student);
                             $j++;
                         }    
                     }  
@@ -300,7 +300,7 @@ class GroupedExams extends CActiveRecord
                         foreach($subject_no_exam as $value)
                         {
                          
-                            $results['no_exam_subject_resutl'][$j]['subject_comment4'] = $cmt_connect->getCommentAll($quarter_4_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment4'] = $cmt_connect->getCommentAll($quarter_4_id,$value['id'],$batch_student);
                             $j++;
                         }    
                     } 
@@ -310,7 +310,7 @@ class GroupedExams extends CActiveRecord
                     {
                         foreach($subject_no_exam as $value)
                         {
-                            $results['no_exam_subject_resutl'][$j]['subject_comment6'] = $examGroupObj->getCommentAll($final_term_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment6'] = $examGroupObj->getCommentAll($final_term_id,$value['id'],$batch_student);
                             $j++;
                         }    
                     } 
@@ -326,7 +326,7 @@ class GroupedExams extends CActiveRecord
                         foreach($subject_no_exam as $value)
                         {
                      
-                            $results['no_exam_subject_resutl'][$j]['subject_comment1'] = $cmt_connect->getCommentAll($quarter_1_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment1'] = $cmt_connect->getCommentAll($quarter_1_id,$value['id'],$batch_student);
 
                             $j++;
                         }    
@@ -339,7 +339,7 @@ class GroupedExams extends CActiveRecord
                         foreach($subject_no_exam as $value)
                         {
                             
-                            $results['no_exam_subject_resutl'][$j]['subject_comment2'] = $cmt_connect->getCommentAll($quarter_2_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment2'] = $cmt_connect->getCommentAll($quarter_2_id,$value['id'],$batch_student);
 
                             $j++;
                         }    
@@ -350,7 +350,7 @@ class GroupedExams extends CActiveRecord
                         foreach($subject_no_exam as $value)
                         {
                           
-                            $results['no_exam_subject_resutl'][$j]['subject_comment5'] = $examGroupObj->getCommentAll($first_term_id,$value['id'],$batch_student);
+                            $results['no_exam_subject_resutl'][$value['id']]['subject_comment5'] = $examGroupObj->getCommentAll($first_term_id,$value['id'],$batch_student);
                             $j++;
                         }    
                     } 

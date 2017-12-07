@@ -545,7 +545,7 @@ class GroupedExams extends CActiveRecord
                 
                 if($connect_exam->result_type==2)
                 {
-                    $quarter_1_id = $cont_exam->getConnectExamByBatch($batch_id,1);
+                    $quarter_1_id = $cont_exam->getConnectExamByBatch($batch_id,4,"1st Quarter");
                     $j = 0;
                     if($subject_no_exam && $quarter_1_id)
                     {
@@ -558,7 +558,7 @@ class GroupedExams extends CActiveRecord
                         }    
                     }  
                     
-                    $quarter_2_id = $cont_exam->getConnectExamByBatch($batch_id,2);
+                    $quarter_2_id = $cont_exam->getConnectExamByBatch($batch_id,4,"2nd Quarter");
                     $j = 0;
                     if($subject_no_exam && $quarter_2_id)
                     {

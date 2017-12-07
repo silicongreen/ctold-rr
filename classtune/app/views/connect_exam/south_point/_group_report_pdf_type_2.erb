@@ -264,18 +264,18 @@
                         
                         <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
                         <td class="col-pdf">
-                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student].blank? %>
-                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student] %>
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student.id.to_s].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student.id.to_s] %>
                           <% end %>  
                         </td>
                         <td class="col-pdf">
-                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student].blank? %>
-                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student] %>
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student.id.to_s].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student.id.to_s] %>
                           <% end %> 
                         </td>
                         <td class="col-pdf">
-                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student].blank? %>
-                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student] %>
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student.id.to_s].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment5'][@student.id.to_s] %>
                           <% end %> 
                             
                         </td>

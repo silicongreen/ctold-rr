@@ -14,7 +14,7 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg south-point-protrait">
       
-      <table  width="100%" >
+      <table  width="99%" >
             <thead>
                 <tr>
                    
@@ -30,7 +30,7 @@
           <div id="grouped_exam_report">
 
 
-              <table id="pdf-table" width="100%" cellspacing="0">
+              <table id="pdf-table" width="99%" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf" colspan="2">Academic Performance</td>
@@ -55,7 +55,7 @@
                       <% check_subject_exam = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
-                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>
                           

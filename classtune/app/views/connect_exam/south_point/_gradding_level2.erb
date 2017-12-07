@@ -57,7 +57,7 @@
                          <tr class="odd">
                                 <td class="col-pdf">Days Present</td>
                                 <% unless @report_data['total_new_std'].blank?  %>
-                                  <td class="col-pdf"><%= @report_data['total_new_std']-@report_data['absent'] %></td>
+                                  <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
                                 <% else %>
                                   <td class="col-pdf"><%= @report_data['present'] %></td>
                                 <% end %>

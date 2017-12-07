@@ -264,13 +264,13 @@
                         
                         <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
                         <td class="col-pdf">
-                          <% unless report['subject_comment1'].blank? %>
-                            <%= report['subject_comment1'] %>
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment1'][@student] %>
                           <% end %>  
                         </td>
                         <td class="col-pdf">
-                          <% unless report['subject_comment2'].blank? %>
-                            <%= report['subject_comment2'] %>
+                          <% if !@report_data['report']['quarter_result'].blank? && !@report_data['report']['quarter_result'][report['id']].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'].blank? && !@report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student].blank? %>
+                            <%= @report_data['report']['quarter_result'][report['id']]['subject_comment2'][@student] %>
                           <% end %> 
                         </td>
                         <td class="col-pdf"></td>

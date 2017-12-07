@@ -42,6 +42,7 @@
     @student = Student.find_by_id(std['id'].to_i)
 
     unless @student.blank?
+      @report_data['report']['quarter_result'] = @report_data['report']['no_exam_subject_resutl']
       @report_data['report']['no_exam_subject_resutl'] = []
       @report_data['report']['exams'] = []
       @report_data['report']['comments'] = []
@@ -61,7 +62,7 @@
       
         if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
           @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
-          end 
+        end 
 
         if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
           @report_data['present'] = @report_data['present_all'][std['id']]

@@ -1,41 +1,13 @@
-
-
-
 #page-yield 
 {
     width:1250px;
     margin: 0 auto;
     overflow: hidden;
 }
-
-.section2
-{
-    margin-top:120px;
-}
-.result_main_table
-{
-    margin-top: 40px;
-}
-h4{margin: 5px;}
-.current_batch
-{
-    margin-top: 10px;
-}
-
-
-
-/*MPSC COMBINE REPORT CARD STYLE*/
-.header_address
-{
-    margin-left: 220px;
-}
-
-
-
 .odd{
     height:auto;
     background: #fff;
-    font-size: 11px;
+    font-size: 27px;
 
 }
 
@@ -43,7 +15,7 @@ h4{margin: 5px;}
 
     height:auto;
     background: #fff;
-    font-size: 11px;
+    font-size: 27px;
 
 
 }
@@ -57,7 +29,7 @@ tr.odd{
 
 .even td{
 
-    padding: 5px 5px 5px 8px;
+    padding: 9px 9px 9px 9px;
     border: 1px solid #000000;
     border-top: 0px solid #fff;
     text-align: center;
@@ -65,20 +37,20 @@ tr.odd{
 }
 
 .odd td{
-    padding: 5px 5px 5px 8px;
+    padding: 9px 9px 9px 9px;
     border: 1px solid #000000;
     border-top: 0px solid #fff;
     text-align: center;
 
 }
 .table-header td{
-    padding: 5px 5px 5px 8px;
+    padding: 9px 9px 9px 9px;
     border: 1px solid #000000;
     color: #000000;
     background: #ffffff;
     font-weight: bold;
     text-align: center;
-    font-size: 11px;
+    font-size: 27px;
 }
 
 table#pdf-table{
@@ -86,34 +58,62 @@ table#pdf-table{
     border-collapse:collapse
 }
 
-#pdf-header-south{
-    width:1000px;
+#pdf-header-south table
+{
+    width: 100%;
+}
+#pdf-header-south table td.south-logo span
+{
+    margin-top:-40px;
+    float:left;
+}
+#pdf-header-south table td
+{
+    width: 10%;
+}
+#pdf-header-south table td.name-td
+{
+    width: 70%;
+    text-align: left;
 }
 
-.page-break4 td{
-    height: 30px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+#pdf-header-south table td.name-td h4, #pdf-header-south table td.name-td h5
+{
+    line-height: 0px !important;
+    width: 85%;
 }
-.page-break1 td{
-    height: 150px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+#pdf-header-south table td.name-td h5
+{
+    font-size: 18px !important;
+    font-weight: normal !important;
+  
 }
-.page-break3 td{
-    height: 30px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+#pdf-header-south table td.name-td h5.step-1, #pdf-header-south table td.name-td h5.step-2
+{
+    float:left;
+    margin-top:-15px; 
 }
-.page-break2 td{
-    height: 77px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+
+#pdf-header-south table td.name-td h5.bold-all
+{
+    font-weight: bold !important;
+    
 }
+
+#pdf-header-south table td.name-td-south h4
+{
+    float:left;
+    font-size: 27px;
+    font-family: sans-serif !important; 
+  
+}
+
+#pdf-header-south
+{
+    font-family: "Times New Roman", Georgia, Serif !important; 
+}
+
+
 .page-break5 td{
     height: 56px;
     border: 1px solid #fff;
@@ -126,169 +126,10 @@ table#pdf-table{
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
 }
-.page-break45 td{
-    height: 45px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break50 td{
-    height: 50px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break55 td{
-    height: 55px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break60 td{
-    height: 60px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
 
-.page-break65 td{
-    height: 65px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-.page-break68 td{
-    height: 68px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-.page-break70 td{
-    height: 70px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-.page-break74 td{
-    height: 74px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break75 td{
-    height: 75px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-
-
-.page-break90 td{
-    height: 90px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-.page-break85 td{
-    height: 85px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-
-.page-break td{
-    height: 80px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break2-bf td{
-    height: 65px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break4-bf td{
-    height: 55px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
-.page-break3-bf td{
-    height: 50px;
-    border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-}
 .name-std
 {
     white-space: nowrap;
 }
-
-.baf_shaheen tr.even td{
-
-    padding: 5px 0px 5px 0px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-
-}
-
-.baf_shaheen tr.odd td{
-    padding: 5px 0px 5px 0px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-
-}
-
-
-
-
-
-.legal_tabulation h4{
-    font-size: 12px;
-}
-.legal_tabulation h2{
-    font-size: 14px;
-}
-
-.legal_tabulation tr td{
-    font-size: 9px;
-}
-.legal_tabulation tr.even td{
-
-    padding: 5px 0px 5px 0px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-    font-size: 9px;
-
-}
-
-.legal_tabulation tr.odd td{
-    padding: 5px 0px 5px 0px;
-    border: 1px solid #000000;
-    border-top: 0px solid #fff;
-    text-align: center;
-    font-size: 9px;
-
-}
-
-.legal_tabulation .table-header td{
-    padding: 5px 0px 5px 0px;
-    border: 1px solid #000000;
-    color: #000000;
-    background: #ffffff;
-    font-weight: bold;
-    text-align: center;
-    font-size: 9px;
-}
-
 
 

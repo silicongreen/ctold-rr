@@ -2753,11 +2753,12 @@ class ExamController < ApplicationController
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     render :pdf => "class_performance_student",
             :orientation => 'Portrait',
-            :margin => { :top=> 30,
+            :margin => {    :top=> 10,
             :bottom => 10,
             :left=> 10,
             :right => 10},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
   end
   
   def tabulation

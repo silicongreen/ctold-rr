@@ -1,7 +1,14 @@
 
 <% unless @report_data.blank? %>
-  <div id="page-yield"  class="available_sections1 south-point-protrait">
-      <h4 align="center">Class Performance</h4>  
+<div id="page-yield" class="available_sections1">
+
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '10%' %></h4>
+        <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+      </div>
+      <h2 align="center">Classroom Participation, <%= @connect_exam_obj.name %></h2> 
 
 
       <div class ="current_batch" style="margin-left:0px;">
@@ -26,13 +33,13 @@
 
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>25 && extender ==0 %>
+                    <% if std_count>28 && extender ==0 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break5">
                             <td colspan="100">&nbsp;</td>
                         </tr>    
-                    <% elsif std_count>26 && extender ==1 %>
+                    <% elsif std_count>30 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break6">
@@ -82,7 +89,8 @@
 
           </div>
       </div>
-
+    </center>
+  </div>   
 
 
   </div>

@@ -66,7 +66,15 @@
 
         if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
           @report_data['present'] = @report_data['present_all'][std['id']]
-          end  
+        end 
+      
+        if !@report_data['absent_all'].blank? and !@report_data['absent_all'][std['id']].blank?
+          @report_data['absent'] = @report_data['absent_all'][std['id']]
+        end 
+      
+        if !@report_data['total_new'].blank? and !@report_data['total_new'][std['id']].blank?
+          @report_data['total_new_std'] = @report_data['total_new'][std['id']]
+        end 
 
         @exam_comment = {}
         @exam_comment_all.each do |ec|

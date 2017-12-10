@@ -191,7 +191,7 @@ class Events extends CActiveRecord {
         $criteria->addCondition("DATE(end_date) >= '" . $start_date . "'");
         $criteria->addCondition("DATE(start_date) <= '" . $end_date . "'");
         
-        $data = $this->findAll($criteria);
+        $data = $this->with($with)->findAll($criteria);
         $return_array = array();
         if ($data != NULL)
             foreach ($data as $value) {

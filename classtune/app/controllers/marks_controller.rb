@@ -82,6 +82,49 @@ class MarksController < ApplicationController
     
   end
   
+  def get_exam_subject_participation
+    require 'json'
+    
+    if current_user.employee
+      @emp_subjects = current_user.employee_record.subjects.active
+      @batches= current_user.employee_record.batches
+      unless @batches.blank?
+        @batches.each do |batch|
+          @emp_subjects += batch.subjects
+        end
+      end
+    
+    @emp_subjects = @emp_subjects.uniq unless @batches.empty?
+    
+    elsif current_user.admin
+      @emp_subjects = Subject.active
+    end
+    
+    exam_id = params[:exam_id]
+    exam_connect = ExamConnect.find(exam_id)
+    
+    @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id)
+    k = 0
+    data = []
+    @subjects = []
+    @group_exams.each do |group_exam|
+      exams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id)
+      exams.each do |exam|
+        exam_subject = exam.subject
+        if !exam_subject.blank? and !@subjects.include?(exam_subject) and @emp_subjects.include?(exam_subject) and exam_subject.no_exams!=true 
+          @subjects << exam_subject  
+          data[k] = @template.link_to(exam_subject.name.to_s, '/exam/' + 'class_performance_student/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s)
+          k = k+1
+        end    
+      end
+
+    end
+    json_data = {:data => data}
+    @data = JSON.generate(json_data)
+    render :text => @data 
+    
+  end
+  
   def get_exams
     require 'json'
     batch_id = params[:batch_id]
@@ -100,14 +143,30 @@ class MarksController < ApplicationController
       @exam_connect.each do |exam_connect|
         if data_type.to_i == 1 or data_type.to_i == 2
           data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'tabulation/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          k = k+1
         elsif data_type.to_i == 3
           data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'continues/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          k = k+1
         elsif data_type.to_i == 4
           data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'comment_tabulation_pdf/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
-        else
+          k = k+1
+        elsif data_type.to_i == 5
           data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
+          k = k+1
+        elsif data_type.to_i == 6
+          if exam_connect.result_type == 1 or exam_connect.result_type == 2
+            data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject_participation("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
+            k = k+1
+          end
+          
+        else
+          if exam_connect.result_type == 1 or exam_connect.result_type == 2
+            data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'class_performance_student/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+            k = k+1
+          end
+          
         end  
-        k = k+1
+        
       end
     end
     

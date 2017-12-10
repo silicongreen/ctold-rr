@@ -23,6 +23,7 @@ authorization do
       :connect_exam_report,
       :get_class,
       :get_exam_subject,
+      :get_exam_subject_participation,
       :get_exams,
       :get_section,
       :examgroup
@@ -381,6 +382,7 @@ authorization do
       :get_class,
       :get_exams,
       :get_exam_subject,
+      :get_exam_subject_participation,
       :get_section,
       :examgroup
     ]
@@ -1997,6 +1999,7 @@ authorization do
       :get_exams,
       :get_section,
       :get_exam_subject,
+      :get_exam_subject_participation,
       :examgroup
     ]
     has_permission_on [:exam],
@@ -3439,6 +3442,7 @@ authorization do
       :connect_exam_report,
       :get_class,
       :get_exam_subject,
+      :get_exam_subject_participation,
       :get_section,
       :examgroup,
       :get_exams,
@@ -3710,6 +3714,7 @@ authorization do
       :get_class,
       :get_exams,
       :get_exam_subject,
+      :get_exam_subject_participation,
       :get_section,
       :examgroup
     ]

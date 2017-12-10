@@ -29,8 +29,9 @@
         <a href="javascript:void(0)" onclick="result_type_change(2)"  id="type_2" >Term End Tabulation Sheet</a>
         <a href="javascript:void(0)" onclick="result_type_change(3)"  id="type_3" >Progress Report</a>
         <a href="javascript:void(0)" onclick="result_type_change(4)"  id="type_4" >Comment Entry</a>
-        <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet Class Teacher</a>
-        <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_5" >Marks Sheet Subject Teacher</a>
+        <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet</a>
+        <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_6" >Subject wise Classroom Participation</a>
+        <a href="javascript:void(0)" onclick="result_type_change(7)"  id="type_7" >Student wise Classroom Participation</a>
     </div>
     <input type="hidden" name="result_type" value="1" id="result_type" />
     <input type="hidden" name="batch_id" value="0" id="batch_id" />
@@ -254,7 +255,7 @@ a:hover
 
 .all-exam-links a
 {
-    width: 14%;
+    width: 12%;
     float:left;
     padding: 5px 0px;
     text-align: center;
@@ -377,6 +378,25 @@ a:hover
       });
       
    }
+   function get_exam_subject_participation(exam_id)
+   {  
+      jj(".subject_div").html("<img src='/images/loader.gif' />");
+      jj.get( "/marks/get_exam_subject_participation?exam_id="+exam_id, function( data ) {
+          var exam_data = jQuery.parseJSON(data)
+          var dataA = exam_data.data;
+          var html = "";
+          jj.each( dataA, function( key, value ) {
+
+              html = html+value;
+          });
+          
+          
+          jj(".subject_div").html(html);
+          jj(".exam_div a").removeClass("active");
+          jj("#exams_id_"+exam_id).addClass("active");
+      });
+      
+   }
    
    function set_batch_id(batch_id)
    {
@@ -414,7 +434,7 @@ a:hover
    
    jj( document ).on( "click", "a", function(event) {
       
-      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
+      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("class_performance_student")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
       {
          jj("#pdf_file").hide();
          jj("#pdf_file").show();

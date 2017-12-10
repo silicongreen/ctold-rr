@@ -2740,6 +2740,7 @@ class ExamController < ApplicationController
 
   def class_performance_student
     @id = params[:id]
+    @subject_id = params[:subject_id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee=@batch.employees
@@ -2748,6 +2749,10 @@ class ExamController < ApplicationController
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
+    end 
+    
+    unless @subject_id.blank?
+      @subject = Subject.find_by_id(@subject_id)
     end 
 
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)

@@ -7,8 +7,8 @@
       <div id="pdf-header-south" class="general-header">
         <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '10%' %></h4>
         <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
-      </div>
-      <h2 align="center">Classroom Participation, <%= @connect_exam_obj.name %></h2> 
+      </div>  
+      <h2 align="center">Classroom Participation, <% unless @subject.blank? %><%= @subject.name %>, <% end %><%= @connect_exam_obj.name %></h2> 
 
 
       <div class ="current_batch" style="margin-left:0px;">
@@ -20,7 +20,7 @@
                   <tr class="table-header">
                       <td class="col-pdf">Sl.</td>
                       <td class="col-pdf">Roll</td>
-                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf name-std">Students Name</td>
                       <td class="col-pdf">Full Marks</td>
                       <td class="col-pdf">Total Marks</td>
                       <td class="col-pdf">Grade</td>
@@ -54,6 +54,9 @@
                       <% total_subject = 0 %>
                       <% class_performance = 0 %>
                       <% @report_data['report']['subjects'].each do |subjects| %>
+                       <% if !@subject.blank? and @subject.id!= subjects['id'].to_i %>
+                        <% next %>
+                       <% end %>
                         <% total_subject = total_subject+1 %>
                         <% unless @report_data['report']['comments'][subjects['id'].to_s].blank? %>  
                             <% class_performance = class_performance+@report_data['report']['comments'][subjects['id'].to_s][std['id'].to_s].to_i %>

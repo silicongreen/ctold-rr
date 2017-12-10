@@ -179,7 +179,7 @@ class Events extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.is_holiday', 1);
-        $criteria->compare('t.t.is_published', 1);
+        $criteria->compare('t.is_published', 1);
         $with = array('eventCategory');
         
         if($batch_id > 0)

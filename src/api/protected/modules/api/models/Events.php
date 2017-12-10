@@ -174,12 +174,20 @@ class Events extends CActiveRecord {
         return $holiday_array_return;
     }        
 
-    public function getHolidayMonth($start_date, $end_date, $school_id) {
+    public function getHolidayMonth($start_date, $end_date, $school_id,$batch_id = 0) {
 
         $criteria = new CDbCriteria;
         $criteria->compare('school_id', $school_id);
         $criteria->compare('is_holiday', 1);
         $criteria->compare('t.is_published', 1);
+        $with = array('eventCategory');
+        
+        if($batch_id > 0)
+        {
+            $with[] = 'eventBatch';
+            $criteria->addCondition("(eventBatch.batch_id = '" . $batch_id . "' or t.is_common=1)");
+        }
+        
         $criteria->addCondition("DATE(end_date) >= '" . $start_date . "'");
         $criteria->addCondition("DATE(start_date) <= '" . $end_date . "'");
         

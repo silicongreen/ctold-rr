@@ -357,7 +357,7 @@ class Attendances extends CActiveRecord {
         
         $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
-        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end);
+        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end, $batch_id);
         
         $criteria = new CDbCriteria;
         $criteria->select="count(t.student_id) as total,t.student_id";
@@ -396,7 +396,7 @@ class Attendances extends CActiveRecord {
             $std_admission = $std_data->admission_date;
             if($std_admission>$attandence_start)
             {
-                $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end);
+                $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
                 $return2[$value->id] = $number_of_days2;
             }
             else
@@ -446,7 +446,7 @@ class Attendances extends CActiveRecord {
         
         $attandence_start = date("Y-m-d" , strtotime($start_date_end_date->attandence_start_date));
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
-        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end);
+        $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end,$batch_id);
         $number_of_days2 = $number_of_days;
         
         $stdobj = new Students();
@@ -456,7 +456,7 @@ class Attendances extends CActiveRecord {
           $std_admission = $std_data->admission_date;
           if($std_admission>$attandence_start)
           {
-              $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end);
+              $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
               
           }   
         }
@@ -673,7 +673,7 @@ class Attendances extends CActiveRecord {
         return array($att_array,$att_date_array);
     }
     
-    private function getNumberOfdays($start_date,$end_date)
+    private function getNumberOfdays($start_date,$end_date,$batch_id = 0)
     {
         $start_day = new DateTime($start_date);
         $end_day = new DateTime($end_date);
@@ -682,7 +682,7 @@ class Attendances extends CActiveRecord {
         
         //making holiday
         $holiday = new Events();
-        $holidays = $holiday->getHolidayMonth($start_date, $end_date, Yii::app()->user->schoolId);
+        $holidays = $holiday->getHolidayMonth($start_date, $end_date, Yii::app()->user->schoolId,$batch_id);
         $holiday_array = array();
         foreach ($holidays as $value)
         {

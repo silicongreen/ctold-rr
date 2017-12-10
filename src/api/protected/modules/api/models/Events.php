@@ -177,9 +177,9 @@ class Events extends CActiveRecord {
     public function getHolidayMonth($start_date, $end_date, $school_id,$batch_id = 0) {
 
         $criteria = new CDbCriteria;
-        $criteria->compare('school_id', $school_id);
-        $criteria->compare('is_holiday', 1);
-        $criteria->compare('t.is_published', 1);
+        $criteria->compare('t.school_id', $school_id);
+        $criteria->compare('t.is_holiday', 1);
+        $criteria->compare('t.t.is_published', 1);
         $with = array('eventCategory');
         
         if($batch_id > 0)

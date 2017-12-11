@@ -79,7 +79,9 @@
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id == 246 %>
           <td class="col-pdf">Position</td>
+          <% end %>
           
         </tr>
     <% elsif std_count>15 && extender ==1 %>
@@ -105,7 +107,9 @@
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id == 246 %>
           <td class="col-pdf">Position</td>
+          <% end %>
         </tr>
     <% end %>
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -137,10 +141,12 @@
           <% last_mark = total %>
       <% end %>    
       <td class="col-pdf"><%= total %></td>
+      <% if MultiSchool.current_school.id == 246 %>
       <% if off_rank == false %>
         <td class="name-std"><%= rank %></td>
       <% else %>
         <td class="name-std"><%= "N/A" %></td>
+      <% end %>
       <% end %>  
  
     </tr>

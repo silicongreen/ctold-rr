@@ -813,10 +813,14 @@ sfx  .table-header td{
 .sub_exam h4.td-align-right
 {
     float: right;
+    width: 49%;
+    text-align: right;
 }
 .sub_exam h4
 {
     float: left;
+    width: 49%;
+    text-align: left;
 }
 
 

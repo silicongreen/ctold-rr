@@ -183,7 +183,7 @@ class Report < ActiveRecord::Base
       self.report_columns.each do |rc|
         if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
             std = 1
-        elsif t(rc.title) == "First name"
+        elsif t(rc.title) == "First Name"
           cols << "Full Name"
         elsif t(rc.title) == "Last Name" || t(rc.title) == "Surname" 
           
@@ -206,7 +206,7 @@ class Report < ActiveRecord::Base
         self.report_columns.each do |col|
           if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
            
-          elsif t(col.title) == "First name"
+          elsif t(col.title) == "First Name"
               cols <<  "#{obj.send("full_name")}"
           elsif t(col.title) == "Middle Name"
               
@@ -262,7 +262,7 @@ class Report < ActiveRecord::Base
           self.report_columns.each do |col|
             if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
-            elsif t(col.title) == "First name"
+            elsif t(col.title) == "First Name"
                 cols <<  ""
             elsif t(col.title) == "Middle Name"
 
@@ -318,7 +318,7 @@ class Report < ActiveRecord::Base
             self.report_columns.each do |col|
                 if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
-                elsif t(col.title) == "First name"
+                elsif t(col.title) == "First Name"
                     cols <<  ""
                 elsif t(col.title) == "Middle Name"
 

@@ -100,6 +100,7 @@
   - :birth_place
   - :phone1
   - :phone2
+  - :sms_number
   - :email
   - :immediate_contact
   - :parent_first_name

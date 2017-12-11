@@ -28,8 +28,10 @@
           <% if std == 1  %> 
             <td class="col-pdf name">Father</td>
             <td class="col-pdf name">Mobile</td>
+            <td class="col-pdf name">Email</td>
             <td class="col-pdf name">Mother</td>
             <td class="col-pdf name">Mobile</td>
+            <td class="col-pdf name">Email</td>
             <td class="col-pdf name"></td>
           <% end %>  
         </tr>
@@ -68,6 +70,7 @@
                       <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
                           <td class="col-pdf name"><%=  gurdian.first_name %> <%=  gurdian.last_name %></td>
                           <td class="col-pdf name"><%=  gurdian.mobile_phone %></td>
+                          <td class="col-pdf name"><%=  gurdian.email %></td>
                           <% count_guardian = count_guardian+1 %>
                           <% father = 1 %>
                           <% break %>
@@ -77,6 +80,7 @@
                 <% if father == 0 %>
                      <td class="col-pdf name"></td>
                      <td class="col-pdf name"></td>
+                     <td class="col-pdf name"></td>
                 <% end %>          
                 <% guardians.each do |gur| %>
                   <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
@@ -84,6 +88,7 @@
                       <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
                           <td class="col-pdf name"><%=  gurdian.first_name %> <%=  gurdian.last_name %></td>
                           <td class="col-pdf name"><%=  gurdian.mobile_phone %></td>
+                          <td class="col-pdf name"><%=  gurdian.email %></td>
                           <% count_guardian = count_guardian+1 %>
                           <% break %>
                       <% end %>
@@ -93,9 +98,12 @@
                 <% if count_guardian == 0 || (count_guardian == 1 && father = 1) %>
                      <td class="col-pdf name"></td>  
                      <td class="col-pdf name"></td>
+                     <td class="col-pdf name"></td>
                 <% end %>
                           
               <% else %>
+                   <td class="col-pdf name"></td>
+                   <td class="col-pdf name"></td>
                    <td class="col-pdf name"></td>
                    <td class="col-pdf name"></td>
                    <td class="col-pdf name"></td>

@@ -53,6 +53,7 @@
     - :birth_place
     - :phone1
     - :phone2
+    - :sms_number
 :fields_to_display:
   :employee:
   - :first_name

@@ -97,8 +97,10 @@ class Report < ActiveRecord::Base
       if std == 1 
         cols << "Father"
         cols << "Mobile"
+        cols << "Email"
         cols << "Mother"
         cols << "Mobile"
+        cols << "Email"
       end
       csv << cols
       
@@ -123,6 +125,7 @@ class Report < ActiveRecord::Base
                 if gurdian.relation.index("Father") || gurdian.relation.index("father")
                   cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
                   cols << gurdian.mobile_phone
+                  cols << gurdian.email
                   count_guardian = count_guardian+1
                   father = 1
                   break
@@ -133,6 +136,7 @@ class Report < ActiveRecord::Base
             if father == 0
               cols << ""
               cols << ""
+              cols << ""
             end
             
             guardians.each do |gur|
@@ -141,6 +145,7 @@ class Report < ActiveRecord::Base
                 if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
                   cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
                   cols << gurdian.mobile_phone
+                  cols << gurdian.email
                   count_guardian = count_guardian+1
                   break
                 end
@@ -150,9 +155,12 @@ class Report < ActiveRecord::Base
             if count_guardian == 0 || (count_guardian == 1 && father = 1)
               cols << ""
               cols << ""
+              cols << ""
             end
             
           else
+            cols << ""
+            cols << ""
             cols << ""
             cols << ""
             cols << ""

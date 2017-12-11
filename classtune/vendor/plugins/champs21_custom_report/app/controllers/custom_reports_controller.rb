@@ -115,7 +115,11 @@ class CustomReportsController < ApplicationController
     report=Report.find params[:id]
     report_columns = report.report_columns
     report_columns.delete_if{|rc| !((report.model_object.instance_methods+report.model_object.column_names).include?(rc.method))}
-    csv = report.to_csv
+    if MultiSchool.current_school.id == 340
+      csv = report.to_csv_sjws
+    else
+      csv = report.to_csv
+    end
     filename = "#{report.name}-#{Time.now.to_date.to_s}.csv"
     send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   end

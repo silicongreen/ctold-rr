@@ -13,14 +13,17 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg south-point-protrait">
-      
+      <% extra_string = "" %>
+      <% if @batch.name == "Day" %>
+      <% extra_string = ", Batch 2" %>
+      <% end %> 
       <table  width="99%" >
             <thead>
                 <tr>
                    
                     <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
                     <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
-                    <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
+                    <td align="right"><b>Section Name : <%= @batch.course.section_name+extra_string %></b></td>
                 </tr>
             </thead>    
       </table>    

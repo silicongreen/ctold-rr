@@ -353,7 +353,7 @@
                           obtained_mark1 = avg_mark_ct1.to_f+avg_mark_st1.to_f
                           full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
 
-                          main_mark1 = (obtained_mark1.to_f/full_mark1.to_f)*100
+                          main_mark1 = (obtained_mark1.round().to_f/full_mark1.to_f)*100
 
                           #Calculation 2nd Quarter Mark
                           st_marks2.sort! {|x,y| y <=> x }
@@ -373,7 +373,7 @@
 
                           obtained_mark2 = avg_mark_ct2.to_f+avg_mark_st2.to_f
                           full_mark2 = ct_full_mark2.to_i+st_full_mark2.to_i
-                          main_mark2 = (obtained_mark2.to_f/full_mark2.to_f)*100
+                          main_mark2 = (obtained_mark2.round().to_f/full_mark2.to_f)*100
 
                           #Calculation 3rd Quarter Mark
                           st_marks3.sort! {|x,y| y <=> x }
@@ -418,17 +418,17 @@
                           #Calculation First Term (40/20) Mark
                           full_mark_first_term = full_mark1+full_mark2+first_term_full_mark
                           obtained_mark_first_term = obtained_mark1.round()+obtained_mark2.round()+first_term_mark.round()
-                          main_mark_first_term = (obtained_mark_first_term.to_f/full_mark_first_term.to_f)*100
+                          main_mark_first_term = (obtained_mark_first_term.round().to_f/full_mark_first_term.to_f)*100
 
                           full_mark_final_term = full_mark3+full_mark4+final_term_full_mark
                           obtained_mark_final_term = obtained_mark3.round()+obtained_mark4.round()+final_term_mark.round()
-                          main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
+                          main_mark_final_term = (obtained_mark_final_term.round().to_f/full_mark_final_term.to_f)*100
 
-                          main_mark_only_final_term = (final_term_mark.to_f/final_term_full_mark.to_f)*100
+                          main_mark_only_final_term = (final_term_mark.round().to_f/final_term_full_mark.to_f)*100
 
-                          full_mark = full_mark_first_term+full_mark_final_term
+                          full_mark = full_mark_first_term.round()+full_mark_final_term.round()
                           obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-                          main_mark = (obtained_mark.to_f/full_mark.to_f)*100
+                          main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
 
                           grade_name1 = "N/A"
                           grade_name2 = "N/A"

@@ -810,13 +810,13 @@ sfx  .table-header td{
     text-align: right;
 }
 
-table.sjws_table_intro td.sub_exam h4.td-align-right
+table.sjws_table_intro td.sub_exam span.td-align-right
 {
     float: right !important;
     width: 49% !important;
     text-align: right !important;
 }
-table.sjws_table_intro td.sub_exam h4
+table.sjws_table_intro td.sub_exam span
 {
     float: left !important;
     width: 49% !important;

@@ -245,6 +245,7 @@ class Report < ActiveRecord::Base
           end 
           csv << cols
           
+          cols = []
           self.report_columns.each do |col|
             if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
@@ -294,6 +295,7 @@ class Report < ActiveRecord::Base
             end
             csv << cols
             
+            cols = []
             self.report_columns.each do |col|
               if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 

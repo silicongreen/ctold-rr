@@ -359,7 +359,7 @@ class Attendances extends CActiveRecord {
         $attandence_end =  date("Y-m-d" , strtotime($start_date_end_date->attandence_end_date));
         $number_of_days = $this->getNumberOfdays($attandence_start, $attandence_end, $batch_id);
         
-        if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2)
+        if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2 && $attandence_start<"2017-08-12" && $attandence_end>"2017-08-19")
         {
             $number_of_days = $number_of_days+2;
         }
@@ -402,11 +402,11 @@ class Attendances extends CActiveRecord {
             if($std_admission>$attandence_start)
             {
                 $number_of_days2 = $this->getNumberOfdays($std_admission, $attandence_end,$batch_id);
-                if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2 && $std_admission>"2017-08-12")
+                if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2 && $std_admission<"2017-08-12")
                 {
                     $number_of_days2 = $number_of_days2+1;
                 }
-                if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2 && $std_admission>"2017-08-19")
+                if(Yii::app()->user->schoolId == 312 && $start_date_end_date->result_type == 2 && $std_admission<"2017-08-19")
                 {
                     $number_of_days2 = $number_of_days2+1;
                 }

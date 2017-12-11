@@ -242,123 +242,110 @@ class Report < ActiveRecord::Base
           else
             cols << ""
             cols << ""
-          end  
+          end 
+          
+          
+          self.report_columns.each do |col|
+            if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+
+            else
+              cols << ""
+            end
+          end
+          
+          count_guardian = 0
+            father = 0
+            guardians = GuardianStudents.find_all_by_student_id(obj.id)
+            unless guardians.blank?
+              guardians.each do |gur|
+                gurdian = Guardian.find_by_id(gur.guardian_id)
+                unless gurdian.blank?
+                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                    cols << gurdian.mobile_phone
+                    count_guardian = count_guardian+1
+                    father = 1
+                    break
+                  end
+                end
+              end
+
+              if father == 0
+                cols << ""
+              end
+
+              guardians.each do |gur|
+                gurdian = Guardian.find_by_id(gur.guardian_id)
+                unless gurdian.blank?
+                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                    cols << gurdian.mobile_phone
+                    count_guardian = count_guardian+1
+                    break
+                  end
+                end
+              end
+
+              if count_guardian == 0 || (count_guardian == 1 && father = 1)
+                cols << ""
+              end
+
+            else
+              cols << ""
+              cols << ""
+            end
+            
+            self.report_columns.each do |col|
+              if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+
+              else
+                cols << ""
+              end
+            end
+          
+            count_guardian = 0
+            father = 0
+            guardians = GuardianStudents.find_all_by_student_id(obj.id)
+            unless guardians.blank?
+              guardians.each do |gur|
+                gurdian = Guardian.find_by_id(gur.guardian_id)
+                unless gurdian.blank?
+                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                    cols << gurdian.email
+                    count_guardian = count_guardian+1
+                    father = 1
+                    break
+                  end
+                end
+              end
+
+              if father == 0
+                cols << ""
+              end
+
+              guardians.each do |gur|
+                gurdian = Guardian.find_by_id(gur.guardian_id)
+                unless gurdian.blank?
+                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                    cols << gurdian.email
+                    count_guardian = count_guardian+1
+                    break
+                  end
+                end
+              end
+
+              if count_guardian == 0 || (count_guardian == 1 && father = 1)
+                cols << ""
+              end
+
+            else
+              cols << ""
+              cols << ""
+            end 
           
         end
         
         csv << cols
       end
-      if std == 1 
-        search_results.uniq.each do |obj|
-          cols = []
-          self.report_columns.each do |col|
-            if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
-
-            else
-              cols << ""
-            end
-          end
-          if std == 1
-            count_guardian = 0
-            father = 0
-            guardians = GuardianStudents.find_all_by_student_id(obj.id)
-            unless guardians.blank?
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
-                    cols << gurdian.mobile_phone
-                    count_guardian = count_guardian+1
-                    father = 1
-                    break
-                  end
-                end
-              end
-
-              if father == 0
-                cols << ""
-              end
-
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                    cols << gurdian.mobile_phone
-                    count_guardian = count_guardian+1
-                    break
-                  end
-                end
-              end
-
-              if count_guardian == 0 || (count_guardian == 1 && father = 1)
-                cols << ""
-              end
-
-            else
-              cols << ""
-              cols << ""
-            end  
-
-          end
-
-          csv << cols
-        end
-
-        search_results.uniq.each do |obj|
-          cols = []
-          self.report_columns.each do |col|
-            if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
-
-            else
-              cols << ""
-            end
-          end
-          if std == 1
-            count_guardian = 0
-            father = 0
-            guardians = GuardianStudents.find_all_by_student_id(obj.id)
-            unless guardians.blank?
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
-                    cols << gurdian.email
-                    count_guardian = count_guardian+1
-                    father = 1
-                    break
-                  end
-                end
-              end
-
-              if father == 0
-                cols << ""
-              end
-
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                    cols << gurdian.email
-                    count_guardian = count_guardian+1
-                    break
-                  end
-                end
-              end
-
-              if count_guardian == 0 || (count_guardian == 1 && father = 1)
-                cols << ""
-              end
-
-            else
-              cols << ""
-              cols << ""
-            end  
-
-          end
-
-          csv << cols
-        end
-      end
+      
     end
     csv
   end

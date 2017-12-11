@@ -183,6 +183,12 @@ class Report < ActiveRecord::Base
       self.report_columns.each do |rc|
         if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
             std = 1
+        elsif t(rc.title) == "First name"
+          cols << "Full Name"
+        elsif t(rc.title) == "Last Name" || t(rc.title) == "Surname" 
+          
+        elsif t(rc.title) == "Middle Name"
+          
         else
           cols << t(rc.title)
         end  
@@ -196,9 +202,16 @@ class Report < ActiveRecord::Base
       search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
       search_results.uniq.each do |obj|
         cols = []
+     
         self.report_columns.each do |col|
           if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
            
+          elsif t(col.title) == "First name"
+              cols <<  "#{obj.send("full_name")}"
+          elsif t(col.title) == "Middle Name"
+              
+          elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
+              
           else
             cols << "#{obj.send(col.method)}"
           end
@@ -249,6 +262,12 @@ class Report < ActiveRecord::Base
           self.report_columns.each do |col|
             if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
+            elsif t(col.title) == "First name"
+                cols <<  ""
+            elsif t(col.title) == "Middle Name"
+
+            elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
+
             else
               cols << ""
             end
@@ -297,12 +316,18 @@ class Report < ActiveRecord::Base
             
             cols = []
             self.report_columns.each do |col|
-              if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+                if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
-              else
-                cols << ""
+                elsif t(col.title) == "First name"
+                    cols <<  ""
+                elsif t(col.title) == "Middle Name"
+
+                elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
+
+                else
+                  cols << ""
+                end
               end
-            end
           
             count_guardian = 0
             father = 0

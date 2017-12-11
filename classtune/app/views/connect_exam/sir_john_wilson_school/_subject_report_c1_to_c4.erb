@@ -7,9 +7,12 @@
                 <% total_mark = 0 %>
                 <% full_mark = 0 %>
                 <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                <td class="col-pdf" colspan="2" class="sub_exam">
-                    <span class="td-align-left"><%= subjects['name'] %></span>
-                    <span class="td-align-right">
+                <td class="col-pdf" colspan="1">
+                    <h4><%= subjects['name'] %></h4>
+                    
+                </td>
+                <td class="col-pdf" colspan="1" class="td-align-right">
+                    <h4>
 
                       <%= @connect_exam_obj.name %>&nbsp;
                       <% if month_number.to_i>6 %>
@@ -17,7 +20,7 @@
                       <% else %>
                         <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
                       <% end %>  
-                    </span>
+                    </h4>
                 </td>
                 <td class="col-pdf rotate" rowspan="2"><div><span>Below Requirement</span></div></td>
                 <td class="col-pdf rotate" rowspan="2"><div><span>With help</span></div></td>
@@ -240,19 +243,10 @@
 </div>
 
 <style>
-    td.sub_exam .td-align-right
+    td.td-align-right
     {
-        float: right !important;
-        width: 49% !important;
         text-align: right !important;
-        border:1px solid black;
     }
-    td.sub_exam .td-align-left
-    {
-        float: left !important;
-        width: 49% !important;
-        text-align: left !important;
-        border:1px solid black;
-    }
+ 
 
 </style>    

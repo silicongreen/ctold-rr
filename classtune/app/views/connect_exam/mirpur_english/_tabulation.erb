@@ -313,9 +313,11 @@
                               %>
                               <% end %>
                             <% end %> 
-
-                            <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
-                            <% if has_exam == true %>
+                            <% main_mark = 0 %>
+                            <% if subject_full_mark.to_i > 0 && subject_obtain_mark.to_i > 0 %>
+                              <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                            <% end %>
+                            <% if has_exam == true && subject_full_mark.to_i > 0 %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                   <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>

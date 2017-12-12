@@ -39,7 +39,9 @@
             <% total_subject = total_subject+1 %>
           <% end %>
           <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id != 246 %>
           <td class="col-pdf">Position</td>
+          <% end %>
         </tr>
         <% colspan_total = total_subject+4 %>
         <% colspan_fourth = colspan_total.to_f/4 %>
@@ -79,7 +81,7 @@
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
-          <% if MultiSchool.current_school.id == 246 %>
+          <% if MultiSchool.current_school.id != 246 %>
           <td class="col-pdf">Position</td>
           <% end %>
           
@@ -107,7 +109,7 @@
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
-          <% if MultiSchool.current_school.id == 246 %>
+          <% if MultiSchool.current_school.id != 246 %>
           <td class="col-pdf">Position</td>
           <% end %>
         </tr>
@@ -141,7 +143,7 @@
           <% last_mark = total %>
       <% end %>    
       <td class="col-pdf"><%= total %></td>
-      <% if MultiSchool.current_school.id == 246 %>
+      <% if MultiSchool.current_school.id != 246 %>
       <% if off_rank == false %>
         <td class="name-std"><%= rank %></td>
       <% else %>

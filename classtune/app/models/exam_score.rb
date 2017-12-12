@@ -42,6 +42,18 @@ class ExamScore < ActiveRecord::Base
       end
     end
   end
+  
+  def before_destroy
+    grouped_exams = GroupedExam.find_all_by_exam_group_id(self.exam.exam_group.id)
+    unless grouped_exams.blank?
+      grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        Rails.cache.delete("student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}_#{self.student_id}")
+        Rails.cache.delete("marksheet_#{grouped_exam.connect_exam_id}_#{self.exam.subject_id}")        
+      end
+    end
+  end
 
   def check_existing
     exam_score = ExamScore.find(:first,:conditions => {:exam_id => self.exam_id,:student_id => self.student_id})

@@ -55,6 +55,22 @@ class ExamGroup < ActiveRecord::Base
     end
   end
   
+  def before_destroy
+    grouped_exams = GroupedExam.find_all_by_exam_group_id(self.id)
+    unless grouped_exams.blank?
+      grouped_exams.each do |grouped_exam|
+        Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+        key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
+        Rails.cache.delete_matched(/#{key}*/)
+        
+        keymarksheet = "marksheet_#{grouped_exam.connect_exam_id}"
+        Rails.cache.delete_matched(/#{keymarksheet}*/)
+        
+      end
+    end
+  end
+  
   def invalidate_student_cache
     batch.delete_student_cce_report_cache if result_published_changed?
   end

@@ -56,15 +56,20 @@
           std_ids_connect_exam = ""
           jj( ".comment_input_box_connect_exam" ).each(function( index ) {
             var value = jj(this).val();
+            var comment_input_id_string = jj(this).attr("id");
+            var comment_input_id_array = comment_input_id_string.split("_");
+            var comment_input_id = comment_input_id_array[1];
             if(value)
             {
-                var comment_input_id_string = jj(this).attr("id");
-                var comment_input_id_array = comment_input_id_string.split("_");
-                var comment_input_id = comment_input_id_array[1];
-                comments_connect_exam = comments_connect_exam+encodeURIComponent(value)+"||";
-                std_ids_connect_exam = std_ids_connect_exam+comment_input_id+"||"
-                
+              comments_connect_exam = comments_connect_exam+encodeURIComponent(value)+"||";
+            }
+            else
+            {
+              comments_connect_exam = comments_connect_exam+"||"
             }  
+            std_ids_connect_exam = std_ids_connect_exam+comment_input_id+"||"
+                
+              
           });
           if(comments_connect_exam)
           {

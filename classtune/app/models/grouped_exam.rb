@@ -33,4 +33,20 @@ class GroupedExam < ActiveRecord::Base
     end
     
   end
+  
+  def before_destroy
+    
+    grouped_exam = GroupedExam.find_by_id(self.id)
+    unless grouped_exam.blank?
+      Rails.cache.delete("tabulation_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+      Rails.cache.delete("continues_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}")
+      key = "student_exam_#{grouped_exam.connect_exam_id}_#{grouped_exam.batch_id}"
+      Rails.cache.delete_matched(/#{key}*/)
+      
+      keymarksheet = "marksheet_#{grouped_exam.connect_exam_id}"
+      Rails.cache.delete_matched(/#{keymarksheet}*/)
+      
+    end
+    
+  end
 end

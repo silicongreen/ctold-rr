@@ -28,7 +28,16 @@ class ExamConnect < ActiveRecord::Base
     Rails.cache.delete("continues_#{self.id}_#{self.batch_id}")
     key = "student_exam_#{self.id}_#{self.batch_id}"
     Rails.cache.delete_matched(/#{key}*/)
-  end  
+  end 
+  
+  def before_destroy
+    keymarksheet = "marksheet_#{self.id}"
+    Rails.cache.delete_matched(/#{keymarksheet}*/)
+    Rails.cache.delete("tabulation_#{self.id}_#{self.batch_id}")
+    Rails.cache.delete("continues_#{self.id}_#{self.batch_id}")
+    key = "student_exam_#{self.id}_#{self.batch_id}"
+    Rails.cache.delete_matched(/#{key}*/)
+  end
 
   
 end

@@ -35,5 +35,16 @@ class ExamConnectSubjectComment < ActiveRecord::Base
         Rails.cache.delete("marksheet_#{exam_connect.id}_#{self.subject_id}")
     end
   end
+  
+  def before_destroy
+    exam_connect = ExamConnect.active.find_by_id(self.exam_connect_id)
+    unless exam_connect.blank?
+        Rails.cache.delete("tabulation_#{exam_connect.id}_#{exam_connect.batch_id}")
+        Rails.cache.delete("continues_#{exam_connect.id}_#{exam_connect.batch_id}")
+        key = "student_exam_#{exam_connect.id}_#{exam_connect.batch_id}"
+        Rails.cache.delete_matched(/#{key}*/)
+        Rails.cache.delete("marksheet_#{exam_connect.id}_#{self.subject_id}")
+    end
+  end
 end
 

@@ -1,12 +1,25 @@
 <% if @connect_exam_obj.result_type == 14 %>
   <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-
+        <% subjecjs_group = [] %>
         <% unless @report_data['report']['subjects'].blank? %> 
           <% @report_data['report']['subjects'].each do |subjects| %>
-            <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_c1_to_c4", :locals=>{:subjects=>subjects} %>
-            <% unless subjects.equal? @report_data['report']['subjects'].last %>
-              <div class="page-break"></div> 
+            <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
+              <% subjecjs_group << subjects['id'] %>
+              
+            <% else %>
+              
+              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_c1_to_c4", :locals=>{:subjects=>subjects} %>
+              
             <% end %>
+            <% unless subjects.equal? @report_data['report']['subjects'].last %>
+              <%  if subjects['no_exams_sjws'].to_i != 1 || subjects['code']=="CL Tr" || subjects['code']=="CTC" %>
+                <div class="page-break"></div> 
+              <% end %>  
+            <% else %>
+              <div class="page-break"></div> 
+              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
+            <% end %>  
+            
           <% end %>     
         <% end %> 
 

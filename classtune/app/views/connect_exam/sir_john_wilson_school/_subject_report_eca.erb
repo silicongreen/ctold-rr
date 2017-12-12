@@ -1,0 +1,148 @@
+<% c = 'even' %>
+ <div id="page-yield"  class="available_sections sjws subject-result-landscape"> 
+<div class="container_body">
+    <div id="grouped_exam_report">        
+        <table id="pdf-table" class="sjws_table_intro sjws_table_head" width="100%" cellspacing="0">
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">                          
+                <% total_mark = 0 %>
+                <% full_mark = 0 %>
+                <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+                <td class="col-pdf" colspan="4">
+                  <h4>Extra Curricular Activities</h4>   
+                </td>
+                
+                <td class="col-pdf" colspan="2" class="td-align-right">
+                    <h4>
+                      <%= @connect_exam_obj.name %>&nbsp;
+                      <% if month_number.to_i>6 %>
+                        <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>        
+                      <% else %>
+                        <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+                      <% end %>  
+                    </h4>
+                </td>
+                
+            </tr>
+            <tr  class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+              <td class="col-pdf" colspan="4">
+                <h4>NAME : <%= @student.full_name %></h4>
+                <h4>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h4>
+              </td>
+              <td><b>Grade</b></td>
+              <td><b>Effort</b></td>
+            </tr>
+            <% if @subjects_names.blank? %>
+            <% @subjects_names = [] %>
+            <% @teacher_names = [] %>
+            <% end %>
+            <% subjecjs_group.each do |subject_id| %>
+            <% sbj_data = Subject.find_by_id(subject_id) %>
+            
+            <%
+              if @subjects_names.blank?
+                @subjects_names << sbj_data.name+" Teacher"
+                emp = sbj_data.employees
+                unless emp.blank?
+                  @teacher_names << emp[0].full_name
+                else
+                  @teacher_names << "N/A"
+                end
+              end
+            %>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+              <td class="text_left"  colspan="4"><%= sbj_data.name %></td> 
+                  <% subject_groups = get_subject_group(subject_id) %>          
+                  <% ilooop = 0 %>  <% @group_loop = 0 %> <% all_total_mark = 0 %><% all_full_mark = 0 %>                   
+                  <% subject_groups.each do |group_name| %>
+                    <% groupCount = 1 %>
+                    <% subject_subgroup = get_subject_sub_group(group_name.id) %>
+
+
+                      <% total_mark = 0 %><% full_mark = 5 %><% avg_counter = 0 %>
+
+                      <% @report_data['report']['exams'].each do |report| %>     
+                        <% if report['exam_category'].to_i == 4 %>
+                          <% unless report['result'][report['exam_id']][subject_id]['remarks'].nil?  %>
+                            <% wordString = report['result'][report['exam_id']][subject_id]['remarks'] %>
+                            <% wordString_split = wordString.split("|") %>
+                            <% exam_group_remarks = "" %>
+                            <% unless wordString_split[ilooop.to_i].blank? %>
+                              <% exam_group_remarks = wordString_split[@group_loop.to_i] %>
+                              <% total_mark = total_mark + exam_group_remarks.to_i %>
+                              <% avg_counter = avg_counter +1 %>
+
+                              <% all_total_mark = all_total_mark + exam_group_remarks.to_i %>
+                              <% all_full_mark = all_full_mark + 5 %>
+                            <% end %>                                                            
+                          <% end %>
+
+                        <% end %>  
+                      <% end %>  
+                      
+                    <% end %>
+               
+              <% @group_loop = @group_loop+1 %>
+              <% ilooop = ilooop+1 %>   
+          
+              <%
+                exam_comment = "<br/>"
+                exam_effort = ""
+                @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => subject_id, :student_id => @student.id} )
+                if !@exam_comments.blank?
+                  exam_comment = @exam_comments['comments']
+                  exam_effort = @exam_comments['effort']
+                  end
+              %>
+            
+                
+              <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
+              <%  grade = GradingLevel.percentage_to_grade(all_mark_percentage, @batch.id) %>
+              
+              <% if !grade.blank? and !grade.name.blank? %>
+                <td colspan="1" ><b><%= grade.name %></b></td>
+                <td colspan="1" ><b><%= exam_effort %></b></td>
+              <% else %>
+                <td class="col-2"><b>N/A</b></td>
+                <td colspan="1"><b><%= exam_effort %></b></td> 
+              <% end %>                              		  
+              </tr>
+          <% end %>
+        </table>
+        <p>&nbsp;</p>
+        <table class='sjws_table_head' width="100%" >                 
+            <tr>
+                <td class="col-pdf">TEACHER'S SIGNATURE: </td>                         
+            </tr> 
+        </table>
+        <table id="pdf-table" class="sjws_table_intro sjws_table_head" width="100%" cellspacing="0">
+           
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                <% @subjects_names.each do |sub_name| %>
+                  <td class="col-pdf" width="25%"><br/><br/><br/></td> 
+                <% end %>
+            </tr>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                <% @teacher_names.each do |t_name| %>
+                  <td width="25%"><b><%= t_name %></b></td> 
+                <% end %>
+            </tr>
+            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                <% @subjects_names.each do |sub_name| %>
+                <td width="25%"><b><font size="3"><%= sub_name %></font></b></td> 
+                <% end %>
+            </tr>
+            
+        </table>
+    </div>
+</div>
+
+</div>
+
+<style>
+    td.td-align-right
+    {
+        text-align: right !important;
+    }
+ 
+
+</style>    

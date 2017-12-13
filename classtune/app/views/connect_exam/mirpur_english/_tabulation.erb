@@ -307,7 +307,7 @@
                             <% end %>
                             <% if has_exam == true %>
                               <td>
-                                  <% if @check_exam_score == true %>
+                                  <% if subject_full_mark.to_i > 0 %>
                                     <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                     <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -319,7 +319,7 @@
                                         grades << grade.name.to_s
                                         grade_count[grade.name.to_s] = 1
                                         end  
-                                    %>
+                                      %>
                                       <%= grade.name %>  
                                     <% else %>
                                       N/A  

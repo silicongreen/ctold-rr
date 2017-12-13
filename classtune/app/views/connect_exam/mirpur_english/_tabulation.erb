@@ -274,9 +274,11 @@
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
+                        <% exam_has_score = false %>
                         <% @report_data['report']['subjects'].each do |sub| %>
                           <% subjectdata = Subject.find(sub['id'].to_i) %>
                           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                          
                           <% if @has_exam_student == false %>
                             <td>&nbsp;</td>
                           <% else %>
@@ -290,6 +292,9 @@
 
                             <% @report_data['report']['exams'].each do |rs| %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                              <% if @check_exam_score == true %>
+                                <% exam_has_score = true %>
+                              <% end %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
                                 <%
@@ -307,7 +312,7 @@
                             <% end %>
                             <% if has_exam == true %>
                               <td>
-                                  <% if subject_full_mark.to_i > 0 %>
+                                  <% if exam_has_score == true %>
                                     <% total_mark = total_mark+subject_obtain_mark.to_f %>
                                     <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -319,7 +324,7 @@
                                         grades << grade.name.to_s
                                         grade_count[grade.name.to_s] = 1
                                         end  
-                                      %>
+                                    %>
                                       <%= grade.name %>  
                                     <% else %>
                                       N/A  

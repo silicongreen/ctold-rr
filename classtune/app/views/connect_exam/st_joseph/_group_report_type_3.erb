@@ -85,8 +85,9 @@
                               <% na= false %>
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    
                                     <% marks_obtain_single_exam = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <%= marks_obtain_single_exam %>
                                     <% total_mark = total_mark.to_i+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                   <% else %>
                                     N/A
@@ -135,7 +136,7 @@
                                     
                                     %>
                                     [<%= grade_name_single  %>]
-                                    [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>]
+                                    [<%= total_marks_single_exam %>]
                                     
                                   <% else %>
 

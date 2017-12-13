@@ -88,9 +88,10 @@
                               <% na= false %>
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                    <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    
                                     <% marks_obtain_single_exam = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
                                     <% total_mark = total_mark.to_i+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i %>
+                                    <%= marks_obtain_single_exam %>
                                   <% else %>
                                     N/A
                                   <% end %>
@@ -120,16 +121,16 @@
                                           fail_grade = true
                                           grade_name_single = "U"
                                         end
-                                      end
+                                      
                                     
-                                      if grade_name_single == "U" and !report['exam_name'].index('sub').nil? and total_marks_single_exam.to_i == 50
+                                      elsif grade_name_single == "U" and !report['exam_name'].index('sub').nil? and total_marks_single_exam.to_i == 50
                                         if marks_obtain_single_exam.to_i >= 22
                                           fail_grade = false
                                           grade_name_single = "D"
                                         end
-                                      end
-                                    
-                                      if grade_name_single == "U" and !report['exam_name'].index('prac').nil? and total_marks_single_exam.to_i == 25
+
+
+                                      elsif grade_name_single == "U" and !report['exam_name'].index('prac').nil? and total_marks_single_exam.to_i == 25
                                         if marks_obtain_single_exam.to_i >= 11
                                           fail_grade = false
                                           grade_name_single = "D"
@@ -138,7 +139,7 @@
                                     
                                     %>
                                     [<%= grade_name_single  %>]
-                                    [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>]
+                                    [<%= total_marks_single_exam %>]
                                     
                                   <% else %>
 

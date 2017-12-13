@@ -121,16 +121,17 @@
                                           fail_grade = true
                                           grade_name_single = "U"
                                         end
-                                      
+                                      end
                                     
-                                      elsif grade_name_single == "U" and !report['exam_name'].index('sub').nil? and total_marks_single_exam.to_i == 50
+                                      if grade_name_single == "U" and !report['exam_name'].index('sub').nil? and total_marks_single_exam.to_i == 50
+                                        %><%= marks_obtain_single_exam  %>|<%
                                         if marks_obtain_single_exam.to_i >= 22
                                           fail_grade = false
                                           grade_name_single = "D"
                                         end
+                                      end  
 
-
-                                      elsif grade_name_single == "U" and !report['exam_name'].index('prac').nil? and total_marks_single_exam.to_i == 25
+                                      if grade_name_single == "U" and !report['exam_name'].index('prac').nil? and total_marks_single_exam.to_i == 25
                                         if marks_obtain_single_exam.to_i >= 11
                                           fail_grade = false
                                           grade_name_single = "D"

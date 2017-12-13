@@ -62,7 +62,7 @@
                               Converted Total
                             </td>
                             <% ct = 1 %>
-                          <% else %>
+                          <% elsif ct == 1 %>
                           <% if !report['exam_name'].index(top_exam).nil? %>
                           <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
                           <td class="col-pdf">
@@ -100,7 +100,7 @@
                               Converted Total
                             </td>
                             <% ct = 1 %>
-                          <% else %>
+                          <% elsif ct == 1 %>
                           <td class="col-pdf">
                               <%= report['exam_name'].upcase %>
                              

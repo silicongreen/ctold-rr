@@ -99,7 +99,7 @@
             @top_exam_group = []
             unless @all_exam_groups.blank?
               @all_exam_groups.each do |exam_group|
-                if !exam_group.name.index('Sub').nil?
+                if !exam_group.name.downcase.index('sub').nil?
                   exam_group_name_array = exam_group.name.split(" ")
                   @top_exam_group << exam_group_name_array[0]+" "+exam_group_name_array[1]
                 end
@@ -125,7 +125,7 @@
                           <% @all_exam_groups.each do |exam_group| %>
                             <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                             <% unless examfound.blank? %>
-                              <% if !exam_group.name.index('Obj').nil? %>
+                              <% if !exam_group.name.downcase.index('obj').nil? %>
                                 <% has_obj = true %>
                               <% end %>
                             <% end %>
@@ -188,7 +188,7 @@
                               <% @all_exam_groups.each do |exam_group| %>
                                 <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                                 <% unless examfound.blank? %>
-                                  <% if !exam_group.name.index('Obj').nil? %>
+                                  <% if !exam_group.name.downcase.index('obj').nil? %>
                                     <% has_obj = true %>
                                   <% end %>
                                 <% end %>
@@ -243,7 +243,7 @@
                               <% @all_exam_groups.each do |exam_group| %>
                                 <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                                 <% unless examfound.blank? %>
-                                  <% if !exam_group.name.index('Obj').nil? %>
+                                  <% if !exam_group.name.downcase.index('obj').nil? %>
                                     <% has_obj = true %>
                                   <% end %>
                                 <% end %>
@@ -315,7 +315,7 @@
                             <% @all_exam_groups.each do |exam_group| %>
                               <% examfound = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,sub['id'].to_i) %>
                               <% unless examfound.blank? %>
-                                <% if !exam_group.name.index('Obj').nil? %>
+                                <% if !exam_group.name.downcase.index('obj').nil? %>
                                   <% has_obj = true %>
                                 <% end %>
                               <% end %>
@@ -326,7 +326,7 @@
 
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
                                 <%
-                                if !rs['exam_name'].index('Obj').nil? && has_obj == true
+                                if !rs['exam_name'].downcase.index('obj').nil? && has_obj == true
                                   objective_full_mark = objective_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   objective_obtain_mark = objective_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   else

@@ -307,21 +307,23 @@
                             <% end %>
                             <% if has_exam == true %>
                               <td>
-                                  <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
-                                  <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-                                  <% if !grade.blank? and !grade.name.blank? %>
-                                    <%
-                                    if grades.include?(grade.name.to_s)
-                                      grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
-                                      else
-                                      grades << grade.name.to_s
-                                      grade_count[grade.name.to_s] = 1
-                                      end  
-                                  %>
-                                    <%= grade.name %>  
-                                  <% else %>
-                                    N/A  
+                                  <% if @check_exam_score == true %>
+                                    <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                                    <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                    <% if !grade.blank? and !grade.name.blank? %>
+                                      <%
+                                      if grades.include?(grade.name.to_s)
+                                        grade_count[grade.name.to_s] = grade_count[grade.name.to_s]+1
+                                        else
+                                        grades << grade.name.to_s
+                                        grade_count[grade.name.to_s] = 1
+                                        end  
+                                    %>
+                                      <%= grade.name %>  
+                                    <% else %>
+                                      N/A  
+                                    <% end %>
                                   <% end %>
                               </td> 
                             <% end %>

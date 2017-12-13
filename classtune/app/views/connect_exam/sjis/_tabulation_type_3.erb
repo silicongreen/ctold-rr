@@ -203,9 +203,7 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                              <td>Position</td>
-                          <% end %>
+                         
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -233,9 +231,7 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                              <td>Position</td>
-                           <% end %>
+                        
 
                       </tr>
                     <% end %>    
@@ -264,6 +260,11 @@
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
+                            <% subject_full_mark_ct1 = 0 %>
+                            <% subject_obtain_mark_ct1 = 0 %>
+                            <% subject_full_mark_ct2 = 0 %>
+                            <% subject_obtain_mark_ct2 = 0 %>
+                            <% term = 1 %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
@@ -274,14 +275,33 @@
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
                                 <%
+                                  if rs['exam_category'] == '1' && term == 1
+                                    subject_full_mark_ct1 = subject_full_mark_ct1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_obtain_mark_ct1 = subject_obtain_mark_ct1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  elsif rs['exam_category'] == '1' && term == 2
+                                    subject_full_mark_ct2 = subject_full_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_obtain_mark_ct2 = subject_obtain_mark_ct2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  else
+                                    subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    term == 2
+                                  end
 
-                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
 
-
-                              %>
+                               %>
                               <% end %>
-                            <% end %> 
+                            <% end %>
+                            <% if subject_full_mark_ct1 > 0 %>
+                              <% subject_full_mark = subject_full_mark+30 %>
+                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
+                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
+                            <% end %>
+                            <% if subject_full_mark_ct2 > 0 %> 
+                              <% subject_full_mark = subject_full_mark+30 %>
+                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
+                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
+                            <% end %>
+                            
 
                             <% main_mark = 0 %>
                             <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
@@ -345,13 +365,7 @@
                             <% end %>
                         </td> 
                         
-                        <% unless @ranked_positions.blank? %>
-                           <% unless @ranked_positions[std['id'].to_i].blank? %>
-                              <td><%= @ranked_positions[std['id'].to_i] %></td>
-                           <% else %>
-                              <td>N/A</td>
-                           <% end %>
-                        <% end %>
+                      
 
 
                     </tr>

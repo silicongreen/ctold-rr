@@ -35,11 +35,11 @@
           @top_exam_group.each do |top_exam|
               e_count = 0
               @all_exam_groups.each do |exam_group|  
-                if !exam_group.name.index(top_exam).nil?
+                if !exam_group.name.index(top_exam).nil? && exam_group.exam_category != 1
                   e_count = e_count+1
                 end
               end
-              @top_exam_group_count << e_count+1
+              @top_exam_group_count << e_count+2
           end 
         end
   

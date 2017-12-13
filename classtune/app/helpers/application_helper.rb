@@ -39,7 +39,10 @@ module ApplicationHelper
     stylesheets << @direction+'autosuggest-menu.css'
     stylesheets << 'calendar'
     ["#{@direction}#{controller.controller_path}/#{controller.action_name}"].each do |ss|
-      stylesheets << ss
+     
+      if File.exists? (Rails.root.join("public","stylesheets",ss+".css"))
+        stylesheets << ss
+      end
     end
     plugin_css_overrides = Champs21Plugin::CSS_OVERRIDES["#{controller.controller_path}_#{controller.action_name}"]
     stylesheets << plugin_css_overrides.collect{|p| "#{@direction}plugin_css/#{p}"}

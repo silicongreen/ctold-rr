@@ -313,63 +313,7 @@
                         </tr>
                     </table> 
                    <% end %>
-                  <table id="pdf-table" class="evaluation1" width="99.8%" >
-                   <tr class="odd">
-                    <td class="col-pdf border-left-none">
-                        Summer
-                    </td> 
-                    <td class="col-pdf align-center">
-                        <b> <%= summer_mark %> </b>
-                    </td> 
-                    <td class="col-pdf">
-                        Spring
-                    </td> 
-                    <td class="col-pdf align-center border-right-none">
-                        <b> <%= spring_mark %> </b>
-                    </td>
-                   </tr>
-                   <tr class="odd">   
-                    <td class="col-pdf  border-left-none"">
-                        Total
-                    </td> 
-                    <td class="col-pdf align-center">
-                        <% total_mark_year = summer_mark+spring_mark+total_mark_all_subject %>
-                        <b> <%= total_mark_year %> </b>
-                    </td>
-                    <%  
-                        @conn = ActiveRecord::Base.connection
-                        sql = "SELECT SUM( Scores.marks ) AS total_score
-                        FROM exams
-                        LEFT JOIN exam_scores AS Scores ON Scores.exam_id = exams.id
-                        LEFT JOIN grouped_exams AS grouped_exams ON grouped_exams.exam_group_id = exams.exam_group_id
-                        WHERE grouped_exams.connect_exam_id = '"+@connect_exam_obj.id.to_s+"'
-                        GROUP BY Scores.student_id
-                        ORDER BY total_score DESC";
-                        ip = 1
-                        exam_marks_data = @conn.execute(sql).all_hashes
-                    %>
-                    
-                    <%
-                        
-                        if !exam_marks_data.blank?
-                            exam_marks_data.each do |exscore|
-                              
-                              if exscore['total_score'].to_f == total_mark_year.to_f
-                                break
-                              end
-                              ip = ip+1
-                            end
-                        end   
-                    %>    
-                    <td class="col-pdf">
-                        Position
-                    </td> 
-                    <td class="col-pdf align-center border-right-none">
-                        <b> <%= ip %> </b>
-                    </td>
-                    
-                </tr>
-              </table>
+                  
                     
               
 

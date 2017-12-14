@@ -63,6 +63,12 @@
         <% std_count = 0 %>
         <% unless @report_data['result']['al_students'].blank? %>
         <% @report_data['result']['al_students'].each do |std| %>
+          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>@subject.id.to_s,:elective_group_id=>@subject.elective_group_id.to_i} %>
+          <% if @has_exam_student == false %>
+            <% next %>
+          <% end %>          
+                
+
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
           <% if std_count>13 && extender ==0 %>
@@ -89,9 +95,10 @@
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
-                <%= rs['students'][std['id']]['score'] %>
-                <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-                <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+                  <%= rs['students'][std['id']]['score'] %>
+                  <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                  <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+                 
               <% else %>
                   -
               <% end %>    

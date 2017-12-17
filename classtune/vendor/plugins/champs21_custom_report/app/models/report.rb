@@ -183,6 +183,7 @@ class Report < ActiveRecord::Base
     csv = FasterCSV.generate do |csv|
       
       cols = []
+      cols << "SL"
       self.report_columns.each do |rc|
         if (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
             p_data = 1
@@ -205,11 +206,14 @@ class Report < ActiveRecord::Base
       csv << cols
       
       search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
+      sl = 0
       search_results.uniq.each do |obj|
         p_data = 0
         p_data2 = 0
         p_data3 = 0
+        sl = sl+1
         cols = []
+        cols << sl
         guardians = GuardianStudents.find_all_by_student_id(obj.id)
         self.report_columns.each do |col|
           

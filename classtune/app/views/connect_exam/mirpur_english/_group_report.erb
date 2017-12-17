@@ -101,6 +101,15 @@
           p = p+1
           last_total_score = ras.total_score
         end
+        if p == 1
+          p = "1st"
+        elsif p == 2
+          p = "2nd"
+        elsif p == 3
+          p = "3rd"
+        else
+          p = p.to_s+"th"
+        end
         @ranked_positions[ras.student_id.to_i] = p
       end
     end

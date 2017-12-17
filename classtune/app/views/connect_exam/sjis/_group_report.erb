@@ -21,13 +21,11 @@
         @top_exam_group_count = []
         unless @all_exam_groups.blank?
           @all_exam_groups.each do |exam_group|
-             if !exam_group.name.downcase.index('ct').nil? or !exam_group.name.downcase.index('class test').nil? or !exam_group.name.downcase.index('sba').nil? or !exam_group.name.downcase.index('term').nil? or !exam_group.name.downcase.index('examination').nil?
-               exam_group_name_array = exam_group.name.split(" ")
-               main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
-               if !@top_exam_group.include?(main_exam_name)
-                  @top_exam_group << main_exam_name
-               end     
-             end
+            exam_group_name_array = exam_group.name.split(" ")
+            main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
+            if !@top_exam_group.include?(main_exam_name)
+               @top_exam_group << main_exam_name
+            end  
           end  
         end
 

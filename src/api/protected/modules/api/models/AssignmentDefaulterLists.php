@@ -131,7 +131,7 @@ class AssignmentDefaulterLists extends CActiveRecord
                         if($only_defaulter==0 || in_array($svalue->id, $d_list))
                         {
                             $std_list[$i_loop]['student_id'] = $svalue->id;
-                            $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->first_name." ".$svalue->last_name;
+                            $std_list[$i_loop]['student_name'] = $svalue->first_name." ".$svalue->middle_name." ".$svalue->last_name;
                             $std_list[$i_loop]['student_name'] = str_replace("  "," ", $std_list[$i_loop]['student_name']);
                             $std_list[$i_loop]['class_roll_no'] = $svalue->class_roll_no;
                             $std_list[$i_loop]['defaulter'] = 0;

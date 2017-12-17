@@ -116,7 +116,7 @@ class CustomReportsController < ApplicationController
     report_columns = report.report_columns
     report_columns.delete_if{|rc| !((report.model_object.instance_methods+report.model_object.column_names).include?(rc.method))}
     if MultiSchool.current_school.id == 340
-      csv = report.to_csv_sjws
+      csv = report.to_csv_sjws2
     else
       csv = report.to_csv
     end

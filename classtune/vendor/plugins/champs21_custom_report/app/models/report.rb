@@ -175,6 +175,167 @@ class Report < ActiveRecord::Base
     csv
   end
   
+  def to_csv_sjws_2
+    std = 0
+    p_data = 0
+    p_data2 = 0
+    p_data3 = 0
+    csv = FasterCSV.generate do |csv|
+      
+      cols = []
+      self.report_columns.each do |rc|
+        if (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
+            p_data = 1
+            cols << "Father's Name"
+            cols << "Mother's Name"
+            
+        elsif t(rc.title) == "Parent mobile phone" && p_data2 == 0
+            cols << "Father's Mobile"
+            cols << "Mother's Mobile"
+            p_data2 = 1
+        elsif t(rc.title) == "Parent email" && p_data3 == 0
+            cols << "Father's Email"
+            cols << "Mother's Email"
+            p_data3 = 1
+        else    
+          cols << t(rc.title)
+        end  
+      end
+     
+      csv << cols
+      
+      search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
+      search_results.uniq.each do |obj|
+        p_data = 0
+        p_data2 = 0
+        p_data3 = 0
+        cols = []
+        guardians = GuardianStudents.find_all_by_student_id(obj.id)
+        self.report_columns.each do |col|
+          
+          if (t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation") && p_data == 0
+                p_data = 1
+                unless guardians.blank?
+                  guardians.each do |gur|
+                  gurdian = Guardian.find_by_id(gur.guardian_id)
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                      cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                      p_data = 2
+                      break
+                    end
+                  end
+                  end 
+                  if p_data == 1
+                    cols << "" 
+                    p_data = 2
+                  end
+
+                    guardians.each do |gur|
+                    gurdian = Guardian.find_by_id(gur.guardian_id)
+                    unless gurdian.blank?
+                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                        cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                        p_data = 3
+                        break
+                      end
+                    end
+                  end 
+                  if p_data == 2
+                    cols << "" 
+                    p_data = 3
+                  end
+                else
+                  cols << "" 
+                  cols << "" 
+                end
+            
+          elsif t(col.title) == "Parent mobile phone" && p_data2 == 0
+                
+                p_data2 = 1
+                unless guardians.blank?
+                  guardians.each do |gur|
+                  gurdian = Guardian.find_by_id(gur.guardian_id)
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                      cols << gurdian.mobile_phone
+                      p_data2 = 2
+                      break
+                    end
+                  end
+                  end 
+                  if p_data2 == 1
+                    cols << "" 
+                    p_data2 = 2
+                  end
+
+                    guardians.each do |gur|
+                    gurdian = Guardian.find_by_id(gur.guardian_id)
+                    unless gurdian.blank?
+                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                        cols << gurdian.mobile_phone
+                        p_data2 = 3
+                        break
+                      end
+                    end
+                  end 
+                  if p_data2 == 2
+                    cols << "" 
+                    p_data2 = 3
+                  end
+                else
+                  cols << "" 
+                  cols << "" 
+                end
+          elsif t(col.title) == "Parent email" && p_data3 == 0
+                
+                p_data3 = 1
+                unless guardians.blank?
+                  guardians.each do |gur|
+                  gurdian = Guardian.find_by_id(gur.guardian_id)
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                      cols << gurdian.email
+                      p_data3 = 2
+                      break
+                    end
+                  end
+                  end 
+                  if p_data3 == 1
+                    cols << "" 
+                    p_data3 = 2
+                  end
+
+                    guardians.each do |gur|
+                    gurdian = Guardian.find_by_id(gur.guardian_id)
+                    unless gurdian.blank?
+                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                        cols << gurdian.email
+                        p_data3 = 3
+                        break
+                      end
+                    end
+                  end 
+                  if p_data3 == 2
+                    cols << "" 
+                    p_data3 = 3
+                  end
+                else
+                  cols << "" 
+                  cols << "" 
+                end
+          else
+            cols << "#{obj.send(col.method)}"
+          end
+        end
+        
+        
+        csv << cols
+      end
+    end
+    csv
+  end
+  
   def to_csv_sjws
     std = 0
     csv = FasterCSV.generate do |csv|

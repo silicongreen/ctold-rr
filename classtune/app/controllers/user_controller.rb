@@ -730,7 +730,9 @@ class UserController < ApplicationController
       @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id,:session_end=>1},:order=>"created_at DESC",:limit=>1)
       if !@last_session_log.nil?
         @session_start_log = ActivityLog.find(:first,:conditions=>["user_id =#{current_user.id} and created_at >'#{@last_session_log.created_at}'"],:order=>"created_at ASC",:limit=>1)
-        @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+        unless @session_start_log.blank? 
+          @sesstion_time =  now.to_time-@session_start_log.created_at.to_time
+        end
       else
         @last_session_log = ActivityLog.find(:first,:conditions=>{:user_id=>current_user.id},:order=>"created_at ASC",:limit=>1)
         if !@last_session_log.nil?

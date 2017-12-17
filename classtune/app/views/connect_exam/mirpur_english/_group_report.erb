@@ -101,16 +101,17 @@
           p = p+1
           last_total_score = ras.total_score
         end
+        j = ""
         if p == 1
-          p = "1st"
+          j = "1st"
         elsif p == 2
-          p = "2nd"
+          j = "2nd"
         elsif p == 3
-          p = "3rd"
+          j = "3rd"
         else
-          p = p.to_s+"th"
+          j = p.to_s+"th"
         end
-        @ranked_positions[ras.student_id.to_i] = p
+        @ranked_positions[ras.student_id.to_i] =j
       end
     end
   end

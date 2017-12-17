@@ -19,6 +19,7 @@ en:
   report_delete_error: "Report cannot be generated"
   immediate_contact: "Immediate contact"
   parent_first_name: "Parent first name"
+  emergency_contact_1_phone : "Phone Number"
   parent_last_name: "Parent last name"
   parent_relation: "Parent relation"
   parent_dob: "Parent date of birth"

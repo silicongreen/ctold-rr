@@ -328,7 +328,7 @@ class Report < ActiveRecord::Base
                   cols << "" 
                   cols << "" 
                 end
-          elsif t(col.title) != "Parent first name" && t(col.title) != "Parent last name" && t(col.title) != "Parent relation" && t(coltitle) != "Parent mobile phone" && t(col.title) != "Parent email"
+          elsif t(col.title) != "Parent first name" && t(col.title) != "Parent last name" && t(col.title) != "Parent relation" && t(col.title) != "Parent mobile phone" && t(col.title) != "Parent email"
             cols << "#{obj.send(col.method)}"
           end
         end

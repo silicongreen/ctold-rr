@@ -46,7 +46,7 @@
       <% full_mark = 0 %>
       <% colspan = 0 %>        
       
-      <table id="pdf-table" class="sjws_table_head" width="90%" cellspacing="0">
+      <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
         <% total_colspan_count = 0 %>
         <tr class="sjws-table-header">
             <td colspan="2" rowspan="2">              
@@ -103,7 +103,7 @@
                   <% width_td = width_td.to_f/subgroup_count %>
                   <% subject_subgroup.each do |sub_group_name| %>
                       <td class="word_break" colspan="3" rowspan="2"  width="<%= width_td %>%"> 
-                        <%= sub_group_name %>
+                        <%= sub_group_name %> 1
                       </td>
                   <% end %>
                 <% end %>  

@@ -72,8 +72,8 @@
           @report_data['absent'] = @report_data['absent_all'][std['id']]
         end 
       
-        if !@report_data['first_term_total'].blank? and !@report_data['first_term_total'][std['id']].blank?
-          @report_data['total_first_term'] = @report_data['first_term_total'][std['id']]
+        if !@report_data['first_term_total'].blank?
+          @report_data['total_first_term'] = @report_data['first_term_total']
         end 
         if !@report_data['first_term_present_all'].blank? and !@report_data['first_term_present_all'][std['id']].blank?
           @report_data['present_first_term'] = @report_data['first_term_present_all'][std['id']]

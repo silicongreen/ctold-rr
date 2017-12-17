@@ -13,6 +13,8 @@ en:
   select_search_fields: "Select and order the fields to be shown in the report."
   export_csv : "Export CSV"
   print : "Print"
+  class_roll_no: "Roll No"
+  sms_number: "SMS"
   report_cannot_be_generated: "report cannot be generated"
   report_created_successfully: "Report created successfully"
   report_deleted_successfully: "Report deleted successfully"

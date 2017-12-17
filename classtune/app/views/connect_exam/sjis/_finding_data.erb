@@ -80,9 +80,7 @@
             elsif std_subject_marks.to_f > @subject_highest[sub['id'].to_i].to_f
                @subject_highest[sub['id'].to_i] = std_subject_marks.to_f
             end
-            if subject_count_std<4
-               std_marks_core_subject = std_marks_core_subject+std_subject_marks.round()
-            end 
+           
             
           end  
         end

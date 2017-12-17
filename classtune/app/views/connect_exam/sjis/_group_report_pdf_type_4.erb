@@ -59,7 +59,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <%  if report['exam_category'] == '1' && ct == 0 %>
                             <td class="col-pdf">
-                              Converted Total(30)
+                              Class Test
                             </td>
                             <% ct = 1 %>
                           <% elsif report['exam_category'] != '1' %>
@@ -97,7 +97,7 @@
                         <% @report_data['report']['exams'].each do |report| %>
                           <%  if report['exam_category'] == '1' && ct == 0 %>
                             <td class="col-pdf">
-                              Converted Total(30)
+                              Class Test
                             </td>
                             <% ct = 1 %>
                           <% elsif report['exam_category'] != '1' %>

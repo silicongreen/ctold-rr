@@ -266,13 +266,28 @@
 
                 <% 
                   result = ""
+                  if letter_grade == "A+"
+                    result = "Excellent."
+                  elsif letter_grade == "A"
+                    result = "Very Good."
+                  elsif letter_grade == "A-"
+                    result = "Good."
+                  elsif letter_grade == "B"
+                    result = "Satisfactory."
+                  elsif letter_grade == "C"
+                    result = "Not Satisfactory."
+                  elsif letter_grade == "D"
+                    result = "Poor."
+                  end
                   promotion_status = 0
                   merit_position = 0
                   if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?
                     all_comments_array = all_comments.split("|")
-                    result = all_comments_array[0]
+                    if all_comments_array[0]!="" && all_comments_array[0]!=" "
+                      result = all_comments_array[0]
+                    end
 
                     if !all_comments_array[1].nil?
                       promotion_status = all_comments_array[1].to_s

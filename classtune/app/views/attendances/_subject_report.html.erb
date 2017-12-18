@@ -7,7 +7,20 @@
             :class=>"text-input-bg",:onchange =>"j('#register').html( '' );j('#student_batch_id').val( '' );j('#student_batch_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
         </div>
         <div class="text-input-bg" style="cursor:pointer;  font-size: 13px;
-             font-weight: bold;color: #db3434;text-decoration: underline; margin-top: 11px;"  onClick="j('#attandence_date').val('');j('#attandence_date').trigger('change');">Clear</div>
+             font-weight: bold;color: #db3434;text-decoration: underline; margin-top: 11px;"  onClick="j('#attandence_date').val('');j('#end_date').val('');j('#attandence_date').trigger('change');">Clear</div>
+             
+       
+      </div>
+      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
+        <label for="duedate">End Date</label>
+        <div  class="text-input-bg">
+          <%= calendar_date_select_tag "end_date","",
+            :class=>"text-input-bg",:onchange =>"j('#register').html( '' );j('#student_batch_id').val( '' );j('#student_batch_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
+        </div>
+        <div class="text-input-bg" style="cursor:pointer;  font-size: 13px;
+             font-weight: bold;color: #db3434;text-decoration: underline; margin-top: 11px;"  onClick="j('#end_date').val('');j('#end_date').trigger('change');">Clear</div>
+             
+       
       </div>
       <div class="row" style="width:45%;">  
         <div class="row_label">
@@ -20,9 +33,10 @@
             <div class="custom_drop_wrapper">
              <%= select :student, :batch_id, options_for_select(@batches.map {|b| [b.full_name, b.id]}, @batch_no.to_i), 
               {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "attendances", :action => "subjects2"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
+              {:onChange => "#{remote_function(:url => {:controller => "attendances", :action => "subjects3"}, :with => "'batch_id='+value" ,:before => "$('loading_2').show();",
               :success => "$('loading_2').hide();")}"} %>
               <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+                
             </div>
           </div>
         </div>
@@ -37,7 +51,7 @@
         <div class="row_data">
           <div>
             <div id="subjects" class="custom_drop_wrapper">
-              <%= render :partial => 'attendances/subjects2' %>
+              <%= render :partial => 'attendances/subjects3' %>
             </div>
           </div>
         </div>

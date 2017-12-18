@@ -66,6 +66,103 @@ class AttendancesController < ApplicationController
 #    end
 #  end
   
+  def subjects3
+    @subjects = []
+    if params[:batch_id].present?
+      @batch = Batch.find(params[:batch_id])
+      @class_timing_id = []
+      unless @batch.class_timing_set.blank?
+        @class_timings = @batch.class_timing_set.class_timings
+        unless @class_timings.blank?
+          @class_timing_id = @class_timings.map(&:id)
+        end
+      end
+      
+      @subjects = @batch.subjects
+      @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+      
+      
+      unless @current_timetable.blank?
+        @subjects = []
+        @subject_names = []
+        if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+          @employee = @current_user.employee_record
+          @employee_subjects = @employee.subjects
+          subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+          electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+          elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+          @entries=[]
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:employee_id => @employee.id,:class_timing_id=>@class_timing_id})
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:class_timing_id=>@class_timing_id})
+          unless @entries.blank?
+            @entries.each do |te|
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
+              unless @timetable_subject.blank?
+                if @timetable_subject.elective_group_id.present?
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  unless @all_sub_elective.blank?
+                    @all_sub_elective.each do |esub|
+                      if @employee_subjects.include?(esub) and !@subjects.include?(esub) and !@subject_names.include?(esub.name)
+                        @subjects << esub
+                        @subject_names << esub.name
+                      end  
+                    end
+                    
+                  end
+                else
+                  if !@subjects.include?(@timetable_subject) and !@subject_names.include?(@timetable_subject.name)
+                    @subjects << @timetable_subject
+                    @subject_names << @timetable_subject.name
+                  end
+                end
+              end
+            end
+          end
+            
+
+        else
+          @entries=[]
+          @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:class_timing_id=>@class_timing_id})
+          
+         
+          unless @entries.blank?
+            @entries.each do |te|
+              @timetable_subject = Subject.active.find_by_id(te.subject_id)
+              unless @timetable_subject.blank?
+                if @timetable_subject.elective_group_id.present?
+                  @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
+                  unless @all_sub_elective.blank?
+                    @all_sub_elective.each do |esub|
+                      if !@subjects.include?(esub) and !@subject_names.include?(esub.name)
+                        @subjects << esub
+                        @subject_names << esub.name
+                      end 
+                    end
+                  end
+                else
+                  if !@subjects.include?(@timetable_subject) and !@subject_names.include?(@timetable_subject.name)
+                    @subjects << @timetable_subject
+                    @subject_names << @timetable_subject.name
+                  end 
+                end
+              end
+            end
+          end
+
+         end
+        
+          
+      end 
+      @subjects.sort! { |a, b|  a.name <=> b.name }
+        
+    end
+   
+  render(:update) do |page|
+    page.replace_html 'subjects', :partial=> 'subjects3'
+  end
+end
+  
+  
   def subjects2
     @subjects = []
     if params[:batch_id].present?
@@ -177,6 +274,44 @@ end
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def get_subject_report_all_name 
+    unless params[:subject_id].nil? or  params[:date].nil?
+      if !params[:subject_id].blank? and !params[:date].blank? and params[:date2].blank?
+        @date = params[:date].to_date.strftime("%Y-%m-%d")
+        get_subject_report_date_name(params[:subject_id],@date)
+        if @student_response['status']['code'].to_i == 200
+          @report_data = @student_response['data']
+        end
+        
+        get_subject_attendence_student_name(params[:subject_id],@date)
+        @subject_id = params[:subject_id]
+        if @student_response['status']['code'].to_i == 200
+          @students = @student_response['data']['students']
+          @register_id = @student_response['data']['register']
+        end
+        
+        respond_to do |format|
+          format.js { render :action => 'get_subject_report_date' }
+        end
+      else
+        if !params[:date].blank? and !params[:date2].blank?
+          @date1 = params[:date].to_date.strftime("%Y-%m-%d")
+          @date2 = params[:date2].to_date.strftime("%Y-%m-%d")
+          get_subject_report_name(params[:subject_id],@date1,@date2)
+        else
+          get_subject_report_name(params[:subject_id])
+        end
+        @subject = Subject.find(params[:subject_id])
+        if @student_response['status']['code'].to_i == 200
+          @data = @student_response['data']
+        end
+        respond_to do |format|
+          format.js { render :action => 'get_subject_report' }
+        end
+      end  
+    end
   end
   
   def get_subject_report_all 
@@ -1354,6 +1489,49 @@ def add_attendence_subject(subject_id,date_to_use,student_id,late)
     
   @student_response
 end
+
+
+def get_subject_report_date_name(subject_id,date_to_use)
+  require 'net/http'
+  require 'uri'
+  require "yaml"
+ 
+  champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+  api_endpoint = champs21_api_config['api_url']
+
+  if current_user.employee? or current_user.admin?
+    api_uri = URI(api_endpoint + "api/attendance/Reportteacherbyname")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"subject_id" =>subject_id ,"date"=>date_to_use,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+  end
+    
+  @student_response
+end
+
+def get_subject_attendence_student_name(subject_id,date_to_use)
+  require 'net/http'
+  require 'uri'
+  require "yaml"
+ 
+  champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+  api_endpoint = champs21_api_config['api_url']
+
+  if current_user.employee? or current_user.admin?
+    api_uri = URI(api_endpoint + "api/attendance/getstudentsbysubname")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"subject_id" =>subject_id ,"date"=>date_to_use,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+  end
+    
+  @student_response
+end
   
 def get_subject_report_date(subject_id,date_to_use)
   require 'net/http'
@@ -1390,6 +1568,31 @@ def get_subject_report(subject_id)
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
     request.set_form_data({"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+  end
+    
+  @student_response
+end
+
+def get_subject_report_name(subject_id,date_start=false,date_end=false)
+  require 'net/http'
+  require 'uri'
+  require "yaml"
+ 
+  champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+  api_endpoint = champs21_api_config['api_url']
+
+  if current_user.employee? or current_user.admin?
+    api_uri = URI(api_endpoint + "api/attendance/reportallteachername")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+   
+    unless date_start.blank?
+      request.set_form_data({"subject_id" =>subject_id, "date_start"=>date_start,"date_end"=>date_end ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    else
+      request.set_form_data({"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    end  
     response = http.request(request)
     @student_response = JSON::parse(response.body)
   end

@@ -56,11 +56,11 @@ class TallyBulkExportJob
     xml_file_name =""
     file_name = "tally_#{Time.now.strftime("%Y%m%d%H%M%S")}.xml"
     if defined?(MultiSchool)
-      FileUtils.mkpath "#{Rails.root}/uploads/tally_exports/#{@school_id}/" unless File.exists? "#{Rails.root}/uploads/tally_exports#{@school_id}/"
-      xml_file_name = "#{Rails.root}/uploads/tally_exports/#{@school_id}/#{file_name}"
+      FileUtils.mkpath "#{Rails.root}/public/uploads/tally_exports/#{@school_id}/" unless File.exists? "#{Rails.root}/public/uploads/tally_exports#{@school_id}/"
+      xml_file_name = "#{Rails.root}/public/uploads/tally_exports/#{@school_id}/#{file_name}"
     else
-      FileUtils.mkpath "#{Rails.root}/uploads/tally_exports" unless File.exists? "#{Rails.root}/uploads/tally_exports"
-      xml_file_name = "#{Rails.root}/uploads/tally_exports/#{file_name}"
+      FileUtils.mkpath "#{Rails.root}/public/uploads/tally_exports" unless File.exists? "#{Rails.root}/public/uploads/tally_exports"
+      xml_file_name = "#{Rails.root}/public/uploads/tally_exports/#{file_name}"
     end
     File.open(xml_file_name, 'w') {|f| f.write(builder.to_xml) }
 
@@ -69,7 +69,7 @@ class TallyBulkExportJob
     if file
       if TallyExportFile.create(:export_file => file)
         begin
-          FileUtils.rm file.path
+#          FileUtils.rm file.path
         rescue
 
         end

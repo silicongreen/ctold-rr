@@ -299,7 +299,9 @@
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?
                     all_comments_array = all_comments.split("|")
-                    result = all_comments_array[0]
+                    if all_comments_array[0]!="" or all_comments_array[0]!=" "
+                      result = all_comments_array[0]
+                    end
 
                     if !all_comments_array[1].nil?
                       promotion_status = all_comments_array[1].to_s

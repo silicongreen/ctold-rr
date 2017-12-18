@@ -189,11 +189,13 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  
+                                    <% total_term = total_term.round() %>
                                     <% if exam_no == 1  %>
                                         <% total_term1 = total_term1.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% total_term1 = total_term1.round() %>
                                     <% else %>
                                         <% total_term2 = total_term2.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% total_term2 = total_term2.round() %>
                                     <% end %>
                                     
                                   <% else %>

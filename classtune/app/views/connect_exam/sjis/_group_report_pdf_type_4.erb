@@ -169,15 +169,21 @@
                                     <% end %>
                               <% else %> 
                               <% if converted_total_showded == 0 %>
+                                    <% converted_total_30 = 0 %>
+                                    <% if converted_total.to_i > 0 %>
                                     <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
                                     <% converted_total_30 = converted_total_30.round() %>
+                                    <% end %>
                                     <% full_mark = full_mark+30 %>
                                     <% total_mark = total_mark.to_f+converted_total_30.to_f %>
                                     <% total_term = total_term.to_f+converted_total_30.to_f %>
+                                    <% total_term = total_term.round() %>
                                     <% if exam_no == 1  %>
                                         <% total_term1 = total_term1.to_f+converted_total_30.to_f %>
+                                        <% total_term1 = total_term1.round() %>
                                     <% else %>
                                         <% total_term2 = total_term2.to_f+converted_total_30.to_f %>
+                                        <% total_term2 = total_term2.round() %>
                                     <% end %>
                                     <td class="col-pdf no-warp">
                                         <%= sprintf( "%0.02f", converted_total_30)%>

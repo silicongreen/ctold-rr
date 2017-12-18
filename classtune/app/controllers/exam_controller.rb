@@ -699,6 +699,7 @@ class ExamController < ApplicationController
       params[:exam].each_pair do |student_id, details|
         @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
         if @exam_comments.nil?
+          
           ExamConnectSubjectComment.create do |score|
             score.subject_id       = @exam_subject.id
             score.student_id       = student_id
@@ -708,7 +709,11 @@ class ExamController < ApplicationController
             score.effort           = details[:effort] # For Sir John Wilson School
           end
         else
-          @exam_comments.update_attributes(details)
+          unless details[:comments].blank?
+            @exam_comments.update_attributes(details)
+          else
+            @exam_comments.destroy
+          end
         end
       end
       unless @exam_marks_error == true

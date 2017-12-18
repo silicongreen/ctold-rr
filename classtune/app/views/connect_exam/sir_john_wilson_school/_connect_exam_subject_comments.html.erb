@@ -111,8 +111,12 @@
                    <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
                   <% else %>
                    <p> 
-                     <%= exam.maximum_marks.to_i %>
-                   </p>
+                       <% if exam.exam_group.marks_entry.to_i == 1 %>
+                          <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
+                       <% else %>
+                          <%= exam.maximum_marks.to_i %>
+                       <% end %>
+                    </p>
                   <% end %> 
               </td>
               <% end %>

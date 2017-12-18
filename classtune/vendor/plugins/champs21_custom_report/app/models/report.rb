@@ -185,7 +185,13 @@ class Report < ActiveRecord::Base
       cols = []
       cols << "SL"
       self.report_columns.each do |rc|
-        if (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
+        if t(rc.title) == "First Name"
+          cols << "Full Name"
+        elsif t(rc.title) == "Last Name" || t(rc.title) == "Surname" 
+         
+        elsif t(rc.title) == "Middle Name"
+
+        elsif (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
             p_data = 1
             cols << "Father's Name"
             cols << "Mother's Name"
@@ -216,8 +222,12 @@ class Report < ActiveRecord::Base
         cols << sl
         guardians = GuardianStudents.find_all_by_student_id(obj.id)
         self.report_columns.each do |col|
-          
-          if (t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation") && p_data == 0
+          if t(col.title) == "First Name"
+              cols <<  "#{obj.send("full_name")}"
+          elsif t(col.title) == "Last Name" || t(rc.title) == "Surname" 
+         
+          elsif t(col.title) == "Middle Name"
+          elsif (t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation") && p_data == 0
                 p_data = 1
                 unless guardians.blank?
                   guardians.each do |gur|

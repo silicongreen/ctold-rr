@@ -40,6 +40,7 @@ en:
   custom_report_view_privilege: "Custom Reports view"
   phone1: "Phone"
   phone2: "Mobile"
+  admission_no: "Student ID"
   home_address_line1: "Home address line 1"
   home_address_line2: "Home address line 2"
   address_line1: "Address line 1"

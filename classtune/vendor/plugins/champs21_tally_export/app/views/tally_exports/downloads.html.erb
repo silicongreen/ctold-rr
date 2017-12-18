@@ -34,7 +34,7 @@
       <% time = file_name.split("_").last %>
       <div class="container<%= cycle('odd', 'even')%> ">
         <div class="file_name"><%= I18n.l(time.to_time) %></div>
-        <div class="file_download"><%= link_to "#{t('download_text')}",f.export_file.url %></div>
+        <div class="file_download"><%= link_to "#{t('download_text')}", "/tally_exports/download/#{f.id}" %></div>
       </div>
     <% end %>
     <div class="link-descr"></div>

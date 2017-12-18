@@ -624,14 +624,16 @@ class ExamController < ApplicationController
          params[:exam_marks].each_pair do |exam_id, max_mark|
            @exam = Exam.find_by_id(exam_id)
            unless @exam.nil?
-             max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
+              max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
+              if @exam.alternative_title != max_mark[:alternative_title]
+                 @exam.update_attribute(:alternative_title,max_mark[:alternative_title])
+              end   
              
-             if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
-                @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
-                
-             elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
-                @exam_marks_error = true
-             end 
+              if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
+                 @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
+              elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
+                 @exam_marks_error = true
+              end 
            end
          end
        end 

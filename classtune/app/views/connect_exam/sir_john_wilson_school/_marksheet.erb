@@ -74,8 +74,11 @@
                         <td class="rotate"><div>
                         <% if rs['exam_date'].to_s!="01/01/70" %>
                           <span><%=  rs['exam_date'].to_s %><br /></span>
-                        <% end %>        
-                        <span><%=  rs['alternative_title'] %></span></div></td>
+                          <span><%=  rs['alternative_title'] %></span>
+                        <% else %>
+                          <span><%=  rs['alternative_title'] %><br /></span>
+                        <% end %>  
+                        </div></td>
                         <% colspan = colspan+1 %>  
                         <% end %>
                       <% end %> 

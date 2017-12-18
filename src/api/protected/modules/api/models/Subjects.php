@@ -147,6 +147,26 @@ class Subjects extends CActiveRecord
        $subjects = $this->findAll($criteria);
        return $subjects;
     }
+    public function getSubjectIdsBySubId($subject_id)
+    {
+       $subjectObj = new Subjects();
+       $sub_data = $subjectObj->findByPk($subject_id);
+       $criteria = new CDbCriteria(); 
+       $criteria->select = 't.id';
+       $criteria->compare('t.name', $sub_data->name);
+       $criteria->compare('t.batch_id', $sub_data->batch_id);
+       $subject = array();
+       $subjects = $this->findAll($criteria);
+       if($subjects)
+       {
+            foreach($subjects as $value)
+            {
+                $subject[] = $value->id;
+            }
+       }
+       return $subject; 
+       
+    }         
     public function getSubjectFullName($id)
     {
        $criteria = new CDbCriteria(); 

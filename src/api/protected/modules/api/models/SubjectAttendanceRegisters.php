@@ -142,6 +142,26 @@ class SubjectAttendanceRegisters extends CActiveRecord
         }
         return 0;
     }
+    
+    public function getRegisterClassName($subject_id,$batch_id,$date_start=false,$date_end=false)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "count(t.id) as total";
+        $subjectObj = new Subjects();
+        $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
+        $criteria->addInCondition("t.subject_id", $subjects);
+        if($date_start && $date_end)
+        {
+            $criteria->addCondition("attendance_date>='" . $date_start . "' and attendance_date<='" . $date_end . "'");
+        }
+        $criteria->compare('t.batch_id', $batch_id);
+        $data = $this->find($criteria);
+        if($data)
+        {
+            return $data->total;
+        }
+        return 0;
+    }
 
     public function getRegisterDataAll($subject_id, $date, $batch_id=0)
     {
@@ -153,6 +173,21 @@ class SubjectAttendanceRegisters extends CActiveRecord
         }
         $criteria->compare("attendance_date", $date);
         $data = $this->findAll($criteria);
+        return $data;
+    }
+    
+    public function getRegisterDataBySubjectName($subject_id, $date, $batch_id=0)
+    {
+        $criteria = new CDbCriteria;
+        $subjectObj = new Subjects();
+        $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
+        $criteria->addInCondition("subject_id", $subjects);
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
+        $criteria->compare("attendance_date", $date);
+        $data = $this->find($criteria);
         return $data;
     }
 

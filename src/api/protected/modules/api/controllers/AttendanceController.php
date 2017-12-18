@@ -23,7 +23,7 @@ class AttendanceController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('getsubject', 'getstudents', 'addattendence', 'reportteacher','reportallstd', 'associatesubject', 'report' , 'reportallteacher'),
+                'actions' => array('getsubject', 'getstudents', 'addattendence','getstudentsbysubname','reportteacherbyname', 'reportteacher','reportallstd', 'associatesubject', 'report' , 'reportallteacher', 'reportallteachername'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -64,6 +64,77 @@ class AttendanceController extends Controller
             }
         }
         else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+    
+    public function actiongetStudentsBySubName()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $date = Yii::app()->request->getPost('date');
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $subject_id)
+        {           
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);
+            
+            if($sub_data->elective_group_id)
+            {
+                $stdObj = new StudentsSubjects();
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
+            }
+            else
+            {
+                $student = new Students();
+                $all_student = $student->getBatchStudentFull($sub_data->batch_id);
+            }
+
+            $att_register = new SubjectAttendanceRegisters();
+            $att_register_data = $att_register->getRegisterDataBySubjectName($subject_id, $date,$sub_data->batch_id);
+
+            if ($att_register_data)
+            {
+               
+                $response['data']['register'] = $att_register_data->id;
+                $attobj = new SubjectAttendances();
+                $att_data = $attobj->getAttendenceTimeTableSubName($subject_id, $date,$sub_data->batch_id);
+                $i = 0;
+                foreach ($all_student as $value)
+                {
+                    $students[$i] = $value;
+                    $students[$i]['att'] = 1;
+                    if (isset($att_data[$value['student_id']]))
+                    {
+                        if ($att_data[$value['student_id']] == 1)
+                        {
+                            $students[$i]['att'] = 3;
+                        } 
+                        else
+                        {
+                            $students[$i]['att'] = 2;
+                        }
+                    }
+                    $i++;
+                }
+            } 
+            else
+            {
+                $response['data']['register'] = "0";
+                $students = $all_student;
+            }
+            $response['data']['students'] = $students;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+            
+        } else
         {
             $response['status']['code'] = 400;
             $response['status']['msg'] = "Bad Request";
@@ -232,6 +303,85 @@ class AttendanceController extends Controller
         echo CJSON::encode($response);
         Yii::app()->end();
     }
+    public function actionReportAllTeacherName()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $date_start = Yii::app()->request->getPost('date_start');
+        $date_end = Yii::app()->request->getPost('date_end');
+        
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $subject_id)
+        { 
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);     
+            if($sub_data->elective_group_id)
+            {
+                $stdObj = new StudentsSubjects();
+                $all_student = $stdObj->getSubjectStudentFull($subject_id,$sub_data->batch_id);
+            }
+            else
+            {
+                $student = new Students();
+                $all_student = $student->getBatchStudentFull($sub_data->batch_id);
+            }
+            $att_register = new SubjectAttendanceRegisters();
+            $total_class = $att_register->getRegisterClassName($subject_id,$sub_data->batch_id,$date_start,$date_end);
+            
+            $std_array = array();
+            if($all_student)
+            {
+                foreach($all_student as $value)
+                {
+                    $std_array[] = $value['student_id'];
+                }  
+            }
+            
+            $att_std = new SubjectAttendances();
+            $absent = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id,0,$date_start,$date_end);
+            $late = $att_std->getAllStdAttname($std_array, $subject_id, $sub_data->batch_id, 1,$date_start,$date_end);
+            
+            $std_data = array();
+            if($all_student)
+            {
+                $i = 0;
+               foreach($all_student as $value)
+               {
+                  $std_data[$i]['roll_no'] = $value['roll_no'];
+                  $std_data[$i]['name'] = $value['student_name'];
+                  $present = $total_class;
+                  $std_data[$i]['absent'] = 0;
+                  $std_data[$i]['late'] =  0;
+                  if(isset($absent[$value['student_id']]))
+                  {
+                      $std_data[$i]['absent'] = (int)$absent[$value['student_id']];
+                      $present = $present -$absent[$value['student_id']]; 
+                  } 
+                  if(isset($late[$value['student_id']]))
+                  {
+                      $std_data[$i]['late'] = (int)$late[$value['student_id']];
+                      $present = $present -$late[$value['student_id']];
+                  }
+                  $std_data[$i]['present'] = (int)$present;
+                  $i++;
+                  
+               } 
+            } 
+            $response['data']['std_att'] = $std_data;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+            
+            
+            
+            
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
     public function actionReportAllTeacher()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -307,7 +457,58 @@ class AttendanceController extends Controller
         }
         echo CJSON::encode($response);
         Yii::app()->end();
-    }        
+    }  
+    
+    public function actionReportTeacherbyName()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $subject_id = Yii::app()->request->getPost('subject_id');
+        $date = Yii::app()->request->getPost('date');
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $subject_id)
+        {
+            
+            $class_completed = 0;
+            if (!$date)
+            {
+                $date = date("Y-m-d");
+            }
+            
+            $subjectObj = new Subjects();
+            $sub_data = $subjectObj->findByPk($subject_id);
+            
+            $present = 0;
+            $absent = 0;
+            $late = 0;
+            $att_register = new SubjectAttendanceRegisters();
+            
+            
+
+            $att_register_data = $att_register->getRegisterDataBySubjectName($subject_id, $date, $sub_data->batch_id);
+            if ($att_register_data)
+            {
+                $class_completed = 1;
+                $present = $present + $att_register_data->present;
+                $absent = $absent + $att_register_data->absent;
+                $late = $late + $att_register_data->late;
+            }
+
+            $response['data']['date'] = $date;
+            $response['data']['class_completed'] = $class_completed;
+            $response['data']['total'] = $present + $absent;
+            $response['data']['present'] = $present;
+            $response['data']['absent'] = $absent;
+            $response['data']['late'] = $late;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Data Found";
+        
+        } else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
     
     public function actionReportTeacher()
     {
@@ -333,7 +534,7 @@ class AttendanceController extends Controller
             
             
 
-            $att_register_data = $att_register->getRegisterData($subject_id, $date, $sub_data->batch_id);
+            $att_register_data = $att_register->getRegisterDataBySubjectName($subject_id, $date, $sub_data->batch_id);
             if ($att_register_data)
             {
                 $class_completed = 1;

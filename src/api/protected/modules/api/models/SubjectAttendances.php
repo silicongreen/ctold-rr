@@ -120,6 +120,36 @@ class SubjectAttendances extends CActiveRecord
         return parent::model($className);
     }
     
+    public function getAllStdAttname($student_id,$subject_id ,$batch_id, $is_late = 0,$date_start=false,$date_end=false)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "t.student_id,count(t.id) as total";
+        $criteria->addInCondition('t.student_id', $student_id);
+        $subjectObj = new Subjects();
+        $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
+        $criteria->addInCondition("t.subject_id", $subjects);
+        $criteria->compare("t.batch_id", $batch_id);
+        if($date_start && $date_end)
+        {
+            $criteria->addCondition("attendance_date>='" . $date_start . "' and attendance_date<='" . $date_end . "'");
+        }
+        $criteria->compare('t.is_late', $is_late);
+        $criteria->group = 't.student_id';
+        $data = $this->findAll($criteria);
+
+        $return = array();
+        if ($data)
+        {
+            foreach($data as $value)
+            {
+                $return[$value->student_id] = $value->total;
+            }    
+        } 
+       
+        return $return;
+        
+    }
+    
     public function getAllStdAtt($student_id,$subject_id ,$batch_id, $is_late = 0)
     {
         $criteria = new CDbCriteria;
@@ -194,6 +224,31 @@ class SubjectAttendances extends CActiveRecord
         $data = $this->findAll($criteria);
 
         return $data;
+    }
+    
+    public function getAttendenceTimeTableSubName($subject_id, $date, $batch_id = 0)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "t.student_id,is_late";
+        $criteria->compare('t.attendance_date', $date);
+        $subjectObj = new Subjects();
+        $subjects = $subjectObj->getSubjectIdsBySubId($subject_id);
+        $criteria->addInCondition("t.subject_id", $subjects);
+        
+        if($batch_id)
+        {
+            $criteria->compare('t.batch_id', $batch_id);
+        }
+        $data = $this->findAll($criteria);
+        $att_data = array();
+        if ($data)
+        {
+            foreach ($data as $value)
+            {
+                $att_data[$value->student_id] = $value->is_late;
+            }
+        }
+        return $att_data;
     }
 
     public function getAttendenceTimeTable($subject_id, $date, $batch_id = 0)

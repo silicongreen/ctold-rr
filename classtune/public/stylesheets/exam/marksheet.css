@@ -318,6 +318,9 @@ tr.sjws_odd{
     background: #fff;
     text-align: center;
 }
+.sjws-table-header td.left-align{
+    text-align: left;
+}
 .sjws_table_head .sl{
     width:20px !important;
 }

@@ -310,7 +310,7 @@ tr.sjws_odd{
 }
 
 .sjws-table-header td{
-    padding: 8px 8px 8px 8px;
+    padding: 8px 2px 8px 2px;
     border-top: 1px solid #ADACAB;
     border-left: 1px solid #ADACAB;
     border-right: 1px solid #ADACAB;

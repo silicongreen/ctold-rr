@@ -256,7 +256,7 @@
                 <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
                 <% end %>
                 <% unless all_mark_percentage == 0 %>
-                <td colspan="1" rowspan="1"><b><%= all_mark_percentage %></b></td>
+                <td colspan="1" rowspan="1"><b><%= sprintf( "%0.02f", all_mark_percentage) %></b></td>
                 <% else %>
                 <td colspan="1" rowspan="1"><b>-</b></td>
                 <% end %>

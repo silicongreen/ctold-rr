@@ -59,7 +59,7 @@
         <% if @date.blank? %>
           <%= link_to "#{t('pdf_report')}", {:controller => "attendances", :action => "get_subject_report_pdf", :subject_id=>@subject.id},:target => '_blank' %>
         <% elsif !@date1.blank? %>
-          <%= link_to "#{t('pdf_report')}", {:controller => "attendances", :action => "get_subject_report_pdf", :subject_id=>@subject.id, :date=>@date1, :date2=>@date2},:target => '_blank' %>
+          <%= link_to "#{t('pdf_report')} Date", {:controller => "attendances", :action => "get_subject_report_pdf", :subject_id=>@subject.id, :date=>@date1, :date2=>@date2},:target => '_blank' %>
         <% end %>  
       </div>
   </div>

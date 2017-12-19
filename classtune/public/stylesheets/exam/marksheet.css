@@ -316,6 +316,7 @@ tr.sjws_odd{
     border-right: 1px solid #ADACAB;
     color: #000;
     background: #fff;
+    text-align: center;
 }
 .sjws_table_head .sl{
     width:20px !important;
@@ -339,12 +340,12 @@ tr.sjws_odd{
     transform: translate(5px, 100px) rotate(270deg);
     width: 40px;
 }
-.sjws_table_head td.rotate_homework div
+.sjws_table_head td.rotate_homework div span
 {
     padding: 5px;
 }
 .sjws_table_head td.rotate div span {  
-  padding: 5px;
+  padding: 15px;
 }
 .sjws_table_head td.rotate div span.rotate_box
 {

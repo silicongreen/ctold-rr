@@ -279,6 +279,11 @@
 				
             
         </tr>
+        <% if std.equal? @report_data['result']['al_students'].last %>
+          <tr class="page-break0">
+              <td colspan="100">&nbsp;</td>
+          </tr>
+        <% end %>
         <% end %>
         <% end %>
       </table>
@@ -298,5 +303,11 @@
     table.sjws_table_head
     {
         width: 95% !important;
+    }
+    .page-break0{
+        height: 0px;
+        border: 1px solid #fff;
+        width: 100%;
+        float: left;
     }
 </style>    

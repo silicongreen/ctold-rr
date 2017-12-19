@@ -28,7 +28,7 @@
               <% unless @data['std_att'].blank? %>
                 <% @data['std_att'].each do |att| %>
                   <% std_count = std_count+1 %>
-                  <% if std_count>39 && extender ==0 %>
+                  <% if std_count>37 && extender ==0 %>
                     <% std_count = 0 %>
                     <% extender = 1 %>
                     <tr class="page-break">

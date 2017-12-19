@@ -13,46 +13,66 @@ class TallyBulkExportJob
     transactions = FinanceTransaction.all(:conditions => "created_at >= '#{@start_date}' AND created_at < '#{@end_date}' AND category_id IN (#{categories.join(',')}) AND lastvchid IS NULL", :include =>  {:category => :tally_ledger })
 
     builder = Nokogiri::XML::Builder.new do |xml|
-      xml.ENVELOPE {
-        xml.HEADER {
-          xml.VERSION "1"
-          xml.TALLYREQUEST "Import"
-          xml.TYPE "Data"
-          xml.ID "Vouchers"
-        }
-        xml.BODY {
-          xml.DESC ""
-          xml.DATA {
-            xml.TALLYMESSAGE {
-              i = 0
-              transactions.each do |trans|
-                trans_amount = trans.fine_included? ? (trans.amount+trans.fine_amount) : trans.amount
-                unless trans_amount == 0
-                  xml.VOUCHER {
-                    category = trans.category
-                    ledger = category.tally_ledger
-                    xml.DATE "#{trans.transaction_date.strftime("%Y%m%d")}"
-                    xml.NARRATION "#{trans.description}"
-                    xml.VOUCHERTYPENAME "#{ledger.voucher_name}"
-                    xml.VOUCHERNUMBER "#{i+=1}"
-                    xml.send("ALLLEDGERENTRIES.LIST") {
-                      xml.LEDGERNAME "#{ledger.ledger_name}"
-                      xml.ISDEEMEDPOSITIVE "#{category.is_income? ? "No" : "Yes"}"
-                      xml.AMOUNT "#{category.is_income? ? "" : "-"}#{trans_amount}"
+        xml.ENVELOPE {
+          xml.HEADER {
+            xml.VERSION "1"
+            xml.TALLYREQUEST "Import"
+            xml.TYPE "Data"
+            xml.ID "Vouchers"
+          }
+          xml.BODY {
+            xml.DESC ""
+            xml.DATA {
+              xml.TALLYMESSAGE {
+                i = 0
+                transactions.each do |trans|
+                  category = trans.category
+                  desc = trans.description
+                  ledger = category.tally_ledger
+                  ledger_name = ledger.ledger_name
+                  account_name = ledger.account_name
+                  trans_amount = trans.fine_included? ? (trans.amount+trans.fine_amount) : trans.amount
+                  if trans.payee_type == 'Student'
+                    payee_id = trans.payee_id 
+                    payee = Student.find(payee_id)
+                    desc = "#{trans.payee_type} #{category.name} for #{payee.admission_no} - #{payee.full_name} of #{payee.batch.full_name}"
+                    ledger_name = "#{payee.admission_no} - #{payee.full_name}"
+                    unless trans.payment_mode.nil? or trans.payment_mode.empty?
+                      account_name = trans.payment_mode
+                    end
+                  elsif trans.payee_type == 'Employee'
+                    payee_id = trans.payee_id 
+                    payee = Employee.find(payee_id)
+                    desc = "#{trans.payee_type} #{category.name} for #{payee.employee_number} - #{payee.full_name}"
+                    ledger_name = "#{payee.employee_number} - #{payee.full_name}"
+                    unless trans.payment_mode.nil? or trans.payment_mode.empty?
+                      account_name = trans.payment_mode
+                    end
+                  end
+                  unless trans_amount == 0
+                    xml.VOUCHER {
+                      xml.DATE "#{trans.transaction_date.strftime("%Y%m%d")}"
+                      xml.NARRATION "#{desc}"
+                      xml.VOUCHERTYPENAME "#{ledger.voucher_name}"
+                      xml.VOUCHERNUMBER "#{i+=1}"
+                      xml.send("ALLLEDGERENTRIES.LIST") {
+                        xml.LEDGERNAME "#{ledger_name}"
+                        xml.ISDEEMEDPOSITIVE "#{category.is_income? ? "No" : "Yes"}"
+                        xml.AMOUNT "#{category.is_income? ? "" : "-"}#{trans_amount}"
+                      }
+                      xml.send("ALLLEDGERENTRIES.LIST") {
+                        xml.LEDGERNAME "#{account_name}"
+                        xml.ISDEEMEDPOSITIVE "#{category.is_income? ? "Yes" : "No"}"
+                        xml.AMOUNT "#{category.is_income? ? "-" : ""}#{trans_amount}"
+                      }
                     }
-                    xml.send("ALLLEDGERENTRIES.LIST") {
-                      xml.LEDGERNAME "#{ledger.account_name}"
-                      xml.ISDEEMEDPOSITIVE "#{category.is_income? ? "Yes" : "No"}"
-                      xml.AMOUNT "#{category.is_income? ? "-" : ""}#{trans_amount}"
-                    }
-                  }
+                  end
                 end
-              end
+              }
             }
           }
         }
-      }
-    end
+      end
     xml_file_name =""
     file_name = "tally_#{Time.now.strftime("%Y%m%d%H%M%S")}.xml"
     if defined?(MultiSchool)

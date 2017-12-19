@@ -121,7 +121,7 @@ class TallyExportsController < ApplicationController
       unless categories.nil?
         if @tally_ledger.save
           categories.each do |cat|
-#            cat.update_attributes(:tally_ledger_id => @tally_ledger.id)
+            cat.update_attributes(:tally_ledger_id => @tally_ledger.id)
           end
           @transaction_categories = FinanceTransactionCategory.all(:conditions => "tally_ledger_id IS NULL AND deleted = 0")
           flash[:notice] = "#{t('ledger_created_successfully')}"
@@ -148,9 +148,9 @@ class TallyExportsController < ApplicationController
         if @tally_ledger.update_attributes(params[:tally_ledger])
           @transaction_categories.each do |trans_cat|
             if categories.include?(trans_cat)
-#              trans_cat.update_attributes(:tally_ledger_id => @tally_ledger.id)
+              trans_cat.update_attributes(:tally_ledger_id => @tally_ledger.id)
             else
-#              trans_cat.update_attributes(:tally_ledger_id => nil)
+              trans_cat.update_attributes(:tally_ledger_id => nil)
             end
           end
           flash[:notice] = "#{t('ledger_updated_successfully')}"

@@ -85,14 +85,14 @@
                       <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
                       <td class="rotate"><center><div><span>TOTAL NUM. OF H.W.</span></div></center></td>
-                      <td class="rotate"><div><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
+                      <td class="rotate"><div><br /><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
                       <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
                       <td class="rotate"><center><div><span>GRADE</span></div></center></td>
                   </tr>
 
 
                   <tr class="sjws-table-header">
-                      <td class="sl left-align"><b>SL.</b></td>
+                      <td class="sl"><b>SL.</b></td>
                       <td class="st_name left-align"><b>STUDENTS' NAME / Out of</b></td>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <% if rs['exam_category'].to_i!=4 %>
@@ -137,7 +137,7 @@
                       <% full_mark = 0 %>
 
                       <tr  class="sjws-table-header">
-                          <td class="sl left-align"><%#= std['class_roll_no'] %><%= std_count_main %></td>
+                          <td class="sl"><%#= std['class_roll_no'] %><%= std_count_main %></td>
                           <td class="st_name left-align"><%= std['name'] %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
                           <% if rs['exam_category'].to_i!=4 %>

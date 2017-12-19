@@ -2872,7 +2872,18 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-         
+      
+      if MultiSchool.current_school.id == 340
+        render :pdf => 'marksheet',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else 
       render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'Legal',
@@ -2882,6 +2893,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
     
   end
   

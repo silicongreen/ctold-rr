@@ -84,7 +84,7 @@
                       <% end %> 
                       <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
-                      <td class="rotate"></td>
+                      <td class="rotate"><center><div><span>TOTAL NUM. OF H.W.</span></div></center></td>
                       <td class="rotate"><div><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
                       <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
                       <td class="rotate"><center><div><span>GRADE</span></div></center></td>
@@ -152,7 +152,7 @@
                             </td>
                             <% end %>
                           <% end %> 
-                          <td></td>  
+                          <td>0/<%= assignmentCount %></td>  
                           <td class="name">&nbsp;&nbsp;&nbsp;<%=total_mark.to_i %>&nbsp; /&nbsp; <%=full_mark.to_i %></td>  
                           <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
                           

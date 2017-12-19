@@ -85,7 +85,7 @@
                       <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
 
                       <td class="rotate"><center><div><span>TOTAL NUM. OF H.W.</span></div></center></td>
-                      <td class="rotate"><div><br /><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
+                      <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
                       <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
                       <td class="rotate"><center><div><span>GRADE</span></div></center></td>
                   </tr>
@@ -116,14 +116,14 @@
                       <% std_count_main = std_count_main+1 %>
                       <%  std_count = std_count+1; %>
                       <% colspan = colspan+4 %>
-                      <% if std_count>10 && extender ==0 %>
+                      <% if std_count>13 && extender ==0 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">
                             <td colspan="<%= colspan %>">&nbsp;</td>
                         </tr>    
                     
-                      <% elsif std_count>20 && extender ==1 %>
+                      <% elsif std_count>22 && extender ==1 %>
                         <% std_count = 0 %>
                         <% extender = 1 %>
                         <tr class="page-break">
@@ -174,3 +174,10 @@
 
 
 </div>
+
+<style>
+    table.sjws_table_head
+    {
+        width: 98% !important;
+    }
+</style>

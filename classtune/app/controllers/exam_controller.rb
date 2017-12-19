@@ -2873,7 +2873,7 @@ class ExamController < ApplicationController
         @report_data = @student_response['data']
       end
       
-      if MultiSchool.current_school.id == 340
+      if MultiSchool.current_school.id == 340 && params[:evaluation].blank?
         render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'A4',

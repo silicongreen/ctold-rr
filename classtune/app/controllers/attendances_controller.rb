@@ -259,7 +259,13 @@ end
   def get_subject_report_pdf
     unless params[:subject_id].nil?
       if !params[:subject_id].blank?
-        get_subject_report(params[:subject_id])
+        if !params[:date].blank? and !params[:date2].blank?
+          @date1 = params[:date].to_date.strftime("%Y-%m-%d")
+          @date2 = params[:date2].to_date.strftime("%Y-%m-%d")
+          get_subject_report_name(params[:subject_id],@date1,@date2)
+        else
+          get_subject_report_name(params[:subject_id])
+        end
         @subject = Subject.find(params[:subject_id])
         @batch = @subject.batch
         if @student_response['status']['code'].to_i == 200
@@ -267,6 +273,7 @@ end
         end
       end
     end
+    
     render :pdf => 'get_subject_report_pdf',
       :margin => {:top=> 10,
       :bottom => 10,

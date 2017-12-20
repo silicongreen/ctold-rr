@@ -165,6 +165,11 @@
                         <td class="col-2"><center><b>N/A</b></center></td>
                       <% end %>
                       </tr>
+                      <% if std.equal? @report_data['result']['al_students'].last %>
+                        <tr class="page-break0">
+                            <td colspan="100">&nbsp;</td>
+                        </tr>
+                      <% end %>
                     <% end %>
                   <% end %>
               </table>
@@ -182,5 +187,11 @@
     }
     .sjws_table_head .st_name{
         width:300px !important;
+    }
+    .page-break0{
+        height: 10px;
+        border: 1px solid #fff;
+        width: 100%;
+        float: left;
     }
 </style>

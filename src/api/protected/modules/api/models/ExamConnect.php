@@ -286,6 +286,7 @@ class ExamConnect extends CActiveRecord
                     $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;
                     $result['ALL'][$f]['name'] = $groupedexam['examgroup']->name;
                     $result['ALL'][$f]['alternative_title'] = $exam->alternative_title;
+                    $result['ALL'][$f]['exam_id'] = $exam->id;
                     $result['ALL'][$f]['exam_date'] =  date("d/m/y",strtotime($exam->end_time));
                     $result['ALL'][$f]['quarter'] = $groupedexam['examgroup']->quarter;
                     $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;

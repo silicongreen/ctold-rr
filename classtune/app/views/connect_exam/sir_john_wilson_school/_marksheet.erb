@@ -156,7 +156,7 @@
                           <td class="name">&nbsp;&nbsp;&nbsp;<%=total_mark.round().to_i %>&nbsp; /&nbsp; <%=full_mark.to_i %></td>  
                           <% main_mark = (total_mark.round().to_f/full_mark.to_f)*100 %>
                           
-                          <td><% if total_mark > 0 %><%= sprintf( "%0.02f", main_mark) %> %<% else %>-<% end %></td>
+                          <td><% if total_mark > 0 %><%=  main_mark.round().to_i %> %<% else %>-<% end %></td>
 
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

@@ -14,7 +14,7 @@
 }
 .grand_total
 {
-    border-bottom: 1px solid #ADACAB;
+    border-bottom: 1px solid #000000;
 }
 .section1{
     page-break-before:always;
@@ -28,7 +28,7 @@
 .page-blank{
     width: 100%;
     float: left;
-    border-top: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
 }
 .page_break{
     margin-top: 60px;
@@ -45,7 +45,7 @@
 }
 .grand_total
 {
-    border-bottom: 1px solid #ADACAB;
+    border-bottom: 1px solid #000000;
 }
 
 
@@ -98,19 +98,19 @@ h2.heading{
 
 }
 tr.even{
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-bottom: 0;
 }
 
 tr.odd{
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-bottom: 0;
 }
 
 .even td{
 
     padding: 8px 8px 8px 8px;
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
@@ -118,7 +118,7 @@ tr.odd{
 
 .odd td{
     padding: 8px 8px 8px 8px;
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
@@ -130,17 +130,17 @@ td.col-pdf-bold{
 
 .table-header td{
     padding: 8px 8px 8px 8px;
-    border-top: 1px solid #ADACAB;
-    border-left: 1px solid #ADACAB;
-    border-right: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
     color: #000;
     background: #EEEEEE;
 }
 
 table#pdf-table{
-    border-top: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
     border-collapse:collapse;
-    border-bottom: 1px solid #ADACAB;
+    border-bottom: 1px solid #000000;
 }
 
 
@@ -176,27 +176,27 @@ table#pdf-table{
 .page-break4 td{
     height: 47px;
     border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
 }
 
 
 .page-break td{
     height: 50px;
     border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
 }
 .page-break1 td{
     height: 100px;
     border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
 }
 .page-last-element td{
     height: 5px;
     border: 1px solid #fff;
-    border-top: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
 }
 table, tr, td, th, tbody, thead, tfoot {
     page-break-inside: avoid !important;
@@ -280,18 +280,18 @@ transform:scale(1,1.5); /* W3C */
 
 }
 tr.sjws_even{
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-bottom: 0;
 }
 
 tr.sjws_odd{
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-bottom: 0;
 }
 .sjws_even td{
 
     padding: 8px 8px 8px 8px;
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
@@ -299,7 +299,7 @@ tr.sjws_odd{
 
 .sjws_odd td{
     padding: 8px 8px 8px 8px;
-    border: 1px solid #ADACAB;
+    border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
@@ -311,9 +311,9 @@ tr.sjws_odd{
 
 .sjws-table-header td{
     padding: 8px 2px 8px 2px;
-    border-top: 1px solid #ADACAB;
-    border-left: 1px solid #ADACAB;
-    border-right: 1px solid #ADACAB;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
     color: #000;
     background: #fff;
     text-align: center;
@@ -352,9 +352,9 @@ tr.sjws_odd{
 }
 .sjws_table_head td.rotate div span.rotate_box
 {
-    border-top:1px solid #ADACAB;
-    border-bottom: 1px solid #ADACAB;
-    border-left:1px solid #ADACAB;
+    border-top:1px solid #000000;
+    border-bottom: 1px solid #000000;
+    border-left:1px solid #000000;
 }
 .sjws_table_head td.word_break
 {

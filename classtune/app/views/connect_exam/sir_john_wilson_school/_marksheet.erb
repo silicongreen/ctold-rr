@@ -71,14 +71,14 @@
                       </td>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <% if rs['exam_category'].to_i!=4 %>
-                        <td class="rotate"><center><div>
+                        <td class="rotate"><center><div><br />
                         <% if rs['exam_date'].to_s!="01/01/70" %>
                           <span><%=  rs['exam_date'].to_s %><br /></span>
                           <span><%=  rs['alternative_title'] %></span>
                         <% else %>
                           <span><%=  rs['alternative_title'] %></span>
                         <% end %>  
-                        </div></center></td>
+                        </div><br /></center></td>
                         <% colspan = colspan+1 %>  
                         <% end %>
                       <% end %> 

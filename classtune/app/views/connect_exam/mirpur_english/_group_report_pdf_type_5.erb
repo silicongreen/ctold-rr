@@ -65,7 +65,7 @@
                       <td class="col-pdf">
                           Total Marks
                       </td>
-                      <td class="col-pdf">Highest Marks</td>
+                      
                       <td class="col-pdf">Letter Grade</td>
                       <td class="col-pdf border-right-none">GPA</td>
                   </tr>
@@ -153,8 +153,7 @@
 
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", highest_mark)%> </td>
+                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>   
                             <% unless subject_grade_per.blank? %>
                               <td class="col-pdf"><b><%= subject_grade_per %></b></td>
                               <%
@@ -353,7 +352,11 @@
                               Present
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= merit_position %>
+                              <% if merit_position == 0 %>
+                                <%= @report_data['present'] %>
+                              <% else %>
+                                <%= merit_position %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               
@@ -364,7 +367,11 @@
                               Absent
                           </td> 
                           <td class="col-pdf align-center" width="33%">
-                              <%= promotion_status.to_i-merit_position.to_i %>
+                              <% if promotion_status == 0 or merit_position == 0 %>
+                                <%= @report_data['total']-@report_data['present'] %>
+                              <% else %>
+                                <%= promotion_status.to_i-merit_position.to_i %>
+                              <% end %>
                           </td>
                           <td class="col-pdf no-border" width="33%">
                               

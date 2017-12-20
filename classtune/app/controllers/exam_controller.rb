@@ -647,7 +647,7 @@ class ExamController < ApplicationController
             if details[:marks].nil?
                details[:marks] = 0
             end
-            if details[:marks].downcase == "ab" or details[:marks].downcase == "na"
+            if details[:marks] != 0 and (details[:marks].downcase == "ab" or details[:marks].downcase == "na")
               if @exam_absent.nil?
                 ExamAbsent.create do |absent|
                     absent.exam_id          = @exam.id
@@ -696,7 +696,7 @@ class ExamController < ApplicationController
                       details[:remarks] = remarks_details
                     end
                   end 
-                  if details[:marks].downcase == "ab" or details[:marks].downcase == "na"
+                  if details[:marks] != 0 and (details[:marks].downcase == "ab" or details[:marks].downcase == "na")
                     @exam_score.destroy
                   else
                     if @exam_score.update_attributes(details)

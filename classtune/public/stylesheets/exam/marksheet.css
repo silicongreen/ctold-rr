@@ -341,14 +341,14 @@ tr.sjws_odd{
 .sjws_table_head td.rotate div {
     -webkit-transform: translate(5px, 100px) rotate(270deg);
     transform: translate(5px, 100px) rotate(270deg);
-    width: 40px;
+    width: 50px;
 }
 .sjws_table_head td.rotate_homework div span
 {
-    padding: 5px;
+    padding: 15px;
 }
 .sjws_table_head td.rotate div span {  
-  padding: 5px;
+  padding: 15px;
 }
 .sjws_table_head td.rotate div span.rotate_box
 {

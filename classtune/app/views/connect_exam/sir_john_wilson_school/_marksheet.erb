@@ -147,7 +147,17 @@
                                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                                   <% full_mark = full_mark+rs['maximum_marks'].to_i %>
                                 <% else %>
+                                  <% examObj = Exam.find_by_id(rs['exam_id'].to_i) %>
+                                  <% absent = examObj.absent_for(std['id'].to_i) %>
+                                  <% unless absent.remarks.blank?  %>
+                                      <% if absent.remarks.downcase == "ab"  %>
+                                          <font color="red" > <%= absent.remarks.upcase %></font>
+                                      <% else %>
+                                          <font color="green" > <%= absent.remarks.upcase %></font>
+                                      <% end %>
+                                  <% else %>
                                   -
+                                  <% end %>  
                                 <% end %>    
                             </td>
                             <% end %>

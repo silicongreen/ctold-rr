@@ -211,12 +211,19 @@
                     </table>
                 </td>
                 <% else %>
+                <% if !@exam_score.marks.blank? %>
+                    <% total_mark = total_mark.to_f+@exam_score.marks.to_f %>
+                    <% score_now = @exam_score.marks  %>
+                <% else %>
+                  <% @exam_absent = exam.absent_for(student) %>
+                  <% score_now = @exam_absent.remarks  %>
+              ` <% end %>
                 <td class="col-2 td-mark">
 
                     <div class="label-field-pair2">
 
                       <div class="text-input-bg2">
-                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :size => '4', :class=>"marks-box" %>
+                          <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", score_now, :size => '4', :class=>"marks-box" %>
                        </div>
                     </div>
                     <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>

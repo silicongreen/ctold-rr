@@ -28,6 +28,7 @@ class Exam < ActiveRecord::Base
   has_one :event ,:as=>:origin
 
   has_many :exam_scores
+  has_many :exam_absents
   has_many :archived_exam_scores
   has_many :previous_exam_scores
   has_many :assessment_scores
@@ -35,6 +36,7 @@ class Exam < ActiveRecord::Base
   delegate :name,:is_current, :to => :exam_group
   
   accepts_nested_attributes_for :exam_scores
+  accepts_nested_attributes_for :exam_absents
   
   def after_save
     grouped_exams = GroupedExam.find_all_by_exam_group_id(self.exam_group.id)
@@ -113,6 +115,11 @@ class Exam < ActiveRecord::Base
   def score_for(student_id)
     exam_score = self.exam_scores.find(:first, :conditions => { :student_id => student_id })
     exam_score.nil? ? ExamScore.new : exam_score
+  end
+  
+  def absent_for(student_id)
+    exam_absent = self.exam_absents.find(:first, :conditions => { :student_id => student_id })
+    exam_absent.nil? ? ExamAbsent.new : exam_absent
   end
 
   def class_average_marks

@@ -643,32 +643,47 @@ class ExamController < ApplicationController
           @exam = Exam.find_by_id(exam_id)
           stdetails.each_pair do |student_id, details|
             @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
+            @exam_absent = ExamAbsent.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
             if details[:marks].nil?
                details[:marks] = 0
+            end
+            if details[:marks].downcase == "ab" or details[:marks].downcase == "na"
+              if @exam_absent.nil?
+                ExamAbsent.create do |absent|
+                    absent.exam_id          = @exam.id
+                    absent.student_id       = student_id
+                    absent.remarks          = details[:marks]
+                end 
+              else
+                @exam_absent.update_attribute("remarks",details[:marks])
+              end  
             end
             if @exam_score.nil?
               
               unless details[:marks].nil? 
                 if details[:marks].to_f <= @exam.maximum_marks.to_f
                   
-                  unless details[:remarks].blank?
-                    if details[:remarks].kind_of?(Array)
-                      remarks_details = details[:remarks].join("|")
+                  
+                    unless details[:remarks].blank?
+                      if details[:remarks].kind_of?(Array)
+                        remarks_details = details[:remarks].join("|")
+                        ExamScore.create do |score|
+                          score.exam_id          = @exam.id
+                          score.student_id       = student_id
+                          score.marks            = details[:marks]
+                          score.remarks          = remarks_details
+                        end
+
+                      end
+                    else
                       ExamScore.create do |score|
                         score.exam_id          = @exam.id
                         score.student_id       = student_id
                         score.marks            = details[:marks]
-                        score.remarks          = remarks_details
                       end
-                      
                     end
-                  else
-                    ExamScore.create do |score|
-                      score.exam_id          = @exam.id
-                      score.student_id       = student_id
-                      score.marks            = details[:marks]
-                    end
-                  end
+                
+                  
                 else
                   @error = true
                 end
@@ -680,13 +695,16 @@ class ExamController < ApplicationController
                       remarks_details = details[:remarks].join("|")
                       details[:remarks] = remarks_details
                     end
-                  end   
-                  if @exam_score.update_attributes(details)
+                  end 
+                  if details[:marks].downcase == "ab" or details[:marks].downcase == "na"
+                    @exam_score.destroy
                   else
-                    flash[:warn_notice] = "#{t('flash4')}"
-                    @error = nil
-                  end
-                   
+                    if @exam_score.update_attributes(details)
+                    else
+                      flash[:warn_notice] = "#{t('flash4')}"
+                      @error = nil
+                    end
+                  end  
                  
               else
                 @error = true

@@ -1490,11 +1490,11 @@ table.float-left-clear-both
 }
 .sjws .exam_title_left p {
 display:inline-block;
-transform:scale(1.5,1.0); /* W3C */
--webkit-transform:scale(1.5,1.0); /* Safari and Chrome */
--moz-transform:scale(1.5,1.0); /* Firefox */
--ms-transform:scale(1.5,1.0); /* IE 9 */
--o-transform:scale(1.5,1.0); /* Opera */
+transform:scale(1.3,1.3); /* W3C */
+-webkit-transform:scale(1.3,1.3); /* Safari and Chrome */
+-moz-transform:scale(1.3,1.3); /* Firefox */
+-ms-transform:scale(1.3,1.3); /* IE 9 */
+-o-transform:scale(1.3,1.3); /* Opera */
 /* Rest Of CSS Code Here*/
 margin:10px;
 } 

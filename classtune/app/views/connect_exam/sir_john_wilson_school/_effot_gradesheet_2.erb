@@ -140,7 +140,6 @@
            
                          
               <% if increase != totalCount %>
-              
                 <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %> 
                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                   <% total_mark_for_40 = total_mark_for_40.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -150,24 +149,20 @@
               <% end %>
               
               <% if increase == totalCount %>
-                <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %> 
                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                   <% total_mark_for_60 = total_mark_for_60.to_f+rs['students'][std['id']]['score'].to_f %>
                 <% end %>
                 <% full_mark = full_mark+rs['maximum_marks'].to_i %>
                 <% full_mark_for_60 = full_mark_for_60+rs['maximum_marks'].to_i %>
               <% end %>
-            
                 
-            <% end %>    
+              
             <% increase = increase+1%>
           <% end %>   
-          <% if total_mark_for_40 > 0 %>
+          <% if total_mark_for_40 > 0 && total_mark_for_60 > 0 %>
           <% mark_obtain_in_40 = ((total_mark_for_40/full_mark_for_40)*40).to_i %>
-          <% end %>  
-          <% if total_mark_for_60 > 0 %>
-            <% mark_obtain_in_60 = ((total_mark_for_60/full_mark_for_60)*60).to_i %>   
-          <% end %>    
+          <% mark_obtain_in_60 = ((total_mark_for_60/full_mark_for_60)*60).to_i %>   
           <% mark_obtain_in_100 = mark_obtain_in_40+mark_obtain_in_60 %>   
           <% end %>
           <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
@@ -186,7 +181,7 @@
             
             <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
             
-            <td class="name"> <center><%= "0" %><hr><%= assignmentCount %></center></td>
+            <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
             <%
               exam_comment = ""
               exam_effort = ""

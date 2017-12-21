@@ -16,17 +16,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+
 <div id="page-yield" class="available_sections1">
-  <div class="page1 sjws"> 
-      <div class="logo_left">&nbsp;</div>
-      <div class="exam_title_left">
-          <p>SIR JOHN WILSON SCHOOL</p>
-          <p><%= @connect_exam_obj.name %> - <%= Time.current.year %> / <%= Time.current.year + 1 %></p>
-      </div>
-      <div class="grad_list_right">
-          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '90%' %>
-      </div>
-  </div>
+  <%= render :partial=>"/connect_exam/sir_john_wilson_school/grade_effort_header" %>
   <div class="section1 row" >
     <center>     
       

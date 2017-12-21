@@ -1578,6 +1578,14 @@ margin:10px;
     background-size: 80%;
     padding: 20px;
 }
+.sjws_table_intro .tickbox_check2
+{
+    background-image: url(../../images/icons/tickbox_check.png);
+    background-repeat: no-repeat;
+    background-position: 10%;
+    background-size: 60%;
+    padding: 20px;
+}
 
 .sjws_table_intro .tickbox_check
 {

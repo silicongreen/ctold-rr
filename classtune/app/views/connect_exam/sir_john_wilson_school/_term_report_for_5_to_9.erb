@@ -1,5 +1,9 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+  <% ab_grades = 0 %>
+  <% c_grades = 0 %>
+  <% d_grades = 0 %>
+  <% total_grades = 0 %>
   <div id="page-yield"  class="available_sections1 sjws">
     <div class="page1"> 
         <div class="logo_left">
@@ -122,6 +126,16 @@
                           <%  grade2 = GradingLevel.percentage_to_grade(main_mark + main_mark2, @batch.id) %>
                           <% if !grade2.blank? and !grade2.name.blank? %>
                           <td class="col-pdf"><center><%= grade2.name %></center></td>
+                          <% if grade2.name.downcase == "a" or grade2.name.downcase == "b" %>
+                              <%  ab_grades = ab_grades+1 %>
+                          <% end %>
+                          <% if grade2.name.downcase == "c" %>
+                              <%  c_grades = c_grades+1 %>
+                          <% end %>
+                          <% if grade2.name.downcase == "d" %>
+                              <%  d_grades = d_grades+1 %>
+                          <% end %>
+                                <% total_grades = total_grades+1 %>
                           <% else %>
                           <td class="col-pdf"><center>N/A</center></td>
                           <% end %> 
@@ -162,9 +176,34 @@
                           <td width="60%">
                               <div class="roundbox2">                                
                                 <p>
-                                <span class="tickbox_uncheck2"></span>Progressing well<br /><br />
-                                <span class="tickbox_uncheck2"></span>Progressing with difficulty<br /><br />
-                                <span class="tickbox_uncheck2"></span>Unsatisfactory progress</p>
+                                 <% ab_grades_percent = 0 %>
+                                 <% c_grades_percent = 0 %>
+                                 <% if ab_grades > 0 %>
+                                    <% ab_grades_percent = (ab_grades.to_f/total_grades.to_f)*100 %>
+                                 <% end %> 
+                                 <% if c_grades > 0 %>
+                                    <% c_grades_percent = (c_grades.to_f/total_grades.to_f)*100 %>
+                                 <% end %>
+                                <% if d_grades<2 && ab_grades_percent > 50 %>
+                                   <span class="tickbox_check2"></span>Progressing well (Mostly A and B grades)
+                                <% else %>    
+                                  <span class="tickbox_uncheck2"></span>Progressing well (Mostly A and B grades)
+                                <% end %>
+                                <br /><br />
+                                
+                                <% if d_grades<2 && c_grades_percent > 50 %>
+                                  <span class="tickbox_check2"></span>Progressing with some difficulties (Mostly C grades)
+                                <% else %>
+                                  <span class="tickbox_uncheck2"></span>Progressing with some difficulties (Mostly C grades)
+                                <% end %>
+                                <br /><br />
+                                <% if d_grades>=2 %>
+                                    <span class="tickbox_check2"></span>Grades at risk (2 and more D grades)
+                                <% else %>
+                                  <span class="tickbox_uncheck2"></span>Grades at risk (2 and more D grades)
+                                <% end %>
+                                
+                                </p>
                               </div>
                           </td>                          
                       </tr> 

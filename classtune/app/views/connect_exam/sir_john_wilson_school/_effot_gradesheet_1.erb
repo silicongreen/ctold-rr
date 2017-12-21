@@ -83,7 +83,7 @@
         </tr>
         
       </table>
-      <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
+      <table id="pdf-table" class="sjws_table_head" width="99%" cellspacing="0">
         
         
         
@@ -135,12 +135,12 @@
             <% end %>    
            
           <% end %>     
-          <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
+          <tr  class="sjws-table-header">
             <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>
             
             <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>'
+            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
             <% if total_mark.to_i > 0 %>
             <td class="name"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

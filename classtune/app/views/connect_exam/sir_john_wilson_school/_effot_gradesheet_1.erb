@@ -131,7 +131,7 @@
               <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
               <% full_mark = full_mark+rs['maximum_marks'].to_i %>
             <% else %>
-                
+              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
             <% end %>    
            
           <% end %>     
@@ -140,7 +140,8 @@
             <td class="st_name"><%= std['name'] %></td>
             
             <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>'
+            <% if total_mark.to_i > 0 %>
             <td class="name"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
@@ -148,10 +149,14 @@
             <% else %>
               <td class="name"><center>N/A</center></td>
             <% end %> 
+            <% else %>
+              <td class="name"><center>-</center></td> 
+              <td class="name"><center>-</center></td>
+            <% end %>
             
             <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
             
-            <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
+            <td class="name"> <center><%= "0" %><hr><%= assignmentCount %></center></td>
             <%
               exam_comment = ""
               exam_effort = ""

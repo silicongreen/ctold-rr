@@ -729,7 +729,7 @@ class ExamController < ApplicationController
             score.effort           = details[:effort] # For Sir John Wilson School
           end
         else
-          unless details[:comments].blank?
+          if !details[:comments].blank? || !details[:effort].blank? 
             @exam_comments.update_attributes(details)
           else
             @exam_comments.destroy

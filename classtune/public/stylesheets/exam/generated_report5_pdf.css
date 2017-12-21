@@ -1570,6 +1570,15 @@ margin:10px;
     padding: 20px;
 }
 
+.sjws_table_intro .tickbox_uncheck2
+{
+    background-image: url(../../images/icons/tickbox_uncheck.png);
+    background-repeat: no-repeat;
+    background-position: 10%;
+    background-size: 80%;
+    padding: 20px;
+}
+
 .sjws_table_intro .tickbox_check
 {
     background-image: url(../../images/icons/tickbox_check.png);
@@ -1581,6 +1590,13 @@ margin:10px;
 .sjws .roundbox
 {
     border:1px solid #000;
+    padding:10px 20px;
+    margin-left: 20px;
+    font-size: 22px;
+}
+.sjws .roundbox2
+{
+   
     padding:0px 10px;
     margin-left: 20px;
     font-size: 22px;
@@ -1597,8 +1613,8 @@ margin:10px;
 
 .sjws .roundbox_left
 {
-    border:1px solid #000 ;
-    padding:0px 10px;    
+    
+    padding:0px 0px;    
     font-size: 22px;
 }
 .sjws .text_right

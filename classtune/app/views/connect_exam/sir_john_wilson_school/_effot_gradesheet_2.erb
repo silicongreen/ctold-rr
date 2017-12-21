@@ -132,6 +132,7 @@
           <% full_mark_for_60 = 0 %>
           <% mark_obtain_in_40 = 0 %>
           <% mark_obtain_in_60 = 0 %>
+          <% mark_obtain_in_100 = 0 %>
               
           <% totalCount = @report_data['result']['ALL'].count %>
           <% increase = 1 %>
@@ -155,10 +156,12 @@
                 
             <% end %>    
             <% increase = increase+1%>
-          <% end %>     
+          <% end %>   
+          <% if full_mark_for_40 > 0 && full_mark_for_60 > 0 %>
           <% mark_obtain_in_40 = ((total_mark_for_40/full_mark_for_40)*40).to_i %>
           <% mark_obtain_in_60 = ((total_mark_for_60/full_mark_for_60)*60).to_i %>   
           <% mark_obtain_in_100 = mark_obtain_in_40+mark_obtain_in_60 %>   
+          <% end %>
           <tr class="<%= cycle(c,(["sjws_odd","sjws_even"]-[c]).first) %>">
             <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>

@@ -211,6 +211,7 @@ class BatchesController < ApplicationController
     batch_tutor.batch_id = params[:batch_id]
     batch_tutor.class_teacher = params[:class_teacher]
     batch_tutor.show_result = params[:show_result]
+    batch_tutor.advisor = params[:advisor]
     batch_tutor.save
     @assigned_employee=@batch.employees
     render :update do |page|

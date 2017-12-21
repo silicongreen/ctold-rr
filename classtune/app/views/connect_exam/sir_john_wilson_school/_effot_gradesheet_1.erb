@@ -100,16 +100,16 @@
           <%  std_count = std_count+1; %>
           <%  main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>16 && extender ==0 %>
+          <% if std_count>15 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr class="page-break-new">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
           <% elsif std_count>20 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break">
+              <tr class="page-break-new">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr> 
           <% end %>    

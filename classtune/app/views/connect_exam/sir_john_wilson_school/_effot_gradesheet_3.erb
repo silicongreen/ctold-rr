@@ -175,7 +175,7 @@
             
             <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
             
-            <td class="name"> <center><%= "2" %><hr><%= assignmentCount %></center></td>
+            <td class="name"> <center><%= "0" %><hr><%= assignmentCount %></center></td>
             <%
               exam_comment = ""
               exam_effort = ""

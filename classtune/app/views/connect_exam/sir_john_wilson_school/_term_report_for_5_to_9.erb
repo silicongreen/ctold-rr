@@ -167,15 +167,18 @@
             <div>
               <table id="pdf-table" class="sjws_table_intro" width="100%" cellspacing="0">                
                       <tr class="table-header t_head">
-                          <td width="40%">
+                          <td width="27%">
                               <div class="roundbox_left">
-                                  <p>Days Absent &nbsp;&nbsp;&nbsp;&nbsp;<span class='roundbox'><%= (@report_data['total']-@report_data['present']) %>/<%= @report_data['total'] %></span></p>
+                                  <p>Days Absent &nbsp;&nbsp;<span class='roundbox'><%= (@report_data['total']-@report_data['present']) %>/<%= @report_data['total'] %></span></p>
                                  
                               </div>
                           </td>                          
-                          <td width="60%">
-                              <div class="roundbox2">                                
-                                <p>
+                          <td width="73%" class="no_padding">
+                              <div class="roundbox2">  
+                                <table id="pdf-table" class="no_border" width="100%" cellspacing="0"><tr>
+                                <td  width='7%'><h3><center>Promotion Status</center></h3></td>
+                                <td  width='93%'>        
+                             
                                  <% ab_grades_percent = 0 %>
                                  <% c_grades_percent = 0 %>
                                  <% if ab_grades > 0 %>
@@ -185,7 +188,7 @@
                                     <% c_grades_percent = (c_grades.to_f/total_grades.to_f)*100 %>
                                  <% end %>
                                 <% if d_grades<2 && ab_grades_percent > 50 %>
-                                   <span class="tickbox_check2"></span>Progressing well (Mostly A and B grades)
+                                  <span class="tickbox_check2"></span>Progressing well (Mostly A and B grades)
                                 <% else %>    
                                   <span class="tickbox_uncheck2"></span>Progressing well (Mostly A and B grades)
                                 <% end %>
@@ -203,7 +206,8 @@
                                   <span class="tickbox_uncheck2"></span>Grades at risk (2 and more D grades)
                                 <% end %>
                                 
-                                </p>
+                                
+                                </td></tr></table> 
                               </div>
                           </td>                          
                       </tr> 
@@ -212,9 +216,9 @@
               <table id="pdf-table" width="100%" cellspacing="0">              
                       <tr class="table-header t_head">
                           <td class="col-pdf" width='20%'>
-                              <p class="note">
+                             <div class="roundbox_left">
                                 <b>Advisor's Comments</b>                                
-                              </p>
+                             </div> 
                           </td>                          
                           <td class="col-pdf" width='80%'>
                               <table id="pdf-table" class="no_border" width="100%" cellspacing="0"><tr>
@@ -247,9 +251,9 @@
               <table id="pdf-table" width="100%" cellspacing="0">     
                       <tr class="table-header t_head">
                           <td class="col-pdf" width='20%'>
-                              <p class="note">
+                              <div class="roundbox_left">
                                 <b>Principal</b>                                
-                              </p>
+                              </div>
                           </td>                          
                           <td class="col-pdf" width='40%'><br/><br/><br/><br/><br/></td>
                           <td class="col-pdf" width='40%' rowspan="2"  class="align-center">
@@ -263,9 +267,9 @@
                       
                       <tr class="table-header t_head">
                           <td class="col-pdf" width='20%'>
-                              <p class="note">
+                              <div class="roundbox_left">
                                 <b>Parent's Signature</b>                                
-                              </p>
+                              </div>
                           </td>                          
                           <td class="col-pdf" width='40%'>&nbsp;</td>
                       </tr>
@@ -300,6 +304,14 @@
     table.sjws_table_intro tr.even td
     {
         padding: 8px !important;
+    }
+    td.no_padding
+    {
+        padding: 0px !important;
+    }
+    .sjws_table_intro .roundbox2 table td
+    {
+        font-size:20px !important;
     }
    
 </style>    

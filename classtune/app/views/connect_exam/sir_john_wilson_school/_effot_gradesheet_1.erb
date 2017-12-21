@@ -131,7 +131,11 @@
             <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
             <td class="st_name"><%= std['name'] %></td>
             
-            <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
+            <% if total_mark > 0 %>
+              <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
+            <% else %>
+              <td class="name"><center>-</center></td>
+            <% end %>
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
             <% if total_mark.to_i > 0 %>
             <td class="name"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
@@ -162,8 +166,12 @@
             <td class="name"><center><%= exam_effort %></center></td>
             <td class="st_name"><%= exam_comment %></td>
           </tr>
+         
         <% end %>
         <% end %>
+        <tr class="tr-bottom">
+          <td colspan="100">&nbsp;</td>
+        </tr>
       </table>
       <% end %>
     </center>

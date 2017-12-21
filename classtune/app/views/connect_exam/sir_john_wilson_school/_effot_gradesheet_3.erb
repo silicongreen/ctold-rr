@@ -180,6 +180,11 @@
             <td class="name"><center><%= exam_effort %></center></td>
             <td><%= exam_comment %></td>
           </tr>
+          <% if std.equal? @report_data['result']['al_students'].last %>
+            <tr class="page-break0">
+                <td colspan="100">&nbsp;</td>
+            </tr>
+          <% end %>
         <% end %>
         <% end %>
           <tr class="tr-bottom">

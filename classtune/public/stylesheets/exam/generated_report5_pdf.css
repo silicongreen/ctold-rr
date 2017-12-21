@@ -1484,17 +1484,17 @@ table.float-left-clear-both
 {
     float: left;
     width: 75%;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
 }
 .sjws .exam_title_left p {
 display:inline-block;
-transform:scale(1,1.5); /* W3C */
--webkit-transform:scale(1,1.5); /* Safari and Chrome */
--moz-transform:scale(1,1.5); /* Firefox */
--ms-transform:scale(1,1.5); /* IE 9 */
--o-transform:scale(1,1.5); /* Opera */
+transform:scale(2,1.0); /* W3C */
+-webkit-transform:scale(2,1.0); /* Safari and Chrome */
+-moz-transform:scale(2,1.0); /* Firefox */
+-ms-transform:scale(2,1.0); /* IE 9 */
+-o-transform:scale(2,1.0); /* Opera */
 /* Rest Of CSS Code Here*/
 margin:10px;
 } 

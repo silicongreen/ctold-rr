@@ -1,8 +1,8 @@
 <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %> 
 <div class="page1 sjws"> 
       <div class="logo_left">&nbsp;</div>
-      <div class="exam_title_left">
-          <p>SIR JOHN WILSON SCHOOL</p><br />
+      <div>
+          <p>SIR JOHN WILSON SCHOOL</p>
           <p><%= @connect_exam_obj.name.upcase %> - EFFORT / GRADE SHEET - 
           <% if month_number.to_i>6 %>
             <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>/<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>        

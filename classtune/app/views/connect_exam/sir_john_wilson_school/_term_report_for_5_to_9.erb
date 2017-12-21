@@ -29,9 +29,10 @@
               <table id="pdf-table" class="sjws_table_intro" width="100%" cellspacing="0">
                   <% c = 'even'  %>                  
                   <tr class="table-header t_head">
-                      <td class=""><b><%= "Subject" %></b></td> 
-                      <td class="">Class<br />Assessment<br />Mark(40%)</td> 
+                      <td class=""><b><center><%= "Subject" %></b></center></td> 
+                      <td class=""><center>Class<br />Assessment<br />Mark(40%)</center></td> 
                       <td class="">
+                        <center>
                         <% if @connect_exam_obj.name.include? ("FIRST") %>
                             <%=  "Half Yearly <br /> Exam (60%)"%>
                         <% elsif @connect_exam_obj.name.include? ("First") %>
@@ -51,12 +52,12 @@
                         <% elsif @connect_exam_obj.name.include? ("final") %>
                             <%=  "Final Exam <br />(60%)"%>
                         <% end %>
-                        
+                        </center>
                       </td>                       
-                      <td class="">Overall<br />Term Mark<br />(%)</td>
-                      <td class="">Grade</td>
-                      <td class="">Home Work</td> 
-                      <td class="">Effort</td>                      
+                      <td class=""><center>Overall<br />Term Mark<br />(%)</center></td>
+                      <td class=""><center>Grade</center></td>
+                      <td class=""><center>Home Work</center></td> 
+                      <td class=""><center>Effort</center></td>                      
                       
                   </tr>
 

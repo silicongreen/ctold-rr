@@ -17,7 +17,6 @@
 #limitations under the License.
 
 class ExamConnectSubjectComment < ActiveRecord::Base
-  validates_presence_of :comments
   belongs_to :student
   belongs_to :employee
   belongs_to :exam_connect

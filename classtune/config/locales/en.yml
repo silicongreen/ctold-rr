@@ -1100,6 +1100,8 @@ en: # locale
   max_period_per_day: "Max period per day"
   max_period_per_week: "Max period per week"
   employee_admission: "Employee admission"
+  employee_attendance_time: "Employee Attendance Time"
+  employee_attendance_time_desc: "Office In-Time for employee"
   select_department: "Select department"
   view_all_by_dept: "View by Department"
   not_selected: "not selected"
@@ -2653,6 +2655,10 @@ en: # locale
     flash49: "Grade having active employees cannot be made inactive"
     flash50: "Department having active employees cannot be made inactive"
     flash51: "There is no payroll category"
+    flash52: "No Option is selected to set office timing"
+    flash53: "You must select a Employee"
+    flash54: "to set office timing"
+    flash55: "Employee office timing has been set successfully"
 
 #payroll translation
   payroll:

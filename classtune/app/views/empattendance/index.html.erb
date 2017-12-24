@@ -36,20 +36,51 @@
   <% end %>
   <% form_remote_for :campus_report, :url => {:action=> 'campus_report_show'}, :html=> {:id=>'campus_report_show'} do |s| %>
   <div class="box">
+      <% if @has_advance_attendance_report %>
+      <div class="label-field-pair" style="display: none; float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+          <label for="attandence_date"><%= "Report Type" %></label>
+          <div class="text-input-bg">
+              <%= select :campus_report, :report_type, [["All",1],["Absent",2],["Present",3],["Late",4]] %>
+          </div>
+      </div>
+      <% else %>
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
           <label for="attandence_date"><%= "Report Type" %></label>
           <div class="text-input-bg">
               <%= select :campus_report, :report_type, [["All",1],["Absent",2],["Present",3],["Late",4]] %>
           </div>
       </div>
-      <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
-       <label for="duedate">Select date</label>
-       <div  class="text-input-bg">
-         <%= calendar_date_select_tag "campus_report[attandence_date]",@date_today,
-           :class=>"text-input-bg" ,:readonly=>true,:popup=>:force%>
-       </div>
-     </div>
-     <%= submit_tag "", :value => "► #{t('proceed')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>  
+      <% end %>
+      <% if @has_advance_attendance_report %>
+        <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+            <label for="attandence_date"><%= "Report For" %></label>
+            <div class="text-input-bg select_tag">
+                <%= select_tag "attendance_report_for",options_for_select([["-- Select --",0],["Single Date",1],["Month",2],["Date Range",3]],0), :autocomplete => :off,:onChange => "#{remote_function(:url => {:action => "list_options"},
+                :with => "'option_type='+ value",
+                :before => "Element.show('loader1')",
+                :success => "Element.hide('loader1')"
+                )}" %>
+                <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader1",
+                :style =>"display: none;" ) %>  
+            </div> 
+        </div>
+        <div id="report_for"></div>
+      <% else %>
+        <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+          <label for="duedate">Select date</label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "campus_report[attandence_date]",@date_today,
+              :class=>"text-input-bg" ,:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+      <% end %>
+      <div style="clear: both; height: 10px;"></div>  
+      <div style="margin-left: 15px;">
+        <%= submit_tag "", :value => "► #{t('proceed')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}" %>  
+      </div>
   </div>
   <% end %>
   <%= hidden_field_tag 'time_zone_date',@date_today, :id=>'time_zone' %>
@@ -59,38 +90,111 @@
 <script>
   var jq = jQuery.noConflict();
   var oDataTable;
-  function generate_datatable(report_type, report_date, start_month, end_month, month, all_record)
+  function generate_datatable(report_for, report_type, report_date_from, report_date_to, start_month, end_month, month, all_record)
   {
       jq(document).ready(function() {
-          oDataTable = jq('#hr_report').DataTable( {
-              processing: true,
-              serverSide: true,
-              ajax: {
-                  url: "/empattendance/campus_report_view",
-                  type: 'POST',
-                  data: {
-                      report_type: report_type, 
-                      report_date: report_date, 
-                      start_month: start_month, 
-                      end_month: end_month, 
-                      month: month, 
-                      all_record: all_record, 
-                      employee_department_id: jq("#dept_id").val(),
-                      category_id: jq("#cate_id").val(),
-                      position_id: jq("#pos_id").val(),
-                      grade_id: jq("#grade").val(),
-                  }
-              },
-              columns: [
-                  { "data": "employee_image" },
-                  { "data": "employee_info" },
-                  { "data": "department" },
-                  { "data": "in_time", "sClass" : "ofc_time" },
-                  { "data": "out_time", "sClass" : "ofc_time" },
-                  { "data": "status", "sClass" : "ofc_time" },
-                  { "data": "late", "sClass" : "ofc_time" }
-              ]
-          });
+          if ( parseInt(report_for) == 1 )
+          {
+            oDataTable = jq('#hr_report').DataTable( {
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/empattendance/campus_report_view",
+                    type: 'POST',
+                    data: {
+                        report_for: report_for,
+                        report_type: report_type, 
+                        report_date_from: report_date_from, 
+                        report_date_to: report_date_to, 
+                        start_month: start_month, 
+                        end_month: end_month, 
+                        month: month, 
+                        all_record: all_record, 
+                        employee_department_id: jq("#dept_id").val(),
+                        category_id: jq("#cate_id").val(),
+                        position_id: jq("#pos_id").val(),
+                        grade_id: jq("#grade").val(),
+                    }
+                },
+                columns: [
+                    { "data": "employee_image" },
+                    { "data": "employee_info" },
+                    { "data": "department" },
+                    { "data": "in_time", "sClass" : "ofc_time" },
+                    { "data": "out_time", "sClass" : "ofc_time" },
+                    { "data": "status", "sClass" : "ofc_time" },
+                    { "data": "late", "sClass" : "ofc_time" }
+                ]
+            });
+          }
+          else if ( parseInt(report_for) == 2 )
+          {
+            oDataTable = jq('#hr_report').DataTable( {
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/empattendance/campus_report_view",
+                    type: 'POST',
+                    data: {
+                        report_for: report_for,
+                        report_type: report_type, 
+                        report_date_from: report_date_from, 
+                        report_date_to: report_date_to, 
+                        start_month: start_month, 
+                        end_month: end_month, 
+                        month: month, 
+                        all_record: all_record, 
+                        employee_department_id: jq("#dept_id").val(),
+                        category_id: jq("#cate_id").val(),
+                        position_id: jq("#pos_id").val(),
+                        grade_id: jq("#grade").val(),
+                    }
+                },
+                columns: [
+                    { "data": "employee_image" },
+                    { "data": "employee_info" },
+                    { "data": "department" },
+                    { "data": "total_present", "sClass" : "ofc_time" },
+                    { "data": "total_absent", "sClass" : "ofc_time" },
+                    { "data": "total_late", "sClass" : "ofc_time" },
+                    { "data": "total_leave", "sClass" : "ofc_time" }
+                ]
+            });
+          }
+          else if ( parseInt(report_for) == 3 )
+          {
+            oDataTable = jq('#hr_report').DataTable( {
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "/empattendance/campus_report_view",
+                    type: 'POST',
+                    data: {
+                        report_for: report_for,
+                        report_type: report_type, 
+                        report_date_from: report_date_from, 
+                        report_date_to: report_date_to, 
+                        start_month: start_month, 
+                        end_month: end_month, 
+                        month: month, 
+                        all_record: all_record, 
+                        employee_department_id: jq("#dept_id").val(),
+                        category_id: jq("#cate_id").val(),
+                        position_id: jq("#pos_id").val(),
+                        grade_id: jq("#grade").val(),
+                    }
+                },
+                columns: [
+                    { "data": "employee_image" },
+                    { "data": "employee_info" },
+                    { "data": "department" },
+                    { "data": "total_present", "sClass" : "ofc_time" },
+                    { "data": "total_absent", "sClass" : "ofc_time" },
+                    { "data": "total_late", "sClass" : "ofc_time" },
+                    { "data": "total_leave", "sClass" : "ofc_time" }
+                ]
+            });
+          }
       });
   }
   function add_filter()
@@ -178,4 +282,12 @@ body, html
   margin-top: 10px;
     margin-left: 5px;
 }
-</style>
+.select_tag select {
+    height: 35px;
+}
+
+.select_tag select option {
+    /*in case you want to style the options of a select*/
+}
+</style> 
+ 

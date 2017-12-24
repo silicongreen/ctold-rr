@@ -278,6 +278,7 @@ class EmployeeAttendanceController < ApplicationController
       page.replace_html 'attendance_form', :partial => 'attendance_form'
     end
   end
+  
   def card_attendance_pdf
     if !params[:month].blank? and !params[:year].blank? and !params[:employee_id].blank?
       @employee = Employee.find(params[:employee_id])
@@ -303,6 +304,251 @@ class EmployeeAttendanceController < ApplicationController
               :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
    
   end
+  
+  def card_attendance_pdf_details
+    require "yaml"
+    unless params[:summary].nil? or params[:summary].empty? or params[:summary].blank?
+      @summary = params[:summary].to_i
+      if @summary == 1
+        @date_today = @local_tzone_time.to_date
+        
+        unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
+          @report_date_from = params[:report_date_from]
+          @report_date_to = params[:report_date_to]
+
+          @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+          @report_date = @report_date_from.to_date.strftime("%B %Y")
+          
+          order_str = "employee_positions.order_by asc"
+          
+          @employees = Employee.find(:all, :select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, employee_position_id, '' as in_time, '' as out_time, '' as stat", :include => :employee_position, :order=>""  + order_str)
+          
+          employess_id = @employees.map(&:user_id)
+          data = []
+          employee_department_ids = []
+          department_names = []
+          unless @employees.nil? or @employees.empty?
+
+            @cardAttendances = CardAttendance.find(:all, :select=>'user_id, count( DISTINCT date ) as count_present',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "user_id")
+            
+            k = 0;
+            m = 0
+
+            @employees.each do |employee|
+              unless employee_department_ids.include?(employee.employee_department_id)
+                dept = EmployeeDepartment.find employee.employee_department_id
+                employee_department_ids[m] = employee.employee_department_id
+                department_names[m] = dept.name
+                dept_name = dept.name
+                m += 1
+              else
+                t = employee_department_ids.index(employee.employee_department_id)
+                dept_name = department_names[t]
+              end
+              emp_id = employee.user_id
+              cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
+
+              if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                  total_present = ' - '
+                  total_absent = ' - '
+                  total_late = ' - '
+                  total_leave = ' - '
+              else 
+                is_late = ' - '
+                @employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
+
+                unless @employee_setting.blank?
+                    in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
+                    lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
+                    total_late = lateAttendances.length
+                end
+                total_present = cardAttendance[0].count_present
+                leave_n_absent_count = EmployeeAttendance.find(:all, :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id = " + employee.id.to_s).size
+
+                leave_types = EmployeeLeaveType.find(:all, :conditions => "status = true")
+                leave_count = EmployeeLeave.find_all_by_employee_id(employee,:joins=>:employee_leave_type,:conditions=>"status = true")
+                total_leaves = 0
+                leave_types.each do |lt|
+                  leave_count = EmployeeAttendance.find(:all, :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id = " + employee.id.to_s + " AND employee_leave_type_id = " + lt.id.to_s).size
+                  total_leaves = total_leaves + leave_count
+                end
+                total_leave = total_leaves
+                total_absent = leave_n_absent_count.to_i - total_leave.to_i
+                if total_absent.to_i  < 0
+                  total_absent = 0
+                end
+              end
+              @emp = Employee.find(employee.id)
+              position = EmployeePosition.find(@emp.employee_position_id)
+              employee_image = "<img src='/images/HR/default_employee.png' width='100px' />"
+              if @emp.photo.file?
+                employee_image = "<img src='"+@emp.photo.url+"' width='100px' />"
+              end
+              if !employee.blank?
+                unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                  emp = []
+                  emp[0] = @emp.first_name + ' ' + @emp.middle_name + ' ' + @emp.last_name
+                  emp[1] = position.name
+                  emp[2] = dept_name
+                  emp[3] = total_present
+                  emp[4] = total_absent
+                  emp[5] = total_late
+                  emp[6] = total_leave 
+                  emp[7] = @emp.employee_department_id
+                  data[k] = emp
+                  k += 1
+                end
+              end
+            end
+          end
+          @employee_attendance = data
+
+
+        else
+          data = []
+          @employee_attendance = data
+        end
+      else
+        @date_today = @local_tzone_time.to_date
+        
+        unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
+          @report_date_from = params[:report_date_from]
+          @report_date_to = params[:report_date_to]
+
+          @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+          @report_date = @report_date_from.to_date.strftime("%B %Y")
+          
+          order_str = "employee_positions.order_by asc"
+          
+          @employees = Employee.find(:all, :select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, employee_position_id, '' as in_time, '' as out_time, '' as stat", :include => :employee_position, :order=>""  + order_str)
+          
+          employess_id = @employees.map(&:user_id)
+          data = []
+          employee_department_ids = []
+          department_names = []
+          unless @employees.nil? or @employees.empty?
+
+            @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+            
+            k = 0;
+            m = 0
+            
+            @employees.each do |employee|
+              unless employee_department_ids.include?(employee.employee_department_id)
+                dept = EmployeeDepartment.find employee.employee_department_id
+                employee_department_ids[m] = employee.employee_department_id
+                department_names[m] = dept.name
+                dept_name = dept.name
+                m += 1
+              else
+                t = employee_department_ids.index(employee.employee_department_id)
+                dept_name = department_names[t]
+              end
+              emp_id = employee.user_id
+              cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
+
+              if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                  in_time = ' - '
+                  out_time = ' - '
+                  late = ' - '
+                  late_time = ' - '
+                  absent = ' - '
+                  leave = ' - '
+                  leave_for = ' - '
+              else 
+                @employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
+                (@report_date_from.to_date..@report_date_to.to_date).each do |d|
+                  dt = d.strftime("%Y-%m-%d")
+                  dtCardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
+                  
+                  unless dtCardAttendance.nil? or dtCardAttendance.empty? or dtCardAttendance.blank?
+                    unless @employee_setting.blank?
+                      in_ofc_time = @employee_setting.start_time 
+                      ofc_time = Time.parse(dtCardAttendance[0].min_time)
+                      in_offc_time = @employee_setting.start_time.to_time.strftime("%H%M").to_i
+                      offc_time = ofc_time.strftime("%H%M").to_i
+                      if offc_time > in_offc_time
+                        late = 'yes'
+                        lt_ofc_time = @date_today.to_date.strftime("%Y-%m-%d " + @employee_setting.start_time.to_time.strftime("%H:%M:%S"))
+                        lt_ofc_in_time = @date_today.to_date.strftime("%Y-%m-%d " + ofc_time.strftime("%H:%M:%S"))
+                        late_time_i = (( lt_ofc_in_time.to_time - lt_ofc_time.to_time ) / 60).to_i
+                        late_time = late_time_i.to_s + " Minutes"
+                      end
+                      in_time = dtCardAttendance[0].min_time
+                      out_time = dtCardAttendance[0].max_time
+                      #if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
+                    end
+                  else
+                    in_time = ' - '
+                    out_time = ' - '
+                    late = ' - '
+                    late_time = ' - '
+                    
+                    emp_attendance = EmployeeAttendance.find(:first, :conditions=>"attendance_date = '" + dt + "' and employee_id = " + employee.id.to_s + "")
+                    unless emp_attendance.nil? or emp_attendance.blank?
+                      unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
+                        leave_types = EmployeeLeaveType.find(emp_attendance.employee_leave_type_id)
+                        absent = '-'
+                        leave = 'yes'
+                        leave_for = leave_types.name
+                      else  
+                        absent = 'yes'
+                        leave = ' - '
+                        leave_for = ' - '
+                      end
+                    else
+                      absent = ' - '
+                      leave = ' - '
+                      leave_for = ' - '
+                    end
+                  end
+                  @emp = Employee.find(employee.id)
+                  position = EmployeePosition.find(@emp.employee_position_id)
+                  unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                    emp = []
+                    emp[0] = @emp.first_name + ' ' + @emp.middle_name + ' ' + @emp.last_name
+                    emp[1] = @emp.id
+                    emp[2] = dt
+                    emp[3] = position.name
+                    emp[4] = dept_name
+                    emp[5] = in_time
+                    emp[6] = out_time
+                    emp[7] = late
+                    emp[8] = late_time 
+                    emp[9] = absent
+                    emp[10] = leave
+                    emp[11] = leave_for
+                    data[k] = emp
+                    k += 1
+                  end
+                end
+                
+              end
+            end
+          end
+          @employee_attendance = data
+
+
+        else
+          data = []
+          @employee_attendance = data
+        end
+      end
+    end
+    adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
+    
+    @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
+    render    :pdf => "card_attendance_pdf_details",
+              :orientation => 'Portrait',
+              :margin => {    :top=> 10,
+              :bottom => 20,
+              :left=> 10,
+              :right => 10},
+              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+   
+  end
+  
   def report_card_generate
     if !params[:month].blank? and !params[:year].blank? and !params[:employee_id].blank?
       @employee = Employee.find(params[:employee_id])
@@ -322,6 +568,7 @@ class EmployeeAttendanceController < ApplicationController
         page.replace_html 'report_card_generate', :partial => 'report_card_generate'
     end
   end
+  
   def card_report
     @employee = Employee.all
   end

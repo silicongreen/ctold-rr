@@ -1584,6 +1584,7 @@ authorization do
       :report_card_generate,
       :report_pdf,
       :card_attendance_pdf,
+      :card_attendance_pdf_details,
       :leave_management,
       :edit_leave_types,
       :delete_leave_types,
@@ -1823,8 +1824,8 @@ authorization do
       :daily_register
     ]
     has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card,:student_record,:list_student_record,:print_student_record]
-    has_permission_on [:empattendance],  :to => [:index,:campus_report_show,:campus_report_view]
-    has_permission_on [:stdattendance],  :to => [:index,:campus_report_show,:campus_report_view]
+    has_permission_on [:empattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
+    has_permission_on [:stdattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
     has_permission_on [:sms],  :to => [:index, :settings, :update_general_sms_settings, :students, :list_students, :batches, :sms_all, :employees, :list_employees, :departments, :all, :show_sms_messages, :show_sms_logs]
     has_permission_on [:sms_settings],  :to => [:index, :update_general_sms_settings]
     has_permission_on [:class_timings],  :to => [:index, :edit, :destroy, :show, :new, :create, :update]
@@ -1908,6 +1909,7 @@ authorization do
       :report,
       :report_card_generate,
       :card_attendance_pdf,
+      :card_attendance_pdf_details,
       :card_report,
       :report_pdf,
       :update_attendance_report,
@@ -2848,6 +2850,9 @@ authorization do
       :employee_leave_count_update,
       :view_employee_payslip,
       :employee_setting_update,
+      :employee_attendance_time,
+      :list_options,
+      :employee_setting_mass_update,
       :edit_employee_settings,
       :employee_settings,
       :employee_add_attendance,

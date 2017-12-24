@@ -1,0 +1,147 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+</div>
+<div id="page-yield">
+
+    <p style="padding-left: 10px; font-size: 10px;"><%= MultiSchool.current_school.name %></p>
+    <% if @summary.to_i == 1 %>
+    <p style="padding-left: 10px; font-size: 10px;"><%= "Report for Late, Absent and Leave" %></p>
+    <% else %>
+    <p style="padding-left: 10px; font-size: 10px;"><%= "Attendance Report" %></p>
+    <% end %>
+    <p style="padding-left: 10px; font-size: 10px;"><%= "Report Date: #{@report_date}" %></p>
+    <div class="hor_line"></div>
+
+
+    
+    <div class="report">
+
+        <div id="pdf-info">
+            <% if @summary.to_i == 1 %>
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <tr class="table-header">
+                      <td class="col-pdf">Ser No.</td>
+                      <td class="col-pdf">Name</td>
+                      <td class="col-pdf">Designation</td>
+                      <td class="col-pdf">Late(Total Days)</td>
+                      <td class="col-pdf">Absent(Total Days)</td>
+                      <td class="col-pdf">Leave(Total Days)</td>
+                      <td class="col-pdf">Remarks</td>
+                  </tr>
+                  <% @all_groups.each do |group| %>
+                    <% group_a = group.split("-") %>
+                    <tr class="<%= cycle('odd', 'even') %>">
+                        <td class="col-pdf" colspan="7"><%= group_a[0] %></td>
+                    </tr>
+                    <% dept_ids = group_a[1].split("+") %>
+                    <% employee_attendances = @employee_attendance.select{|e| dept_ids.include?(e[7].to_s) } %>
+                    <% i = 1 %>
+                    <% employee_attendances.each do |e| %>
+                      <tr class="<%= cycle('odd', 'even') %>">
+                        <td class="col-pdf"><%= i %></td>
+                        <td class="col-pdf"><%= e[0] %></td>
+                        <td class="col-pdf"><%= e[1] %></td>
+                        <td class="col-pdf"><%= e[5] %></td>
+                        <td class="col-pdf"><%= e[4] %></td>
+                        <td class="col-pdf"><%= e[6] %></td>
+                        <td class="col-3">&nbsp;</td>
+                        <% i = i + 1 %>
+                      </tr>    
+                    <% end %>
+                    <tr class="<%= cycle('odd', 'even') %>">
+                        <td class="col-pdf" colspan="7">&nbsp;</td>
+                    </tr>  
+                  <% end %>
+              </table>
+            <% else %>
+              <% j = 1 %>
+              <% @employees.each do |e| %>
+                <% employee_attendances = @employee_attendance.select{|e1| e.id.to_s == e1[1].to_s} %>
+                <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
+                  <div style='float: left; width: 49.5%;'>
+                    <table id="pdf-table_new" width="100%" cellspacing="0">
+                      <tr class="<%= cycle('odd', 'even') %>">
+                          <td class="col-pdf">Ser No</td>
+                          <td class="col-pdf" colspan="5"><%= j  %> </td>
+                      </tr>
+                      <tr class="<%= cycle('odd', 'even') %>">
+                          <td class="col-pdf">Name</td>
+                          <td class="col-pdf" colspan="5"><%= e.full_name %> </td>
+                      </tr>
+                      <tr class="<%= cycle('odd', 'even') %>">
+                          <td class="col-pdf">Deg.</td>
+                          <td class="col-pdf" colspan="5"><%= e.employee_position.name  %> </td>
+                      </tr>
+                      <tr class="<%= cycle('odd', 'even') %>">
+                          <td class="col-pdf">Date</td>
+                          <td class="col-pdf vertical-text">Arrival Time</td>
+                          <td class="col-pdf">Departure Time</td>
+                          <td class="col-pdf">late</td>
+                          <td class="col-pdf">Absent</td>
+                          <td class="col-pdf">Leave</td>
+                      </tr>
+                      <% employee_attendances.each do |em| %>
+                        <tr class="<%= cycle('odd', 'even') %>">
+                            <td class="col-pdf"><%= em[2]  %></td>
+                            <td class="col-pdf"><%= em[5]  %></td>
+                            <td class="col-pdf"><%= em[6]  %></td>
+                            <td class="col-pdf">
+                              <% if em[7] == 'yes' %>  
+                                &#10004;
+                              <% else %>  
+                                -
+                              <% end %>  
+                            </td>
+                            <td class="col-pdf">
+                              <% if em[9] == 'yes' %>  
+                                &#10004;
+                              <% else %>  
+                                -
+                              <% end %>
+                            </td>
+                            <td class="col-pdf">
+                                <% if em[10] == 'yes' %>  
+                                  &#10004;
+                                <% else %>  
+                                  -
+                                <% end %>   
+                            </td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                  <% if j % 2 == 0 %>
+                    <% if j < 3 %>
+                      <div style="clear: both; height: 110px;"></div>
+                    <% else %>
+                      <div style="clear: both; height: 190px;"></div>
+                    <% end %>
+                  <% end %>
+                  <% j = j + 1 %>
+                <% end %>  
+              <% end %>
+            <% end %>
+        </div>
+
+    </div>
+
+</div>

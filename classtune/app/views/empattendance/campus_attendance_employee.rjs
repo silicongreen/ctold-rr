@@ -1,2 +1,2 @@
 page.replace_html 'report_content', :partial => 'campus_attendance_employee'
-page << "generate_datatable('" + @report_type + "', '" + @report_date + "');"
+page << "generate_datatable('" + @report_for + "','" + @report_type + "', '" + @report_from_date + "', '" + @report_to_date + "');"

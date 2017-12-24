@@ -34,7 +34,12 @@ class EmpattendanceController < ApplicationController
     unless params[:campus_report].nil? or params[:campus_report].empty? or params[:campus_report].blank?
       campus_report = params[:campus_report]
       @report_type = campus_report[:report_type]
-      @report_for = params[:attendance_report_for];
+      unless params[:attendance_report_for].nil? or params[:attendance_report_for].empty? or params[:attendance_report_for].blank?
+        @report_for = params[:attendance_report_for];
+      else
+        @report_for = "1";
+      end
+      
       valid_req = true
       if params[:attendance_report_for].to_i == 2
         current_year = Date.today.year
@@ -56,7 +61,11 @@ class EmpattendanceController < ApplicationController
         end
       else
         @report_from_date = campus_report[:attandence_date]
-        @report_to_date = campus_report[:attandence_to_date]
+        unless campus_report[:attandence_to_date].nil? or campus_report[:attandence_to_date].empty? or campus_report[:attandence_to_date].blank?
+          @report_to_date = campus_report[:attandence_to_date]
+        else
+          @report_to_date = campus_report[:attandence_date]
+        end
       end
       if valid_req
         @has_advance_attendance_report = false

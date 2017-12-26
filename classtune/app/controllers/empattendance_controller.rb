@@ -61,10 +61,14 @@ class EmpattendanceController < ApplicationController
         end
       else
         @report_from_date = campus_report[:attandence_date]
-        unless campus_report[:attandence_to_date].nil? or campus_report[:attandence_to_date].empty? or campus_report[:attandence_to_date].blank?
-          @report_to_date = campus_report[:attandence_to_date]
-        else
+        if @report_for.to_i == 1
           @report_to_date = campus_report[:attandence_date]
+        else
+          unless campus_report[:attandence_to_date].nil? or campus_report[:attandence_to_date].empty? or campus_report[:attandence_to_date].blank?
+            @report_to_date = campus_report[:attandence_to_date]
+          else
+            @report_to_date = campus_report[:attandence_date]
+          end
         end
       end
       if valid_req
@@ -105,6 +109,7 @@ class EmpattendanceController < ApplicationController
     unless params[:report_type].nil? or params[:report_type].empty? or params[:report_type].blank?
       @report_type = params[:report_type]
       @report_for = params[:report_for]
+      @report_date = params[:report_date_from]
       @report_date_from = params[:report_date_from]
       @report_date_to = params[:report_date_to]
       

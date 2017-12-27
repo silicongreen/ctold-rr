@@ -699,13 +699,14 @@ class ExamController < ApplicationController
                   if details[:marks] != 0 and (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
                     @exam_score.destroy
                   else
-                    if @exam_score.update_attributes(details)
-                    else
-                      flash[:warn_notice] = "#{t('flash4')}"
-                      @error = nil
+                    unless details[:marks].nil? 
+                      if @exam_score.update_attributes(details)
+                      else
+                        flash[:warn_notice] = "#{t('flash4')}"
+                        @error = nil
+                      end
                     end
                   end  
-                 
               else
                 @error = true
               end

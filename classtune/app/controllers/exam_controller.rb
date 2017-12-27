@@ -647,7 +647,7 @@ class ExamController < ApplicationController
             if details[:marks].nil?
                details[:marks] = 0
             end
-            if details[:marks] != 0 and (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
+            if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
               if @exam_absent.nil?
                 ExamAbsent.create do |absent|
                     absent.exam_id          = @exam.id
@@ -696,7 +696,7 @@ class ExamController < ApplicationController
                       details[:remarks] = remarks_details
                     end
                   end 
-                  if details[:marks] != 0 and (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
+                  if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
                     @exam_score.destroy
                   else
                     unless details[:marks].nil? 

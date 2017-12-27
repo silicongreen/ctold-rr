@@ -24,7 +24,7 @@
           <% end %>  
           <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_" + course.id.to_s, :style =>"display: none;  float: right; " ) %>
         </div>
-        <% a_course_batch_info = courses_batches[0].split('-')   %>
+        <% a_course_batch_info = courses_batches[0].split('--')   %>
         <% batch_id = a_course_batch_info[2]   %>
         <div class="category-name" style="padding: 0 2px 8px 8px; float: right; width: 80px; ">
             <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>

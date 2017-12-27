@@ -12,7 +12,7 @@
         <div id="cate_name_<%= course.id %>" class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
           <% courses_batches.each do |cb| %>
-            <% a_course_batch_info = cb.split('-') %>
+            <% a_course_batch_info = cb.split('||') %>
             <% @batch_data =   Batch.find_by_id(a_course_batch_info[2]) %>
             <% unless @batch_data.blank? %>
             <%= link_to_remote(a_course_batch_info[0].strip.length > 0 ?  a_course_batch_info[0].strip : "no-section", 

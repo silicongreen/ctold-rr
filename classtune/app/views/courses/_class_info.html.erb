@@ -11,7 +11,7 @@
         <div class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
           <% courses_batches.each do |cb| %>
-            <% a_course_batch_info = cb.split('-') %>
+            <% a_course_batch_info = cb.split('||') %>
             <% course_data = Course.find_by_id(a_course_batch_info[1].to_i) %>
             <% unless course_data.blank? %>
               <% unless @for_exam %>

@@ -11,7 +11,7 @@
         <div id="cate_name_<%= course.id %>" class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
           <% courses_batches.each do |cb| %>
-            <% a_course_batch_info = cb.split('-') %>
+            <% a_course_batch_info = cb.split('||') %>
             <% @batch_data =   Batch.find(a_course_batch_info[2]) %>
             <%= link_to a_course_batch_info[0], {:controller => "syllabus", :action => 'show_syllabus', :batch_id => @batch_data.id, :batch_name => @batch_data.name, :course_name => course.course_name,:class=>false},:target => "_blank", :class => "user_button", :style => "margin-top: 0px;"  %>            
           <% end %>   

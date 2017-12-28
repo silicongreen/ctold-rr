@@ -85,8 +85,8 @@
   <%if @has_advance_attendance_report  %>
     <% unless @report_for.to_i == 1 %>
       <div class="box" style="border-radius: 8px; text-align: center; float:left; clear:both; margin:20px 0px; background: #f6f6f6; border: 1px solid #ccc; padding: 20px; width: 94%;">
-          <button class="submit_button" id="employee_wise_report" onclick='location.href="/employee_attendance/card_attendance_pdf_details?summary=0&report_date_from=<%=@report_from_date%>&report_date_to=<%=@report_to_date%>"'>► Export Employee Details Report</button>
-          <button class="submit_button" id="employee_wise_report" onclick='location.href="/employee_attendance/card_attendance_pdf_details?summary=1&report_date_from=<%=@report_from_date%>&report_date_to=<%=@report_to_date%>"'>► Export Monthly Report</button>
+          <button class="submit_button" id="employee_wise_report" onclick='var win = window.open("/employee_attendance/card_attendance_pdf_details?summary=0&report_date_from=<%=@report_from_date%>&report_date_to=<%=@report_to_date%>","_blank"); win.focus();'>► Export Employee Details Report</button>
+          <button class="submit_button" id="employee_wise_report" onclick='var win = window.open("/employee_attendance/card_attendance_pdf_details?summary=1&report_date_from=<%=@report_from_date%>&report_date_to=<%=@report_to_date%>","_blank"); win.focus();'>► Export Monthly Report</button>
       </div>
     <% end %>
   <% end %>  

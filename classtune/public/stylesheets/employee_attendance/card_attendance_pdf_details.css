@@ -8,8 +8,6 @@
     border: 0px;
 }
 
-
-
 .hor_line{
     width:800px;
     background: #333333;
@@ -90,7 +88,7 @@ table#pdf-table tr td{
     font-size : 11px;
 }
 table#pdf-table_new tr td{ 
-    font-size : 9px;
+    font-size : 10px;
 }
 
 table#pdf-table{
@@ -123,6 +121,10 @@ table#pdf-table_new{
 
 
 #page-yield h2{
+    text-align: center;
+}
+
+#page-yield_landscape h2{
     text-align: center;
 }
 

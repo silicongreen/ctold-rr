@@ -310,6 +310,7 @@ class EmployeeAttendanceController < ApplicationController
     unless params[:summary].nil? or params[:summary].empty? or params[:summary].blank?
       @summary = params[:summary].to_i
       if @summary == 1
+        orientation = "Portrait"
         @date_today = @local_tzone_time.to_date
         
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
@@ -409,6 +410,7 @@ class EmployeeAttendanceController < ApplicationController
           @employee_attendance = data
         end
       else
+        orientation = "Landscape"
         @date_today = @local_tzone_time.to_date
         
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
@@ -539,9 +541,11 @@ class EmployeeAttendanceController < ApplicationController
     
     @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
     render    :pdf => "card_attendance_pdf_details",
-              :orientation => 'Portrait',
+              :orientation => orientation,
+              :page_size => 'Legal',
+              :zoom => 1.4,
               :margin => {    :top=> 10,
-              :bottom => 20,
+              :bottom => 15,
               :left=> 10,
               :right => 10},
               :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},

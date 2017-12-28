@@ -6,7 +6,7 @@
     <% end %>  
     <% @courses.each do |course| %>
       <li class="list<%=cycle('odd', 'even')%>">
-        <% courses_batches = course.courses_batches.split(',') %>
+        <% courses_batches = course.courses_batches.split('--') %>
         <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
         <div class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
         <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">

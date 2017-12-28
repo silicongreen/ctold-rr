@@ -3538,6 +3538,7 @@ class ExamController < ApplicationController
       @batch = @batches[0]
       batch_name = @batch.name
       school_id = MultiSchool.current_school.id
+      Rails.cache.delete("course_data_#{batch_name.parameterize("_")}_#{school_id}")
       @courses = Rails.cache.fetch("course_data_#{batch_name.parameterize("_")}_#{school_id}"){
         @batches_data = Batch.find(:all, :conditions => ["name = ?", batch_name], :select => "course_id")
         @batch_ids = @batches_data.map{|b| b.course_id}

@@ -512,8 +512,8 @@ class Events extends CActiveRecord {
 
         
 
-        $criteria->addCondition("DATE(t.start_date) >= '" . date("Y-m-d") . "'");
-        $criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
+        $criteria->addCondition("DATE(t.end_date) >= '" . date("Y-m-d") . "'");
+        //$criteria->addCondition("DATE(t.end_date) <= '" . $to_date . "'");
 
         $criteria->addCondition('(eventCategory.is_club is NULL or  eventCategory.is_club != 1)');
 

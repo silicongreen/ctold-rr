@@ -610,6 +610,7 @@ def update_forwarded
     end 
     @courses = []
     unless batch_name.blank?
+    
     @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
       @batch_name = batch_name;
       batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}

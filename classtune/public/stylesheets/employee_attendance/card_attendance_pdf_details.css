@@ -53,6 +53,27 @@ tr.odd{
     border: 1px solid #000000;
 }
 
+.odd_summary{
+    height:auto;
+    background: #fff;
+
+}
+
+.even_summary{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even_summary{
+    border: 1px solid #000000;
+}
+
+tr.odd_summary{
+    border: 1px solid #000000;
+}
+
 .even td{
 
     padding: 8px 8px 8px 11px;
@@ -68,6 +89,25 @@ tr.odd{
     border: 1px solid #000000;
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
+    text-align: center;
+
+}
+
+.even_summary td{
+
+    padding: 4px 4px 4px 4px;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
+    border-top: 1px solid #000;
+    text-align: center;
+
+}
+
+.odd_summary td{
+    padding: 4px 4px 4px 4px;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
+    border-top: 1px solid #000;
     text-align: center;
 
 }

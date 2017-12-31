@@ -54,6 +54,7 @@ class EmpattendanceController < ApplicationController
           else
             mon = month.to_s
           end
+          current_day = "01"
           dat_str = current_day.to_s + '-' + mon + '-' + current_year.to_s
           d = Date.parse(dat_str)
           @report_from_date = d.beginning_of_month.strftime("%Y-%m-%d")

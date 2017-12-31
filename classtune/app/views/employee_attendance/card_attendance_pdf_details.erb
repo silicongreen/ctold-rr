@@ -77,25 +77,28 @@
               </table>
             <% else %>
               <% j = 1 %>
+              <% newPage = true %>
               <% @employees.each do |e| %>
                 <% employee_attendances = @employee_attendance.select{|e1| e.id.to_s == e1[1].to_s} %>
                 <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
                   <div style='float: left; width: 24.8%;'>
                     <table id="pdf-table_new" width="100%" cellspacing="0">
-                      <tr class="<%= cycle('odd', 'even') %>">
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                           <td class="col-pdf">Ser No</td>
                           <td class="col-pdf" colspan="5"><%= j  %> </td>
                       </tr>
-                      <tr class="<%= cycle('odd', 'even') %>">
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                           <td class="col-pdf">Name</td>
                           <td class="col-pdf" colspan="5"><%= e.full_name %> </td>
                       </tr>
-                      <tr class="<%= cycle('odd', 'even') %>">
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                           <td class="col-pdf">Deg.</td>
                           <td class="col-pdf" colspan="5"><%= e.employee_position.name  %> </td>
                       </tr>
-                      <tr class="<%= cycle('odd', 'even') %>">
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
                           <td class="col-pdf">Date</td>
+                          <% end %>
                           <td class="col-pdf vertical-text">Arrival</td>
                           <td class="col-pdf">Departure</td>
                           <td class="col-pdf">late</td>
@@ -103,8 +106,10 @@
                           <td class="col-pdf">Leave</td>
                       </tr>
                       <% employee_attendances.each do |em| %>
-                        <tr class="<%= cycle('odd', 'even') %>">
+                        <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                            <% if newPage %>
                             <td class="col-pdf"><%= em[2]  %></td>
+                            <% end %>
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>
                             <td class="col-pdf">
@@ -130,9 +135,11 @@
                             </td>
                         </tr>
                       <% end %>
+                      <% newPage = false %>  
                     </table>
                   </div>
                   <% if j % 4 == 0 %>
+                    <% newPage = true %>
                     <% if j < 5 %>
                       <div style="clear: both; height: 110px;"></div>
                     <% else %>

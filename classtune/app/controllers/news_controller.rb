@@ -229,7 +229,7 @@ class NewsController < ApplicationController
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     @news = News.find_by_id(params[:id])
     @news.is_published = 1
-    
+  
     if @news.save
         sms_setting = SmsSetting.new()
         reminder_recipient_ids = []
@@ -243,8 +243,10 @@ class NewsController < ApplicationController
 
             if u.student == true
               student = u.student_record
-              batch_ids[u.id] = student.batch_id
-              student_ids[u.id] = student.id
+              unless student.nil?
+                batch_ids[u.id] = student.batch_id
+                student_ids[u.id] = student.id
+              end
             elsif u.parent == true
               guardian = Guardian.find_by_user_id(u.id)
               unless guardian.nil?

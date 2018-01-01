@@ -27,9 +27,9 @@
                 <th>Roll</th>
                 <th>Student Name</th>
                 <th>Status</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th style="text-align: center;"><input type="radio" value="1" checked="checked" name="check_all" class="check_all" />&nbsp;&nbsp;Present</th>
+                <th style="text-align: center;"><input type="radio" value="2" name="check_all" class="check_all" />&nbsp;&nbsp;Absent</th>
+                <th style="text-align: center;"><input type="radio" value="3" name="check_all" class="check_all" />&nbsp;&nbsp;Late</th>
 
             </tr>
         </thead>
@@ -58,20 +58,20 @@
 
               <td class="col-2 status-class">
                   <div class="image_loading">
-                      <input type="radio" value="1" <% if student['att']==1 or student['att']==0 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Present
+                      <input type="radio" value="1" <% if student['att']==1 or student['att']==0 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student present_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Present
 
                   </div>
               </td>
 
               <td class="col-2 status-class">
                   <div class="image_loading">
-                      <input type="radio" value="2" <% if student['att']==2 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Absent
+                      <input type="radio" value="2" <% if student['att']==2 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student absent_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Absent
 
                   </div>
               </td>
               <td class="col-2 status-class">
                   <div class="image_loading">
-                      <input type="radio" value="3" <% if student['att']==3 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Late
+                      <input type="radio" value="3" <% if student['att']==3 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student late_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Late
 
                   </div>
               </td>
@@ -202,6 +202,21 @@
 <script>
   var jj = jQuery.noConflict();
   jj(document).ready(function () {
+      jj('.check_all').click(function () {
+      
+        if(jj(this).val() == 1)
+        {
+          jj('.present_std').trigger("click");
+        } 
+        if(jj(this).val() == 2)
+        {
+          jj('.absent_std').trigger("click");
+        }
+        if(jj(this).val() == 3)
+        {
+          jj('.late_std').trigger("click");
+        } 
+      });
       jj('#attendance_save_all').click(function () {
       
           var student_ids = new Array;

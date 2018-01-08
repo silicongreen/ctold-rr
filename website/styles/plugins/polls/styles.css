@@ -1,0 +1,20 @@
+
+#pollcontainer h1{
+	margin:0; padding:5px; 
+	font-size:1.4em; font-family:Georgia, serif;
+	font-weight:normal; color:#333;
+}
+#pollcontainer p{
+	font-family:Georgia, serif; color:#333; 
+	margin:0; line-height:2em;
+        font-size: 1em;
+}
+#pollcontainer{
+	margin:5px; border:1px solid #f3f3f3;
+	background:#f9f9f9; padding:5px;
+}
+#loader{ display:none; text-align:center;}
+.option{ margin:5px 0; }
+.option p{ line-height:1.1em; font-size:0.85em; }
+.bar{ height:10px; background:#3399cc; }
+.yourvote{ background:#113399; }

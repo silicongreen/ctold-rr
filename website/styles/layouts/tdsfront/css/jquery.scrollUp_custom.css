@@ -1,0 +1,20 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 7, 2014, 3:47:46 PM
+    Author     : Administrator
+*/
+
+
+#scrollUp{
+    background: url('./img/top.png') no-repeat;
+    bottom:50px;
+    height:38px;
+    right:50px;
+    text-indent:-999999px;
+    overflow:hidden;
+    width:38px;
+}

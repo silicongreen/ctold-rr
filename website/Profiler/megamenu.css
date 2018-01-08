@@ -1,0 +1,898 @@
+/**
+ *------------------------------------------------------------------------------
+ * @package       Plazart Framework for Joomla!
+ *------------------------------------------------------------------------------
+ * @copyright     Copyright (C) 2012-2013 TemPlaza.com. All Rights Reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @authors       TemPlaza
+ * @Link:         http://templaza.com
+ *------------------------------------------------------------------------------
+ */
+/**
+ *------------------------------------------------------------------------------
+ * @package       T3 Framework for Joomla!
+ *------------------------------------------------------------------------------
+ * @copyright     Copyright (C) 2004-2013 JoomlArt.com. All Rights Reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @authors       JoomlArt, JoomlaBamboo, (contribute to this project at github
+ *                & Google group to become co-author)
+ * @Google group: https://groups.google.com/forum/#!forum/t3fw
+ * @Link:         http://t3-framework.org
+ *------------------------------------------------------------------------------
+ */
+
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/** 
+ *------------------------------------------------------------------------------
+ * @package       T3 Framework for Joomla!
+ *------------------------------------------------------------------------------
+ * @copyright     Copyright (C) 2004-2013 JoomlArt.com. All Rights Reserved.
+ * @license       GNU General Public License version 2 or later; see LICENSE.txt
+ * @authors       JoomlArt, JoomlaBamboo, (contribute to this project at github 
+ *                & Google group to become co-author)
+ * @Google group: https://groups.google.com/forum/#!forum/t3fw
+ * @Link:         https://github.com/t3framework/ 
+ *------------------------------------------------------------------------------
+*/
+.plazart-megamenu .mega-inner {
+  padding: 10px;
+  *zoom: 1;
+}
+.plazart-megamenu .mega-inner:before,
+.plazart-megamenu .mega-inner:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.plazart-megamenu .mega-inner:after {
+  clear: both;
+}
+.plazart-megamenu .row-fluid + .row-fluid {
+  padding-top: 10px;
+  border-top: 1px solid #eeeeee;
+}
+.plazart-megamenu .mega > .mega-dropdown-menu {
+  min-width: 200px;
+  display: none;
+}
+.plazart-megamenu .mega.open > .mega-dropdown-menu,
+.plazart-megamenu .mega.dropdown-submenu:hover > .mega-dropdown-menu {
+  display: block;
+}
+.plazart-megamenu .mega-group {
+  *zoom: 1;
+}
+.plazart-megamenu .mega-group:before,
+.plazart-megamenu .mega-group:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.plazart-megamenu .mega-group:after {
+  clear: both;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title {
+  background: inherit;
+  color: inherit;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:focus {
+  background: inherit;
+  color: inherit;
+}
+.plazart-megamenu .mega-group-ct {
+  margin: 0;
+  padding: 0;
+  *zoom: 1;
+}
+.plazart-megamenu .mega-group-ct:before,
+.plazart-megamenu .mega-group-ct:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.plazart-megamenu .mega-group-ct:after {
+  clear: both;
+}
+.plazart-megamenu .mega-group-ct > .row-fluid > [class*="span"] > .mega-inner {
+  padding: 0;
+}
+.plazart-megamenu .span12.mega-col-nav .mega-inner {
+  padding: 5px;
+}
+.plazart-megamenu .mega-nav,
+.plazart-megamenu .dropdown-menu .mega-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.plazart-megamenu .mega-nav > li,
+.plazart-megamenu .dropdown-menu .mega-nav > li {
+  list-style: none;
+  margin-left: 0;
+}
+.plazart-megamenu .mega-nav > li a,
+.plazart-megamenu .dropdown-menu .mega-nav > li a {
+  white-space: normal;
+}
+.plazart-megamenu .mega-group > .mega-nav,
+.plazart-megamenu .dropdown-menu .mega-group > .mega-nav {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.plazart-megamenu .mega-nav .dropdown-submenu > a::after {
+  margin-right: 5px;
+}
+.plazart-megamenu .plazart-module {
+  margin-bottom: 10px;
+}
+.plazart-megamenu .plazart-module .module-title {
+  margin-bottom: 0;
+}
+.plazart-megamenu .plazart-module .module-ct {
+  margin: 0;
+  padding: 0;
+}
+.plazart-megamenu .mega-align-left > .dropdown-menu {
+  left: 0;
+}
+.plazart-megamenu .mega-align-right > .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+.plazart-megamenu .mega-align-center > .dropdown-menu {
+  left: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translate(-50%);
+  -moz-transform: translate(-50%);
+  -ms-transform: translate(-50%);
+  -o-transform: translate(-50%);
+}
+.plazart-megamenu .dropdown-submenu.mega-align-left > .dropdown-menu {
+  left: 100%;
+}
+.plazart-megamenu .dropdown-submenu.mega-align-right > .dropdown-menu {
+  left: auto;
+  right: 100%;
+}
+.plazart-megamenu .mega-align-justify {
+  position: static;
+}
+.plazart-megamenu .mega-align-justify > .dropdown-menu {
+  left: 0;
+  margin-left: 0;
+  top: auto;
+}
+.plazart-megamenu .mega-caption {
+  display: block;
+  white-space: nowrap;
+}
+.plazart-megamenu .nav .caret,
+.plazart-megamenu .dropdown-submenu .caret,
+.plazart-megamenu .mega-menu .caret {
+  display: none;
+}
+.plazart-megamenu .nav > .dropdown > .dropdown-toggle .caret {
+  display: inline-block;
+}
+.plazart-megamenu .nav [class^="icon-"],
+.plazart-megamenu .nav [class*=" icon-"] {
+  margin-right: 5px;
+}
+@media (min-width: 768px) {
+  .plazart-megamenu.animate .mega > .mega-dropdown-menu {
+    transition: all 400ms;
+    -webkit-transition: all 400ms;
+    -ms-transition: all 400ms;
+    -o-transition: all 400ms;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    opacity: 0;
+  }
+  .plazart-megamenu.animate .mega.animating > .mega-dropdown-menu {
+    display: block!important;
+  }
+  .plazart-megamenu.animate .mega.open > .mega-dropdown-menu,
+  .plazart-megamenu.animate .mega.animating.open > .mega-dropdown-menu {
+    opacity: 1;
+  }
+  .plazart-megamenu.animate.zoom .mega > .mega-dropdown-menu {
+    transform: scale(0, 0);
+    transform-origin: 20% 20%;
+    -webkit-transform: scale(0, 0);
+    -webkit-transform-origin: 20% 20%;
+    -ms-transform: scale(0, 0);
+    -ms-transform-origin: 20% 20%;
+    -o-transform: scale(0, 0);
+    -o-transform-origin: 20% 20%;
+  }
+  .plazart-megamenu.animate.zoom .mega.open > .mega-dropdown-menu {
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -o-transform: scale(1, 1);
+  }
+  .plazart-megamenu.animate.elastic .level0 > .mega > .mega-dropdown-menu {
+    transform: scale(1, 0);
+    -webkit-transform: scale(1, 0);
+    -ms-transform: scale(1, 0);
+    -o-transform: scale(1, 0);
+  }
+  .plazart-megamenu.animate.elastic .mega > .mega-dropdown-menu {
+    transform: scale(0, 1);
+    transform-origin: 10% 0;
+    -webkit-transform: scale(0, 1);
+    -webkit-transform-origin: 10% 0;
+    -ms-transform: scale(0, 1);
+    -ms-transform-origin: 10% 0;
+    -o-transform: scale(0, 1);
+    -o-transform-origin: 10% 0;
+  }
+  .plazart-megamenu.animate.elastic .mega.open > .mega-dropdown-menu {
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -o-transform: scale(1, 1);
+  }
+  .plazart-megamenu.animate.slide .mega.animating > .mega-dropdown-menu {
+    overflow: hidden;
+  }
+  .plazart-megamenu.animate.slide .mega > .mega-dropdown-menu > div {
+    transition: all 400ms;
+    -webkit-transition: all 400ms;
+    -ms-transition: all 400ms;
+    -o-transition: all 400ms;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    margin-top: -100%;
+  }
+  .plazart-megamenu.animate.slide .mega.open > .mega-dropdown-menu > div {
+    margin-top: 0%;
+  }
+  .plazart-megamenu.animate.slide .mega .mega > .mega-dropdown-menu {
+    min-width: 0;
+  }
+  .plazart-megamenu.animate.slide .mega .mega > .mega-dropdown-menu > div {
+    min-width: 200px;
+    margin-top: 0;
+    margin-left: -500px;
+  }
+  .plazart-megamenu.animate.slide .mega .mega.open > .mega-dropdown-menu > div {
+    margin-left: 0;
+  }
+}
+
+.clearfix {
+    *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.clearfix:after {
+    clear: both;
+}
+.hide-text {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+.input-block-level {
+    display: block;
+    width: 100%;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.plazart-megamenu .mega-inner {
+    padding: 10px;
+    *zoom: 1;
+}
+.plazart-megamenu .mega-inner:before,
+.plazart-megamenu .mega-inner:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.plazart-megamenu .mega-inner:after {
+    clear: both;
+}
+.plazart-megamenu .row-fluid + .row-fluid {
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+.plazart-megamenu .mega > .mega-dropdown-menu {
+    min-width: 200px;
+    display: none;
+}
+.plazart-megamenu .mega.open > .mega-dropdown-menu,
+.plazart-megamenu .mega.dropdown-submenu:hover > .mega-dropdown-menu {
+    display: block;
+}
+.plazart-megamenu .mega-group {
+    *zoom: 1;
+}
+.plazart-megamenu .mega-group:before,
+.plazart-megamenu .mega-group:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.plazart-megamenu .mega-group:after {
+    clear: both;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title {
+    background: inherit;
+    color: inherit;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:focus {
+    background: inherit;
+    color: inherit;
+}
+.plazart-megamenu .mega-group-ct {
+    margin: 0;
+    padding: 0;
+    *zoom: 1;
+}
+.plazart-megamenu .mega-group-ct:before,
+.plazart-megamenu .mega-group-ct:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.plazart-megamenu .mega-group-ct:after {
+    clear: both;
+}
+.plazart-megamenu .mega-group-ct > .row-fluid > [class*="span"] > .mega-inner {
+    padding: 0;
+}
+.plazart-megamenu .span12.mega-col-nav .mega-inner {
+    padding: 5px;
+}
+.plazart-megamenu .mega-nav,
+.plazart-megamenu .dropdown-menu .mega-nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.plazart-megamenu .mega-nav > li,
+.plazart-megamenu .dropdown-menu .mega-nav > li {
+    list-style: none;
+    margin-left: 0;
+}
+.plazart-megamenu .mega-nav > li a,
+.plazart-megamenu .dropdown-menu .mega-nav > li a {
+    white-space: normal;
+}
+.plazart-megamenu .mega-group > .mega-nav,
+.plazart-megamenu .dropdown-menu .mega-group > .mega-nav {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.plazart-megamenu .mega-nav .dropdown-submenu > a::after {
+    margin-right: 5px;
+}
+.plazart-megamenu .plazart-module {
+    margin-bottom: 10px;
+}
+.plazart-megamenu .plazart-module .module-title {
+    margin-bottom: 0;
+}
+.plazart-megamenu .plazart-module .module-ct {
+    margin: 0;
+    padding: 0;
+}
+.plazart-megamenu .mega-align-left > .dropdown-menu {
+    left: 0;
+}
+.plazart-megamenu .mega-align-right > .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+.plazart-megamenu .mega-align-center > .dropdown-menu {
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
+    -moz-transform: translate(-50%);
+    -ms-transform: translate(-50%);
+    -o-transform: translate(-50%);
+}
+.plazart-megamenu .dropdown-submenu.mega-align-left > .dropdown-menu {
+    left: 100%;
+}
+.plazart-megamenu .dropdown-submenu.mega-align-right > .dropdown-menu {
+    left: auto;
+    right: 100%;
+}
+.plazart-megamenu .mega-align-justify {
+    position: static;
+}
+.plazart-megamenu .mega-align-justify > .dropdown-menu {
+    left: 0;
+    margin-left: 0;
+}
+.plazart-megamenu .nav .caret,
+.plazart-megamenu .dropdown-submenu .caret,
+.plazart-megamenu .mega-menu .caret {
+    display: none;
+}
+.plazart-megamenu .nav > .dropdown > .dropdown-toggle .caret {
+    display: inline-block;
+}
+.plazart-megamenu .nav [class^="icon-"],
+.plazart-megamenu .nav [class*=" icon-"] {
+    margin-right: 5px;
+}
+.plazart-megamenu .mega-inner {
+    padding: 20px;
+}
+.plazart-megamenu .mega-dropdown-inner .last-col {
+    margin-left: 0 !important;
+}
+.plazart-megamenu .mega-dropdown-inner .last-col .mega-inner,
+.plazart-megamenu .mega-dropdown-inner .row-fluid > div:last-child .mega-inner {
+    padding: 20px 20px 0 10px;
+}
+.plazart-megamenu .mega-dropdown-inner .row-fluid > .span12.mega-col-nav:last-child .mega-inner {
+    padding: 20px;
+}
+.plazart-megamenu .nav-child.mega-group-ct .mega-dropdown-inner .last-col .mega-inner,
+.plazart-megamenu .nav-child.mega-group-ct .mega-dropdown-inner .mega-col-nav .mega-inner,
+.plazart-megamenu .nav-child.mega-group-ct .row-fluid > div:last-child .mega-inner,
+.plazart-megamenu .span12.mega-col-nav:last-child .nav-child.mega-group-ct .row-fluid .mega-inner {
+    padding: 0;
+}
+.plazart-megamenu .nav-child.mega-group-ct .row-fluid .mega-col-nav:first-child .mega-inner {
+    padding-right: 10px !important;
+}
+.plazart-megamenu .row-fluid + .row-fluid {
+    border-top: 1px solid #ddd;
+}
+.plazart-megamenu .mega-nav .mega-group > a.mega-group-title,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > a.mega-group-title,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > a.mega-group-title {
+    background: inherit;
+    border-bottom: none;
+    color: #414952;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    border-top: none;
+}
+.plazart-megamenu .mega-nav .mega-group > a.mega-group-title:hover,
+.plazart-megamenu .mega-nav .mega-group > a.mega-group-title:active,
+.plazart-megamenu .mega-nav .mega-group > a.mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > a.mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > a.mega-group-title:active,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > a.mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > a.mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > a.mega-group-title:active,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > a.mega-group-title:focus {
+    background: inherit;
+    color: #414952 !important;
+}
+.plazart-megamenu .mega-group-ct .mega-dropdown-inner .mega-col-nav .mega-inner {
+    border-right: none;
+}
+.plazart-megamenu .mega-group-ct > .row-fluid > [class*="span"] > .mega-inner,
+.plazart-megamenu .span12.mega-col-nav .mega-group-ct .mega-inner,
+.plazart-megamenu .mega-col-nav .mega-group-ct .mega-inner {
+    padding: 0;
+    border-right: none;
+}
+.plazart-megamenu .mega-dropdown-inner .mega-col-nav .mega-inner {
+    border-right: solid 1px #333;
+}
+.plazart-megamenu .mega-dropdown-inner .mega-col-nav:last-child .mega-inner {
+    border-right: none;
+}
+.plazart-megamenu .span12.mega-col-nav .mega-inner {
+    padding: 20px;
+}
+.plazart-megamenu .mega-nav > li:first-child a,
+.plazart-megamenu .dropdown-menu .mega-nav > li:first-child a {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.plazart-megamenu .mega-nav > li a {
+    padding: 5px 10px;
+}
+.plazart-megamenu .dropdown-menu .mega-nav > li a {
+    padding: 10px 0 !important;
+    font-size: 12px;
+    border-top: 1px solid #e1e5e7;
+    color: #414952;
+}
+.plazart-megamenu .mega-group .mega-nav > li a,
+.plazart-megamenu .dropdown-menu .mega-group .mega-nav > li a {
+    padding-left: 0;
+    padding-right: 0;
+}
+.plazart-megamenu .mega-nav .dropdown-submenu > a::after {
+    margin-right: 0;
+}
+.plazart-megamenu .plazart-module .module-title {
+    display: block;
+    line-height: 20px;
+    border-bottom: 1px solid #333333;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+.plazart-megamenu .plazart-module .module-ct {
+    color: #666;
+    font-weight: 400;
+}
+.plazart-megamenu .plazart-module ul,
+.plazart-megamenu .plazart-module .nav {
+    margin: 0 0 0 15px;
+}
+.plazart-megamenu .plazart-module ul li,
+.plazart-megamenu .plazart-module .nav li {
+    list-style: disc;
+    display: list-item;
+    float: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.plazart-megamenu .plazart-module ul li a,
+.plazart-megamenu .plazart-module .nav li a {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-size: 100%;
+    background: none;
+    font: inherit;
+    white-space: normal;
+}
+.plazart-megamenu .plazart-module ul li a:hover,
+.plazart-megamenu .plazart-module ul li a:focus,
+.plazart-megamenu .plazart-module ul li a:active,
+.plazart-megamenu .plazart-module .nav li a:hover,
+.plazart-megamenu .plazart-module .nav li a:focus,
+.plazart-megamenu .plazart-module .nav li a:active {
+    background: none;
+    color: inherit;
+    font: inherit;
+}
+.plazart-megamenu .plazart-module .category-module {
+    margin: 0;
+    color: #555;
+    font-weight: 400;
+}
+.plazart-megamenu .plazart-module .category-module li {
+    list-style: none;
+}
+.plazart-megamenu .plazart-module .category-module li h4 {
+    border-bottom: 1px solid #333;
+    line-height: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+.plazart-megamenu .plazart-module .category-module li h4 a {
+    color: #fff;
+}
+.plazart-megamenu .plazart-module .category-module li h4 a:hover,
+.plazart-megamenu .plazart-module .category-module li h4 a:focus,
+.plazart-megamenu .plazart-module .category-module li h4 a:active {
+    color: #fff;
+    text-decoration: none;
+}
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a {
+    background: #01a3d4;
+    color: #fff;
+    display: inline-block;
+    font-size: 11px;
+    opacity: 1;
+    padding: 3px 14px;
+    text-indent: 0;
+    text-transform: uppercase;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.1);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.1);
+}
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active {
+    color: #fff;
+    text-decoration: none;
+    color: 0 -1px 0 rgba(0,0,0,0.25);
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    background-color: #0088cc;
+    background-image: -moz-linear-gradient(top,#08c,#08c);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#08c),to(#08c));
+    background-image: -webkit-linear-gradient(top,#08c,#08c);
+    background-image: -o-linear-gradient(top,#08c,#08c);
+    background-image: linear-gradient(to bottom,#08c,#08c);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0088cc', GradientType=0);
+    border-color: #08c #08c #005580;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    *background-color: #08c;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover:hover,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover:focus,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover.active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover.disabled,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover[disabled],
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus:hover,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus:focus,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus.active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus.disabled,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus[disabled],
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active:hover,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active:focus,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active.active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active.disabled,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active[disabled] {
+    color: 0 -1px 0 rgba(0,0,0,0.25);
+    background-color: #08c;
+    *background-color: #0077b3;
+}
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:hover.active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:focus.active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active:active,
+.plazart-megamenu .plazart-module .category-module li p.mod-articles-category-readmore a:active.active {
+    background-color: #006699 \9;
+}
+.plazart-megamenu .mega-caption {
+    color: #999;
+    font-size: 12px;
+    margin-top: 3px;
+    font-weight: normal;
+}
+@media (min-width: 768px) {
+    .vertical-nav .plazart-megamenu.elastic .level0 > .mega .mega-dropdown-menu {
+        transform: scale(0,1);
+        -webkit-transform: scale(0,1);
+        -ms-transform: scale(0,1);
+        -o-transform: scale(0,1);
+    }
+    .vertical-nav .plazart-megamenu.elastic .level0 > .mega.open > .mega-dropdown-menu {
+        transform: scale(1,1);
+        -webkit-transform: scale(1,1);
+        -ms-transform: scale(1,1);
+        -o-transform: scale(1,1);
+    }
+    .vertical-nav .plazart-megamenu.slide .mega > .mega-dropdown-menu {
+        min-width: 0;
+    }
+    .vertical-nav .plazart-megamenu.slide .mega > .mega-dropdown-menu > div {
+        min-width: 200px;
+        margin-top: 0;
+        margin-left: -500px;
+    }
+    .vertical-nav .plazart-megamenu.slide .mega.open > .mega-dropdown-menu > div {
+        margin-left: 0;
+    }
+}
+#tz_mainmenu {
+    position: absolute;
+    top: 65px !important;
+    bottom: 0;
+    z-index: 1000;
+	overflow:hidden;
+    /*box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+    -moz-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+    -ms-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+    -webkit-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;
+    -o-box-shadow: 0 9px 0 0 #e7e7e7, 0 -9px 0 0 #e7e7e7, 2px 0 3px #c5c4c4, -2px 0 3px #c5c4c4;*/
+}
+#tz_mainmenu #plazart-mainnav {
+    position: relative;
+    margin: 0;
+    width: auto;
+    height: auto;
+    top: 0;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 {
+    padding-top: 10px;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li {
+    padding: 0;
+    position: relative;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li >a {
+    color: #93989c;
+    font-size: 11.9px;
+    text-transform: capitalize;
+    text-align: center;
+    border: none;
+    -webkit-transition: all 300ms linear;
+    -moz-transition: all 300ms linear;
+    -o-transition: all 300ms linear;
+    transition: all 300ms linear;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li >a:hover {
+    color: #414952;
+    -webkit-transition: all 300ms linear;
+    -moz-transition: all 300ms linear;
+    -o-transition: all 300ms linear;
+    transition: all 300ms linear;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li >a i {
+    display: block;
+    -webkit-transition: all 300ms linear;
+    -moz-transition: all 300ms linear;
+    -o-transition: all 300ms linear;
+    transition: all 300ms linear;
+    margin: 0;
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 3px;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li.active >a,
+#tz_mainmenu #plazart-mainnav ul.level0 >li:hover >a {
+    color: #414952;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li.active >a:before,
+#tz_mainmenu #plazart-mainnav ul.level0 >li:hover >a:before {
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-left: none;
+    content: "";
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    width: 0;
+    -webkit-transition: all 300ms linear;
+    -moz-transition: all 300ms linear;
+    -o-transition: all 300ms linear;
+    transition: all 300ms linear;
+}
+#tz_mainmenu #plazart-mainnav ul.level0 >li.active >a:after,
+#tz_mainmenu #plazart-mainnav ul.level0 >li:hover >a:after {
+    background: none !important;
+}
+.plazart-megamenu .mega-inner {
+    padding: ;
+}
+.plazart-megamenu .row-fluid + .row-fluid {
+    border-top: 1px solid #ddd;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title {
+    background: inherit;
+    color: #222;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .mega-nav .mega-group > .mega-group-title:focus,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:hover,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:active,
+.plazart-megamenu .dropdown-menu .active .mega-nav .mega-group > .mega-group-title:focus {
+    background: inherit;
+    color: #222;
+}
+.plazart-megamenu .mega-nav > li a,
+.plazart-megamenu .dropdown-menu .mega-nav > li a {
+    padding: 5px 10px;
+}
+.plazart-megamenu .mega-nav .dropdown-submenu > a::after {
+    margin-right: 0;
+}
+.plazart-megamenu .plazart-module .module-title {
+    font-size: 16px;
+    color: #222;
+    display: block;
+    line-height: 20px;
+    margin-bottom: 5px;
+}
+.plazart-megamenu .plazart-module ul,
+.plazart-megamenu .plazart-module .nav {
+    margin: 0 0 0 15px;
+}
+.plazart-megamenu .plazart-module ul li,
+.plazart-megamenu .plazart-module .nav li {
+    list-style: disc;
+    display: list-item;
+    float: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.plazart-megamenu .plazart-module ul li a,
+.plazart-megamenu .plazart-module .nav li a {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-size: 100%;
+    background: none;
+    font: inherit;
+    white-space: normal;
+}
+.plazart-megamenu .plazart-module ul li a:hover,
+.plazart-megamenu .plazart-module ul li a:focus,
+.plazart-megamenu .plazart-module ul li a:active,
+.plazart-megamenu .plazart-module .nav li a:hover,
+.plazart-megamenu .plazart-module .nav li a:focus,
+.plazart-megamenu .plazart-module .nav li a:active {
+    background: none;
+    color: inherit;
+    font: inherit;
+}

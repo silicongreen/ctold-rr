@@ -17,7 +17,6 @@ website/market/var/
 webhook-deploy
 .vagrant
 composer.lock
-vendor/
 log
 nbproject
 website/git_pull

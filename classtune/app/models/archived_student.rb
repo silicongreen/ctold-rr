@@ -59,13 +59,12 @@ class ArchivedStudent < ActiveRecord::Base
   
   def retrive_student
     student_attributes = self.attributes
-    student_attributes["id"]= self.former_id
-  
     student_attributes.delete "former_id"
     student_attributes.delete "status_description"
     student_attributes.delete "date_of_leaving"
     
     student = Student.new(student_attributes)
+    student.id= self.former_id
     student.photo = self.photo
     user = User.find_by_id(self.user_id)
     user.is_deleted = 0

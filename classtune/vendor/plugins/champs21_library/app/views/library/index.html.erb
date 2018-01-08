@@ -18,7 +18,7 @@
 #under the License. -%>
 <div id="content-header">
 <%= show_header_icon %>
-  <h1><%= "#{t('library_text')}"%></h1>
+  <h1><a href="/library" style="color:#666666; text-decoration: none;" ><%= "#{t('library_text')}"%></a></h1>
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= "#{t('library_management')}"%></div>
 
@@ -29,6 +29,10 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
   <div id="box">
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "#{t('manage_book_call')}", :controller=>'books', :action=>'book_call_numbers' %> </div>
+      <div class="link-descr"><%= "#{t('manage_library_call')}"%></div>
+    </div>
     <div class="link-box">
       <div class="link-heading"><%= link_to "#{t('manage_books')}", :controller=>'books', :action=>'index' %> </div>
       <div class="link-descr"><%= "#{t('manage_library_books')}"%></div>

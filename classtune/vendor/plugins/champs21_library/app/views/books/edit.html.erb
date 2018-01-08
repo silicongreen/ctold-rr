@@ -18,7 +18,7 @@
 #under the License. -%>
 <div id="content-header">
 <%= show_header_icon %>
-  <h1><%= "#{t('library_text')}"%></h1>
+  <h1><a href="/library" style="color:#666666; text-decoration: none;" ><%= "#{t('library_text')}"%></a></h1>
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= "#{t('edit_book')}"%></div>
 <div id="inner-tab-menu">
@@ -37,6 +37,7 @@
 
     <% form_for (@book) do |f| %>
       <%= error_messages_for :book %>
+      <input type="hidden" name="book_call_number" value="<%= params[:book_call_number] %>" />
       <div class="label-field-pair">
         <label for="book_number"><%= "#{t('book_number')}"%> <span class="necessary-field">*</span></label>
         <div class="text-input-bg">
@@ -44,13 +45,37 @@
         </div>
       </div>
       <div class="label-field-pair">
+        <label for="title" style="width:210px;"><%= "#{t('book_call_number')}"%> <span class="necessary-field">*</span></label>
+        <div class="text-select-bg" style="margin-left:20px; ">
+          <%= select_tag   "book[book_call_number_id]", options_for_select([["Select",""]]+@book_call_numbers.map{|em| [em.title,em.id]},@book.book_call_number_id),{:class => 'js-example-basic-single'} %>
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="title"><%= "Source"%></label>
+        <div class="text-input-bg">
+          <%= f.text_field :source %>
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="title"><%= "Price"%></label>
+        <div class="text-input-bg">
+          <%= f.text_field :price %>
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="title"><%= "Cataloging Date"%></label>
+        <div class="text-input-bg">
+          <%= calendar_date_select_tag 'book[catalog_date]',I18n.l(Date.today,:format=>:default) ,:popup=>:force%>
+        </div>
+      </div>
+      <div class="label-field-pair" style="display:none;">
         <label for="title"><%= "#{t('title')}"%> <span class="necessary-field">*</span></label>
         <div class="text-input-bg">
           <%= f.text_field :title%>
         </div>
       </div>
 
-      <div class="label-field-pair">
+      <div class="label-field-pair" style="display:none;">
         <label for="author"><%= "#{t('author')}"%> <span class="necessary-field">*</span></label>
         <div class="text-input-bg">
           <%= f.text_field :author %>
@@ -58,7 +83,7 @@
       </div>
       <div class="extender"></div>
       <div class="tag">
-        <div class="label-field-pair">
+        <div class="label-field-pair" style="display:none;">
           <label for="tag"><%= "#{t('tags_text')}"%> </label>
           <div class="tag_list">
             <div class="label-field-pair-checkbox">
@@ -73,7 +98,7 @@
        </div>
       <div class="extender"></div>
       <div class="extender"></div>
-      <div class="label-field-pair">
+      <div class="label-field-pair" style="display:none;">
         <label for="title"><%= "#{t('custom_tags')}"%> </label>
             <div class="text-input-bg">
               <%= text_field_tag "tag[list]", @custom_tags %>
@@ -97,4 +122,17 @@
 
   </div>
 </div>
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq('.js-example-basic-single').select2();
+  });
+  
+</script> 
+<style>
+  .text-select-bg select
+  {
+      width:220px;
+  }
+</style>
 

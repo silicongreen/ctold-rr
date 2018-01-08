@@ -17,9 +17,10 @@
 class Book < ActiveRecord::Base
   acts_as_taggable
   belongs_to :book_movement
+  belongs_to :book_call_number
   has_many :book_reservations, :dependent => :destroy
   has_many :book_additional_details, :dependent => :destroy
-  validates_presence_of :book_number, :title, :author
+  validates_presence_of :book_number, :title, :author, :book_call_number_id
   validates_uniqueness_of :book_number
   before_destroy :delete_dependency
 

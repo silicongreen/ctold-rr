@@ -1,6 +1,7 @@
 --- 
 multi_school_models:
 - EmployeePosition
+- BookCallNumber
 - EmployeeLeave
 - ApplyLeave
 - ApplyLeaveStudent

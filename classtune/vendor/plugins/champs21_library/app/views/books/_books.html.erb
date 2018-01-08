@@ -27,10 +27,10 @@
         <%= "#{t('title')}"%>
       </td>
       <td>
-        <%= "#{t('author')}"%>
+        <%= "Source"%>
       </td>
       <td>
-        <%= "#{t('tags_text')}"%>
+        <%= "Price"%>
       </td>
       <td>
         <%= "#{t('status')}"%>
@@ -44,8 +44,8 @@
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <td class="col-3"><%=h book.book_number %></td>
         <td class="col-7"><%=h book.title %></td>
-        <td class="col-7"><%=h book.author %></td>
-        <td class="col-7"><%=h book.tag_list %></td>
+        <td class="col-7"><%=h book.source %></td>
+        <td class="col-7"><%=h book.price %></td>
         <td class="col-1"><%=h t("#{book.status.downcase}") %></td>
         <td class="col-3">
           <small>

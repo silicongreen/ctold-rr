@@ -41,6 +41,13 @@ authorization do
     ]
     has_permission_on [:books],
       :to => [
+      :book_call_numbers,
+      :add_call_numbers,
+      :create_call_number,
+      :edit_call_number,
+      :update_call_number,
+      :destroy_call_number,
+      :filter_by,
       :index,
       :new,
       :create,
@@ -104,6 +111,8 @@ authorization do
     has_permission_on [:books],
       :to => [
       :index,
+      :book_call_numbers,
+      :filter_by,
       :show,
       :sort_by
 

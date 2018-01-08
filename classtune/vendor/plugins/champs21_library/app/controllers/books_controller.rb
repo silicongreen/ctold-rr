@@ -21,12 +21,89 @@ class BooksController < ApplicationController
   filter_access_to :all
 
   def index
-    @books = Book.paginate(:page => params[:page],:include=>:tags)
+    @book_call_number = params[:book_call_number]
+    unless @book_call_number.blank?
+      @book_call_number_obj = BookCallNumber.find_by_id(@book_call_number)
+      @books = Book.paginate(:page => params[:page],:conditions=>["book_call_number_id = ?",@book_call_number],:include=>:tags)
+    else
+      @books = Book.paginate(:page => params[:page],:include=>:tags)
+    end
+  end
+  
+  def book_call_numbers
+    @book_call_numbers = BookCallNumber.paginate(:page => params[:page])
+  end
+  
+  def add_call_numbers
+    @book_call_number = BookCallNumber.new
+  end
+  def create_call_number
+    @book_call_number = BookCallNumber.new(params[:book_call_number])
+    if @book_call_number.save
+      flash[:notice]="#{t('flash1')}"
+      redirect_to :controller => "books", :action => "book_call_numbers"
+    else
+      render 'add_call_numbers'
+    end  
+  end
+  
+  def edit_call_number
+    @book_call_number = BookCallNumber.find(params[:id])
+  end
+  def update_call_number
+    @book_call_number = BookCallNumber.find(params[:id]) 
+    if @book_call_number.update_attributes(params[:book_call_number])
+      flash[:notice]="#{t('flash6')}"
+      redirect_to :controller => "books", :action => "book_call_numbers",:page=>params[:page]
+    else
+      render 'edit_call_number'
+    end
+  end
+  
+  def destroy_call_number
+    @book_call_number = BookCallNumber.find(params[:id])
+    can_destroy = true
+    books = Book.find_all_by_book_call_number_id(self.id)
+    unless books.blank?
+      books.each do |book|
+        unless book.book_movement_id.nil?
+          can_destroy = false
+          break
+        end
+      end
+    end 
+    if can_destroy
+      @book_call_number.destroy
+      flash[:notice] ="#{t('flash3')}"
+    else
+      flash[:warn_notice] ="#{t('flash4')}"
+    end 
+    redirect_to :controller => "books", :action => "book_call_numbers",:page=>params[:page]
+  end
+
+  def filter_by
+    filter_field = params[:filter][:on]
+    search = params[:filter][:search]
+    unless filter_field.blank?
+      @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>[filter_field.to_s+" like ?",search],:page=>params[:page])
+    else
+      @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>["call_number like ? or title like ? or subject like ? or author like ? or version like ? or language like ? or publish_year like ? or published_by like ?",search,search,search,search,search,search,search,search],:page=>params[:page])
+    end  
+    render(:update) do |page|
+      page.replace_html 'books', :partial=>'book_call_number'
+    end
   end
 
   def new
     @tagg = []
     @book = Book.find(:last)
+    @book_call_number = params[:book_call_number]
+    unless @book_call_number.nil?
+      @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
+    else
+      @book_call_numbers = BookCallNumber.find(:all)
+    end
+    
     @book_number = @book.book_number.next unless @book.nil?
     unless params[:author].nil?
       @book_title = params[:title]
@@ -43,71 +120,48 @@ class BooksController < ApplicationController
   end
 
   def create
-    @tagg = []
-    @book = Book.find(:last)
-    @book_number = @book.book_number.next unless @book.nil?
-    @book_number = params[:book][:book_number] unless params[:book][:book_number].nil?
-
-    unless params[:author].nil?
-      @book_title = params[:title]
-      @author = params[:author]
-      @detail = Book.find_by_author_and_title(@author, @book_title)
-      @tagg = @detail.tag_list
-    else
-      @book_title = ''
-      @author = ''
+    author = ""
+    title = ""
+    unless params[:book][:book_call_number_id].nil?
+      book_call_number = BookCallNumber.find(params[:book][:book_call_number_id]) 
+      unless book_call_number.blank?
+        author = book_call_number.author
+        title = book_call_number.title
+      end
     end
-
-    @book = Book.new
-    @tags = Tag.find(:all)
-    @book = Book.new(params[:book])
-    @created_books = Array.new
-    @count = params[:tag][:count].to_i
-    @custom_tags = params[:tag][:list]
-    tags = @custom_tags.split(',')
-    unless params[:tag][:count] == ""
-      saved = 0
-      temp_book_number = params[:book][:book_number]
-      tags << params[:book][:tag_list]
-      @count.times do |c|
-        book_number = temp_book_number
-        if @book = Book.create(:title=> params[:book][:title], :author=> params[:book][:author], :tag_list =>tags, :book_number =>book_number, :status=>'Available')
-          unless @book.id.nil?
-            saved += 1
-            Book.update(@book.id, :tag_list => tags)
-            temp_book_number = temp_book_number.next
-            @created_books = @created_books.push @book.id
-          end
-        end
-      end
-      if  saved == @count
-        flash[:notice]="#{t('flash1')}"
-        redirect_to additional_data_books_path(:id => @created_books)
-      else
-        render 'new'
-      end
+    if @book = Book.create(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id], :status=>'Available')
+       flash[:notice]="#{t('flash1')}"
+       redirect_to additional_data_books_path(:id => @created_books,:book_call_number=>params[:book_call_number])     
     else
-      @book.errors.add_to_base("#{t('flash5')}")
       render 'new'
-    end 
+    end    
   end
 
   def edit
     @book = Book.find(params[:id])
+    @book_call_number = params[:book_call_number]
+    unless @book_call_number.nil?
+      @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
+    else
+      @book_call_numbers = BookCallNumber.find(:all)
+    end
     @tags = Tag.find(:all)
   end
 
   def update
-    @book = Book.find(params[:id])
-    @tags = Tag.all
-    @custom_tags = params[:tag][:list]
-    tags = @custom_tags.split(',')
-    params[:book][:tag_list]=[] if params[:book][:tag_list].blank?
-    params[:book][:tag_list] << tags unless tags.blank?
-      
-    if @book.update_attributes(params[:book])
-      flash[:notice]="#{t('flash2')}"
-      redirect_to edit_additional_data_books_path(:id => @book.id)
+    @book = Book.find(params[:id])  
+    author = ""
+    title = ""
+    unless params[:book][:book_call_number_id].nil?
+      book_call_number = BookCallNumber.find(params[:book][:book_call_number_id]) 
+      unless book_call_number.blank?
+        author = book_call_number.author
+        title = book_call_number.title
+      end
+    end
+    if @book.update_attributes(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id], :status=>'Available')
+       flash[:notice]="#{t('flash2')}"
+       redirect_to edit_additional_data_books_path(:id => @book.id,:book_call_number=>params[:book_call_number])     
     else
       render 'edit'
     end
@@ -119,7 +173,7 @@ class BooksController < ApplicationController
     @additional_fields = BookAdditionalField.find(:all, :conditions=> "is_active = true", :order=>"priority ASC")
     if @additional_fields.empty?
       flash[:notice] = "Books created successfully."
-      redirect_to books_path and return
+      redirect_to :controller => "books", :action => "index",:book_call_number=>params[:book_call_number] and return
     end
     if request.post?
       @books.each do |book|
@@ -162,7 +216,7 @@ class BooksController < ApplicationController
         end
       end
       flash[:notice] = "Book saved with additional data successfully"
-      redirect_to books_path
+      redirect_to :controller => "books", :action => "index",:book_call_number=>params[:book_call_number]
     end
   end
 
@@ -172,7 +226,7 @@ class BooksController < ApplicationController
     @book_additional_details = BookAdditionalDetail.find_all_by_book_id(@book.id)
     if @additional_fields.blank?
       flash[:notice] = t('book_updated')
-      redirect_to @book
+      redirect_to :controller => "books", :action => "index",:book_call_number=>params[:book_call_number]
     end
     if request.post?
       @error=false
@@ -213,7 +267,7 @@ class BooksController < ApplicationController
       end
 
       flash[:notice] = "Book saved with additional data successfully"
-      redirect_to books_path
+      redirect_to :controller => "books", :action => "index",:book_call_number=>params[:book_call_number]
     end
   end
 

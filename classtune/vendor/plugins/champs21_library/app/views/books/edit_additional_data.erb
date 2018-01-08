@@ -33,6 +33,7 @@
     <%= a.error_messages %>
   <%#= error_messages_for 'employee_bank_details' %>
     <% i=0 %>
+    <input type="hidden" name="book_call_number" value="<%= params[:book_call_number] %>" />
     <div id="form-contents">
       <span class="span-sub-heading"><%= t('additional_detail') %></span>
       <hr class="sub-heading"></hr>

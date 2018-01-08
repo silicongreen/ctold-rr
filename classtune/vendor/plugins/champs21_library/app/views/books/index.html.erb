@@ -18,13 +18,25 @@
 #under the License. -%>
 <div id="content-header">
   <%= show_header_icon %>
-  <h1><%= "#{t('library_text')}"%></h1>
+    <h1><a href="/library"  style="color:#666666; text-decoration: none;" ><%= "#{t('library_text')}"%></a></h1>
   <div class='header-sep'>|</div>
-  <div class='sub-header'><%= "#{t('manage_books')}"%></div>
+  <div class='sub-header'>
+  <% unless @book_call_number_obj.nil? %>
+      <a href="/books/" style="color:#666; text-decoration:none;"><%= "#{t('manage_books')}"%></a>&nbsp;|&nbsp;<%= @book_call_number_obj.title %>
+  <% else %>
+     <%= "#{t('manage_books')}"%>
+  <% end %>   
+  </div>
   <div id="inner-tab-menu">
     <ul>
       <% if permitted_to? :new, :books %>
-        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('add_books')}", new_book_path %></li>
+        <li class='themed_bg themed-dark-hover-background'>
+          <% unless @book_call_number_obj.nil? %>
+            <%= link_to "#{t('add_books')}", {:action => "new",:book_call_number=>@book_call_number} %>
+          <% else %>  
+            <%= link_to "#{t('add_books')}", new_book_path %>
+          <% end %>
+          </li>
       <% end %>
     </ul>
   </div>
@@ -66,10 +78,10 @@
             <%= "#{t('title')}"%>
           </td>
           <td>
-            <%= "#{t('author')}"%>
+            <%= "Source"%>
           </td>
           <td>
-            <%= "#{t('tags_text')}"%>
+            <%= "Price"%>
           </td>
           <td>
             <%= "#{t('status')}"%>
@@ -85,14 +97,14 @@
           <tr class="tr-<%= cycle('odd', 'even') %>">
             <td class="col-3"><%=h book.book_number %></td>
             <td class="col-7"><%=h book.title %></td>
-            <td class="col-7"><%=h book.author %></td>
-            <td class="col-7"><%=h book.tag_list %></td>
+            <td class="col-7"><%=h book.source %></td>
+            <td class="col-7"><%=h book.price %></td>
             <td class="col-1"><%=h t("#{book.status.downcase}") %></td>
             <td class="col-3">
               <small>
                 <%= link_to "#{t('view')}", book %>
                 <% if can_edit %>
-                  | <%= link_to "#{t('edit_text')}", edit_book_path(book) %>
+                  | <%= link_to "#{t('edit_text')}", {:action => "edit",:id=>book.id,:book_call_number=>@book_call_number} %>
                 <% end %>
                 <% if can_delete %>
                   | <%= link_to "#{t('delete_text')}", book, :confirm => "#{t('delete_confirm_msg')}", :method => :delete %>

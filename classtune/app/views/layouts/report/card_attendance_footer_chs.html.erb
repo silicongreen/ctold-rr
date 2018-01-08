@@ -16,6 +16,12 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<%#*<div class="powered-text">%>
+    <%#*<p>Powered by <b>ClassTune</b></p>%>
+<%#*</div>%>
 
-
-
+<% unless @summary.to_i == 1 %>
+  <%= "------------------------------------------" %><br />
+  <font size='3'><%= "Principal's Signature" %></font>
+  <br />
+<% end %>

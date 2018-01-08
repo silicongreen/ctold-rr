@@ -136,11 +136,9 @@ table#pdf-table{
     border-collapse:collapse
 }
 table#pdf-table_new{
-    border-top: 1px solid #000000;
+    border: 1px solid #000000;
     border-collapse:collapse
 }
-
-
 
 
 .report{
@@ -178,5 +176,11 @@ table#pdf-table_new{
 td.col-bold{
     font-weight: bold;
 }
+.showLast {
+    display: none;
+}
 
+.pLast .showLast {
+    display: block;
+}
 

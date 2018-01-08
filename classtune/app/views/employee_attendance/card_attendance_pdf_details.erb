@@ -23,16 +23,16 @@
   <% styles = "width: 1460px;" %>
 <% end %>
 </div>
-<div id="page-yield" style="<%= styles  %>">
+<div id="page-yield" style="<%= styles  %>; ">
 
-    <p style="padding-left: 10px; font-size: 10px;"><%= MultiSchool.current_school.name %></p>
+    <p id="ss_name" style="padding-left: 10px; font-size: 16px; font-weight: bold;"><%= MultiSchool.current_school.name %></p>
     <% if @summary.to_i == 1 %>
-    <p style="padding-left: 10px; font-size: 10px;"><%= "Report for Late, Absent and Leave" %></p>
+    <p style="padding-left: 10px; font-size: 16px;"><%= "Report for Late, Absent and Leave" %></p>
     <% else %>
-    <p style="padding-left: 10px; font-size: 10px;"><%= "Attendance Report" %></p>
+    <p style="padding-left: 10px; font-size: 16px;"><%= "Attendance Report" %></p>
     <% end %>
-    <p style="padding-left: 10px; font-size: 10px;"><%= "Report Date: #{@report_date}" %></p>
-    <div class="hor_line"></div>
+    <p style="padding-left: 10px; font-size: 16px;"><%= "Report Date: #{@report_date}" %></p>
+    
 
 
     
@@ -84,31 +84,71 @@
                   <div style='float: left; width: 24.8%;'>
                     <table id="pdf-table_new" width="100%" cellspacing="0">
                       <tr class="<%= cycle('odd_summary', 'even_summary') %>">
-                          <td class="col-pdf">Ser No</td>
-                          <td class="col-pdf" colspan="5"><%= j  %> </td>
-                      </tr>
-                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
-                          <td class="col-pdf">Name</td>
-                          <td class="col-pdf" colspan="5"><%= e.full_name %> </td>
-                      </tr>
-                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
-                          <td class="col-pdf">Deg.</td>
-                          <td class="col-pdf" colspan="5"><%= e.employee_position.name  %> </td>
+                          <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Ser No</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= j  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= j  %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= j  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= j  %> </td>
+                            <% end %>
+                          <% end %>
                       </tr>
                       <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                           <% if newPage %>
-                          <td class="col-pdf">Date</td>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Name</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= e.full_name %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.full_name %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= e.full_name %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.full_name %> </td>
+                            <% end %>
+                          <% end %>
+                      </tr>
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Deg.</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= e.employee_position.name  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_position.name  %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= e.employee_position.name  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_position.name  %> </td>
+                            <% end %>
+                          <% end %>
+                      </tr>
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                          <td class="col-pdf" style="border-right: 2px solid #000;">Date</td>
                           <% end %>
                           <td class="col-pdf vertical-text">Arrival</td>
                           <td class="col-pdf">Departure</td>
                           <td class="col-pdf">late</td>
                           <td class="col-pdf">Absent</td>
+                          <% if j % 4 == 0 %>
                           <td class="col-pdf">Leave</td>
+                          <% else %>
+                          <td class="col-pdf" style="border-right: 3px solid #000;">Leave</td>
+                          <% end %>
                       </tr>
                       <% employee_attendances.each do |em| %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                             <% if newPage %>
-                            <td class="col-pdf"><%= em[2]  %></td>
+                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
                             <% end %>
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>
@@ -126,6 +166,7 @@
                                 -
                               <% end %>
                             </td>
+                            <% if j % 4 == 0 %>
                             <td class="col-pdf">
                                 <% if em[10] == 'yes' %>  
                                   &#10004;
@@ -133,6 +174,15 @@
                                   -
                                 <% end %>   
                             </td>
+                            <% else %>
+                            <td class="col-pdf" style="border-right: 3px solid #000;">
+                                <% if em[10] == 'yes' %>  
+                                  &#10004;
+                                <% else %>  
+                                  -
+                                <% end %>   
+                            </td>
+                            <% end %>
                         </tr>
                       <% end %>
                       <% newPage = false %>  
@@ -141,9 +191,9 @@
                   <% if j % 4 == 0 %>
                     <% newPage = true %>
                     <% if j < 5 %>
-                      <div style="clear: both; height: 110px;"></div>
+                      <div style="clear: both; height: 90px;"></div>
                     <% else %>
-                      <div style="clear: both; height: 190px;"></div>
+                      <div style="clear: both; height: 160px;"></div>
                     <% end %>
                   <% end %>
                   <% j = j + 1 %>
@@ -153,5 +203,4 @@
         </div>
 
     </div>
-
 </div>

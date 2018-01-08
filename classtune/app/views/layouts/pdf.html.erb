@@ -53,10 +53,8 @@
         overflow: hidden;
       }
     </style>
-
   </head>
-  <body>
-
+    <body>
     <%= yield %>
     <div id="content_top"></div>
     <script type="text/javascript">
@@ -68,6 +66,7 @@
       var insertPageBreak = function(){body.appendChild(pageBreak.cloneNode(true))};
       var insertPage = function(){body.appendChild(page.cloneNode(true));};
       var currPage = function(){return $$('.page').last()}
+      
       $$('.available_sections .section').each(function(el){
         if(currPage() == null){
           insertPage();//first page
@@ -80,6 +79,7 @@
         }
         currPage().appendChild(el);
       });
+      
     </script>
   </body>
 </html>

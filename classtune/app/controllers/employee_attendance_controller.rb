@@ -544,12 +544,12 @@ class EmployeeAttendanceController < ApplicationController
               :orientation => orientation,
               :page_size => 'Legal',
               :zoom => 1.4,
-              :margin => {    :top=> 10,
-              :bottom => 15,
+              :margin => {    :top=> 5,
+              :bottom => 20,
               :left=> 10,
               :right => 10},
-              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+              :header => {:html => { :template=> 'layouts/report/card_attendance_header_' + MultiSchool.current_school.code.to_s + '.html'}},
+              :footer => {:html => { :template=> 'layouts/report/card_attendance_footer_' + MultiSchool.current_school.code.to_s + '.html'}} 
    
   end
   

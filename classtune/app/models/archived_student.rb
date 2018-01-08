@@ -64,6 +64,7 @@ class ArchivedStudent < ActiveRecord::Base
     student_attributes.delete "date_of_leaving"
     
     student = Student.new(student_attributes)
+    student.id = self.former_id
     student.photo = self.photo
     user = User.find_by_id(self.user_id)
     user.is_deleted = 0

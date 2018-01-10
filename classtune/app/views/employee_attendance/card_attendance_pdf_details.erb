@@ -74,13 +74,13 @@
                         <td class="col-3">&nbsp;</td>
                         <% i = i + 1 %>
                       </tr>  
-                      <% if page_one_done == false and k == 43 %>
+                      <% if page_one_done == false and k == 41 %>
                         <% page_one_done = true %>
                         <% k = 0 %> 
                         <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
                             <td class="col-pdf" colspan="7">&nbsp;</td>
                         </tr>  
-                      <% elsif page_one_done and k == 47 %>
+                      <% elsif page_one_done and k == 45 %>
                         <% k = 0 %> 
                         <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
                             <td class="col-pdf" colspan="7">&nbsp;</td>
@@ -94,22 +94,22 @@
                         <td class="col-pdf" colspan="7">&nbsp;</td>
                     </tr> 
                     <% end %>
-                    <% if page_one_done == false and k == 43 %>
+                    <% if page_one_done == false and k == 41 %>
                       <% page_one_done = true %>
                       <% k = 0 %> 
                       <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
                           <td class="col-pdf" colspan="7">&nbsp;</td>
                       </tr>  
-                    <% elsif page_one_done == true and k == 47 %>
+                    <% elsif page_one_done == true and k == 45 %>
                       <% k = 0 %> 
                       <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
                           <td class="col-pdf" colspan="7">&nbsp;</td>
                       </tr>  
                     <% end %>
                   <% end %>
-                  <% last_index = 43 %>    
+                  <% last_index = 41 %>    
                   <% if page_one_done %>    
-                      <% last_index = 47 %>
+                      <% last_index = 45 %>
                   <% end %>    
                   <% (k+1..last_index).each do |n| %>    
                       <% if n < last_index %>
@@ -254,9 +254,9 @@
                   <% if j % 4 == 0 %>
                     <% newPage = true %>
                     <% if j < 5 %>
-                      <div style="clear: both; height: 90px;"></div>
+                      <div style="clear: both; height: 80px;"></div>
                     <% else %>
-                      <div style="clear: both; height: 170px;"></div>
+                      <div style="clear: both; height: 160px;"></div>
                     <% end %>
                   <% end %>
                   <% j = j + 1 %>

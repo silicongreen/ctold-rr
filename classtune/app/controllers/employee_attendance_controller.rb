@@ -512,7 +512,7 @@ class EmployeeAttendanceController < ApplicationController
                   position = EmployeePosition.find(@emp.employee_position_id)
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []
-                    emp[0] = @emp.first_name + ' ' + @emp.middle_name + ' ' + @emp.last_name
+                    emp[0] = @emp.full_name
                     emp[1] = @emp.id
                     emp[2] = dt
                     emp[3] = position.name

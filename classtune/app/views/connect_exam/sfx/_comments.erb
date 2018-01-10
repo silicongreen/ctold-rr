@@ -34,9 +34,9 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
     </tr>
     <tr class="even">
         <td class="no-warp" colspan="1">&nbsp;Result Issue Date</td>
-        <td class="no-warp" colspan="2">&nbsp;<%= @connect_exam_obj.published_date %></td>
+        <td class="no-warp" colspan="1">&nbsp;<%= @connect_exam_obj.published_date %></td>
         <td class="no-warp" colspan="1">&nbsp;Result Comment</td>
-        <td class="no-warp" colspan="2">&nbsp;<%= comments %></td>
+        <td class="no-warp" colspan="1">&nbsp;<%= comments %></td>
     </tr>
 </table>
 <table id="pdf-table" class="margin-top-20" width="100%" cellspacing="0">

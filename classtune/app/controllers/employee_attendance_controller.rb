@@ -311,6 +311,8 @@ class EmployeeAttendanceController < ApplicationController
       @summary = params[:summary].to_i
       if @summary == 1
         orientation = "Portrait"
+        top = 10
+        bottom = 12
         @date_today = @local_tzone_time.to_date
         
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
@@ -411,6 +413,8 @@ class EmployeeAttendanceController < ApplicationController
         end
       else
         orientation = "Landscape"
+        top = 5
+        bottom = 18
         @date_today = @local_tzone_time.to_date
         
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
@@ -544,8 +548,8 @@ class EmployeeAttendanceController < ApplicationController
               :orientation => orientation,
               :page_size => 'Legal',
               :zoom => 1.4,
-              :margin => {    :top=> 5,
-              :bottom => 20,
+              :margin => {    :top=> top,
+              :bottom => bottom,
               :left=> 10,
               :right => 10},
               :header => {:html => { :template=> 'layouts/report/card_attendance_header_' + MultiSchool.current_school.code.to_s + '.html'}},

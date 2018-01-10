@@ -21,23 +21,8 @@
 <%#*</div>%>
 
 <% unless @summary.to_i == 1 %>
-  <div class="PageClass">
+<div class="PageClass">
     <%= "------------------------------------------" %><br />
     <font size='3'><%= "Principal's Signature" %></font>
-  </div>
-<% else %>
-<div class="summaryFooter" style="width: 900px; float: left;">
-      <div style="float: left; width: 33%; text-align: left;">
-        <%= "------------------------------------------" %><br />
-        <font size='3'><%= "Admin's Signature" %></font>
-      </div>
-      <div style="float: left; width: 33%; text-align: center;">
-        <%= "------------------------------------------" %><br />
-        <font size='3'><%= "Account's Signature" %></font>
-      </div>
-      <div style="float: left; width: 33%; text-align: right;">
-        <%= "------------------------------------------" %><br />
-        <font size='3'><%= "Principal's Signature" %></font>
-      </div>
   </div>
 <% end %>

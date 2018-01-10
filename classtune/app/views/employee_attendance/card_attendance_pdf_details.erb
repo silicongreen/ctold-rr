@@ -39,6 +39,7 @@
     <div class="report">
 
         <div id="pdf-info">
+            <% k = 1 %>
             <% if @summary.to_i == 1 %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
@@ -50,8 +51,11 @@
                       <td class="col-pdf">Leave(Total Days)</td>
                       <td class="col-pdf">Remarks</td>
                   </tr>
+                  <% grp_done = 0 %>
+                  <% page_one_done = false %>
                   <% @all_groups.each do |group| %>
                     <% group_a = group.split("-") %>
+                    <% k = k + 1 %>
                     <tr class="<%= cycle('odd', 'even') %>">
                         <td class="col-pdf" colspan="7"><%= group_a[0] %></td>
                     </tr>
@@ -59,6 +63,7 @@
                     <% employee_attendances = @employee_attendance.select{|e| dept_ids.include?(e[7].to_s) } %>
                     <% i = 1 %>
                     <% employee_attendances.each do |e| %>
+                      <% k = k + 1 %>
                       <tr class="<%= cycle('odd', 'even') %>">
                         <td class="col-pdf"><%= i %></td>
                         <td class="col-pdf"><%= e[0] %></td>
@@ -68,12 +73,70 @@
                         <td class="col-pdf"><%= e[6] %></td>
                         <td class="col-3">&nbsp;</td>
                         <% i = i + 1 %>
-                      </tr>    
+                      </tr>  
+                      <% if page_one_done == false and k == 43 %>
+                        <% page_one_done = true %>
+                        <% k = 0 %> 
+                        <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
+                            <td class="col-pdf" colspan="7">&nbsp;</td>
+                        </tr>  
+                      <% elsif page_one_done and k == 47 %>
+                        <% k = 0 %> 
+                        <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
+                            <td class="col-pdf" colspan="7">&nbsp;</td>
+                        </tr>  
+                      <% end %>
                     <% end %>
+                    <% grp_done = grp_done + 1 %>    
+                    <% if grp_done < @all_groups.length %>    
+                    <% k = k + 1 %>
                     <tr class="<%= cycle('odd', 'even') %>">
                         <td class="col-pdf" colspan="7">&nbsp;</td>
-                    </tr>  
+                    </tr> 
+                    <% end %>
+                    <% if page_one_done == false and k == 43 %>
+                      <% page_one_done = true %>
+                      <% k = 0 %> 
+                      <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
+                          <td class="col-pdf" colspan="7">&nbsp;</td>
+                      </tr>  
+                    <% elsif page_one_done == true and k == 47 %>
+                      <% k = 0 %> 
+                      <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
+                          <td class="col-pdf" colspan="7">&nbsp;</td>
+                      </tr>  
+                    <% end %>
                   <% end %>
+                  <% last_index = 43 %>    
+                  <% if page_one_done %>    
+                      <% last_index = 47 %>
+                  <% end %>    
+                  <% (k+1..last_index).each do |n| %>    
+                      <% if n < last_index %>
+                      <tr style="border: 1px solid #fff; height: 28px;">
+                          <td class="col-pdf" colspan="7">&nbsp;</td>
+                      </tr>
+                      <% else %>
+                      <tr style="border: 1px solid #fff; height: 28px;">
+                          <td class="col-pdf" colspan="7">
+                              <div class="summaryFooter" style="width: 100%; float: left;">
+                                <div style="float: left; width: 33%; text-align: left;">
+                                  <%= "------------------------------------------" %><br />
+                                  <font size='3'><%= "Admin's Signature" %></font>
+                                </div>
+                                <div style="float: left; width: 33%; text-align: center;">
+                                  <%= "------------------------------------------" %><br />
+                                  <font size='3'><%= "Account's Signature" %></font>
+                                </div>
+                                <div style="float: left; width: 33%; text-align: right;">
+                                  <%= "------------------------------------------" %><br />
+                                  <font size='3'><%= "Principal's Signature" %></font>
+                                </div>
+                            </div>
+                          </td>
+                      </tr>
+                      <% end %>
+                  <% end %>    
               </table>
             <% else %>
               <% j = 1 %>
@@ -193,7 +256,7 @@
                     <% if j < 5 %>
                       <div style="clear: both; height: 90px;"></div>
                     <% else %>
-                      <div style="clear: both; height: 160px;"></div>
+                      <div style="clear: both; height: 170px;"></div>
                     <% end %>
                   <% end %>
                   <% j = j + 1 %>

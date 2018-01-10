@@ -2,6 +2,7 @@
  <p>&nbsp;<p>
  <p>&nbsp;<p>
  <h2>&nbsp;&nbsp;&nbsp;</h2>
+ <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
 
       
@@ -39,7 +40,7 @@
           </tr>
           <tr>
               <td>Name of Examination </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.name %></td>
-              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;December-2016</td>
+              <td>Exam Held </td><td class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %></td>
           </tr>
       </table>
       <%#= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %>
@@ -140,6 +141,9 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
+                              <% if grade.name == "U" %>
+                                <% total_u +=1 %>
+                              <% end %>
                             <% else %>
                               <td class="col-pdf">N/A</td>
                             <% end %>
@@ -226,6 +230,7 @@
                 %>
               
               <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <% unless result.blank?  %>
               <table id="pdf-table" class="evaluation" width="99.8%" >
                       <tr class="odd">
                           <td class="col-pdf border-left-none" width="50%">
@@ -256,6 +261,46 @@
                      
                       
               </table>
+              <% else %>
+              <% if total_u == 0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  total_u<2) %>
+              <% if total_u > 0   %>
+               <% result = "Passed Under Consideration" %>
+              <% else %>
+               <% result = "Passed" %>
+              <% end %>
+              
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Result
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <b> <%= result %> </b>
+                          </td>
+                      </tr>
+                      
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <%= @report_data['total'] %>
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center  border-right-none" width="50%">
+                              <%#= @report_data['present'] %>
+                              <%= @report_data['present'] %>
+                          </td>
+                      </tr>
+                     
+                      
+              </table>
+              <% end %>
+              
               <h5><b>&nbsp;</b></h5>
               <table id="pdf-table" class="evaluation table_99"  width="99.8%" >
 

@@ -48,7 +48,9 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% exam_marks = 0 %>
-                  
+                  <% @attendance_parcentage = 0 %>
+                  <% @total_subject_attendance = 0 %>
+                  <% @std_subject_elective = StudentsSubject.find_all_by_student_id(@student.id)  %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% subjectdata = Subject.find(subjects['id'].to_i) %>
@@ -56,6 +58,37 @@
                       <% if @has_exam_student == false %>
                           
                       <% else %>
+                      <% total_att = 0 %>
+                      <% absent_att = 0 %>   
+
+                      <% e_subject_id = 0 %>
+                      <% unless @std_subject_elective.blank? %>
+                         <% @std_subject_elective.each do |esub| %>
+                             <% unless esub.subject.blank? %>
+                             <% if esub.subject.name.include?(subjects['name']) && esub.subject.id != subjects['id'].to_i %>
+                                 <% e_subject_id = esub.subject.id %>
+                                 <% total_att_temp = SubjectAttendanceRegister.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                 <% absent_att_temp = SubjectAttendance.count(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>e_subject_id,:is_late=>0,:student_id=>@student.id,:attendance_date => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                                 <% total_att = total_att+total_att_temp.to_i %>
+                                 <% absent_att = absent_att+absent_att_temp.to_i %>
+                             <% end %>
+                             <% end %>
+                         <% end %>
+                      <% end %> 
+                      <% if e_subject_id != 0 %>
+
+
+                         <% att_percentize = 0 %>  
+                         <% if total_att.to_i > 0 %>
+                             <% total_present = total_att-absent_att  %>
+                             <% if total_present > 0 %>
+                               <% @attendance_parcentage = @attendance_parcentage.to_f+((total_present.to_f)/total_att.to_f)*100  %>
+                               <% @total_subject_attendance = @total_subject_attendance+1 %>
+                             <% end %>
+                         <% end %> 
+
+                      <% end %>
+                             
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>

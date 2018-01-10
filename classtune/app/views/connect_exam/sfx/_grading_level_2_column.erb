@@ -26,12 +26,12 @@
                               <% min_score = min_score.to_i %>
                               <% max_score = max_score.to_i %>
                               <% if max_score.to_i == exam_marks.to_i  %>
-                              <%= min_score.to_s+" and above"  %>
+                              <%= min_score.to_s+"% and above"  %>
                               <% elsif min_score.to_i == 0  %>
                               <% below = max_score.to_i+1 %>
-                              <%=  "Below "+below.to_s  %>
+                              <%=  "Below "+below.to_s+"%"  %>
                               <% else %>
-                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                                  <%= min_score.to_s + "% - " + max_score.to_s+"%" %>
                               <% end %>
                             <% end %>                      
                         </td>

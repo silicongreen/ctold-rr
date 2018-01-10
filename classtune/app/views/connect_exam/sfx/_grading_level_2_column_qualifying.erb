@@ -25,12 +25,12 @@
                                <% min_score = grade.min_score.to_i %>
                               <% max_score = grade.max_score.to_i %>
                               <% if min_score.to_i == 90  %>
-                              <%= min_score.to_s+" and above"  %>
+                              <%= min_score.to_s+"% and above"  %>
                               <% elsif min_score.to_i == 0  %>
                               <% below = max_score.to_i+1 %>
-                              <%=  "Below "+below.to_s  %>
+                              <%=  "Below "+below.to_s+"%"  %>
                               <% else %>
-                                  <%= min_score.to_s + " - " + max_score.to_s %>
+                                  <%= min_score.to_s + "% - " + max_score.to_s+"%" %>
                               <% end %>
                             <% end %>                      
                         </td>

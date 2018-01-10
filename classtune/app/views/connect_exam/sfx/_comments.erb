@@ -28,7 +28,7 @@ if !@report_data['total'].blank? and @report_data['total'].to_i>0 and !@report_d
         <td class="no-warp" colspan="1">&nbsp;Attendance Percentage</td>
         <% avg = "N/A" %>
         <% if !@total_subject_attendance.blank? and @total_subject_attendance>0 %>
-          <% avg = (@attendance_parcentage.to_f/@total_subject_attendance.to_f) %>
+          <% avg = (@attendance_parcentage.to_f/@total_subject_attendance.to_f)*100 %>
           <td class="no-warp" colspan="1"><%= sprintf( "%0.02f", avg) %> %</td>
         <% else %>
         <td class="no-warp" colspan="1"><%= avg %></td>

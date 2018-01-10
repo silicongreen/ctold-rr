@@ -86,8 +86,8 @@
                          <% if total_att.to_i > 0 %>
                              <% total_present = total_att-absent_att  %>
                              <% if total_present > 0 %>
-                               <% @attendance_parcentage = @attendance_parcentage.to_f+((total_present.to_f)/total_att.to_f)*100  %>
-                               <% @total_subject_attendance = @total_subject_attendance+1 %>
+                               <% @attendance_parcentage = @attendance_parcentage+total_present  %>
+                               <% @total_subject_attendance = @total_subject_attendance+total_att %>
                              <% end %>
                          <% end %> 
 

@@ -119,9 +119,11 @@
             <% end %>  
             </div>  
             <div style="display: inline-table; float: right ">
-              
+            <% if @current_user.admin? && @is_batch_exam  %> 
+                <%= link_to("Edit", '/exam/edit_exam_group/'+exam_group.id.to_s) %>&nbsp;&nbsp;
+            <% end %>    
             <% if @current_user.admin? or @user_privileges.map{|p| p.name}.include?('ExaminationControl') or @user_privileges.map{|p| p.name}.include?('EnterResults') %>
-              <%= link_to("Edit", '/exam/edit_exam_group/'+exam_group.id.to_s) %>&nbsp;&nbsp;
+              
               <span><small>
                   <% if @is_class_exam %>  
                     <%

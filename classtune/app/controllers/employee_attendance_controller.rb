@@ -546,9 +546,8 @@ class EmployeeAttendanceController < ApplicationController
       @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
     else
       @departments = EmployeeDepartment.active.find(:all,:order=>'name ASC')
-      @dept_ids = @departments.map(&:id)
-      abort(@dept_ids.inspect)
-      @all_groups = ["Employees-"]
+      @dept_ids = @departments.map(&:id).join("+")
+      @all_groups = ["Employees-" + @dept_ids]
     end
     
     render    :pdf => "card_attendance_pdf_details",

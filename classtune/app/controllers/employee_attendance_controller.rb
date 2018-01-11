@@ -438,7 +438,7 @@ class EmployeeAttendanceController < ApplicationController
             
             k = 0;
             m = 0
-            abort(@employees.inspect)
+            
             @employees.each do |employee|
               unless employee_department_ids.include?(employee.employee_department_id)
                 dept = EmployeeDepartment.find employee.employee_department_id
@@ -544,6 +544,7 @@ class EmployeeAttendanceController < ApplicationController
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
     
     @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
+    abort(@all_groups.inspect)
     render    :pdf => "card_attendance_pdf_details",
               :orientation => orientation,
               :page_size => 'Legal',

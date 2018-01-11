@@ -109,7 +109,7 @@
                   <b><%= exam.exam_group.name %></b>
                     
                    <p style="font-size: 10px;"> 
-                        <% if exam.exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
+                        <% if exam.exam_group.marks_entry.to_i == 1 or !@current_user.employee? %>
                             <%= text_field_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :class=>"marks-box" %>
                          <% else %>
                             <%= exam.alternative_title %>
@@ -117,7 +117,7 @@
                     </p>
                   
                    <p> 
-                       <% if exam.exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
+                       <% if exam.exam_group.marks_entry.to_i == 1 or !@current_user.employee? %>
                           <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
                        <% else %>
                           <%= exam.maximum_marks.to_i %>

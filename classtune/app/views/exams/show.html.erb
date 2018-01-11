@@ -166,7 +166,7 @@
               <% unless @exam_group.exam_type == 'Grades' %>
                 <td class="col-1"  <%=styletext%>><div class="label-field-pair">
                     <div class="text-input-bg">
-                      <% if @exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
+                      <% if @exam_group.marks_entry.to_i == 1 or !@current_user.employee? %>
                         <% if markexam==1 %>
                           <%= text_field_tag "exam[#{student.id}][marks]", @exam_score.marks,:value=>markexam,:onkeyup => "checkValueMax(#{@exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{@exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box" %>
                         <% else %>
@@ -244,7 +244,7 @@
                                  
                   <% else %>
                     <td class="col-2">
-                    <% if @exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
+                    <% if @exam_group.marks_entry.to_i == 1 or !@current_user.employee? %>
                         <%= text_field_tag "exam[#{student.id}][remarks]", @exam_score.remarks, :size => '40' %>
                     <% else %>
                         <%= @exam_score.remarks %>
@@ -260,7 +260,7 @@
           <% end %>
 
         </table>
-        <% if @exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
+        <% if @exam_group.marks_entry.to_i == 1 or !@current_user.employee? %>
         <div id="sub-button"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :onClick => "if(check_blanks()==true) return true; else return false;" %></div>
         <% end %>
       <% end %>

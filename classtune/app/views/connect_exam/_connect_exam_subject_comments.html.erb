@@ -116,6 +116,7 @@
                         <% extra_class="red_class" %>
                       <% end %>  
                         <div class="text-input-bg2">
+                          <%= exam.exam_group.marks_entry.to_i %>| <%= exam.exam_group.id %>
                           <% if exam.exam_group.marks_entry.to_i == 1 %>
                             <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                           <% else %>

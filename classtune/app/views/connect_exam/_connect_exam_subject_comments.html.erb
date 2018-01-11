@@ -74,7 +74,7 @@
                   <% else %>
                   
                    <p> 
-                       <% if exam.exam_group.marks_entry.to_i == 1 %>
+                       <% if exam.exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
                           <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
                        <% else %>
                           <%= exam.maximum_marks.to_i %>
@@ -116,8 +116,8 @@
                         <% extra_class="red_class" %>
                       <% end %>  
                         <div class="text-input-bg2">
-                          <%= exam.exam_group.marks_entry.to_i %>| <%= exam.exam_group.id %>
-                          <% if exam.exam_group.marks_entry.to_i == 1 %>
+                          
+                          <% if exam.exam_group.marks_entry.to_i == 1 or @current_user.admin? %>
                             <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                           <% else %>
                             <%= @exam_score.marks %>

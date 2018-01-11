@@ -542,8 +542,11 @@ class EmployeeAttendanceController < ApplicationController
       end
     end
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
-    
-    @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
+    unless adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].nil?
+      @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")
+    else
+      @all_groups = ["Employees", ""]
+    end
     abort(@all_groups.inspect)
     render    :pdf => "card_attendance_pdf_details",
               :orientation => orientation,

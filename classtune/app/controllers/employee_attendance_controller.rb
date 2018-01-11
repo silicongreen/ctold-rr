@@ -547,7 +547,7 @@ class EmployeeAttendanceController < ApplicationController
     else
       @all_groups = ["Employees", ""]
     end
-    abort(@all_groups.inspect)
+    
     render    :pdf => "card_attendance_pdf_details",
               :orientation => orientation,
               :page_size => 'Legal',

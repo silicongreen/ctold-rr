@@ -435,7 +435,7 @@ class EmployeeAttendanceController < ApplicationController
           unless @employees.nil? or @employees.empty?
 
             @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
-            
+            abort(@cardAttendances.inspect)
             k = 0;
             m = 0
             
@@ -541,7 +541,7 @@ class EmployeeAttendanceController < ApplicationController
         end
       end
     end
-    abort(@employee_attendance.inspect)
+    
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
     unless adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].nil?
       @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")

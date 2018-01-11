@@ -466,7 +466,7 @@ class EmployeeAttendanceController < ApplicationController
                 (@report_date_from.to_date..@report_date_to.to_date).each do |d|
                   dt = d.strftime("%Y-%m-%d")
                   dtCardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
-                  abort(dtCardAttendance.inspect)
+                  
                   unless dtCardAttendance.nil? or dtCardAttendance.empty? or dtCardAttendance.blank?
                     unless @employee_setting.blank?
                       in_ofc_time = @employee_setting.start_time 
@@ -483,6 +483,9 @@ class EmployeeAttendanceController < ApplicationController
                       in_time = dtCardAttendance[0].min_time
                       out_time = dtCardAttendance[0].max_time
                       #if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
+                    else
+                      in_time = dtCardAttendance[0].min_time
+                      out_time = dtCardAttendance[0].max_time
                     end
                   else
                     in_time = ' - '

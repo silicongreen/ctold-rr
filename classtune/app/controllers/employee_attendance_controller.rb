@@ -438,7 +438,7 @@ class EmployeeAttendanceController < ApplicationController
             
             k = 0;
             m = 0
-            
+            abort(@employees.inspect)
             @employees.each do |employee|
               unless employee_department_ids.include?(employee.employee_department_id)
                 dept = EmployeeDepartment.find employee.employee_department_id

@@ -390,7 +390,7 @@ class EmployeeAttendanceController < ApplicationController
               if !employee.blank?
                 unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                   emp = []
-                  emp[0] = @emp.first_name + ' ' + @emp.middle_name + ' ' + @emp.last_name
+                  emp[0] = @emp.full_name
                   emp[1] = position.name
                   emp[2] = dept_name
                   emp[3] = total_present

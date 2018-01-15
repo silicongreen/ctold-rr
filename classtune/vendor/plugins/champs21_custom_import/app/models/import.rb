@@ -195,7 +195,11 @@ class Import < ActiveRecord::Base
             unless value_hash[:pass].nil?
               unless value_hash[:pass].blank?
                 if value_hash[:pass] == "1"
-                  value_hash[:pass] = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
+                  if MultiSchool.current_school.id == 348
+                    value_hash[:pass] = (('1'..'9').to_a + ('1'..'9').to_a + ('1'..'9').to_a + ('1'..'9').to_a + ('1'..'9').to_a).shuffle.first(6).join
+                  else
+                    value_hash[:pass] = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
+                  end
                 elsif value_hash[:pass] == "0"
                   value_hash[:pass] = "123456"
                 end

@@ -149,7 +149,7 @@
                           if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
                             highest_mark = @report_data['report']['max_mark'][subjects['id']].to_f
                             end  
-
+                          highest_mark = highest_mark.round()
                           if total_mark.to_f>0 and full_mark.to_f>0
                             main_mark = (total_mark.to_f/full_mark.to_f)*100 
                             else
@@ -165,7 +165,7 @@
                             <% else %>
                               <td class="col-pdf"><b>N/A</b></td>
                             <% end %>
-                            <td class="col-pdf border-right-none"><%= sprintf( "%0.02f", highest_mark)%> </td>
+                            <td class="col-pdf border-right-none"><%= highest_mark %> </td>
                             
 
                             <% total_parcent= total_parcent+main_mark %>

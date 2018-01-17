@@ -69,17 +69,7 @@
     
     
     %>
-      <% if @exam_group.exam_category == 5 %>
-        <%= render  :partial=>"/group_exam_report/pdf/exam_report_mock_test" %>
-      <% elsif MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
-        <%= render  :partial=>"/group_exam_report/pdf/exam_report_south" %>
-      <% elsif MultiSchool.current_school.id == 280 %>
-        <%= render  :partial=>"/group_exam_report/pdf/exam_report_st_joshef" %>
-      <% elsif MultiSchool.current_school.id == 186 %>
-        <%= render  :partial=>"/group_exam_report/pdf/exam_report_akmis_comment" %>
-      <% else %>
-        <%= render  :partial=>"/group_exam_report/pdf/general" %>
-      <% end %>
+      <%= render :file => '/exam/student_wise_generated_report' %>
       <% unless student.equal? @students.last %>
         <div class="page-break"></div>
       <% end %>

@@ -640,6 +640,7 @@ class ExamsController < ApplicationController
                 ExamScore.create do |score|
                   score.exam_id          = @exam.id
                   score.student_id       = student_id
+                  score.user_id          = current_user.id
                   score.marks            = details[:marks]
                   score.grading_level_id = details[:grading_level_id]
                   score.remarks          = remarks_details
@@ -648,6 +649,7 @@ class ExamsController < ApplicationController
               ExamScore.create do |score|
                 score.exam_id          = @exam.id
                 score.student_id       = student_id
+                score.user_id          = current_user.id
                 score.marks            = details[:marks]
                 score.grading_level_id = details[:grading_level_id]
                 score.remarks          = details[:remarks]
@@ -666,6 +668,7 @@ class ExamsController < ApplicationController
             @exam_score.destroy
           else
             unless details[:marks].nil? 
+              details[:user_id] = current_user.id
               if @exam_score.update_attributes(details)
               else
                 flash[:warn_notice] = "#{t('flash4')}"

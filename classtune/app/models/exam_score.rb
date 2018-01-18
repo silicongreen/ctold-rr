@@ -44,7 +44,6 @@ class ExamScore < ActiveRecord::Base
     employee_marks_atributes = self.attributes
     employee_marks_atributes.delete "id"
     employee_score = ExamEmployeeScore.new(employee_marks_atributes)
-    employee_score.user_id = @current_user.id
     employee_score.save
   end
   

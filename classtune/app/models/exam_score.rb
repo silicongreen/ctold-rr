@@ -27,7 +27,7 @@ class ExamScore < ActiveRecord::Base
 
   validates_presence_of :student_id
   validates_presence_of :exam_id,:message =>  "Name/Batch Name/Subject Code is invalid"
-  validates_numericality_of :marks,:allow_nil => true
+  validates_numericality_of :marks
   validates_uniqueness_of :exam_id, :scope=> [:student_id],:message => "score already present."
   
 

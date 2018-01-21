@@ -78,7 +78,7 @@
     @exams.each do |exam| 
       exam_score.push exam.exam_scores.find_by_student_id(@student.id,:include=>[{:exam=>[:subject]}]) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
     end
-    exam_score.sort! { |a, b|  a.exam.subject.name.to_i <=> b.exam.subject.name.to_i }
+    exam_score.sort! { |a, b|  a.exam.subject.name <=> b.exam.subject.name }
   
     elective_group_mark = {}
     exam_score.each do |es|

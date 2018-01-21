@@ -16,7 +16,13 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+<%
+    @config = Configuration.find_by_config_key('LeaveSectionManager')
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1)
+      desig_ids = [1610,1611,1612]
+      employees = Employee.find(:all,:conditions=>["employee_position_id in (?) and id!=?",desig_ids,@current_user.employee_record.id],:order=>"employee_position_id DESC")
+    end
+%>
 <div class="approval-form">
 
 
@@ -26,6 +32,21 @@
       <div class="text-input-bg"> <%= text_field_tag :forwarder_remark %> </div>
       <%= hidden_field_tag :applied_leave, @applied_leave.id %>
     </div>
+    
+    <%  if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) %>
+    <div class="label-field-pair">
+      <label for="course_grade" >Forward To: </label>
+      <div class="text-input-bg"><select name="emp" id="emp" style="height: 30px;width: 96%;margin-top: 5px; margin-left:0px;" >
+        <% employees.each do |emp| %>
+          <span class="apply_tag" style="float:left; claer:both; margin-top:10px;">
+              <option value="<%= emp.id %>"><%= emp.first_name+"("+emp.employee_position.name+")"%> </option>
+          </span>
+        <% end %>
+      </select></div>
+     
+    </div>
+    
+    <% end %>
 
     <div id="submit-button" style="float:left; clear:both; margin-top: 20px;">
       <%=submit_tag "#{t('ok')}", :disable_with => "► #{t('please_wait')}" %>
@@ -36,3 +57,13 @@
   <% end %>
 
 </div>
+<style>
+.label-field-pair input
+{
+    margin: 5px 0px !important;
+}
+#submit-button input
+{
+   padding: 5px 20px;
+}
+</style>

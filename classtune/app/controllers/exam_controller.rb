@@ -1353,6 +1353,7 @@ class ExamController < ApplicationController
     end
     
     @students = @tmp_students
+    @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     
     render :pdf => 'student_wise_tabulation',
       :orientation => 'Landscape', :zoom => 1.00,

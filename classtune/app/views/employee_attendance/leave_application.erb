@@ -125,6 +125,12 @@
         <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Forwarder Message:</div>
           <%= @applied_leave.forwarder_remark %>
         </li>
+        <% if @applied_leave.employee_id.to_i > 0 %>
+          <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Current Desk:</div>
+            <% current_emp = Employee.find_by_id(@applied_leave.employee_id) %>
+            <%= current_emp.full_name %>
+          </li>
+        <% end %>
       <% end %>
         
      
@@ -153,15 +159,18 @@
 
 
     <div class="buttons">
-      <% if((@applied_leave.approved == false or @applied_leave.approved.nil?) or (@target == "student" and @applied_leave.viewed_by_teacher == false))  %>
+        
+      <% if((@applied_leave.approved == false or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)))  %>
         <div class="approve_button">    <%= link_to_remote "► #{t('approve')}",
             :url => {:action => "approve_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'} %>
         </div>
       <% end %>
+   
+      
+      <% if (@current_user.employee_record.meeting_forwarder.to_i == 1 and @applied_leave.forward.to_i == 0) or @current_user.employee_record.id == @applied_leave.employee_id  %>
         
-      <% if @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1  %>
         <% @config = Configuration.find_by_config_key('LeaveSectionManager') %>
-        <% if @applied_leave.approved.nil? and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+        <% if (@applied_leave.approved == false or @applied_leave.approved.nil?) and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
           <div class="cancel_button"><%= link_to_remote "► Forward",
             :url => {:action => "forward_to_admin", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'}  %>
           </div>
@@ -170,7 +179,7 @@
       
      
       
-      <% if((@applied_leave.approved == true or @applied_leave.approved.nil?) or (@target == "student" and @applied_leave.viewed_by_teacher == false)) %>
+      <% if((@applied_leave.approved == true or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id))) %>
         <div class="cancel_button"><%= link_to_remote "► #{t('deny')}",
             :url => {:action => "deny_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'}  %>
         </div>
@@ -178,9 +187,9 @@
     </div>
   </div>
 </div>
-<% if @current_user.employee? and @current_user.employee_record.meeting_forwarder.to_i == 1  %>
+ <% if (@current_user.employee_record.meeting_forwarder.to_i == 1 and @applied_leave.forward.to_i == 0) or @current_user.employee_record.id == @applied_leave.employee_id  %>
   <% @config = Configuration.find_by_config_key('LeaveSectionManager') %>
-  <% if @applied_leave.approved.nil? and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+  <% if (@applied_leave.approved == false or @applied_leave.approved.nil?) and @target == "student" and !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
   <style>
       .buttons {
       margin: 0 auto;

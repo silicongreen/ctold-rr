@@ -680,12 +680,14 @@ class EmployeeAttendanceController < ApplicationController
       @app_leaves = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher=?",false])
       @total_leave_count = @total_leave_count + @app_leaves
     elsif @current_user.employee_record.meeting_forwarder.to_i == 1
-
       @employee_batches = @current_user.employee_record.batches
       batch_ids = @employee_batches.map(&:id)
-      @app_leaves = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student])
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND students.batch_id in (?)",false,batch_ids],:include=>[:student])
       @total_leave_count = @total_leave_count + @app_leaves
-    end 
+    else
+      @app_leaves = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND forward = ? AND employee_id=?",false,true,@current_user.employee_record.id],:include=>[:student])
+      @total_leave_count = @total_leave_count + @app_leaves
+    end  
     
     
     @leave_apply = ApplyLeave.new(params[:leave_apply])
@@ -794,9 +796,19 @@ class EmployeeAttendanceController < ApplicationController
   def forward_leave
     @applied_leave = ApplyLeaveStudent.find(params[:applied_leave])
     @applied_student = Student.find(@applied_leave.student_id)
-    @applied_leave.update_attributes(:forward =>true,:forwarder_remark => params[:forwarder_remark])
-    @approving_teacher = Employee.find_by_user_id(current_user.id) 
-    reminderrecipients = User.find(:all,:conditions=>["admin = ? and is_deleted = ?",true,false]).map(&:id)
+    unless params[:emp].blank?
+      @applied_leave.update_attributes(:forward =>true,:forwarder_remark => params[:forwarder_remark],:employee_id=>params[:emp])
+    else 
+      @applied_leave.update_attributes(:forward =>true,:forwarder_remark => params[:forwarder_remark])
+    end
+    @approving_teacher = Employee.find_by_user_id(current_user.id)
+    reminderrecipients = []
+    unless params[:emp].blank?
+      @employee_data = Employee.find_by_id(params[:emp])
+      reminderrecipients << @employee_data.user_id
+    else
+      reminderrecipients = User.find(:all,:conditions=>["admin = ? and is_deleted = ?",true,false]).map(&:id)
+    end
     unless reminderrecipients.nil?
         Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
         :recipient_ids => reminderrecipients,

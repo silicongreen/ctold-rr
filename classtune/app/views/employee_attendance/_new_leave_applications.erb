@@ -20,7 +20,7 @@
     
   <% unless @reporting_employees.blank? %>
     <% @reporting_employees.each do |e| %>
-      <% @applied_leaves = ApplyLeave.find(:all,:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false], :order=>"start_date DESC") %>
+      <% @applied_leaves = ApplyLeave.find(:all,:conditions=>["employee_id =? AND (viewed_by_manager is NULL or viewed_by_manager =?)", e.id, false], :order=>"id DESC") %>
       <% unless @applied_leaves.blank? %>
         <% @applied_leaves.each do |l| %>
           
@@ -78,22 +78,26 @@
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
       @count_student = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false])
-    else
+    elsif @current_user.employee_record.meeting_forwarder.to_i == 1
       @employee_batches = @current_user.employee_record.batches
       batch_ids = @employee_batches.map(&:id)
-      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student])
-    end 
+      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?)",false,batch_ids],:include=>[:student])
+    else
+      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND forward = ? AND employee_id=?",false,true,@current_user.employee_record.id],:include=>[:student])
+    end  
  %>
 
   <% if @count_student > 0 %>
     <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) %>
       <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false],:order=>"start_date DESC") %>
-    <% else %>
+    <% elsif @current_user.employee_record.meeting_forwarder.to_i == 1 %>
       <% 
         @employee_batches = @current_user.employee_record.batches
         batch_ids = @employee_batches.map(&:id)
-        @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?) and forward = ?",false,batch_ids,false],:include=>[:student]) 
+        @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) AND students.batch_id in (?)",false,batch_ids],:include=>[:student],:order=>"start_date DESC") 
       %>
+    <% else %>
+      <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND forward = ? AND employee_id=?",false,true,@current_user.employee_record.id],:include=>[:student],:order=>"start_date DESC") %>
     <% end %>
     
     <% unless @applied_leaves_students == [] %>
@@ -113,21 +117,30 @@
                 <div class="leave_info">Duration:
                   <%= I18n.l(l.start_date.to_date, :format=>'%d/%m/%Y') %> to <%= I18n.l(l.end_date.to_date, :format=>'%d/%m/%Y') %>
                 </div>
+                <% if l.employee_id.to_i > 0 %>
+                <div class="leave_info">Current Desk:
+                  <% current_emp = Employee.find_by_id(l.employee_id) %>
+                  <%= current_emp.full_name %>
+                </div>
+                <% end %>
               </div>
             </a>
 
             <div class="new_leave_status_wrapper">
-              <% if(l.approved == true or l.approved.nil?) %>
-                <%= link_to_remote "<div class=\"decline\">#{image_tag "/images/icons/leave/decline.png", :class => 'decline'}</div>",
-                  :url => {:action => "deny_remarks", :id=>l.id, :target => 'student'} %>
-              <% else %>
-                <div class="declined">
-                  <%= image_tag "/images/icons/leave/declined.png", :class => 'declined' %>
-                </div>
-              <% end %>
+              <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) or (l.forward == 1 and l.employee_id==@current_user.employee_record.id) or (@current_user.employee_record.meeting_forwarder.to_i == 1 and l.forward.to_i == 0) %>
+                <% if(l.approved == true or l.approved.nil?) %>
+                  <%= link_to_remote "<div class=\"decline\">#{image_tag "/images/icons/leave/decline.png", :class => 'decline'}</div>",
+                    :url => {:action => "deny_remarks", :id=>l.id, :target => 'student'} %>
+                <% else %>
+                  <div class="declined">
+                    <%= image_tag "/images/icons/leave/declined.png", :class => 'declined' %>
+                  </div>
+                <% end %>
+              <% end %>  
             </div>
 
             <div class="new_leave_status_wrapper">
+              <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) or (l.forward == 1 and l.employee_id==@current_user.employee_record.id) or (@current_user.employee_record.meeting_forwarder.to_i == 1 and l.forward.to_i == 0) %>
               <% if( l.approved == false or l.approved.nil? ) %>
                 <%= link_to_remote "<div class=\"approve\">#{image_tag "/images/icons/leave/approve.png", :class => 'approve'}</div>",
                   :url => {:action => "approve_remarks", :id=>l.id, :target => 'student'} %>
@@ -136,6 +149,7 @@
                   <%= image_tag "/images/icons/leave/approved.png", :class => 'approved' %>
                 </div>
               <% end %>
+              <% end %>  
             </div>
 
           </div>

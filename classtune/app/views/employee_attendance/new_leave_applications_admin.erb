@@ -67,12 +67,13 @@
 <% end %>
 
 
- <%   
+ <% 
+    @employee = Employee.find_by_user_id(current_user.id)
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
       @count_student = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false])
     else
-      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) and forward=?",false,true])
+      @count_student = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) and forward=? and employee_id=?",false,true,@employee.id])
     end 
  %> 
 
@@ -80,7 +81,7 @@
   <% if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1) %>
     <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false],:order=>"start_date DESC") %>
   <% else %>
-    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) and forward=?",false,true],:order=>"start_date DESC") %>
+    <% @applied_leaves_students = ApplyLeaveStudent.find(:all,:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher = ?) and forward=? and employee_id=?",false,true,@employee.id],:order=>"start_date DESC") %>
   <% end %>
   <% unless @applied_leaves_students.blank? %>
 

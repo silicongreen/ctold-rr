@@ -1,2 +1,2 @@
 page.replace_html 'modal-box', :partial => 'forward_to_admin'
-page << "Modalbox.show($('modal-box'), {title: '#{t('student_remark')}', width: 500});"
+page << "Modalbox.show($('modal-box'), {title: 'Remarks', width: 500});"

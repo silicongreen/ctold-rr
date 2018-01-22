@@ -176,7 +176,7 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <% std_info = Student.find_by_id(std['id'].to_i) %>
                     <% if std_info.batch_id != @batch.id %>
-                      <% continue %>
+                      <% next %>
                     <% end %>
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>

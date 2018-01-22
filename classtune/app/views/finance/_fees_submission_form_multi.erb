@@ -1,0 +1,337 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<% unless flash[:notice].nil? %>
+  <div id="errorExplanation" class="errorExplanation"><p><%= t('there_were_pblm') %></p><ul><li><%= flash[:notice] %></li></ul></div>
+<% end %>
+
+<% unless flash[:warning].nil? %><p class="flash-msg"><%= flash[:warning] %></p><% end %>
+<div class="details">
+  <div class="name">
+    <%= t('fees_receipt_no') %>
+  </div>
+  <div class="val themed_text">
+    <span>:</span>
+    <div class="val-align">
+      <% unless @paid_feess.nil?  %>
+        <% @paid_feess.each do |paid_fees| %>
+          <% unless paid_fees.nil?  %>
+            <% paid_fees.map(&:receipt_no).join(',') %>&nbsp;&nbsp;
+          <% end %>
+        <% end %>
+      <% end %>  
+     </div>
+  </div>
+  <% unless @fee_category.nil? %>
+    <div class="name">
+      <%= t('fee_category_name') %>
+    </div>
+    <div class="val themed_text">
+      <span>:</span>
+      <div class="val-align">
+        <% @fee_category.each do |fee_category| %>
+          <% unless fee_category.nil?  %>
+            <%= fee_category.name.capitalize %>&nbsp;&nbsp;
+          <% end %>
+        <% end %>
+        
+      </div>
+    </div>
+  <% end %>
+  <% unless @student.student_category.nil? %>
+    <div class="name">
+      <%= t('student_category') %>
+    </div>
+    <div class="val themed_text">
+      <span>:</span>
+      <div class="val-align">
+        <%= @student.student_category.name.capitalize %>
+      </div>
+    </div>
+  <% else %>
+    <div class="name">
+      <%= t('student_category') %>
+    </div>
+    <div class="val themed_text">
+      <span>:</span>
+      <div class="val-align">
+        <%= t('n_a') %>
+      </div>
+    </div>
+  <% end %>
+  <div class="name">
+    <%= t('fees_collection_date_name')%>
+  </div>
+  <div class="val themed_text">
+    <span>:</span>
+    <div class="val-align">
+        
+        <% @date.each do |date| %>
+            <% unless date.blank?  %>
+              <%= date.name.capitalize %>&nbsp;&nbsp;
+            <% end %>
+        <% end %>
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="height-fixer"> </div>
+<div class="extender"></div>
+<% total_fees =0 %>
+
+
+  <% unless @fee_particulars.nil? %>
+    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+      <tr class="tr-head">
+        <td><%= t('sl_no') %></td>
+        <td><%= t('particulars') %></td>
+        <td><%= t('amount') %> (<%= currency %>  )</td>
+      </tr>
+      <% i = 0 %>
+      <tr class="tr-blank"></tr>
+      <% particulers = {} %>
+      <% @fee_particulars.each do |fee_particulars| %>
+        <% unless fee_particulars.blank? %>
+          <% fee_particulars.each do |fee| %>
+            <% if particulers[fee.name].nil? %>
+              <% particulers[fee.name] = 0 %>
+            <% end %>
+            <% particulers[fee.name] = particulers[fee.name]+fee.amount %>
+          <% end %>
+        <% end %>
+      <% end %>
+      
+      <% particulers.each do |key,value| %>
+        <tr class="tr-<%= cycle("odd","even") %>">
+          <td class="col-1"><%= i +=1 %></td>
+          <td class="col-2"><%= key %></td>
+          <td class="col-6">
+            <%= precision_label(value) %>
+          </td>
+        </tr>
+        <% total_fees += value %>
+      <% end %>
+      <% total_discount = 0 %>
+      <% @total_discount.each do |total_dis| %>
+        <% unless total_dis.blank? %>
+          <% total_discount = total_discount+total_dis %>
+        <% end %>
+      <% end %> 
+      <% total_payable = 0 %>
+      <% @total_payable.each do |total_pay| %>
+        <% unless total_pay.blank? %>
+          <% total_payable = total_payable+total_pay %>
+        <% end %>
+      <% end %>
+        
+      <% unless total_discount == 0 %>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-1" ></td>
+          <td class="col-1" colspan="2"><span class="themed_text"><%= t('discount') %> </span></td>
+        </tr>
+        <% discounts_array = {} %>
+        <% @discounts.each do |discounts| %>
+          <% discounts.each do |d| %>
+            <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+            <% if discounts_array[discount_text].nil? %>
+              <% discounts_array[discount_text] = 0 %>
+            <% end %>
+            <% discounts_array[discount_text] = discounts_array[discount_text]+(total_payable * d.discount.to_f/ (d.is_amount?? total_payable : 100)) %>
+          <% end %>
+        <% end %>
+        
+        
+        
+        <% discounts_array.each do |key,value| %>
+          <tr class="tr-<%= cycle("odd","even") %>">
+            <td class="col-1"><%= i+1 %></td>
+            <td class="col-2"><%= key %></td>
+            <td class="col-6">
+              <%= precision_label(value) %>
+            </td>
+          </tr>
+          <% i += 1 %>
+        <% end %>
+
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+
+        <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="2"><%= t('total_discount') %> </td>
+          <td class="col-6" >
+            <%= precision_label(total_discount) %>
+          </td>
+        </tr>
+
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <% total_fees = (total_payable-total_discount)%>
+        <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="2" ><%= t('total_fees') %> </td>
+          <td class="col-6" >
+            <%= precision_label(total_fees) %>
+          </td>
+        </tr>
+
+
+      <% end %>
+
+      <tr class="tr-blank"></tr>
+      <tr class="tr-blank"></tr>
+      
+      <%  total_fees1=total_fees %>
+      
+      
+        
+      <% fine_tran = 0 %>
+      <% vat_tran = 0 %>
+      <% @paid_fees.each do |paid_fees| %>
+        <% if paid_fees %>
+
+
+          <% unless paid_fees.blank? %>
+            <% paid_fees.each do |trans| %>
+              <% if trans.fine_included %>
+                 <% fine_tran = fine_tran+trans.fine_amount %>
+
+                <% total_fees += trans.fine_amount.to_f %>
+              <% end %>
+              <% if trans.vat_included %>
+                    <% vat_tran = vat_tran+trans.vat_amount %>
+
+                <% total_fees += trans.vat_amount.to_f %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if fine_tran.to_i > 0 %>
+           <tr class="tr-<%= cycle("odd","even") %>">
+                  <td class="col-1"><%= i+=1 %></td>
+                  <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+                  <td class="col-6">
+                <%= precision_label(fine_tran) %>
+              </td>
+            </tr>     
+      <% end %>
+      <% if vat_tran.to_i > 0 %>
+           <tr class="tr-<%= cycle("odd","even") %>">
+                  <td class="col-1"><%= i+=1 %></td>
+                  <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>
+                  <td class="col-6">
+                <%= precision_label(vat_tran) %>
+              </td>
+            </tr>     
+      <% end %> 
+                
+      
+      <% key = 0 %>         
+      <% @financefee.each do |financefee| %>
+      <% unless financefee.blank? %>
+        <%unless financefee.is_paid%>
+          <tr class="tr-blank"></tr>
+          <tr class="tr-blank"></tr>
+          <%if @fine_rule[key] %>
+            <tr class="tr-<%= cycle("odd","even") %>">
+              <td class="col-1"><%= i+=1 %></td>
+              <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
+              <td class="col-6"><%=  precision_label(@fine_amount[key]) %></td>
+            </tr>
+          <%end%>
+        <%end%>
+            
+      <% end %>
+      <% key = key+1 %>      
+      <% end %>
+      <% total_paid_fees = 0 %>    
+      <% @paid_fees.each do |paid_fees| %>
+        <% unless paid_fees.blank? %>
+          <% paid=0 %>
+          <% paid_fees.each{|a| paid += a.amount.to_f} %>
+          <% total_fees -= paid %>
+          <% total_paid_fees = total_paid_fees+paid %>
+        <% end %>    
+      <% end %>    
+          
+      <% if total_paid_fees > 0 %>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="2"><%= t('payment_done') %></td>
+          <td class="col-6" >
+            <%= precision_label(total_paid_fees) %>
+          </td>
+        </tr>
+      <% end %>
+      <% total_fine_amount = 0 %>
+      <% balance = 0 %>
+      
+      <% loop = 0 %>
+      <% @financefee.each do |financefee|  %>
+        <% unless financefee.blank? %>
+          <%  balance = balance.to_f+financefee.balance.to_f %>
+          
+          <% unless @fine_amount.nil?  %>
+            <% unless @fine_amount[loop].blank? %>
+              <%  total_fine_amount = total_fine_amount+@fine_amount[loop] %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% loop = loop+1 %>
+      <% end %> 
+    
+      <tr class="tr-blank"></tr>
+      <tr class="tr-blank"></tr>
+      <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+        <td class="col-8" colspan="2"><%= t('amount_to_pay') %></td>
+        <td class="col-6" >
+          <% unless precision_label(balance+total_fine_amount.to_f).to_f == 0 %>
+            <%= precision_label(balance+total_fine_amount.to_f) %>
+          <% else %>
+            <%= precision_label(0) %>
+          <% end %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td colspan="3">
+          <div class="pay_fees">
+            <div id="payment_mode"></div>
+              <% dates = [] %>
+              <% @date.each do |date| %>
+                <% dates << date.id  %>
+              <% end %>
+              <% date_string = dates.join("|") %>
+              <div class="pay_fees_buttons">
+                <%= link_to "► #{t('print_receipt')}",
+                  {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id,:id2=>date_string,:batch_id=>@student.batch_id},:target => '_blank', :class=> 'user_button' %>
+              </div>
+          </div>
+        </td>
+      </tr>
+
+  </table>
+  <% end %>
+
+<script type="text/javascript">
+  $('submit_button').disable();
+  setTimeout(function(){$('submit_button').enable();},3000);
+</script>

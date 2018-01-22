@@ -16,32 +16,6 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<%  if @dates_array.count == 1 %>
-<% if MultiSchool.current_school.id == 312 %>
-  <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
-<% else %>
-  <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>
-<% end %>
-<% else %>
-
-<%-# Champs21
-#Copyright 2010 teamCreative Private Limited
-#
-#This product includes software developed at
-#Project Champs21 - http://www.champs21.com/
-#
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#Unless required by applicable law or agreed to in writing,
-#software distributed under the License is distributed on an
-#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#KIND, either express or implied.  See the License for the
-#specific language governing permissions and limitations
-#under the License. -%>
 <%
   copy = []
   copy << "Office Copy"
@@ -54,8 +28,8 @@
             
                <table class="vat_area">
                    <tr>
-                       <td class="mark-td"class="left">&nbsp;</td>
-                       <td class="mark-td"class="right"><%= cp %></td>
+                       <td class="left">&nbsp;</td>
+                       <td class="right"><%= cp %></td>
                    </tr>
                </table>
           
@@ -79,19 +53,19 @@
             <% total_fees = 0 %>
             <table class="std_info">
                 <tr>  
-                     <td class="mark-td"class="left">For Month</td> <td>:<% @date.each do |date| %>
+                     <td class="left">For Month</td> <td>:<% @date.each do |date| %>
                           <% unless date.blank?  %>
                             <%= date.name.capitalize %>&nbsp;&nbsp;
                           <% end %>
                       <% end %>
                      </td>
-                     <td class="mark-td"class="right">Date</td> <td>:&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
+                     <td class="right">Date</td> <td>:&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
                 </tr>
             </table>     
             <table class="std_info">
                
                 <tr>
-                    <td class="mark-td"colspan="1"><%= "Name of Student" %></td> <td class="mark-td"colspan="3">:&nbsp; <%=  "#{@student.full_name}" %></td>
+                    <td colspan="1"><%= "Name of Student" %></td> <td colspan="3">:&nbsp; <%=  "#{@student.full_name}" %></td>
                 </tr>
                    <tr> <td><%= "Class" %></td> <td>:&nbsp;  <%=  "#{@student.batch.course.course_name}" %></td> <td><%= "Roll" %></td> <td>:&nbsp;  <%=  "#{@student.class_roll_no}" %></td>
                 </tr> 
@@ -104,8 +78,8 @@
        
             <table id="pdf-table" width="98%" cellspacing="0">
                 <tr class="table-header">
-                    <td class="mark-td"class="name-td"  colspan="2"><%= "Details" %></td>
-                    <td  class="mark-td"> <%= "Taka (BDT)" %></td>
+                    <td class="name-td"  colspan="2"><%= "Details" %></td>
+                    <td class="mark-td"> <%= "Taka (BDT)" %></td>
                 </tr>
                 <%k=7%>
                 <% i = 0  %>
@@ -126,8 +100,8 @@
                 <% particulers.each do |key,value| %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <%k+=1%>
-                          <td class="mark-td"class="name-td" colspan="2"><%= key %></td>
-                          <td  class="mark-td"><% if value.to_i > 0 %><%= "#{precision_label(value.to_s)}" %><% else %>-<% end %></td>
+                          <td class="name-td" colspan="2"><%= key %></td>
+                          <td class="mark-td"><% if value.to_i > 0 %><%= "#{precision_label(value.to_s)}" %><% else %>-<% end %></td>
                       </tr>
                       <% total_fees += value %>
                     
@@ -149,7 +123,7 @@
                 <% unless total_discount == 0 %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
-                      <td class="mark-td"class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
+                      <td class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
                   </tr>
                   <% discounts_array = {} %>
                     <% @discounts.each do |discounts| %>
@@ -165,31 +139,58 @@
                   <% discounts_array.each do |key,value| %>
                     <%k+=1%>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="mark-td"class="name-td"  colspan="2"><%= key %></td>
-                        <td  class="mark-td"><%= precision_label(value) %></td>
+                        <td class="name-td"  colspan="2"><%= key %></td>
+                        <td class="mark-td"><%= precision_label(value) %></td>
                     </tr>
                   <% end %>
 
 
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
-                      <td  class="mark-td" colspan="2" ><%= t('total_discount') %></td>
-                      <td  class="mark-td" ><%= "#{precision_label(total_discount)}" %></td>
+                      <td class="mark-td" colspan="2" ><%= t('total_discount') %></td>
+                      <td class="mark-td" ><%= "#{precision_label(total_discount)}" %></td>
                   </tr>
 
                   <% total_fees = (total_payable-total_discount) %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
-                      <td  class="mark-td" colspan="2" ><%= t('total_fees') %></td>
-                      <td  class="mark-td" ><%=  precision_label(total_fees) %></td>
+                      <td class="mark-td" colspan="2" ><%= t('total_fees') %></td>
+                      <td class="mark-td" ><%=  precision_label(total_fees) %></td>
                   </tr>
 
 
                 <% end %>
 
-               
-                <% fine_tran = 0 %>
-                <% vat_tran = 0 %>
+                <% if @paid_fees%>
+
+
+
+                  <% unless @paid_fees.blank? %>
+                    <% @paid_fees.each do |trans| %>
+                      <% if trans.fine_included %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <%k+=1%>
+                            
+                            <td class="col-2"  colspan="2"><span><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+
+                            <td class="col-4"><%= "#{precision_label(trans.fine_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.fine_amount.to_f %>
+                      <% end %>
+                      <% if trans.vat_included %>
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                            <%k+=1%>
+                            
+                            <td class="col-2"  colspan="2"><span><%= "Vat"  %></span></td>
+
+                            <td class="col-4"><%= "#{precision_label(trans.vat_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.vat_amount.to_f %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <%end%>
+                 
                 <% @paid_fees.each do |paid_fees| %>
                   <% if paid_fees %>
 
@@ -197,45 +198,38 @@
                     <% unless paid_fees.blank? %>
                       <% paid_fees.each do |trans| %>
                         <% if trans.fine_included %>
-                           <% fine_tran = fine_tran+trans.fine_amount %>
-                            
+                          <tr class="tr-<%= cycle("odd","even") %>">
+                            <td class="col-8" colspan="2" ><%= t('fine_on') %> <%= Date.today %></td>
+                            <td class="col-6">
+                              <%= precision_label(trans.fine_amount) %>
+                            </td>
+                          </tr>
                           <% total_fees += trans.fine_amount.to_f %>
                         <% end %>
                         <% if trans.vat_included %>
-                              <% vat_tran = vat_tran+trans.vat_amount %>
-                          
+                          <tr class="tr-<%= cycle("odd","even") %>">
+                            <td class="col-8"><span class="themed_text"><%= "Vat" %></span></td>
+                            <td class="col-6">
+                              <%= precision_label(trans.vat_amount) %>
+                            </td>
+                          </tr>
                           <% total_fees += trans.vat_amount.to_f %>
                         <% end %>
                       <% end %>
                     <% end %>
                   <% end %>
                 <% end %>
-                
-                <% if fine_tran.to_i > 0 %>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Fine" %></span></td>
-                        <td class="mark-td"class="col-6">
-                          <%= precision_label(fine_tran) %>
-                        </td>
-                      </tr>     
-                <% end %>
-                <% if vat_tran.to_i > 0 %>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Vat" %></span></td>
-                        <td class="mark-td"class="col-6">
-                          <%= precision_label(vat_tran) %>
-                        </td>
-                      </tr>     
-                <% end %> 
                           
                 <% key = 0 %>         
                   <% @financefee.each do |financefee| %>
                   <% unless financefee.blank? %>
                     <%unless financefee.is_paid%>
+                      <tr class="tr-blank"></tr>
+                      <tr class="tr-blank"></tr>
                       <%if @fine_rule[key] %>
-                        <tr class="<%= cycle("odd","even") %>">
-                          <td class="mark-td"class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
-                          <td class="mark-td"class="col-6"><%=  precision_label(@fine_amount[key]) %></td>
+                        <tr class="tr-<%= cycle("odd","even") %>">
+                          <td class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
+                          <td class="col-6"><%=  precision_label(@fine_amount[key]) %></td>
                         </tr>
                       <%end%>
                     <%end%>
@@ -255,9 +249,9 @@
                 <% end %>    
 
                 <% if total_paid_fees > 0 %>
-                  <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-                    <td class="mark-td"class="col-8" colspan="2" ><%= t('payment_done') %></td>
-                    <td class="mark-td"class="col-6" >
+                  <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+                    <td class="col-8" colspan="2" ><%= t('payment_done') %></td>
+                    <td class="col-6" >
                       <%= precision_label(total_paid_fees) %>
                     </td>
                   </tr>
@@ -279,9 +273,9 @@
                   <% loop = loop+1 %>
                 <% end %> 
 
-                <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-                  <td class="mark-td"class="col-8" colspan="2"><%= "Total" %></td>
-                  <td class="mark-td"class="col-6" >
+                <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+                  <td class="col-8" colspan="2"><%= "Total" %></td>
+                  <td class="col-6" >
                     <% unless precision_label(balance+total_fine_amount.to_f).to_f == 0 %>
                       <%= precision_label(balance+total_fine_amount.to_f) %>
                     <% else %>
@@ -290,7 +284,7 @@
                   </td>
                 </tr>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td class="mark-td"colspan="3">Amount in Word : <b><%= in_words(balance.to_i+total_fine_amount.to_i).split.map(&:capitalize).join(' ') %></b></td>
+                    <td colspan="3">Amount in Word : <b><%= in_words(balance.to_i+total_fine_amount.to_i).split.map(&:capitalize).join(' ') %></b></td>
                 </tr>
               
               <% if ((k+1)%1)==0 %>
@@ -314,6 +308,3 @@
     
     
 </div>
-
-
-<% end %>

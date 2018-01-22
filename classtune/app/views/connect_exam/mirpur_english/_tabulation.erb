@@ -174,6 +174,10 @@
                   <% j = 0 %>
 
                   <% @report_data['report']['students'].each do |std| %>
+                    <% std_info = Student.find_by_id(std['id'].to_i) %>
+                    <% if std_info.batch_id != @batch.id %>
+                      <% continue %>
+                    <% end %>
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
@@ -262,6 +266,8 @@
 
                       
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        
                         
                         <td class="name"><%= std['class_roll_no'] %></td>
                         <% if !std['first_name'].blank? and !std['last_name'].blank?  %>

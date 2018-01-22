@@ -24,6 +24,9 @@
 <div class='sub-header'><%= @student.full_name%></div>
 
 </div>
+<script>
+  var jj = jQuery.noConflict();
+</script>
 <div id="page-yield">
   <div class="label-field-pair">
     <label><%= t('select_fee_collection') %> <%= image_tag("loader.gif",
@@ -31,12 +34,12 @@
         :border => 0,
         :id => "loader",
         :style =>"display: none;" ) %></label>
-    <div class="text-input-bg">
+    <div class="text-input-bg  text-input-bg2"  style="height: 320px;">
       <%= select  :fees_submission, :dates_id, @dates.map { |e| [e.full_name, e.id]},
         {:prompt => "#{t('select_fee_collection')}"},
-        {:onChange => "#{remote_function( :url =>
+        {:multiple => true,:onChange => "#{remote_function( :url =>
         {:action => "fees_submission_student"},
-        :with => "'date='+value+'&id='+#{@student.id}",:before => "$('loader').show();",
+        :with => "'date='+jj('#fees_submission_dates_id').val()+'&id='+#{@student.id}",:before => "$('loader').show();",
         :success => "$('loader').hide();") }"} %>
     </div>
   </div>
@@ -103,3 +106,23 @@
     setTimeout(function(){$('submit_button').enable();},15000);
   }
 </script>
+<style>
+.text-input-bg2 select
+{
+   height: 300px;
+}
+p.flash-msg
+{
+  float:left;
+  clear: both;
+}
+.name {
+    height: 2px;
+    color: #999999;
+    float: left;
+    clear: both;
+    width: 220px;
+    font-weight: bold;
+    font-size: 13px;
+}
+</style>   

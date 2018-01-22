@@ -30,11 +30,11 @@
 
         <div class="label-field-pair1">
           <div class="text-input-bg">
-<%= form.text_field :fee, :value=>'' ,:id=>"fine_fee", :class=>'precision_text' %></div></div>
-            <%= form.hidden_field :student, :value => @student.id %>
-            <%= form.hidden_field :date, :value => @date.id %>
-            <%= form.hidden_field :vat, :value => @vat %>
-        <%=  submit_tag "► #{t('add_fine')}",:class=>'submit_button2',:id => 'fine_button',:onclick=>'return validate_fine();' %>
+            <%= form.text_field :fee, :value=>'' ,:id=>"fine_fee", :class=>'precision_text' %></div></div>
+              <%= form.hidden_field :student, :value => @student.id %>
+              <%= form.hidden_field :date, :value => @date.id %>
+              <%= form.hidden_field :vat, :value => @vat %>
+            <%=  submit_tag "► #{t('add_fine')}",:class=>'submit_button2',:id => 'fine_button',:onclick=>'return validate_fine();' %>
       <% end %>
     </div>
   </div>

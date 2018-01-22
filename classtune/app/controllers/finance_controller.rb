@@ -2088,29 +2088,29 @@ class FinanceController < ApplicationController
   end
 
   def student_fee_receipt_pdf
-    @batch=Batch.find(params[:batch_id])
-    @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
+    @dates_array = params[:id2].split("|")
     @student = Student.find(params[:id])
-    @financefee = @student.finance_fee_by_date @date
-    @due_date = @fee_collection.due_date
-
-    @paid_fees = @financefee.finance_transactions
-    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
+    @batch=Batch.find(params[:batch_id])
     @currency_type = currency
-
-    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
-    @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-    @total_discount = 0
-    @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-    @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
-    bal=(@total_payable-@total_discount).to_f
-    days=(Date.today-@date.due_date.to_date).to_i
-    auto_fine=@date.fine
-    if days > 0 and auto_fine
-      @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-      @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-    end
-    @fine_amount=0 if @financefee.is_paid
+    if @dates_array.count == 1
+      @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
+      @financefee = @student.finance_fee_by_date @date
+      @due_date = @fee_collection.due_date
+      @paid_fees = @financefee.finance_transactions
+      @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
+      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+      @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+      @total_discount = 0
+      @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+      @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+      bal=(@total_payable-@total_discount).to_f
+      days=(Date.today-@date.due_date.to_date).to_i
+      auto_fine=@date.fine
+      if days > 0 and auto_fine
+        @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+        @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+      end
+      @fine_amount=0 if @financefee.is_paid
 #    render :layout => false
       if MultiSchool.current_school.id == 312
         render :pdf => 'student_fee_receipt_pdf',
@@ -2132,14 +2132,59 @@ class FinanceController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      end  
-    
-    
-  
+      end
+    else
+      @iloop = 0
+      
+      @date = []
+      @fee_collection = []
+      @due_date = []
+      @fee_category = []
+      @paid_fees = []
+      @financefee = []
+      @fee_particulars = []
+      @discounts = []
+      @total_payable = []
 
-    #        respond_to do |format|
-    #            format.pdf { render :layout => false }
-    #        end
+      @total_discount = []
+      @fine_rule = []
+      @fine_amount = []
+      @dates_array.each do |date|
+
+
+        @date[@iloop] = @fee_collection[@iloop] = FinanceFeeCollection.find(date)
+        @financefee[@iloop] = @student.finance_fee_by_date(@date[@iloop])
+        @due_date[@iloop] = @fee_collection[@iloop].due_date
+        @fee_category[@iloop] = FinanceFeeCategory.find(@fee_collection[@iloop].fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+        flash[:warning]=nil
+        flash[:notice]=nil
+        @paid_fees[@iloop] = @financefee[@iloop].finance_transactions
+
+        @fee_particulars[@iloop] = @date[@iloop].finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee[@iloop].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[@iloop].batch) }
+        @discounts[@iloop]=@date[@iloop].fee_discounts.all(:conditions=>"batch_id=#{@financefee[@iloop].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[@iloop].batch) }
+        @total_discount[@iloop] = 0
+        @total_payable[@iloop]=@fee_particulars[@iloop].map{|s| s.amount}.sum.to_f
+        @total_discount[@iloop] =@discounts[@iloop].map{|d| @total_payable[@iloop] * d.discount.to_f/(d.is_amount? ? @total_payable[@iloop] : 100)}.sum.to_f unless @discounts[@iloop].nil?
+        bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
+        days=(Date.today-@date[@iloop].due_date.to_date).to_i
+        auto_fine=@date[@iloop].fine
+        if days > 0 and auto_fine
+          @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
+          @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
+        end
+        @fine_amount[@iloop]=0 if @financefee[@iloop].is_paid
+        @iloop = @iloop+1
+      end
+      render :pdf => 'student_fee_receipt_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :page_size => 'A5',
+      :margin => {    :top=> 10,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end 
 
   end
   
@@ -2260,35 +2305,84 @@ class FinanceController < ApplicationController
   def fees_submission_student
 
     if params[:date].present?
-      @student = Student.find(params[:id])
-      @date = @fee_collection = FinanceFeeCollection.find(params[:date])
-      @financefee = @student.finance_fee_by_date(@date)
+      @dates_array = params[:date].split(",")
+      if @dates_array.count == 1
+        @student = Student.find(params[:id])
+        @date = @fee_collection = FinanceFeeCollection.find(params[:date])
+        @financefee = @student.finance_fee_by_date(@date)
 
 
-      @due_date = @fee_collection.due_date
-      @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
-      flash[:warning]=nil
-      flash[:notice]=nil
+        @due_date = @fee_collection.due_date
+        @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+        flash[:warning]=nil
+        flash[:notice]=nil
 
-      @paid_fees = @financefee.finance_transactions
+        @paid_fees = @financefee.finance_transactions
 
 
-      @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
-      @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
-      @total_discount = 0
-      @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-      @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
-      bal=(@total_payable-@total_discount).to_f
-      days=(Date.today-@date.due_date.to_date).to_i
-      auto_fine=@date.fine
-      if days > 0 and auto_fine
-        @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-        @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-      end
-      @fine_amount=0 if @financefee.is_paid
-      render :update do |page|
-        page.replace_html "fee_submission", :partial => "fees_submission_form"
-      end
+        @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+        @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+        @total_discount = 0
+        @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+        @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+        bal=(@total_payable-@total_discount).to_f
+        days=(Date.today-@date.due_date.to_date).to_i
+        auto_fine=@date.fine
+        if days > 0 and auto_fine
+          @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+          @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+        end
+        @fine_amount=0 if @financefee.is_paid
+
+        render :update do |page|
+          page.replace_html "fee_submission", :partial => "fees_submission_form"
+        end
+      else
+        @iloop = 0
+        @student = Student.find(params[:id])
+        @date = []
+        @fee_collection = []
+        @due_date = []
+        @fee_category = []
+        @paid_fees = []
+        @financefee = []
+        @fee_particulars = []
+        @discounts = []
+        @total_payable = []
+
+        @total_discount = []
+        @fine_rule = []
+        @fine_amount = []
+        @dates_array.each do |date|
+          
+          
+          @date[@iloop] = @fee_collection[@iloop] = FinanceFeeCollection.find(date)
+          @financefee[@iloop] = @student.finance_fee_by_date(@date[@iloop])
+          @due_date[@iloop] = @fee_collection[@iloop].due_date
+          @fee_category[@iloop] = FinanceFeeCategory.find(@fee_collection[@iloop].fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+          flash[:warning]=nil
+          flash[:notice]=nil
+          @paid_fees[@iloop] = @financefee[@iloop].finance_transactions
+          
+          @fee_particulars[@iloop] = @date[@iloop].finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee[@iloop].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[@iloop].batch) }
+          @discounts[@iloop]=@date[@iloop].fee_discounts.all(:conditions=>"batch_id=#{@financefee[@iloop].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[@iloop].batch) }
+          @total_discount[@iloop] = 0
+          @total_payable[@iloop]=@fee_particulars[@iloop].map{|s| s.amount}.sum.to_f
+          @total_discount[@iloop] =@discounts[@iloop].map{|d| @total_payable[@iloop] * d.discount.to_f/(d.is_amount? ? @total_payable[@iloop] : 100)}.sum.to_f unless @discounts[@iloop].nil?
+          bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
+          days=(Date.today-@date[@iloop].due_date.to_date).to_i
+          auto_fine=@date[@iloop].fine
+          if days > 0 and auto_fine
+            @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
+            @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
+          end
+          @fine_amount[@iloop]=0 if @financefee[@iloop].is_paid
+          @iloop = @iloop+1
+        end
+        render :update do |page|
+            page.replace_html "fee_submission", :partial => "fees_submission_form_multi"
+        end
+      end  
     else
       render :update do |page|
         page.replace_html "fee_submission", :text=>""

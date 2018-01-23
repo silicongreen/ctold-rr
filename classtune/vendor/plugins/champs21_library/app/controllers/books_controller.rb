@@ -50,6 +50,27 @@ class BooksController < ApplicationController
   def edit_call_number
     @book_call_number = BookCallNumber.find(params[:id])
   end
+  def upload_call_numbers
+    @book_call_number = BookCallNumber.new
+    if request.post?
+      insert = []
+      FasterCSV.foreach(params[:file].path) do |row|
+        insert_row = {}
+        insert_row[:call_number] = row[0]
+        insert_row[:subject] = row[1]
+        insert_row[:title] = row[2]
+        insert_row[:author] = row[3]
+        insert_row[:version] = row[4]
+        insert_row[:language] = row[5]
+        insert_row[:publication_place] = row[6]
+        insert_row[:published_by] = row[7]
+        insert_row[:publish_year] = row[8]
+        insert_row[:total_page] = row[9]
+        all_rows << row.join(',')
+      end
+      abort(all_rows.inspect)
+    end
+  end
   def update_call_number
     @book_call_number = BookCallNumber.find(params[:id]) 
     if @book_call_number.update_attributes(params[:book_call_number])
@@ -98,7 +119,7 @@ class BooksController < ApplicationController
     @tagg = []
     @book = Book.find(:last)
     @book_call_number = params[:book_call_number]
-    unless @book_call_number.nil?
+    if !@book_call_number.nil? and !@book_call_number.blank? and !@book_call_number==""
       @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
     else
       @book_call_numbers = BookCallNumber.find(:all)
@@ -122,14 +143,14 @@ class BooksController < ApplicationController
   def create
     author = ""
     title = ""
-    unless params[:book][:book_call_number_id].nil?
+    if !params[:book][:book_call_number_id].nil? && !params[:book][:book_call_number_id].blank?
       book_call_number = BookCallNumber.find(params[:book][:book_call_number_id]) 
       unless book_call_number.blank?
         author = book_call_number.author
         title = book_call_number.title
       end
     end
-    if @book = Book.create(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id], :status=>'Available')
+    if @book = Book.create(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id], :book_type =>params[:book][:book_type],:catalog_date =>params[:book][:catalog_date], :status=>'Available')
        flash[:notice]="#{t('flash1')}"
        redirect_to additional_data_books_path(:id => @created_books,:book_call_number=>params[:book_call_number])     
     else
@@ -140,7 +161,7 @@ class BooksController < ApplicationController
   def edit
     @book = Book.find(params[:id])
     @book_call_number = params[:book_call_number]
-    unless @book_call_number.nil?
+    if !@book_call_number.nil? and !@book_call_number.blank? and !@book_call_number==""
       @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
     else
       @book_call_numbers = BookCallNumber.find(:all)
@@ -152,18 +173,18 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])  
     author = ""
     title = ""
-    unless params[:book][:book_call_number_id].nil?
+    if !params[:book][:book_call_number_id].nil? && !params[:book][:book_call_number_id].blank?
       book_call_number = BookCallNumber.find(params[:book][:book_call_number_id]) 
       unless book_call_number.blank?
         author = book_call_number.author
         title = book_call_number.title
       end
     end
-    if @book.update_attributes(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id], :status=>'Available')
+    if @book.update_attributes(:title=> title, :author=> author,:source=>params[:book][:source], :price=>params[:book][:price], :book_number =>params[:book][:book_number], :book_call_number_id =>params[:book][:book_call_number_id],:book_type =>params[:book][:book_type],:catalog_date =>params[:book][:catalog_date], :status=>'Available')
        flash[:notice]="#{t('flash2')}"
        redirect_to edit_additional_data_books_path(:id => @book.id,:book_call_number=>params[:book_call_number])     
     else
-      render 'edit'
+      redirect_to :controller => "books", :action => "edit",:id => @book.id,:book_call_number=>params[:book_call_number]
     end
   end
 
@@ -273,10 +294,10 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
-    @lender = Student.find_by_admission_no @book.book_movement.user.username unless @book.book_movement_id.nil?
-    @lender ||= ArchivedStudent.find_by_admission_no @book.book_movement.user.username unless @book.book_movement_id.nil?
-    @lender ||= Employee.find_by_employee_number @book.book_movement.user.username unless @book.book_movement_id.nil?
-    @lender ||= ArchivedEmployee.find_by_employee_number @book.book_movement.user.username unless @book.book_movement_id.nil?
+    @lender = Student.find_by_user_id @book.book_movement.user_id unless @book.book_movement_id.nil?
+    @lender ||= ArchivedStudent.find_by_formar_id @book.book_movement.user_id unless @book.book_movement_id.nil?
+    @lender ||= Employee.find_by_user_id @book.book_movement.user_id  unless @book.book_movement_id.nil?
+    @lender ||= ArchivedEmployee.find_by_formar_id @book.book_movement.user_id unless @book.book_movement_id.nil?
     @reservations = BookReservation.find_all_by_book_id(@book.id)
     @book_reserved = BookReservation.find_by_book_id(@book.id)
     @additional_details = BookAdditionalDetail.find_all_by_book_id(@book.id)

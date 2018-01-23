@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
     :edit_additional_data => [:get,:post,:put],
     :library_transactions=>[:get,:post],
     :book_call_numbers => [:get,:post],
+    :upload_call_numbers => [:get,:post],
     :add_call_numbers => [:get,:post],
     :create_call_number => [:get,:post],
     :edit_call_number => [:get,:post],

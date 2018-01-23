@@ -19,7 +19,7 @@
 <% unless @student_user.nil? %>
   <% @student_user.each_with_index do |u, i| %>
     <div class="user-wrapper">
-      <div class="ad-number"><%= shorten_string(u.admission_no,8) %> - </div><div class="fullname"><%= link_to_remote shorten_string(u.full_name.downcase,18), :url=>{:action=>'update_user', :id=>u.id, :id2=>'student'} %></div>
+      <div class="ad-number"><%= shorten_string(u.admission_no,30) %></div><div class="fullname"><%= link_to_remote shorten_string(u.full_name.downcase,30), :url=>{:action=>'update_user', :id=>u.id, :id2=>'student'} %></div>
       <div class="batch-fullname"><%= u.batch.full_name %></div>
     </div>
   <% end %>
@@ -27,8 +27,8 @@
 <% unless @employee_user.nil? %>
   <% @employee_user.each_with_index do |u, i| %>
     <div class="user-wrapper">
-      <div class="ad-number"><%=shorten_string(u.employee_number,8) %> - </div><div class="fullname"><%= link_to_remote shorten_string(u.full_name.downcase,18), :url=>{:action=>'update_user', :id=>u.id, :id2=>'employee'} %></div>
-      <div class="batch-fullname"><%= shorten_string(u.employee_department.name,18) %></div>
+      <div class="ad-number"><%=shorten_string(u.employee_number,30) %></div><div class="fullname"><%= link_to_remote shorten_string(u.full_name.downcase,30), :url=>{:action=>'update_user', :id=>u.id, :id2=>'employee'} %></div>
+      <div class="batch-fullname"><%= shorten_string(u.employee_department.name,30) %></div>
     </div>
   <% end %>
 <% end %>

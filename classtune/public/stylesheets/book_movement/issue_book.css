@@ -86,6 +86,8 @@
 .user-wrapper{
     overflow: hidden;
     margin-bottom: 5px;
+    padding: 3px;
+    border: 1px solid black;
 }
 .name{
     color: #999999;
@@ -132,11 +134,12 @@
     width:155px;
     height: auto;
     float: left;
+    margin-left:40px;
 
 }
 
 .batch-fullname{
-    width: 164px;
+    width: 120px;
     height: auto;
     float: left;
 

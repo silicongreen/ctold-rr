@@ -26,6 +26,9 @@
       <% if permitted_to? :add_call_numbers, :books %>
         <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('add_call_numbers')}", {:action => "add_call_numbers"} %></li>
       <% end %>
+      <% if permitted_to? :upload_call_numbers, :books %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('upload_csv')}", {:action => "upload_call_numbers"} %></li>
+      <% end %>
     </ul>
   </div>
 </div>

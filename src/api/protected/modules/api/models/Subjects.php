@@ -759,8 +759,15 @@ class Subjects extends CActiveRecord
            $report_term_merge['total_student'] = $total_student;
          
            
-           
-           $report_term_merge['Your_position'] = $examModel->getPosition($value->id, $only_grade_point, $total_mark);
+          
+           if(Yii::app()->user->schoolId == 246)
+           {
+                $report_term_merge['Your_position'] = "N/A";
+           }
+           else
+           {    
+                $report_term_merge['Your_position'] = $examModel->getPosition($value->id, $only_grade_point, $total_mark);
+           }
          
            
            $report_term[] = $report_term_merge; 

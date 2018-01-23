@@ -98,9 +98,9 @@ class BookMovementController < ApplicationController
   def user_search
     unless params[:user][:name].nil?
       if params[:user][:nature] =='student'
-        @student_user = Student.library_card_or_admission_no_like_any(params[:user][:name])
+        @student_user = Student.library_card_or_admission_no_or_first_name_or_last_name_or_class_roll_no_like_any(params[:user][:name])
       else
-        @employee_user = Employee.employee_number_or_library_card_like_any(params[:user][:name])
+        @employee_user = Employee.employee_number_or_library_card_or_first_name_or_last_name_like_any(params[:user][:name])
       end
     end
     render(:update) do |page|

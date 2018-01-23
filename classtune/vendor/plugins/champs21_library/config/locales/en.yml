@@ -3,7 +3,7 @@ en:
     attributes:
       book:
         title: "Title"
-        book_number: "Book number"
+        book_number: "Acc Number"
         author: "Author"
         tag_list: "Tag list"
       book_movement:
@@ -22,12 +22,14 @@ en:
         custom_tag_tool_long : "One or more of the custom tags is too long (maximum is 30 characters)"
 
   subject: "Subject"
+  upload_csv: "Import CSV"
+  csv_file: "CSV File"
   total_page: "Total Page"
   publication_place: "Publication Place"
   call_number: "Call Number"
   book_call_number: "Book Call Number"
   manage_library_call: "Manage library Call Number"
-  book_number: "Book Number"
+  book_number: "Acc Number"
   library_text: "Library"
   add_book: "Add book"
   manage_books: "Manage Books"
@@ -105,7 +107,7 @@ en:
   borrower: "borrower"
   listing_items: "Listing items"
   library_book_return: "Library book return"
-  with_book_number: "With Book Number"
+  with_book_number: "With Acc Number"
   books_taken: "Books taken"
   issue_book_text: "Issue Book"
   no_of_books_can_be_taken: "No. of books can be taken"

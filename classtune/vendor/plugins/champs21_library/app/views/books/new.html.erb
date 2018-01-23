@@ -43,7 +43,7 @@
       <div class="label-field-pair">
         <label for="title" style="width:210px;"><%= "#{t('book_call_number')}"%> <span class="necessary-field">*</span></label>
         <div class="text-select-bg" style="margin-left:20px; ">
-          <%= select_tag   "book[book_call_number_id]", options_for_select([["Select",""]]+@book_call_numbers.map{|em| [em.title,em.id]}),{:class => 'js-example-basic-single'} %>
+          <%= select_tag   "book[book_call_number_id]", options_for_select([["Select",""]]+@book_call_numbers.map{|em| [em.call_number,em.id]}),{:class => 'js-example-basic-single'} %>
         </div>
       </div>
       <div class="label-field-pair">
@@ -62,6 +62,12 @@
         <label for="title"><%= "Cataloging Date"%></label>
         <div class="text-input-bg">
           <%= calendar_date_select_tag 'book[catalog_date]',I18n.l(Date.today,:format=>:default) ,:popup=>:force%>
+        </div>
+      </div>
+      <div class="label-field-pair">
+        <label for="title"><%= "Book Type" %></label>
+        <div class="text-select-bg">
+          <%= select_tag   "book[book_type]", options_for_select([["Teacher","Teacher"],["Referance","Referance"],["TR","TR"],["Student","Student"]],"Teacher") %>
         </div>
       </div>
       <div class="label-field-pair" style="display:none;">
@@ -121,5 +127,7 @@
   .text-select-bg select
   {
       width:220px;
+      height: 30px;
+      margin-left: 10px;
   }
 </style>

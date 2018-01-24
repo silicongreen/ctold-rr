@@ -68,13 +68,14 @@ class FeeDiscount < ActiveRecord::Base
       end
 
       tot_amt=part_amt-discount_amt
-      abort(part_amt.to_s+" "+discount.to_s)
+      
       # part_amt=fee_particular.amount.to_f if fee_particular.present?
       tot_disc_amt=part_amt*discount.to_f/(is_amount?? part_amt : 100)
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
       if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
         errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
       elsif tot_disc_amt.to_f <= 0.0
+        abort(part_amt.to_s+" "+discount.to_s)
         errors.add_to_base(t('discount_cannot_be_zero'))
       end
       # end

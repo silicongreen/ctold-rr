@@ -50,6 +50,42 @@ class BooksController < ApplicationController
   def edit_call_number
     @book_call_number = BookCallNumber.find(params[:id])
   end
+  def upload_book
+    @book = Book.new
+    if request.post?
+      insert = []
+      book_call_number = {}
+      FasterCSV.foreach(params[:file].path) do |row|
+        insert_row = {}
+        book_call_number_id = row[0]
+        unless book_call_number[book_call_number_id].nil?
+          book_call_number_obj = book_call_number[book_call_number_id]
+        else
+          book_call_number_obj = BookCallNumber.find_by_call_number(book_call_number_id)
+          unless book_call_number_obj.nil? 
+            book_call_number[book_call_number_id] = book_call_number_obj
+          end
+        end 
+        
+        if book_call_number_obj.nil?
+          next
+        end
+        
+        insert_row[:book_call_number_id] = book_call_number_obj.id
+        insert_row[:title] = book_call_number_obj.title
+        insert_row[:author] = book_call_number_obj.author
+        insert_row[:book_number] = row[1]
+        insert_row[:source] = row[2]
+        insert_row[:price] = row[3]
+        insert_row[:catalog_date] = row[4]
+        insert_row[:book_type] = row[5]
+        insert << insert_row
+      end
+      Book.create(insert) 
+      flash[:notice]="#{t('flash1')}"
+      redirect_to :controller => "books", :action => "index"
+    end
+  end
   def upload_call_numbers
     @book_call_number = BookCallNumber.new
     if request.post?
@@ -66,9 +102,11 @@ class BooksController < ApplicationController
         insert_row[:published_by] = row[7]
         insert_row[:publish_year] = row[8]
         insert_row[:total_page] = row[9]
-        all_rows << row.join(',')
+        insert << insert_row
       end
-      abort(all_rows.inspect)
+      BookCallNumber.create(insert) 
+      flash[:notice]="#{t('flash1')}"
+      redirect_to :controller => "books", :action => "book_call_numbers"
     end
   end
   def update_call_number

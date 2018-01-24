@@ -38,6 +38,9 @@
           <% end %>
           </li>
       <% end %>
+     <% if permitted_to? :upload_call_numbers, :books %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('upload_csv')}", {:action => "upload_book"} %></li>
+      <% end %>
     </ul>
   </div>
 </div>
@@ -70,7 +73,9 @@
     <div id="books">
       <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
         <tr class="tr-head">
-
+          <td>
+            <%= "#{t('call_number')}"%>
+          </td>
           <td>
             <%= "#{t('book_number')}"%>
           </td>
@@ -95,12 +100,13 @@
         <% can_delete=permitted_to? :destroy, :books %>
         <% for book in @books %>
           <tr class="tr-<%= cycle('odd', 'even') %>">
+            <td class="col-3"><%=h book.book_call_number.call_number %></td>
             <td class="col-3"><%=h book.book_number %></td>
             <td class="col-7"><%=h book.title %></td>
-            <td class="col-7"><%=h book.source %></td>
-            <td class="col-7"><%=h book.price %></td>
+            <td class="col-3"><%=h book.source %></td>
+            <td class="col-3"><%=h book.price %></td>
             <td class="col-1"><%=h t("#{book.status.downcase}") %></td>
-            <td class="col-3">
+            <td class="col-7" style="width:20%;">
               <small>
                 <%= link_to "#{t('view')}", book %>
                 <% if can_edit %>

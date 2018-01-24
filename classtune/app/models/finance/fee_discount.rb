@@ -68,7 +68,7 @@ class FeeDiscount < ActiveRecord::Base
       end
 
       tot_amt=part_amt-discount_amt
-
+      abort(part_amt.to_s+" "+discount.to_s)
       # part_amt=fee_particular.amount.to_f if fee_particular.present?
       tot_disc_amt=part_amt*discount.to_f/(is_amount?? part_amt : 100)
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min

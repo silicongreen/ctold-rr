@@ -55,12 +55,13 @@
               end
             end
            
-            
+            std_subject_marks_ct = std_subject_marks_ct.round()
             std_subject_marks_ct = (std_subject_marks_ct.to_f/std_full_marks_ct.to_f)*30
             std_subject_marks = std_subject_marks+std_subject_marks_ct
             
             std_marks_full = std_marks_full+std_subject_marks.to_f
             full_marks = full_marks+30
+            
             marks_on_100 = ((std_subject_marks.to_f/full_marks)*100)
             subject_grade = ""
             grade = GradingLevel.percentage_to_grade(marks_on_100, @batch.id)

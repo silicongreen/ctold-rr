@@ -27,6 +27,16 @@ class EmpattendanceController < ApplicationController
   end
   
   def campus_report_show
+    require "yaml"
+    @has_advance_attendance_report = false
+    adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
+    all_schools = adv_attendance_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    
+    if all_schools.include?(current_school.to_s)
+      @has_advance_attendance_report = true
+    end
+    
     @departments = EmployeeDepartment.active
     @categories  = EmployeeCategory.active.find(:all,:order=>'name ASC')
     @positions   = EmployeePosition.active.find(:all,:order=>'name ASC')
@@ -100,6 +110,30 @@ class EmpattendanceController < ApplicationController
   
   def campus_report_view
     require 'json'
+    require "yaml"
+    
+    
+    @has_advance_attendance_report = false
+    adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
+    all_schools = adv_attendance_config['numbers'].split(",")
+    current_school = MultiSchool.current_school.id
+    
+    if all_schools.include?(current_school.to_s)
+      @has_advance_attendance_report = true
+    end
+    
+    unless adv_attendance_config['order_by_custom_' + MultiSchool.current_school.id.to_s].nil?
+      @order_by_custom = adv_attendance_config['order_by_custom_' + MultiSchool.current_school.id.to_s]
+    else
+      @order_by_custom = false
+    end
+    
+    unless adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s].nil?
+      @hide_blank = adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s]
+    else
+      @hide_blank = false
+    end
+
     @date_today = @local_tzone_time.to_date
     unless params[:report_type].nil? or params[:report_type].empty? or params[:report_type].blank?
       draw = params[:draw]
@@ -179,6 +213,10 @@ class EmpattendanceController < ApplicationController
         end
       end
       
+      if @order_by_custom
+        order_str = "employee_positions.order_by asc"
+      end
+      
       a = 0
       if is_second_filter_enable == false and draw.to_i == 1
         if @employee_department_id.to_i > 0
@@ -247,16 +285,33 @@ class EmpattendanceController < ApplicationController
           if b_filtered_search == true
             conditions += " AND "
           end
+          @hide_blank  = false
           conditions += "  user_id NOT IN (select user_id from card_attendance where date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and school_id = '"+MultiSchool.current_school.id.to_s+"') "
           b_filtered_search = true
         end  
+        if @hide_blank
+          if b_filtered_search == true
+            conditions += " AND "
+          end
+          already_blank_filter  = true
+          conditions += "  employees.user_id IN (select user_id from card_attendance where date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and school_id = '"+MultiSchool.current_school.id.to_s+"') or employees.id IN (select employee_id from employee_attendances where attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and school_id = '"+MultiSchool.current_school.id.to_s+"') "
+          b_filtered_search = true
+        end 
         if b_filtered_search
           employees_length = Employee.count(:conditions => conditions)
-          @employees = Employee.paginate(:conditions => conditions,:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str)
+          if @order_by_custom
+            @employees = Employee.paginate(:conditions => conditions,:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :include => :employee_position)
+          else
+            @employees = Employee.paginate(:conditions => conditions,:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str)
+          end
           recordsFiltered = employees_length
         else  
           employees_length = Employee.count
-          @employees = Employee.paginate(:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str)
+          if @order_by_custom
+            @employees = Employee.paginate(:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :include => :employee_position)
+          else
+            @employees = Employee.paginate(:select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, '' as in_time, '' as out_time, '' as stat", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str)
+          end
           recordsFiltered = employees_length
         end
       else
@@ -265,7 +320,11 @@ class EmpattendanceController < ApplicationController
             conditions += " AND "
           end
           @employees_all = Employee.find(:all, :conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :group => "employees.user_id")
-          @employees = Employee.paginate(:conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :group => "employees.user_id")
+          if @order_by_custom
+            @employees = Employee.paginate(:conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :group => "employees.user_id", :include => :employee_position)
+          else
+            @employees = Employee.paginate(:conditions=>conditions + " date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1", :select => "employees.id,employees.user_id, concat( employees.first_name,' ',employees.last_name )  as employee_info, employees.employee_department_id, '' as in_time, '' as out_time, '' as stat", :joins => "INNER JOIN card_attendance ON employees.user_id = card_attendance.user_id", :page => page.to_i, :per_page => per_page.to_i,:order=>""  + order_str, :group => "employees.user_id")
+          end
           emp_ids = @employees_all.map(&:user_id).uniq
           employees_length = emp_ids.length
           recordsFiltered = employees_length
@@ -281,7 +340,6 @@ class EmpattendanceController < ApplicationController
           
         end  
       end
-      
       employess_id = @employees.map(&:user_id)
       data = []
       employee_department_ids = []
@@ -310,18 +368,50 @@ class EmpattendanceController < ApplicationController
           end
           emp_id = employee.user_id
           cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
-          
-          if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+          populate_emp = true
+          if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank? 
+              found_leave_or_absent = false
               if @report_for.to_i == 1
                 in_time = ' - '
                 out_time = ' - '
                 time_diff = ' - '
                 is_late = ' - '
+                late = ' - '
+                absent = ' - '
+                leave = ' - '
+                leave_for = ' - '
+                
+                dt = @report_date_from.to_date.strftime("%Y-%m-%d")
+              
+                emp_attendance = EmployeeAttendance.find(:first, :conditions=>"attendance_date = '" + dt + "' and employee_id = " + employee.id.to_s + "")
+                unless emp_attendance.nil? or emp_attendance.blank?
+                  unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
+                    found_leave_or_absent = true
+                    leave_types = EmployeeLeaveType.find(emp_attendance.employee_leave_type_id)
+                    absent = '-'
+                    leave = '&#10004;'
+                    leave_for = leave_types.name
+                  else  
+                    found_leave_or_absent = true
+                    absent = '&#10004;'
+                    leave = ' - '
+                    leave_for = ' - '
+                  end
+                else
+                  absent = ' - '
+                  leave = ' - '
+                  leave_for = ' - '
+                end
+              
               elsif @report_for.to_i == 2 or @report_for.to_i == 3
                 total_present = ' - '
                 total_absent = ' - '
                 total_late = ' - '
                 total_leave = ' - '
+              end
+              
+              if @hide_blank and  !found_leave_or_absent
+                populate_emp = false
               end
           else 
             is_late = ' - '
@@ -332,6 +422,7 @@ class EmpattendanceController < ApplicationController
                 if @report_for.to_i == 1
                   if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
                     is_late = 'Late'
+                    late = '&#10004;'
                   else
                     is_late = 'On Time'
                   end  
@@ -374,6 +465,7 @@ class EmpattendanceController < ApplicationController
                   unless @employee_setting.blank?
                     if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
                       is_late = 'Late'
+                      late = '&#10004;'
                     else
                       is_late = 'On Time'
                     end  
@@ -409,19 +501,26 @@ class EmpattendanceController < ApplicationController
           if @emp.photo.file?
             employee_image = "<img src='"+@emp.photo.url+"' width='100px' />"
           end
-          if @report_for.to_i == 1
-            if @report_type.to_i != 4 or is_late == "Late" 
-              if !employee.blank? and !@month.blank? and !@year.blank? and !employee.employee_info.blank?
-                emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => is_late }
+          
+          if populate_emp
+            if @report_for.to_i == 1
+              if @report_type.to_i != 4 or is_late == "Late" 
+                if !employee.blank? and !@month.blank? and !@year.blank? and !employee.full_name.blank?
+                  if @has_advance_attendance_report
+                    emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.full_name + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => late, :absent =>  absent, :leave => leave}
+                  else  
+                    emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.full_name + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => is_late }
+                  end
+                  data[k] = emp
+                  k += 1
+                end
+              end
+            else
+              if !employee.blank? and !@month.blank? and !@year.blank? and !employee.full_name.blank?
+                emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.full_name + "<a/>", :department => dept_name, :total_present => total_present, :total_absent => total_absent, :total_late => total_late,:total_leave => total_leave }
                 data[k] = emp
                 k += 1
               end
-            end
-          else
-            if !employee.blank? and !@month.blank? and !@year.blank? and !employee.employee_info.blank?
-              emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.employee_info + "<a/>", :department => dept_name, :total_present => total_present, :total_absent => total_absent, :total_late => total_late,:total_leave => total_leave }
-              data[k] = emp
-              k += 1
             end
           end
         end

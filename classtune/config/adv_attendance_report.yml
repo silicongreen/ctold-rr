@@ -1,3 +1,7 @@
 school:
  numbers: "2,312,3,246"
  groups_312: "Teachers-1992+1995+1996+2261+2262+2265,Office Staff-1994,MLSS-2263"
+ order_by_custom_312: true
+ order_by_custom_3: true
+ hide_blank_312: true
+ hide_blank_3: true

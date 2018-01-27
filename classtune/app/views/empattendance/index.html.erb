@@ -90,42 +90,80 @@
 <script>
   var jq = jQuery.noConflict();
   var oDataTable;
-  function generate_datatable(report_for, report_type, report_date_from, report_date_to, start_month, end_month, month, all_record)
+  function generate_datatable(has_advance_attendance_report, report_for, report_type, report_date_from, report_date_to, start_month, end_month, month, all_record)
   {
       jq(document).ready(function() {
           if ( parseInt(report_for) == 1 )
           {
-            oDataTable = jq('#hr_report').DataTable( {
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "/empattendance/campus_report_view",
-                    type: 'POST',
-                    data: {
-                        report_for: report_for,
-                        report_type: report_type, 
-                        report_date_from: report_date_from, 
-                        report_date_to: report_date_to, 
-                        start_month: start_month, 
-                        end_month: end_month, 
-                        month: month, 
-                        all_record: all_record, 
-                        employee_department_id: jq("#dept_id").val(),
-                        category_id: jq("#cate_id").val(),
-                        position_id: jq("#pos_id").val(),
-                        grade_id: jq("#grade").val(),
-                    }
-                },
-                columns: [
-                    { "data": "employee_image" },
-                    { "data": "employee_info" },
-                    { "data": "department" },
-                    { "data": "in_time", "sClass" : "ofc_time" },
-                    { "data": "out_time", "sClass" : "ofc_time" },
-                    { "data": "status", "sClass" : "ofc_time" },
-                    { "data": "late", "sClass" : "ofc_time" }
-                ]
-            });
+            if ( has_advance_attendance_report.toLowerCase() == "false" )
+            {
+                oDataTable = jq('#hr_report').DataTable( {
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/empattendance/campus_report_view",
+                        type: 'POST',
+                        data: {
+                            report_for: report_for,
+                            report_type: report_type, 
+                            report_date_from: report_date_from, 
+                            report_date_to: report_date_to, 
+                            start_month: start_month, 
+                            end_month: end_month, 
+                            month: month, 
+                            all_record: all_record, 
+                            employee_department_id: jq("#dept_id").val(),
+                            category_id: jq("#cate_id").val(),
+                            position_id: jq("#pos_id").val(),
+                            grade_id: jq("#grade").val(),
+                        }
+                    },
+                    columns: [
+                        { "data": "employee_image" },
+                        { "data": "employee_info" },
+                        { "data": "department" },
+                        { "data": "in_time", "sClass" : "ofc_time" },
+                        { "data": "out_time", "sClass" : "ofc_time" },
+                        { "data": "status", "sClass" : "ofc_time" },
+                        { "data": "late", "sClass" : "ofc_time" }
+                    ]
+                });
+            }
+            else
+            {
+                oDataTable = jq('#hr_report').DataTable( {
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/empattendance/campus_report_view",
+                        type: 'POST',
+                        data: {
+                            report_for: report_for,
+                            report_type: report_type, 
+                            report_date_from: report_date_from, 
+                            report_date_to: report_date_to, 
+                            start_month: start_month, 
+                            end_month: end_month, 
+                            month: month, 
+                            all_record: all_record, 
+                            employee_department_id: jq("#dept_id").val(),
+                            category_id: jq("#cate_id").val(),
+                            position_id: jq("#pos_id").val(),
+                            grade_id: jq("#grade").val(),
+                        }
+                    },
+                    columns: [
+                        { "data": "employee_image" },
+                        { "data": "employee_info" },
+                        { "data": "department" },
+                        { "data": "in_time", "sClass" : "ofc_time" },
+                        { "data": "out_time", "sClass" : "ofc_time" },
+                        { "data": "late", "sClass" : "ofc_time" },
+                        { "data": "absent", "sClass" : "ofc_time" },
+                        { "data": "leave", "sClass" : "ofc_time" }
+                    ]
+                });
+            }
           }
           else if ( parseInt(report_for) == 2 )
           {

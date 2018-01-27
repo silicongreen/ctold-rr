@@ -56,6 +56,16 @@
   <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
     <thead>
         <% if @report_for.to_i == 1 %>
+          <% if @has_advance_attendance_report %>
+          <th width="30%"><%= "Image" %></th>
+          <th width="30%"><%= "Employee Info" %></th>
+          <th width="25%"><%= "Department" %></th>
+          <th width="25%" data-orderable="false"><%= "In Time" %></th>
+          <th width="25%" data-orderable="false"><%= "Out Time" %></th>
+          <th width="10%" data-orderable="false"><%= "Late" %></th>
+          <th width="10%" data-orderable="false"><%= "Absent" %></th>
+          <th width="10%" data-orderable="false"><%= "Leave" %></th>
+          <% else %>
           <th width="30%"><%= "Image" %></th>
           <th width="30%"><%= "Employee Info" %></th>
           <th width="25%"><%= "Department" %></th>
@@ -63,6 +73,7 @@
           <th width="25%" data-orderable="false"><%= "Out Time" %></th>
           <th width="20%" data-orderable="false"><%= "Duration" %></th>
           <th width="20%" data-orderable="false"><%= "Late" %></th>
+          <% end %>
         <% elsif @report_for.to_i == 2 %>
           <th width="15%"><%= "Image" %></th>
           <th width="20%"><%= "Employee Info" %></th>

@@ -505,7 +505,7 @@ class EmpattendanceController < ApplicationController
           if populate_emp
             if @report_for.to_i == 1
               if @report_type.to_i != 4 or is_late == "Late" 
-                if !employee.blank? and !@month.blank? and !@year.blank? and !employee.full_name.blank?
+                if !employee.blank? and !@month.blank? and !@year.blank?
                   if @has_advance_attendance_report
                     emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.full_name + "<a/>", :department => dept_name, :in_time => in_time, :out_time => out_time, :status => time_diff,:late => late, :absent =>  absent, :leave => leave}
                   else  
@@ -516,7 +516,7 @@ class EmpattendanceController < ApplicationController
                 end
               end
             else
-              if !employee.blank? and !@month.blank? and !@year.blank? and !employee.full_name.blank?
+              if !employee.blank? and !@month.blank? and !@year.blank?
                 emp = {:employee_image => employee_image,:employee_info => "<a href='/employee_attendance/card_attendance_pdf?employee_id=" + employee.id.to_s + "&month=" + @month.to_s + "&year="+@year.to_s+"' target='_blank'>" + employee.full_name + "<a/>", :department => dept_name, :total_present => total_present, :total_absent => total_absent, :total_late => total_late,:total_leave => total_leave }
                 data[k] = emp
                 k += 1

@@ -251,7 +251,11 @@ class Employee < ActiveRecord::Base
   end
 
   def full_name
-    "#{first_name} #{middle_name} #{last_name}"
+    unless first_name.nil? and middle_name.nil? and last_name.nil?
+      "#{first_name} #{middle_name} #{last_name}"
+    else
+      ""
+    end
   end
 
   def is_payslip_approved(date)

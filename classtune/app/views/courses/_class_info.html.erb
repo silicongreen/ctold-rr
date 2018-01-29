@@ -2,9 +2,12 @@
   <h4 align="center"><%= t('course_text') %></h4>
   <ul id="category-list">
     <% if Batch.active.find(:all, :group => "name").length > 1 %>
-      <h4 style="margin-left: 10px;"><%= @batch.name %>  <%= t('batch_text') %></h4>
+      <% unless @batch.blank? %>
+        <h4 style="margin-left: 10px;"><%= @batch.name %>  <%= t('batch_text') %></h4>
+      <% end %>
     <% end %>  
     <% @courses.each do |course| %>
+      <% unless course.courses_batches.blank? %>
       <li class="list<%=cycle('odd', 'even')%>">
         <% courses_batches = course.courses_batches.split(',') %>
         <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
@@ -38,6 +41,7 @@
             <% end %>
         </div>
       </li>
+      <% end %>
     <% end %>
  
   </ul>

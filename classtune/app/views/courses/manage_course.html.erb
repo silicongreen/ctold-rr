@@ -59,6 +59,7 @@
     <div id ="cate_data_main">
       <ul id="category-list">
         <% @courses.each do |course| %>
+          <% unless course.sections.blank?  %>
           <li class="list<%=cycle('odd', 'even')%>">
             <% sections = course.sections.split(',') %>
             <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
@@ -67,6 +68,7 @@
               <% if sections.empty? %>
                 <span class="section">No-Section</span>
               <% else %>  
+                
                 <% sections.each do |s| %>
                   <span class="section"><%= s %> </span>
                 <% end %>  
@@ -84,6 +86,7 @@
             </div>
             <div class="category-delete">   <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %></div>
           </li>
+          <% end %>
         <% end %>
 
       </ul>

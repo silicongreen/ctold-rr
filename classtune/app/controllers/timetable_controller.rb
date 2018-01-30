@@ -745,10 +745,14 @@ class TimetableController < ApplicationController
     end     
     @subjects = Subject.find_all_by_batch_id(@batch.id)
     @weekday = @batch.weekday_set.nil? ? WeekdaySet.first.weekday_ids : @batch.weekday_set.weekday_ids
-    render :pdf=>'timetable_pdf',:margin => {    :top=> 40,
-      :bottom => 20,
-      :left=> 10,
-      :right => 10}
+    render :pdf => 'timetable_pdf',
+        :orientation => 'Landscape', :zoom => 1.00,
+        :margin => {    :top=> 0,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def student_timetable_pdf

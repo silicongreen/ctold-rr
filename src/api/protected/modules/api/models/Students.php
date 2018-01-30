@@ -415,6 +415,8 @@ class Students extends CActiveRecord
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
         $criteria->order = "LENGTH(t.class_roll_no) ASC,t.class_roll_no ASC";
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+        $criteria->compare('t.is_deleted',0);
+        
         if ($batch_id)
         {
             $criteria->compare('t.batch_id', $batch_id);
@@ -482,13 +484,28 @@ class Students extends CActiveRecord
         return $return_array;
     }
 
-    public function getStudentByBatchFull($batch_id)
+    public function getStudentByBatchFull($batch_id,$connect_exam_id=0,$deleted_exam=false)
     {
 
         $criteria = new CDbCriteria();
 
         $criteria->select = 't.id,t.first_name,t.middle_name,t.last_name,t.immediate_contact_id,t.class_roll_no';
-        $criteria->compare('batch_id', $batch_id);
+        if($connect_exam_id!=0 && $deleted_exam==true)
+        {
+            $exam_conn_std = new ExamConnectStudents();
+            $all_std = $exam_conn_std->all_students($connect_exam_id);
+            $std_all = [];
+            foreach($all_std as $value)
+            {
+                $std_all[] = $value->student_id;
+            }
+            $criteria->addInCondition('id', $std_all);
+        } 
+        else
+        {
+            $criteria->compare('batch_id', $batch_id);
+        }
+        
         if(Yii::app()->user->schoolId == 319)
         {
             $criteria->order = "t.first_name ASC, t.middle_name ASC, t.last_name ASC";
@@ -505,14 +522,29 @@ class Students extends CActiveRecord
 
         return $students;
     }
+    
 
-    public function getStudentByBatch($batch_id)
+    public function getStudentByBatch($batch_id,$connect_exam_id=0,$deleted_exam=false)
     {
 
         $criteria = new CDbCriteria();
 
         $criteria->select = 't.id';
-        $criteria->compare('batch_id', $batch_id);
+        if($connect_exam_id!=0 && $deleted_exam==true)
+        {
+            $exam_conn_std = new ExamConnectStudents();
+            $all_std = $exam_conn_std->all_students($connect_exam_id);
+            $std_all = [];
+            foreach($all_std as $value)
+            {
+                $std_all[] = $value->student_id;
+            }
+            $criteria->addInCondition('id', $std_all);
+        } 
+        else
+        {
+            $criteria->compare('batch_id', $batch_id);
+        }
 
         $students = $this->findAll($criteria);
 

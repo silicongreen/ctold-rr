@@ -58,6 +58,9 @@
                 <% if can_edit %>
                   | <%= link_to "#{t('edit_text')}", {:action => "edit_call_number", :id=>book.id,:page => params[:page]} %>
                 <% end %>
+                <% if can_edit %>
+                  | <%= link_to "#{t('view')} Books", {:action => "index", :book_call_number=>book.id},:target=>"_blank" %>
+                <% end %>
                 <% if can_delete %>
                   | <%= link_to "#{t('delete_text')}", {:action => "destroy_call_number", :id=>book.id, :page => params[:page]}, :confirm => "#{t('delete_confirm_msg')}" %>
                 <% end %>

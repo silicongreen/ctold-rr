@@ -57,15 +57,7 @@ class BooksController < ApplicationController
       book_call_number = {}
       FasterCSV.foreach(params[:file].path) do |row|
         insert_row = {}
-        book_call_number_id = row[0]
-        unless book_call_number[book_call_number_id].nil?
-          book_call_number_obj = book_call_number[book_call_number_id]
-        else
-          book_call_number_obj = BookCallNumber.find_by_call_number(book_call_number_id)
-          unless book_call_number_obj.nil? 
-            book_call_number[book_call_number_id] = book_call_number_obj
-          end
-        end 
+        book_call_number_obj = BookCallNumber.find_by_call_number(book_call_number_id)
         
         if book_call_number_obj.nil?
           next
@@ -143,10 +135,14 @@ class BooksController < ApplicationController
   def filter_by
     filter_field = params[:filter][:on]
     search = params[:filter][:search]
-    unless filter_field.blank?
-      @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>[filter_field.to_s+" like ?",search],:page=>params[:page])
+    unless search.blank?
+      unless filter_field.blank?
+        @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>[filter_field.to_s+" like ?",search],:page=>params[:page])
+      else
+        @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>["call_number like ? or title like ? or subject like ? or author like ? or version like ? or language like ? or publish_year like ? or published_by like ?",search,search,search,search,search,search,search,search],:page=>params[:page])
+      end  
     else
-      @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>["call_number like ? or title like ? or subject like ? or author like ? or version like ? or language like ? or publish_year like ? or published_by like ?",search,search,search,search,search,search,search,search],:page=>params[:page])
+      @book_call_numbers = BookCallNumber.paginate(:all,:page=>params[:page])
     end  
     render(:update) do |page|
       page.replace_html 'books', :partial=>'book_call_number'

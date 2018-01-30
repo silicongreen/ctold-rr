@@ -57,6 +57,7 @@ class BooksController < ApplicationController
       book_call_number = {}
       FasterCSV.foreach(params[:file].path) do |row|
         insert_row = {}
+        book_call_number_id = row[0]
         book_call_number_obj = BookCallNumber.find_by_call_number(book_call_number_id)
         
         if book_call_number_obj.nil?

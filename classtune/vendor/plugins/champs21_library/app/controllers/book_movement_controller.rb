@@ -238,12 +238,12 @@ class BookMovementController < ApplicationController
         end
         unless @movement.nil?
           if @movement.user.student?
-            @student = Student.find_by_admission_no(@movement.user.username)
+            @student = Student.find_by_user_id(@movement.user_id)
             @issueable = LibraryCardSetting.find_by_course_id(@student.batch.course.id, :conditions=>["student_category_id='#{@student.student_category_id}'"  ]) unless @student.student_category_id.nil?
             @issueable ||= LibraryCardSetting.find_by_course_id(@student.batch.course.id, :conditions=>["student_category_id is NULL"  ])
-            @time_period = @issueable.nil? ? 30 : @issueable.time_period
+            @time_period = @issueable.nil? ? 7 : @issueable.time_period
           else
-            @time_period = 30
+            @time_period = 7
           end
           flash[:warn_notice] = nil
         end

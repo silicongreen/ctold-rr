@@ -112,7 +112,7 @@ function validate()
         <div class="label-field-pair">
           <label for="Due Date"><%= "#{t('due_date')}"%> </label>
           <div class="text-input-bg">
-            <%= calendar_date_select_tag 'issue[due_date]', I18n.l(Date.today+30,:format=>:default),:readonly=>true,:popup=>"force"%>
+            <%= calendar_date_select_tag 'issue[due_date]', I18n.l(Date.today+7,:format=>:default),:readonly=>true,:popup=>"force"%>
           </div>
         </div>
       </div>

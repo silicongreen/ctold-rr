@@ -137,6 +137,7 @@ class BooksController < ApplicationController
     filter_field = params[:filter][:on]
     search = params[:filter][:search]
     unless search.blank?
+      search = "%"+search+"%"
       unless filter_field.blank?
         @book_call_numbers = BookCallNumber.paginate(:all,:conditions=>[filter_field.to_s+" like ?",search],:page=>params[:page])
       else
@@ -154,7 +155,7 @@ class BooksController < ApplicationController
     @tagg = []
     @book = Book.find(:last)
     @book_call_number = params[:book_call_number]
-    if !@book_call_number.nil? and !@book_call_number.blank? and !@book_call_number==""
+    if !@book_call_number.nil? and !@book_call_number.blank? and @book_call_number!=""
       @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
     else
       @book_call_numbers = BookCallNumber.find(:all)
@@ -196,7 +197,7 @@ class BooksController < ApplicationController
   def edit
     @book = Book.find(params[:id])
     @book_call_number = params[:book_call_number]
-    if !@book_call_number.nil? and !@book_call_number.blank? and !@book_call_number==""
+    if !@book_call_number.nil? and !@book_call_number.blank? and @book_call_number!=""
       @book_call_numbers = BookCallNumber.find_all_by_id(@book_call_number)
     else
       @book_call_numbers = BookCallNumber.find(:all)

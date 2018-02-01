@@ -33,14 +33,7 @@
       </div-->
   </div>  
   
-  <div class="section1 row" >
-    <center>     
-      
-      <div id ="main_info" class="sjws">
-            
-       
-      </div>
-      
+  <div class="section1 row" >    
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
@@ -141,14 +134,11 @@
               </tr> 
           <% end %>    
         
-        
-          
-          
-          <%#= debug @report_data['result']['ALL'][0]['students'][std['id']]['remarks'] %> 
+
           
           <tr class="sjws-table-header">
-            <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
-            <td class="st_name left-align"><%= std['name'] %></td>            
+            <td class="sl"><%= main_count %></td>
+            <td class="st_name left-align"><%= truncate(std['name'], :length =>26) %></td>            
             <% @examScore1 = [] %>
             <% loopCounter = @report_data['result']['ALL'].count %>
             
@@ -288,8 +278,6 @@
         <% end %>
       </table>
       <% end %>
-      
-    </center>
   </div>
   
   

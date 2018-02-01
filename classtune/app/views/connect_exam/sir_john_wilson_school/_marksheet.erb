@@ -138,7 +138,7 @@
 
                       <tr  class="sjws-table-header">
                           <td class="sl"><%#= std['class_roll_no'] %><%= std_count_main %></td>
-                          <td class="st_name left-align"><%= std['name'] %></td>
+                          <td class="st_name left-align"><%= truncate(std['name'], :length =>26) %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
                           <% if rs['exam_category'].to_i!=4 %>
                             <td>

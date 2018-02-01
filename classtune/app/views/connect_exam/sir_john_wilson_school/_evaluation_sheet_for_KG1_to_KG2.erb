@@ -52,13 +52,13 @@
         <% total_colspan_count = 0 %>
         <tr class="sjws-table-header">
             <td colspan="2" rowspan="2" class="left-align">              
-              <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
-              <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+              <p><b>&nbsp;&nbsp;TERM: <%= @connect_exam_obj.name %></b></p>
+              <p><b>&nbsp;&nbsp;Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
             <% if !@employee.nil? %> 
-              <p><b>Subject : <%= @subject.name %></b></p>
-              <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
+              <p><b>&nbsp;&nbsp;Subject : <%= @subject.name %></b></p>
+              <p><b>&nbsp;&nbsp;Teacher's Name : <%=  @employee.full_name %></b></p>              
             <% else %>
-              <p><b>Subject : <%= @subject.name %></b></p>
+              <p><b>&nbsp;&nbsp;Subject : <%= @subject.name %></b></p>
             <% end %> 
             <p></p>
           </td>
@@ -113,8 +113,8 @@
             <% end %>
         </tr>
         <tr class="sjws-table-header">
-          <td class="sl"><b>SL.</b></td>
-          <td class="st_name left-align"><b>STUDENTS' NAME</b></td>
+          <td class="sl"><b>&nbsp;&nbsp;SL.</b></td>
+          <td class="st_name left-align"><b>&nbsp;&nbsp;STUDENTS' NAME</b></td>
           
         
         </tr>
@@ -129,13 +129,13 @@
           <% std_count = std_count+1; %>
           <% main_count = main_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>12 && extender ==0 %>
+          <% if std_count>25 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
               </tr>    
-          <% elsif std_count>20 && extender ==1 %>
+          <% elsif std_count>30 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -146,8 +146,8 @@
 
           
           <tr class="sjws-table-header">
-            <td class="sl"><%= main_count %></td>
-            <td class="st_name left-align"><%= truncate(std['name'], :length =>26) %></td>            
+            <td class="sl">&nbsp;&nbsp;<%= main_count %></td>
+            <td class="st_name left-align">&nbsp;&nbsp;<%= truncate(std['name'], :length =>30) %></td>            
             <% @examScore1 = [] %>
             <% loopCounter = @report_data['result']['ALL'].count %>
             
@@ -319,6 +319,13 @@
         margin-left: 10px;
         font-size: 16px;
         font-weight: bold;
+    }
+    .sjws_table_head tr.sjws-table-header td
+    {
+        padding-top: 1px !important;
+        padding-bottom: 1px !important;
+        padding-left: 0px !important;
+        font-size: 14px !important;
     }
     .page-break td{
     height: 60px;

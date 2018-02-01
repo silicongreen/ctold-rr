@@ -271,8 +271,49 @@ class EventController extends Controller
     public function actionTeacherLeaves()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
+        $student_id = Yii::app()->request->getPost('student_id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isParent && $student_id)
+        {
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
+            $leave = new ApplyLeaveStudents();
+            $leaveobj = $leave->getStudentLeaveParent($student_id);
+
+            $leave = array();
+            $i = 0;
+            if ($leaveobj)
+                foreach ($leaveobj as $value)
+                {
+                   
+                    $leave[$i]['leave_start_date'] = $value->start_date;
+                    $leave[$i]['leave_end_date'] = $value->end_date;
+                    $leave[$i]['leave_subject']  = "";
+                    if($value->leave_subject)
+                    {
+                        $leave[$i]['leave_subject'] = $value->leave_subject;
+                    }
+                    $leave[$i]['reason'] = $value->reason;
+                    if (!$value->viewed_by_teacher && !$value->approved)
+                    {
+                        $leave[$i]['status'] = 2;
+                    }
+                    else if ($value->approved == 1)
+                    {
+                        $leave[$i]['status'] = 1;
+                    }
+                    else
+                    {
+                        $leave[$i]['status'] = 0;
+                    }
+                    $leave[$i]['created_at'] = date("Y-m-d", strtotime($value->created_at));
+                    $i++;
+                }
+             
+            $response['data']['today'] = date("Y-m-d");
+            $response['data']['leaves'] = $leave;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "Success";
+        }
+        else if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
 
             $leave = new ApplyLeaves();

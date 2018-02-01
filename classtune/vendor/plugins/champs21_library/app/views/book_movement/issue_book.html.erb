@@ -97,6 +97,7 @@ function validate()
             <div class="pack"></div>
           <% @in_hand_books.each do |b| %>
             <div class="name"><%= "#{t('book_title')}"%></div><div class="val themed_text"><span>:</span><%= b.book.title %></div>
+            <div class="name"><%= "Book Type" %></div><div class="val themed_text"><span>:</span><%= b.book.book_type %></div>
             <div class="name"><%= "#{t('book_number')}"%></div><div class="val themed_text"><span>:</span><%= b.book.book_number %></div>
             <div class="name"><%= "#{t('issue_date')}"%></div><div class="val themed_text"><span>:</span><%= b.issue_date %></div>
             <div class="name"><%= "#{t('due_date')}"%></div><div class="val themed_text"><span>:</span><%= b.due_date %></div>

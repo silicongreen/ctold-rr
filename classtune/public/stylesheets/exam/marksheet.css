@@ -231,18 +231,6 @@ table tr td
 
 /***************SJWS START************/
 .sjws{width:100%;}
-.sjws .logo_left
-{
-    float: left;
-    width: 8%;
-}
-.sjws .exam_title_left
-{
-    float: left;
-    width: 68%;
-    font-size: 20px;
-    font-weight: bold;
-}
 .sjws .exam_title_left p {
 display:inline-block;
 transform:scale(1,1.5); /* W3C */

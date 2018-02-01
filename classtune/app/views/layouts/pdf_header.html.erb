@@ -137,7 +137,30 @@
   <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/325/mev-logo.png")),:width=> '10%' %></h4>
   <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
 </div>
-<% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312 %>
+<% elsif MultiSchool.current_school.id == 2%>
+<div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %><% end %>">
+    <table width="100%">
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/summer.jpg")),:width=> '100%' %></span></td>
+        <td class="name-td name-td-south">
+              <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
+              <h5 align="center">English Medium - Banani Branch</h5>
+              <% if !@connect_exam_obj.blank? %>
+                <% if !@batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>
+                    <h5 align="center" class="bold-all step-1">Result Sheet</h5>
+                    <h5 align="center" class="step-2"><%= @batch.course.course_name+", Section - "+@batch.course.section_name %></h5>
+                    <h5 align="center" class="step-2" ><%= @connect_exam_obj.name %></h5>
+                <% else %>
+                <% unless @connect_exam_obj.blank? and @batch.blank? %>
+                   <h5 align="center"   class="bold-all step-1">Progress Report</h5>
+                   <h5 align="center" class="step-2"><%= @batch.course.course_name %></h5>
+                   <h5 align="center" class="step-2" ><%= @connect_exam_obj.name %></h5>
+                <% end %>
+                <% end %>   
+             <% end %>   
+        </td>
+    </table>   
+</div> 
+<% elsif MultiSchool.current_school.id == 312 %>
 <div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %><% end %>">
     <table width="100%">
         <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '100%' %></span></td>

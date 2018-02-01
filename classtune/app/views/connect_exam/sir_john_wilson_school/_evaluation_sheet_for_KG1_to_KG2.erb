@@ -16,10 +16,19 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
 <div id="page-yield" class="available_sections1">
   <div class="page1 sjws"> 
-      <div class="logo_left">&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '70%' %></div>
-      <div class="exam_title_left"><p><%= @connect_exam_obj.name %> - EVALUATION SHEET - ACADEMIC YEAR <%= Time.current.year %>-<%= Time.current.year + 1 %></p></div>
+      <div class="logo_left">&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '55%' %></div>
+      <div class="exam_title_left"><p><%= @connect_exam_obj.name %> - EVALUATION SHEET - ACADEMIC YEAR 
+
+      <% if month_number.to_i>6 %>
+          <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
+      <% else %>
+          <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+      <% end %>
+
+     </p></div>
       <!--div class="grad_list_right">ATTAINMENT:<br />
           <%#= debug @grades %>
           <% @grades.each do |g| %>

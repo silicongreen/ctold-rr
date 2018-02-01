@@ -143,6 +143,7 @@
         <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/2/summer.jpg")),:width=> '170%' %></span></td>
         <td class="name-td name-td-south">
               <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
+              <h5 align="center">English Medium</h5>
               <% if !@connect_exam_obj.blank? %>
                 <% if !@batch.blank? and @connect_exam_obj.result_type.to_i == 4 %>
                     <h5 align="center" class="bold-all step-1">Result Sheet</h5>

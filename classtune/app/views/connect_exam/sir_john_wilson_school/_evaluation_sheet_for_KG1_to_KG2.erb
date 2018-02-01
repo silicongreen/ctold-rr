@@ -18,7 +18,7 @@
 #under the License. -%>
 <div id="page-yield" class="available_sections1">
   <div class="page1 sjws"> 
-      <div class="logo_left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '80%' %></div>
+      <div class="logo_left">&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '70%' %></div>
       <div class="exam_title_left"><p><%= @connect_exam_obj.name %> - EVALUATION SHEET - ACADEMIC YEAR <%= Time.current.year %>-<%= Time.current.year + 1 %></p></div>
       <!--div class="grad_list_right">ATTAINMENT:<br />
           <%#= debug @grades %>
@@ -269,11 +269,7 @@
 				
             
         </tr>
-        <% if std.equal? @report_data['result']['al_students'].last %>
-          <tr class="page-break0">
-              <td colspan="100">&nbsp;</td>
-          </tr>
-        <% end %>
+        
         <% end %>
         <% end %>
       </table>

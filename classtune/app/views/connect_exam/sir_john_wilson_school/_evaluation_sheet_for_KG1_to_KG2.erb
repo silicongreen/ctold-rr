@@ -269,7 +269,11 @@
 				
             
         </tr>
-        
+        <% if std.equal? @report_data['result']['al_students'].last %>
+          <tr class="page-break0">
+              <td colspan="100">&nbsp;</td>
+          </tr>
+        <% end %>
         <% end %>
         <% end %>
       </table>
@@ -288,10 +292,9 @@
     {
         width: 95% !important;
     }
-    .page-break0{
-        height: 10px;
-        border: 1px solid #fff;
-        width: 100%;
-        float: left;
+    .page-break0 td{
+      height: 2px;
+      border: 1px solid #fff;
+      border-top: 1px solid #000000;
     }
 </style>    

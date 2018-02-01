@@ -19,7 +19,7 @@
 <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
 <div id="page-yield" class="available_sections1">
   <div class="page1 sjws"> 
-      <div class="logo_left">&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '55%' %></div>
+      <div class="logo_left">&nbsp;&nbsp;&nbsp;&nbsp;<%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '80%' %></div>
       <div class="exam_title_left"><p><%= @connect_exam_obj.name %> - EVALUATION SHEET - ACADEMIC YEAR 
 
       <% if month_number.to_i>6 %>
@@ -305,5 +305,17 @@
       height: 2px;
       border: 1px solid #fff;
       border-top: 1px solid #000000;
+    }
+    .sjws .logo_left
+    {
+        float: left;
+        width: 6%;
+    }
+    .sjws .exam_title_left
+    {
+        float: left;
+        width: 68%;
+        font-size: 16px;
+        font-weight: bold;
     }
 </style>    

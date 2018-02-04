@@ -3446,22 +3446,6 @@ authorization do
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf] do
       if_attribute :is_allowed_to_mark_attendance? => is {true}
     end
-    has_permission_on [:marks],
-      :to => [
-      :index,
-      :connect_exam,
-      :data,
-      :data_connect_exam,
-      :data_connect_exam_report,
-      :connect_exam_report,
-      :get_class,
-      :get_exam_subject,
-      :get_exam_subject_participation,
-      :get_section,
-      :examgroup,
-      :get_exams,
-      :examgroup
-    ]
     has_permission_on [:exam],
       :to => [
       :index,

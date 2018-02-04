@@ -31,7 +31,7 @@
           <div class="tutor-name"><%= e.full_name %></div>
           <div class="remove"><select id="class_teacher_<%= e.id %>" name="class_teacher_<%= e.id %>"><option value="1">Class Teacher</option><option value="0">No</option></select></div>
           <div class="remove"><select id="show_result_<%= e.id %>" name="show_result_<%= e.id %>"><option value="1">Show Result</option><option value="0">No</option></select></div>
-          <div class="remove"><select id="show_result_<%= e.id %>" name="advisor_<%= e.id %>"><option value="1">Advisor</option><option value="0">No</option></select></div>
+          <div class="remove"><select id="advisor_<%= e.id %>" name="advisor_<%= e.id %>"><option value="1">Advisor</option><option value="0">No</option></select></div>
           <div class="remove"><%= link_to_remote "#{t('assign')}", :url => {:action => "assign_employee", :id => e.id},:with => "'batch_id=#{params[:batch_id]}'+'&department_id=#{params[:department_id]}'+'&class_teacher='+$('class_teacher_#{e.id}').value+'&show_result='+$('show_result_#{e.id}').value+'&advisor='+$('advisor_#{e.id}').value",  :update => "setTimeount(function{department-select}, 2000)", :before=>"this.style.display='none'" %></div>
         <% end %>
       </li>
@@ -41,3 +41,17 @@
   <% end %>
 
 </ul>
+<style>
+#tutor-list li div.tutor-name
+{
+    width: 20%;
+}
+#tutor-list li div.remove {
+    width: 20%;
+}
+#tutor-list .listodd
+{
+    height: auto;
+    padding: 10px 5px;
+}
+</style>

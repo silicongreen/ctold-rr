@@ -323,101 +323,104 @@ class MarksController < ApplicationController
         end
       end
       @employee_subjects = @employee_subjects.uniq unless @batches.empty?
+      @employee_subjects = @employee_subjects.map(&:id)
     end
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,exam_connects.batch_id",:joins=>[:batch],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
+    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
-      exam_connect_batch = exam_connect.batch
-      unless exam_connect_batch.blank?
+      exam_connect_batch = exam_connect.batch_name+" "+exam_connect.course_name+" "+exam_connect.section_name
+      if exam_connect.is_deleted == 0
         @subjects = []
         @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
         @exam_group_ids = @group_exams.map(&:exam_group_id)
-        exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id",:joins=>[:subject])
+        exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
         exams.each do |exam|
-          exam_subject = exam.subject
-          if !exam_subject.blank? and !@subjects.include?(exam_subject) 
-            if @employee_subjects.include?(exam_subject) or @current_user.admin?
-              @subjects << exam_subject
+          exam_subject = Subject.new
+          exam_subject.id = exam.subject_id
+          exam_subject.name = exam.subject_name
+          if !exam_subject.blank? and !@subjects.include?(exam_subject.id) 
+            if @employee_subjects.include?(exam_subject.id) or @current_user.admin?
+              @subjects << exam_subject.id
               data[k] = []
               if school_id == 340
                 #Sir John Wilson School
                 if exam_connect.result_type == 1
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s+"("+exam_subject.name.to_s+")" 
                   data[k][2] = @template.link_to("Effort/Grade Sheet", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][3] = @template.link_to("Pupil Progress Report", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("REPORT CARD",  '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 2
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][3] = @template.link_to("Pupil Progress Report", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
-                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 3
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s+" (All Result)", 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s+" (All Result)", 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][1] = @template.link_to(exam_connect.name.to_s+" (Tablulation)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][2] = @template.link_to(exam_subject.name.to_s+" (Marksheet)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][3] = @template.link_to("Effort/Grade Sheet", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("Results", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 4
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s
                   data[k][2] = exam_subject.name.to_s
                   data[k][3] = @template.link_to("Effort/Grade Sheet", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("REPORT CARD",  '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 7
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s
                   data[k][2] = exam_subject.name.to_s
                   data[k][3] = "-"
                   data[k][4] = @template.link_to("Score Sheet", '/exam/' + 'score_sheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 5
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s+" (All Result)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s+" (All Result)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][1] = @template.link_to(exam_connect.name.to_s+" (Tablulation)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][2] = @template.link_to(exam_subject.name.to_s+" (Marksheet)", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][3] = @template.link_to("Effort/Grade Sheet", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("Results", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 6
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s+"("+exam_subject.name.to_s+")" 
                   data[k][2] = exam_subject.name.to_s
                   data[k][3] = @template.link_to("Effort/Grade Sheet", '/exam/' + 'effot_gradesheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("REPORT CARD",  '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 9
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 10
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s
                   data[k][2] = exam_subject.name.to_s
                   data[k][3] = "-"
                   data[k][4] = @template.link_to("REPORT CARD",  '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 11
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 12
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][3] = @template.link_to("Evaluation Sheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                   data[k][4] = @template.link_to("Results", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 13
-                  data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
-                  data[k][4] = @template.link_to("Results", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+                  data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][1] = @template.link_to(exam_connect.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][2] = @template.link_to(exam_subject.name.to_s, '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][3] = @template.link_to("Report Card", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
+                  data[k][4] = @template.link_to("Results", '/exam/' 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
                 elsif exam_connect.result_type == 14
-                  data[k][0] = exam_connect_batch.full_name.to_s
+                  data[k][0] = exam_connect_batch.to_s
                   data[k][1] = exam_connect.name.to_s+"("+exam_subject.name.to_s+")" 
                   data[k][2] = @template.link_to("EVALUATION REPORT",'/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s+"&evaluation=1", :target => "_blank")
                   data[k][3] = @template.link_to("PUPIL PROGRESS REPORT",'/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
@@ -425,11 +428,11 @@ class MarksController < ApplicationController
                 end
 
               else
-                data[k][0] = @template.link_to(exam_connect_batch.full_name.to_s+" (All Result)", '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
+                data[k][0] = @template.link_to(exam_connect_batch.to_s+" (All Result)", '/exam/' + 'continues/' +exam_connect.id.to_s, :target => "_blank")
                 data[k][1] = @template.link_to(exam_connect.name.to_s+" (Tablulation)", '/exam/' + 'tabulation/' +exam_connect.id.to_s, :target => "_blank")
                 data[k][2] = @template.link_to(exam_subject.name.to_s+" (Marksheet)", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
                 data[k][3] = @template.link_to("Comment Entry", '/exam/' + 'comment_tabulation_pdf/' +exam_connect.id.to_s, :target => "_blank")
-                data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect_batch.id.to_s, :target => "_blank")
+                data[k][4] = @template.link_to("Results", '/exam/' + 'generated_report5?connect_exam='+exam_connect.id.to_s+"&batch_id="+exam_connect.batch_id.to_s, :target => "_blank")
 
               end
               k = k+1

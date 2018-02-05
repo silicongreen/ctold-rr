@@ -127,6 +127,11 @@ function validate()
 
         <div id="search_textbox">
           <%= f.text_field  :name %>
+          <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
         <div class="radio_button">
           <%= f.radio_button  "nature", "student", :checked => "checked" %> <%= "#{t('student_text')}"%>
           <%= f.radio_button  "nature", "employee" %><%= "#{t('employee_text')}"%>
@@ -135,11 +140,7 @@ function validate()
       <% end %>
     <% end %>
     <div class="extender"></div>
-    <%= image_tag("loader.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader",
-          :style =>"display: none;" ) %>
+    
     <div id="user_list">
       
     </div>

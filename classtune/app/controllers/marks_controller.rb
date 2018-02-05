@@ -338,7 +338,6 @@ class MarksController < ApplicationController
         @exam_group_ids = @group_exams.map(&:exam_group_id)
         exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
         exams.each do |exam|
-          next
           exam_subject = Subject.new
           exam_subject.id = exam.subject_id
           exam_subject.name = exam.subject_name

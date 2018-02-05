@@ -331,12 +331,16 @@ class MarksController < ApplicationController
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
+     
       exam_connect_batch = exam_connect.batch_name+" "+exam_connect.course_name+" "+exam_connect.section_name
       if exam_connect.is_deleted == 0
         @subjects = []
         @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
+         
         @exam_group_ids = @group_exams.map(&:exam_group_id)
+        
         exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
+        next
         exams.each do |exam|
           
           if !@subjects.include?(exam.subject_id) 

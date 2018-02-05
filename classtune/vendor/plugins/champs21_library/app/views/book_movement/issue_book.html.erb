@@ -132,7 +132,6 @@ function validate()
           <%= f.radio_button  "nature", "employee" %><%= "#{t('employee_text')}"%>
         </div>
         </div>
-        <%= f.submit "#{t('search_text')}", :class=>"search_button" %>
       <% end %>
     <% end %>
     <div class="extender"></div>
@@ -141,3 +140,20 @@ function validate()
  
 </div>
 </div>
+<script type="text/javascript">
+    function search_logic(){
+      if ($('user_name').value.include("%")) return;
+        <%="#{remote_function(:url => {:action => "user_search"},
+        :with => "j('form').serialize()"
+        )}"%>
+      }
+  document.observe("dom:loaded", function() {
+    new Form.Element.Observer('user_name', 1, search_logic);
+  });
+   document.observe("dom:loaded", function() {
+    new Form.Element.Observer('user_nature_student', 1, search_logic);
+  });
+   document.observe("dom:loaded", function() {
+    new Form.Element.Observer('user_nature_employee', 1, search_logic);
+  });
+</script>  

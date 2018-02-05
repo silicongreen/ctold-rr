@@ -260,6 +260,7 @@ class MarksController < ApplicationController
   def data_connect_exam
 #    @employee_subjects = current_user.employee_record.subjects.active
     @employee_subjects = []
+    @batches2 = []
     unless @current_user.admin?
       @employee_subjects = current_user.employee_record.subjects.active
       @batches= current_user.employee_record.batches
@@ -268,36 +269,37 @@ class MarksController < ApplicationController
           @employee_subjects += batch.subjects
         end
       end
+      @batches2 = @batches.map(&:id)
       @employee_subjects = @employee_subjects.uniq unless @batches.empty?
+      @employee_subjects = @employee_subjects.map(&:id)
     end
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.name,exam_connects.batch_id",:joins=>[:batch],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
+    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
-      exam_connect_batch =  exam_connect.batch
+      exam_connect_batch = exam_connect.batch_name+" "+exam_connect.course_name+" "+exam_connect.section_name
       @subjects = []
       @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
       @exam_group_ids = @group_exams.map(&:exam_group_id)
-      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id",:joins=>[:subject])
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
       unless exams.blank?   
         exams.each do |exam|
-          exam_subject = exam.subject
-          if !exam_subject.blank? and !exam_connect_batch.blank? and !@subjects.include?(exam_subject) 
-            if @employee_subjects.include?(exam_subject) or @current_user.admin?
-              @subjects << exam_subject
+          if !@subjects.include?(exam.subject_id) 
+            if @employee_subjects.include?(exam.subject_id) or @current_user.admin?
+              @subjects << exam.subject_id
               data[k] = []
-              data[k][0] = @template.link_to(exam_connect_batch.full_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
-              if @current_user.admin? or (!@batches.blank? and @batches.include?(exam_connect_batch))
+              data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
+              if @current_user.admin? or (!@batches2.blank? and @batches2.include?(exam_connect.batch_id))
                 data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
               else
-                data[k][1] = @template.link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
+                data[k][1] = @template.link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               end  
-              data[k][2] = @template.link_to(exam_subject.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam_subject.id.to_s, :target => "_blank")
+              data[k][2] = @template.link_to(exam.subject_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               if MultiSchool.current_school.id != 340
-               data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam_subject.id.to_s, :target => "_blank")
+               data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
               end 
              k = k+1
             end

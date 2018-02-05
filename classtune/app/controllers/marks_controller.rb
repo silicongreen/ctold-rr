@@ -340,7 +340,6 @@ class MarksController < ApplicationController
         @exam_group_ids = @group_exams.map(&:exam_group_id)
         
         exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
-        next
         exams.each do |exam|
           
           if !@subjects.include?(exam.subject_id) 

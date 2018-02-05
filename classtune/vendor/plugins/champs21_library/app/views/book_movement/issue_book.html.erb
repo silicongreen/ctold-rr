@@ -135,7 +135,13 @@ function validate()
       <% end %>
     <% end %>
     <div class="extender"></div>
-  <div id="user_list"></div>
+    <div id="user_list">
+      <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %>
+    </div>
   </div>
  
 </div>
@@ -144,7 +150,9 @@ function validate()
     function search_logic(){
       if ($('user_name').value.include("%")) return;
         <%="#{remote_function(:url => {:action => "user_search"},
-        :with => "j('form').serialize()"
+        :with => "j('form').serialize()",
+        :before => "Element.show('loader')",
+        :success => "Element.hide('loader')"
         )}"%>
       }
   document.observe("dom:loaded", function() {

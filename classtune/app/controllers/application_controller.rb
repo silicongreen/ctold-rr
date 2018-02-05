@@ -55,8 +55,6 @@ class ApplicationController < ActionController::Base
   before_filter :login_check
   before_filter :set_host
   before_filter :default_time_zone_present_time
-  
-  after_filter :activity_check
 
   before_filter :dev_mode
   include CustomInPlaceEditing

@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
 
   config.reload_plugins = true if RAILS_ENV =="development"
   config.plugins = [:paperclip,:all]
-  #config.gem "paperclip", :version => "~> 2.3"
+#  config.gem "paperclip", :version => "~> 2.3"
   if (File.exist?('config/smtp_settings.yml'))
     SMTP_SETTINGS = YAML.load_file('config/smtp_settings.yml')[RAILS_ENV]
     if SMTP_SETTINGS      
@@ -22,12 +22,12 @@ Rails::Initializer.run do |config|
     end
   end
   
-#  if File.exists?('config/memcached.yml')
- #   memcached_settings = YAML.load(open('config/memcached.yml'))[RAILS_ENV.to_sym]
-  # config.cache_store = :mem_cache_store, memcached_settings[:host], {:namespace=>"champs21:"+(__FILE__).gsub(/^(.*)\/config\/environment.rb/,'\1')}
-  #else
+  if File.exists?('config/memcached.yml')
+    memcached_settings = YAML.load(open('config/memcached.yml'))[RAILS_ENV.to_sym]
+   config.cache_store = :mem_cache_store, memcached_settings[:host], {:namespace=>"champs21:"+(__FILE__).gsub(/^(.*)\/config\/environment.rb/,'\1')}
+  else
     config.cache_store = :file_store, "#{Rails.root.to_s}/public/uploads/cache/"
-  #end
+  end
     
 
 end
@@ -35,11 +35,11 @@ end
 
 SMTP_SETTINGS = ActionMailer::Base.smtp_settings unless defined? SMTP_SETTINGS
 
-#if File.exists?('config/memcached.yml')
- # begin
-  #  Rails.cache.stats
-  #rescue MemCache::MemCacheError=>e
-   # puts "Memcached - #{e.message}"
-    #exit
-  #end
-#end
+if File.exists?('config/memcached.yml')
+  begin
+    Rails.cache.stats
+  rescue MemCache::MemCacheError=>e
+    puts "Memcached - #{e.message}"
+    exit
+  end
+end

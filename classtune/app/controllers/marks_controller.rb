@@ -14,7 +14,7 @@ class MarksController < ApplicationController
       batches = batches.uniq unless batches.empty?
       batches.reject! {|s| s.name!=batch_name}
     else
-       batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+      batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
     end  
     @class_list = []
     @class_names = []
@@ -51,7 +51,7 @@ class MarksController < ApplicationController
         end
       end
     
-    @emp_subjects = @emp_subjects.uniq unless @batches.empty?
+      @emp_subjects = @emp_subjects.uniq unless @batches.empty?
     
     elsif current_user.admin
       @emp_subjects = Subject.active
@@ -94,7 +94,7 @@ class MarksController < ApplicationController
         end
       end
     
-    @emp_subjects = @emp_subjects.uniq unless @batches.empty?
+      @emp_subjects = @emp_subjects.uniq unless @batches.empty?
     
     elsif current_user.admin
       @emp_subjects = Subject.active
@@ -187,7 +187,7 @@ class MarksController < ApplicationController
     else
       batches = Batch.find_all_by_name_and_is_deleted(batch_name,false)
     end 
-#    batches = Batch.find_all_by_name(batch_name)
+    #    batches = Batch.find_all_by_name(batch_name)
     @batch_list = []
     k = 0
     unless batches.blank?
@@ -220,7 +220,7 @@ class MarksController < ApplicationController
         end
       end
     
-    @subjects = @subjects.uniq unless @batches.empty?
+      @subjects = @subjects.uniq unless @batches.empty?
     
     elsif current_user.admin
       @subjects = Subject.active
@@ -230,7 +230,7 @@ class MarksController < ApplicationController
     all_sub_id = @subjects.map(&:id)
     all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject])
     all_exams.each do |exam|
-        @exams.push exam unless exam.nil?
+      @exams.push exam unless exam.nil?
     end 
    
     @exams.sort! { |a, b|  b.id <=> a.id }
@@ -258,7 +258,7 @@ class MarksController < ApplicationController
   end
   
   def data_connect_exam
-#    @employee_subjects = current_user.employee_record.subjects.active
+    #    @employee_subjects = current_user.employee_record.subjects.active
     @employee_subjects = []
     @batches2 = []
     unless @current_user.admin?
@@ -276,7 +276,7 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
+    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
@@ -284,7 +284,7 @@ class MarksController < ApplicationController
       @subjects = []
       @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
       @exam_group_ids = @group_exams.map(&:exam_group_id)
-      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject],:conditions =>["subjects.is_deleted = ?", false])
       unless exams.blank?   
         exams.each do |exam|
           if !@subjects.include?(exam.subject_id) 
@@ -299,9 +299,9 @@ class MarksController < ApplicationController
               end  
               data[k][2] = @template.link_to(exam.subject_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               if MultiSchool.current_school.id != 340
-               data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
+                data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
               end 
-             k = k+1
+              k = k+1
             end
           end    
         end
@@ -314,9 +314,9 @@ class MarksController < ApplicationController
     render :text => @data
   end
   
- def data_connect_exam_report
-   @employee_subjects = []
-   unless @current_user.admin?
+  def data_connect_exam_report
+    @employee_subjects = []
+    unless @current_user.admin?
       @employee_subjects = current_user.employee_record.subjects.active
       @batches= current_user.employee_record.batches
       unless @batches.blank?
@@ -329,122 +329,119 @@ class MarksController < ApplicationController
     end
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ?",MultiSchool.current_school.id])
+    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
      
       exam_connect_batch = exam_connect.batch_name+" "+exam_connect.course_name+" "+exam_connect.section_name
-      if exam_connect.is_deleted == 0
-        @subjects = []
-        @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
+      @subjects = []
+      @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
          
-        @exam_group_ids = @group_exams.map(&:exam_group_id)
+      @exam_group_ids = @group_exams.map(&:exam_group_id)
         
-        exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject])
-        exams.each do |exam|
-          
-          if !@subjects.include?(exam.subject_id) 
-            if @employee_subjects.include?(exam.subject_id) or @current_user.admin?
-              @subjects << exam.subject_id
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject],:conditions =>["subjects.is_deleted = ?", false])
+      exams.each do |exam|   
+        if !@subjects.include?(exam.subject_id) 
+          if @employee_subjects.include?(exam.subject_id) or @current_user.admin?
+            @subjects << exam.subject_id
               
-              data[k] = []
-              if school_id == 340
-                #Sir John Wilson School
-                if exam_connect.result_type == 1
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
-                  data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                  data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                elsif exam_connect.result_type == 2
-                  data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
-                  data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
-                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
-                  data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                elsif exam_connect.result_type == 3
-                  data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
-                  data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
-                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
-                  data[k][3] = "-"
-                  data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                elsif exam_connect.result_type == 4
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s
-                  data[k][2] = exam.subject_name.to_s
-                  data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                elsif exam_connect.result_type == 7
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s
-                  data[k][2] = exam.subject_name.to_s
-                  data[k][3] = "-"
-                  data[k][4] = "<a href='/exam/score_sheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Score Sheet</a>"
-                elsif exam_connect.result_type == 5
-                  data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
-                  data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
-                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
-                  data[k][3] = "-"
-                  data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                elsif exam_connect.result_type == 6
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
-                  data[k][2] = exam.subject_name.to_s
-                  data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                elsif exam_connect.result_type == 9
-                  data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
-                  data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
-                  data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
-                  data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
-                  data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
-                elsif exam_connect.result_type == 10
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s
-                  data[k][2] = exam.subject_name.to_s
-                  data[k][3] = "-"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                elsif exam_connect.result_type == 11
-                  data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
-                  data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
-                  data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
-                  data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
-                  data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
-                elsif exam_connect.result_type == 12
-                  data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
-                  data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
-                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
-                  data[k][3] = "-"
-                  data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
-                elsif exam_connect.result_type == 13
-                  data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
-                  data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
-                  data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
-                  data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
-                  data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
-                elsif exam_connect.result_type == 14
-                  data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
-                  data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
-                  data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
-                  data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
-                end
-
-              else
+            data[k] = []
+            if school_id == 340
+              #Sir John Wilson School
+              if exam_connect.result_type == 1
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
+                data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+              elsif exam_connect.result_type == 2
+                data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
+                data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
+                data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
+                data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+              elsif exam_connect.result_type == 3
                 data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
                 data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                 data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
-                data[k][3] = "<a href='/exam/comment_tabulation_pdf/#{exam_connect.id.to_s}' target='_blank'>Comment Entry</a>"
+                data[k][3] = "-"
+                data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+              elsif exam_connect.result_type == 4
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s
+                data[k][2] = exam.subject_name.to_s
+                data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+              elsif exam_connect.result_type == 7
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s
+                data[k][2] = exam.subject_name.to_s
+                data[k][3] = "-"
+                data[k][4] = "<a href='/exam/score_sheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Score Sheet</a>"
+              elsif exam_connect.result_type == 5
+                data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
+                data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+                data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
+                data[k][3] = "-"
+                data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+              elsif exam_connect.result_type == 6
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
+                data[k][2] = exam.subject_name.to_s
+                data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+              elsif exam_connect.result_type == 9
+                data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
+                data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
+                data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
+                data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
                 data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
-
+              elsif exam_connect.result_type == 10
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s
+                data[k][2] = exam.subject_name.to_s
+                data[k][3] = "-"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+              elsif exam_connect.result_type == 11
+                data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
+                data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
+                data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
+                data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
+                data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
+              elsif exam_connect.result_type == 12
+                data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
+                data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
+                data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
+                data[k][3] = "-"
+                data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Effort/Grade Sheet</a>"
+              elsif exam_connect.result_type == 13
+                data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect_batch.to_s}</a>"
+                data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam_connect.name.to_s}</a>"
+                data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>#{exam.subject_name.to_s}</a>"
+                data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
+                data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
+              elsif exam_connect.result_type == 14
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
+                data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
+                data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
+                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
               end
-              k = k+1
+
+            else
+              data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
+              data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+              data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
+              data[k][3] = "<a href='/exam/comment_tabulation_pdf/#{exam_connect.id.to_s}' target='_blank'>Comment Entry</a>"
+              data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
+
             end
-          end    
-        end 
-        
-      end
+            k = k+1
+          end
+        end    
+      end 
+ 
         
     end
     json_data = {:data => data}

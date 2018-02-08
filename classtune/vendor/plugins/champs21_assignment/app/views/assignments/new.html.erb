@@ -103,7 +103,7 @@
           <label for="duedate"><%= "Published date"%></label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "assignment[created_at]",
-              I18n.l(1.week.since,:format=>"%Y-%m-%d"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+             I18n.l(Date.today,:format=>"%Y-%m-%d"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
         <div class="label-field-pair"  style="float:left; clear:both;">

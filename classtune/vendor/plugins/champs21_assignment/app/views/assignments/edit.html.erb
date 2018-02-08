@@ -88,6 +88,14 @@
               :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
+          
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "Published date"%></label>
+          <div  class="text-input-bg">
+             <%= calendar_date_select_tag "assignment[created_at]",I18n.l(@assignment.created_at,:format=>"%d-%m-%Y"),
+              :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
 
       </div>
       <div id="subjects_student_list">

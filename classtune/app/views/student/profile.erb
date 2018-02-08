@@ -153,8 +153,20 @@
                         <div><%= @student.class_roll_no %></div>
                     </div>
                 </div>
+                
                 <div class="clearfix"></div>
-
+                
+                <% unless @student.email.nil? or @student.email.blank? %>
+                  <div class="row">
+                    <div class="row_label">
+                        <div><%= t('email') %></div>
+                    </div>
+                    <div class="row_data">
+                        <div><%= @student.email %></div>
+                    </div>
+                  </div>
+                <% end %>
+                <div class="clearfix"></div>
                 <div class="row">
                     <div class="row_label">
                         <div><%= t('admission_date') %></div>
@@ -367,9 +379,7 @@
                   <div class="clearfix"></div>
                 <% end %>
 
-                <% unless @student.email.nil? or @student.email.blank? %>
-                  
-                <% end %>
+                
 
                 <% unless @assigned_employees.empty? %>
                   <div class="row">

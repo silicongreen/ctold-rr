@@ -49,13 +49,13 @@ h2{
 .form_content
 {
     margin-top:80px;
-    line-height: 2;
+    line-height: 1.8;
     font-size: 23px;   
 }
 .form_footer
 {
     width: 30%;
-    margin-top:9em;
+    margin-top:8em;
     line-height: 1;
     font-size: 23px;   
     float:left;

@@ -882,6 +882,21 @@ class UserController < ApplicationController
       @user_privileges=@user.privileges
       if request.post?
         new_privileges = params[:user][:privilege_ids] if params[:user]
+        new_batches = params[:user][:batch_ids] if params[:user]
+        
+        batch_tutor = BatchTutor.find_all_by_employee_id(@user.employee_record.id)
+        unless batch_tutor.blank?
+          batch_tutor.each(&:destroy)
+        end
+        unless new_batches.blank?
+          new_batches.each do |batch|
+            batch_tutor = BatchTutor.new
+            batch_tutor.employee_id = @user.employee_record.id
+            batch_tutor.batch_id = batch
+            batch_tutor.save
+          end
+        end
+        
         new_privileges ||= []
         @user.privileges = Privilege.find_all_by_id(new_privileges)
         @user.clear_menu_cache

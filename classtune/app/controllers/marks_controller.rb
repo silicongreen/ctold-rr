@@ -424,7 +424,7 @@ class MarksController < ApplicationController
               elsif exam_connect.result_type == 14
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
-                data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
+                data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
               end

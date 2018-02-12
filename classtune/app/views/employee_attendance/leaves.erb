@@ -116,6 +116,8 @@
           :html => {:class => 'f2'}
       %>
       </li>
+      <%= debug @batch_ids_test.inspect %>
+      <%= @app_leaves.to_s %>
       <% unless @total_leave_count == 0 %>
         <li>
           <%= link_to_remote "#{t('new_leaves')} (#{@total_leave_count})",

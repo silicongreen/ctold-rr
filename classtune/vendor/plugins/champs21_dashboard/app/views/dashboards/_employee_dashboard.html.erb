@@ -67,9 +67,11 @@ employee_id = @current_user.employee_record.id
               <li class="als-item" >
                 <%=  link_to "<div class='calendar_box_icon'><span class='f2'>CALENDAR</span></div>", :controller => 'calendar', :action => 'index' %>
               </li>
-              <li class="als-item" >
-                <%=  link_to "<div class='report_card_box_icon'><span class='f2'>REPORT CARD</span></div>", :controller => 'exam', :action => 'exam_wise_report' %>
-              </li>
+              <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
+                <li class="als-item" >
+                  <%=  link_to "<div class='report_card_box_icon'><span class='f2'>REPORT CARD</span></div>", :controller => 'marks', :action => 'connect_exam' %>
+                </li>
+              <% end %>
               <li class="als-item" >
                 <%=  link_to "<div class='leave_box_icon'><span class='f2'>LEAVE</span></div>", :controller => 'employee_attendance', :action => 'leaves', :id => employee_id %>
               </li>

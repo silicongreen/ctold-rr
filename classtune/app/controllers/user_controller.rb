@@ -887,7 +887,7 @@ class UserController < ApplicationController
         batch_tutor = BatchTutor.find_all_by_employee_id(@user.employee_record.id)
         unless batch_tutor.blank?
           batch_tutor.each do |tutor|
-            batch = batch.find(tutor.batch_id)
+            batch = Batch.find(tutor.batch_id)
             batch.employees.delete(Employee.find @user.employee_record.id)
           end
         end

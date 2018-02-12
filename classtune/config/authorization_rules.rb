@@ -3432,17 +3432,17 @@ authorization do
     has_permission_on [:courses],
       :to=>[
       :get_batches_classes
-    ]    
-    has_permission_on :student_attendance, :to => [:index] do
-      if_attribute :has_assigned_subjects? => is {true}
-    end
+    ]  
     has_permission_on [:attendances], :to => [:index,:show_report_student,:rollcall,:subjects,:save_attendance_subject,
       :get_subject_student,:get_subject_report_all,:get_subject_report_pdf,
       :get_subject_report_all_name,
       :subjects2,
       :subjects3,
       :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report]
+    has_permission_on :student_attendance, :to => [:index] do
+      if_attribute :has_assigned_subjects? => is {true}
     end
+    
     has_permission_on :attendance_reports, :to => [:index] do
       if_attribute :has_assigned_subjects? => is {true}
     end

@@ -55,8 +55,8 @@ h2{
 .form_footer
 {
     width: 30%;
-    margin-top:10em;
+    margin-top:9em;
     line-height: 1;
     font-size: 23px;   
-    float:right;
+    float:left;
 }

@@ -3441,8 +3441,7 @@ authorization do
       :get_subject_report_all_name,
       :subjects2,
       :subjects3,
-      :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report] do
-      if_attribute :has_assigned_subjects? => is {true}
+      :subject_report,:graph_code,:show_report,:student_report,:show_student,:class_report]
     end
     has_permission_on :attendance_reports, :to => [:index] do
       if_attribute :has_assigned_subjects? => is {true}

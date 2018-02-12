@@ -114,7 +114,6 @@
                     <% unless employees.blank? %>
                     Forward To: 
                     <select name="emp" id="emp" style="height: 22px;width: 96%;margin-top: 5px; margin-left:0px;" >
-                        <option value="0">Select Employee</option>
                         <% employees.each do |emp| %>
                           <span class="apply_tag" style="float:left; claer:both; margin-top:10px;">
                               <option value="<%= emp.id %>"><%= emp.first_name+"("+emp.employee_position.name+")"%> </option>

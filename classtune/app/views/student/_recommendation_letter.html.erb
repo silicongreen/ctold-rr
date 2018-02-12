@@ -71,7 +71,10 @@
     <div class="row" id="request_date_1">
       <div class="row_label">Request Date of Collection</div>
       <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today+3,:format=>:default),:year_range => [0.years.ago, 1.years.from_now], :popup=>"force" %></div>
-    </div> 
+    </div>
+    <div class="row" id="request_date_1">
+        <div class="row_label" style="width:100%;"><font color="red" >Please allow minimum 3 working days to process</font></div>
+    </div>
     <div class="row" style="border: 0px;">      
       <div class="row_button">
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>

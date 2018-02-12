@@ -2263,9 +2263,10 @@ end
   end
   
   def close_letter
-    @formData = StudentForm.find_by_id(params[:aid])        
-    @formData.update_attributes(:is_delete => 1)
-    
+    @formData = StudentForm.find_by_id_and_student_id(params[:aid],current_user.guardian_entry.current_ward_id )  
+    unless @formData.blank?
+      @formData.update_attributes(:is_delete => 1)
+    end
     flash[:warn_notice]="<p>Request is closed.</p>"
     redirect_to :action=>'form_to_apply', :id => params[:id]
   end

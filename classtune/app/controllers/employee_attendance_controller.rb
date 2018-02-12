@@ -682,7 +682,6 @@ class EmployeeAttendanceController < ApplicationController
     elsif @current_user.employee_record.meeting_forwarder.to_i == 1
       @employee_batches = @current_user.employee_record.batches
       batch_ids = @employee_batches.map(&:id)
-      @batch_ids_test = batch_ids
       @app_leaves = ApplyLeaveStudent.count(:conditions=>["(viewed_by_teacher is NULL or viewed_by_teacher=?) AND students.batch_id in (?)",false,batch_ids],:include=>[:student])
       @total_leave_count = @total_leave_count + @app_leaves
     else

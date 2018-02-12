@@ -2,19 +2,19 @@
       <% @formData.each do |a| %>
         <% 
         if a.form_type_text == "transfer_letter" 
-          title = "Transfer Certificate Letter"
+          title = "Transfer Certificate"
           style = "transfer_letter"
         elsif a.form_type_text == "noc_letter" 
-          title = "No Objection Certificate Letter"
+          title = "No Objection Certificate"
           style = "noc_letter"
         elsif a.form_type_text == "recommendation_letter" 
-          title = "Recommendation Certificate Letter"
+          title = "Recommendation Letter"
           style = "recommendation_letter"
         elsif a.form_type_text == "studentship_letter" 
-          title = "Studentship Letter"
+          title = "Studentship Certificate"
           style = "studentship_letter"
         elsif a.form_type_text == "visa_recommendation_letter" 
-          title = "VISA Recommendation Certificate Letter"
+          title = "VISA Recommendation Letter"
           style = "visa_recommendation_letter"
         end 
         %>        

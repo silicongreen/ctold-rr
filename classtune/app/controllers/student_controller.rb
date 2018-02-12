@@ -3698,15 +3698,15 @@ end
     end
     
     if @formData.form_type_text == "transfer_letter" 
-      title = "Transfer Certificate Letter"
+      title = "Transfer Certificate"
     elsif @formData.form_type_text == "noc_letter" 
-      title = "No Objection Certificate Letter"
+      title = "No Objection Certificate"
     elsif @formData.form_type_text == "recommendation_letter"
-      title = "Recommendation Certificate Letter"
+      title = "Recommendation Letter"
     elsif @formData.form_type_text == "studentship_letter" 
-      title = "Studentship Letter"
+      title = "Studentship Certificate"
     elsif @formData.form_type_text == "visa_recommendation_letter" 
-      title = "VISA Recommendation Certificate Letter"
+      title = "VISA Recommendation Letter"
     end 
     
     unless reminderrecipients.nil?
@@ -3728,15 +3728,15 @@ end
     available_user_ids << employee.user_id
     title = ""
     if @formData.form_type_text == "transfer_letter" 
-      title = "Transfer Certificate Letter"
+      title = "Transfer Certificate"
     elsif @formData.form_type_text == "noc_letter" 
-      title = "No Objection Certificate Letter"
+      title = "No Objection Certificate"
     elsif @formData.form_type_text == "recommendation_letter"
-      title = "Recommendation Certificate Letter"
+      title = "Recommendation Letter"
     elsif @formData.form_type_text == "studentship_letter" 
-      title = "Studentship Letter"
+      title = "Studentship Certificate"
     elsif @formData.form_type_text == "visa_recommendation_letter" 
-      title = "VISA Recommendation Certificate Letter"
+      title = "VISA Recommendation Letter"
     end
     
     unless available_user_ids.nil?
@@ -3766,15 +3766,15 @@ end
     
      
     if @formData.form_type_text == "transfer_letter" 
-      title = "Transfer Certificate Letter"
+      title = "Transfer Certificate"
     elsif @formData.form_type_text == "noc_letter" 
-      title = "No Objection Certificate Letter"
+      title = "No Objection Certificate"
     elsif @formData.form_type_text == "recommendation_letter"
-      title = "Recommendation Certificate Letter"
+      title = "Recommendation Letter"
     elsif @formData.form_type_text == "studentship_letter" 
-      title = "Studentship Letter"
+      title = "Studentship Certificate"
     elsif @formData.form_type_text == "visa_recommendation_letter" 
-      title = "VISA Recommendation Certificate Letter"
+      title = "VISA Recommendation Letter"
     end 
         
     
@@ -3806,15 +3806,15 @@ end
     
      
     if @studentForm.form_type_text == "transfer_letter" 
-      title = "Transfer Certificate Letter"
+      title = "Transfer Certificate"
     elsif @studentForm.form_type_text == "noc_letter" 
-      title = "No Objection Certificate Letter"
+      title = "No Objection Certificate"
     elsif @studentForm.form_type_text == "recommendation_letter"
-      title = "Recommendation Certificate Letter"
+      title = "Recommendation Letter"
     elsif @studentForm.form_type_text == "studentship_letter" 
-      title = "Studentship Letter"
+      title = "Studentship Certificate"
     elsif @studentForm.form_type_text == "visa_recommendation_letter" 
-      title = "VISA Recommendation Certificate Letter"
+      title = "VISA Recommendation Letter"
     end 
         
     

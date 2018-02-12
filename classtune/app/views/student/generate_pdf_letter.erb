@@ -42,7 +42,7 @@
   <% 
     arStudentData = []
     if @formData.form_type_text == "transfer_letter" 
-      title = "Transfer Certificate Letter"
+      title = "Transfer Certificate"
       style = "transfer_letter"
       
  
@@ -72,7 +72,7 @@
    
       
     elsif @formData.form_type_text == "noc_letter" 
-      title = "No Objection Certificate Letter"
+      title = "No Objection Certificate"
       style = "noc_letter"
       
       arStudentData << ["Student Name", result[0]] 
@@ -88,7 +88,7 @@
       formContent = formContent.gsub("{startdate}", result[4].to_date.strftime("%d-%m-%Y").to_s)
       formContent = formContent.gsub("{enddate}", result[5].to_date.strftime("%d-%m-%Y").to_s)
     elsif @formData.form_type_text == "recommendation_letter" 
-      title = "Recommendation Certificate Letter"
+      title = "Recommendation Letter"
       style = "recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 
@@ -108,7 +108,7 @@
       formContent = formContent.gsub("his/her", result[6])
       formContent = formContent.gsub("girl/boy", result[7])
     elsif @formData.form_type_text == "studentship_letter" 
-      title = "Studentship Letter"
+      title = "Studentship Certificate"
       style = "studentship_letter"
       
       arStudentData << ["Student Name", result[0]] 
@@ -127,7 +127,7 @@
       arStudentData << ["Request Date of Collection", result[2]] 
       
     elsif @formData.form_type_text == "visa_recommendation_letter" 
-      title = "VISA Recommendation Certificate Letter"
+      title = "VISA Recommendation Letter"
       style = "visa_recommendation_letter"
       
       arStudentData << ["Student Name", result[0]] 

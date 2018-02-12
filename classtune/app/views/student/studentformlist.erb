@@ -51,7 +51,7 @@
                   :success => "Element.hide('loader')"  )}"} %>
 &nbsp;&nbsp;&nbsp;&nbsp;
 <%= select :form_data, :form_type, 
-        options_for_select([["Transfer Certificate Letter", "transfer_letter"],["No Objection Certificate Letter", "noc_letter"], ["Recommendation Certificate Letter", "recommendation_letter"], ["Studentship Letter", "studentship_letter"], ["VISA Recommendation Certificate Letter", "visa_recommendation_letter"]],@form_type),
+        options_for_select([["Transfer Certificate", "transfer_letter"],["No Objection Certificate", "noc_letter"], ["Recommendation Letter", "recommendation_letter"], ["Studentship Certificate", "studentship_letter"], ["VISA Recommendation Letter", "visa_recommendation_letter"]],@form_type),
         {:prompt => "Form Type"},
                   {:onchange => "#{remote_function(
                   :url => { :action => 'studentformlist' },

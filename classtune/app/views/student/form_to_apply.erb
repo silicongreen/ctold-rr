@@ -103,12 +103,12 @@
                   close_transfer = 1
                 elsif a.status == 2
                   status_transfer = "Processing"
-                  close_transfer = 1
+                  close_transfer = 2
                 elsif a.status == 22
                   close_transfer = 1
                   status_transfer = "Denied"
                 elsif a.status == 3
-                  close_transfer = 1
+                  close_transfer = 2
                   status_transfer = "Ready"
                 end
              %>
@@ -162,12 +162,12 @@
                   close_noc = 1
                 elsif b.status == 2
                   status_noc = "Processing"
-                  close_noc = 1
+                  close_noc = 2
                 elsif b.status == 22
                   close_noc = 1
                   status_noc = "Denied"
                 elsif b.status == 3
-                  close_noc = 1
+                  close_noc = 2
                   status_noc = "Ready"
                 end
              %>
@@ -219,12 +219,12 @@
                 close_recommendation = 1
               elsif c.status == 2
                 status_recommendation = "Processing"
-                close_recommendation = 1
+                close_recommendation = 2
               elsif c.status == 22
                 close_recommendation = 1
                 status_recommendation = "Denied"
               elsif c.status == 3
-                close_recommendation = 1
+                close_recommendation = 2
                 status_recommendation = "Ready"
               end
            %>
@@ -279,12 +279,12 @@
                 close_studentship = 1
               elsif d.status == 2
                 status_studentship = "Processing"
-                close_studentship = 1
+                close_studentship = 2
               elsif d.status == 22
                 close_studentship = 1
                 status_studentship = "Denied"
               elsif d.status == 3
-                close_studentship = 1
+                close_studentship = 2
                 status_studentship = "Ready"
               end
            %>
@@ -333,12 +333,12 @@
                 close_visa_recommendation = 1
               elsif e.status == 2
                 status_visa_recommendation = "Processing"
-                close_visa_recommendation = 1
+                close_visa_recommendation = 2
               elsif e.status == 22
                 close_visa_recommendation = 1
                 status_visa_recommendation = "Denied"
               elsif e.status == 3
-                close_visa_recommendation = 1
+                close_visa_recommendation = 2
                 status_visa_recommendation = "Ready"
               end
            %>

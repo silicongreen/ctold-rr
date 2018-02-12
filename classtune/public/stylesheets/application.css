@@ -1,4 +1,4 @@
-/*FRONTS*/
+#demo2 .als-next/*FRONTS*/
 .school_feed_box .partial_attendance .portlet-subcontent
 {
 margin-top: 0px;
@@ -3115,7 +3115,7 @@ top: 65px;
   overflow-x: auto;
 }
 #demo2 .als-next {
-  background: url("http://www.champs21.com/styles/layouts/tdsfront/images/nextarrow.png") no-repeat scroll 0 40px rgba(0, 0, 0, 0);
+  background: url("http://old.champs21.com/styles/layouts/tdsfront/images/nextarrow.png") no-repeat scroll 0 40px rgba(0, 0, 0, 0);
   height: 80%;
   right: 20px;
   width: 37px;

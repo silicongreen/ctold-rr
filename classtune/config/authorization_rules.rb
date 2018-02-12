@@ -3321,6 +3321,13 @@ authorization do
       :show,
       :profile_pdf
     ]
+     has_permission_on [:student],
+      :to => [
+      :get_section_data,
+      :get_classes,
+      :get_classes_publisher,
+      :get_batches,
+      ]  
     has_permission_on [:meetings], :to => [:index,:forwarded,:inbox,:outbox, :new, :create, :edit, :update,:update_forwarded, :show,:show_forwarded, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
     has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt]
     has_permission_on [:event], :to => [:event_details]

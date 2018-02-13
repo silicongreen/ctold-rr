@@ -51,7 +51,11 @@
                     <div>
                       <% if a.employee_id!=0 %>
                         <% current_employee = Employee.find_by_id(a.employee_id) %>
+                        <% unless current_employee.employee.blank? %>
                          Current Desk : <%= current_employee.full_name %>
+                        <% else %>
+                         Current Desk : Section Office
+                         <% end %>
                       <% else %>
                          Current Desk : Section Office
                       <% end %>  

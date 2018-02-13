@@ -109,7 +109,7 @@
             </div>
             <div class="row_action2">
                 <div>
-                  <% if a.forwarded == 0 or @current_user.admin? or a.employee_id == @current_user.employee_record.id %>
+                  <% if (a.forwarded == 0 or @current_user.admin? or a.employee_id == @current_user.employee_record.id) and a.status != 3 %>
                    <% form_for :studentfrom, :url => {:action=> 'forward_form', :aid => a.id, :id => a.student_id},:html=>{:onsubmit=>"return validate("+a.id.to_s+");"} do |f| %>
                     <%
                       desig_ids = [1610,1611,1612]

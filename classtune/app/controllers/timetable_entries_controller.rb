@@ -26,6 +26,12 @@ class TimetableEntriesController < ApplicationController
   def new
     @timetable=Timetable.find(params[:timetable_id])
     @batches = TimeTableClassTiming.find_all_by_timetable_id(params[:timetable_id]).map(&:batch).compact.flatten.reject{|b| b.end_date < @timetable.try(:start_date)}.reject{|b| b.class_timing_set_id.nil? or b.weekday_set_id.nil?}
+    unless @current_user.admin?
+      emp_batches = @current_user.employee_record.batches
+      emp_batches_id = emp_batches.map(&:batch_id)
+      @batches = @batches.reject{|b| !emp_batches_id.include?(b.id.to_s)}
+    end
+  
   end
 
   def select_batch

@@ -204,7 +204,11 @@ class TimetableController < ApplicationController
   def view
     @timetables=Timetable.all(:order=>"start_date DESC")
     @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
-    @courses=@current_timetable.nil?? [] : Batch.all(:joins=>[:timetable_entries,{:time_table_class_timings=>:timetable}],:conditions=>["timetables.id=#{@current_timetable.id} and batches.class_timing_set_id is NOT NULL and batches.weekday_set_id is NOT NULL "],:include=>:course).uniq
+    if @current_user.admin?
+      @courses=@current_timetable.nil?? [] : Batch.all(:joins=>[:timetable_entries,{:time_table_class_timings=>:timetable}],:conditions=>["timetables.id=#{@current_timetable.id} and batches.class_timing_set_id is NOT NULL and batches.weekday_set_id is NOT NULL "],:include=>:course).uniq
+    else
+      @courses=@current_timetable.nil?? [] : @current_user.employee_record.batches.all(:joins=>[:timetable_entries,{:time_table_class_timings=>:timetable}],:conditions=>["timetables.id=#{@current_timetable.id} and batches.class_timing_set_id is NOT NULL and batches.weekday_set_id is NOT NULL "],:include=>:course).uniq
+    end
   end
 
   def edit_master

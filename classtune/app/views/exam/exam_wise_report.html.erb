@@ -23,6 +23,13 @@
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('exam_wise_report') %></div>
 </div>
+<% 
+  if @current_user.admin? 
+    batches = Batch.active.find(:all, :group => "name")
+  else 
+    batches = @current_user.employee_record.batches.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
+  end 
+%>
 <div id="page-yield">
 
   <div class="bread_crumb">
@@ -36,17 +43,16 @@
   <div class="box">
     <% form_for :exam_report, :url=>{:action=>'generated_report'}, :html=> {:id=>'new_student'} do |x| %>
 
-      <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+      
       <div class="label-field-pair">
         <label for="student_grade"><%= t('shift_label') %></label>
         <div class="text-input-bg">
-          <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+          <%= select :student, :batch_name, options_for_select(batches.map {|b| [b.name, b.id]}, @batch_no.to_i), 
             {:prompt => "#{t('select')}"},
             {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=exam/sections_view&page=course_new&partial_view=exam/courses_new'" ,:before => "$('loading_2').show();",
             :success => "$('loading_2').hide();")}"} %>
             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
       </div>
-      <% end %>
       <div class="label-field-pair">
         <label for="student_grade"><%= t('class_label') %></label>
         <div class="text-input-bg"><div id="course_new"> <%= render :partial => 'courses_new', :object => @courses %></div></div>

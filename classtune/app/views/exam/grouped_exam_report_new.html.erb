@@ -23,6 +23,13 @@
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('grouped_exam_reports') %></div>
 </div>
+<% 
+  if @current_user.admin? 
+    batches = Batch.active.find(:all, :group => "name")
+  else 
+    batches = @current_user.employee_record.batches.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
+  end 
+%>
 <div id="page-yield">
       <div class="bread_crumb">
     <%= link_to t('exam_text'), :controller => "exam", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
@@ -39,7 +46,7 @@
         <div class="label-field-pair">
           <label for="student_grade"><%= t('shift_label') %></label>
           <div class="text-input-bg">
-            <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+            <%= select :student, :batch_name, options_for_select(batches.map {|b| [b.name, b.id]}, @batch_no.to_i), 
               {:prompt => "#{t('select')}"},
               {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=exam/grouped_sections_view_new&page=course_new&partial_view=exam/grouped_courses_view_new'" ,:before => "$('loading_2').show();",
               :success => "$('loading_2').hide();")}"} %>

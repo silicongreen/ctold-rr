@@ -32,7 +32,12 @@
         <%
         unless @student.nil?
           @batch = Batch.find_by_id(@student.batch_id)
-          @course = Course.find_by_id(@batch.course_id)
+          unless @batch.blank?
+            @course = Course.find_by_id(@batch.course_id)
+          else
+            @batch = nil
+            style = style+"style='background-color:red;color:#fff;'"
+          end  
         else
           @batch = nil
           style = style+"style='background-color:red;color:#fff;'"

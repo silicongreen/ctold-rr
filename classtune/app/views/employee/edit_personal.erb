@@ -48,9 +48,18 @@
             :year_range => 83.years.ago..4.years.ago ,:popup=>"force"%></div>
       </div>
             <div class="extender"></div>
+            
           
           <hr class="label-underline"></hr>
-
+          
+          <div class="label-field-pair">
+             <label for="master_student_nationality"><%= t('nationality') %></label>
+             <div class="text-input-bg"><%= select :employee, :nationality_id, Country.all.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @employee.nationality_id %></div>
+          </div>
+        <div class="extender"></div>
+            
+          
+          <hr class="label-underline"></hr>
           <div class="label-field-pair">
             <label><%= t('marital_status') %></label>
             <div class="text-input-bg"><%= select :employee, :marital_status, [["#{t('single')}","single"], ["#{t('married')}","married"],["#{t('divorced')}","divorced"]] %></div>

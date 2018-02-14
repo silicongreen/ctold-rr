@@ -89,6 +89,7 @@ class Employee < ActiveRecord::Base
         self.nationality_method
       else
         self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
+        self.nationality_method.nationality.id = self.nationality_method.id
         self.nationality_method.nationality
       end  
     end

@@ -159,7 +159,7 @@
                 <% unless @student.email.nil? or @student.email.blank? %>
                   <div class="row">
                     <div class="row_label">
-                        <div><%= t('email') %></div>
+                        <div><%= t('email_for_school_use') %></div>
                     </div>
                     <div class="row_data">
                         <div><%= @student.email %></div>
@@ -382,7 +382,7 @@
                 
 
                 <% unless @assigned_employees.empty? %>
-                  <div class="row">
+                  <div class="row" style="display:none;">
                       <div class="row_label">
                           <div><%= t('group_tutor') %>(s)</div>
                       </div>

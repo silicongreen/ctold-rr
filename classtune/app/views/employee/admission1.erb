@@ -214,7 +214,7 @@
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
         <label for="employee_nationality"><%= t('nationality') %></label>
-        <div class="text-input-bg"><%= select :employee, :nationality_id, @nationalities.map {|c| [c.name, c.id]}, :selected => @employee.nationality_id || @selected_value %></div>
+        <div class="text-input-bg"><%= select :employee, :nationality_id, @nationalities.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @employee.nationality_id || @selected_value %></div>
       </div>
       <br />
       

@@ -18,4 +18,5 @@
 
 class Country < ActiveRecord::Base
   default_scope :order=>'name ASC'
+  belongs_to :nationality, :primary_key=>"alpha_3_code", :foreign_key=>"code3"
 end

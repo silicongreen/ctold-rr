@@ -112,6 +112,13 @@ class DashboardController extends Controller
             $user_id = Yii::app()->user->id;
             $school_id = Yii::app()->user->schoolId;
             
+            if(Yii::app()->user->isParent)
+            {
+                $std_obj = new Students();
+                $std_details = $std_obj->getStudentById($student_id);
+                $user_id = $std_details->user_id;
+            }    
+            
             if(!Yii::app()->user->isTeacher)
             {
                 $time_table = new TimetableEntries;
@@ -188,8 +195,8 @@ class DashboardController extends Controller
                 $page_size = 10;
             }
             $objreminder = new Reminders();
-            $response['data']['unread_total'] = $objreminder->getReminderTotalUnread(Yii::app()->user->id);
-            $response['data']['total'] = $objreminder->getReminderTotal(Yii::app()->user->id);
+            $response['data']['unread_total'] = $objreminder->getReminderTotalUnread($user_id);
+            $response['data']['total'] = $objreminder->getReminderTotal($user_id);
             $has_next = false;
             if ($response['data']['total'] > $page_number * $page_size)
             {
@@ -197,7 +204,7 @@ class DashboardController extends Controller
             }
             $response['data']['has_next'] = $has_next;
             
-            $feeds = $objreminder->getUserReminderNew(Yii::app()->user->id,$page_number,$page_size);
+            $feeds = $objreminder->getUserReminderNew($user_id,$page_number,$page_size);
             
             $response['data']['feeds'] = $this->formatFeeds($feeds);
             

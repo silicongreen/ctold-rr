@@ -1,17 +1,20 @@
 <% c = 'even' %>
+<% top_margin = 134 %>
+
+<% @subject_groups = [] %>
  <div id="page-yield"  class="available_sections sjws subject-result-landscape"> 
 <div class="container_body">
     <div id="grouped_exam_report">        
         <table id="pdf-table" class="sjws_table_intro sjws_table_head" width="100%" cellspacing="0">
-            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">                          
+            <tr class="even">                          
                 <% total_mark = 0 %>
                 <% full_mark = 0 %>
                 <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
-                <td class="col-pdf" colspan="1">
+                <td class="col-pdf border-left-none" colspan="1">
                     <h4><%= subjects['name'] %></h4>
                     
                 </td>
-                <td class="col-pdf" colspan="1" class="td-align-right">
+                <td class="col-pdf td-align-right" colspan="1">
                     <h4>
                       <%= @connect_exam_obj.name %>&nbsp;
                       <% if month_number.to_i>6 %>
@@ -21,18 +24,21 @@
                       <% end %>  
                     </h4>
                 </td>
-                <td class="col-pdf rotate" rowspan="2"><div><span>Below Requirement</span></div></td>
-                <td class="col-pdf rotate" rowspan="2"><div><span>With help</span></div></td>
-                <td class="col-pdf rotate" rowspan="2"><div><span>Without help</span></div></td>
-                <td class="col-pdf rotate" rowspan="2"><div><span>High level</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span><br/>Below<br/><br/>Requirement</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span><br/>With help</span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span><br/>Without help<br/><br/></span></div></td>
+                <td class="col-pdf rotate" rowspan="2"><div><span><br/>High level<br/><br/></span></div></td>
             </tr>     
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>"> 
-                <td class="col-pdf" colspan="2">
+                <td class="col-pdf margin-padding-0" colspan="2">
                     <h4>NAME : <%= @student.full_name %></h4>
-                    <h4>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h4>
+                    <h4>Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
                 </td>
             </tr> 
-            <% subject_groups = get_subject_group(subjects['id']) %>          
+            <% subject_groups = get_subject_group(subjects['id']) %> 
+            <% if subject_groups %>
+              <% total_subject = subject_groups.count %>
+            <% end %>
             <% ilooop = 0 %>  <% @group_loop = 0 %> <% all_total_mark = 0 %><% all_full_mark = 0 %>                   
             <% subject_groups.each do |group_name| %>
               <% groupCount = 1 %>
@@ -41,13 +47,13 @@
               <% if subject_subgroup %>
                 <% groupCount = subject_subgroup.count %>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td class="text_left" rowspan="<%=groupCount.to_i %>" colspan="1"><%= group_name.name.to_s %><%=groupCount.to_i %></td>  
+                    <td class="text_left col-pdf" rowspan="<%=groupCount.to_s %>" colspan="1"><%= group_name.name.to_s %><%=groupCount.to_s %></td>  
                     <% isublooop = 0 %>
                     <% subject_subgroup.each do |sub_group_name| %>
                       <% if isublooop > 0 %>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% end %>
-                      <td class="text_left" colspan="1"> 
+                      <td class="text_left col-pdf" colspan="1"> 
                           <%= sub_group_name %>
                       </td>
                       <% unless @report_data['report']['exams'].blank? %>  
@@ -74,30 +80,30 @@
                       <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
                       <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
                       <% if mark_percentage.to_f < 50 %>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 50 && mark_percentage.to_f < 70 %>                          
-                        <td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 70 && mark_percentage.to_f < 85 %> 
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 85 %>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
                       <% else %>
                         
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% end %>  
                       <% @group_loop = @group_loop+1 %>
                     </tr>
@@ -125,36 +131,37 @@
                   <% end %>  
                 <% end %>  
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                    <td colspan="2" class="text_left"><%= group_name.name.to_s %></td> 
+                    
+                    <td colspan="2" class="text_left col-pdf subject-group-<%= total_subject %>"><%= group_name.name.to_s %></td> 
 
                     <% total_avg = total_mark.to_f/avg_counter.to_i %>                                                          
                     <% mark_percentage = (total_avg.to_f/full_mark.to_f)*100 %>  
 
                       <% if mark_percentage.to_f < 50 %>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 50 && mark_percentage.to_f < 70 %>                          
-                        <td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 70 && mark_percentage.to_f < 85 %> 
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
-                        <td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td>
                       <% elsif  mark_percentage.to_f >= 85 %>
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
-                        <td class="col-pdf text_center">
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">
                             *
                         </td>
                       <% else %>
                         
-                        <td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td><td class="col-pdf text_center">&nbsp;</td>
+                        <td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td><td class="col-pdf text_center start_width">&nbsp;</td>
                       <% end %> 
 
                 </tr>  
@@ -170,22 +177,10 @@
               if !@exam_comments.blank?
                 exam_comment = @exam_comments['comments']
                 exam_effort = @exam_comments['effort']
-                end
+              end
             %>
             <% if subjects['no_exams_sjws'].to_i == 1 %>
-                
-                <% all_mark_percentage = (all_total_mark.to_f/all_full_mark.to_f)*100 %>
-                <%  grade = GradingLevel.percentage_to_grade(all_mark_percentage, @batch.id) %>
-                <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                  <td colspan="2" class="text_left"><b>Accumulation of assessment criteria</b></td>
-                <% if !grade.blank? and !grade.name.blank? %>
-                  <td colspan="2" class="text_left"><b>Grade:<%= grade.name %></b></td>
-                  <td colspan="2" class="text_left"><b>Effort: <%= exam_effort %></b></td>
-                <% else %>
-                  <td class="col-2"><b>N/A</b></td>
-                  <td colspan="2" class="text_left"><b>Effort: <%= exam_effort %></b></td> 
-                <% end %>                              		  
-                </tr>
+               
             <% else %>               
             
               <% unless @report_data['report']['exams'].blank? %>  
@@ -211,31 +206,45 @@
               <%  grade = GradingLevel.percentage_to_grade(written_main_mark, @batch.id) %>
               
               <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                <td colspan="2" class="text_left"><b>Accumulated grade on written work in class</b></td>
+                <td colspan="2" class="text_left col-pdf"><b>Accumulated grade on written work in class</b></td>
               <% if !grade.blank? and !grade.name.blank? %>
-                 <td colspan="2" class="text_left"><b>Grade:<%= grade.name %></b></td>
-                 <td colspan="2" class="text_left"><b>Effort: <%= exam_effort %></b></td> 
+                 <td colspan="2" class="text_left col-pdf"><b>Grade:&nbsp;<%= grade.name %></b></td>
+                 <td colspan="2" class="text_left col-pdf"><b>Effort:&nbsp;<%= exam_effort %></b></td> 
               <% else %>
-                 <td class="col-2"><b>N/A</b></td>
-                 <td colspan="2" class="text_left"><b>Effort: <%= exam_effort %></b></td> 
+                 <td class="col-2 col-pdf"><b>N/A</b></td>
+                 <td colspan="2" class="text_left col-pdf"><b>Effort:&nbsp;<%= exam_effort %></b></td> 
               <% end %>            		  
               </tr>    
             <% end %>
               
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                <td colspan="6" class="text_left"><b>COMMENTS:</b></td> 		  
+                <td colspan="6" class="text_left col-pdf"><b>COMMENTS:</b></td> 		  
             </tr>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                <td colspan="6" rowspan="6" class="text_left"><%=exam_comment%></td> 		  
+                <td colspan="6" rowspan="6" class="text_left col-pdf fixed-height-170"><%=exam_comment%></td> 		  
             </tr>
         </table>
-        <p>&nbsp;</p>
-        <table class='sjws_table_head' width="100%" >                 
-            <tr>
-                <td class="col-pdf">TEACHER'S SIGNATURE: .................................... </td>                          
-                <td class="col-pdf">DATE: <%=Time.now.strftime("%d-%m-%Y")%> </td>                          
-            </tr> 
-        </table>
+         
+        <% @subject_id_current = subjects['id'].to_i  %>
+         <% @teacher_name = "Teachers Signature" %>
+          <% sbj_data = Subject.find_by_id(@subject_id_current) %>
+          <% 
+            unless sbj_data.blank?
+              emp = sbj_data.employees
+              unless emp.blank?
+                @teacher_name = emp[0].full_name
+              end
+            end
+           %>
+          <table class='sjws_table_head footer_sign' width="100%" >                 
+
+              <tr>
+                  <td class="col-pdf align-center"><b><%= @teacher_name %></b></td>  
+                  <td class="col-pdf border-none">&nbsp;</td>
+                  <td class="col-pdf align-center"><b>Date</b></td>                          
+              </tr>
+          </table>
+        
     </div>
 </div>
 
@@ -246,6 +255,5 @@
     {
         text-align: right !important;
     }
- 
-
+    
 </style>    

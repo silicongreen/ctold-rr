@@ -422,11 +422,11 @@ class MarksController < ApplicationController
                 data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Report Card</a>"
                 data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
               elsif exam_connect.result_type == 14
-                data[k][0] = exam_connect_batch.to_s
-                data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
-                data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
-                data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
-                data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+                data[k][0] = exam_connect_batch.to_s 
+                data[k][1] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD ("+exam_connect.name.to_s+")</a>"
+                data[k][2] = "<a href='/exam/continues/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>REPORT CARD ("+exam.subject_name.to_s+")</a>"
+                data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
+                data[k][4] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
               end
 
             else

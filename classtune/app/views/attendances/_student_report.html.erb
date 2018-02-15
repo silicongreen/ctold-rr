@@ -1,9 +1,6 @@
-<% 
-  if @current_user.admin? 
-    batches = Batch.active.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
-  else 
-    batches = @current_user.employee_record.batches.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
-  end 
+<%  
+   batches = Batch.active.find(:all,:select=>"batches.id as batch_id, batches.name as name", :group => "name")
+ 
 %>
 
 <% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>

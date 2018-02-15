@@ -1,29 +1,182 @@
+
+
+<% eca_subject = false %>
+<% unless params[:subject_id].blank? %>
+  <% subData = Subject.find_by_id(params[:subject_id].to_i) %>
+  <% unless subData.blank?  %>
+      <%  if subData.no_exams_sjws.to_i == 1 && subData.code!="CL Tr" && subData.code!="CTC" %>
+        <% eca_subject = true %>
+      <% end %>
+  <% end %>
+
+  
+<% end %>
+
+<% if eca_subject == true %>
 <% if @connect_exam_obj.result_type == 14 %>
   <% unless @report_data.blank?  or  @report_data['report'].blank? %>
         <% subjecjs_group = [] %>
         <% unless @report_data['report']['subjects'].blank? %> 
           <% @report_data['report']['subjects'].each do |subjects| %>
-            <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
-              <% subjecjs_group << subjects['id'] %>
-              
-            <% else %>
-              
-              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_c1_to_c4", :locals=>{:subjects=>subjects} %>
-              
-            <% end %>
-            <% unless subjects.equal? @report_data['report']['subjects'].last %>
-              <%  if subjects['no_exams_sjws'].to_i != 1 || subjects['code']=="CL Tr" || subjects['code']=="CTC" %>
+              <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
+                <% subjecjs_group << subjects['id'] %>
+              <% end %>
+            <% end %>     
+         <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>     
+        <% end %>    
+  <% end %>
+<% end %>  
+
+
+<% else %>
+<% if @connect_exam_obj.result_type == 14 %>
+  <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+        <% subjecjs_group = [] %>
+        <% unless @report_data['report']['subjects'].blank? %> 
+          <% @report_data['report']['subjects'].each do |subjects| %>
+            <% if params[:subject_id].blank? or params[:subject_id].to_i == subjects['id'].to_i %>
+              <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
+                <% subjecjs_group << subjects['id'] %>
+
+              <% else %>
+
+                <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_c1_to_c4", :locals=>{:subjects=>subjects} %>
+
+              <% end %>
+              <% unless subjects.equal? @report_data['report']['subjects'].last %>
+                <%  if subjects['no_exams_sjws'].to_i != 1 || subjects['code']=="CL Tr" || subjects['code']=="CTC" %>
+                  <% if params[:subject_id].blank? %>
+                    <div class="page-break"></div> 
+                  <% end %>
+                <% end %>  
+              <% else %>
                 <div class="page-break"></div> 
-              <% end %>  
-            <% else %>
-              <div class="page-break"></div> 
-              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
-            <% end %>  
+                <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
+              <% end %> 
+            <% end %>    
             
           <% end %>     
         <% end %> 
 
   <% end %>
-<% end %>
+<% end %>  
+<% end %>                
+                
+ <style>
+ table.sjws_table_head tr.even td.col-pdf, 
+ table.sjws_table_head tr.odd td.col-pdf,  
+ table.sjws_table_head tr.even td.col-pdf div span, 
+ table.sjws_table_head tr.odd td.col-pdf div span,
+ table.sjws_table_head tr.odd td.col-pdf h4,
+ table.sjws_table_head tr.even td.col-pdf h4,
+ table.sjws_table_head tr td.col-pdf
+ {
+    font-size: 26px !important;
+    padding: 4px 8px !important;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+
+ .fixed-height-170
+ {
+    height: 170px;
+    max-height: 170px;
+    min-height: 170px;
+    overflow: hidden;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+
+ table.sjws_table_head tr.even td.td-align-right
+ {
+    border-left: none !important;
+    text-align: right !important;
+    padding: 4px 8px !important;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+ table.sjws_table_head tr.even td.border-left-none h4
+ {
+   font-size: 32px !important;
+   margin-left: 0px !important;
+ }
+ 
+ td.margin-padding-0 h4
+ {
+   margin-left: -5px !important;
+ }
+ table.sjws_table_head tr.even td.border-left-none,
+ table.sjws_table_head tr.odd td.border-left-none
+ {
+    border-right: none !important; 
+    padding: 0px !important;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+ .sjws_table_head td.rotate {
+  height: 190px;
+  white-space: nowrap; 
+  line-height: 20px;
+  font-weight: 500;
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+.sjws_table_head td.rotate div {
+    -webkit-transform: translate(5px, 70px) rotate(270deg);
+    transform: translate(5px, 70px) rotate(270deg);
+}
+.sjws_table_head td.rotate div span {  
+  padding: 15px;
+}
+
+table.sjws_table_head tr td.align-center
+ {
+    text-align: center !important;
+    width:35% !important;
+    border-top:1px dashed black;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+ .start_width
+ {
+    width: 70px !important;
+    font-size: 28px !important;
+    font-weight: bold;
+ }
+ table.sjws_table_head tr.even td.extra_padding, table.sjws_table_head tr.odd td.extra_padding
+ {
+    padding: 23px 12px !important;
+ }
+  table.sjws_table_head tr td b font
+  {
+     font-family: "Helvetica Narrow","Arial Narrow",Tahoma,Arial,Helvetica,sans-serif;
+  }
+  table.border-two-side
+  {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+  }
+  table.border-two-side tr td.extra_padding
+  {
+      padding: 24px 12px !important;
+  }
+ table.sjws_table_head tr.even td.width-60
+ {
+   width: 200px;
+ }
+ .footer_sign
+  {
+      margin-top: 134px;
+  }
+ 
+  table.sjws_table_head tr.even td.subject-group-6, table.sjws_table_head tr.odd td.subject-group-6
+  {
+     padding: 8px 8px !important;
+  }
+  table.sjws_table_head tr.even td.subject-group-5, table.sjws_table_head tr.odd td.subject-group-5
+  {
+     padding: 14px 8px !important;
+  }
+  table.sjws_table_head tr.even td.subject-group-4, table.sjws_table_head tr.odd td.subject-group-4
+  {
+     padding: 22px 8px !important;
+  }
+
+ </style>
 
 

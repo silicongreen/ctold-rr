@@ -3,21 +3,23 @@
         <% subjecjs_group = [] %>
         <% unless @report_data['report']['subjects'].blank? %> 
           <% @report_data['report']['subjects'].each do |subjects| %>
-            <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
-              <% subjecjs_group << subjects['id'] %>
-              
-            <% else %>
-              
-              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_kg1_to_kg2", :locals=>{:subjects=>subjects} %>
-              
-            <% end %>
-            <% unless subjects.equal? @report_data['report']['subjects'].last %>
-              <%  if subjects['no_exams_sjws'].to_i != 1 || subjects['code']=="CL Tr" || subjects['code']=="CTC" %>
+            <% if params[:subject_id].blank? or params[:subject_id].to_i == subjects['id'].to_i %>
+              <%  if subjects['no_exams_sjws'].to_i == 1 && subjects['code']!="CL Tr" && subjects['code']!="CTC" %>
+                <% subjecjs_group << subjects['id'] %>
+
+              <% else %>
+
+                <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_kg1_to_kg2", :locals=>{:subjects=>subjects} %>
+
+              <% end %>
+              <% unless subjects.equal? @report_data['report']['subjects'].last %>
+                <%  if subjects['no_exams_sjws'].to_i != 1 || subjects['code']=="CL Tr" || subjects['code']=="CTC" %>
+                  <div class="page-break"></div> 
+                <% end %>  
+              <% else %>
                 <div class="page-break"></div> 
-              <% end %>  
-            <% else %>
-              <div class="page-break"></div> 
-              <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
+                <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
+              <% end %> 
             <% end %>  
             
           <% end %>     

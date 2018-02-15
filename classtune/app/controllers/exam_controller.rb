@@ -2756,7 +2756,7 @@ class ExamController < ApplicationController
     file_name = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s,pdf_name)
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['from']
-    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}") && api_from != "local" && MultiSchool.current_school.id != 312
+    if File.file?(file_name) && Rails.cache.exist?("continues_#{@id}_#{@batch.id}") && api_from != "local" && api_from != "local_remote" && MultiSchool.current_school.id != 312
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
@@ -4232,9 +4232,9 @@ class ExamController < ApplicationController
               :save_only    => for_save,
               :orientation => 'Landscape',
               :page_size=>'A5',
-              :margin => {    :top=> 10,
-              :bottom => 10,
-              :left=> 10,
+              :margin => {:top=> 5,
+              :bottom =>0,
+              :left=> 30,
               :right => 10},
               :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
               :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 

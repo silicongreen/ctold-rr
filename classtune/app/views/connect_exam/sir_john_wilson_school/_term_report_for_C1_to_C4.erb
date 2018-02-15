@@ -50,8 +50,10 @@
                   <% end %>
                 <% end %>  
               <% else %>
+                <% if params[:subject_id].blank? %>
                 <div class="page-break"></div> 
                 <%= render :partial=>"/connect_exam/sir_john_wilson_school/subject_report_eca", :locals=>{:subjecjs_group=>subjecjs_group} %>
+                <% end %>
               <% end %> 
             <% end %>    
             

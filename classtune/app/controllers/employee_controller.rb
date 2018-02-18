@@ -1503,6 +1503,10 @@ ORDER BY emp.first_name ASC"
     @batches = Batch.active
     @subjects = []
   end
+  
+  def employee_subjects
+    @assigned_subjects = EmployeesSubject.find_all_by_employee_id(params[:id])
+  end
 
   def update_subjects
     unless params[:batch_id].nil?
@@ -1603,6 +1607,24 @@ ORDER BY emp.first_name ASC"
     render :update do |page|
       page.replace_html 'department-select', :partial => 'select_department'
       page.replace_html 'employee-list', :partial => 'employee_list'
+    end
+  end
+  
+  def remove_employee_subject
+    @department_id = Employee.find(params[:id]).employee_department_id
+    @departments = EmployeeDepartment.find(:all,:conditions =>{:status=>true})
+    @subject = Subject.find(params[:id1])
+    if TimetableEntry.find_all_by_subject_id_and_employee_id(@subject.id,params[:id]).blank?
+      EmployeesSubject.find_by_employee_id_and_subject_id(params[:id], params[:id1]).destroy
+      flash[:notice]="#{t('subject_de_assigned_successfully')}"
+    else
+      TimetableEntry.destroy_all(:subject_id => @subject.id,:employee_id=>params[:id])
+      EmployeesSubject.find_by_employee_id_and_subject_id(params[:id], params[:id1]).destroy
+      flash[:notice]="#{t('subject_de_assigned_successfully')}"
+    end
+    @assigned_subjects = EmployeesSubject.find_all_by_employee_id(params[:id])
+    render :update do |page|
+      page.replace_html 'department-select', :partial => 'department_select_employee'
     end
   end
 

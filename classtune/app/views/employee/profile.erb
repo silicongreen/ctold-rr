@@ -162,6 +162,12 @@
           </li>
         <% end %>
       <% end %>
+          
+      <% if (@current_user.admin? or permitted_to? :employee_subjects, :employee) %>
+        <li>
+          <%= link_to "Employee Subjects", {:action=>'employee_subjects',:id=>@employee.id}, {:class => 'f2'} %>
+        </li>
+      <% end %>
 
       <% if ((@current_user.admin? or permitted_to? :remove, :employee) and @current_user != @employee.user) %>
         <li>

@@ -1697,6 +1697,8 @@ authorization do
       :employees_list,
       :applicant_list,
       :view_all_applicant,
+      :remove_employee_subject,
+      :employee_subjects,
       :advanced_search,
       :hr
     ]

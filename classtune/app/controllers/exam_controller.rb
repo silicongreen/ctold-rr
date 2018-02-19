@@ -1528,7 +1528,8 @@ class ExamController < ApplicationController
     @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
     
     if @for_save.blank?
-      render :pdf => 'student_wise_generated_report'
+      render :pdf => 'student_wise_generated_report',
+      :footer => {:html => { :template=> 'layouts/footer_single.html'}}
     else
       pdf_name = "group_exam_"+params[:exam_group].to_s+"_"+params[:student].to_s+".pdf"
       dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s)
@@ -1537,6 +1538,7 @@ class ExamController < ApplicationController
         FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
       end
       render :pdf  => 'student_wise_generated_report',
+      :footer => {:html => { :template=> 'layouts/footer_single.html'}},
       :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
       :save_only    => true
     end

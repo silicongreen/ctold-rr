@@ -17,11 +17,13 @@ class ReportQuery < ActiveRecord::Base
     if column_type == :association
       parent_model_name = table_name
       parent_model = Kernel.const_get(parent_model_name.to_sym)
-      assoc_object=parent_model.reflect_on_association(column_name.to_sym).klass
-      if assoc_object.respond_to? :report_data
-        return assoc_object.report_data
-      else
-        return assoc_object.all
+      if !parent_model.blank? and !parent_model.reflect_on_association(column_name.to_sym).blank?
+        assoc_object=parent_model.reflect_on_association(column_name.to_sym).klass
+        if assoc_object.respond_to? :report_data
+          return assoc_object.report_data
+        else
+          return assoc_object.all
+        end
       end
     end
   end

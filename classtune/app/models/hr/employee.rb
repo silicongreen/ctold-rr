@@ -26,7 +26,7 @@ class Employee < ActiveRecord::Base
   belongs_to  :employee_position
   belongs_to  :employee_grade
   belongs_to  :employee_department
-  belongs_to  :nationality_method, :class_name => 'Country',:foreign_key=>"nationality_id"
+  belongs_to  :nationality, :class_name => 'Country',:foreign_key=>"nationality_id"
   belongs_to  :home_country, :class_name => 'Country'
   belongs_to  :office_country, :class_name => 'Country'
   belongs_to  :user
@@ -83,17 +83,17 @@ class Employee < ActiveRecord::Base
   #  def after_initialize
   #    self.biometric_id = biometric_id.present? ? biometric_id : BiometricInformation.find_by_user_id(user_id).try(:biometric_id)
   #  end
-  def nationality
-    unless self.nationality_id.blank?
-      if self.nationality_method.nationality.blank?
-        self.nationality_method
-      else
-        self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
-        self.nationality_method.nationality.id = self.nationality_method.id
-        self.nationality_method.nationality
-      end  
-    end
-  end
+#  def nationality
+#    unless self.nationality_id.blank?
+#      if self.nationality_method.nationality.blank?
+#        self.nationality_method
+#      else
+#        self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
+#        self.nationality_method.nationality.id = self.nationality_method.id
+#        self.nationality_method.nationality
+#      end  
+#    end
+#  end
   
   def setup_employee_leave
     leave_type = EmployeeLeaveType.all

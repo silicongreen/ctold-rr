@@ -25,8 +25,8 @@ class Student < ActiveRecord::Base
   belongs_to :country
   belongs_to :batch
   belongs_to :student_category
-  belongs_to :nationality_method, :class_name => 'Country',:foreign_key=>"nationality_id"
-  belongs_to :dual_nationality_method, :class_name => 'Country',:foreign_key=>"dual_nationality_id"
+  belongs_to :nationality, :class_name => 'Country',:foreign_key=>"nationality_id"
+  belongs_to :dual_nationality, :class_name => 'Country',:foreign_key=>"dual_nationality_id"
   belongs_to :user
 
   #  has_one    :immediate_contact,:class_name => 'Guardian',:foreign_key => 'id',:primary_key => 'immediate_contact_id'
@@ -106,28 +106,28 @@ class Student < ActiveRecord::Base
       raise ActiveRecord::Rollback
     end
   end
-  def nationality
-    unless self.nationality_id.blank?
-      if self.nationality_method.nationality.blank?
-        self.nationality_method
-      else
-        self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
-        self.nationality_method.nationality.id = self.nationality_method.id
-        self.nationality_method.nationality
-      end  
-    end
-  end
-  
-  def dual_nationality
-    unless self.dual_nationality_id.blank?
-      if self.dual_nationality_method.nationality.blank?
-        self.dual_nationality_method
-      else
-        self.dual_nationality_method.nationality.name = self.dual_nationality_method.nationality.nationality
-        self.dual_nationality_method.nationality
-      end  
-    end
-  end
+#  def nationality
+#    unless self.nationality_id.blank?
+#      if self.nationality_method.nationality.blank?
+#        self.nationality_method
+#      else
+#        self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
+#        self.nationality_method.nationality.id = self.nationality_method.id
+#        self.nationality_method.nationality
+#      end  
+#    end
+#  end
+#  
+#  def dual_nationality
+#    unless self.dual_nationality_id.blank?
+#      if self.dual_nationality_method.nationality.blank?
+#        self.dual_nationality_method
+#      else
+#        self.dual_nationality_method.nationality.name = self.dual_nationality_method.nationality.nationality
+#        self.dual_nationality_method.nationality
+#      end  
+#    end
+#  end
 
   def validate
     

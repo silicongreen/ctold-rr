@@ -122,6 +122,7 @@ class Import < ActiveRecord::Base
             process_row.slice! "_id"
             assoc = settings[model_name.to_s.underscore]["associations"].present? ? settings[model_name.to_s.underscore]["associations"].find{|assoc| process_row.pluralize.index(assoc.to_s)==0 } : Array.new
             process_row = assoc ? assoc : process_row
+            
             if settings[model_name.to_s.underscore]["associations"].present? and settings[model_name.to_s.underscore]["associations"].include? process_row.to_sym
              
               if settings[model_name.to_s.underscore]["map_combination"].present? and settings[model_name.to_s.underscore]["map_combination"].keys.include? process_row.to_s
@@ -131,14 +132,16 @@ class Import < ActiveRecord::Base
                 associated_id = all_data.select{|data| data.second == csv_row[index]}.first.nil? ? nil : all_data.select{|data| data.second == csv_row[index]}.first.first
               else
                 assoc_reflection = model_name.reflect_on_association(process_row.to_sym)
-                associated_model = assoc_reflection.klass
-                associated_column = settings[model_name.to_s.underscore]["associated_columns"][process_row.to_s]
-                primary_key = model_name.reflect_on_association(process_row.to_sym).options[:foreign_key] || :id
-                associated_id =  case assoc_reflection.macro
-                when :belongs_to
-                  associated_model.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
-                else
-                  assoc_reflection.klass.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                unless assoc_reflection.blank?
+                  associated_model = assoc_reflection.klass
+                  associated_column = settings[model_name.to_s.underscore]["associated_columns"][process_row.to_s]
+                  primary_key = model_name.reflect_on_association(process_row.to_sym).options[:foreign_key] || :id
+                  associated_id =  case assoc_reflection.macro
+                  when :belongs_to
+                    associated_model.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                  else
+                    assoc_reflection.klass.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                  end
                 end
               end
               value_hash = value_hash.merge(database_row_name.to_sym => associated_id)

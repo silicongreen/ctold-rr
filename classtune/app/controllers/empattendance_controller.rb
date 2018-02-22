@@ -566,7 +566,7 @@ class EmpattendanceController < ApplicationController
                   num_week_off_days_remaining = 0
                 end
                 if num_event_days_remaining < 0
-                  num_event_days_remaining = 0
+                  num_event_days_remaining = 0 
                 end
                 leave_n_absent_count = leave_n_absent_count + num_week_off_days_remaining
                 leave_n_absent_count = leave_n_absent_count + num_event_days_remaining

@@ -462,6 +462,7 @@ class EmpattendanceController < ApplicationController
                 unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
                   emp_weekdays = @employee_setting.weekdays.split(",").map(&:to_i)
                   week_off_day = num_weekdays - emp_weekdays
+                  
                   if @report_date_to.to_date > Date.today
                     a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                   else
@@ -522,6 +523,7 @@ class EmpattendanceController < ApplicationController
                 if  cardAttendancesInWeekendDay.to_i < 0
                   cardAttendancesInWeekendDay = 0
                 end
+                
                 num_week_off_days = num_week_off_days - cardAttendancesInWeekendDay
                 
                 #Check IF Attendance exists on Event days
@@ -540,8 +542,9 @@ class EmpattendanceController < ApplicationController
                 #Check IF Absent/Leave exists on Weekend days
                 leave_n_absent_weekendday_count = 0
                 unless a_week_off_days.blank?
-                  leave_n_absent_weekendday_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  leave_n_absent_weekendday_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ") and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")").size
                 end
+                
                 if  leave_n_absent_weekendday_count.to_i < 0
                   leave_n_absent_weekendday_count = 0
                 end
@@ -550,14 +553,21 @@ class EmpattendanceController < ApplicationController
                 #Check IF Absent/Leave exists on Event days
                 leave_n_absent_events_count = 0
                 unless event_dates.blank?
-                  leave_n_absent_events_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + event_dates.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  leave_n_absent_events_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + event_dates.map{ |l| "'" + l + "'" }.join(",") + ") and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")").size
                 end
+                
                 if  leave_n_absent_events_count.to_i < 0
                   leave_n_absent_events_count = 0
                 end
                 num_event_days_remaining = event_dates_count - leave_n_absent_events_count
                 
                 #Calculate the Leave and Absent Count (Add the remaining Weekend and Event date)
+                if num_week_off_days_remaining < 0
+                  num_week_off_days_remaining = 0
+                end
+                if num_event_days_remaining < 0
+                  num_event_days_remaining = 0
+                end
                 leave_n_absent_count = leave_n_absent_count + num_week_off_days_remaining
                 leave_n_absent_count = leave_n_absent_count + num_event_days_remaining
                 

@@ -166,15 +166,15 @@
                           <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;">Name</td>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="5"><%= e.full_name %> </td>
+                            <td class="col-pdf" colspan="5"><%= e.employee_info %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.full_name %> </td>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
                             <% end %>
                           <% else %>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="6"><%= e.full_name %> </td>
+                            <td class="col-pdf" colspan="6"><%= e.employee_info %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.full_name %> </td>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
                             <% end %>
                           <% end %>
                       </tr>
@@ -182,15 +182,15 @@
                           <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;">Deg.</td>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="5"><%= e.employee_position.name  %> </td>
+                            <td class="col-pdf" colspan="5"><%= e.position_name  %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_position.name  %> </td>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.position_name  %> </td>
                             <% end %>
                           <% else %>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="6"><%= e.employee_position.name  %> </td>
+                            <td class="col-pdf" colspan="6"><%= e.position_name  %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_position.name  %> </td>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.position_name  %> </td>
                             <% end %>
                           <% end %>
                       </tr>
@@ -217,22 +217,28 @@
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>
                             <td class="col-pdf">
-                              <% if em[7] == 'yes' %>  
+                              <% if ( em[7] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[7] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %>
                                 &#10004;
                               <% else %>  
                                 -
                               <% end %>  
                             </td>
                             <td class="col-pdf">
-                              <% if em[9] == 'yes' %>  
-                                &#10004;
-                              <% else %>  
+                              <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
                                 -
-                              <% end %>
+                              <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                -
+                              <% else %>   
+                                <% if em[8] == 'yes' %>
+                                &#10004;
+                                <% else %>
+                                -
+                                <% end %>
+                              <% end %>  
                             </td>
                             <% if j % 4 == 0 %>
                             <td class="col-pdf">
-                                <% if em[10] == 'yes' %>  
+                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
                                   &#10004;
                                 <% else %>  
                                   -
@@ -240,7 +246,7 @@
                             </td>
                             <% else %>
                             <td class="col-pdf" style="border-right: 3px solid #000;">
-                                <% if em[10] == 'yes' %>  
+                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
                                   &#10004;
                                 <% else %>  
                                   -

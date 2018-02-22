@@ -79,7 +79,6 @@
               <td><%= 'Weekdays' %><span class="required">*</span></td>
               <td class="right">
                   <ul class="nav" style="width: 100%;">
-
                     <% @default_weekdays.each_pair do |key,value| %>
                       <li style="display: inline-block; width: 25%; height: 30px;">
                         <%= check_box_tag "weekdays[]", key, @weekday_set.include?(key.to_s), :class => "flat" %>&nbsp;&nbsp;<%= t(value.downcase) %>

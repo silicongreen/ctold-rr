@@ -3,3 +3,4 @@ school:
  groups_312: "Teachers-1992+1995+1996+2261+2262+2265,Office Staff-1994,MLSS-2263"
  order_by_custom_312: true
  hide_blank_312: true
+ exclude_details_dept_id_312: "2265,1995"

@@ -74,13 +74,13 @@
                         <td class="col-3">&nbsp;</td>
                         <% i = i + 1 %>
                       </tr>  
-                      <% if page_one_done == false and k == 41 %>
+                      <% if page_one_done == false and k == 39 %>
                         <% page_one_done = true %>
                         <% k = 0 %> 
-                        <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
+                        <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 23px;">
                             <td class="col-pdf" colspan="7">&nbsp;</td>
                         </tr>  
-                      <% elsif page_one_done and k == 45 %>
+                      <% elsif page_one_done and k == 47 %>
                         <% k = 0 %> 
                         <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
                             <td class="col-pdf" colspan="7">&nbsp;</td>
@@ -94,13 +94,13 @@
                         <td class="col-pdf" colspan="7">&nbsp;</td>
                     </tr> 
                     <% end %>
-                    <% if page_one_done == false and k == 41 %>
+                    <% if page_one_done == false and k == 39 %>
                       <% page_one_done = true %>
                       <% k = 0 %> 
-                      <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 20px;">
+                      <tr style="border: 1px solid #fff; border-bottom: 1px solid #000; height: 23px;">
                           <td class="col-pdf" colspan="7">&nbsp;</td>
                       </tr>  
-                    <% elsif page_one_done == true and k == 45 %>
+                    <% elsif page_one_done == true and k == 47 %>
                       <% k = 0 %> 
                       <tr style="border: 1px solid #fff; border-bottom: 1px solid #000;  height: 28px;">
                           <td class="col-pdf" colspan="7">&nbsp;</td>
@@ -208,6 +208,7 @@
                           <td class="col-pdf" style="border-right: 3px solid #000;">Leave</td>
                           <% end %>
                       </tr>
+                      <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                             <% if newPage %>
@@ -254,9 +255,15 @@
                   <% if j % 4 == 0 %>
                     <% newPage = true %>
                     <% if j < 5 %>
-                      <div style="clear: both; height: 80px;"></div>
+                      <% height = 50 %>
+                      <% pg_height = 31 - num_date.to_i %>
+                      <% hght = height + ( pg_height * 20 ) %>
+                      <div style="clear: both; height: <%= hght %>px;"></div>
                     <% else %>
-                      <div style="clear: both; height: 140px;"></div>
+                      <% height = 168 %>
+                      <% pg_height = 31 - num_date.to_i %>
+                      <% hght = height + ( pg_height * 19 ) %>
+                      <div style="clear: both; height: <%= hght %>px;"></div>
                     <% end %>
                   <% end %>
                   <% j = j + 1 %>

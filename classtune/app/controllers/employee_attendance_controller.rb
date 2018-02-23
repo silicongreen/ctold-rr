@@ -559,13 +559,14 @@ class EmployeeAttendanceController < ApplicationController
 
             @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
             @emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date")
-            @settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
+            #@settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
+            @settings = EmployeeSetting.find(:all)
             
             k = 0;
             m = 0
             num_weekdays = [0,1,2,3,4,5,6]
             a_week_off_days = []
-            abort(@settings.length.to_s + " " + @emp_attendance.length.to_s + "  " + @cardAttendances.length.to_s)
+            abort("LENGTH: " + @settings.length.to_s + " " + @emp_attendance.length.to_s + "  " + @cardAttendances.length.to_s)
             @employees.each do |employee|
               e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
               @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}

@@ -734,6 +734,7 @@ class EmployeeAttendanceController < ApplicationController
               :bottom => bottom,
               :left=> 10,
               :right => 10},
+              :encoding => 'utf8',
               :header => {:html => { :template=> 'layouts/report/card_attendance_header_' + MultiSchool.current_school.code.to_s + '.html'}},
               :footer => {:html => { :template=> 'layouts/report/card_attendance_footer_' + MultiSchool.current_school.code.to_s + '.html'}} 
    

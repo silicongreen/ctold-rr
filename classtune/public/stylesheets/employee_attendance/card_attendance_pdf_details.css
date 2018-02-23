@@ -188,6 +188,7 @@ p.tick_sign:before {
     display:inline-block;
     content: '';
     display: block;
+    margin-left: 10px;
 
     /*Make it a small rectangle so the border will create an L-shape*/
     width: 6px;
@@ -197,7 +198,7 @@ p.tick_sign:before {
     border: solid #000;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
-    border-width: 0 5px 5px 0;
+    border-width: 0 3px 3px 0;
 
     /*Rotate the L 45 degrees to turn it into a checkmark*/
     transform: rotate(45deg);

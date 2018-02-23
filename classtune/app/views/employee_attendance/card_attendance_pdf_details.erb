@@ -142,7 +142,7 @@
               <% j = 1 %>
               <% newPage = true %>
               <% @employees.each do |e| %>
-                <% employee_attendances = @employee_attendance.select{|e1| e.id.to_s == e1[1].to_s} %>
+                <% employee_attendances = @employee_attendance[e.id] %>
                 <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
                   <div style='float: left; width: 24.8%;'>
                     <table id="pdf-table_new" width="100%" cellspacing="0">

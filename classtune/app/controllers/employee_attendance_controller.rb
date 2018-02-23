@@ -716,7 +716,7 @@ class EmployeeAttendanceController < ApplicationController
         end
       end
     end
-    abort(@employee_attendance[2125].inspect)
+    
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
     unless adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].nil?
       @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")

@@ -145,20 +145,7 @@
                 <% employee_attendances = @employee_attendance[e.id] %>
                 <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
                  
-                  <% if j % 4 == 0 %>
-                    <% newPage = true %>
-                    <% if j < 5 %>
-                      <% height = 50 %>
-                      <% pg_height = 31 - num_date.to_i %>
-                      <% hght = height + ( pg_height * 20 ) %>
-                      <div style="clear: both; height: <%= hght %>px;"></div>
-                    <% else %>
-                      <% height = 168 %>
-                      <% pg_height = 31 - num_date.to_i %>
-                      <% hght = height + ( pg_height * 19 ) %>
-                      <div style="clear: both; height: <%= hght %>px;"></div>
-                    <% end %>
-                  <% end %>
+                  
                   <% j = j + 1 %>
                 <% end %>  
               <% end %>

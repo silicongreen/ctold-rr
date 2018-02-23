@@ -572,6 +572,7 @@ class EmployeeAttendanceController < ApplicationController
               
               emp_id = employee.user_id
               cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
+              @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
 
               if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                   in_time = ' - '
@@ -581,7 +582,7 @@ class EmployeeAttendanceController < ApplicationController
                   leave = ' - '
               else 
                 #@employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
-                employee_setting = @settings.select{ |s| s.employee_id == employee.id}
+                #employee_setting = @settings.select{ |s| s.employee_id == employee.id}
                 
 #                unless employee_setting.blank?
 #                  @employee_setting = employee_setting[0]

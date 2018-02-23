@@ -211,7 +211,7 @@
                       </tr>
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
-                        <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                        <tr class="<%= cycle('odd_summary', 'even_summary') %>" style="border-bottom: 1px solid #000;">
                             <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
                             <% end %>
@@ -231,7 +231,7 @@
                                 - 
                               <% else %>   
                                 <% if em[8] == 'yes' %>
-                                <p class="tick_sign"></p>
+                                <span class="tick_sign"></span> 
                                 <% else %>
                                 - 
                                 <% end %>
@@ -262,22 +262,27 @@
                   <% if j % 4 == 0 %>
                     <% newPage = true %>
                     <% if j < 5 %>
-                      <% height = 50 %>
+                      <% height = 40 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
                       <div style="clear: both; height: <%= hght %>px;"></div>
                     <% else %>
-                      <% height = 168 %>
+                      <% height = 142 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 19 ) %>
-                      <div style="clear: both; height: <%= hght %>px;"></div>
+                      <div style="clear: both; height: <%= hght %>px;"><%= hght %></div>
                     <% end %>
                   <% end %>
                   <% j = j + 1 %>
                 <% end %>  
               <% end %>
+	      <% if (j - 1 )  % 4 != 0 %>
+		<% k = 4 - ( (j - 1 ) % 4) %>
+		<% p = 24.8 * k %>
+		<div style="float: left; width: <%= p %>%;"></div>
+  	        <div style="clear: both; height: 5px;"></div>
+	      <% end; %> 	 		
             <% end %>
         </div>
-
     </div>
 </div>

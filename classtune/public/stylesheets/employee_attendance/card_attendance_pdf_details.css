@@ -100,7 +100,7 @@ tr.odd_summary{
     border-right: 1px solid #000;
     border-top: 1px solid #000;
     text-align: center;
-
+    border-bottom: 1px solid #000000;
 }
 
 .odd_summary td{
@@ -108,11 +108,9 @@ tr.odd_summary{
     border: 1px solid #000000;
     border-right: 1px solid #000;
     border-top: 1px solid #000;
+    border-bottom: 1px solid #000000;	
     text-align: center;
-
 }
-
-
 
 .table-header td{
     padding: 8px 8px 8px 11px;
@@ -137,7 +135,8 @@ table#pdf-table{
 }
 table#pdf-table_new{
     border: 1px solid #000000;
-    border-collapse:collapse
+    border-collapse:collapse;
+    border-bottom: 1px solid #000;
 }
 
 
@@ -169,8 +168,8 @@ table#pdf-table_new{
 
 .page-break td{
     height: 100px;
-    border: 1px solid #fff;
-    border-bottom: 1px solid #ADACAB;
+    #border: 1px solid #fff;
+    #border-bottom: 1px solid #ADACAB;
 }
 
 td.col-bold{
@@ -184,21 +183,25 @@ td.col-bold{
     display: block;
 }
 
-p.tick_sign:before {
+span.tick_sign{
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+span.tick_sign:before {
     display:inline-block;
     content: '';
-    display: block;
-    margin-left: 10px;
 
     /*Make it a small rectangle so the border will create an L-shape*/
-    width: 6px;
-    height: 12px;
+    width: 3px;
+    height: 6px;
 
     /*Add a white border on the bottom and left, creating that 'L' */
     border: solid #000;
     border-left: 0px solid #fff;
     border-top: 0px solid #fff;
-    border-width: 0 3px 3px 0;
+    border-width: 0 2px 2px 0;
 
     /*Rotate the L 45 degrees to turn it into a checkmark*/
     transform: rotate(45deg);

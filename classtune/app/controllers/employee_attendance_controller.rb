@@ -566,7 +566,7 @@ class EmployeeAttendanceController < ApplicationController
             }
             
             @emp_attendance = Rails.cache.fetch("empattendance_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
-              emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date", :order => 'date asc')
+              emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date", :order => 'attendance_date asc')
               emp_attendance
             }
             

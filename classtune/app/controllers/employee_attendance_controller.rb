@@ -565,7 +565,7 @@ class EmployeeAttendanceController < ApplicationController
             m = 0
             num_weekdays = [0,1,2,3,4,5,6]
             a_week_off_days = []
-            
+            abort("here")
             @employees.each do |employee|
               e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
               @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}

@@ -140,6 +140,7 @@
                   <% end %>    
               </table>
             <% else %>
+              <% events = @event_dates.map{|c| c.to_date} %>
               <% j = 1 %>
 	      <% num = @employee_attendance[@employees[0].id].length %>	
               <% newPage = true %>
@@ -212,6 +213,7 @@
                       </tr>
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
+                        <% weekdate = em[10].split(",").map{|c| c.to_date} %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>" style="border-bottom: 1px solid #000;">
                             <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
@@ -219,9 +221,9 @@
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>
                             <td class="col-pdf">
-                              <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                              <% if events.include?(em[2].to_date) %> 
                                 - 
-                              <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                              <% elsif weekdate.include?(em[2].to_date) %>
                                 - 
                               <% else %>   
                                 <% if em[7] == 'yes' %>
@@ -232,9 +234,9 @@
                               <% end %>
                             </td>
                             <td class="col-pdf">
-                              <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                              <% if events.include?(em[2].to_date) %> 
                                 - 
-                              <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                              <% elsif weekdate.include?(em[2].to_date) %>
                                 - 
                               <% else %>   
                                 <% if em[8] == 'yes' %>
@@ -246,9 +248,9 @@
                             </td>
                             <% if j % 4 == 0 %>
                             <td class="col-pdf">
-                                <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                <% if events.include?(em[2].to_date) %> 
                                   - 
-                                <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                <% elsif weekdate.include?(em[2].to_date) %>
                                   - 
                                 <% else %>   
                                   <% if em[9] == 'yes' %>
@@ -260,9 +262,9 @@
                             </td>
                             <% else %>
                             <td class="col-pdf" style="border-right: 3px solid #000;">
-                                <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                <% if events.include?(em[2].to_date) %> 
                                   - 
-                                <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                <% elsif weekdate.include?(em[2].to_date) %>
                                   - 
                                 <% else %>   
                                   <% if em[9] == 'yes' %>
@@ -284,7 +286,7 @@
                       <% height = 40 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
-                      <div style="clear: both; height: <%= hght %>px;"></div>
+                      <div style="clear: both; height: <%= hght %>px;"> </div>
                     <% else %>
                       <% height = 142 %>
                       <% pg_height = 31 - num_date.to_i %>

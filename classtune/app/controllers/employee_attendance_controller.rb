@@ -586,6 +586,7 @@ class EmployeeAttendanceController < ApplicationController
               
               emp_id = employee.user_id
               cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
+              dtcard = cardAttendance.map{ |c| c.date.strftime("%Y-%m-%d")}
               @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
 
               if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
@@ -596,7 +597,6 @@ class EmployeeAttendanceController < ApplicationController
                   leave = ' - '
               else 
                 employee_setting = @settings.select{ |s| s.employee_id == employee.id}
-                
                 unless employee_setting.blank?
                   @employee_setting = employee_setting[0]
                   unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
@@ -628,7 +628,8 @@ class EmployeeAttendanceController < ApplicationController
                   end
                   num_week_off_days = a_week_off_days.length
                 end
-                
+                 
+                p = 0
                 (@report_date_from.to_date..@report_date_to.to_date).each do |d|
                   in_time = ' - '
                   out_time = ' - '
@@ -636,26 +637,27 @@ class EmployeeAttendanceController < ApplicationController
                   absent = ' - '
                   leave = ' - '
                   dt = d.strftime("%Y-%m-%d")
-                  dtCardAttendance = cardAttendance.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
-                  cardAttendance = cardAttendance.delete_if{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
+                  #dtCardAttendance = cardAttendance.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
+                  #cardAttendance = cardAttendance.delete_if{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
                   
-#                  unless dtCardAttendance.nil? or dtCardAttendance.empty? or dtCardAttendance.blank?
-#                    unless employee_setting.blank?
-#                      @employee_setting = employee_setting[0]
-#                      ofc_time = Time.parse(dtCardAttendance[0].min_time)
-#                      in_offc_time = @employee_setting.start_time.to_time.strftime("%H%M").to_i
-#                      offc_time = ofc_time.strftime("%H%M").to_i
-#                      if offc_time > in_offc_time
-#                        late = 'yes'
-#                      end
-#                      in_time = Time.parse(dtCardAttendance[0].min_time).strftime("%I:%M %p")
-#                      out_time = Time.parse(dtCardAttendance[0].max_time).strftime("%I:%M %p")
-#                      #if cardAttendance[0]['time'].to_time.strftime("%H%M").to_i > @employee_setting.start_time.strftime("%H%M").to_i
-#                    else
-#                      in_time = Time.parse(dtCardAttendance[0].min_time).strftime("%I:%M %p")
-#                      out_time = Time.parse(dtCardAttendance[0].max_time).strftime("%I:%M %p")
-#                    end
-#                  else
+                  if dtcard.include?(dt)
+                    dtCardAttendance = cardAttendance[p]
+                    p = p + 1
+                    unless employee_setting.blank?
+                      @employee_setting = employee_setting[0]
+                      ofc_time = Time.parse(dtCardAttendance.min_time)
+                      in_offc_time = @employee_setting.start_time.to_time.strftime("%H%M").to_i
+                      offc_time = ofc_time.strftime("%H%M").to_i
+                      if offc_time > in_offc_time
+                        late = 'yes'
+                      end
+                      in_time = Time.parse(dtCardAttendance.min_time).strftime("%I:%M %p")
+                      out_time = Time.parse(dtCardAttendance.max_time).strftime("%I:%M %p")
+                    else
+                      in_time = Time.parse(dtCardAttendance.min_time).strftime("%I:%M %p")
+                      out_time = Time.parse(dtCardAttendance.max_time).strftime("%I:%M %p")
+                    end
+                  else
 #                    in_time = ' - '
 #                    out_time = ' - '
 #                    late = ' - '
@@ -675,7 +677,7 @@ class EmployeeAttendanceController < ApplicationController
 #                      absent = ' - '
 #                      leave = ' - '
 #                    end
-#                  end
+                  end
                   
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []

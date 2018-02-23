@@ -141,6 +141,7 @@
               </table>
             <% else %>
               <% j = 1 %>
+	      <% num = @employee_attendance[@employees[0].id].length %>	
               <% newPage = true %>
               <% @employees.each do |e| %>
                 <% employee_attendances = @employee_attendance[e.id] %>
@@ -300,13 +301,17 @@
                 <% c = p.to_s + "%" %>
 		<div style="float: left; width: <%= c %>;"></div>
   	        <div style="clear: both; height: 5px;"></div>
-	      <% end; %>
+	      <% end %>
               <% if j < 5 %>
-                <% height = 40 %>
+                <% height = 0 %>
+		<% pg_height = 31 - num.to_i %>
+                <% hght = height + ( pg_height * 20 ) %>
               <% else %>
-                <% height = 142 %>
+                <% height = 77 %>
+		<% pg_height = 31 - num.to_i %>
+                <% hght = height + ( pg_height * 20 ) %> 
               <% end %>  
-              <div style="clear: both; height: <%= height %>px;"></div>  
+              <div style="clear: both; height: <%= hght %>px;"></div>  
               <div class="PageClass">
                 <%= "------------------------------------------" %><br />
                 <font size='3'><%= "Principal's Signature" %></font>

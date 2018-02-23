@@ -581,10 +581,10 @@ class EmployeeAttendanceController < ApplicationController
             a_week_off_days = []
             
             @employees.each do |employee|
-#              e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
-#              @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}
-#              
-#              emp_id = employee.user_id
+              e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
+              @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}
+              
+              emp_id = employee.user_id
               cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
               @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
 

@@ -214,68 +214,7 @@
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
                         <% weekdate = em[10].split(",").map{|c| c.to_date} %>
-                        <tr class="<%= cycle('odd_summary', 'even_summary') %>" style="border-bottom: 1px solid #000;">
-                            <% if newPage %>
-                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
-                            <% end %>
-                            <td class="col-pdf"><%= em[5]  %></td>
-                            <td class="col-pdf"><%= em[6]  %></td>
-                            <td class="col-pdf">
-                              <% if events.include?(em[2].to_date) %> 
-                                - 
-                              <% elsif weekdate.include?(em[2].to_date) %>
-                                - 
-                              <% else %>   
-                                <% if em[7] == 'yes' %>
-                                <span class="tick_sign"></span> 
-                                <% else %>
-                                - 
-                                <% end %>
-                              <% end %>
-                            </td>
-                            <td class="col-pdf">
-                              <% if events.include?(em[2].to_date) %> 
-                                - 
-                              <% elsif weekdate.include?(em[2].to_date) %>
-                                - 
-                              <% else %>   
-                                <% if em[8] == 'yes' %>
-                                <span class="tick_sign"></span> 
-                                <% else %>
-                                - 
-                                <% end %>
-                              <% end %>  
-                            </td>
-                            <% if j % 4 == 0 %>
-                            <td class="col-pdf">
-                                <% if events.include?(em[2].to_date) %> 
-                                  - 
-                                <% elsif weekdate.include?(em[2].to_date) %>
-                                  - 
-                                <% else %>   
-                                  <% if em[9] == 'yes' %>
-                                  <span class="tick_sign"></span> 
-                                  <% else %>
-                                  - 
-                                  <% end %>
-                                <% end %>   
-                            </td>
-                            <% else %>
-                            <td class="col-pdf" style="border-right: 3px solid #000;">
-                                <% if events.include?(em[2].to_date) %> 
-                                  - 
-                                <% elsif weekdate.include?(em[2].to_date) %>
-                                  - 
-                                <% else %>   
-                                  <% if em[9] == 'yes' %>
-                                  <span class="tick_sign"></span> 
-                                  <% else %>
-                                  - 
-                                  <% end %>
-                                <% end %>   
-                            </td>
-                            <% end %>
-                        </tr>
+                        
                       <% end %>
                       <% newPage = false %>  
                     </table>

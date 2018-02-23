@@ -700,17 +700,16 @@ class EmployeeAttendanceController < ApplicationController
                     emp[8] = absent
                     emp[9] = leave
                     emp[10] = a_week_off_days.join(",")  
-                    data[employee.id] = emp
+                    data[k] = emp
                     k += 1
                   end
                 end
-                
+                @employee_attendance[employee.id] = data
+                k = 0
+                data = []
               end
             end
           end
-          @employee_attendance = data
-
-
         else
           data = []
           @employee_attendance = data

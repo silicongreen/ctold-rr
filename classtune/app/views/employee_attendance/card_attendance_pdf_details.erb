@@ -209,7 +209,53 @@
                           <% end %>
                       </tr>
                       <% num_date = employee_attendances.length %>
-                      
+                      <% employee_attendances.each do |em| %>
+                        <%= debug em.inspect %>
+                        <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                            <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
+                            <% end %>
+                            <td class="col-pdf"><%= em[5]  %></td>
+                            <td class="col-pdf"><%= em[6]  %></td>
+                            <td class="col-pdf">
+                              <% if ( em[7] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[7] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %>
+                                &#10004;
+                              <% else %>  
+                                -
+                              <% end %>  
+                            </td>
+                            <td class="col-pdf">
+                              <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                -
+                              <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                -
+                              <% else %>   
+                                <% if em[8] == 'yes' %>
+                                &#10004;
+                                <% else %>
+                                -
+                                <% end %>
+                              <% end %>  
+                            </td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf">
+                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
+                                  &#10004;
+                                <% else %>  
+                                  -
+                                <% end %>   
+                            </td>
+                            <% else %>
+                            <td class="col-pdf" style="border-right: 3px solid #000;">
+                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
+                                  &#10004;
+                                <% else %>  
+                                  -
+                                <% end %>   
+                            </td>
+                            <% end %>
+                        </tr>
+                      <% end %>
                       <% newPage = false %>  
                     </table>
                   </div>

@@ -143,6 +143,7 @@
               <% newPage = true %>
               <% @employees.each do |e| %>
                 <% employee_attendances = @employee_attendance[e.id] %>
+                <% @employee_attendance = @employee_attendance.delete_at(@employee_attendance.index(e.id)) %>
                 <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
                   <div style='float: left; width: 24.8%;'>
                     <table id="pdf-table_new" width="100%" cellspacing="0">
@@ -210,6 +211,7 @@
                       </tr>
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
+                        <%= debug em.inspect %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                             <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>

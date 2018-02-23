@@ -225,14 +225,14 @@
                             </td>
                             <td class="col-pdf">
                               <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
-                                - 1
+                                - 
                               <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
-                                - 2
+                                - 
                               <% else %>   
                                 <% if em[8] == 'yes' %>
-                                &#10004;
+                                <p>&#10004; milk<br>&#10004; butter<br>&#10004; bread<p>
                                 <% else %>
-                                - 3
+                                - 
                                 <% end %>
                               <% end %>  
                             </td>

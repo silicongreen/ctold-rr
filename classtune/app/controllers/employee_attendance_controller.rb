@@ -595,40 +595,39 @@ class EmployeeAttendanceController < ApplicationController
                   absent = ' - '
                   leave = ' - '
               else 
-                #@employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
-                #employee_setting = @settings.select{ |s| s.employee_id == employee.id}
+                employee_setting = @settings.select{ |s| s.employee_id == employee.id}
                 
-#                unless employee_setting.blank?
-#                  @employee_setting = employee_setting[0]
-#                  unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
-#                    emp_weekdays = @employee_setting.weekdays.split(",").map(&:to_i)
-#                    week_off_day = num_weekdays - emp_weekdays
-#                    if @report_date_to.to_date > Date.today
-#                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                    else
-#                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                    end
-#                    num_week_off_days = a_week_off_days.length
-#                  else
-#                    emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
-#                    week_off_day = num_weekdays - emp_weekdays
-#                    if @report_date_to.to_date > Date.today
-#                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                    else
-#                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                    end
-#                    num_week_off_days = a_week_off_days.length
-#                  end
-#                else
-#                  emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
-#                  week_off_day = num_weekdays - emp_weekdays
-#                  if @report_date_to.to_date > Date.today
-#                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                  else
-#                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
-#                  end
-#                  num_week_off_days = a_week_off_days.length
-#                end
+                unless employee_setting.blank?
+                  @employee_setting = employee_setting[0]
+                  unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
+                    emp_weekdays = @employee_setting.weekdays.split(",").map(&:to_i)
+                    week_off_day = num_weekdays - emp_weekdays
+                    if @report_date_to.to_date > Date.today
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    else
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    end
+                    num_week_off_days = a_week_off_days.length
+                  else
+                    emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
+                    week_off_day = num_weekdays - emp_weekdays
+                    if @report_date_to.to_date > Date.today
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    else
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    end
+                    num_week_off_days = a_week_off_days.length
+                  end
+                else
+                  emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
+                  week_off_day = num_weekdays - emp_weekdays
+                  if @report_date_to.to_date > Date.today
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                  else
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                  end
+                  num_week_off_days = a_week_off_days.length
+                end
                 
                 (@report_date_from.to_date..@report_date_to.to_date).each do |d|
 #                  in_time = ' - '

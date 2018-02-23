@@ -184,3 +184,7 @@ td.col-bold{
     display: block;
 }
 
+p.tick_sign:before {
+  content: "\2717";
+  color: crimson;
+}

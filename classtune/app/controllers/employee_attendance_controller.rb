@@ -669,11 +669,16 @@ class EmployeeAttendanceController < ApplicationController
                     unless eattend.include?(dt)
                       emp_attendance = e_attendance[q]
                       q = q + 1
-                      unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
-                        absent = '-'
-                        leave = 'yes'
-                      else  
-                        absent = 'yes'
+                      unless emp_attendance.nil?
+                        unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
+                          absent = '-'
+                          leave = 'yes'
+                        else  
+                          absent = 'yes'
+                          leave = ' - '
+                        end
+                      else
+                        absent = ' - '
                         leave = ' - '
                       end
                     else

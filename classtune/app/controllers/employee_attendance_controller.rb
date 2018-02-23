@@ -548,7 +548,10 @@ class EmployeeAttendanceController < ApplicationController
           
           order_str = "employee_positions.order_by asc"
           
-          @employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+          @employees = Rails.cache.fetch("employees_data_#{MultiSchool.current_school.id}"){
+            employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+            employees
+          }
           
           employess_id = @employees.map(&:user_id)
           employee_profile_ids = @employees.map(&:id)
@@ -557,9 +560,20 @@ class EmployeeAttendanceController < ApplicationController
           department_names = []
           unless @employees.nil? or @employees.empty?
 
-            @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
-            @emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date")
-            @settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
+            @cardAttendances = Rails.cache.fetch("cardattendance_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
+              cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+              cardAttendances
+            }
+            
+            @emp_attendance = Rails.cache.fetch("empattendance_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
+              emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date")
+              emp_attendance
+            }
+            
+            @settings = Rails.cache.fetch("settings_data_#{MultiSchool.current_school.id}"){
+              settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
+              settings
+            }
             
             k = 0;
             m = 0

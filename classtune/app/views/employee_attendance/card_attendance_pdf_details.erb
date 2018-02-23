@@ -218,11 +218,17 @@
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>
                             <td class="col-pdf">
-                              <% if ( em[7] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[7] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %>
-                                &#10004;
-                              <% else %>  
-                                -
-                              <% end %>  
+                              <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                - 
+                              <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                - 
+                              <% else %>   
+                                <% if em[7] == 'yes' %>
+                                <span class="tick_sign"></span> 
+                                <% else %>
+                                - 
+                                <% end %>
+                              <% end %>
                             </td>
                             <td class="col-pdf">
                               <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
@@ -239,18 +245,30 @@
                             </td>
                             <% if j % 4 == 0 %>
                             <td class="col-pdf">
-                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
-                                  &#10004;
-                                <% else %>  
-                                  -
+                                <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                  - 
+                                <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                  - 
+                                <% else %>   
+                                  <% if em[9] == 'yes' %>
+                                  <span class="tick_sign"></span> 
+                                  <% else %>
+                                  - 
+                                  <% end %>
                                 <% end %>   
                             </td>
                             <% else %>
                             <td class="col-pdf" style="border-right: 3px solid #000;">
-                                <% if ( em[9] == 'yes' && ! @event_dates.map{|c| c.to_date}.include?(em[2].to_date) ) || ( em[9] == 'yes' && ! em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) ) %> 
-                                  &#10004;
-                                <% else %>  
-                                  -
+                                <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
+                                  - 
+                                <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
+                                  - 
+                                <% else %>   
+                                  <% if em[9] == 'yes' %>
+                                  <span class="tick_sign"></span> 
+                                  <% else %>
+                                  - 
+                                  <% end %>
                                 <% end %>   
                             </td>
                             <% end %>
@@ -279,9 +297,20 @@
 	      <% if (j - 1 )  % 4 != 0 %>
 		<% k = 4 - ( (j - 1 ) % 4) %>
 		<% p = 24.8 * k %>
-		<div style="float: left; width: <%= p %>%;"></div>
+                <% c = p.to_s + "%" %>
+		<div style="float: left; width: <%= c %>;"></div>
   	        <div style="clear: both; height: 5px;"></div>
-	      <% end; %> 	 		
+	      <% end; %>
+              <% if j < 5 %>
+                <% height = 40 %>
+              <% else %>
+                <% height = 142 %>
+              <% end %>  
+              <div style="clear: both; height: <%= height %>px;"></div>  
+              <div class="PageClass">
+                <%= "------------------------------------------" %><br />
+                <font size='3'><%= "Principal's Signature" %></font>
+              </div>  
             <% end %>
         </div>
     </div>

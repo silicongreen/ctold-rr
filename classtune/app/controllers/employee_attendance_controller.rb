@@ -585,16 +585,16 @@ class EmployeeAttendanceController < ApplicationController
 #              @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}
 #              
 #              emp_id = employee.user_id
-#              cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
-#              @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
+              cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
+              @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
 
-#              if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
-#                  in_time = ' - '
-#                  out_time = ' - '
-#                  late = ' - '
-#                  absent = ' - '
-#                  leave = ' - '
-#              else 
+              if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                  in_time = ' - '
+                  out_time = ' - '
+                  late = ' - '
+                  absent = ' - '
+                  leave = ' - '
+              else 
                 #@employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
                 #employee_setting = @settings.select{ |s| s.employee_id == employee.id}
                 
@@ -695,7 +695,7 @@ class EmployeeAttendanceController < ApplicationController
                   end
                 end
                 
-#              end
+              end
             end
           end
           @employee_attendance = data

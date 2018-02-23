@@ -195,6 +195,8 @@ p.tick_sign:before {
 
     /*Add a white border on the bottom and left, creating that 'L' */
     border: solid #000;
+    border-left: 0px solid #fff;
+    border-top: 0px solid #fff;
     border-width: 0 5px 5px 0;
 
     /*Rotate the L 45 degrees to turn it into a checkmark*/

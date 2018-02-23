@@ -666,7 +666,7 @@ class EmployeeAttendanceController < ApplicationController
                     late = ' - '
 #                    emp_attendance = e_attendance.select{|e| e.attendance_date.to_date.strftime("%Y-%m-%d") == dt && e.employee_id == employee.id}
 #                    e_attendance = e_attendance.delete_if{|e| e.attendance_date.to_date.strftime("%Y-%m-%d") == dt && e.employee_id == employee.id}
-                    unless eattend.include?(dt)
+                    if eattend.include?(dt)
                       emp_attendance = e_attendance[q]
                       q = q + 1
                       unless emp_attendance.nil?
@@ -678,7 +678,6 @@ class EmployeeAttendanceController < ApplicationController
                           leave = ' - '
                         end
                       else
-                        abort(e_attendance.inspect)
                         absent = ' - '
                         leave = ' - '
                       end
@@ -718,7 +717,7 @@ class EmployeeAttendanceController < ApplicationController
         end
       end
     end
-    abort("here")
+    abort(@employee_attendance.inspect)
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
     unless adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].nil?
       @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")

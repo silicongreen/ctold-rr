@@ -122,6 +122,7 @@ multi_school_models:
 - CollectionDiscount
 - FeeTransaction
 - FeeCollectionBatch
+- EmployeeSetting
 - CategoryBatch
 - AdditionalReportCsv
 

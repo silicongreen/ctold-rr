@@ -566,7 +566,7 @@ class EmployeeAttendanceController < ApplicationController
             }
             
             @emp_attendance = Rails.cache.fetch("empattendance_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
-              emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date")
+              emp_attendance = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date, employee_leave_type_id", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id IN (" + employee_profile_ids.join(",") + ")", :group => "employee_id, attendance_date", :order => 'date asc')
               emp_attendance
             }
             
@@ -582,6 +582,8 @@ class EmployeeAttendanceController < ApplicationController
             
             @employees.each do |employee|
               e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
+              eattend = e_attendance.map{ |c| c.attendance_date.strftime("%Y-%m-%d")}
+              
               @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}
               
               emp_id = employee.user_id
@@ -630,6 +632,7 @@ class EmployeeAttendanceController < ApplicationController
                 end
                  
                 p = 0
+                q = 0
                 (@report_date_from.to_date..@report_date_to.to_date).each do |d|
                   in_time = ' - '
                   out_time = ' - '
@@ -658,25 +661,25 @@ class EmployeeAttendanceController < ApplicationController
                       out_time = Time.parse(dtCardAttendance.max_time).strftime("%I:%M %p")
                     end
                   else
-#                    in_time = ' - '
-#                    out_time = ' - '
-#                    late = ' - '
+                    in_time = ' - '
+                    out_time = ' - '
+                    late = ' - '
 #                    emp_attendance = e_attendance.select{|e| e.attendance_date.to_date.strftime("%Y-%m-%d") == dt && e.employee_id == employee.id}
 #                    e_attendance = e_attendance.delete_if{|e| e.attendance_date.to_date.strftime("%Y-%m-%d") == dt && e.employee_id == employee.id}
-#                    unless emp_attendance.nil? or emp_attendance.blank?
-#                      emp_attendance = emp_attendance[0]
-#                      unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
-#                        #leave_types = EmployeeLeaveType.find(emp_attendance.employee_leave_type_id)
-#                        absent = '-'
-#                        leave = 'yes'
-#                      else  
-#                        absent = 'yes'
-#                        leave = ' - '
-#                      end
-#                    else
-#                      absent = ' - '
-#                      leave = ' - '
-#                    end
+                    unless eattend.include?(dt)
+                      emp_attendance = e_attendance[q]
+                      q = q + 1
+                      unless  emp_attendance.employee_leave_type_id.nil? or emp_attendance.employee_leave_type_id.empty? or emp_attendance.employee_leave_type_id.blank? 
+                        absent = '-'
+                        leave = 'yes'
+                      else  
+                        absent = 'yes'
+                        leave = ' - '
+                      end
+                    else
+                      absent = ' - '
+                      leave = ' - '
+                    end
                   end
                   
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  

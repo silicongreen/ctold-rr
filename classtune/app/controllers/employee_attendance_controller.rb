@@ -678,7 +678,7 @@ class EmployeeAttendanceController < ApplicationController
                           leave = ' - '
                         end
                       else
-                        abort(dt.to_s + "  " + q.to_s)
+                        abort(e_attendance.inspect)
                         absent = ' - '
                         leave = ' - '
                       end

@@ -726,7 +726,7 @@ class EmployeeAttendanceController < ApplicationController
       @dept_ids = @departments.map(&:id).join("+")
       @all_groups = ["Employees-" + @dept_ids]
     end
-    
+    abort("here")
     render    :pdf => "card_attendance_pdf_details",
               :orientation => orientation,
               :page_size => 'Legal',

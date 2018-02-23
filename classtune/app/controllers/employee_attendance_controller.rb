@@ -700,7 +700,7 @@ class EmployeeAttendanceController < ApplicationController
                     emp[8] = absent
                     emp[9] = leave
                     emp[10] = a_week_off_days.join(",")  
-                    data[k] = emp
+                    data[employee.id] = emp
                     k += 1
                   end
                 end
@@ -717,7 +717,7 @@ class EmployeeAttendanceController < ApplicationController
         end
       end
     end
-    
+    abort(@employee_attendance[2125].inspect)
     adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
     unless adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].nil?
       @all_groups = adv_attendance_config['groups_' + MultiSchool.current_school.id.to_s].split(",")

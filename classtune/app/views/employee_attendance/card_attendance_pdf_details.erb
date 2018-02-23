@@ -210,7 +210,7 @@
                       </tr>
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
-                        <%= debug em.inspect %>
+                        <%= debug em[10].inspect %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                             <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>

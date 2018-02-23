@@ -210,7 +210,6 @@
                       </tr>
                       <% num_date = employee_attendances.length %>
                       <% employee_attendances.each do |em| %>
-                        <%= debug em[10].inspect %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>">
                             <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;"><%= em[2]  %></td>
@@ -226,14 +225,14 @@
                             </td>
                             <td class="col-pdf">
                               <% if @event_dates.map{|c| c.to_date}.include?(em[2].to_date) %> 
-                                -
+                                - 1
                               <% elsif em[10].split(",").map{|c| c.to_date}.include?(em[2].to_date) %>
-                                -
+                                - 2
                               <% else %>   
                                 <% if em[8] == 'yes' %>
                                 &#10004;
                                 <% else %>
-                                -
+                                - 3
                                 <% end %>
                               <% end %>  
                             </td>

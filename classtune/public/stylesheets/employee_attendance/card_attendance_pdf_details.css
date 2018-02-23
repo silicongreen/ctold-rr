@@ -185,6 +185,19 @@ td.col-bold{
 }
 
 p.tick_sign:before {
-  content: "\2717";
-  color: crimson;
+    display:inline-block;
+    content: '';
+    display: block;
+
+    /*Make it a small rectangle so the border will create an L-shape*/
+    width: 3px;
+    height: 6px;
+
+    /*Add a white border on the bottom and left, creating that 'L' */
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+
+    /*Rotate the L 45 degrees to turn it into a checkmark*/
+    transform: rotate(45deg);
+  
 }

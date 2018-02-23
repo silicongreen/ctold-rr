@@ -630,13 +630,14 @@ class EmployeeAttendanceController < ApplicationController
                 end
                 
                 (@report_date_from.to_date..@report_date_to.to_date).each do |d|
-#                  in_time = ' - '
-#                  out_time = ' - '
-#                  late = ' - '
-#                  absent = ' - '
-#                  leave = ' - '
-#                  dt = d.strftime("%Y-%m-%d")
-#                  dtCardAttendance = cardAttendance.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
+                  in_time = ' - '
+                  out_time = ' - '
+                  late = ' - '
+                  absent = ' - '
+                  leave = ' - '
+                  dt = d.strftime("%Y-%m-%d")
+                  dtCardAttendance = cardAttendance.select{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
+                  cardAttendance = cardAttendance.delete_if{ |s| s.user_id == employee.user_id && s.date == dt.to_date}
                   
 #                  unless dtCardAttendance.nil? or dtCardAttendance.empty? or dtCardAttendance.blank?
 #                    unless employee_setting.blank?

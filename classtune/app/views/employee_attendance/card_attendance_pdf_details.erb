@@ -144,8 +144,89 @@
               <% @employees.each do |e| %>
                 <% employee_attendances = @employee_attendance[e.id] %>
                 <% unless employee_attendances.nil? or employee_attendances.empty? or employee_attendances.blank? %>
-                 
-                  
+                  <div style='float: left; width: 24.8%;'>
+                    <table id="pdf-table_new" width="100%" cellspacing="0">
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Ser No</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= j  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= j  %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= j  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= j  %> </td>
+                            <% end %>
+                          <% end %>
+                      </tr>
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Name</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= e.employee_info %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= e.employee_info %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
+                            <% end %>
+                          <% end %>
+                      </tr>
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;">Deg.</td>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="5"><%= e.position_name  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.position_name  %> </td>
+                            <% end %>
+                          <% else %>
+                            <% if j % 4 == 0 %>
+                            <td class="col-pdf" colspan="6"><%= e.position_name  %> </td>
+                            <% else %>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.position_name  %> </td>
+                            <% end %>
+                          <% end %>
+                      </tr>
+                      <tr class="<%= cycle('odd_summary', 'even_summary') %>">
+                          <% if newPage %>
+                          <td class="col-pdf" style="border-right: 2px solid #000;">Date</td>
+                          <% end %>
+                          <td class="col-pdf vertical-text">Arrival</td>
+                          <td class="col-pdf">Departure</td>
+                          <td class="col-pdf">late</td>
+                          <td class="col-pdf">Absent</td>
+                          <% if j % 4 == 0 %>
+                          <td class="col-pdf">Leave</td>
+                          <% else %>
+                          <td class="col-pdf" style="border-right: 3px solid #000;">Leave</td>
+                          <% end %>
+                      </tr>
+                      <% num_date = employee_attendances.length %>
+                      
+                      <% newPage = false %>  
+                    </table>
+                  </div>
+                  <% if j % 4 == 0 %>
+                    <% newPage = true %>
+                    <% if j < 5 %>
+                      <% height = 50 %>
+                      <% pg_height = 31 - num_date.to_i %>
+                      <% hght = height + ( pg_height * 20 ) %>
+                      <div style="clear: both; height: <%= hght %>px;"></div>
+                    <% else %>
+                      <% height = 168 %>
+                      <% pg_height = 31 - num_date.to_i %>
+                      <% hght = height + ( pg_height * 19 ) %>
+                      <div style="clear: both; height: <%= hght %>px;"></div>
+                    <% end %>
+                  <% end %>
                   <% j = j + 1 %>
                 <% end %>  
               <% end %>

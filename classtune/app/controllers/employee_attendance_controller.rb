@@ -517,7 +517,7 @@ class EmployeeAttendanceController < ApplicationController
         top = 5
         bottom = 18
         @date_today = @local_tzone_time.to_date
-        
+        @employee_attendance = []
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
           @report_date_from = params[:report_date_from]
           @report_date_to = params[:report_date_to]

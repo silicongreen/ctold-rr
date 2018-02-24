@@ -344,16 +344,16 @@ class EmployeeAttendanceController < ApplicationController
           
           adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
           unless adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s].nil?
-            exclude_dept_ids = "0" #adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
+            exclude_dept_ids = adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
           else
             exclude_dept_ids = "0"
           end
           conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
           
-          #@employees = Rails.cache.fetch("employees_data_details_#{MultiSchool.current_school.id}"){
-            @employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.id as dept_id, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
-          #  employees
-          #}
+          @employees = Rails.cache.fetch("employees_data_for_monthly_#{MultiSchool.current_school.id}"){
+            empdata = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.id as dept_id, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+            empdata
+          }
           
           data = []
           unless @employees.nil? or @employees.empty?

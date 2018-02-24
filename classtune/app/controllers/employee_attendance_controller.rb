@@ -168,7 +168,6 @@ class EmployeeAttendanceController < ApplicationController
     redirect_to :controller=>"employee_attendance", :action => "employee_leave_reset_by_department"
   end
 
-
   def employee_leave_reset_by_employee
     @departments = EmployeeDepartment.find(:all,:order=>'name ASC')
     @categories  = EmployeeCategory.find(:all,:order=>'name ASC')
@@ -248,7 +247,6 @@ class EmployeeAttendanceController < ApplicationController
       page.replace_html "list", :partial => 'employee_reset_sucess'
     end
   end
-
 
   def register
     @departments = EmployeeDepartment.find(:all, :conditions=>"status = true", :order=> "name ASC")

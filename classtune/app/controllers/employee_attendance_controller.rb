@@ -339,44 +339,56 @@ class EmployeeAttendanceController < ApplicationController
               end
             end
           end 
-
-          event_dates_count = @event_dates.length
-          
+             
           order_str = "employee_positions.order_by asc"
           
           adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
-          exclude_dept_ids = adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
+          unless adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s].nil?
+            exclude_dept_ids = "0" #adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
+          else
+            exclude_dept_ids = "0"
+          end
+          conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
           
-          conditions = "employee_department_id NOT IN (" + exclude_dept_ids + ")"
+          #@employees = Rails.cache.fetch("employees_data_details_#{MultiSchool.current_school.id}"){
+            @employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.id as dept_id, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+          #  employees
+          #}
           
-          @employees = Employee.find(:all, :conditions => conditions, :select => "id,user_id, concat(  first_name,' ', last_name )  as employee_info, employee_department_id, employee_position_id, '' as in_time, '' as out_time, '' as stat", :include => :employee_position, :order=>""  + order_str)
-          
-          employess_id = @employees.map(&:user_id)
           data = []
-          employee_department_ids = []
-          department_names = []
           unless @employees.nil? or @employees.empty?
-
-            @cardAttendances = CardAttendance.find(:all, :select=>'user_id, count( DISTINCT date ) as count_present',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "user_id")
+            employess_id = @employees.map(&:user_id)
+            employee_profile_ids = @employees.map(&:id)
+            
+            @cardAttendances = Rails.cache.fetch("cardattendance_data_count_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
+              cardAttendances = CardAttendance.find(:all, :select=>'user_id, count( DISTINCT date ) as count_present',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "user_id")
+              cardAttendances
+            }
+            
+            @cardAttendancesAllDates = Rails.cache.fetch("cardattendance_all_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
+              cardAttendancesAllDates = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+              cardAttendancesAllDates
+            }
+            
+            @settings = Rails.cache.fetch("settings_data_#{MultiSchool.current_school.id}"){
+              settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
+              settings
+            }
             
             k = 0;
             m = 0
             num_weekdays = [0,1,2,3,4,5,6]
-            @a_week_off_days = []
+            a_week_off_days = []
             @employees.each do |employee|
-              unless employee_department_ids.include?(employee.employee_department_id)
-                dept = EmployeeDepartment.find employee.employee_department_id
-                employee_department_ids[m] = employee.employee_department_id
-                department_names[m] = dept.name
-                dept_name = dept.name
-                m += 1
-              else
-                t = employee_department_ids.index(employee.employee_department_id)
-                dept_name = department_names[t]
-              end
-              emp_id = employee.user_id
+              event_dates_count = @event_dates.length
+              #cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
               cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
-
+              @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}
+              
+              cardAttendanceAllDates = @cardAttendancesAllDates.select{ |s| s.user_id == employee.user_id}
+              dtcard = cardAttendanceAllDates.map{ |c| c.date.strftime("%Y-%m-%d")}
+              @cardAttendancesAllDates = @cardAttendancesAllDates.delete_if{ |s| s.user_id == employee.user_id}
+              
               if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                   total_present = ' - '
                   total_absent = ' - '
@@ -384,12 +396,14 @@ class EmployeeAttendanceController < ApplicationController
                   total_leave = ' - '
               else 
                 is_late = ' - '
-                @employee_setting = EmployeeSetting.find_by_employee_id(employee.id)
-
-                unless @employee_setting.blank?
+                employee_setting = @settings.select{ |s| s.employee_id == employee.id}
+                
+                unless employee_setting.blank?
+                    @employee_setting = employee_setting[0]
                     unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
                       emp_weekdays = @employee_setting.weekdays.split(",").map(&:to_i)
                       week_off_day = num_weekdays - emp_weekdays
+
                       if @report_date_to.to_date > Date.today
                         a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                       else
@@ -407,9 +421,11 @@ class EmployeeAttendanceController < ApplicationController
                       num_week_off_days = a_week_off_days.length
                     end
                     in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
-                    lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
-                    total_late = lateAttendances.length
+                    #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'").size
+                    lateAttendances = cardAttendanceAllDates.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
+                    total_late = lateAttendances
                 else
+                  total_late = 0
                   emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
                   week_off_day = num_weekdays - emp_weekdays
                   if @report_date_to.to_date > Date.today
@@ -420,36 +436,44 @@ class EmployeeAttendanceController < ApplicationController
                   num_week_off_days = a_week_off_days.length
                 end
                 total_present = cardAttendance[0].count_present
-                cardAttendancesDate = CardAttendance.find(:all, :select=>'date',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").map(&:date).map{|l| l.to_date.strftime("%Y-%m-%d")}
+                #cardAttendancesDate = CardAttendance.find(:all, :select=>'date',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").map(&:date).map{|l| l.to_date.strftime("%Y-%m-%d")}
+                cardAttendancesDate = dtcard
                 
                 #Check IF Attendance exists on Weekend days
                 cardAttendancesInWeekendDay = 0
                 unless a_week_off_days.blank?
-                  cardAttendancesInWeekendDay = CardAttendance.find(:all, :select=>'date',:conditions=>"date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ") and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").size
+                  #cardAttendancesInWeekendDay = CardAttendance.find(:all, :select=>'date',:conditions=>"date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ") and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").size
+                  cardAttendancesInWeekendDay = dtcard.select{ |d| a_week_off_days.include?(d) }.size
                 end
                 if  cardAttendancesInWeekendDay.to_i < 0
                   cardAttendancesInWeekendDay = 0
                 end
+                
                 num_week_off_days = num_week_off_days - cardAttendancesInWeekendDay
                 
                 #Check IF Attendance exists on Event days
                 cardAttendancesInEventDay = 0
                 unless @event_dates.blank?
-                  cardAttendancesInEventDay = CardAttendance.find(:all, :select=>'date',:conditions=>"date IN (" + @event_dates.map{ |l| "'" + l + "'" }.join(",") + ") and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").size
+                  #cardAttendancesInEventDay = CardAttendance.find(:all, :select=>'date',:conditions=>"date IN (" + @event_dates.map{ |l| "'" + l + "'" }.join(",") + ") and type = 1 and profile_id = " + employee.id.to_s + "", :group => "date").size
+                  cardAttendancesInEventDay = dtcard.select{ |d| @event_dates.include?(d) }.size
                 end
                 if  cardAttendancesInEventDay.to_i < 0
                   cardAttendancesInEventDay = 0
                 end
                 event_dates_count = event_dates_count - cardAttendancesInEventDay
                 
+                
                 #Leave or Absent count in the given date (Date From to Date TO)
-                leave_n_absent_count = EmployeeAttendance.find(:all, :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id = " + employee.id.to_s + " and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")").size
-
+                leave_n_absent = EmployeeAttendance.find(:all, :select => "employee_id, attendance_date", :conditions=>"attendance_date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and employee_id = " + employee.id.to_s + " and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")")
+                leave_n_absent_count = leave_n_absent.size
+                
                 #Check IF Absent/Leave exists on Weekend days
                 leave_n_absent_weekendday_count = 0
                 unless a_week_off_days.blank?
-                  leave_n_absent_weekendday_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  #leave_n_absent_weekendday_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + a_week_off_days.map{ |l| "'" + l + "'" }.join(",") + ") and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  leave_n_absent_weekendday_count = leave_n_absent.select{ |l| l.employee_id == employee.id && a_week_off_days.include?(l.attendance_date.to_date.strftime("%Y-%m-%d")) }.size
                 end
+                
                 if  leave_n_absent_weekendday_count.to_i < 0
                   leave_n_absent_weekendday_count = 0
                 end
@@ -458,14 +482,22 @@ class EmployeeAttendanceController < ApplicationController
                 #Check IF Absent/Leave exists on Event days
                 leave_n_absent_events_count = 0
                 unless @event_dates.blank?
-                  leave_n_absent_events_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + @event_dates.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  #leave_n_absent_events_count = EmployeeAttendance.find(:all, :conditions=>"employee_id = " + employee.id.to_s + " and attendance_date IN (" + @event_dates.map{ |l| "'" + l + "'" }.join(",") + ") and attendance_date NOT IN (" + cardAttendancesDate.map{ |l| "'" + l + "'" }.join(",") + ")").size
+                  leave_n_absent_events_count = leave_n_absent.select{ |l| l.employee_id == employee.id && @event_dates.include?(l.attendance_date.to_date.strftime("%Y-%m-%d")) }.size
                 end
+                
                 if  leave_n_absent_events_count.to_i < 0
                   leave_n_absent_events_count = 0
                 end
                 num_event_days_remaining = event_dates_count - leave_n_absent_events_count
                 
                 #Calculate the Leave and Absent Count (Add the remaining Weekend and Event date)
+                if num_week_off_days_remaining < 0
+                  num_week_off_days_remaining = 0
+                end
+                if num_event_days_remaining < 0
+                  num_event_days_remaining = 0 
+                end
                 leave_n_absent_count = leave_n_absent_count + num_week_off_days_remaining
                 leave_n_absent_count = leave_n_absent_count + num_event_days_remaining
                 
@@ -482,26 +514,19 @@ class EmployeeAttendanceController < ApplicationController
                   total_absent = 0
                 end
               end
-              @emp = Employee.find(employee.id)
-              position = EmployeePosition.find(@emp.employee_position_id)
-              employee_image = "<img src='/images/HR/default_employee.png' width='100px' />"
-              if @emp.photo.file?
-                employee_image = "<img src='"+@emp.photo.url+"' width='100px' />"
-              end
-              if !employee.blank?
-                unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
-                  emp = []
-                  emp[0] = @emp.full_name
-                  emp[1] = position.name
-                  emp[2] = dept_name
-                  emp[3] = total_present
-                  emp[4] = total_absent
-                  emp[5] = total_late
-                  emp[6] = total_leave 
-                  emp[7] = @emp.employee_department_id
-                  data[k] = emp
-                  k += 1
-                end
+              
+              unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                emp = []
+                emp[0] = employee.employee_info
+                emp[1] = employee.position_name
+                emp[2] = employee.dept_name
+                emp[3] = total_present
+                emp[4] = total_absent
+                emp[5] = total_late
+                emp[6] = total_leave 
+                emp[7] = employee.dept_id 
+                data[k] = emp
+                k += 1
               end
             end
           end
@@ -553,13 +578,12 @@ class EmployeeAttendanceController < ApplicationController
             employees
           }
           
-          employess_id = @employees.map(&:user_id)
-          employee_profile_ids = @employees.map(&:id)
           data = []
-          employee_department_ids = []
-          department_names = []
           unless @employees.nil? or @employees.empty?
-
+            
+            employess_id = @employees.map(&:user_id)
+            employee_profile_ids = @employees.map(&:id)
+          
             @cardAttendances = Rails.cache.fetch("cardattendance_data_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
               cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
               cardAttendances
@@ -586,7 +610,6 @@ class EmployeeAttendanceController < ApplicationController
               
               @emp_attendance = @emp_attendance.delete_if{ |s| s.employee_id == employee.id}
               
-              emp_id = employee.user_id
               cardAttendance = @cardAttendances.select{ |s| s.user_id == employee.user_id}
               dtcard = cardAttendance.map{ |c| c.date.strftime("%Y-%m-%d")}
               @cardAttendances = @cardAttendances.delete_if{ |s| s.user_id == employee.user_id}

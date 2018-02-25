@@ -287,16 +287,19 @@ end
       batch_data = Batch.find params[:batch_id]
       batch_name = batch_data.name
     end 
-    @courses = []
-    unless batch_name.blank?
-      @courses = Rails.cache.fetch("classes_data_#{batch_name.parameterize("_")}_#{school_id}"){
-        @batch_name = batch_name;
-        batches = Batch.find(:all, :conditions => ["name = ? and is_deleted = 0", batch_name]).map{|b| b.course_id}
-        tmp_classes = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
-        class_data = tmp_classes
-        class_data
-      }
-    end
+    
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches_all = batches_all.uniq unless batches_all.empty?
+      batches_all.reject! {|s| s.name!=batch_name}
+    else
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end 
+    
+    batches = batches_all.map{|b| b.course_id}
+    
+    @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
     
     @classes = []
     @batch_id = ''

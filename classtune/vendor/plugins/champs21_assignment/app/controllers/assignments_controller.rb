@@ -44,7 +44,7 @@ class AssignmentsController < ApplicationController
       batches_all = Batch.active
     end 
     
-    batches_all_id = batches_all.map{|b| b.course_id}
+    batches_all_id = batches_all.map{|b| b.id}
     
     @assignments = []
     unless batch_id.nil?

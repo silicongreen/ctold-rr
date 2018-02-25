@@ -54,7 +54,7 @@
     <div class="subcontent-info"><%= emp_name %> </div>              
   </div>
   <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
-    <div class="subcontent-date" style="color:#000;"><b>Assigned On &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
+    <div class="subcontent-date" style="color:#000;"><b>Published Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  
     <div class="subcontent-date" style="color:#000;"><b><%= @assignment.duedate.past??  "#{t('assignment_already_due')}" : "#{t('due_in')} #{distance_of_time_in_words( Time.now ,@assignment.duedate)}   "%>&nbsp; : </b><%="<small>#{@assignment.duedate.strftime("%A, %d %B, %Y")}</small>"%></div>                                    
   </div>
   </div>

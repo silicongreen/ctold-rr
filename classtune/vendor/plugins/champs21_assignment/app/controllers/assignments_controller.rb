@@ -40,11 +40,8 @@ class AssignmentsController < ApplicationController
     batches_all_id = []
     if current_user.employee
       batches_all = @current_user.employee_record.batches
-      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
-      batches_all = batches_all.uniq unless batches_all.empty?
-      batches_all.reject! {|s| s.name!=batch_name}
     else
-      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+      batches_all = Batch.active
     end 
     
     batches_all_id = batches_all.map{|b| b.course_id}

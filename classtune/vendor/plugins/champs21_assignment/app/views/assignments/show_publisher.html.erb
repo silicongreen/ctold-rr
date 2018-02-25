@@ -83,6 +83,9 @@
               :confirm => "Do You realy want to Approve this homework?", :class => "user_button" %>
           <%= link_to "► #{t('edit_text')}",
               edit_assignment_path(@assignment), :class => "user_button"%>
+            
+          <%= link_to "► Deny Homework", { :action => 'publisher_homework', :id =>params[:id]},
+              :confirm => "Do You realy want to Deny this homework?", :class => "user_button" %>
          
           <% end %>  
           

@@ -49,7 +49,7 @@
   </div>
   <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
     <div class="subcontent-header themed_text">
-        <%=  link_to @assignment.subject.name.to_s+' - '+@assignment.title, @assignment%>
+        <%= @assignment.subject.name.to_s+' - '+@assignment.title %>
     </div>                           
     <div class="subcontent-info"><%= emp_name %> </div>              
   </div>

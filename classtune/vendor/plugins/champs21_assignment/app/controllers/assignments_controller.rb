@@ -37,19 +37,31 @@ class AssignmentsController < ApplicationController
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
+    batches_all_id = []
+    if current_user.employee
+      batches_all = @current_user.employee_record.batches
+      batches_all += @current_user.employee_record.subjects.collect{|b| b.batch}
+      batches_all = batches_all.uniq unless batches_all.empty?
+      batches_all.reject! {|s| s.name!=batch_name}
+    else
+      batches_all = Batch.find_all_by_name_and_is_deleted(batch_name,false)
+    end 
+    
+    batches_all_id = batches_all.map{|b| b.course_id}
+    
     @assignments = []
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}'  and (is_published=2 or is_published=3) ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = '#{batch_name}'  and (is_published=2 or is_published=3)",batches_all_id],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
         elsif student_section.blank?
-          @assignments =Assignment.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and (is_published=2 or is_published=3) ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and (is_published=2 or is_published=3)",batches_all_id],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
         else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
-            @assignments =Assignment.paginate  :conditions=>"batches.id = '#{batch.id}'  and (is_published=2 or is_published=3) ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.id = '#{batch.id}'  and (is_published=2 or is_published=3)",batches_all_id],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
           end
         end  
       end

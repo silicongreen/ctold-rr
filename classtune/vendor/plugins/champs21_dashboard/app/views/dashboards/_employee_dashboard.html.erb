@@ -32,11 +32,15 @@ employee_id = @current_user.employee_record.id
               
               
               <li class="als-item">
+                <% if MultiSchool.current_school.id == 340 %>
+                  <%=  link_to "<div class='homework_box_icon'><span class='f2'>HOMEWORK</span></div>", :controller => 'assignments', :action => 'index' %>
+                <% else %>  
                 <%= link_to_remote "<div class='homework_box_icon'><span class='f2'>HOMEWORK</span></div>",
                   :update => "dashboard-data",
                   :before => "Element.show('loader');j('.partial_homework').empty();",
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .homework_box_icon').addClass('active');",
                   :url => {:controller=>"dashboards",:action => "employee_homework_data"} %>
+                <% end %>  
               </li>
              
               

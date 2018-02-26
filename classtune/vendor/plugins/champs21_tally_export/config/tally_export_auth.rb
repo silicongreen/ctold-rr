@@ -25,6 +25,13 @@ authorization do
       :schedule,
       :downloads,
       :download,
+      :export_journal,
+      :export_receipt,
+      :update_fees_collection_dates,
+      :load_fees_submission_batch,
+      :load_student_details,
+      :download_journal,
+      :download_receipt,
       :failed_syncs
     ]
   end
@@ -54,6 +61,13 @@ authorization do
       :schedule,
       :downloads,
       :download,
+      :export_journal,
+      :export_receipt,
+      :update_fees_collection_dates,
+      :load_fees_submission_batch,
+      :load_student_details,
+      :download_journal,
+      :download_receipt,
       :failed_syncs
     ]
   end

@@ -393,23 +393,27 @@ class EmpattendanceController < ApplicationController
         if @report_for.to_i == 1
           #@cardAttendances = CardAttendance.all(:select=>'user_id, time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "time")
           #Rails.cache.delete("cardattendance_for_report_type_1_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
+          Rails.cache.delete("cardattendance_for_report_type_1_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
           @cardAttendances = Rails.cache.fetch("cardattendance_for_report_type_1_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
             cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
             cardAttendances
           }
         elsif @report_for.to_i == 2 or @report_for.to_i == 3
           #Rails.cache.delete("cardattendance_for_report_type_2_n_3_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
+          Rails.cache.delete("cardattendance_for_report_type_2_n_3_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
           @cardAttendances = Rails.cache.fetch("cardattendance_for_report_type_2_n_3_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
             cardAttendances = CardAttendance.find(:all, :select=>'user_id, count( DISTINCT date ) as count_present',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "user_id")
             cardAttendances
           }
           #Rails.cache.delete("cardattendance_for_report_type_1_all_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
+          Rails.cache.delete("cardattendance_for_report_type_1_all_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}")
           @cardAttendancesAllDate = Rails.cache.fetch("cardattendance_for_report_type_1_all_#{MultiSchool.current_school.id}_#{@report_date_from}_#{@report_date_to}"){
             cardAttendancesAllDate = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
             cardAttendancesAllDate
           }
         end
       
+        Rails.cache.delete("settings_data_#{MultiSchool.current_school.id}")
         @settings = Rails.cache.fetch("settings_data_#{MultiSchool.current_school.id}"){
             settings = EmployeeSetting.find(:all, :conditions=>"employee_id IN (" + employee_profile_ids.join(",") + ")")
             settings

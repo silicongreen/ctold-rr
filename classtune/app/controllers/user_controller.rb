@@ -670,10 +670,11 @@ class UserController < ApplicationController
       if api_from == "local"
         user_info = [ 
           "user_secret" => auth_response['data']['paid_user']['secret'],
-          "user_cookie" => ar_user_cookie[1].split(",")[1],
+          "user_cookie" => ar_user_cookie[0].split(",")[1],
           "user_cookie_exp" => ar_user_cookie[3].split('=')[1].to_time.to_i
         ]
         else
+          
         user_info = [ 
           "user_secret" => auth_response['data']['paid_user']['secret'],
           "user_cookie" => ar_user_cookie[1].split(",")[1],

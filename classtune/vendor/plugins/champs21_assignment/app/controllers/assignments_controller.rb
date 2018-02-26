@@ -478,7 +478,7 @@ class AssignmentsController < ApplicationController
     @assignment.employee = current_user.employee_record
     
     @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
-    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1           
+    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0        
       @assignment.is_published = 2
     end
     

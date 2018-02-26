@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="/stylesheets/tally_exports/fees_export.css">
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('export_journal') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('export_journal_desc') %></div>
+ <div id="inner-tab-menu">
+    <ul>
+      <li class='themed_bg themed-dark-hover-background' id="active-batch-link"><%= link_to_function t('show_active_batches'), "show_active_batches()" %></li>
+      <li class='themed_bg themed-dark-hover-background' id="inactive-batch-link"><%= link_to_function t('show_inactive_batches'), "show_inactive_batches()" %></li>
+    </ul>
+  </div>
+</div>
+<div id="page-yield">
+
+  <div id="batchs1">
+    <% form_for :fees_submission_batch do %>
+      <div class="label-field-pair" id="hide1"><label><%= t('select_a_batch') %></label>
+        <div class="text-input-bg"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
+            {:prompt => "#{t('select_a_batch')}"},
+            {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
+            :with => "'batch_id='+value+'&opt='+\"#{@option}\"",
+            :before => "Element.show('loader')",
+            :success => "Element.hide('loader')")}"
+          }%>
+        </div>
+        <div class="loader_div">
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none; " ) %>
+        </div>
+        <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
+
+      </div>
+    <div class="label-field-pair" id="hide2"><label><%= t('select_a_batch') %></label>
+        <div class="text-input-bg"> <%= select :fees_submission_inactive, :batch_id, @inactive_batches.map { |c| [c.full_name, c.id] },
+            {:prompt => "#{t('select_a_batch')}"},
+            {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
+            :with => "'batch_id='+value+'&opt='+\"#{@option}\"",
+            :before => "Element.show('loader')",
+            :success => "Element.hide('loader')")}"
+          }%>
+        </div>
+        <div class="loader_div">
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none; " ) %>
+        </div>
+       <%#=link_to_function "show active batches","show_active_batches()",{:class=>'user_button'}%>
+      </div>
+      <div class="label-field-pair"><label><%= t('select_fee_collection_date') %></label>
+
+        <div class="text-input-bg">
+          <div id="fees_collection_dates">
+            <%= render :partial => "fees_collection_dates"  %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div id="student"> </div>
+
+    <div id="modal-box" style="display:none;"></div>
+  </div>
+  <div class="extender"></div>
+</div>
+
+<script type="text/javascript">
+   document.observe("dom:loaded", function() {
+      j('#hide2').hide();
+      j('#active-batch-link').hide();
+  });
+  
+  j(document).ready(function(){
+      j(document).on("click", ".select_all", function(){
+            if ( j(this).prop("checked") )
+            {
+                j('.student').prop("checked", true);
+            }
+            else
+            {
+                j('.student').prop("checked", false);
+            }
+      });
+      
+      j(document).on("click", ".back", function(){
+            j('.summary').addClass('hidden');
+            j('#summary').removeClass('hidden');
+      });
+      
+      j(document).on("click", ".download", function(){
+            var sel = 1;
+            var option = j("#option").val();
+            var batch_id = j("#batch_id").val();
+            var date = j("#date").val();
+            j('.option_download').each(function(){
+                if ( j(this).prop('checked') )
+                {
+                    sel = this.value;
+                }
+            });
+            if ( sel == 4 )
+            {
+                j('.summary').addClass('hidden');
+                j('#customize').removeClass('hidden');
+            }
+            else
+            {
+              
+                var win = window.open("/tally_exports/download_" + option + "?type=" + sel + "&batch_id=" + batch_id + "&date=" + date,"_blank"); 
+                win.focus();
+            }
+            
+      });
+      
+      j(document).on("click", "#procced_download", function(){
+            var option = j("#option").val();
+            var batch_id = j("#batch_id").val();
+            var date = j("#date").val();
+            var students = ""
+            j('.student').each(function(){
+                if ( j(this).prop('checked') )
+                {
+                    students += this.value + ",";
+                }
+            });
+            students = students.substr(0, students.length - 1);
+            var win = window.open("/tally_exports/download_" + option + "?type=0&students=" + students + "&batch_id=" + batch_id + "&date=" + date,"_blank"); 
+            win.focus();
+            
+      });
+  });
+  
+  function show_inactive_batches(){
+    $('fees_submission_batch_id').value=""
+    j('#hide2').show();
+    j('#hide1').hide();
+    j('#active-batch-link').show();
+    j('#inactive-batch-link').hide();
+  }
+
+  function show_active_batches(){
+    $('fees_submission_inactive_batch_id').value=""
+    j('#hide1').show();
+    j('#hide2').hide();
+    j('#inactive-batch-link').show();
+    j('#active-batch-link').hide();
+  }
+
+  function validate_payment_mode()
+  {
+    if ($('payment')!=null)
+    {
+      if ($('payment').select('input')[0].value=="")
+      {
+        alert('<%= "#{t('select_one_payment_mode')}"%>');
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    else
+    {
+      return true;
+    }
+  }
+  function validate_fine()
+  {
+    if(isNaN($('fine_fee').value)==false)
+    {
+      if($('fine_fee').value <= 0)
+      {
+        $('fine_fee').value=""
+        alert("Please enter a positive value for fine");
+        return false;
+      }
+      else if($('fine_fee').value=="")
+      {
+        alert("Please enter a positive value for fine");
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+    else
+    {
+      $('fine_fee').value=""
+      alert("Please enter a numeric value for fine");
+      return false;
+    }
+  }
+  function prev_double(){
+    $('fees_form').setAttribute("onsubmit", "return false")
+    $('submit_button').disable();
+  }
+
+  function set_back(){
+    $('fees_form').removeAttr("onsubmit");
+    setTimeout(function(){$('submit_button').enable();},15000);
+  }
+</script>

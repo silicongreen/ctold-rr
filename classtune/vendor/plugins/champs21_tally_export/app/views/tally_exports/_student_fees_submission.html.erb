@@ -1,0 +1,283 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<input type="hidden" name="batch_id" id="batch_id" value="<%= @batch.id  %>" />
+<input type="hidden" name="date" id="date" value="<%= @date.id  %>" />
+<input type="hidden" name="option" id="option" value="<%= @option %>" />
+<div class="details" style="border: 1px solid #ccc; margin-top: 20px; float: left; width: 100%; padding-bottom: 0px;">
+    <div style="display: inline-block; float: left; width: 29%; ">
+        <div id='summary' class="summary">
+          <div style="width: 98%; text-align: center; padding: 10px; font-weight: bold; background: #eee; border-bottom: 1px solid #999; font-family: verdana;">Summary</div>
+          <div style="width: 90%; padding: 5%; font-family: verdana;">
+              <b style='font-size: 14px;'>Fees Collection:</b> <br /><span  style='font-size: 12px;'><%= @date.full_name %></span>
+              <hr />
+              <b style='font-size: 14px;'>Total Student:</b> <br /><span  style='font-size: 12px;'><%= @fees.length %></span>
+              <hr />
+              <b style='font-size: 14px;'>Total Unpaid:</b> <br /><span  style='font-size: 12px;'><%= @fees.select{|f| !f.is_paid}.length %></span>
+              <hr />
+              <b style='font-size: 14px;'>Total paid:</b> <br /><span  style='font-size: 12px;'><%= @fees.select{|f| f.is_paid}.length %></span>
+          </div>
+
+          <div style="width: 96%; text-align: center; padding: 10px; font-weight: bold;  font-family: verdana;">
+              <hr />
+              Download Options: <br />
+              <hr />
+              <div style="width: 100%; float: left; text-align: left; line-height: 1.5em;">
+                  <% if @option == 'receipt' %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="1" disabled="" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>All</span><br />
+                  <% else %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="1" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>All</span><br />
+                  <% end %>
+                  <% if @option == 'receipt' %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="2" checked="" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Only Paid Student</span><br />
+                  <% else %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="2" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Only Paid Student</span><br />
+                  <% end %>
+                  <% if @option == 'journal' %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="3" checked="" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Only Unpaid Student</span><br />
+                  <% else %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="3" disabled="" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Only Unpaid Student</span><br />
+                  <% end %>
+                  <input type="radio" name='option_download' class="option_download" id='option_download' value="4" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Customize</span>
+              </div>
+              <div style="clear: both;"></div>
+              <hr />
+              <div style="width: 91%; text-align: center; line-height: 1.5em;">
+                <input type='button' name='download' id='download' class="user_button download" value="<%= "&#x2693; Download " + @option.capitalize %> " />
+              </div>
+              <div style="clear: both;"></div>
+          </div>
+        </div>
+        <div id='customize' class="hidden summary">
+          <div style="width: 98%; text-align: center; padding: 10px; font-weight: bold; background: #eee; border-bottom: 1px solid #999; font-family: verdana;">Customized</div>
+          <div style="width: 90%; text-align: center; padding: 10px; font-weight: bold; font-family: verdana;">Select Students<br /><small style='font-weight: normal; text-align: left;'>When you Download the <%=  @option.capitalize %>, it will contain only the selected students </small> </div>
+          <hr />
+          <div style="width: 90%; padding: 10px; font-family: verdana; font-size: 12px; padding-left: 20px;"><input type="checkbox" name='select_all' id='select_all' class="select_all" value="all" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'>Select All</span></div>
+          <hr />
+          <div style="width: 84%; float: left; text-align: left; line-height: 1.5em;  padding: 4px 20px; height: 300px; overflow: auto;">
+              <% unless @fees.nil? %>
+                <% @fees.each do |fee| %>
+                  <% if fee.is_paid %>
+                  <span style="background: #49BB4B;">
+                    <input type="checkbox" name='students[]' id='students_<%= fee.id %>' class="student" value="<%= fee.id %>" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'><%= fee.first_name + " " + fee.last_name %> <%= (fee.is_paid) ? " (paid)" : "" %></span><br />
+                  </span>
+                  <% else %>
+                  <% if @option == 'receipt' %>
+                  <input type="checkbox" name='students[]' id='students_<%= fee.id %>' class="student_disabled" value="<%= fee.id %>" disabled />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'><%= fee.first_name + " " + fee.last_name %></span><br />
+                  <% else %>
+                  <input type="checkbox" name='students[]' id='students_<%= fee.id %>' class="student" value="<%= fee.id %>" />&nbsp;&nbsp;<span  style='font-size: 12px; font-family: verdana;'><%= fee.first_name + " " + fee.last_name %></span><br />
+                  <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+          </div>
+          <div style="clear: both;"></div>
+          <hr />
+          <div style="width: 91%; text-align: center; margin-bottom: 10px; padding-left: 30px; line-height: 1.5em;">
+              <input type='button' name='procced_download' id='procced_download' class="user_button" value="<%= "&#x2693; Procced " %> " style="float: left;" />&nbsp;&nbsp;
+              <input type='button' name='back' id='back' class="user_button back" value="<%= "&#8617; Back " %> " style="float: left; margin-left: 10px;" />&nbsp;&nbsp;
+          </div>
+          <div style="clear: both; height: 20px;"></div>
+        </div>
+    </div>
+    <div style="display: inline-block; width: 70%; height: auto; border-left: 1px solid #ccc;  float: left;">
+      <div style="width: 98%; text-align: center; padding: 10px; font-weight: bold; background: #eee; border-bottom: 1px solid #999; font-family: verdana;">Preview</div>
+      <div id='student_details' style="width: 90%; padding: 5%; font-family: verdana;">
+        <div id="register">
+          <div class="header">
+            <div class="prev">
+              <%= link_to_remote '◄',:url => {:action => 'load_student_details', :batch_id => @batch.id, :student => @prev_student.id, :date=> @date.id }%>
+            </div>
+            <div class="month">
+              <%= @student.full_name %><%="(#{t('transfered_to_batch')}:#{@student.batch.full_name})" unless @batch==@student.batch%>
+            </div>
+            <div class="next">
+              <%= link_to_remote '►',:url => {:action => 'load_student_details', :batch_id => @batch.id, :student => @next_student.id, :date=> @date.id }%>
+            </div>
+            <div class="extender"></div>
+          </div>
+        </div>
+        <% total_fees =0 %>
+        <% unless @fee_particulars.nil? %>
+          <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+            <tr class="tr-head">
+              <td><%= t('sl_no') %> </td>
+              <td><%= t('particulars') %></td>
+              <td><%= t('amount') %> (<%= currency %>  )</td>
+            </tr>
+            <tr class="tr-blank"></tr>
+            <% i = 0 %>
+            <% @fee_particulars.each do |fee| %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i+=1 %></td>
+                <td class="col-2"><%= fee.name %></td>
+                <td class="col-6">
+                  <%= precision_label fee.amount %>
+                </td>
+              </tr>
+              <% total_fees += fee.amount %>
+            <% end %>
+
+            <% unless @total_discount == 0 %>
+              <tr class="tr-blank"></tr>
+              <tr class="tr-blank"></tr>
+              <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+                <td class="col-1" ></td>
+                <td class="col-1" colspan="2"><span class="themed_text"><%= t('discount') %></span></td>
+              </tr>
+              <% @discounts.each do |d| %>
+                <tr class="tr-<%= cycle("odd","even") %>">
+                  <td class="col-1"><%= i+1 %></td>
+                  <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                  <td class="col-2"><%= discount_text %></td>
+                  <td class="col-6">
+                    <%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
+                  </td>
+                </tr>
+                <% i += 1 %>
+              <% end %>
+
+              <tr class="tr-blank"></tr>
+              <tr class="tr-blank"></tr>
+
+              <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+                <td class="col-8" colspan="2" ><%= t('total_discount') %> </td>
+                <td class="col-6" >
+                  <%= precision_label(@total_discount) %>
+                </td>
+              </tr>
+
+              <tr class="tr-blank"></tr>
+              <tr class="tr-blank"></tr>
+              <% total_fees = (@total_payable-@total_discount)%>
+              <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+                <td class="col-8" colspan="2" ><%= t('total_fees') %> </td>
+                <td class="col-6" >
+                  <%= precision_label(total_fees) %>
+                </td>
+              </tr>
+
+            <% end %>
+
+            <tr class="tr-blank"></tr>
+            <tr class="tr-blank"></tr>
+
+            <% unless @vat.nil? %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i+=1 %></td>
+                <td class="col-2"><span class="themed_text"><%= "VAT" %></span></td>
+                <td class="col-6">
+                  <%= precision_label(@vat.to_f) %>
+                </td>
+              </tr>
+              <% unless @financefee.is_paid? == true %>
+                <% total_fees += @vat.to_f %>
+              <% else %>
+                <% total_fees = @vat %>
+              <% end %>
+            <% end %>
+
+            <% unless @fine.nil? %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i+=1 %></td>
+                <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= Date.today %></span></td>
+                <td class="col-6">
+                  <%= precision_label(@fine.to_f) %>
+                </td>
+              </tr>
+              <% unless @financefee.is_paid? == true %>
+                <% total_fees += @fine.to_f %>
+              <% else %>
+                <% total_fees = @fine %>
+              <% end %>
+            <% end %>
+
+            <%total_fees1=total_fees%>
+            <% if @paid_fees%>
+
+              <% unless @paid_fees.blank? %>
+                <% @paid_fees.each do |trans| %>
+                  <% if trans.fine_included %>
+                    <tr class="tr-<%= cycle("odd","even") %>">
+                      <td class="col-1"><%= i+=1 %></td>
+                      <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+                      <td class="col-6">
+                        <%= precision_label(trans.fine_amount) %>
+                      </td>
+                    </tr>
+                    <% total_fees += trans.fine_amount.to_f %>
+                  <% end %>
+
+                  <% if trans.vat_included %>
+                    <tr class="tr-<%= cycle("odd","even") %>">
+                      <td class="col-1"><%= i+=1 %></td>
+                      <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>
+                      <td class="col-6">
+                        <%= precision_label(trans.vat_amount) %>
+                      </td>
+                    </tr>
+                    <% total_fees += trans.vat_amount.to_f %>
+                  <% end %>
+
+                <% end %>
+              <% end %>
+            <% end %>
+            <%unless @financefee.is_paid%>
+              <%if @fine_rule%>
+                <tr class="tr-<%= cycle("odd","even") %>">
+                  <td class="col-1"><%= i+=1 %></td>
+                  <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
+                  <td class="col-6"><%= precision_label(@fine_amount) %></td>
+                </tr>
+              <%end%>
+            <%end%>
+
+            <%balance = total_fees.to_f+@fine.to_f+@vat.to_f%>
+            <tr class="tr-<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+              <td class="col-8" colspan="2"><%= t('amount') %> :</td>
+              <td class="col-6" >
+                <%= precision_label(balance+@fine_amount.to_f) %>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td colspan="3">
+                <div class="pay_fees">
+                  <div id="payment_mode"></div>
+                  <%unless @financefee.balance == 0 %>
+                    <div class="pay_fees_buttons">
+                        <h4 style="font-family: verdana;"><%= t('unpaid') %></h4>
+                    </div>
+                  <% else %>
+                    <div class="pay_fees_buttons" style="background: #49BB4B; border: 1px solid #395838;">
+                        <h4 style="font-family: verdana; color: #fff;"><%= t('fees_paid') %></h4>
+                    </div>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+
+          <%end%>
+        </table>  
+      </div>
+    </div>
+</div>
+
+
+

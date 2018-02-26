@@ -52,13 +52,13 @@ class AssignmentsController < ApplicationController
       unless batchdata.blank?
         batch_name = batchdata.name
         if student_class_name.blank?
-          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = ?  and (is_published=2 or is_published=3)",batches_all_id,batch_name],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = ?  and (is_published=2 or is_published=3 or is_published=4)",batches_all_id,batch_name],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
         elsif student_section.blank?
-          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = ? and courses.course_name = ?  and (is_published=2 or is_published=3)",batches_all_id,batch_name,student_class_name],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+          @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.name = ? and courses.course_name = ?  and (is_published=2 or is_published=3 or is_published=4)",batches_all_id,batch_name,student_class_name],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
         else
           batch = Batch.find_by_course_id_and_name(student_section, batch_name)
           unless batch.blank?
-            @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.id = ?  and (is_published=2 or is_published=3)",batches_all_id,batch.id],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+            @assignments =Assignment.paginate  :conditions=>["batches.id IN (?) and batches.id = ?  and (is_published=2 or is_published=3 or is_published=4)",batches_all_id,batch.id],:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
           end
         end  
       end

@@ -57,7 +57,9 @@
               Pending
             <% elsif assignment.is_published == 3 %>
               Approved
-            <% end %>  
+            <% elsif assignment.is_published == 4 %>
+              Denied
+            <% end %> 
           </td
           
           <td class="col-4">

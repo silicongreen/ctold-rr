@@ -44,8 +44,8 @@
         <div class="label-field-pair">
           <label  for="assignment_subject"><%= "#{t('subject')}"%></label>   
           <div class="text-input-bg" >   
-            <span style="font-size: 15px;margin-left:10px;"><%= "#{@subjects.name}  - #{@subjects.batch.full_name}"%></span>
-            <%= hidden_field :assignment,"subject_id", :value => @subjects.id %>
+            <span style="font-size: 15px;margin-left:10px;"><%= "#{@assignment.subject.name}  - #{@assignment.subject.batch.full_name}"%></span>
+            <%= hidden_field :assignment,"subject_id", :value => @assignment.subject_id %>
           </div>
         </div>
         <% end %>

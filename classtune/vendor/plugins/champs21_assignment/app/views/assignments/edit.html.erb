@@ -40,7 +40,7 @@
           <label  for="assignment_title"><%= "#{t('title')}"%></label>
           <div class="text-input-bg"><%= f.text_field :title %></div>
         </div>
-         <% if @current_user.admin? or @subjects.count == 0 %>
+         <% if @current_user.admin? or @current_user.employee_entry.homework_publisher == 1 %>
         <div class="label-field-pair">
           <label  for="assignment_subject"><%= "#{t('subject')}"%></label>   
           <div class="text-input-bg" >   

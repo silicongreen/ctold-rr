@@ -279,7 +279,7 @@ class TallyExportsController < ApplicationController
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     
-    row_1 = ["Date","Voucher No","vType","By","To","Amount","Narration"]
+    row_1 = ["Date","Voucher No","Vtype","By","To","Amount","Narration"]
     
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new
@@ -525,7 +525,7 @@ class TallyExportsController < ApplicationController
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     
-    row_1 = ["Date","Voucher No","vType","Type","To","Amount","Narration"]
+    row_1 = ["Date","Voucher No","Vtype","Type","To","Amount","Narration"]
     
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new

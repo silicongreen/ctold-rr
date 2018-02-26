@@ -4,7 +4,7 @@ class AssignmentsController < ApplicationController
   filter_access_to :all,:except=>[:show]
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
-  before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:subject_assignments_publisher]
+  before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:deny_homework,:subject_assignments_publisher]
   
   def get_homework_filter
     batch_id = params[:batch_name]
@@ -548,7 +548,7 @@ class AssignmentsController < ApplicationController
         
         end
         
-        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1
+        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0
           flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
         else
           flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
@@ -650,7 +650,7 @@ class AssignmentsController < ApplicationController
       if  @assignment.update_attributes(params[:assignment])
         flash[:notice]="#{t('assignment_details_updated')}"
         @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
-        if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 and (@current_user.employee_entry.homework_publisher == 1 or @current_user.admin?)  and @assignment.is_published.to_i==2 
+        if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 and (@current_user.employee_entry.homework_publisher == 1 or @current_user.admin?) 
           redirect_to :controller=>:assignments ,:action=>:show_publisher, :id=>@assignment.id
         else
           redirect_to @assignment
@@ -753,6 +753,43 @@ class AssignmentsController < ApplicationController
         flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
         redirect_to assignments_path
       end   
+  end
+  
+  
+  def deny_homework
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    @assignment = Assignment.find_by_id(params[:id])
+    previous_status = @assignment.is_published
+    @assignment.is_published = 4
+  
+    @assignment.created_at = now
+    
+    if @assignment.save
+      a_student = @assignment.student_list
+      if !a_student.blank?
+        @subject = Subject.find_by_id(@assignment.subject_id)
+        
+        
+          emp = @assignment.employee
+          emp_user_id = []
+          unless emp.blank?
+            emp_user_id << emp.user_id
+            Delayed::Job.enqueue(
+              DelayedReminderJob.new( :sender_id  => current_user.id,
+                :recipient_ids => emp_user_id,
+                :subject=>"Your homework : #{@assignment.title} is Denied",
+                :rtype=>4,
+                :rid=>@assignment.id,
+                :student_id => 0,
+                :batch_id => 0,
+                :body=>"Your homework '#{@assignment.title}' for  #{@subject.name} is Denied.<br/>#{t('view_reports_homework')}")
+            )
+          end
+        
+      end
+      flash[:notice] = "Homerok successfully Denied"
+      redirect_to :action=>"show_publisher",:id=>@assignment.id
+    end
   end
   
   def publisher_homework

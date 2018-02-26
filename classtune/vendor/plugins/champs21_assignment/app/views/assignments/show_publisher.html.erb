@@ -68,6 +68,9 @@
           <%if @assignment.is_published == 2%>
           <h4 style="color: red;">This Homework has not yet published </h4>
           <% end %>
+          <%if @assignment.is_published == 4%>
+          <h4 style="color: red;">This Homework is denied</h4>
+          <% end %>
       <p>
         <%= @assignment.content.to_s%>
       </p>
@@ -81,9 +84,13 @@
           <% if @assignment.is_published == 2 %>
           <%= link_to "► Approve Homework", { :action => 'publisher_homework', :id =>params[:id]},
               :confirm => "Do You realy want to Approve this homework?", :class => "user_button" %>
-          <%= link_to "► Deny Homework", { :action => 'publisher_homework', :id =>params[:id]},
+          <%= link_to "► Deny Homework", { :action => 'deny_homework', :id =>params[:id]},
               :confirm => "Do You realy want to Deny this homework?", :class => "user_button" %>
          
+          <% end %> 
+          <% if @assignment.is_published == 4 %>
+            <%= link_to "► Approve Homework", { :action => 'publisher_homework', :id =>params[:id]},
+              :confirm => "Do You realy want to Approve this homework?", :class => "user_button" %>
           <% end %>  
           <%= link_to "► #{t('edit_text')}",
               edit_assignment_path(@assignment), :class => "user_button"%>

@@ -148,6 +148,9 @@
           <% elsif @assignment.is_published == 3 %>
           <h4 style="color: red;">This Homework is approved but not published yet. </h4>
           <% end %>
+          <%if @assignment.is_published == 4%>
+          <h4 style="color: red;">This Homework is denied</h4>
+          <% end %>
       <p>
         <%= @assignment.content.to_s%>
       </p>

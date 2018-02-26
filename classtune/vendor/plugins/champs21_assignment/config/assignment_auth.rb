@@ -57,6 +57,7 @@ authorization do
       :destroy,
       :published_homework,
       :publisher_homework,
+      :deny_homework,
       :download_attachment,
       :edit,
       :index,

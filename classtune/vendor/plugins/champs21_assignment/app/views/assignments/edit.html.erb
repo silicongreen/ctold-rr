@@ -48,8 +48,7 @@
             <%= hidden_field :assignment,"subject_id", :value => @assignment.subject_id %>
           </div>
         </div>
-        <% end %>
-        <% if @current_user.employee?  %>
+        <% elsif @current_user.employee?  %>
         <div class="label-field-pair">
           <label  for="assignment_subject"><%= "#{t('subject')}"%></label>    <div class="text-input-bg" >    <%= select :assignment, :subject_id,
               @subjects.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},

@@ -278,9 +278,9 @@ class Course < ActiveRecord::Base
     
     courses_data = Course.find(:all, :conditions => ["course_name like ?", course_name], :select => "id").map{|c| c.id}
     unless batch_name.nil?
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?) and name LIKE ?", courses_data, batch_name] ).map{|b| b.id}
+      @batches = Batch.active.find(:all, :conditions => ["course_id IN (?) and name LIKE ?", courses_data, batch_name] ).map{|b| b.id}
     else
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?)", courses_data] ).map{|b| b.id}
+      @batches = Batch.active.find(:all, :conditions => ["course_id IN (?)", courses_data] ).map{|b| b.id}
     end
     return @batches
   end

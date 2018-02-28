@@ -517,7 +517,7 @@ class TallyExportsController < ApplicationController
                 amount = trans.amount
                 description = trans.title
                 
-                row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, type, to, amount, description]
+                row_new = [trans.transaction_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, type, to, amount, description]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
               end

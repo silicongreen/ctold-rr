@@ -147,7 +147,9 @@
     <div class="label-field-pair">
       <div class="text-input-bg">
         <%  @ele_subjects.each do |s|  %>
-          <%  s.name = s.elective_group.name %>
+          <% unless s.elective_group.blank? %>
+            <% s.name = s.elective_group.name %>
+          <% end %>
         <% end %>
         <% @subjects= @subjects + @ele_subjects  %>
         <%= select :timetable_entries, :subject_id, @subjects.map { |s| [s.name, s.id] },

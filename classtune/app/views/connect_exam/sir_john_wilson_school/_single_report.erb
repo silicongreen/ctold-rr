@@ -14,10 +14,10 @@
       
       
       <p>&nbsp;<p>
-      
+      <p>&nbsp;<p>
       
 
-      <table class="sjws_table_head" width="100%" cellspacing="0">
+      <table class="sjws_table_head std_name_and_class" width="100%" cellspacing="0">
           <tr>
               <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %></b></td> 
           </tr>
@@ -27,11 +27,11 @@
           </tr>
       </table>
       <p>&nbsp;<p>
-      <div class ="current_batch" style="margin-left:0px;">
+      <div class ="current_batch std_name_and_class" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-
-              <table id="pdf-table" class="sjws_table_intro" width="100%" cellspacing="0">
+              <% total_subject_main = @report_data['report']['subjects'].count %>
+              <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="80%" <% end %> cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>                      
@@ -42,6 +42,7 @@
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% iloop = 0 %>
+                  
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% iloop = iloop+1 %>
@@ -50,7 +51,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <td class="col-pdf" class="subject-td"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>                              
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -72,7 +73,7 @@
 
                           <% if full_mark.to_f > 0 %>  
                             <% if main_mark > 0 %>
-                              <td class="col-pdf checkbox_inline">
+                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% end %>">
                                 <% if main_mark >69 and main_mark < 101 %>
                                   <p><span class="tickbox_check"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
@@ -92,7 +93,7 @@
                                 <% end %>
                               </td>                            
                             <% else  %>                            
-                              <td class="col-pdf checkbox_inline">
+                              <td class="col-pdf">
                                 <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                 <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                 <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
@@ -154,5 +155,102 @@
   </div>
 
 <% end %>
+<% if total_subject_main < 7 %>
+<style>
+    .std_name_and_class
+    {
+       float:left;
+       clear:both;
+       margin-top:30px;
+       
+    }
+    .exam_title_left
+    {
+        margin-top:30px;
+    }
+    .exam_title_left p
+    {
+        font-size:23px;
+    }
+    .align-center-table
+    {
+        margin: 0 auto;
+    }
+    .align-center-table tr.table-header td
+    {
+        padding: 10px 12px !important;
+    }
+    
+    .align-center-table tr.odd td
+    {
+        padding: 0px 12px !important;
+    }
+    .align-center-table tr.even td
+    {
+        padding: 0px 12px !important;
+    }
+    .align-center-table tr.even td p
+    {
+        line-height: 1px;
+    }
+    .align-center-table tr.odd td p
+    {
+        line-height: 1px;
+    }
+    .subject-td
+    {
+        width:30%;
+    }
+    
+</style>    
 
+<% else %>
 
+<style>
+    .std_name_and_class
+    {
+       float:left;
+       clear:both;
+       margin-top:30px;
+       
+    }
+    .exam_title_left
+    {
+        margin-top:30px;
+    }
+    .exam_title_left p
+    {
+        font-size:23px;
+    }
+    .align-center-table
+    {
+        margin: 0 auto;
+    }
+    table.align-center-table tr.table-header td
+    {
+        padding: 10px 12px !important;
+    }
+    
+    table.align-center-table tr.odd td
+    {
+        padding: 12px 12px !important;
+    }
+    table.align-center-table tr.even td
+    {
+        padding: 0px 12px !important;
+    }
+    .sjws_table_intro .tickbox_uncheck,.sjws_table_intro .tickbox_check
+    {
+        padding:20px;
+        background-position: 80%;
+        background-size: 60%;
+    }
+    td.checkbox_inline p
+    {
+        float:left;
+        margin-left:5px;
+        padding:0px;
+        font-size:17px;
+    }
+</style> 
+<% end %>

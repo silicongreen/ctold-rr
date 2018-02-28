@@ -761,15 +761,9 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find_by_id(params[:id])
     previous_status = @assignment.is_published
     @assignment.is_published = 4
-  
-    @assignment.created_at = now
     
     if @assignment.save
-      a_student = @assignment.student_list
-      if !a_student.blank?
-        @subject = Subject.find_by_id(@assignment.subject_id)
-        
-        
+          @subject = Subject.find_by_id(@assignment.subject_id)
           emp = @assignment.employee
           emp_user_id = []
           unless emp.blank?
@@ -785,8 +779,6 @@ class AssignmentsController < ApplicationController
                 :body=>"Your homework '#{@assignment.title}' for  #{@subject.name} is Denied.<br/>#{t('view_reports_homework')}")
             )
           end
-        
-      end
       flash[:notice] = "Homerok successfully Denied"
       redirect_to :action=>"show_publisher",:id=>@assignment.id
     end
@@ -797,34 +789,25 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find_by_id(params[:id])
     previous_status = @assignment.is_published
     @assignment.is_published = 3
-  
-    @assignment.created_at = now
     
     if @assignment.save
-      a_student = @assignment.student_list
-      if !a_student.blank?
         @subject = Subject.find_by_id(@assignment.subject_id)
-        
-        
-        if previous_status == 2
-          emp = @assignment.employee
-          emp_user_id = []
-          unless emp.blank?
-            emp_user_id << emp.user_id
-            Delayed::Job.enqueue(
-              DelayedReminderJob.new( :sender_id  => current_user.id,
-                :recipient_ids => emp_user_id,
-                :subject=>"Your homework : #{@assignment.title} is approved",
-                :rtype=>4,
-                :rid=>@assignment.id,
-                :student_id => 0,
-                :batch_id => 0,
-                :body=>"Your homework '#{@assignment.title}' for  #{@subject.name} is approved now <br/>#{t('view_reports_homework')}")
-            )
-          end
+        emp = @assignment.employee
+        emp_user_id = []
+        unless emp.blank?
+          emp_user_id << emp.user_id
+          Delayed::Job.enqueue(
+            DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => emp_user_id,
+              :subject=>"Your homework : #{@assignment.title} is approved",
+              :rtype=>4,
+              :rid=>@assignment.id,
+              :student_id => 0,
+              :batch_id => 0,
+              :body=>"Your homework '#{@assignment.title}' for  #{@subject.name} is approved now <br/>#{t('view_reports_homework')}")
+          )
         end
-        
-      end
+   
       flash[:notice] = "Homerok successfully Approved"
       redirect_to :action=>"show_publisher",:id=>@assignment.id
     end

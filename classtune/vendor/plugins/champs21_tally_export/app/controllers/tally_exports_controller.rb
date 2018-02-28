@@ -294,26 +294,16 @@ class TallyExportsController < ApplicationController
       ind = 1
       @fees_data.each do |fee|
           student ||= fee.student
+          by = student.admission_no.gsub("SJW","")
+          by = by.gsub("FC","")
+          by = by.gsub("MC","")
           @financefee = student.finance_fee_by_date @date
           voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
           @due_date = @fee_collection.due_date
           if @financefee.is_paid
             @paid_fees = fee.finance_transactions
             total_amount = 0
-            unless @paid_fees.blank?
-              description = @paid_fees[0].title
-              @paid_fees.each do |trans|
-                total_amount += trans.amount
-              end
-            end
-            vtype = 'Journal'
-            by = student.admission_no + " - " + student.full_name
-            to = "TutionFees"
-            row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, by, to, total_amount, description]
-            new_book.worksheet(0).insert_row(ind, row_new)
-            ind += 1
             
-          
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
             amount_paid = 0
             unless @fee_particulars.nil?
@@ -321,7 +311,6 @@ class TallyExportsController < ApplicationController
                 voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
                 description = fee_p.name.capitalize + " payment for " + student.full_name
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = fee_p.name
                 total_amount = fee_p.amount
                 amount_paid += total_amount
@@ -339,7 +328,6 @@ class TallyExportsController < ApplicationController
                 discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;"
                 description = discount_text + " for " + student.full_name
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = discount_text
                 total_amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
                 amount_paid -= total_amount
@@ -360,7 +348,6 @@ class TallyExportsController < ApplicationController
                 voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
                 description = "Fine"
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = "Fine"
                 total_amount = @fine_amount=@fine_rule
                 amount_paid += total_amount
@@ -383,7 +370,6 @@ class TallyExportsController < ApplicationController
             end
             if fine_found && amnt > 0
               vtype = 'Journal'
-              by = student.admission_no + " - " + student.full_name
               to = "Fine"
               row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, by, to, total_amount, description]
               new_book.worksheet(0).insert_row(ind, row_new)
@@ -405,40 +391,12 @@ class TallyExportsController < ApplicationController
             
             if vat_found && amnt > 0
               vtype = 'Journal'
-              by = student.admission_no + " - " + student.full_name
               to = "VAT"
               row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, by, to, total_amount, description]
               new_book.worksheet(0).insert_row(ind, row_new)
               ind += 1
             end
           else
-            description = "Total Payable fees for " + student.full_name
-            if @financefee.balance == 0
-              @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-              @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-              total_amount = 0
-              @total_discount = 0
-              @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-              @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
-              bal=(@total_payable-@total_discount).to_f
-              days=(Date.today-@date.due_date.to_date).to_i
-              auto_fine=@date.fine
-              if days > 0 and auto_fine
-                @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-                @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-              end
-              total_amount = bal + @fine_amount.to_f
-            else
-              total_amount = @financefee.balance
-            end
-            vtype = 'Journal'
-            by = student.admission_no + " - " + student.full_name
-            to = "TutionFees"
-
-            row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, by, to, total_amount, description]
-            new_book.worksheet(0).insert_row(ind, row_new)
-            ind += 1
-            
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
             amount_paid = 0
             unless @fee_particulars.nil?
@@ -446,7 +404,6 @@ class TallyExportsController < ApplicationController
                 voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
                 description = fee_p.name.capitalize + " payment for " + student.full_name
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = fee_p.name
                 total_amount = fee_p.amount
                 amount_paid += total_amount
@@ -464,7 +421,6 @@ class TallyExportsController < ApplicationController
                 discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;"
                 description = discount_text + " for " + student.full_name
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = discount_text
                 total_amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
                 amount_paid -= total_amount
@@ -485,7 +441,6 @@ class TallyExportsController < ApplicationController
                 voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
                 description = "Fine"
                 vtype = 'Journal'
-                by = student.admission_no + " - " + student.full_name
                 to = "Fine"
                 total_amount = @fine_amount=@fine_rule
                 amount_paid += total_amount
@@ -540,6 +495,9 @@ class TallyExportsController < ApplicationController
       ind = 1
       @fees_data.each do |fee|
           student ||= fee.student
+          to = student.admission_no.gsub("SJW","")
+          to = by.gsub("FC","")
+          to = by.gsub("MC","")
           @financefee = student.finance_fee_by_date @date
           
           @due_date = @fee_collection.due_date
@@ -556,7 +514,6 @@ class TallyExportsController < ApplicationController
                 else
                   type = trans.payment_mode
                 end
-                to = student.admission_no + " - " + student.full_name
                 amount = trans.amount
                 description = trans.title
                 
@@ -566,102 +523,6 @@ class TallyExportsController < ApplicationController
               end
             end
             
-            if @paid_fees[0].payment_mode.nil? or @paid_fees[0].payment_mode.blank? or @paid_fees[0].payment_mode.empty?
-              type = "Cash"
-            else
-              type = @paid_fees[0].payment_mode
-            end
-            @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-            unless @fee_particulars.nil?
-              @fee_particulars.each do |fee_p|
-                voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-                description = fee_p.name.capitalize + " payment for " + student.full_name
-                vtype = 'Receipt'
-                to = student.admission_no + " - " + student.full_name
-                total_amount = fee_p.amount
-                row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no_new, vtype, type, to, total_amount, description]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
-              end
-            end
-            
-            @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-            @total_discount = 0
-            @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
-            unless @total_discount == 0
-              @discounts.each do |d|
-                voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-                discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;"
-                description = discount_text + " for " + student.full_name
-                vtype = 'Receipt'
-                to = student.admission_no + " - " + student.full_name
-                total_amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-                amount_paid -= total_amount
-                row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no_new, vtype, type, to, total_amount, description]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
-              end
-            end
-            @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-            bal=(@total_payable-@total_discount).to_f
-            days=(Date.today-@date.due_date.to_date).to_i
-            auto_fine=@date.fine
-            if days > 0 and auto_fine
-              @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-              @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-            end
-            if @fine_rule
-                voucher_no_new = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-                description = "Fine"
-                vtype = 'Receipt'
-                to = student.admission_no + " - " + student.full_name
-                total_amount = @fine_amount=@fine_rule
-                amount_paid += total_amount
-                row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no_new, vtype, type, to, total_amount, description]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
-            end
-            
-            amnt = 0
-            fine_found = false
-            voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-            unless @paid_fees.blank?
-              description = @paid_fees[0].title + " - Fine"
-              @paid_fees.each do |trans|
-                if trans.fine_included
-                  amnt += trans.fine_amount
-                  fine_found = true
-                end
-              end
-            end
-            if fine_found && amnt > 0
-              vtype = 'Receipt'
-              to = student.admission_no + " - " + student.full_name
-              row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, type, to, total_amount, description]
-              new_book.worksheet(0).insert_row(ind, row_new)
-              ind += 1
-            end
-            
-            amnt = 0
-            vat_found = false
-            voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-            unless @paid_fees.blank?
-              description = @paid_fees[0].title + " - VAT"
-              @paid_fees.each do |trans|
-                if trans.vat_included
-                  amnt += trans.vat_amount
-                  vat_found = true
-                end
-              end
-            end
-            
-            if vat_found && amnt > 0
-              vtype = 'Receipt'
-              to = student.admission_no + " - " + student.full_name
-              row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, type, to, total_amount, description]
-              new_book.worksheet(0).insert_row(ind, row_new)
-              ind += 1
-            end
           end
           
       end

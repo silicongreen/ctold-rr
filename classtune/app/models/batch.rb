@@ -110,6 +110,17 @@ class Batch < ActiveRecord::Base
       if self.start_date > self.end_date \
       if self.start_date and self.end_date
   end
+  
+  def class_teacher
+    class_teacher = BatchTutor.find_by_batch_id_and_class_teacher(self.id,true)
+    unless class_teacher.blank?
+      employee = Employee.find_by_id(class_teacher.employee_id)
+      unless employee.blank?
+        return employee
+      end
+    end
+    return false
+  end
 
   def timetable_entry_validation
     if self.timetable_entries.present? and ( self.start_date_changed? or self.end_date_changed? )

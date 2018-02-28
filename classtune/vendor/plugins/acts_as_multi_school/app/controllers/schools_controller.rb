@@ -508,144 +508,146 @@ class SchoolsController <  MultiSchoolController
           #          @batch = Batch.find_by_id(@student[0].batch_id)
           @batch = Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
-          @course = Course.find_by_sql ["SELECT * FROM courses WHERE id = ?", @batch[0].course_id]
-      
-        
-          batch_str = ""
-          unless @batch[0].nil?
-            if @batch[0].name != "" and @batch[0].name != "General"
-              batch_str = batch_str + "Shift:" + @batch[0].name+" | "
-            end
-            if @course[0].course_name != ""
-              batch_str = batch_str + "Class:" + @course[0].course_name
-            end
-            if @course[0].section_name != ""
-              batch_str = batch_str + " | " + "Section:" + @course[0].section_name
-            end
-          end
-        
-          @conn = ActiveRecord::Base.connection 
-          #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
-          ##          g.relation,fu.paid_username,fu.paid_password FROM 
-          #          guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id where g.ward_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
-          #
-          #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
-#g.relation,fu.paid_username,fu.paid_password FROM 
-#guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
-       sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
-g.relation,fu.paid_username,fu.paid_password FROM 
-guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}"    
-          guardian_data = @conn.execute(sql).all_hashes
-          #abort(guardian_data.inspect)
-          rows = []
-          rows << "#{@school.name}"
-          csv << rows
-        
-          rows = []
-          rows << "Admission No."
-          rows << "#{b['admission_no']}"
-          csv << rows
-        
-          rows = []
-          rows << "Batch"
-          rows << "#{batch_str}"
-          csv << rows
-        
-          rows = []
-          rows << "Student"
-          unless b['middle_name'].blank?
-            rows << "#{b['first_name']} #{b['middle_name']} #{b['last_name']}"
-          else
-            rows << "#{b['first_name']} #{b['last_name']}"
-          end
-          csv << rows
-        
-          rows = []
-          rows << "Username"
-          rows << "#{b['paid_username']}"
-          csv << rows
-        
-          rows = []
-          rows << "Password"
-          rows << "#{b['paid_password']}"
-          csv << rows
-        
-          if guardian_data.count > 1
-            guardian_data.each_with_index do |glist,i|
-            
-              j = i+1
-              gPhone = ""
-              if !glist['office_phone1'].blank?
-                gPhone = gPhone + glist['office_phone1']
+          unless @batch.blank?
+            @course = Course.find_by_sql ["SELECT * FROM courses WHERE id = ?", @batch[0].course_id]
+
+
+            batch_str = ""
+            unless @batch[0].nil?
+              if @batch[0].name != "" and @batch[0].name != "General"
+                batch_str = batch_str + "Shift:" + @batch[0].name+" | "
               end
-              if !glist['mobile_phone'].blank?
+              if @course[0].course_name != ""
+                batch_str = batch_str + "Class:" + @course[0].course_name
+              end
+              if @course[0].section_name != ""
+                batch_str = batch_str + " | " + "Section:" + @course[0].section_name
+              end
+            end
+
+            @conn = ActiveRecord::Base.connection 
+            #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
+            ##          g.relation,fu.paid_username,fu.paid_password FROM 
+            #          guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id where g.ward_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
+            #
+            #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
+  #g.relation,fu.paid_username,fu.paid_password FROM 
+  #guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
+         sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
+  g.relation,fu.paid_username,fu.paid_password FROM 
+  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}"    
+            guardian_data = @conn.execute(sql).all_hashes
+            #abort(guardian_data.inspect)
+            rows = []
+            rows << "#{@school.name}"
+            csv << rows
+
+            rows = []
+            rows << "Admission No."
+            rows << "#{b['admission_no']}"
+            csv << rows
+
+            rows = []
+            rows << "Batch"
+            rows << "#{batch_str}"
+            csv << rows
+
+            rows = []
+            rows << "Student"
+            unless b['middle_name'].blank?
+              rows << "#{b['first_name']} #{b['middle_name']} #{b['last_name']}"
+            else
+              rows << "#{b['first_name']} #{b['last_name']}"
+            end
+            csv << rows
+
+            rows = []
+            rows << "Username"
+            rows << "#{b['paid_username']}"
+            csv << rows
+
+            rows = []
+            rows << "Password"
+            rows << "#{b['paid_password']}"
+            csv << rows
+
+            if guardian_data.count > 1
+              guardian_data.each_with_index do |glist,i|
+
+                j = i+1
+                gPhone = ""
                 if !glist['office_phone1'].blank?
-                  gPhone = gPhone + " | " + glist['mobile_phone']
-                else  
-                  gPhone = gPhone + glist['mobile_phone']
+                  gPhone = gPhone + glist['office_phone1']
                 end
+                if !glist['mobile_phone'].blank?
+                  if !glist['office_phone1'].blank?
+                    gPhone = gPhone + " | " + glist['mobile_phone']
+                  else  
+                    gPhone = gPhone + glist['mobile_phone']
+                  end
+                end
+
+                rows = []
+                rows << "Guardian " + j.to_s
+                rows << "#{glist['first_name']} #{glist['last_name']}"
+                csv << rows
+
+                rows = []
+                rows << "Username"
+                rows << "#{glist['paid_username']}"
+                csv << rows
+
+                rows = []
+                rows << "Password"
+                rows << "#{glist['paid_password']}"
+                csv << rows
+
+                rows = []
+                rows << "Phone"
+                rows << "#{gPhone}"
+                csv << rows
+
               end
-            
-              rows = []
-              rows << "Guardian " + j.to_s
-              rows << "#{glist['first_name']} #{glist['last_name']}"
-              csv << rows
-            
-              rows = []
-              rows << "Username"
-              rows << "#{glist['paid_username']}"
-              csv << rows
-            
-              rows = []
-              rows << "Password"
-              rows << "#{glist['paid_password']}"
-              csv << rows
-            
-              rows = []
-              rows << "Phone"
-              rows << "#{gPhone}"
-              csv << rows
-            
-            end
-          else
-            guardian_data.each_with_index do |glist,i|
-              gPhone = ""
-              if !glist['office_phone1'].blank?
-                gPhone = gPhone + glist['office_phone1']
-              end
-              if !glist['mobile_phone'].blank?
+            else
+              guardian_data.each_with_index do |glist,i|
+                gPhone = ""
                 if !glist['office_phone1'].blank?
-                  gPhone = gPhone + " | " + glist['mobile_phone']
-                else  
-                  gPhone = gPhone + glist['mobile_phone']
+                  gPhone = gPhone + glist['office_phone1']
                 end
+                if !glist['mobile_phone'].blank?
+                  if !glist['office_phone1'].blank?
+                    gPhone = gPhone + " | " + glist['mobile_phone']
+                  else  
+                    gPhone = gPhone + glist['mobile_phone']
+                  end
+                end
+
+                rows = []
+                rows << "Guardian"
+                rows << "#{glist['first_name']} #{glist['last_name']}"
+                csv << rows
+
+                rows = []
+                rows << "Username"
+                rows << "#{glist['paid_username']}"
+                csv << rows
+
+                rows = []
+                rows << "Password"
+                rows << "#{glist['paid_password']}"
+                csv << rows
+
+                rows = []
+                rows << "Phone"
+                rows << "#{gPhone}"
+                csv << rows
               end
-              
-              rows = []
-              rows << "Guardian"
-              rows << "#{glist['first_name']} #{glist['last_name']}"
-              csv << rows
-
-              rows = []
-              rows << "Username"
-              rows << "#{glist['paid_username']}"
-              csv << rows
-
-              rows = []
-              rows << "Password"
-              rows << "#{glist['paid_password']}"
-              csv << rows
-
-              rows = []
-              rows << "Phone"
-              rows << "#{gPhone}"
-              csv << rows
             end
+
+
+            rows = []
+            csv << rows
           end
-        
-          
-          rows = []
-          csv << rows
         end
       end
       

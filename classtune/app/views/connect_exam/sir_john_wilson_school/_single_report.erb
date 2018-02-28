@@ -14,12 +14,11 @@
       
       
       <p>&nbsp;<p>
-      <p>&nbsp;<p>
       
-
+      <% total_subject_main = @report_data['report']['subjects'].count %>    
       <table class="sjws_table_head std_name_and_class" width="100%" cellspacing="0">
           <tr>
-              <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %></b></td> 
+              <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
           </tr>
           <tr>
               <td colspan="1"><b>Class : <%= @batch.course.course_name %></b></td>
@@ -30,7 +29,7 @@
       <div class ="current_batch std_name_and_class" style="margin-left:0px;">
           <div id="grouped_exam_report">
 
-              <% total_subject_main = @report_data['report']['subjects'].count %>
+              
               <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="80%" <% end %> cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
@@ -73,7 +72,9 @@
 
                           <% if full_mark.to_f > 0 %>  
                             <% if main_mark > 0 %>
+                          
                               <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% end %>">
+                                  
                                 <% if main_mark >69 and main_mark < 101 %>
                                   <p><span class="tickbox_check"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
@@ -93,7 +94,7 @@
                                 <% end %>
                               </td>                            
                             <% else  %>                            
-                              <td class="col-pdf">
+                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% end %>">
                                 <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                 <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                 <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
@@ -123,13 +124,37 @@
 
               </table-->
               <p>&nbsp;<p>
-              <table class='sjws_table_head' width="100%" >                 
+              <table class='sjws_table_head std_name_and_class' width="100%" >                 
                       <tr>
-                          <td class="col-pdf">CLASS TEACHER'S SIGNATURE: .................................... </td>                          
-                          <td class="col-pdf">DATE: <%=Time.now.strftime("%d-%m-%Y")%> </td>                          
+                          <td class="col-pdf">
+                              <table class='sjws_table_head' width="100%"><tr>
+                                      <td class="col-pdf"><b>CLASS TEACHER'S SIGNATURE:</b> </td><td class="col-pdf"><b>.............................................................................</b></td>  
+                                  </tr>
+                                  <tr>
+                                      <% if @teacher_name.blank? %>
+                                        <% teacher_name = "Teacher" %>
+                                        <% emp_batch = @batch.class_teacher  %>
+                                        <% unless emp_batch.blank? %>
+                                          <% @teacher_name = emp_batch.full_name %>
+                                        <% end %>
+                                      <% end %>
+                                      <td class="col-pdf"></td><td class="col-pdf text_center"><b><%= @teacher_name %></b></td>  
+                                  </tr>
+                              </table>
+                          </td> 
+                          <td class="col-pdf">
+                              <table class='sjws_table_head' width="100%">
+                                  <tr>
+                                    <td class="col-pdf"><b>DATE: <%=Time.now.strftime("%d-%m-%Y")%></b></td> 
+                                  </tr>
+                                  <tr>
+                                      <td class="col-pdf"></td><td class="col-pdf text_center">&nbsp;</td>  
+                                  </tr>
+                              </table>
+                          </td> 
                       </tr> 
               </table>
-              <table class='sjws_table_head' width="100%" >                 
+              <table class='sjws_table_head std_name_and_class' width="100%" >                 
                       <tr>
                           <td width="50%">
                               <p class="note">Note: The level of progress is based on the marking class works and class test(s) taken in the month of 
@@ -139,7 +164,7 @@
                           </td>                          
                           <td width="50%">
                               <div class="roundbox">
-                                <p class="roundbox_line">Progress Indicator Key:</p>
+                                <span class="roundbox_line">Progress Indicator Key:</span>
                                 <span>70-100% - Progressing well (Grade A + B)</span><br />
                                 <span>50-69% - Progressing with difficulty (Grade C)</span><br />
                                 <span>49% and below - Unsatisfactory progress (Grade D)</span>
@@ -164,6 +189,7 @@
        margin-top:30px;
        
     }
+    
     .exam_title_left
     {
         margin-top:30px;
@@ -241,7 +267,7 @@
     }
     .sjws_table_intro .tickbox_uncheck,.sjws_table_intro .tickbox_check
     {
-        padding:20px;
+        padding:22px;
         background-position: 80%;
         background-size: 60%;
     }
@@ -250,7 +276,26 @@
         float:left;
         margin-left:5px;
         padding:0px;
-        font-size:17px;
+        font-size:17px !important;
+    }
+    .roundbox
+    {
+        min-height: 170px;
     }
 </style> 
 <% end %>
+<style>
+  .roundbox span 
+    {
+        white-space: nowrap;
+    }
+  .roundbox
+  {
+      padding:5px 20px;
+  }
+  sjws_table_head tr td.text_center
+  {
+      text-align: center !important;
+  }
+  
+</style>

@@ -56,7 +56,11 @@
     <center>
       <table id="pdf-table" width="100%">
         <tr class="even">
-          <td class="col-pdf name"><%= t('admission_date') %></td>
+          <td class="col-pdf name"><% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date_2')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %></td>
           <td class="col-pdf amnt"><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></td>
         </tr>
       </table>

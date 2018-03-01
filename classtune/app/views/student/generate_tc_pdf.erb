@@ -42,7 +42,11 @@
           <td class="col-pdf"><%= @student.admission_no %></td>
         </tr>
         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-          <td class="col-pdf"><%= t('admission_date') %></td>
+          <td class="col-pdf"><% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date_2')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %></td>
           <td class="col-pdf"><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></td>
         </tr>
         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

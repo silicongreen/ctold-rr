@@ -299,7 +299,7 @@ class TallyExportsController < ApplicationController
           by = by.gsub("MC","")
           @financefee = student.finance_fee_by_date @date
           voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-          @due_date = @fee_collection.due_date
+          @due_date = @fee_collection.start_date
           if @financefee.is_paid
             @paid_fees = fee.finance_transactions
             total_amount = 0
@@ -442,8 +442,8 @@ class TallyExportsController < ApplicationController
                 description = "Fine"
                 vtype = 'Journal'
                 to = "Fine"
-                total_amount = @fine_amount=@fine_rule
-                amount_paid += total_amount
+                total_amount = @fine_amount
+                #amount_paid += total_amount
                 row_new = [@due_date.to_date.strftime("%m/%d/%Y"), voucher_no_new, vtype, by, to, total_amount, description]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
@@ -496,8 +496,8 @@ class TallyExportsController < ApplicationController
       @fees_data.each do |fee|
           student ||= fee.student
           to = student.admission_no.gsub("SJW","")
-          to = by.gsub("FC","")
-          to = by.gsub("MC","")
+          to = to.gsub("FC","")
+          to = to.gsub("MC","")
           @financefee = student.finance_fee_by_date @date
           
           @due_date = @fee_collection.due_date

@@ -130,7 +130,11 @@
         </div>
 
         <div class="label-field-pair">
-          <label for="student_grade"><%= t('admission_date') %></label>
+          <label for="student_grade"><% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date_2')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %></label>
           <div class="text-input-bg">
             <%= select :advv_search,:doa_option,[["#{t('equal_to')}","Equal to"],["#{t('less_than')}","Less than"],["#{t('greater_than')}","Greater than"]],{:prompt=>"#{t('option')}"},
               {:onChange => "#{remote_function(:url => {:action => "list_doa_year"},

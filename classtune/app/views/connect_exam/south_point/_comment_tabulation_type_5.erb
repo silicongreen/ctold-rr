@@ -22,20 +22,7 @@
     <center>
       
       <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
-      <table width="100%" >
-            <thead>
-                <tr>
-                    <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
-                    <td align="right"><b>Class : 
-                        <% if @batch.name == "General" %>
-                        <%= @batch.course.full_name %>
-                        <% else %>
-                           <%= @batch.name %> ,<%= @batch.course.full_name %>
-                        <% end %></b>
-                    </td>
-                </tr>
-            </thead>    
-      </table>
+      <%= render  :partial=>"/connect_exam/south_point/tabulation_top" %>
      
       <% unless @report_data.blank? %>
       <% c = 'even' %>

@@ -45,7 +45,11 @@
               </div>
 
               <div class="label-field-pair-edit">
-                  <label for="master_student_admission_date"><%= t('admission_date') %> <span class="necessary-field">*</span></label>
+                  <label for="master_student_admission_date"><% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date_2')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %><span class="necessary-field">*</span></label>
                   <div class="text-input-bg">
                       <% 
                         admission_date = ""

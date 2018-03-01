@@ -28,7 +28,13 @@
               <td><%= t('name') %></td>
               <td>Class</td>
               <td><%= t('adm_no') %></td>
-              <td><%= t('admission_date') %></td>
+              <td>
+                <% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %>
+              </td>
               <td><%= t('date_of_birth') %></td>
               <td><%= t('guardian') %></td>
 

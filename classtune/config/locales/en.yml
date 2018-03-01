@@ -1,10 +1,13 @@
 en: # locale
+  date:
+    formats:
+      default: "%m/%d/%Y"
   activerecord:
     attributes:
 
       student:
         first_name: "First name"
-        admission_no: "Admission number"
+        admission_no: "Student Id"
         admission_date: "Admission date"
         batch_id: "Batch"
         date_of_birth: "Date of birth"
@@ -269,7 +272,7 @@ en: # locale
         start_date_cant_be_after_due_date: "start date cant be after due date"
         end_date_cant_be_after_due_date: "end date cant be after due date"
         student_category_cant_be_blank: "Student Category cant be blank"
-        student_admission_no_cant_be_blank: "Student Admission number cant be blank"
+        student_admission_no_cant_be_blank: "Student Id cant be blank"
         end_date_cant_before_start_date: "End date can't be before start date"
         date_marked_is_before_join_date: "Date marked is before join date"
         you_have_already_availed: "You have already availed all available leave"
@@ -755,7 +758,7 @@ en: # locale
   greater_than: "greater than"
   equal_to: "equal to"
   year_of_birth: "Year of birth"
-  admission_no: "Admission no"
+  admission_no: "Student Id"
   students: "Students"
   syllabus: "Syllabus"
   lessonplan: "Lesson Plan"
@@ -1484,7 +1487,7 @@ en: # locale
   generate_tc: "Generate TC"
   view_pdf: "View PDF"
   student_settings: "Student Settings"
-  student_admission_no: "Student Admission no."
+  student_admission_no: "Student Id."
   parent: "Parent"
   parent_personal_details: "Parent Personal Details"
   relation: "Relation"
@@ -1492,7 +1495,7 @@ en: # locale
   occupation: "Occupation"
   parent_contact_details: "Parent - Contact Details"
   office_address_line1: "Office Address Line 1"
-  office_address_line2: "Office Address Line 2"
+  office_address_line2: "Office Area"
   mobile_phone_no: "Mobile Phone no."
   no_admission_notice: "No previous student found"
   admission_no_of_last_stud: "Admission no. of last student is"
@@ -1511,7 +1514,7 @@ en: # locale
   remove_student: "Remove student"
   select_blood_group: "Select Blood Group"
   address_line1: "Address Line 1"
-  address_line2: "Address Line 2"
+  address_line2: "Area"
   enable_sms_feature: "Enable SMS Features"
   parent_information: "Parent Information"
   edit_parent_guardian_details: "Edit Parent/guardian details"
@@ -1789,7 +1792,7 @@ en: # locale
   voucher_no: "Voucher No"
   receipt_or_voucher_no: "Receipt / Voucher No"
   batch_cant_be_blank: "Batch cant be blank"
-  is_invalid_admission_no: "is invalid admission number"
+  is_invalid_admission_no: "is invalid Student Id"
   admission_cant_be_blank: "Admission cant be blank"
   fees_category_cant_blank: "Fees Category cant be blank."
   fee_discount_succesfully_created: "Fees Discount Successfully created"
@@ -2333,7 +2336,7 @@ en: # locale
   select_fine: "Select fine"
   select_atleast_one_batch: "Select atleast one batch"
   days: "Days"
-  admission_no_cant_be_blank: "Admission no cant be blank"
+  admission_no_cant_be_blank: "Student Id cant be blank"
   category_cant_be_blank: "Category cant be blank"
   start_date_cant_be_after_end_date: "start date cant be after end date"
   start_date_cant_be_after_due_date: "start date cant be after due date"

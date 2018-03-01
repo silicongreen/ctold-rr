@@ -41,7 +41,11 @@
       </div>
     </div> 
     <div class="row">
-      <div class="row_label"><%= t('admission_date') %></div>
+      <div class="row_label"><% if MultiSchool.current_school.id == 340  %>
+                  <%= t('admission_date_2')  %>
+                <% else %>  
+                  <%= t('admission_date') %>
+                <% end %></div>
       <div class="row_data">
           <% unless @student.admission_date.nil? %>
             <%= I18n.l(@student.admission_date,:format=>:normal) %>

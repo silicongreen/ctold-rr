@@ -55,51 +55,6 @@ class EmployeeController < ApplicationController
     render :partial => "employee_add_attendance"
   end
   
-  def employee_attendance_time
-      @default_weekdays = WeekdaySet.default_weekdays
-  end
-  
-  def employee_setting_mass_update
-    if request.post?
-      attendance_type_options = params[:attendance_type_options]
-      unless attendance_type_options == "Department" or attendance_type_options == "Position"
-        flash[:notice] = "<p class=\"flash-msg\">#{t('flash52')}</p>"
-      else
-        option_id = params[:option_id]
-        if option_id == "-- Select --"
-          flash[:notice] = "<p class=\"flash-msg\">#{t('flash53')} #{params[:option_type]} #{t('flash54')}</p>"
-        else
-          option_type = params[:option_type]
-          if option_type == "Position"
-            employees = Employee.find(:all ,:conditions=>"employee_position_id = #{option_id.to_i}")
-          elsif option_type == "Department"
-            employees = Employee.find(:all ,:conditions=>"employee_department_id = #{option_id.to_i}")
-          end
-          
-          unless employees.nil? or employees.empty?
-            weekdays = params[:weekdays].join(",")
-            employees.each do |e|
-              @employee_settings = EmployeeSetting.find_by_employee_id(e.id)
-              unless @employee_settings.nil? 
-                @employee_settings.update_attributes(params[:employee_setting])
-                @employee_settings.update_attribute("weekdays",weekdays)
-              else
-                @employee_settings = EmployeeSetting.new(params[:employee_setting])
-                @employee_settings.weekdays = weekdays  
-                @employee_settings.employee_id = e.id
-                @employee_settings.save
-              end   
-            end
-            flash[:notice] = "<p class=\"flash-msg\">#{t('flash55')}</p>"
-          end
-        end
-      end
-    end
-    render :update do |page|
-      page.replace_html 'message', :partial => 'employee_setting_mass_update_settings_msg'
-    end
-  end
-  
   def employee_create_attendance
     @employee = Employee.find(params[:id])
     @c_att = CardAttendance.new
@@ -110,6 +65,35 @@ class EmployeeController < ApplicationController
     @c_att.profile_id = @employee.id
     @c_att.user_id = @employee.user_id
     if @c_att.save
+      
+      @attendance = EmployeeAttendance.find_by_attendance_date_and_employee_id(@c_att.date,@employee.id)
+      unless @attendance.blank?
+        unless @attendance.employee_leave_type_id.blank?
+          @reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
+          leaves_taken = @reset_count.leave_taken
+          total_employee_leave = @reset_count.leave_count
+          created_at = @attendance.created_at || @attendance.attendance_date.to_datetime
+          reset_date = @reset_count.reset_date
+          if created_at > reset_date
+            if @attendance.is_half_day
+              leave = leaves_taken - (0.5)
+            else
+              leave = leaves_taken - (1)
+            end
+            @reset_count.update_attributes(:leave_taken => leave)
+          else
+            if @attendance.is_half_day
+              total_leave = total_employee_leave.to_f + (0.5)
+            else
+              total_leave = total_employee_leave.to_f + (1)
+            end
+            @reset_count.update_attributes(:leave_count => total_leave)
+          end
+          
+        end
+        @attendance.delete
+      end  
+      
       flash[:notice] = "#{t('employee_attendance_added')}"
     else
       flash[:notice] = "#{t('something_went_wrong')}"
@@ -125,23 +109,6 @@ class EmployeeController < ApplicationController
     @default_weekdays = WeekdaySet.default_weekdays
     render :update do |page|
       page.replace_html 'profile-infos', :partial => 'edit_employee_settings'
-    end
-  end
-  
-  def list_options
-    @data_found = false
-    unless params[:option_type].nil? or params[:option_type].empty? or params[:option_type].blank?
-      @option_type = params[:option_type]
-      if @option_type == "Position"
-        @data_found = true
-        @options = EmployeePosition.find(:all,:order => "name asc",:conditions=>'status = 1')
-      elsif @option_type == "Department"
-        @data_found = true
-        @options = EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
-      end
-    end
-    render :update do |page|
-      page.replace_html 'options-select', :partial => 'options_office_time'
     end
   end
   

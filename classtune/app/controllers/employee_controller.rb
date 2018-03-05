@@ -54,6 +54,47 @@ class EmployeeController < ApplicationController
     @default_weekdays = WeekdaySet.default_weekdays
   end
   
+  def employee_setting_mass_update
+    if request.post?
+      attendance_type_options = params[:attendance_type_options]
+      unless attendance_type_options == "Department" or attendance_type_options == "Position"
+        flash[:notice] = "<p class=\"flash-msg\">#{t('flash52')}</p>"
+      else
+        option_id = params[:option_id]
+        if option_id == "-- Select --"
+          flash[:notice] = "<p class=\"flash-msg\">#{t('flash53')} #{params[:option_type]} #{t('flash54')}</p>"
+        else
+          option_type = params[:option_type]
+          if option_type == "Position"
+            employees = Employee.find(:all ,:conditions=>"employee_position_id = #{option_id.to_i}")
+          elsif option_type == "Department"
+            employees = Employee.find(:all ,:conditions=>"employee_department_id = #{option_id.to_i}")
+          end
+          
+          unless employees.nil? or employees.empty?
+            weekdays = params[:weekdays].join(",")
+            employees.each do |e|
+              @employee_settings = EmployeeSetting.find_by_employee_id(e.id)
+              unless @employee_settings.nil? 
+                @employee_settings.update_attributes(params[:employee_setting])
+                @employee_settings.update_attribute("weekdays",weekdays)
+              else
+                @employee_settings = EmployeeSetting.new(params[:employee_setting])
+                @employee_settings.weekdays = weekdays  
+                @employee_settings.employee_id = e.id
+                @employee_settings.save
+              end   
+            end
+            flash[:notice] = "<p class=\"flash-msg\">#{t('flash55')}</p>"
+          end
+        end
+      end
+    end
+    render :update do |page|
+      page.replace_html 'message', :partial => 'employee_setting_mass_update_settings_msg'
+    end
+  end
+  
   def employee_add_attendance
     @employee = Employee.find(params[:id])
     render :partial => "employee_add_attendance"

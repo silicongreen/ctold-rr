@@ -50,6 +50,10 @@ class EmployeeController < ApplicationController
     render :partial => "employee_settings"
   end
   
+  def employee_attendance_time
+    @default_weekdays = WeekdaySet.default_weekdays
+  end
+  
   def employee_add_attendance
     @employee = Employee.find(params[:id])
     render :partial => "employee_add_attendance"

@@ -142,7 +142,10 @@
             <% else %>
               <% events = @event_dates.map{|c| c.to_date} %>
               <% j = 1 %>
+              <% num = 20 %>
+              <% unless @employee_attendance[@employees[0].id].nil? or @employee_attendance[@employees[0].id].empty? %>
 	      <% num = @employee_attendance[@employees[0].id].length %>	
+              <% end %>
               <% newPage = true %>
               <% @employees.each do |e| %>
                 <% employee_attendances = @employee_attendance[e.id] %>

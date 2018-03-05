@@ -54,6 +54,23 @@ class EmployeeController < ApplicationController
     @default_weekdays = WeekdaySet.default_weekdays
   end
   
+  def list_options
+    @data_found = false
+    unless params[:option_type].nil? or params[:option_type].empty? or params[:option_type].blank?
+      @option_type = params[:option_type]
+      if @option_type == "Position"
+        @data_found = true
+        @options = EmployeePosition.find(:all,:order => "name asc",:conditions=>'status = 1')
+      elsif @option_type == "Department"
+        @data_found = true
+        @options = EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
+      end
+    end
+    render :update do |page|
+      page.replace_html 'options-select', :partial => 'options_office_time'
+    end
+  end
+  
   def employee_setting_mass_update
     if request.post?
       attendance_type_options = params[:attendance_type_options]

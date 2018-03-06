@@ -228,7 +228,7 @@ class MarksController < ApplicationController
     @subjects.reject! {|s| !s.batch or !s.batch.is_active}
     @exams = []
     all_sub_id = @subjects.map(&:id)
-    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject])
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ?",false])
     all_exams.each do |exam|
       @exams.push exam unless exam.nil?
     end 
@@ -451,9 +451,18 @@ class MarksController < ApplicationController
   
   def index
     if current_user.employee
-      @batches = @current_user.employee_record.batches
-      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches = @batches.uniq unless @batches.empty?
+      @batches2 = @current_user.employee_record.batches
+      @batches2 += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches2 = @batches2.uniq unless @batches2.empty?
+      @batches = []
+      unless @batches2.blank?
+        @batches2.each do |batch|
+          if batch.is_deleted.to_i == 0
+            @batches << batch
+          end
+        end
+      end
+      
     elsif current_user.admin
       @batches = Batch.active
     end  

@@ -72,6 +72,8 @@ class Student < ActiveRecord::Base
     :message => :must_be_a_valid_email_address
   validates_format_of     :admission_no, :with => /^[A-Z0-9_-]*$/i,
     :message => :must_contain_only_letters 
+  validates_format_of     :sms_number, :with => /^(?:\+88|01)?(?:\d{11}|\d{13})$/i,   :allow_blank=>true,
+    :message => :must_be_a_valid_phone_number
   
   
   validates_associated :user

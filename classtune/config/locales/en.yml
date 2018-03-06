@@ -1,7 +1,4 @@
 en: # locale
-  date:
-    formats:
-      default: "%m/%d/%Y"
   activerecord:
     attributes:
 
@@ -262,6 +259,7 @@ en: # locale
         wrong_length: "is the wrong length (should be {{count}} characters)"
         must_contain_only_letters: "must contain only letters, numbers, hyphen, dot and  underscores"
         must_be_a_valid_email_address: "must be a valid email "
+        must_be_a_valid_phone_number: "Must Be Valid"
         cant_be_a_future_date: "cannot be a future date"
         should_not_be_admin: "Should Not Be Admin"
         student_excessed_messege: "Student limit excessed for your school. Please Contact with school administrator."
@@ -1502,7 +1500,7 @@ en: # locale
   birth_place: "Birth Place"
   mother_tongue: "Mother Tongue"
   religion: "Religion"
-  address_line: "Address Line"
+  address_line: "Present Address"
   phone: "Phone"
   parent_guardian_details_step2: "Step 2 - Parent/guardian details"
   emergency_contact_step3: "Step 3 - Emergency contact"

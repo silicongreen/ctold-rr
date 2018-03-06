@@ -204,7 +204,7 @@
         <hr class="label-underline"></hr>
         
         <div class="label-field-pair">
-          <label for="student_nationality"><%= t("nationality") %></label>
+          <label for="student_nationality"><%= t("nationality") %><span class="necessary-field">*</span></label>
           <div class="text-input-bg">
             <%= select :student, :nationality_id, Country.all.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected=> @student.nationality_id || @selected_value.to_i %>
           </div>

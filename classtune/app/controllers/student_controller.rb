@@ -801,7 +801,25 @@ end
     
     if @parents.empty?
       redirect_to :controller => "student", :action => "previous_data", :id => @student.id
-    end
+    elsif MultiSchool.current_school.id == 340
+      @parents.each do |immediate_contact|
+        sms_setting = SmsSetting.new()
+        @student = Student.update(@student.id, :immediate_contact_id => immediate_contact.id)
+        @guardian = Guardian.find(immediate_contact.id)
+        usernamep = @guardian.user.username
+        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+        api_endpoint = champs21_api_config['api_url']
+        uri = URI(api_endpoint + "api/user/createuser")
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
+        auth_res = http.request(auth_req)
+        @auth_response = JSON::parse(auth_res.body)
+        sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"
+        CONN.execute sql
+      end
+      redirect_to :action => "previous_data", :id => @student.id
+    end  
     return if params[:immediate_contact].nil?
     if request.post?
       sms_setting = SmsSetting.new()

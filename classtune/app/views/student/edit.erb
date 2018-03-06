@@ -83,7 +83,7 @@
           <hr class="label-underline"></hr>
 
           <div class="label-field-pair">
-              <label for="student_email"><%= t('email_for_school_use') %></label>
+              <label for="student_email"><%= t('email_for_school_use') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
               <div class="text-input-bg"><%= s.text_field :email %></div>
           </div>
 
@@ -122,7 +122,7 @@
                 <div style="display: block;" id="std_batch_id" data="<%= @student.batch.id %>"></div>
                 <div style="display: block;" id="std_batch_name" data="<%= @student.batch.name %>"></div>
                 
-                <label for="student_grade"><%= t('shift_label') %></label>
+                <label for="student_grade"><%= t('shift_label') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
                 <div class="text-input-bg">
                     <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i),
                       {:prompt => "#{t('select')}"},
@@ -135,13 +135,13 @@
           <% end %>
 
           <div class="label-field-pair">
-              <label for="student_grade"><%= t('class_label') %></label>
+              <label for="student_grade"><%= t('class_label') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
               <div class="text-input-bg"><div id="course_data"> <%= render :partial => 'student/courses_data', :object => @courses %></div></div>
           </div>
           <hr class="label-underline"></hr>
 
           <div class="label-field-pair" id="section_label">
-              <label for="student_grade"><%= t('section_label') %></label>
+              <label for="student_grade"><%= t('section_label') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
               <div class="text-input-bg"><div id="section"> <%= render :partial => 'sections', :object => @classes %></div></div>
           </div>
           <hr class="label-underline" id="section_label_underline"></hr>
@@ -206,7 +206,7 @@
               <hr class="label-underline"></hr>
           </div>
            <div class="label-field-pair">
-                  <label for="master_student_nationality"><%= t('nationality') %></label>
+                  <label for="master_student_nationality"><%= t('nationality') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
                   <div class="text-input-bg"><%= select :student, :nationality_id, Country.all.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @student.nationality.id %></div>
           </div>
           

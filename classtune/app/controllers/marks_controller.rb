@@ -471,9 +471,17 @@ class MarksController < ApplicationController
   def connect_exam
     @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
     if current_user.employee
-      @batches = @current_user.employee_record.batches
-      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches = @batches.uniq unless @batches.empty?
+      @batches2 = @current_user.employee_record.batches
+      @batches2 += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches2 = @batches2.uniq unless @batches2.empty?
+      @batches = []
+      unless @batches2.blank?
+        @batches2.each do |batch|
+          if batch.is_deleted == false
+            @batches << batch
+          end
+        end
+      end
       
     elsif current_user.admin
       @batches = Batch.active
@@ -503,9 +511,17 @@ class MarksController < ApplicationController
   def connect_exam_report
     @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
     if current_user.employee
-      @batches = @current_user.employee_record.batches
-      @batches += @current_user.employee_record.subjects.collect{|b| b.batch}
-      @batches = @batches.uniq unless @batches.empty?
+      @batches2 = @current_user.employee_record.batches
+      @batches2 += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches2 = @batches2.uniq unless @batches2.empty?
+      @batches = []
+      unless @batches2.blank?
+        @batches2.each do |batch|
+          if batch.is_deleted == false
+            @batches << batch
+          end
+        end
+      end
     elsif current_user.admin
       @batches = Batch.active
     end 

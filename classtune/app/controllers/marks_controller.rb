@@ -457,7 +457,7 @@ class MarksController < ApplicationController
       @batches = []
       unless @batches2.blank?
         @batches2.each do |batch|
-          if batch.is_deleted.to_i == 0
+          if batch.is_deleted == false
             @batches << batch
           end
         end

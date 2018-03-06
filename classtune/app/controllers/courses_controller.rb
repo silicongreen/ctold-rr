@@ -840,7 +840,7 @@ class CoursesController < ApplicationController
         k += 1
       end	
       @course_new = Course.new
-      code = code_ini + params[:course][:section_name] + zeros + nums
+      code = @courses_dt.course_name + params[:course][:section_name]
       @courses_exits = Course.find_by_course_name_and_section_name(@courses_dt.course_name, params[:course][:section_name], :conditions => {:is_deleted => false})
       if @courses_exits.nil?
         if params[:course][:section_name].strip.length == 0

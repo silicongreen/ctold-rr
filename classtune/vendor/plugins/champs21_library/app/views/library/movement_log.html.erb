@@ -38,9 +38,25 @@
     </div>
     <div class="filter1">
       <div class="label-field-pair">
-        <label for="subject_type"><%= t('select_date') %></label>
+        <label for="subject_type"><%= "Date Start" %></label>
         <div class="text-input-bg">
           <%= calendar_date_select_tag 'book_log[date]', I18n.localize(Date.today, :format=>:default), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %>
+        </div>
+      </div>
+    </div>
+    <div class="filter1">
+      <div class="label-field-pair">
+        <label for="subject_type"><%= "Date End" %></label>
+        <div class="text-input-bg">
+          <%= calendar_date_select_tag 'book_log[date2]', I18n.localize(Date.today, :format=>:default), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %>
+        </div>
+      </div>
+    </div>
+    <div class="filter">
+      <div class="label-field-pair">
+        <label for="course_id"><%= "User Type" %></label>
+        <div class="text-input-bg margin-left-10">
+          <%= f.select :user_type, [["Student", 1],["Employee", 0]], {}  %>
         </div>
       </div>
     </div>

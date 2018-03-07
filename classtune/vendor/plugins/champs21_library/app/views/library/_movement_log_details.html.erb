@@ -100,15 +100,15 @@
           <% end %>
           <% if @sort_order=="first_name ASC" or @sort_order=="first_name DESC" %>
             <% if r.student? %>
-              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no}" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
+              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no} (Student)" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
             <% else %>
-              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
+              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number} (Employee)" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
             <% end %>
           <% else %>
             <% if r.student? %>
-              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no}" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
+              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no} (Student)" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
             <% else %>
-              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
+              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number} (Employee)" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
             <% end %>
           <% end %>
           <% if @sort_order=="status ASC" or @sort_order=="status DESC" %>

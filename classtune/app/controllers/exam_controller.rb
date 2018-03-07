@@ -1353,7 +1353,9 @@ class ExamController < ApplicationController
     end
     
     @students = @tmp_students
-    @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
+    unless MultiSchool.current_school.id != 325
+      @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
+    end  
     
     render :pdf => 'student_wise_tabulation',
       :orientation => 'Landscape', :zoom => 1.00,

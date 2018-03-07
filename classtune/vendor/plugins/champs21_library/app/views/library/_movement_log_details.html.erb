@@ -124,14 +124,14 @@
             <td class="col-4"><% case r.book_status when 'Lost'%><%= "#{t('lost')}" %> <% when 'Binding' %> <%= "#{t('binding')}" %> <% else %><%= t("#{r.status.downcase}") %><% end %></td>
           <% end %>
           <% if @sort_order=="issue_date ASC" or @sort_order=="issue_date DESC" %>
-            <td class="col-4 batch_order_select"><%= r.issue_date %></td>
+            <td class="col-4 batch_order_select" style="white-space: nowrap;"><%= r.issue_date %></td>
           <% else %>
-            <td class="col-4"><%=r.issue_date %></td>
+            <td class="col-4"  style="white-space: nowrap;"><%=r.issue_date %></td>
           <% end %>
           <% if @sort_order=="due_date ASC" or @sort_order=="due_date DESC" %>
-            <td class="col-4 batch_order_select"><%= r.due_date %></td>
+            <td class="col-4 batch_order_select"  style="white-space: nowrap;"><%= r.due_date %></td>
           <% else %>
-            <td class="col-4"><%=r.due_date %></td>
+            <td class="col-4"  style="white-space: nowrap;"><%=r.due_date %></td>
           <% end %>
         </tr>
       <% end %>

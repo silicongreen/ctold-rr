@@ -1353,7 +1353,7 @@ class ExamController < ApplicationController
     end
     
     @students = @tmp_students
-    unless MultiSchool.current_school.id != 325
+    unless MultiSchool.current_school.id == 325
       @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     end  
     

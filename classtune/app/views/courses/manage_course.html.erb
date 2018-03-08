@@ -83,8 +83,8 @@
                 <%= link_to_remote(t('manage_section'),
                 :url => { :controller=>"courses",:action => 'add_section', :id =>course},
                 :method => 'get' ) %>&nbsp;<span>|</span>&nbsp;
+                <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %>
             </div>
-            <div class="category-delete">   <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %></div>
           </li>
           <% end %>
         <% end %>

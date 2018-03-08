@@ -114,6 +114,10 @@ class CalenderController extends Controller
                 if ($yearly)
                 {
                     $start_date = date("Y-m-d", strtotime($batchData->start_date));
+                    if ($stddata->admission_date && $start_date < date("Y-m-d", strtotime($stddata->admission_date)))
+                    {
+                        $start_date = date("Y-m-d", strtotime($stddata->admission_date));
+                    }
                     $end_date = date("Y-m-d", strtotime($batchData->end_date));
                     if ($end_date > date("Y-m-d"))
                     {
@@ -129,6 +133,7 @@ class CalenderController extends Controller
 
                 if (!$yearly)
                 {
+                    
                     if ($start_date < date("Y-m-d", strtotime($batchData->start_date)))
                     {
                         $start_date = date("Y-m-d", strtotime($batchData->start_date));
@@ -137,6 +142,12 @@ class CalenderController extends Controller
                     {
                         $end_date = date("Y-m-d", strtotime($batchData->end_date));
                     }
+                    if ($stddata->admission_date && $start_date < date("Y-m-d", strtotime($stddata->admission_date)))
+                    {
+                        $start_date = date("Y-m-d", strtotime($stddata->admission_date));
+                    }
+                    
+                    
                 }
 
                 if ($end_date > date("Y-m-d"))
@@ -234,6 +245,10 @@ class CalenderController extends Controller
                 if ($yearly)
                 {
                     $begin = new DateTime(date("Y-m-d", strtotime($batchData->start_date)));
+                    if ($stddata->admission_date && date("Y-m-d", strtotime($batchData->start_date)) < date("Y-m-d", strtotime($stddata->admission_date)))
+                    {
+                        $begin = new DateTime(date("Y-m-d", strtotime($stddata->admission_date)));
+                    }
                     $end = new DateTime(date("Y-m-d", strtotime($batchData->end_date)));
                     if (date("Y-m-d", strtotime($batchData->end_date)) > date("Y-m-d"))
                     {

@@ -26,7 +26,7 @@ class Employee < ActiveRecord::Base
   belongs_to  :employee_position
   belongs_to  :employee_grade
   belongs_to  :employee_department
-  belongs_to  :nationality, :class_name => 'Country',:foreign_key=>"nationality_id"
+  belongs_to  :nationality, :class_name => 'Country'
   belongs_to  :home_country, :class_name => 'Country'
   belongs_to  :office_country, :class_name => 'Country'
   belongs_to  :user

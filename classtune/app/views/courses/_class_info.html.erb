@@ -11,8 +11,8 @@
       <li class="list<%=cycle('odd', 'even')%>">
         <% courses_batches = course.courses_batches.split(',') %>
         <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
-        <div class="category-name" style="width: 100px; padding: 4px 2px 8px 8px;"><%=  course.course_name %></div>
-        <div id="cate_sections_<%= course.id %>" class="category-sections" style=" padding: 4px 2px 12px 8px;">
+        <div class="category-name"><%=  course.course_name %></div>
+        <div id="cate_sections_<%= course.id %>" class="category-sections">
           <% courses_batches.each do |cb| %>
             <% a_course_batch_info = cb.split('--') %>
             <% course_data = Course.find_by_id(a_course_batch_info[1].to_i) %>
@@ -27,7 +27,7 @@
         </div>
         <% a_course_batch_info = courses_batches[0].split('--')   %>
         <% batch_id = a_course_batch_info[2]   %>
-        <div class="category-name" style="padding: 0 2px 8px 8px; float: right; width: 80px; ">
+        <div class="category-name" style="float: right;">
             <%#*new_batch_exam_group_path(Batch.find(batch_id),:class_exam=>true)%>
             <% unless @for_exam %>
             <% ARGV[0] = 'shift' %>

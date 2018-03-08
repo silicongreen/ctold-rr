@@ -42,10 +42,10 @@
   <div class="box">
    
       <h4 align="center"><%= t('batches_available_text') %></h4>  
-      <ul id="category-list">
+      <ul id="category-list" style="width:50%;">
           <% @batches.each do |batch| %>
             <li class="list<%=cycle('odd', 'even')%>">
-                <div id="save_batches_<%= batch.id %>" class="category-name">
+                <div id="save_batches_<%= batch.id %>" class="category-name" style="width:50%;">
                   <%= link_to_remote( batch.name.strip.downcase == 'general' ? 'General' : batch.name,
                     :url => { :controller=>"courses",:action => 'get_batches_classes', :id =>batch.id, :name => batch.name},
                     :method => 'get', :before => "$('loading_" + batch.id.to_s + "').show();", 

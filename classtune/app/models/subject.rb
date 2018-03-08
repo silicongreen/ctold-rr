@@ -36,7 +36,7 @@ class Subject < ActiveRecord::Base
   validates_uniqueness_of :code, :case_sensitive => false, :scope=>[:batch_id,:is_deleted] ,:if=> 'is_deleted == false'
   named_scope :for_batch, lambda { |b| { :conditions => { :batch_id => b.to_i, :is_deleted => false } } }
   named_scope :without_exams, :conditions => { :no_exams => false, :is_deleted => false }
-  named_scope :active,:conditions => ["batches.is_deleted = ? and batches.is_active = ? and courses.is_deleted = ? and subjects.is_deleted", false, true , false, false],:include=>[{:batch=>[:course]}]
+  named_scope :active,:conditions => ["batches.is_deleted = ? and batches.is_active = ? and courses.is_deleted = ? and subjects.is_deleted = ?", false, true , false, false],:include=>[{:batch=>[:course]}]
 
   before_save :fa_group_valid
   

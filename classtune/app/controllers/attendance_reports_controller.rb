@@ -261,9 +261,11 @@ class AttendanceReportsController < ApplicationController
 #        leaves_afternoon=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>false,:afternoon=>true,:month_date => @start_date..@end_date},:group=>:student_id)
 #        leaves_full=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>true,:afternoon=>true,:month_date => @start_date..@end_date},:group=>:student_id)
         @students.each do |student|
-          if @start_date < student.admission_date.to_date
+          @start_date = @batch.start_date.to_date
+          if student.admission_date.to_date > @start_date
             @start_date = student.admission_date.to_date
           end
+            
           @academic_days=  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
           @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
           on_leaves = 0;
@@ -410,11 +412,13 @@ class AttendanceReportsController < ApplicationController
           end
         end   
         if @config.config_value == 'Daily'
+          @start_date_main = @start_date
 #          @academic_days=  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
 #          #working_days.select{|v| v<=@end_date}.count
 #          
 #          @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @start_date..@end_date})
           @students.each do |student|
+            @start_date = @start_date_main
             if @start_date < student.admission_date.to_date
               @start_date = student.admission_date.to_date
             end
@@ -585,7 +589,9 @@ class AttendanceReportsController < ApplicationController
 #          end
           
           #@student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+          @start_date_main = @start_date
           @students.each do |student|
+            @start_date = @start_date_main
             if @mode=='Overall'
               @start_date = @batch.start_date.to_date
               @end_date = @local_tzone_time.to_date

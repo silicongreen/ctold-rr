@@ -202,9 +202,24 @@ class Subjects extends CActiveRecord
         $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('Subjectbatch.is_deleted', 0);
+        $criteria->compare('courseDetails.is_deleted', 0);
         $criteria->compare('t.no_exams', 1);
+        
 	$criteria->addCondition("t.elective_group_id IS NULL");
         $criteria->order = "t.priority asc";
+        $criteria->with =array(
+                      "Subjectbatch" => array(
+                          "select" => "Subjectbatch.name",
+                          'joinType' => "INNER JOIN",
+                          'with' => array(
+                              "courseDetails" => array(
+                                  "select" => "courseDetails.course_name",
+                                  'joinType' => "INNER JOIN",
+                              )
+                          )
+                   )
+        );
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();
         $student_subject = $stsub->getStudentSubject($batch_id,$student_id,1);
@@ -254,10 +269,24 @@ class Subjects extends CActiveRecord
         $criteria->select = 't.name,t.id,t.icon_number,t.no_exams,t.code,t.no_exams_sjws';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
+        $criteria->compare('Subjectbatch.is_deleted', 0);
+        $criteria->compare('courseDetails.is_deleted', 0);
         if($send_no_exam == false)
         $criteria->compare('t.no_exams', 0);
         $criteria->addCondition("t.elective_group_id IS NULL");
 	$criteria->order = "t.priority asc";
+        $criteria->with =array(
+                      "Subjectbatch" => array(
+                          "select" => "Subjectbatch.name",
+                          'joinType' => "INNER JOIN",
+                          'with' => array(
+                              "courseDetails" => array(
+                                  "select" => "courseDetails.course_name",
+                                  'joinType' => "INNER JOIN",
+                              )
+                          )
+                   )
+        );
 
         $data_subject = $this->findAll($criteria);
         $stsub = new StudentsSubjects();

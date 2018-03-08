@@ -46,7 +46,7 @@ class LessonplanController < ApplicationController
     @error = false
     if @current_user.employee?
       @subjects = current_user.employee_record.subjects.active
-      @subjects.reject! {|s| !s.batch.is_active} 
+      @subjects = @subjects.uniq
     end
     
     if request.post? and @lessonplan.save      
@@ -87,7 +87,7 @@ class LessonplanController < ApplicationController
     @error = false
     if @current_user.employee?
       @subjects = current_user.employee_record.subjects.active
-      @subjects.reject! {|s| !s.batch.is_active} 
+      @subjects = @subjects.uniq
     end
     
     if request.post? and @lessonplan.update_attributes(params[:lessonplan])

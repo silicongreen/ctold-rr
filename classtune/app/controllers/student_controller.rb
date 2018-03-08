@@ -2398,7 +2398,7 @@ end
       batches = Batch.active
       batch_name = batches[0].name
       batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
-      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+      @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = ?", batches, false], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
     end
     
     @batches = Batch.active

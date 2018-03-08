@@ -72,9 +72,10 @@
     float : left;
 }
 #category-list li div.category-name {
-    width : 120px;
+    width: 14%;
     font-weight: bold;
-    font-size:13px;
+    font-size: 13px;
+    margin: 8px;
 }
 #category-list li div.category-sections {
     width : 50%;
@@ -106,7 +107,7 @@
 
 #category-list li div.category-edit{
     font-size : 0.9em;
-    width : 160px;
+    width : 30%;
     margin:8px;
 
 }

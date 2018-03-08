@@ -79,7 +79,7 @@
                     <%= check_box_tag c.id.to_s, c.id,selected,:class=>"category_select course_group_data batch_group_" + batch, :onclick => "javascript:select_course_group(this,'" + batch + "')" %>&nbsp;&nbsp;&nbsp;&nbsp;
                     <%= c.course_name %>
                     <% unless t_courses.nil? %>
-                      <div style="float: right; text-align: right; margin-right: 10px; width: 200px;">
+                      <div style="float: right; text-align: right; margin-right: 10px; width: 70%;">
                       <% t_courses.each do |tc| %>
                           <% selected = batch_events.include?(tc.batch_id.to_i) ? true : false %>
                           <span class="sections_span <%= batch_events.include?(tc.batch_id.to_i) ? 'select_section' : 'section_data' %> section_data_<%= c.id.to_s  %> section_data_<%= batch  %>_<%= c.id.to_s  %>  batch_section_data_<%= batch  %> " onclick="javascript:highlight_checkbox(this, '<%= tc.batch_id.to_s %>')">
@@ -102,5 +102,12 @@
   </ul>
   <%= submit_tag "#{t('save')}", :class=>"create" %>
 <% end %>
-
+<style>
+    span.sections_span
+    {
+      width: 42%;
+      float: left;
+      margin: 3px;
+    }
+</style>    
 

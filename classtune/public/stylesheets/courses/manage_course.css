@@ -36,7 +36,7 @@
 #category-list {
     clear : both;
     padding : 10px 0 40px 0px;
-    width:570px;
+    width:100%;
     margin:0px auto;
 }
 
@@ -44,7 +44,7 @@
     background : #fff;
     border-bottom:1px solid #d7d7d7;
     color : #444;
-    min-height : 1.5em; width : 33em;
+    min-height : 1.5em; width : 97%;
     overflow: auto;
     list-style-type : none;
     padding : 0.5em 0 0 3em;
@@ -54,7 +54,7 @@
     background : #f5f5f5;
     border-bottom:1px solid #d7d7d7;
     color : #444;
-    min-height : 1.5em; width : 33em;
+    min-height : 1.5em; width : 97%;
     overflow: auto;
     list-style-type : none;
     padding : 0.5em 0 0 3em;
@@ -77,7 +77,7 @@
     font-size:13px;
 }
 #category-list li div.category-sections {
-    width : 195px;
+    width : 50%;
     font-weight: bold;
     font-size:13px;
 }
@@ -85,12 +85,14 @@
     overflow: hidden;
 }
 #category-list li div.category-sections span.section {
-    width: 50px;
+    width: 45%;
     background: #DDD;
     margin-right: 8px;
     padding: 2px 4px 2px 5px;
     border: 1px solid #BBB;
     position: relative;
+    float:left;
+    margin: 8px;
 }
 #category-list li div.category-sections span.section span.close {
     position: absolute;
@@ -105,11 +107,13 @@
 #category-list li div.category-edit{
     font-size : 0.9em;
     width : 160px;
+    margin:8px;
 
 }
 #category-list li div.category-delete {
     font-size : 0.9em;
     width : 48px;
+    margin:8px
 
 }
 #category-list li div a {

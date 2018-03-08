@@ -59,7 +59,7 @@
           <%= batch.strip.downcase == 'general' ? 'no-shift' : batch %>
           <% unless courses.nil? %>
             <% courses.each do |c| %>
-              <li class="list<%= cycle('odd','even') %>" style="width: 66%; padding: 10px; padding-left: 20%; font-size: 13px;">
+              <li class="list<%= cycle('odd','even') %>" style="width: 66%; padding: 10px; padding-left: 20%; font-size: 13px; height: auto;">
                   <% if c.section_name.strip.length == 0 %>
                     <% t_batch = Batch.find_by_course_id_and_name(c.id, batch) %>
                     <% selected = batch_events.include?(t_batch.id.to_i) ? true : false %>

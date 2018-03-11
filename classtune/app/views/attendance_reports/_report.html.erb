@@ -84,7 +84,7 @@
           <td class="col-3"> <%= @leaves[student.id]['absent'] %></td>
           <td class="col-3"> <%= @leaves[student.id]['on_leave'] %></td>
           <td class="col-3"> <%= @leaves[student.id]['total'] %></td>
-          <td class="col-3"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].nil? %></td>
+          <td class="col-3"><%= @leaves[student.id]['percent'].round(2) unless @leaves[student.id]['percent'].blank? %></td>
         </tr>
       <% end %>
     </table>

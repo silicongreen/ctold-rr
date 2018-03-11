@@ -463,7 +463,7 @@ class AttendanceReportsController < ApplicationController
             @leaves[student.id]['on_leave'] = on_leaves
             @leaves[student.id]['present'] = @academic_days-on_leaves-leaves_full
             @leaves[student.id]['total']=@academic_days-leaves_full.to_f-(0.5*leaves_other)
-            @leaves[student.id]['percent'] = 0
+            @leaves[student.id]['percent'] = 0.0
             @leaves[student.id]['percent'] = (@leaves[student.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
           end
 #          leaves_forenoon=Attendance.count(:all,:joins=>:student,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>true,:afternoon=>false,:month_date => @start_date..@end_date},:group=>:student_id)

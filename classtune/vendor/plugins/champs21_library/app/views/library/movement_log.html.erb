@@ -40,7 +40,7 @@
       <div class="label-field-pair">
         <label for="subject_type"><%= "Date Start" %></label>
         <div class="text-input-bg">
-          <%= calendar_date_select_tag 'book_log[date]', I18n.localize(Date.today, :format=>:default), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %>
+          <%= calendar_date_select_tag 'book_log[date]',"", :year_range => 5.years.ago..0.years.ago %>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
       <div class="label-field-pair">
         <label for="subject_type"><%= "Date End" %></label>
         <div class="text-input-bg">
-          <%= calendar_date_select_tag 'book_log[date2]', I18n.localize(Date.today, :format=>:default), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %>
+          <%= calendar_date_select_tag 'book_log[date2]',"", :year_range => 5.years.ago..0.years.ago %>
         </div>
       </div>
     </div>

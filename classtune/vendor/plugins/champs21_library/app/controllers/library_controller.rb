@@ -139,7 +139,7 @@ class LibraryController < ApplicationController
       end
     else
       if params[:book_log][:date2].blank?
-        params[:book_log][:date] = "2080-01-01"
+        params[:book_log][:date2] = "2080-01-01"
       end
       if params[:book_log][:date].blank?
         params[:book_log][:date] = "1977-01-01"

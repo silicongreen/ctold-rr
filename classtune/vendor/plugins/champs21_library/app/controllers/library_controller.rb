@@ -145,6 +145,9 @@ class LibraryController < ApplicationController
         params[:book_log][:date] = "1977-01-01"
       end
       
+      params[:book_log][:date] = params[:book_log][:date].to_date
+      params[:book_log][:date2] = params[:book_log][:date2].to_date
+      
       if @sort_order.nil?
         if params[:book_log][:type]=="Due Date"
           @log= BookMovement.paginate(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ? and users.student = ?",params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type]],:page=>params[:page],:per_page=>20,:order=>'due_date ASC')

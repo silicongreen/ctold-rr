@@ -271,7 +271,7 @@ class TimetableEntriesController < ApplicationController
       @timetable[tte.weekday_id][tte.class_timing_id]=tte
     end
     @subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>["elective_group_id IS NULL AND is_deleted = false"])
-    @ele_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"], :group => "elective_group_id")
+    @ele_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>["elective_group_id IS NOT NULL AND is_deleted = false AND elsective_groups.batch_id = subjects.batch_id"], :group => "elective_group_id",:include=>[:elsective_groups])
   end
 
   def check_valid_timetable

@@ -87,10 +87,10 @@
         <div  class="text-input-bg">
             <% unless @examgroup.attandence_start_date.blank? %>
                 <%= calendar_date_select_tag "exam_group[attandence_start_date]",
-                I18n.l(@examgroup.attandence_start_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                I18n.l(@examgroup.attandence_start_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
             <% else %>
                 <%= calendar_date_select_tag "exam_group[attandence_start_date]",
-                I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
             <% end %>
         </div>
       </div>
@@ -102,10 +102,10 @@
         <div  class="text-input-bg">
          <% unless @examgroup.attandence_end_date.blank? %>
                 <%= calendar_date_select_tag "exam_group[attandence_end_date]",
-            I18n.l(@examgroup.attandence_end_date,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+            I18n.l(@examgroup.attandence_end_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
          <% else %> 
                 <%= calendar_date_select_tag "exam_group[attandence_end_date]",
-                I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+                I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
          <% end %>   
         </div>
       </div>

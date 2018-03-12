@@ -34,11 +34,11 @@
     <%= error_messages_for 'events' %>
     <div class="label-field-pair" style="display:none;">
       <label for="start-date"><%= t('start_date') %>:</label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'events[start_date]', I18n.localize(@start_date || @date, :format=>("%Y-%m-%d %H:%M")), :time => true , :readonly=>true, :popup=>"force" %></div>
+      <div class="text-input-bg"><%= calendar_date_select_tag 'events[start_date]', I18n.localize(@start_date || @date, :format=>("%d %b %Y %H:%M")), :time => true , :readonly=>true, :popup=>"force" %></div>
     </div>
     <div class="label-field-pair" style="display:none;">
       <label for="end-date"><%= t('end_date') %>:</label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'events[end_date]', I18n.localize(@end_date || @date, :format=>("%Y-%m-%d %H:%M")), :time => true , :readonly=>true, :popup=>"force" %></div>
+      <div class="text-input-bg"><%= calendar_date_select_tag 'events[end_date]', I18n.localize(@end_date || @date, :format=>("%d %b %Y %H:%M")), :time => true , :readonly=>true, :popup=>"force" %></div>
     </div>
     <div class="label-field-pair">
           <label for="event_category"><%= t('category') %></label>

@@ -6,7 +6,7 @@
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
        <a href="/calendar/index/" style="float: left;">Academic Calendar</a>
-       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%d %b %Y") %></span>
       </div>
       <div class="header-title-sub-text f5">
 
@@ -118,7 +118,7 @@
                         
                         <% else %>
                           <tr>
-                            <td class=""><span> <%= h.start_date.strftime('%Y-%m-%d') %><%#= dt  %></span></td>
+                            <td class=""><span> <%= h.start_date.strftime('%d %b %Y') %><%#= dt  %></span></td>
                             <td class="">
                               <a class="event_title" href="/event/event_details/<%=  h.id%>" style="font-size:16px;color: <%= color %> ;"><%= h.title %></a>
                               <% if h.is_holiday  %>

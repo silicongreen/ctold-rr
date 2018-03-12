@@ -13,7 +13,7 @@
     <div class="header-title-text-wrapper">
       <div class="header-title-main-text f2">
        <%= link_to "Homework", :controller => 'assignments', :action => 'index' %>   
-       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%d %b %Y") %></span>
       </div>
       <div class="header-title-sub-text f5">
         
@@ -103,14 +103,14 @@
           <label for="duedate"><%= "Published date"%></label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "assignment[created_at]",
-             I18n.l(Date.today,:format=>"%Y-%m-%d"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+             I18n.l(Date.today,:format=>"%d %b %Y"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate"><%= "#{t('due_date')}"%></label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "assignment[duedate]",
-              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+              I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
         <%= hidden_field :assignment,"is_published", :value =>1 %>        

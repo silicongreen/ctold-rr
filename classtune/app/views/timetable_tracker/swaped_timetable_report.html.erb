@@ -20,13 +20,13 @@
       <div class="label-field-pair">
         <label for="employee_detais"><%= t('from') %></label>
         <div class="text-input-bg">
-          <%= calendar_date_select_tag 'employee_details[from]', I18n.l(Date.today,:format=>:default),:year_range => 15.years.ago..0.years.from_now,:popup=>"force" %>
+          <%= calendar_date_select_tag 'employee_details[from]', I18n.l(Date.today,:format=>"%d %b %Y"),:year_range => 15.years.ago..0.years.from_now,:popup=>"force" %>
         </div>
       </div>
       <div class="label-field-pair">
         <label for="employee_detais"><%= t('to') %></label>
         <div class="text-input-bg">
-          <%= calendar_date_select_tag 'employee_details[to]', I18n.l(Date.today,:format=>:default),:year_range => 15.years.ago..0.years.from_now,:popup=>"force" %>
+          <%= calendar_date_select_tag 'employee_details[to]', I18n.l(Date.today,:format=>"%d %b %Y"),:year_range => 15.years.ago..0.years.from_now,:popup=>"force" %>
         </div>
       </div>
     </div>

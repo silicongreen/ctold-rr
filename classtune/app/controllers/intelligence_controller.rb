@@ -1582,7 +1582,7 @@ class IntelligenceController < ApplicationController
  
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date_used = date_used.to_date unless date_used.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/syllabus/intelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1610,7 +1610,7 @@ class IntelligenceController < ApplicationController
     require "yaml"
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date = date.to_date unless date.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/syllabus/teacherintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1643,7 +1643,7 @@ class IntelligenceController < ApplicationController
  
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date_used = date_used.to_date unless date_used.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/homework/homeworkintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1674,7 +1674,7 @@ class IntelligenceController < ApplicationController
     require "yaml"
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date = date.to_date unless date.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/homework/teacherintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1704,7 +1704,7 @@ class IntelligenceController < ApplicationController
     end
 
     
- 
+    date_used = date_used.to_date unless date_used.blank?
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
 
@@ -1735,7 +1735,7 @@ class IntelligenceController < ApplicationController
     require "yaml"
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date = date.to_date unless date.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/classwork/teacherintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1767,7 +1767,7 @@ class IntelligenceController < ApplicationController
  
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+    date_used = date_used.to_date unless date_used.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/calender/studentattendenceintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1840,7 +1840,7 @@ class IntelligenceController < ApplicationController
  
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
-
+     date_used = date_used.to_date unless date_used.blank?
     if current_user.employee? or current_user.admin?
       api_uri = URI(api_endpoint + "api/calender/attcomparisom")
       http = Net::HTTP.new(api_uri.host, api_uri.port)

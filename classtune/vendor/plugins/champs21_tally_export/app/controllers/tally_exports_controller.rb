@@ -20,7 +20,7 @@ class TallyExportsController < ApplicationController
     if request.post?
       configs = params[:tally_export_configuration]
       if configs[:enable_live_sync] == '1'
-        configs[:live_sync_start_date] = I18n.l(Date.today, :format=>:default) if @config[:live_sync_start_date].blank?
+        configs[:live_sync_start_date] = I18n.l(Date.today, :format=>"%d %b %Y") if @config[:live_sync_start_date].blank?
       end
       TallyExportConfiguration.set_config_values(configs)
       @config = TallyExportConfiguration.get_multiple_configs_as_hash ['TallyUrl', 'EnableLiveSync', 'LiveSyncStartDate']

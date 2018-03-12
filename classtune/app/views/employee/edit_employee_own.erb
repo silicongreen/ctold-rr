@@ -154,7 +154,7 @@
       <hr class="sub-heading"></hr>
           <div class="label-field-pair">
             <label><%= t('date_of_birth') %></label>
-            <div class="text-input-bg"><%= calendar_date_select_tag 'employee[date_of_birth]', I18n.l(@employee.date_of_birth,:format=>:default),
+            <div class="text-input-bg"><%= calendar_date_select_tag 'employee[date_of_birth]', I18n.l(@employee.date_of_birth,:format=>"%d %b %Y"),
                 :year_range => 83.years.ago..4.years.ago ,:popup=>"force"%></div>
           </div>
           <div class="extender"></div>

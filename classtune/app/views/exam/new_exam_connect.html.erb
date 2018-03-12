@@ -147,7 +147,7 @@
           <label for="duedate">Publish Date</label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "exam_grouping[published_date]",
-              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+              I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
       <% 
@@ -160,14 +160,14 @@
           <label for="duedate"><%= "#{t('attandence_start_date')}"%></label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "exam_grouping[attandence_start_date]",
-              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+              I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate"><%= "#{t('attandence_end_date')}"%></label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "exam_grouping[attandence_end_date]",
-              I18n.l(1.week.since,:format=>"%Y-%m-%d") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+              I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
           </div>
         </div>
         <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">

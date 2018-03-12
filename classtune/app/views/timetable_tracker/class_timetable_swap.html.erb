@@ -34,7 +34,7 @@
         :style =>"display: none;" ) %>
     </div>
     <div class="label-field-pair">
-      <div class="text-input-bg"><%= calendar_date_select_tag 'batch[date]', I18n.l(Date.today,:format=>:default),
+      <div class="text-input-bg"><%= calendar_date_select_tag 'batch[date]', I18n.l(Date.today,:format=>"%d %b %Y"),
           :year_range => 10.years.ago..10.years.from_now, :readonly=>true, :popup=>"force",
           :onChange => "#{remote_function(:url => {:action => "batch_timetable"},
         :with => "j('form').serialize()",

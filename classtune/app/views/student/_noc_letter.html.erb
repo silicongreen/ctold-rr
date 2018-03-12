@@ -51,17 +51,17 @@
     
     <div class="row" id="start_date_1">
       <div class="row_label">Start Date</div>
-      <div class="row_data"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>"%d %b %Y"),  :popup=>"force" %></div>
     </div>
 
     <div class="row" id="end_date_1">
       <div class="row_label">End Date</div>
-      <div class="row_data"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y"), :popup=>"force" %></div>
     </div>
     
     <div class="row" id="request_date_1">
       <div class="row_label">Request Date of Collection</div>
-      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today+3,:format=>:default),:year_range => [0.years.ago, 1.years.from_now], :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today+3,:format=>"%d %b %Y"),:year_range => [0.years.ago, 1.years.from_now], :popup=>"force" %></div>
     </div>
     <div class="row" id="request_date_1">
         <div class="row_label" style="width:100%;"><font color="red" >Please allow minimum 3 working days to process</font></div>

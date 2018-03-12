@@ -84,12 +84,12 @@
 
           <div class="label-field-pair" id="start_date_1" style="display: none;">
             <div class="label-container"><%= batch_form.label "#{t('start_date')}" %></div>
-            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][start_date]', I18n.l(Date.today,:format=>:default),  :popup=>"force" %></div>
+            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][start_date]', I18n.l(Date.today,:format=>"%d %b %Y"),  :popup=>"force" %></div>
           </div>
 
           <div class="label-field-pair" id="end_date_1" style="display: none;">
             <div class="label-container"><%= batch_form.label "#{t('end_date')}" %></div>
-            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][end_date]', I18n.l(Date.today + 5.year,:format=>:default), :popup=>"force" %></div>
+            <div class="input-container"><%= calendar_date_select_tag 'course[batches_attributes][0][end_date]', I18n.l(Date.today + 5.year,:format=>"%d %b %Y"), :popup=>"force" %></div>
           </div>
         </div>
         <%= link_to t('add_more_batch'), "javascript:;", :onclick=>"add_more_batch()",:class => "user_button", :style => "float:right; margin-top: 5px;"%>

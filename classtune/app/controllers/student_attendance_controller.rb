@@ -651,8 +651,8 @@ class StudentAttendanceController < ApplicationController
     
     form_data = {}
     form_data['user_secret'] = session[:api_info][0]['user_secret']
-    form_data['start_date'] = first_day
-    form_data['end_date'] = last_day
+    form_data['start_date'] = first_day.to_date
+    form_data['end_date'] = last_day.to_date
     
     if current_user.parent
       target = current_user.guardian_entry.current_ward_id      

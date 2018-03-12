@@ -52,7 +52,7 @@
   <div class="date-of-leaving">
     <div class="label-field-pair">
          <div class="status-label"><%= t('leaving_date') %>:</div>
-          <div class="input-container"><%= calendar_date_select_tag 'leaving_date', I18n.l(Date.today,:format=>:default) ,:popup=>:force%></div>
+          <div class="input-container"><%= calendar_date_select_tag 'leaving_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
         </div>
   </div></div>
   

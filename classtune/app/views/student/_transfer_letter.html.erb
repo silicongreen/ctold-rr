@@ -61,7 +61,7 @@
             <%= I18n.l(@student.admission_date,:format=>"%d %b %Y") %>
             <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>:normal) %>">
           <% else %>
-            <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
+            <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>"%d %b %Y"),  :popup=>"force" %>
           <% end %>
       </div>
     </div>
@@ -73,19 +73,19 @@
             <%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") %>
             <input type="hidden" id="date_of_birth" value="<%= I18n.l(@student.date_of_birth,:format=>:normal) %>">
           <% else %>
-            <%= calendar_date_select_tag 'date_of_birth', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
+            <%= calendar_date_select_tag 'date_of_birth', I18n.l(Date.today,:format=>"%d %b %Y"),  :popup=>"force" %>
           <% end %>
       </div>
     </div>
 
     <div class="row" id="end_date_1">
       <div class="row_label">Date of Transfer</div>
-      <div class="row_data"><%= calendar_date_select_tag 'date_of_transfer', I18n.l(Date.today,:format=>:default), :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'date_of_transfer', I18n.l(Date.today,:format=>"%d %b %Y"), :popup=>"force" %></div>
     </div>
       
     <div class="row" id="request_date_1">
       <div class="row_label">Request Date of Collection</div>
-      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today+3,:format=>:default),:year_range => [0.years.ago, 1.years.from_now], :popup=>"force" %></div>
+      <div class="row_data"><%= calendar_date_select_tag 'request_date', I18n.l(Date.today+3,:format=>"%d %b %Y"),:year_range => [0.years.ago, 1.years.from_now], :popup=>"force" %></div>
     </div>
     <div class="row" id="request_date_1">
         <div class="row_label" style="width:100%;"><font color="red" >Please allow minimum 3 working days to process</font></div>

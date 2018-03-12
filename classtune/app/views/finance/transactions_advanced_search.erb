@@ -89,7 +89,7 @@
             <%= calendar_date_select_tag 'date[start_date]', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 25.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%>
             <%#= calendar_date_select_tag 'date[start_date]',
-              I18n.l(Date.today,:format=>:default) , :year_range => 15.years.ago..5.years.ago,:popup=>"force" %>
+              I18n.l(Date.today,:format=>"%d %b %Y") , :year_range => 15.years.ago..5.years.ago,:popup=>"force" %>
           </div>
         </div>
       <div class="label-field-pair">
@@ -98,7 +98,7 @@
             <%= calendar_date_select_tag 'date[end_date]', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 25.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%>
             <%#= calendar_date_select_tag 'date[end_date]',
-              I18n.l(Date.today,:format=>:default) , :year_range => 15.years.ago..5.years.ago,:popup=>"force" %>
+              I18n.l(Date.today,:format=>"%d %b %Y") , :year_range => 15.years.ago..5.years.ago,:popup=>"force" %>
           </div>
         </div>
 

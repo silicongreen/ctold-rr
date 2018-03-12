@@ -12,7 +12,7 @@ module CalendarDateSelect
       :javascript_include => "format_hyphen_ampm"
     },
     :iso_date => {
-      :date => "%Y-%m-%d",
+      :date => "%d %b %Y",
       :time => " %H:%M",
       :javascript_include => "format_iso_date"
     },

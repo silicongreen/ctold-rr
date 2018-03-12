@@ -211,7 +211,7 @@
               <div class="row_data">
                 <div>
                   <% start_date = params[:leave_apply][:start_date] if params[:leave_apply].present? %>
-                  <%= calendar_date_select_tag 'leave_apply[start_date]' ,I18n.l( start_date.present? ? start_date.to_date : Date.today, :format=>:default),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+                  <%= calendar_date_select_tag 'leave_apply[start_date]' ,I18n.l( start_date.present? ? start_date.to_date : Date.today, :format=>"%d %b %Y"),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
                 </div>
               </div>
             </div>
@@ -225,7 +225,7 @@
               <div class="row_data">
                 <div>
                   <% end_date = params[:leave_apply][:end_date] if params[:leave_apply].present? %>
-                  <%= calendar_date_select_tag 'leave_apply[end_date]' ,I18n.l( end_date.present? ? end_date.to_date : Date.today, :format=>:default),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
+                  <%= calendar_date_select_tag 'leave_apply[end_date]' ,I18n.l( end_date.present? ? end_date.to_date : Date.today, :format=>"%d %b %Y"),:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png' %>
                 </div>
               </div>
             </div>

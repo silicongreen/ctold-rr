@@ -87,7 +87,7 @@
       <div class="indent_date label-field-pair">
         <div class="label-container1"><%= "#{t('po_date')}" %></div>
         <div class="text-input-bg-indent">
-          <%= calendar_date_select_tag 'purchase_order[po_date]', I18n.l(Date.today,:format=>:default),
+          <%= calendar_date_select_tag 'purchase_order[po_date]', I18n.l(Date.today,:format=>"%d %b %Y"),
             :year_range => 15.years.ago..5.years.from_now, :readonly=>true,:popup=>"force" %>
         </div>
       </div>

@@ -264,7 +264,7 @@
               </div>
               <div class="label-field-pair4">
                 <label>Transaction Date</label>
-                <div class="text-input-bg4"><%= calendar_date_select_tag 'fees[transaction_date]',I18n.l(Date.today,:format=>:default),:readonly=>true,:popup=>"force" %></div>
+                <div class="text-input-bg4"><%= calendar_date_select_tag 'fees[transaction_date]',I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
               </div>
             </div>
           </td>

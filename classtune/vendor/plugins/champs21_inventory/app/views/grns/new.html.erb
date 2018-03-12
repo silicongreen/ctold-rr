@@ -55,7 +55,7 @@
       <div class="indent_date label-field-pair">
         <div class="label-container1"><%= "#{t('grn_date')}" %></div>
         <div class="text-input-bg-indent">
-          <%= calendar_date_select_tag 'grn[grn_date]', @grn.grn_date.blank? ? I18n.l(Date.today,:format=>:default):@grn.grn_date,
+          <%= calendar_date_select_tag 'grn[grn_date]', @grn.grn_date.blank? ? I18n.l(Date.today,:format=>"%d %b %Y"):@grn.grn_date,
             :year_range => 15.years.ago..5.years.from_now , :readonly=>true,:popup=>"force"%>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <div class="indent_date label-field-pair">
         <div class="label-container1"><%= "#{t('invoice_date')}" %></div>
         <div class="text-input-bg-indent">
-          <%= calendar_date_select_tag 'grn[invoice_date]', @grn.invoice_date.blank? ? I18n.l(Date.today,:format=>:default):@grn.invoice_date,
+          <%= calendar_date_select_tag 'grn[invoice_date]', @grn.invoice_date.blank? ? I18n.l(Date.today,:format=>"%d %b %Y"):@grn.invoice_date,
             :year_range => 15.years.ago..5.years.from_now, :readonly=>true,:popup=>"force" %>
         </div>
       </div>

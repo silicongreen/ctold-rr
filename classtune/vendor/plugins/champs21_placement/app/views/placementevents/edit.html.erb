@@ -13,7 +13,7 @@
     <%= f.error_messages %>
     <div id="new_placementevent_form">
       <div class="label-field-pair"><label for="title"><%= t('title') %></label><div class="text-input-bg"><%= f.text_field :title   %></div></div>
-      <div class="label-field-pair"> <label for="date"><%= t('date_text') %></label><div class="text-input-bg"> <%= calendar_date_select_tag "placementevent[date]",I18n.l(@placementevent.date.to_date,:format=>:default) ,:class=>"text-input-bg" ,:readonly=>true,:popup=>"force"%></div></div>
+      <div class="label-field-pair"> <label for="date"><%= t('date_text') %></label><div class="text-input-bg"> <%= calendar_date_select_tag "placementevent[date]",I18n.l(@placementevent.date.to_date,:format=>"%d %b %Y") ,:class=>"text-input-bg" ,:readonly=>true,:popup=>"force"%></div></div>
       <div class="label-field-pair"><label for="company"><%= t('company') %></label><div class="text-input-bg"><%= f.text_field :company   %></div></div>
       <div class="label-field-pair" id="placementevent-description"><label for="description"><%= t('description') %></label><div class="text-input-bg"><%= f.text_area :description %></div></div>
       <%= f.submit "#{t('update_placement_event')}" ,:class=>"submit-button"%>

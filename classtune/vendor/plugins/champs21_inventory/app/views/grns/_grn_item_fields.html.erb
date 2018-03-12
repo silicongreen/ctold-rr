@@ -16,7 +16,7 @@
         <td class="text-input"><%= i.text_field :discount,:value=>precision_label(i.object.discount),:readonly => true, :class=>'precision_text' %></td>
         <td class="text-input"><%= i.text_field :tax,:value=>precision_label(i.object.tax),:readonly => true, :class=>'precision_text' %></td>
         <td class="text-input" >
-          <%= i.calendar_date_select :expiry_date,:popup => :force,:value => I18n.l(Date.today,:format=>:default),:year_range => 15.years.ago..5.years.from_now, :readonly=>true %>
+          <%= i.calendar_date_select :expiry_date,:popup => :force,:value => I18n.l(Date.today,:format=>"%d %b %Y"),:year_range => 15.years.ago..5.years.from_now, :readonly=>true %>
         </td>
         <td id="remove"> <%= link_to_remove_fields image_tag("/images/buttons/Delete.png",:border => 0) , i %>
         </td>

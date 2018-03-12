@@ -38,11 +38,11 @@
   <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
     <div class="label-field-pair">
       <label for="start_date"><%= t('start_date') %></label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>:default),:readonly=>true,:popup=>"force" %></div>
+      <div class="text-input-bg"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
     </div>
     <div class="label-field-pair">
       <label for="start_date"><%= t('end_date') %></label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>:default),:readonly=>true,:popup=>"force" %></div>
+      <div class="text-input-bg"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
     </div>
     <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
   <% end %>

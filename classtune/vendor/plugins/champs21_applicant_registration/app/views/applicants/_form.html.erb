@@ -32,7 +32,7 @@
       <div class="label-field-pair">
         <label for="student_date_of_birth"><%= t('date_of_birth') %> <span class="necessary-field">*</span> </label>
         <div class="text-input-bg w198">
-          <%= calendar_date_select_tag 'applicant[date_of_birth]',(@applicant.date_of_birth.blank? ?  I18n.l(Date.today-5.years,:format=>:default): @applicant.date_of_birth),
+          <%= calendar_date_select_tag 'applicant[date_of_birth]',(@applicant.date_of_birth.blank? ?  I18n.l(Date.today-5.years,:format=>"%d %b %Y"): @applicant.date_of_birth),
             :year_range => 72.years.ago..0.years.ago,:readonly=>true,:popup=>"force" %>
         </div>
       </div>

@@ -29,7 +29,7 @@
       </div>
       <div class="row_data">
         <div>
-          <%= calendar_date_select_tag 'period[start_date]', I18n.l(1.month.ago.to_date,:format=>:default) ,:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png'%>
+          <%= calendar_date_select_tag 'period[start_date]', I18n.l(1.month.ago.to_date,:format=>"%d %b %Y") ,:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png'%>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="row_data">
         <div>
-          <%= calendar_date_select_tag 'period[end_date]', I18n.l(Date.today,:format=>:default) ,:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png'%>
+          <%= calendar_date_select_tag 'period[end_date]', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force, :placeholder => 'Start Date', :image => '/images/icons/calendar/calendar-icon.png'%>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
     <div class="header-title-text-wrapper" style="width: 72%;">
       <div class="header-title-main-text f2">
         <a href="/calendar/list_events/" style="float: left;">Academic Calendar</a><br />
-       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%Y-%m-%d") %></span>
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%d %b %Y") %></span>
       </div>
       <div class="header-title-sub-text f5">
 
@@ -67,8 +67,8 @@
             <div class="subcontent-header themed_text"><%=  link_to acacal.title, :controller => 'calendar', :action => 'download_acacal', :id => acacal.id%></div> 
             
             <div class="subcontent-info" style="margin-top:10px;">
-                Created : <%= acacal.updated_at.strftime("%Y-%m-%d") %> &nbsp;&nbsp;&nbsp
-                Updated : <%= acacal.updated_at.strftime("%Y-%m-%d") %>
+                Created : <%= acacal.updated_at.strftime("%d %b %Y") %> &nbsp;&nbsp;&nbsp
+                Updated : <%= acacal.updated_at.strftime("%d %b %Y") %>
             </div>    
           </div>
         

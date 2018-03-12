@@ -74,7 +74,7 @@
                             end
                         %>
                         <tr>
-                          <td class=""><span> <%= h.start_date.strftime('%Y-%m-%d') %><%#= dt  %></span></td>
+                          <td class=""><span> <%= h.start_date.strftime('%d %b %Y') %><%#= dt  %></span></td>
                           <td class="">
                             <a class="event_title" href="/event/event_details/<%=  h.id%>" style="font-size:16px;color: <%= color %> ;"><%= h.title %></a>
                             <% if h.is_holiday  %>

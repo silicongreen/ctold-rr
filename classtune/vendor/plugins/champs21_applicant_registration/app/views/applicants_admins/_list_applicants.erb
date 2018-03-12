@@ -14,14 +14,14 @@
       <div class="col2">
         <div class="col-label"><%= t('from') %>: </div>
         <div class="text-input-bg2">  <%= calendar_date_select_tag 'search[created_at_gte]',
-            (params[:search].blank? ? I18n.l((DateTime.now-30.days).to_date,:format=>:default) : params[:search][:created_at_gte]),:readonly=>true, :popup=>:force %>
+            (params[:search].blank? ? I18n.l((DateTime.now-30.days).to_date,:format=>"%d %b %Y") : params[:search][:created_at_gte]),:readonly=>true, :popup=>:force %>
         </div>
       </div>
       <div class="col2">
         <div class="col-label"><%= t('to') %>: </div>
         <div class="text-input-bg2">
           <%= calendar_date_select_tag 'search[created_at_lte]',
-            (params[:search].blank? ? I18n.l((DateTime.now).to_date,:format=>:default) : params[:search][:created_at_lte]),:readonly=>true, :popup=>:force %>
+            (params[:search].blank? ? I18n.l((DateTime.now).to_date,:format=>"%d %b %Y") : params[:search][:created_at_lte]),:readonly=>true, :popup=>:force %>
         </div>
       </div>
       <%= submit_tag t('filter'),:class=>"submit_1" %>

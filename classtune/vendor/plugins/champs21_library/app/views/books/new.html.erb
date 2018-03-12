@@ -61,7 +61,7 @@
       <div class="label-field-pair">
         <label for="title"><%= "Cataloging Date"%></label>
         <div class="text-input-bg">
-          <%= calendar_date_select_tag 'book[catalog_date]',I18n.l(Date.today,:format=>:default) ,:popup=>:force%>
+          <%= calendar_date_select_tag 'book[catalog_date]',I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%>
         </div>
       </div>
       <div class="label-field-pair">

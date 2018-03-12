@@ -185,7 +185,7 @@
     </div>
     <div class="label-field-pair">
       <label for="trial_date"><%= t('trial_date') %><span class="necessary-field">*</span></label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'discipline_complaint[trial_date]', I18n.l(@date.to_date,:format=>:default),
+      <div class="text-input-bg"><%= calendar_date_select_tag 'discipline_complaint[trial_date]', I18n.l(@date.to_date,:format=>"%d %b %Y"),
           :year_range => 0.years.ago...5.years.from_now, :popup=>"force" %></div>
     </div>
     <div class="extender"></div>

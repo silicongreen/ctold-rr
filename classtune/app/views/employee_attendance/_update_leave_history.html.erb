@@ -35,7 +35,7 @@
   <% else %>
     <% leave.each do |l| %>
       <div class="date-<%= cycle('odd', 'even') %>">
-        <%= I18n.l(l.attendance_date,:format=>:default) %>
+        <%= I18n.l(l.attendance_date,:format=>"%d %b %Y") %>
         <% if l.is_half_day==true %>
           (<%= t('half_day') %>)
         <% end %>

@@ -46,7 +46,7 @@
       </div>
       <div class="label-field-pair">
         <label for="reason">  <%= t('refund_validity') %><span class="necessary-field">*</span>:</label>
-        <div class="text-input-bg"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>:default), :popup=>"force",:class=>'due_date'%></div>
+        <div class="text-input-bg"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
       </div>
       <div class="label-field-pair">
         <label for="reason">  <%= t('refund_percentage') %><span class="necessary-field">*</span>:</label>

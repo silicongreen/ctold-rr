@@ -1416,7 +1416,8 @@ def get_report_year(batch_id,student_id,start_date="",end_date="")
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  start_date = start_date.to_date unless start_date.blank?
+  end_date = end_date.to_date unless end_date.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/calender/getattendence")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1440,7 +1441,7 @@ def get_report_full(date)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date = date.to_date unless date.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/calender/studentattendencereportfull")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1461,7 +1462,7 @@ def get_report(batch_id,date)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date = date.to_date unless date.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/calender/studentattendencereport")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1483,7 +1484,7 @@ def add_attendence_subject(subject_id,date_to_use,student_id,late)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/addattendence")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1505,7 +1506,7 @@ def get_subject_report_date_name(subject_id,date_to_use)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/Reportteacherbyname")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1526,7 +1527,7 @@ def get_subject_attendence_student_name(subject_id,date_to_use)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/getstudentsbysubname")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1547,7 +1548,7 @@ def get_subject_report_date(subject_id,date_to_use)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/reportteacher")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1589,7 +1590,8 @@ def get_subject_report_name(subject_id,date_start=false,date_end=false)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_start = date_start.to_date unless date_start.blank?
+  date_end = date_end.to_date unless date_end.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/reportallteachername")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1614,7 +1616,7 @@ def get_subject_attendence_student(subject_id,date_to_use)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/attendance/getstudents")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1635,7 +1637,7 @@ def get_attendence_student(batch_id,date_to_use)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/calender/getbatchstudentattendence")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1656,7 +1658,7 @@ def add_attendence_student(batch_id,date_to_use,student_id,late=0,remove_only=0)
  
   champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
   api_endpoint = champs21_api_config['api_url']
-
+  date_to_use = date_to_use.to_date unless date_to_use.blank?
   if current_user.employee? or current_user.admin?
     api_uri = URI(api_endpoint + "api/calender/addattendencesingle")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
@@ -1714,7 +1716,8 @@ def immidiate_leave(student_id, start_date, end_date)
     form_data['start_date'] = start_date
     form_data['end_date'] = end_date
     form_data['student_id'] = student_id
-      
+    start_date = start_date.to_date unless start_date.blank?
+    end_date = end_date.to_date unless end_date.blank?
     api_uri = URI(api_endpoint + "api/event/addLeaveStudent")
     http = Net::HTTP.new(api_uri.host, api_uri.port)
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })

@@ -47,7 +47,7 @@
   <% else %>
     <% @student_attendances.each do |leave| %>
     <tr class="tr-<%=cycle('odd', 'even')%>">
-        <td class="col-2"><%= I18n.l(leave.month_date,:format=>:default) %></td>
+        <td class="col-2"><%= I18n.l(leave.month_date,:format=>"%d %b %Y") %></td>
         <td class="col-2"><%= leave.reason %></td>
     </tr>
     <%end%>

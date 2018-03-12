@@ -24,6 +24,7 @@ nil = null;
 Date.one_day = 24*60*60*1000;
 Date.weekdays = $w("S M T W T F S");
 Date.first_day_of_week = 0;
+Date.months_small = $w("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec" );
 Date.months = $w("January February March April May June July August September October November December" );
 Date.padded2 = function(hour) { var padded2 = parseInt(hour, 10); if (hour < 10) padded2 = "0" + padded2; return padded2; }
 Date.prototype.getPaddedMinutes = function() { return Date.padded2(this.getMinutes()); }

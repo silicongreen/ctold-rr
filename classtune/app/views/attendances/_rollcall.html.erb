@@ -4,7 +4,7 @@
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
        <label for="duedate">Select date</label>
        <div  class="text-input-bg">
-         <%= calendar_date_select_tag "attandence_date",@date_today,
+         <%= calendar_date_select_tag "attandence_date",I18n.l(@date_today,:format=>"%d %b %Y"),
            :class=>"text-input-bg",:onchange =>"j('#register').html( '' );j('#student_batch_id').val( '' );j('#student_batch_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
        </div>
        <div class="text-input-bg" style="cursor:pointer;  font-size: 13px;

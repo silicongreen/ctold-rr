@@ -1698,7 +1698,8 @@ class CalendarController < ApplicationController
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
 
-    
+    first_day = first_day.to_date unless first_day.blank?
+    last_day = last_day.to_date unless last_day.blank?
     if current_user.student
       homework_uri = URI(api_endpoint + "api/calender/getattendence")
       http = Net::HTTP.new(homework_uri.host, homework_uri.port)

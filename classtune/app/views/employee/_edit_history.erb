@@ -30,12 +30,12 @@
       </div>
       <div class="label-field-pair">
         <label for="category_name"><%= "Date of Commencement of Employment" %></label>
-        <div class="text-bg"><%= calendar_date_select_tag 'history[date_commencement]', I18n.l(@history.date_commencement,:format=>:default),
+        <div class="text-bg"><%= calendar_date_select_tag 'history[date_commencement]', I18n.l(@history.date_commencement,:format=>"%d %b %Y"),
               :year_range => 90.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %></div>
       </div>
       <div class="label-field-pair">
         <label for="category_name"><%= "Date of Discontinuation of Employment" %></label>
-        <div class="text-bg"><%= calendar_date_select_tag 'history[date_discontinuation]', I18n.l(@history.date_discontinuation,:format=>:default),
+        <div class="text-bg"><%= calendar_date_select_tag 'history[date_discontinuation]', I18n.l(@history.date_discontinuation,:format=>"%d %b %Y"),
               :year_range => 90.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %></div>
       </div>
         

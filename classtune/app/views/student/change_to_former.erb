@@ -99,7 +99,7 @@
           </div>
           <div class="label-field-pair">
             <label><%= t('leaving_date') %>:</label>
-            <div class="input-container"><%= calendar_date_select_tag 'leaving_date', I18n.l(Date.today,:format=>:default) ,:popup=>:force%></div>
+            <div class="input-container"><%= calendar_date_select_tag 'leaving_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
           </div>
           <div id="submit-button">
             <%= submit_tag "► #{t('delete_text')}", :id => 'submit_button' %>

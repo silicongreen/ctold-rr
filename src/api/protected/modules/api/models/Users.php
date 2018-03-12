@@ -372,7 +372,7 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.employee=1 )");
+         $criteria->addCondition("( (employeeDetails.first_name like '%".$term."%' or employeeDetails.last_name like '%".$term."%' or concat(employeeDetails.first_name,' ',employeeDetails.last_name) like '%".$term."%' or concat(employeeDetails.first_name,' ',employeeDetails.middle_name,' ',employeeDetails.last_name) like '%".$term."%' ) and t.employee=1 )");
          $criteria->compare('t.is_deleted', 0);
          $criteria->order = "CASE 
                WHEN t.first_name like '". $term."%' THEN 0
@@ -398,7 +398,7 @@ class Users extends CActiveRecord {
          $criteria = new CDbCriteria;
          $criteria->select = 't.*';
          $criteria->compare('t.school_id', Yii::app()->user->schoolId);
-         $criteria->addCondition("( (t.first_name like '%".$term."%' or t.last_name like '%".$term."%') and t.student=1  )");
+         $criteria->addCondition("( (studentDetails.first_name like '%".$term."%' or studentDetails.last_name like '%".$term."%' or concat(studentDetails.first_name,' ',studentDetails.last_name) like '%".$term."%' or concat(studentDetails.first_name,' ',studentDetails.middle_name,' ',studentDetails.last_name) like '%".$term."%') and t.student=1  )");
          $criteria->compare('t.is_deleted', 0);
          $criteria->order = "CASE 
                WHEN t.first_name like '".$term."%' THEN 0

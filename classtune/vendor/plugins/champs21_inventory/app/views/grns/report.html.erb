@@ -24,7 +24,7 @@
       <div class="list<%=cycle('odd', 'even')%>">
         <div class="fees-table-payee"><%= link_to t.title, :action=> 'report_detail', :id=>t.finance_id  %></div>
         <div class="fees-table-category"><%= t.finance_type  %></div>
-        <div class="fees-table-date"> <%= I18n.l(t.transaction_date,:format=>:normal) %> </div>
+        <div class="fees-table-date"> <%= I18n.l(t.transaction_date,:format=>"%d %b %Y") %> </div>
         <div class="fees-table-reciept">&nbsp;<%= t.receipt_no %></div>
         <div class="fees-table-amount"><%= precision_label t.amount %> </div>
 

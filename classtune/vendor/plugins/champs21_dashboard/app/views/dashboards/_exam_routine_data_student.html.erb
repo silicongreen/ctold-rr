@@ -13,7 +13,7 @@
               <% end %>
               <%= link_to h['name']+" "+@is_new, :controller => "exam", :action => "student_exam_schedule_view", :id => h['id'] %>
             </div>
-            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>"%d %b %Y") unless h['exam_date'].empty? %></div>             
           </div>       
         </div>
         <div style="border-bottom: 1px solid #ccc; float: left; margin: 15px; width: 90%;"></div> 

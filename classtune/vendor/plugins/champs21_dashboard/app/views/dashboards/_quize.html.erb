@@ -13,8 +13,8 @@
           <div class="timetable_left"><img width="30" src="/images/icons/subjects/<%= h['subject_icon'] %>" /></div>
           <div class="timetable_right" style="margin-top:5px;">
             <div class="subcontent-header themed_text"><%= h['subject_name'] %> - <%= h['name'] %>&nbsp;<%= @is_new %></div>
-            <div class="subcontent-date">Start date : <%= I18n.l(h['start_date'].to_time,:format=>:normal) unless h['start_date'].empty? %></div>  
-            <div class="subcontent-date">End date : <%= I18n.l(h['end_date'].to_time,:format=>:normal) unless h['end_date'].empty? %></div>
+            <div class="subcontent-date">Start date : <%= I18n.l(h['start_date'].to_time,:format=>"%d %b %Y") unless h['start_date'].empty? %></div>  
+            <div class="subcontent-date">End date : <%= I18n.l(h['end_date'].to_time,:format=>"%d %b %Y") unless h['end_date'].empty? %></div>
             <div class="subcontent-info">Maximum Time : <%= h['maximum_time']%> Min </div>              
           </div>
           <div class='timetable_last'>

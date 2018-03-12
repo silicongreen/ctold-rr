@@ -80,7 +80,7 @@
                <% @exam_groups.each do |exam_group| %>
                 <tr>
                   <td>
-                    <%= I18n.l(exam_group.exam_date.to_time, :format=>:normal) unless exam_group.exam_date.nil? %>
+                    <%= I18n.l(exam_group.exam_date.to_time, :format=>"%d %b %Y") unless exam_group.exam_date.nil? %>
                   </td>
                   <td>
                       <%  if exam_group.exam_category==1 %>

@@ -21,7 +21,7 @@
         <td class="col-1"><%= (@indents.current_page - 1) * @indents.per_page + (i + 1) %></td>
         <td class="col-3"><%= link_to s.indent_no , s %></td>
         <td class="col-2"><%=  s.user.first_name unless s.user.nil?  %></td>
-        <td class="col-1"><%= I18n.l(s.expected_date,:format=>:normal) %></td>
+        <td class="col-1"><%= I18n.l(s.expected_date,:format=>"%d %b %Y") %></td>
         <td class="col-3"><%= s.status %></td>
         <td class="col-3"><%=  s.manager.first_name unless s.manager.nil?   %></td>
         <td class="col-2 edit-delete-links" colspan="4">

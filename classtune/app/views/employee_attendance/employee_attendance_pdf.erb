@@ -59,7 +59,7 @@
                 <% end %>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                   <td class="col-pdf"><%= lt.name %></td>
-                  <td class="col-pdf"><%= I18n.l(r.attendance_date,:format=>:normal) %>
+                  <td class="col-pdf"><%= I18n.l(r.attendance_date,:format=>"%d %b %Y") %>
                     <% if r.is_half_day==true %>
                       (<%= t('half_day') %>)
                     <% end %>

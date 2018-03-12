@@ -2,7 +2,9 @@
 // Including time (no seconds): yyyy-mm-dd HH:MM
 Date.prototype.toFormattedString = function(include_time) {
         var hour;
+    //var str = Date.padded2(this.getDate()) + "/" + Date.padded2(this.getMonth() + 1) + "/" + this.getFullYear();
     var str = this.getFullYear() + "-" + Date.padded2(this.getMonth() + 1) + "-" +Date.padded2(this.getDate());
+    //var str = Date.months[this.getMonth()].substring(0,3) + " " + this.getDate() + " " + this.getFullYear();
     if (include_time) {
         hour = Date.padded2(this.getHours());
         str += " " + hour + ":" + this.getPaddedMinutes();

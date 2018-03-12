@@ -103,7 +103,7 @@
               <%= transaction_id %>
             </td>
             <td class="transaction_date">
-              <%= I18n.l(payment.created_at,:format=>:normal) %>
+              <%= I18n.l(payment.created_at,:format=>"%d %b %Y") %>
             </td>
           </tr>
         <% end %>

@@ -18,7 +18,7 @@
               <% end %>
               <%= link_to h['name']+" "+@is_new, :controller => "exam", :action => "generated_report", :exam_group => h['id'], :student => student_id %>
             </div>
-            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>"%d %b %Y") unless h['exam_date'].empty? %></div>             
           </div>       
         </div>
          <% if i<total_routine %>
@@ -53,7 +53,7 @@
               <%= link_to h['name']+" "+@is_new, :controller => "student", :action => "class_test_report" %>
               <%#= link_to h['name'], :controller => "student", :action => "class_test_report", :exam_group => h['id'] %>
             </div>
-            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>:normal) unless h['exam_date'].empty? %></div>             
+            <div class="subcontent-info">Start date : <%= I18n.l(h['exam_date'].to_time,:format=>"%d %b %Y") unless h['exam_date'].empty? %></div>             
           </div>       
         </div>
         <% if i<total_routine %>

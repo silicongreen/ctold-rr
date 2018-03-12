@@ -43,7 +43,7 @@
         <td class="batch"><%= applicant.reg_no %></td>
         <td class="batch"><%= applicant.registration_course.try(:course).try(:full_name) %></td>
         <td class="name"><%= link_to applicant.full_name, :action=>:view_applicant,:id=>applicant.id%></td>
-        <td><%= I18n.l(applicant.created_at.to_date,:format=>:normal) unless applicant.created_at.nil? %></td>
+        <td><%= I18n.l(applicant.created_at.to_date,:format=>"%d %b %Y") unless applicant.created_at.nil? %></td>
         <td class="status">
           <span class="<%=applicant.status%>"><%= t("#{applicant.status}") %></span>
         </td>

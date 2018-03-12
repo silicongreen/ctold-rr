@@ -14,7 +14,7 @@
     <tr>
         <td>
            
-              <%= I18n.l(s.created_at.to_time,:format=>:normal) unless s.created_at.nil? %>
+              <%= I18n.l(s.created_at.to_time,:format=>"%d %b %Y") unless s.created_at.nil? %>
            
         </td> 
         <td>

@@ -27,7 +27,7 @@
                         <div class="timetable_right_exam_name">
                           <div class="subcontent-info">
                             <%  begin %>
-                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].blank? %>
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>"%d %b %Y") unless class_result['exam_date'].blank? %>
                             <%
                             rescue ArgumentError
                             end
@@ -87,7 +87,7 @@
                           <div class="subcontent-info">
 
                              <%  begin %>
-                            <%= I18n.l(class_result['exam_date'].to_time,:format=>:normal) unless class_result['exam_date'].blank? %>
+                            <%= I18n.l(class_result['exam_date'].to_time,:format=>"%d %b %Y") unless class_result['exam_date'].blank? %>
                             <%
                             rescue ArgumentError
                             end

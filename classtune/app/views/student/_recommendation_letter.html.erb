@@ -58,8 +58,8 @@
                 <% end %></div>
       <div class="row_data">
           <% unless @student.admission_date.nil? %>
-            <%= I18n.l(@student.admission_date,:format=>:normal) %>
-            <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>:normal) %>">
+            <%= I18n.l(@student.admission_date,:format=>"%d %b %Y") %>
+            <input type="hidden" id="admission_date" value="<%= I18n.l(@student.admission_date,:format=>"%d %b %Y") %>">
           <% else %>
             <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today,:format=>:default),  :popup=>"force" %>
           <% end %>

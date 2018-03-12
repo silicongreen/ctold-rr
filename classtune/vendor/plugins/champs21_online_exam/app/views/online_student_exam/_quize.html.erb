@@ -11,8 +11,8 @@
             <div class="subcontent-info">Maximum Time : <%= h['maximum_time']%> Min </div>              
           </div>
           <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
-            <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= I18n.l(h['start_date'].to_time,:format=>:normal) unless h['start_date'].empty? %></div>  
-            <div class="subcontent-date"><b style="color:#000;">End date : </b><%= I18n.l(h['end_date'].to_time,:format=>:normal) unless h['end_date'].empty? %></div>
+            <div class="subcontent-date"><b style="color:#000;">Start date : </b><%= I18n.l(h['start_date'].to_time,:format=>"%d %b %Y") unless h['start_date'].empty? %></div>  
+            <div class="subcontent-date"><b style="color:#000;">End date : </b><%= I18n.l(h['end_date'].to_time,:format=>"%d %b %Y") unless h['end_date'].empty? %></div>
           </div>
           <div class='timetable_last'>
             <% if h['examGiven']==1 %>

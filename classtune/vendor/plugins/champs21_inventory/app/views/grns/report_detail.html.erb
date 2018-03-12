@@ -69,13 +69,13 @@
 
   <div class="label-field-show">
     <div class="label-container1"><%= "#{t('grn_date')}" %></div>
-    <div class="label-output">:  <%=h I18n.l(@grn_report.grn_date,:format=>:normal) %></div>
+    <div class="label-output">:  <%=h I18n.l(@grn_report.grn_date,:format=>"%d %b %Y") %></div>
   </div>
 
   <div class="extender"></div>
   <div class="label-field-show">
     <div class="label-container1"><%= "#{t('invoice_date')}" %></div>
-    <div class="label-output">:  <%=h I18n.l(@grn_report.invoice_date,:format=>:normal) %></div>
+    <div class="label-output">:  <%=h I18n.l(@grn_report.invoice_date,:format=>"%d %b %Y") %></div>
   </div>
 
 

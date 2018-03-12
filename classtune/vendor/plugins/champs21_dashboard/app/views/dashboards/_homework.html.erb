@@ -71,8 +71,8 @@
                 <% end %>
                 <%= link_to h['subjects']+' - '+h['teacher_name']+" "+@is_new, :controller => "assignments", :action => "show", :id => h['id'] %>
               </div>
-              <div class="subcontent-date">Assign Date : <%= I18n.l(h['assign_date'].to_time,:format=>:normal) unless h['assign_date'].empty? %></div>
-              <div class="subcontent-date">Due Date : <%= I18n.l(h['duedate'].to_time,:format=>:normal) unless h['duedate'].empty? %></div>
+              <div class="subcontent-date">Assign Date : <%= I18n.l(h['assign_date'].to_time,:format=>"%d %b %Y") unless h['assign_date'].empty? %></div>
+              <div class="subcontent-date">Due Date : <%= I18n.l(h['duedate'].to_time,:format=>"%d %b %Y") unless h['duedate'].empty? %></div>
               <div class="subcontent-info"><%= h['name'] %> </div>
             </div>
             <div class="timetable_right_1" style="background-color:transparent; float:left; width:15%; margin-left:45px; margin-top:-10px; padding: 0">

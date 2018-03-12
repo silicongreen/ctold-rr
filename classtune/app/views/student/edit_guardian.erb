@@ -18,6 +18,7 @@
 #under the License. -%>
 
 
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('parent_information') %></h1>
@@ -81,6 +82,10 @@
         <div class="text-input-bg"><%= s.text_field :occupation, :value => @parent.occupation %></div>
       </div>
       <div class="label-field-pair">
+        <label for="parent_detail_education"><%= "Organization" %></label>
+        <div class="text-input-bg"><%= s.text_field :organization, :value => @parent.organization %></div>
+      </div>
+      <div class="label-field-pair">
         <label for="parent_detail_education"><%= "Designation" %></label>
         <div class="text-input-bg"><%= s.text_field :designation, :value => @parent.designation %></div>
       </div>
@@ -111,7 +116,7 @@
         <% end %>
       </div>
 
-      <div class="label-field-pair">
+      <div class="label-field-pair" style="display:none;">
         <label for="master_student_city"><%= t('office_address_line2') %></label>
         <% unless @parent.office_address_line2.to_s.empty? %>
           <div class="text-input-bg"><%= s.text_field :office_address_line2, :value => @parent.office_address_line2 %></div>

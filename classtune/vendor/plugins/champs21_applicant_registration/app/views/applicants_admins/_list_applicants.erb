@@ -83,7 +83,7 @@
           <td class="chk"><%= check_box_tag "regid[]",applicant.id,false,:class=>"right" %></td>
           <td class="batch"><%= link_to applicant.reg_no, :action=>:view_applicant,:id=>applicant.id %></td>
           <td class="name"><%= link_to applicant.full_name, :action=>:view_applicant,:id=>applicant.id%></td>
-          <td><%= I18n.l(applicant.created_at.to_date,:format=>:normal) unless applicant.created_at.nil? %></td>
+          <td><%= I18n.l(applicant.created_at.to_date,:format=>"%d %b %Y") unless applicant.created_at.nil? %></td>
           <td class="status">
             <span class="<%=applicant.status%>"><%= t("#{applicant.status}") %></span>
           </td>

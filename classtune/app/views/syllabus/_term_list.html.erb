@@ -35,7 +35,7 @@
         <% @data['terms'].each do |term| %>
           <tr>
             <td>
-              <%= I18n.l(term['exam_date'].to_time, :format=>:normal) unless term['exam_date'].nil? %>
+              <%= I18n.l(term['exam_date'].to_time, :format=>"%d %b %Y") unless term['exam_date'].nil? %>
             </td> 
             <td>
               <div class="left-dev"><%= term['title'] %></div>

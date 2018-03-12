@@ -176,7 +176,7 @@
                 <% end %></div>
                     </div>
                     <div class="row_data">
-                        <div><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></div>
+                        <div><%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -186,7 +186,7 @@
                         <div><%= t('date_of_birth') %></div>
                     </div>
                     <div class="row_data">
-                        <div><%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %></div>
+                        <div><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></div>
                     </div>
                 </div>
                 <div class="clearfix"></div>

@@ -51,8 +51,8 @@
                   
                 </div>
                 <div class="col-xs-12 data-group">
-                    <div class="col-xs-4" >DOB&nbsp;:&nbsp;<%= I18n.l(std_info.date_of_birth,:format=>:normal) unless std_info.date_of_birth.nil? %></div>
-                    <div class="col-xs-4" >Date of Admission&nbsp;:&nbsp;<%= I18n.l(std_info.admission_date,:format=>:normal) unless std_info.admission_date.nil? %></div>
+                    <div class="col-xs-4" >DOB&nbsp;:&nbsp;<%= I18n.l(std_info.date_of_birth,:format=>"%d %b %Y") unless std_info.date_of_birth.nil? %></div>
+                    <div class="col-xs-4" >Date of Admission&nbsp;:&nbsp;<%= I18n.l(std_info.admission_date,:format=>"%d %b %Y") unless std_info.admission_date.nil? %></div>
                     <div class="col-xs-4" >Religion&nbsp;:&nbsp;<%= std_info.religion.titlecase unless std_info.religion.blank? %></div>       
                  
                 </div>

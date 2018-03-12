@@ -44,7 +44,7 @@
 
                          <%= link_to h['subjects']+' - '+h['teacher_name'], :controller => "classworks", :action => "show", :id => h['id'] %>
                      </div>
-                     <div class="subcontent-date">Assign Date : <%= I18n.l(h['assign_date'].to_time,:format=>:normal) unless h['assign_date'].empty? %></div>  
+                     <div class="subcontent-date">Assign Date : <%= I18n.l(h['assign_date'].to_time,:format=>"%d %b %Y") unless h['assign_date'].empty? %></div>  
                      
                      <div class="subcontent-info"><%= h['name'] %> </div>              
                    </div>       

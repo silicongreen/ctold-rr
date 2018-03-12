@@ -61,7 +61,7 @@
                 <% else %>  
                   <%= t('admission_date') %>
                 <% end %></td>
-          <td class="col-pdf amnt"><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></td>
+          <td class="col-pdf amnt"><%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
         </tr>
       </table>
     </center>
@@ -91,7 +91,7 @@
       <table id="pdf-table" width="100%">
         <tr class="odd">
           <td class="col-pdf name"> <%= t('date_of_birth') %></td>
-          <td class="col-pdf amnt"> <%= I18n.l(@student.date_of_birth,:format=>:normal) unless @student.date_of_birth.nil? %> </td>
+          <td class="col-pdf amnt"> <%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %> </td>
         </tr>
       </table>
     </center>

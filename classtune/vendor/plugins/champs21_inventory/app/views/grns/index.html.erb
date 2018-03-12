@@ -73,8 +73,8 @@
           <td class="col-1"><%= link_to g.purchase_order.po_no,g.purchase_order %></td>
           <td class="col-3"><%= g.purchase_order.store.name %></td>
           <td class="col-1"><%= g.invoice_no  %></td>
-          <td class="col-3"><%= I18n.l(g.grn_date,:format=>:normal) %></td>
-          <td class="col-3"><%= I18n.l(g.invoice_date,:format=>:normal) %></td>
+          <td class="col-3"><%= I18n.l(g.grn_date,:format=>"%d %b %Y") %></td>
+          <td class="col-3"><%= I18n.l(g.invoice_date,:format=>"%d %b %Y") %></td>
           <td class="col-1"><%= precision_label g.other_charges %></td>
         </tr>
       <% end %>

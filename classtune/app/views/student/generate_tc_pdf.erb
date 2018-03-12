@@ -47,11 +47,11 @@
                 <% else %>  
                   <%= t('admission_date') %>
                 <% end %></td>
-          <td class="col-pdf"><%= I18n.l(@student.admission_date,:format=>:normal) unless @student.admission_date.nil? %></td>
+          <td class="col-pdf"><%= I18n.l(@student.admission_date,:format=>"%d %b %Y") unless @student.admission_date.nil? %></td>
         </tr>
         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
           <td class="col-pdf"><%= t('date_of_birth') %></td>
-          <td class="col-pdf"><%= I18n.l(@student.date_of_birth,:format=>:normal) %></td>
+          <td class="col-pdf"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") %></td>
         </tr>
         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
           <td class="col-pdf"><%= t('last_course') %></td>

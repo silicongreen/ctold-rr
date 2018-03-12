@@ -2994,7 +2994,7 @@ end
         @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_students}
         @tmp_students.each do |s|
           if appropriate_elective_subject_id == 0
-            @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
+            @tmp_subject_to_test = Subject.active.find_by_code_and_batch_id(@subjects_code, b)
             unless @tmp_subject_to_test.nil?
               appropriate_elective_subject_id = @tmp_subject_to_test.id
             end
@@ -3026,7 +3026,7 @@ end
     
     @subjects_code = @subject.code
     
-    @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
+    @tmp_subject_to_test = Subject.active.find_by_code_and_batch_id(@subjects_code, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
     unless @tmp_subject_to_test.nil?
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end
@@ -3104,7 +3104,7 @@ end
         @batch_data[@tmp_batch.name] << {"course_name" => @tmp_course.course_name, "section" => @tmp_course.section_name, "students" => @tmp_students}
         @tmp_students.each do |s|
           if appropriate_elective_subject_id == 0
-            @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code, b)
+            @tmp_subject_to_test = Subject.active.find_by_code_and_batch_id(@subjects_code, b)
             unless @tmp_subject_to_test.nil?
               appropriate_elective_subject_id = @tmp_subject_to_test.id
             end

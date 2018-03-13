@@ -346,7 +346,7 @@ class HomeworkController extends Controller
 
 
 
-            $employee_data = $assignments->getAssignmentEmployee($date, $sort_by, $sort_type, $time_range, $department_id);
+            $employee_data = $assignments->getAssignmentEmployee($date, $sort_by, $sort_type, $time_range, $department_id,true);
 
             $response['data']['day_type'] = $day_type;
             $response['data']['employee_data'] = $employee_data;

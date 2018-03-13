@@ -98,6 +98,9 @@ class Employees extends CActiveRecord {
             'grade' => array(self::BELONGS_TO, 'EmployeeGrades', 'employee_grade_id',
                 'joinType' => 'LEFT JOIN',
             ),
+            'userDetails' => array(self::BELONGS_TO, 'Users', 'user_id',
+                'joinType' => 'INNER JOIN',
+            ),
             
             'category' => array(self::BELONGS_TO, 'EmployeeCategories', 'employee_category_id',
                 'joinType' => 'LEFT JOIN',
@@ -268,11 +271,16 @@ class Employees extends CActiveRecord {
         return $this->find($criteria);
     }
     
-    public function getEmployee($department_id=false) {
+    public function getEmployee($department_id=false,$only_employee = false) {
 
         $criteria = new CDbCriteria;
         $criteria->select = 'id,t.user_id,first_name,middle_name,last_name';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+        if($only_employee)
+        {
+            $criteria->compare('userDetails.is_deleted', 0);
+            $criteria->compare('userDetails.is_admin',0);
+        }
         
         if($department_id)
         {
@@ -280,6 +288,10 @@ class Employees extends CActiveRecord {
         }
         $criteria->with = array("department"=>array(
             "select"=>"department.name",
+            'joinType' => "LEFT JOIN",
+        ),
+        "userDetails"=>array(
+            "select"=>"userDetails.id",
             'joinType' => "LEFT JOIN",
         ));
         return $this->findAll($criteria);

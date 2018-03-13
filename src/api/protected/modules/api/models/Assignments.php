@@ -68,10 +68,10 @@ class Assignments extends CActiveRecord
                     ),
 		);
 	}
-        public function getAssignmentEmployee($date,$sort_by,$sort_type,$time_range,$department_id=false)
+        public function getAssignmentEmployee($date,$sort_by,$sort_type,$time_range,$department_id=false,$only_employee =false)
         {
             $employee = new Employees();
-            $all_employee = $employee->getEmployee($department_id);
+            $all_employee = $employee->getEmployee($department_id,$only_employee);
             
             $emp_homework_data = array();
             $i = 0;

@@ -279,7 +279,7 @@ class Employees extends CActiveRecord {
         if($only_employee)
         {
             $criteria->compare('userDetails.is_deleted', 0);
-            $criteria->compare('userDetails.is_admin',0);
+            $criteria->compare('userDetails.admin',0);
         }
         
         if($department_id)

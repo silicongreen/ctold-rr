@@ -55,6 +55,10 @@ class News extends CActiveRecord {
                 'select' => 'newsBatch.id',
                 'joinType' => 'LEFT JOIN',
             ),
+            'newsUser' => array(self::HAS_MANY, 'UserNews', 'news_id',
+                'select' => 'UserNews.id',
+                'joinType' => 'LEFT JOIN',
+            ),
             'authorDetails' => array(self::BELONGS_TO, 'Users', 'author_id',
                 'select' => 'authorDetails.id, authorDetails.first_name, authorDetails.last_name',
                 'joinType' => 'INNER JOIN',
@@ -212,13 +216,13 @@ class News extends CActiveRecord {
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.is_published', 1);
         
-        $with = array('authorDetails');
+        $with = array('authorDetails','newsUser');
         if($from_date && $to_date)
         $criteria->addCondition("(DATE(t.created_at) <= '" . $to_date . "' AND DATE(t.created_at) >= '" . $from_date . "' ) OR (DATE(t.updated_at) <= '" . $to_date . "' AND DATE(t.updated_at) >= '" . $from_date . "')");
         
         if (Yii::app()->user->isStudent) {
             $with[] = 'newsBatch';
-            $criteria->addCondition("(newsBatch.batch_id = '" . Yii::app()->user->batchId  . "' or t.is_common=1)");
+            $criteria->addCondition("(newsBatch.batch_id = '" . Yii::app()->user->batchId  . "' or newsUser.user_id = '" . Yii::app()->user->id  . "' or t.is_common=1)");
         }
         else if(Yii::app()->user->isTeacher) 
         {
@@ -228,7 +232,7 @@ class News extends CActiveRecord {
             if($employeeData)
             {
                 $with[] = 'newsDepartment';
-                $criteria->addCondition("(newsDepartment.department_id = '" . $employeeData->employee_department_id . "' or t.is_common=1 or author_id=".Yii::app()->user->id.")");
+                $criteria->addCondition("(newsDepartment.department_id = '" . $employeeData->employee_department_id . "' or newsUser.user_id = '" . Yii::app()->user->id  . "' or t.is_common=1 or author_id=".Yii::app()->user->id.")");
             }
             else
             {
@@ -289,10 +293,10 @@ class News extends CActiveRecord {
         $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.is_published', 1);
         
-        $with = array('authorDetails', 'newsAcknowledge');
+        $with = array('authorDetails', 'newsAcknowledge','newsUser');
         if (Yii::app()->user->isStudent) {
             $with[] = 'newsBatch';
-            $criteria->addCondition("(newsBatch.batch_id = '" . Yii::app()->user->batchId  . "' or t.is_common=1)");
+            $criteria->addCondition("(newsBatch.batch_id = '" . Yii::app()->user->batchId  . "' or newsUser.user_id = '" . Yii::app()->user->id  . "' or t.is_common=1)");
         }
         else if(Yii::app()->user->isTeacher) 
         {
@@ -302,7 +306,7 @@ class News extends CActiveRecord {
             if($employeeData)
             {
                 $with[] = 'newsDepartment';
-                $criteria->addCondition("(newsDepartment.department_id = '" . $employeeData->employee_department_id . "' or t.is_common=1 or author_id=".Yii::app()->user->id.")");
+                $criteria->addCondition("(newsDepartment.department_id = '" . $employeeData->employee_department_id . "' or newsUser.user_id = '" . Yii::app()->user->id  . "' or t.is_common=1 or author_id=".Yii::app()->user->id.")");
             }
             else
             {

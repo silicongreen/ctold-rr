@@ -262,8 +262,10 @@ class AttendanceReportsController < ApplicationController
 #        leaves_full=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>true,:afternoon=>true,:month_date => @start_date..@end_date},:group=>:student_id)
         @students.each do |student|
           @start_date = @batch.start_date.to_date
-          if student.admission_date.to_date > @start_date
-            @start_date = student.admission_date.to_date
+          unless student.admission_date.blank?
+            if student.admission_date.to_date > @start_date
+              @start_date = student.admission_date.to_date
+            end
           end
             
           @academic_days=  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
@@ -419,8 +421,10 @@ class AttendanceReportsController < ApplicationController
 #          @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @start_date..@end_date})
           @students.each do |student|
             @start_date = @start_date_main
-            if student.admission_date.to_date > @start_date
-              @start_date = student.admission_date.to_date
+            unless student.admission_date.blank?
+              if student.admission_date.to_date > @start_date
+                @start_date = student.admission_date.to_date
+              end
             end
 
             @academic_days = 0
@@ -608,8 +612,10 @@ class AttendanceReportsController < ApplicationController
               @start_date = @batch.start_date.to_date
               @end_date = @local_tzone_time.to_date
             end
-            if @start_date < student.admission_date.to_date
-              @start_date = student.admission_date.to_date
+            unless student.admission_date.blank?
+              if @start_date < student.admission_date.to_date
+                @start_date = student.admission_date.to_date
+              end
             end
             
             @academic_days = 0
@@ -758,8 +764,10 @@ class AttendanceReportsController < ApplicationController
             @start_date = @batch.start_date.to_date
             @end_date = @local_tzone_time.to_date
           end
-          if @start_date < student.admission_date.to_date
-            @start_date = student.admission_date.to_date
+          unless student.admission_date.blank?
+            if @start_date < student.admission_date.to_date
+              @start_date = student.admission_date.to_date
+            end
           end
 
           @academic_days = 0
@@ -888,8 +896,10 @@ class AttendanceReportsController < ApplicationController
             @start_date = @batch.start_date.to_date
             @end_date = @local_tzone_time.to_date
           end
-          if @start_date < student.admission_date.to_date
-            @start_date = student.admission_date.to_date
+          unless student.admission_date.blank?
+            if @start_date < student.admission_date.to_date
+              @start_date = student.admission_date.to_date
+            end
           end
 
           @academic_days = 0

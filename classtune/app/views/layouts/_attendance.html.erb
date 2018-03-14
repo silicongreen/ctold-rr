@@ -114,15 +114,7 @@
      </div>      
      <div class="subcontent-info">
        <ul class="champs21_feed">             
-           <li>
-             <div class="champs21_feed_item_box">
-               <%if @current_user.employee? || @current_user.admin? %>
-               <% else %>
-               
-               <% end %>
-                       
-             </div>
-           </li>  
+            
            <li class="att-name">
               <%if @current_user.parent? %>
               <% 

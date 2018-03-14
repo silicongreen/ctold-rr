@@ -1,0 +1,90 @@
+<div id="page-yield" class="available_sections1 baf_shaheen">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
+      </div>
+      <h2 align="center">Homework Report</h2>
+      <% unless @report_data.blank? %>
+      <% c = 'even' %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="col-pdf aling-left"><b>Teacher Name</b></td> 
+          <td class="col-pdf aling-left"><b>Department</b></td> 
+          <td class="col-pdf"><b>Total Class</b></td> 
+          <td class="col-pdf"><b>Homework Given</b></td> 
+          <td class="col-pdf"><b>Frequency</b></td>     
+        </tr>
+        <% std_count = 0 %>
+        <% unless @report_data['employee_data'].blank? %>  
+          <% @report_data['employee_data'].each do |employee| %>
+            <%  std_count = std_count+1; %>
+            <% 
+              if @report_data['day_type']!="1" && @time_range=="days"
+                employee['homework_given'] = "N/A"
+                employee['total_class'] = "N/A"
+                employee['frequency'] = "N/A"
+              end 
+            %>
+            <% if std_count>49 %>
+              <% std_count = 0 %>
+              <tr class="page-break">
+                  <td colspan="100">&nbsp;</td>
+              </tr> 
+            <% end %>
+            
+              <tr class="table-header">
+                <td class="col-pdf aling-left"><%= employee['emp_name'] %></td>
+                <td class="col-pdf aling-left"><%= employee['emp_dep'] %></td>
+                <td class="col-pdf"><%= employee['total_class'] %></td>
+                <td class="col-pdf"><%= employee['homework_given'] %></td>
+                <td class="col-pdf"><%= employee['frequency'] %></td>
+              </tr>
+          <% end %>  
+        <% end %>
+      </table>      
+      
+      <% end %>
+   </center>
+  </div>
+  
+  
+</div>
+
+
+<style>
+#page-yield 
+{
+    width:1250px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.table-header td{
+    padding: 5px 15px;
+    border: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-size: 20px;
+    text-align:center;
+}
+
+table#pdf-table{
+    border-top: 1px solid #000000;
+    border-collapse:collapse
+}
+
+#pdf-header-south{
+    width:1000px;
+}
+.page-break td{
+    height: 130px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.table-header td.aling-left
+{
+    text-align:left !important;
+}
+</style>    

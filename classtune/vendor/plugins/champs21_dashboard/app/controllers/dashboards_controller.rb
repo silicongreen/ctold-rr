@@ -26,7 +26,7 @@ class DashboardsController < ApplicationController
       
       if current_user.employee?
         @view_layout = 'employee'
-        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=?)", current_user.employee_record.employee_department_id,current_user.id], :limit =>4,:include=>[:department_news])
+        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?)", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
         
         if check_free_school?
           get_employee_homework
@@ -100,7 +100,7 @@ class DashboardsController < ApplicationController
         end
         @subjects = @normal_subjects+@elective_subjects
         
-        @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or news.is_common = 1)", student.batch_id], :limit=>4,:include=>[:batch_news]) 
+        @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
       
       
       end
@@ -541,15 +541,34 @@ class DashboardsController < ApplicationController
       elsif params[:category] == "others"
         @notice = News.find(:all, :conditions=>"category_id != 1", :limit => 3)
       end 
-    else
+    elsif current_user.employee?
+      
       if params[:category] == "all"
-        @notice = News.find(:all, :limit => 4)
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?)", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
       elsif params[:category] == "general"
-        @notice = News.find(:all, :conditions=>"category_id = 1", :limit => 4)
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?) and category_id = 1", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
       elsif params[:category] == "others"
-        @notice = News.find(:all, :conditions=>"category_id != 1", :limit => 4)
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?) and category_id != 1", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
       end
-    end
+    else
+      if current_user.student?
+        student = current_user.student_record
+      end  
+      if current_user.parent?
+        target = current_user.guardian_entry.current_ward_id      
+        student = Student.find_by_id(target)
+      end
+      if params[:category] == "all"
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
+      elsif params[:category] == "general"
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1) and category_id = 1", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
+      elsif params[:category] == "others"
+        @notice = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1) and category_id != 1", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news])
+      end
+      
+      
+   
+    end   
     
     render :partial=>"notice", :locals=>{:news => @notice, :type => params[:category] }
   end 

@@ -103,9 +103,13 @@
               <select name="news[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
                 <option value="1">Yes</option>
                 <option value="0">No</option>
+                <option value="2">Specific Student</option>
+                <option value="3">Specific Employee</option>
               </select>
           </div>
       </div>
+      
+      
       
       <div class="news_label_field hidden_field_class_department" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
           <label >Select Class</label>
@@ -116,12 +120,12 @@
           <% end %>
       </div>
       <% else %>
-      <div class="news_label_field" style="display:none;" >
-          <label>Common</label>
+      <div class="news_label_field"  style="float: left;clear: both;width: 100%;margin: 10px 0px;">
+          <label>To</label>
           <div class="text-input-bg">
               <select name="news[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
-                <option value="1">Yes</option>
-                <option value="0" selected="selected">No</option>
+                <option value="0" selected="selected">Batch Students</option>
+                <option value="2">Specific Student</option>
               </select>
           </div>
       </div>
@@ -145,8 +149,50 @@
             </div>    
           <% end %>
       </div>
+      <div class="news_label_field hidden_field_class_department hidden_field_class_department_employee" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Department</label>
+          <div class="text-input-bg">
+
+              <%= select :employee, :department_id,
+        @employee_department.map {|b| [b.name, b.id]},
+        {:prompt => "Select A Department"},
+        {:onChange => "#{remote_function(:url => {:action => "list_employees"},
+        :with => "'department_id='+ value",
+        :before => "Element.show('loader2')",
+        :success => "Element.hide('loader2')"
+        )}"} %>
+             
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %>
+          </div>
+      </div>
       <% end %>
-      <div class="news_label_field" >
+      <div class="news_label_field hidden_field_class_department hidden_field_class_department_student" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <div class="text-input-bg">
+
+              <%= select :batch, :batch_id,
+        @batches.map {|b| [b.full_name, b.id]},
+        {:prompt => "#{t('select_a_batch')}"},
+        {:onChange => "#{remote_function(:url => {:action => "list_students"},
+        :with => "'batch_id='+ value",
+        :before => "Element.show('loader')",
+        :success => "Element.hide('loader')"
+        )}"} %>
+             
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+          </div>
+      </div>
+      <div id="student-list"  style="float: left;clear: both;width: 100%;margin: 10px 0px;">
+      </div>
+      <div class="news_label_field"  style="float: left;clear: both;width: 100%;margin: 10px 0px;" >
           <label>Can Comment</label>
           <div class="text-input-bg">
               <select name="news[can_comment]" style="margin:0px;">
@@ -176,13 +222,75 @@
 <script>
   function hide_show_hidden(value)
   {
+
+    
     if(value==1)
     {
       j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_student").hide();
+      j(".hidden_field_class_department_employee").hide();
+      j("#student-list").html("");
+    }
+    else if(value==2)
+    {
+ 
+      j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_employee").hide();
+      j(".hidden_field_class_department_student").show();
+      j("#student-list").html("");
+    }
+    else if(value==3)
+    {
+      j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_student").hide();
+      j(".hidden_field_class_department_employee").show();
+      j("#student-list").html("");
     }
     else
     {
       j(".hidden_field_class_department").show();
+      j(".hidden_field_class_department_employee").hide();
+      j(".hidden_field_class_department_student").hide();
+      j("#student-list").html("");
     }  
   }
-</script>  
+</script> 
+<style>
+   #employee_department_id
+   {
+     margin:0px;
+   }
+   #batch_batch_id
+   {
+     margin:0px;
+   }
+   .name_listodd{
+    background:#E4EBFE;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.name_listeven{
+    background:#DAE6FF;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.att_list_names {
+    display:inline;
+    font-weight: 600;
+    font-size: 13px;
+}
+label {display:inline;}
+
+#list {
+    width:400px;
+}
+#list li {
+    padding:6px 0 0 50px;
+    list-style-type:none;
+}
+#list li label input {
+    margin-right:10px;
+}
+</style>    

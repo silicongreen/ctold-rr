@@ -269,6 +269,44 @@ class IntelligenceController < ApplicationController
     render :partial=>"teacher_classwork"
   end
   
+  def teacher_classwork_pdf
+    @department_id = 0
+    @sort_by = "classwork_given";
+    @sort_type = 1;
+    @time_range = "day";
+    @date = @local_tzone_time.to_date
+    
+    if !params[:student][:department].blank?
+      @department_id = params[:student][:department]
+    end
+    if !params[:student][:sort_by].blank?
+      @sort_by = params[:student][:sort_by]
+    end 
+    if !params[:student][:sort_type].blank?
+      @sort_type = params[:student][:sort_type]
+    end
+    if !params[:student][:timerange].blank?
+      @time_range = params[:student][:timerange]
+    end
+    if !params[:select_date].blank?
+      @date = params[:select_date]
+    end
+    
+    get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    render :pdf => "teacher_classwork_pdf",
+    :orientation => 'Portrait',
+    :margin => {    :top=> 10,
+    :bottom => 10,
+    :left=> 10,
+    :right => 10},
+    :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+    :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def get_teacher_classworks 
     require 'json'
     
@@ -551,6 +589,44 @@ class IntelligenceController < ApplicationController
     @date_today = @local_tzone_time.to_date
     @departments = EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
     render :partial=>"teacher_homework"
+  end
+  
+  def teacher_homework_pdf
+    @department_id = 0
+    @sort_by = "homework_given";
+    @sort_type = 1;
+    @time_range = "day";
+    @date = @local_tzone_time.to_date
+    
+    if !params[:student][:department].blank?
+      @department_id = params[:student][:department]
+    end
+    if !params[:student][:sort_by].blank?
+      @sort_by = params[:student][:sort_by]
+    end 
+    if !params[:student][:sort_type].blank?
+      @sort_type = params[:student][:sort_type]
+    end
+    if !params[:student][:timerange].blank?
+      @time_range = params[:student][:timerange]
+    end
+    if !params[:select_date].blank?
+      @date = params[:select_date]
+    end
+    
+    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+    render :pdf => "teacher_homework_pdf",
+    :orientation => 'Portrait',
+    :margin => {    :top=> 10,
+    :bottom => 10,
+    :left=> 10,
+    :right => 10},
+    :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+    :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def get_teacher_homeworks 

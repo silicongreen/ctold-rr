@@ -188,23 +188,16 @@
           <tr>
             <td colspan="3">
               <%= link_to "► #{t('print_receipt')}",
-                {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>
-            </td>
-          </tr>
-        <% else %>
-          <tr>
-            <td colspan="3">
+                {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>&nbsp;&nbsp;
               <% if @active_gateway == "Paypal" %>
                 <%= paypal_pay_button(@certificate,@merchant_id,"FEE #{@fee_collection.name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
               <% elsif @active_gateway == "Authorize.net" %>
                 <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",@paid_fees,"float: right;margin: 18px 0 0;") %>
               <% elsif @active_gateway == "ssl.commerce" %>
-                
                 <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
               <% end %>
             </td>
           </tr>
-        <% end %>
       <% end %>
     </table>
   <% end %>

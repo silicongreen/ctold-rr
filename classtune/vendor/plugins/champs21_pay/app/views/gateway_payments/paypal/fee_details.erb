@@ -173,7 +173,7 @@
         <td class="col-8" colspan="2"><%= t('amount_to_pay') %></td>
         <td class="col-6" >
           <% unless precision_label(balance+@fine_amount.to_f).to_f == 0 %>
-            <%= precision_label(balance+@fine_amount.to_f) %>
+            <%= precision_label(balance+@fine_amount.to_f) %>&nbsp;here i am
           <% else %>
             <%= precision_label(0) %>
           <% end %>

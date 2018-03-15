@@ -1,0 +1,13 @@
+<div class="label-container">
+    <label for="student_course"><%= t('particular_category') %> : <%= image_tag("loader.gif",
+        :align => "absmiddle",
+        :border => 0,
+        :id => "loader",
+        :style =>"display: none;" ) %></label>
+</div>
+<div class="input-container">
+    
+    <%= select :finance_fee_particular, :finance_fee_particular_category_id,
+          @finance_fee_particular_categories.map {|pc| [pc.name, pc.id]},
+          {:prompt => "#{t('select_a_category')}"},{:onChange => "$('finance_fee_particular_name').value = j(this).find('option:selected').text()"}%>
+</div>

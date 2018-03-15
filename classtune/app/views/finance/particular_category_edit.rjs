@@ -1,0 +1,3 @@
+page.replace_html 'particular_category', :partial => 'particular_category_update'
+page << "j('.edit_btn_td').children('.edit_btn').hide();"
+page << "j('#tr_#{@finance_fee_particular_category.id} td').addClass('info');"

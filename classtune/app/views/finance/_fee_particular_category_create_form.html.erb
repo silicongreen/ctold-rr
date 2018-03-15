@@ -1,0 +1,101 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<label class="head_label" style="top: -10px;"><h2><%= t('create_category_for_particular') %></h2><span></span></label>
+
+
+<div id="grading-levels-form" style="width: 100%;">
+  <div id="particular_category" style="float: left; width: 45%; padding-left: 10px;">
+      <% form_remote_for @finance_fee_particular_category, :url=>{:action=>'particular_category_create'},:before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},500)" do |f| %>
+
+      <div id="form-errors"></div>
+      <div id="flash_box"></div>
+
+
+      <div class="label-field-pair">
+        <div class="label-container"><%= f.label "#{t('name')}" %></div>
+        <div class="input-container"><%= f.text_field :name %></div>
+      </div>
+
+      <div class="label-field-pair">
+        <div class="label-container"><%= f.label "#{t('description')}" %></div>
+        <div class="input-container"><%= f.text_area :description,:cols => 27, :rows => 5 %></div>
+      </div>
+
+      <div style="clear: both; height: 10px;"></div>
+      <div id ="sub-button">
+        <%=  submit_tag "► #{t('save')}",{:class=>'submit_button', :id => 'submit_button'} %>
+      </div>
+
+    <% end %>
+  </div>
+  <div style="float: left; width: 50%; padding-left: 10px; min-height: 300px; border-left: 1px solid #ccc;">
+      <% unless @finance_fee_particular_categories.empty? %>
+      <h2 style="border-bottom: 1px solid #ccc;">Particular Category List</h2>
+      <div style="height: 290px; overflow-y: auto;">
+        <table class="table table-striped table-info table-bordered table-hover" id="finance_fee_particular_categories" cellspacing="0" cellpadding="0" border="0">
+          <thead class="thead-inverse">
+            <tr>
+              <th><%= t('name') %></th>
+              <th><%= t('desc') %> </th>
+              <th>&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @finance_fee_particular_categories.each_with_index do |finance_fee_particular_category,i| %>
+              <tr id="tr_<%=  finance_fee_particular_category.id %>" class="<%= cycle("odd","even") %> tr_finance_fee_particular">
+                  <td class="col-4 name"><%= finance_fee_particular_category.name %></td>
+                  <td class="col-4 desc"><%= (finance_fee_particular_category.description.length > 30) ? finance_fee_particular_category.description[0..30] + "..." : finance_fee_particular_category.description %></td>
+                  <td class="edit_btn_td">
+                      <div class="edit_btn">
+                      <% if finance_fee_particular_category.fee_particular_exists %>
+                        <span class="small-strike"><%= t('delete_text') %></span>
+                      <% else %>
+                        <span class="small"> <%= link_to_remote t('delete_text'),:confirm=>"#{t('delete_confirm_msg')}", :url => { :action => 'particular_category_delete',:id => finance_fee_particular_category.id} %></span>
+                      <% end %>
+                      <span class="small"> <%= link_to_remote t('edit_text'), :url => { :action => 'particular_category_edit',:id => finance_fee_particular_category.id} %></span>
+                      </div>
+                  </td>
+              </tr>
+            <% end %>
+          </tbody>
+      </table>
+      </div>
+      <% else %>
+      <h2 style="border-bottom: 1px solid #ccc;">Particular Category List</h2>
+      <div style="height: 290px; overflow-y: auto;">
+        <table class="table table-striped table-info table-bordered table-hover" id="finance_fee_particular_categories" cellspacing="0" cellpadding="0" border="0">
+          <thead class="thead-inverse">
+            <tr>
+              <th><%= t('name') %></th>
+              <th><%= t('desc') %> </th>
+              <th>&nbsp; </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="tr_0" class="<%= cycle("odd","even") %> tr_finance_fee_particular">
+                <td colspan="3" class="col-4 name">No Particular Category Found</td>
+            </tr>
+          </tbody>
+      </table>
+      </div>
+      <% end %>
+  </div>
+</div>
+<div style="clear: both; height: 10px;"></div>

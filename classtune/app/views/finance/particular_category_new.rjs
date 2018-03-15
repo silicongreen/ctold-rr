@@ -1,0 +1,11 @@
+page.replace_html 'particular_category', :partial => 'particular_category_new'
+page << "j('.edit_btn_td').children('.edit_btn').show();"
+page << "j('.tr_finance_fee_particular td').removeClass('info');"
+if ( @update )
+  page << "j('#tr_#{@finance_update_category.id} td.name').html('#{@finance_update_category.name}');"
+  if @finance_update_category.description.length > 30
+    page << "j('#tr_#{@finance_update_category.id} td.desc').html('#{@finance_update_category.description[0..30]}...');"
+  else
+    page << "j('#tr_#{@finance_update_category.id} td.desc').html('#{@finance_update_category.description}');"
+  end
+end

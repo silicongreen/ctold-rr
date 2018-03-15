@@ -1,0 +1,12 @@
+if @error.nil?
+	page.replace_html 'form-errors', :text => ''
+	page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('particular_category_created_sucessfully')}</p>"
+  #page << "Modalbox.hide();"
+  #page.replace_html 'categories', :partial =>'master_category_list'
+  page << "j('#finance_fee_particular_categories tbody tr#tr_0').remove(); j('#finance_fee_particular_categories tbody').append(\"<tr id='tr_#{@finance_fee_particular_category.id}' class='tr_finance_fee_particular'></tr>\");"
+  page.replace_html 'tr_' + @finance_fee_particular_category.id.to_s, :partial => 'particular_category_single'
+else
+	page.replace_html 'form-errors', :partial => 'errors', :object => @errors
+  page.insert_html :bottom, 'full_errors', :text => "#{@error_name}" if @error_name
+  page.visual_effect(:highlight, 'form-errors')
+end

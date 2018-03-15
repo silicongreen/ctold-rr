@@ -1,0 +1,2 @@
+page << "alert('#{@del}');"
+page << "j('#tr_#{@finance_fee_particular_category_id}').remove();"

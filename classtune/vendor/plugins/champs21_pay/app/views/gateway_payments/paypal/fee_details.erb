@@ -173,7 +173,8 @@
         <td class="col-8" colspan="2"><%= t('amount_to_pay') %></td>
         <td class="col-6" >
           <% unless precision_label(balance+@fine_amount.to_f).to_f == 0 %>
-            <%= precision_label(balance+@fine_amount.to_f) %>
+            <%= precision_label(balance+@fine_amount.to_f) %>&nbsp;
+            <%= precision_label(@amount) %>
           <% else %>
             <%= precision_label(0) %>
           <% end %>
@@ -181,7 +182,7 @@
       </tr>
 
 
-  <%total_fees=balance.to_f+@fine_amount.to_f%>
+      <%total_fees=balance.to_f+@fine_amount.to_f%>
 
       <% unless (@current_user.admin? or @current_user.employee?) %>
         <% if total_fees == 0 %>

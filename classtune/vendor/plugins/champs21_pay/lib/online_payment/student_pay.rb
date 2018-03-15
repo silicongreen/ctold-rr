@@ -312,6 +312,7 @@ module OnlinePayment
             end 
           
           end
+          abort("here")
           @fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
           render 'gateway_payments/paypal/fee_details'
         else

@@ -184,7 +184,7 @@
   <%total_fees=balance.to_f+@fine_amount.to_f%>
 
       <% unless (@current_user.admin? or @current_user.employee?) %>
-        <% if total_fees == 0 %>
+        
           <tr>
             <td colspan="3">
               <%= link_to "► #{t('print_receipt')}",

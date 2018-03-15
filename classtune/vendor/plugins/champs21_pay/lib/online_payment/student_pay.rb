@@ -13,7 +13,6 @@ module OnlinePayment
         
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
           @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
-          abort(@active_gateway)
           if @active_gateway == "Paypal"
             @merchant_id = PaymentConfiguration.config_value("paypal_id")
             @merchant_id ||= String.new

@@ -36,20 +36,20 @@
 
       <div id="create_user_form">
         <div class="label-field-pair">
-          <label for="donor_name"><%= t('donor_name') %>:</label>
-          <div class="text-field-bg"><%= f.text_field :donor %></div>
+          <div class="label-container"><label for="donor_name"><%= t('donor_name') %>:</label></div>
+          <div class="input-container"><%= f.text_field :donor %></div>
         </div>
         <div class="label-field-pair">
-          <label for="description"><%= t('description') %>:</label>
-          <div class="text-field-bg"><%= f.text_field :description %></div>
+          <div class="label-container"><label for="description"><%= t('description') %>:</label></div>
+          <div class="input-container"><%= f.text_field :description %></div>
         </div>
         <div class="label-field-pair">
-          <label for="description"><%= t('transaction_date') %>:</label>
-          <div class="text-field-bg"><%= calendar_date_select_tag 'donation[transaction_date]', I18n.l(@donation.transaction_date,:format=>"%d %b %Y"), :year_range => 5.years.ago..0.years.ago,:readonly=>true,:popup=>"force" %></div>
+          <div class="label-container"><label for="description"><%= t('transaction_date') %>:</label></div>
+          <div class="input-container calendar-input"><%= calendar_date_select_tag 'donation[transaction_date]', I18n.l(@donation.transaction_date,:format=>"%d %b %Y"), :year_range => 5.years.ago..0.years.ago,:readonly=>true,:popup=>"force" %></div>
         </div>
         <div class="label-field-pair">
-          <label for="amount"><%= t('amount') %>:</label>
-          <div class="text-field-bg"><%= f.text_field :amount,:class=>'precision_text',:value => precision_label(@donation.amount) %></div>
+          <div class="label-container"><label for="amount"><%= t('amount') %>:</label></div>
+          <div class="input-container"><%= f.text_field :amount,:class=>'precision_text',:value => precision_label(@donation.amount) %></div>
         </div>
         <%=  submit_tag "► #{t('update')}",:class=>'submit_button' %>
       </div>

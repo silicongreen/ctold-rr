@@ -46,15 +46,17 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
     <div id="left-assign"></div>
-  <div id="batch" >
+  <div id="batch" style="padding-bottom: 30px;">
     <div id="form-errors"></div>
-    <div class="label-field-pair"><label><%= t('select_discount_type') %> : </label>
-      <div class="text-input-bg"> <%= select("id",:id,[["#{t('batch')}","batch_wise"],["#{t('student_category')}","category_wise"],["#{t('student_text')}","student_wise"]],
-          {:prompt => "#{t('select_discount_type')}"},
+    
+    <div class="label-field-pair">
+      <div class="label-container"><label><%= t('discount_options') %> : </label></div>
+      <div class="input-container"> <%= select("id",:id,[["#{t('batch')}","batch_wise"],["#{t('student_category')}","category_wise"],["#{t('student_text')}","student_wise"]],
+          {:prompt => "#{t('select_discount_options')}"},
           {:onChange => "#{remote_function(:url => {:action => "load_discount_create_form"},
             :with => "'type='+value",
             :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}"
+            :success => "Element.hide('loader')")}",:autocomplete => "off"
           })%>
       </div>
       <div class="loader_div">
@@ -66,8 +68,53 @@
       </div>
 
     </div>
-  
+    <div style="clear: both;"></div>
 
   <div id="form-box" style=""></div></div>
 
 </div>
+
+<script>
+  j(document).ready(function(){
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("std_","");
+              var val = j(this).html();
+              if ( val.indexOf(srch_val) == -1  )
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+  });
+</script>

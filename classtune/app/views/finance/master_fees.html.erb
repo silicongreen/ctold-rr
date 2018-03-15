@@ -38,13 +38,18 @@
 
   <div class="box">
 
-    <div class="fee-link">
-
       <div class="link-box">
         <div class="link-heading">
           <%= link_to_remote "#{t('create_category')}", :url => { :action => 'master_category_new'} %>
         </div>
         <div class="link-descr"> <%= t('create_master_category') %></div>
+      </div>
+        
+      <div class="link-box">
+        <div class="link-heading">
+          <%= link_to_remote "#{t('create_particular_category')}", :url => { :action => 'master_particular_category_new'} %>
+        </div>
+        <div class="link-descr"> <%= t('create_particular_category_desc') %></div>
       </div>
 
       <div class="link-box">
@@ -67,14 +72,15 @@
         </div>
         <div class="link-descr"><%= t('generate_fine') %></div>
       </div>
-    </div>
+        
     <div id="modal-box" style="display:none;"></div>
     <%= @a %>
+    <div style="clear: both; height: 5px;"></div>
 
-
-    <div id="batch">
-      <div class="label-field-pair"><label><%= t('select_a_batch') %> : </label>
-        <div class="text-input-bg"> <%= select("id",:id,@batchs.map { |c| [c.full_name, c.id] },
+    <div id="batch" style="padding: 10px 10px 20px 10px; border: 0px solid #ccc;">
+      <div class="label-field-pair">
+        <div class="label-container"><label><%= t('select_a_batch') %> : </label></div>
+        <div class="input-container"> <%= select("id",:id,@batchs.map { |c| [c.full_name, c.id] },
             {:prompt => "#{t('select_a_batch')}"},
             {:onChange => "#{remote_function(:url => {:action => "show_master_categories_list"},
               :with => "'id='+value",
@@ -90,9 +96,11 @@
             :style =>"display: none;" ) %>
         </div>
       </div>
+      <div style="clear: both; height: 5px;"></div>
     </div>
+    <div style="clear: both; height: 5px;"></div>
     <div id="fee_collection_dates"></div>
-
+    <div style="clear: both; height: 5px;"></div>
     <div id="categories">   
       <%= render :partial => "master_category_list" unless params[:batch_id].blank? %>
     </div>

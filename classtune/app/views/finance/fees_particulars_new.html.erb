@@ -49,74 +49,76 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
 
-  <div id="grading-levels-form">
+    <div id="grading-levels-form" style="height: auto;">
 
     <% form_for  :finance_fee_particular,:url =>{:action => 'fees_particulars_create'}  do |f| %>
        <%if @finance_fee_particular.errors.present?%>
       <div id="form-errors"><%= render :partial=>'errors',:object=>@finance_fee_particular %></div><%end%>
       <div id="form-errors"></div>
+      <div style="width: 100%; float: left;">
       <div id="right-side-inputs">
         <div class="label-field-pair">
-      <label for="student_course"><%= t('select_a_category') %> : <%= image_tag("loader.gif",
-              :align => "absmiddle",
-              :border => 0,
-              :id => "loader",
-              :style =>"display: none;" ) %></label>
-      <div  class="text-input-bg">
-        <%= select :finance_fee_particular, :finance_fee_category_id,
-          @fees_categories.map {|b| [b.name, b.id]},
-          {:prompt => "#{t('select_a_category')}"},{:onChange => "#{remote_function(:url => {:action => "list_category_batch"}, :with => "'category_id='+value",:before => "$('loader').show();",
-              :success => "$('loader').hide();")}"}%></div></div>
+            <div class="label-container">
+              <label for="student_course"><%= t('select_a_category') %> : </label>
+            </div>
+            <div class="input-container">
+                <%= select :finance_fee_particular, :finance_fee_category_id,
+                      @fees_categories.map {|b| [b.name, b.id]},
+                      {:prompt => "#{t('select_a_category')}"},{:onChange => "#{remote_function(:url => {:action => "list_category_batch"}, :with => "'category_id='+value",:before => "$('loader').show();",
+                      :success => "$('loader').hide();")}"}%>
+                <%= image_tag("loader.gif",
+                    :align => "absmiddle",
+                    :border => 0,
+                    :id => "loader",
+                    :style =>"display: none;" ) %>
+            </div>
+        </div>
+        <div class="label-field-pair category_list" id="list-particular-category"></div>
         <div class="label-field-pair category_list" id="list-category-batch">
           <%if @render and @batches%>
-          <div class="label-container">
-            <label><%= t('select_a_batch') %>:
-              <b class="sel-list">
-                <%= link_to_function t('all'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = true; });" %>,
-                <%= link_to_function t('none'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = false; });" %>
-              </b>
-            </label>
-          </div>
-          <div class="categories">
-
-            <% @batches.each do |c| %>
-              <div class="each_category">
-                <%= check_box_tag "particular[batch_ids][]", c.id,(@cat_ids.present? and @cat_ids.include?(c.id.to_s)), :class=>"category_select" %> <label><%= "#{c.full_name}" %></label>
-              </div>
-            <% end %></div>
+            <div class="label-container" style="width: 100%;">
+                <label><%= t('select_a_batch') %>:
+                  <div class="sel-list" style="padding-bottom: 5px; padding-left: 20px; display: inline-block; width: 60%; ">
+                    <%= link_to_function t('all'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = true; });" %>,
+                    <%= link_to_function t('none'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = false; });" %>
+                  </div>
+                </label>
+            </div>
+            <div class="categories" style="height: 200px;">
+              <% @batches.each do |c| %>
+                <div class="each_category">
+                    <div class="checkbox_inline"><%= check_box_tag "particular[batch_ids][]", c.id,(@cat_ids.present? and @cat_ids.include?(c.id.to_s)), :class=>"category_select" %> </div>
+                    <div class="checkbox_label"><label><%= "#{c.full_name}" %></label></div>
+                </div>
+              <% end %>
+            </div>
             <%end%>
         </div>
       </div>
       <div id="left-side-inputs">
-
         <div class="label-field-pair">
-          <div class="label-container"> <%= f.label "#{t('name')}"  %></div>
+          <div class="label-container"><%= f.label "#{t('name')}"  %></div>
           <div class="input-container"><%= f.text_field :name %></div>
         </div>
-
         <div class="label-field-pair">
           <div class="label-container"><%= f.label "#{t('description')}" %></div>
           <div class="input-container"><%= f.text_field :description %></div>
         </div>
-  <%#if @t%>
-  <%#*<script>%>
-  <%#*v="student"%>
-  <%#=remote_function(:url => {:action => "student_or_student_category"},:with => "'select_value='+v")%>
-  <%#*</script>%>
-  <%#end%>
         <div class="label-field-pair2">
           <div class="label-container2"><label><%= t('create_using') %></label></div>
           <div class="input-container2">
-             <div class="opt"><%= radio_button("finance_fee_particular","receiver_type","Batch",
+              <div class="opt"><%= radio_button("finance_fee_particular","receiver_type","Batch",
                 {:checked=>@all,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
                   :with => "'select_value='+value")}"}) %><%= t('all') %></div>
-           <div class="opt"><%=  radio_button("finance_fee_particular","receiver_type","Student",
+              <div class="opt"><%=  radio_button("finance_fee_particular","receiver_type","Student",
                 {:checked=>@student,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
                   :with => "'select_value='+value")}"}) %><%= t('admission_no') %></div>
-            <div class="opt"> <%= radio_button("finance_fee_particular","receiver_type","StudentCategory",
+              <div class="opt"> <%= radio_button("finance_fee_particular","receiver_type","StudentCategory",
                 {:checked=>@category,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
                   :with => "'select_value='+value")}"}) %><%= t('student_category') %> </div>
+            <div style="clear: both; height: 10px;"></div>
           </div>
+          
         </div>
 
         <div id="student">
@@ -142,10 +144,10 @@
           <div class="input-container"> <%= f.text_field :amount, :class=>'precision_text' %></div>
         </div>
       </div>
+      </div>    
 
 
-
-
+      <div style="clear: both; height: 10px;"></div>
       <%=  submit_tag "► #{t('create_text')}",:class=>'submit_button', :disable_with => "► #{t('please_wait')}" %>
 
     <% end %>

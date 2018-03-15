@@ -17,8 +17,9 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div class="label-field-pair"><label><%= t('select_batch') %>: </label>
-  <div class="text-input-bg"> <%= select("fee_discount","batch_id", @batches.map{|b|[b.name,b.id]},{:prompt => "#{t('select_batch')}"},
+<div class="label-field-pair">
+  <div class="label-container"><label><%= t('select_batch') %>: </label></div>
+  <div class="input-container"> <%= select("fee_discount","batch_id", @batches.map{|b|[b.name,b.id]},{:prompt => "#{t('select_batch')}"},
       {:onChange => "#{remote_function(:url => {:action => "load_batch_fee_category"},
         :with => "'batch='+value",
         :before => "Element.show('loader_batch')",

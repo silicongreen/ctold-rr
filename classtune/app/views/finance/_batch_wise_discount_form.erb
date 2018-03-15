@@ -23,26 +23,30 @@
 </script>
 <% form_remote_for :fee_discount, :url=>{:action=>"batch_wise_discount_create"},:html=>{:id=>'form'},:before=>"j('.submit_button').attr('disabled', true);",:complete=>"j('.submit_button').attr('value','►#{t('create_text')}');j('.submit_button').attr('disabled', false);" do |form|%>
 
-
-
   <div class="label-field-pair">
-    <label for="reason"><%= t('name') %><span class="necessary-field">*</span></label>
-    <div class="text-input-bg"><%= form.text_field :name %></div>
+    <div class="label-container"><label><%= t('select_discount_type') %><span class="necessary-field">*</span> : </label></div>
+    <div class="input-container"> <%= select("fee_discount",:type,[["#{t('one_time')}",1],["#{t('repeat_every_month')}",2]],
+        {:prompt => "#{t('select_discount_type')}"})%>
+    </div>
   </div>
 
-
-
   <div class="label-field-pair">
-    <label for="reason"><%= t('fee_category') %><span class="necessary-field">*</span>:</label>
-    <div class="text-input-bg">
-      <%= select("fee_discount","finance_fee_category_id", @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
-        {:prompt => "#{t('select_category')}" },
-        {:onchange => "#{remote_function(:url => {:action => "fee_collection_batch_update"},
-          :with => "'id='+value",
-          :before => "Element.show('loader1')",
-          :success => "Element.hide('loader1')")}"
-        })%>
-    </div>
+      <div class="label-container"><label for="reason"><%= t('name') %><span class="necessary-field">*</span></label></div>
+      <div class="input-container"><%= form.text_field :name, :style=>"width: 94%" %></div>
+  </div>
+  <div style="clear: both; height: 4px;"></div> 
+  
+  <div class="label-field-pair">
+      <div class="label-container"><label for="reason"><%= t('fee_category') %><span class="necessary-field">*</span>:</label></div>
+      <div class="input-container">
+        <%= select("fee_discount","finance_fee_category_id", @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
+          {:prompt => "#{t('select_category')}" },
+          {:onchange => "#{remote_function(:url => {:action => "get_particular_by_category"},
+            :with => "'id='+value",
+            :before => "Element.show('loader1')",
+            :success => "Element.hide('loader1')")}",:autocomplete => "off"
+          })%>
+     </div>
      <div class="loader_div">
         <%= image_tag("loader.gif",
           :align => "absmiddle",
@@ -51,23 +55,26 @@
           :style =>"display: none;" ) %>
       </div>
   </div>
-
-  <div id ="batchs"></div>
+  
+  <div id ="discount_on" style="margin-top: 0; margin-bottom: 0;"></div>
+  <div id ="batchs" style="margin-top: 0; margin-bottom: 0;"></div>
 
   <div class="label-field-pair">
-    <label for="reason"><%= t('discount') %><span class="necessary-field">*</span></label>
-    <div class="text-input-bg"><%= form.text_field :discount, :class=>'precision_text' %></div>
+      <div class="label-container"><label for="reason"><%= t('discount') %><span class="necessary-field">*</span></label></div>
+      <div class="input-container"><%= form.text_field :discount, :style=>"width: 94%; display: inline-block;", :class=>'precision_text' %> <span id="percent_span" style="display: none;">%</span></div>
   </div>
+  <div style="clear: both; height: 4px;"></div> 
 
-  <div class="label_field_pair">
-    <label class="label_for_student_gender" for="is_amount"><%= t('discount_type') %></label>
-    <div class="student_gender_value">
-      <label class="label_for_gender" for="is_amount_false"> <%= t('percentage') %></label>
-      <%= form.radio_button  :is_amount, false, :checked => "checked" %>
-      <label class="label_for_gender" for="is_amount_true"><%= t('amount') %></label>
-      <%= form.radio_button  :is_amount, true %>
-    </div>
+  <div id="discount_types_radio" class="label_field_pair">
+      <div class="label-container"><label class="label_for_student_gender" for="is_amount"><%= t('discount_type') %></label></div>
+      <div class="student_gender_value">
+        <label class="label_for_gender" for="is_amount_false"> <%= t('percentage') %></label>
+        <%= form.radio_button  :is_amount, false, :checked => "checked" %>
+        <label class="label_for_gender" for="is_amount_true"><%= t('amount') %></label>
+        <%= form.radio_button  :is_amount, true %>
+      </div>
   </div>
+  <div style="clear: both; height: 4px;"></div> 
 
   <div id="submit-button">
     <%=  form.submit "►#{t('create_text')}",:class=>'submit_button', :id => 'submit_button' , :disable_with => "► #{t('please_wait')}",:data_disable_with=>"► #{t('please_wait')}" %>

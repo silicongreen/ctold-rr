@@ -18,8 +18,9 @@
 #under the License. -%>
 
 <div id="batch">
-  <div class="label-field-pair"><label><%= t('select_a_fees_category') %> : </label>
-    <div class="text-input-bg"> <%= select("id",:id,@fee_categories.map { |f| [f.name, f.id] },
+  <div class="label-field-pair">
+    <div class="label-container"><label><%= t('select_a_fees_category') %> : </label></div>
+    <div class="input-container"> <%= select("id",:id,@fee_categories.map { |f| [f.name, f.id] },
         {:prompt => "#{t('select_a_fees_category')}"},
         {:onChange => "#{remote_function(:url => {:action => "show_fee_discounts",:b_id=>@batch.id},
          :with => "'id='+value",

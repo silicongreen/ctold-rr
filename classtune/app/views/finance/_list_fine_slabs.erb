@@ -7,29 +7,33 @@
     <%= hidden_field_tag "fine[fine_rules_attributes][#{i}][id]",slab.id %>
     
 <div class="slab<%=i%>"  id="remove-slab">
-      <hr  />
+      <hr style="border-top: 1px solid #ccc; width: 94%;" />
       
-      <div class="label-field-pair">
-        <label for="reason">  <%= t('days_after_due_date') %> <span class="necessary-field">*</span></label>
-        <div class="text-input-bg"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_days]",value=slab.fine_days,options={:class=>"precision_text"}%></div>
-      </div>
-      <div class="label-field-pair">
-          <%=link_to_function "&times",  "slab_delete('#{i}');", {:class => 'list_btn themed_text'} %>
-        <label for="reason">  <%= t('fine_amount') %> <span class="necessary-field">*</span></label>
-        <div class="text-input-bg"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_amount]",value=precision_label(slab.fine_amount),options={:class=>"precision_text"}%></div>
-      </div>
       <div class="label_field_pair">
-        <div class="fine-mode" >
+        <div class="label-container"><label for="reason">  <%= t('days_after_due_date') %> <span class="necessary-field">*</span></label></div>
+        <div class="input-container" style="width: 57%;"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_days]",value=slab.fine_days,options={:class=>""}%></div>
+        <%=link_to_function "&times",  "slab_delete('#{i}');", {:class => 'list_btn themed_text'} %>
+      </div>
+      
+      <div class="label_field_pair">
+        <div class="label-container"><label for="reason">  <%= t('fine_amount') %> <span class="necessary-field">*</span></label></div>
+        <div class="input-container" style="width: 57%;"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_amount]",value=precision_label(slab.fine_amount),options={:class=>""}%></div>
+      </div>
+      
+      <div class="label_field_pair">
+        <div class="label-container">
           <label class="label_for_student_gender" for="is_amount"><%= t('discount_type') %></label>
         </div>
-        <div class="student_gender_value" >
+        <div class="student_gender_value" style="width: 61%; margin-left: 10px;" >
           <label class="label_for_gender" for="is_amount_false"> <%= t('percentage') %></label>
           <%= radio_button_tag   "fine[fine_rules_attributes][#{i}][is_amount]", value =false ,checked=!(slab.is_amount),options={"id"=>"slab"+i.to_s} %>
           <label class="label_for_gender" for="is_amount_true"><%= t('amount') %></label>
           <%= radio_button_tag "fine[fine_rules_attributes][#{i}][is_amount]" ,value =true,checked=slab.is_amount,options={ "id"=>"slab"+i.to_s} %>
         </div>
       </div></div><%end%></div>
-  <hr  />
+<div style="clear: both; height: 1px;"></div>
+  <hr style="border-top: 1px solid #ccc; width: 94%;" />
+  <div style="clear: both; height: 1px;"></div>
   <div class="extender"></div>
   <div id="link">
     <%= link_to_function "#{image_tag "buttons/add_2.png" } #{t('add_fine_slab')}","add_fine_slab(this);"%>
@@ -39,3 +43,38 @@
   </div>
 
 
+<style>
+    .label_field_pair label.label_for_gender {
+      font-weight: normal;
+      display: inline;
+    }
+    input[type='text']{
+        border-radius: 4px;
+        display: block;
+        padding: 6px 12px;
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555;
+        background: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+    .label-container {
+        width: 32%; 
+        float: left;
+    }
+    .input-container {
+        width: 40%; 
+        float: left;
+    }
+    .label_field_pair{
+      width: 100%;
+      clear: both;
+      float: left;
+    }
+</style>

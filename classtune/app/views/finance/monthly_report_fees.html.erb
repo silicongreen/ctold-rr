@@ -37,12 +37,12 @@
   <div class="box">
     <% form_for :report, :url => {:action => 'update_monthly_report_fees'},:html=>{:id=>"form_id"} do |form| %>
       <div class="label-field-pair">
-        <label><%= t('select_start_date') %>:</label>
-        <div class="input-container"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+        <div class="label-container"><label><%= t('select_start_date') %>:</label></div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
       </div>
       <div class="label-field-pair">
-        <label><%= t('select_end_date') %>: </label>
-        <div class="input-container"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+        <div class="label-container"><label><%= t('select_end_date') %>: </label></div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
       </div>
 
     <div class="submit-btn" ><%=  link_to_function "► #{t('monthly_report')}","submit_form();",{:class=>'user_button'} %></div>

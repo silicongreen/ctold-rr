@@ -1,15 +1,16 @@
- <div class="label-container">
-            <label><%= t('select_a_batch') %>:
-              <b class="sel-list">
-                <%= link_to_function t('all'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = true; });" %>,
-                <%= link_to_function t('none'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = false; });" %>
-              </b>
-            </label>
-          </div>
-          <div class="categories">
-
-            <% @batches.each do |c| %>
-              <div class="each_category">
-                <%= check_box_tag "particular[batch_ids][]", c.id,(@cat_ids.present? and @cat_ids.include?(c.id)), :class=>"category_select" %> <label><%= "#{c.full_name}" %></label>
-              </div>
-            <% end %></div>
+<div class="label-container" style="width: 100%;">
+    <label><%= t('select_a_batch') %>:
+      <div class="sel-list" style="padding-bottom: 5px; padding-left: 20px; display: inline-block; width: 60%; ">
+        <%= link_to_function t('all'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = true; });" %>,
+        <%= link_to_function t('none'), "$$('input.category_select').each(function(checkbox) { checkbox.checked = false; });" %>
+      </div>
+    </label>
+</div>
+<div class="categories" style="height: 200px;">
+  <% @batches.each do |c| %>
+      <div class="each_category">
+          <div class="checkbox_inline"><%= check_box_tag "particular[batch_ids][]", c.id,(@cat_ids.present? and @cat_ids.include?(c.id)), :class=>"category_select" %></div> 
+          <div class="checkbox_label"><label><%= "#{c.full_name}" %></label></div>
+      </div>
+  <% end %>
+</div>

@@ -69,12 +69,10 @@
 }
 
 .fee_category_scroll {
-    height:76px;
-    margin-left:258px;
+    height:176px;
     margin-top:-53px;
     overflow:auto;
-    width:205px;
-
+    width:60%;
     -moz-background-inline-policy: continuous;
     background: none repeat scroll 0 0 #EEEEEE;
     border: 1px solid #C6C6C6;
@@ -82,6 +80,8 @@
     max-height: 100px;
     overflow: auto;
     padding: 7px;
+    float: left;
+    margin: 10px 10px;
 }
 
 .sel-list {
@@ -94,7 +94,7 @@
 
 
 #form-box{
-    width: 450px;
+    width: 600px;
 }
 #batch{
     margin-top: 20px;
@@ -121,7 +121,6 @@
     font-weight:600;
     margin:0 0 0;
     padding-top:10px;
-    width:250px;
 }
 .bread_crumb {
     margin-left: 10px;
@@ -146,12 +145,12 @@
     display:block;
     color:#444;
     margin-bottom:10px;
-    width:200px;
+    width:30%;
     float:left;
 }
 .student_gender_value {
     float: left;
-    margin-left: 60px;
+    margin-left: -7px;
     padding-top: 5px;
     width: 300px;
 }

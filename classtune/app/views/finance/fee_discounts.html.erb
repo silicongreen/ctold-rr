@@ -47,8 +47,9 @@
   <% end %>
 
   <div id="batch">
-    <div class="label-field-pair"><label><%= t('select_a_batch') %> : </label>
-      <div class="text-input-bg"> <%= select("id",:id,@batches.map { |c| [c.full_name, c.id] },
+    <div class="label-field-pair">
+      <div class="label-container"><label><%= t('select_a_batch') %> : </label></div>
+      <div class="input-container"> <%= select("id",:id,@batches.map { |c| [c.full_name, c.id] },
           {:prompt => "#{t('select_a_batch')}"},
           {:onChange => "#{remote_function(:url => {:action => "update_master_fee_category_list"},
             :with => "'id='+value",

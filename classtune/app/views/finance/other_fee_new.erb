@@ -49,12 +49,12 @@
       <div id="form-errors"></div>
       <% form_for :other_fees  do |f| %>
         <div class="label-field-pair">
-          <label for="name"><%= "Name" %></label>
-          <div id="text-input-bg"><%= f.text_field :name %></div>
+          <div class="label-container"><label for="name"><%= "Name" %></label></div>
+          <div id="input-container"><%= f.text_field :name %></div>
         </div>
         <div class="label-field-pair">
-          <label for="name"><%= "Amount" %></label>
-          <div id="text-input-bg"><%= form.text_field :amount, :class=>'precision_text' %></div>
+          <div class="label-container"><label for="name"><%= "Amount" %></label></div>
+          <div id="input-container"><%= form.text_field :amount, :class=>'precision_text' %></div>
         </div>
         <div id="submit-button">
           <%=  form.submit "► #{t('create_text')}", :id => "submit_button" %>

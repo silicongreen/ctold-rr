@@ -28,16 +28,19 @@
   <% if @donations.present? %>
   <% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %>
   <h4> <%= t('list_of_donors') %> </h4>
-  <table id="listing">
-    <tr class="tr-head">
-      <td><%= t('name') %></td>
-      <td><%= t('description') %></td>
-      <td><%= t('amount') %></td>
-      <td><%= t('created_at') %></td>
-      <td></td>
-    </tr>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('name') %></th>
+        <th><%= t('description') %></th>
+        <th><%= t('amount') %></th>
+        <th><%= t('created_at') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
     <% @donations.each do |d| %>
-      <tr class="tr-<%= cycle('odd','even') %>">
+      <tr class="<%= cycle('odd','even') %>">
         <td class="col-3"><%= link_to d.donor,:action=>'donation_receipt',:id=>d.id %></td>
         <td class="col-3"><%= d.description %></td>
         <td class="col-3"><%= precision_label(d.amount) %></td>
@@ -45,9 +48,22 @@
         <td class="col-3 links_class"><%= link_to t('edit_text'), :action => 'donation_edit', :id => d.id %>  |  <%= link_to t('delete_text'), {:action => 'donation_delete', :id=> d.id} , :confirm => t('delete_confirm_msg') %></td>
       </tr>
     <% end %>
-
+    </tbody>
   </table>
   <% else %>
-    <p class="flash-msg"><b><%= "#{t('no_donors')}" %></b></p>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('name') %></th>
+        <th><%= t('description') %></th>
+        <th><%= t('amount') %></th>
+        <th><%= t('created_at') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td colspan="5"><%= "#{t('no_donors')}" %></td></tr>
+    </tbody>
+    </table>
   <% end %>
 </div>

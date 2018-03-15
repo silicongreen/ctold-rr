@@ -73,10 +73,10 @@ class FinanceController < ApplicationController
 
   def donation_edit
     @donation = FinanceDonation.find(params[:id])
-    @transaction = FinanceTransaction.find(@donation.transaction_id)
+    #@transaction = FinanceTransaction.find(@donation.transaction_id)
     if request.post? and @donation.update_attributes(params[:donation])
       donor = "#{t('flash15')} #{params[:donation][:donor]}"
-      FinanceTransaction.update(@transaction.id, :description => params[:donation][:description], :title=>donor, :amount=>params[:donation][:amount], :transaction_date=>@donation.transaction_date)
+      #FinanceTransaction.update(@transaction.id, :description => params[:donation][:description], :title=>donor, :amount=>params[:donation][:amount], :transaction_date=>@donation.transaction_date)
       redirect_to :action => 'donors'
       flash[:notice] = "#{t('flash16')}"
     end
@@ -1149,6 +1149,22 @@ class FinanceController < ApplicationController
       format.js { render :action => 'master_category_new' }
     end
   end
+  
+  def master_particular_category_new
+    @finance_fee_particular_category = FinanceFeeParticularCategory.new
+    @finance_fee_particular_categories = FinanceFeeParticularCategory.active
+    respond_to do |format|
+      format.js { render :action => 'master_particular_category_new' }
+    end
+  end
+  
+  def particular_category_new
+    @update = false
+    @finance_fee_particular_category = FinanceFeeParticularCategory.new
+    respond_to do |format|
+      format.js { render :action => 'particular_category_new' }
+    end
+  end
 
   def master_category_create
     if request.post?
@@ -1179,7 +1195,73 @@ class FinanceController < ApplicationController
       end
     end
   end
+  
+  def particular_category_create
+    if request.post?
+      if params[:finance_fee_particular_category][:name].present?
+        @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(params[:finance_fee_particular_category][:name],params[:finance_fee_particular_category][:description],false)
+      else
+        @errors = {}
+        @errors[:errors] = {}
+        @finance_fee_particular_category = FinanceFeeParticularCategory.new
+        @finance_fee_particular_category.valid?
+        @errors[:errors][:full_messages] = "Name can't be empty"
+        @error = true
+      end
+      respond_to do |format|
+        format.js { render :action => 'particular_category_create' }
+      end
+    end
+  end
 
+  def particular_category_edit
+    @finance_fee_particular_category = FinanceFeeParticularCategory.find(params[:id])
+    respond_to do |format|
+      format.js { render :action => 'particular_category_edit' }
+    end
+  end
+  
+  def particular_category_delete
+    if params[:id].present?
+      @del = "Particular Category deleted successfully"
+      finance_fee_particular_category = FinanceFeeParticularCategory.find(params[:id])
+      finance_fee_particular_category.destroy
+      @finance_fee_particular_category_id = params[:id]
+      respond_to do |format|
+        format.js { render :action => 'particular_category_delete' }
+      end
+    else
+      @del = "No Particular Category found to delete"
+      @finance_fee_particular_category_id = 0
+      respond_to do |format|
+        format.js { render :action => 'particular_category_delete' }
+      end
+    end
+  end
+  
+  def particular_category_update
+    @update = false
+    finance_fee_category = FinanceFeeParticularCategory.find(params[:id])
+    if (params[:finance_fee_particular_category][:name]==finance_fee_category.name) and (params[:finance_fee_particular_category][:description]==finance_fee_category.description)
+      @finance_update_category = finance_fee_category
+      @finance_fee_particular_category = FinanceFeeParticularCategory.new
+      respond_to do |format|
+        format.js { render :action => 'particular_category_new' }
+      end
+    else
+      if params[:opt].to_i == 1
+        finance_fee_category.update_attributes({:name => params[:finance_fee_particular_category][:name], :description => params[:finance_fee_particular_category][:description]})
+        @update = true
+      end
+      
+      @finance_update_category = finance_fee_category
+      @finance_fee_particular_category = FinanceFeeParticularCategory.new
+      respond_to do |format|
+        format.js { render :action => 'particular_category_new' }
+      end
+    end
+  end
+  
   def master_category_edit
     @batch=Batch.find(params[:batch_id])
     @finance_fee_category = FinanceFeeCategory.find(params[:id])
@@ -1255,10 +1337,11 @@ class FinanceController < ApplicationController
     #      @finance_fee_category = FinanceFeeCategory.find_by_name_and_batch_id_and_is_deleted(@finance_fee_category.name,@batch.id,false)
     #    end
     #@particulars = FinanceFeeParticular.paginate(:page => params[:page],:joins=>"INNER JOIN finance_fee_categories on finance_fee_categories.id=finance_fee_particulars.finance_fee_category_id",:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_categories.name = '#{@finance_fee_category.name}' and finance_fee_categories.description = '#{@finance_fee_category.description}' and finance_fee_particulars.batch_id='#{@batch.id}' "])
-    @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["is_deleted = '#{false}' and finance_fee_category_id = '#{@finance_fee_category.id}' and batch_id='#{@batch.id}' "])
-
+    @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_particulars.finance_fee_category_id = '#{@finance_fee_category.id}' and finance_fee_particulars.batch_id='#{@batch.id}' "], :joins => [:finance_fee_particular_category])
   end
+  
   def master_category_particulars_edit
+    #DONE
     @finance_fee_particular= FinanceFeeParticular.find(params[:id])
     @student_categories = StudentCategory.active
     unless @finance_fee_particular.student_category.present? and @student_categories.collect(&:name).include?(@finance_fee_particular.student_category.name)
@@ -1295,6 +1378,7 @@ class FinanceController < ApplicationController
     #      format.js { render :action => 'master_category_particulars' }
     #    end
   end
+  
   def master_category_particulars_delete
     @feeparticular = FinanceFeeParticular.find( params[:id])
     #discounts=@feeparticular.finance_fee_category.fee_discounts.all(:conditions=>"batch_id=#{@feeparticular.batch_id}")
@@ -1306,6 +1390,7 @@ class FinanceController < ApplicationController
       format.js { render :action => 'master_category_particulars' }
     end
   end
+  
   def master_category_delete
     @error=false
     @batches=Batch.find(params[:batch_id])
@@ -1353,12 +1438,23 @@ class FinanceController < ApplicationController
   end
 
   def list_category_batch
+    #DONE
     fee_category=FinanceFeeCategory.find(params[:category_id])
     #@batches= Batch.find(:all,:joins=>"INNER JOIN `category_batches` ON `batches`.id = `category_batches`.batch_id INNER JOIN finance_fee_categories on finance_fee_categories.id=category_batches.finance_fee_category_id INNER JOIN courses on courses.id=batches.course_id",:conditions=>"finance_fee_categories.name = '#{fee_category.name}' and finance_fee_categories.description = '#{fee_category.description}'",:order=>"courses.code ASC")
     @batches=Batch.active.find(:all,:joins=>[{:category_batches=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{fee_category.id}",:order=>"courses.code ASC").uniq
     #@batches=fee_category.batches.all(:order=>"name ASC")
+    
+    #@finance_fee_particular_categories_id = FinanceFeeParticular.find_all_by_finance_fee_category_id(params[:category_id]).map(&:finance_fee_particular_category_id).uniq.delete_if{ |x| x==0 }
+    
+    #unless @finance_fee_particular_categories_id.empty?
+    #  @finance_fee_particular_categories = FinanceFeeParticularCategory.find(:all, :conditions => ["id NOT IN (?) and is_deleted = ?", @finance_fee_particular_categories_id, false])
+    #else
+    @finance_fee_particular_categories = FinanceFeeParticularCategory.active
+    #end
+    
     render :update do |page|
       page.replace_html 'list-category-batch', :partial => 'list_category_batch'
+      page.replace_html 'list-particular-category', :partial => 'list_particular_category'
     end
   end
 
@@ -1451,9 +1547,19 @@ class FinanceController < ApplicationController
   end
 
   def fees_particulars_new2
+    #DONE
     @batch=Batch.find(params[:batch_id])
     @fees_category = FinanceFeeCategory.find(params[:category_id])
     @student_categories = StudentCategory.active
+    
+    @finance_fee_particular_categories_id = FinanceFeeParticular.find_all_by_finance_fee_category_id(params[:category_id]).map(&:finance_fee_particular_category_id).uniq.delete_if{ |x| x==0 }
+    
+    unless @finance_fee_particular_categories_id.empty?
+      @finance_fee_particular_categories = FinanceFeeParticularCategory.find(:all, :conditions => ["id NOT IN (?) and is_deleted = ?", @finance_fee_particular_categories_id, false])
+    else
+      @finance_fee_particular_categories = FinanceFeeParticularCategory.active
+    end
+    
     respond_to do |format|
       format.js { render :action => 'fees_particulars_new2' }
     end
@@ -1763,6 +1869,39 @@ class FinanceController < ApplicationController
 
   def fee_collection_batch_update
     if params[:id].present?
+      id_str = params[:id].split("-")
+      finance_fee_category_id = id_str[1]
+      if finance_fee_category_id.to_i > 0
+        finance_fee_particular_category_id = id_str[0]
+        
+        @fee_category = FinanceFeeCategory.find(finance_fee_category_id)
+        is_late = 0
+        if finance_fee_particular_category_id.index('F') == 0 
+          is_late = 1
+        end
+        if finance_fee_particular_category_id.index('F') == 0 or finance_fee_particular_category_id.to_i == 0
+          @batches=Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        else
+          @batches=Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false} and finance_fee_particulars.finance_fee_particular_category_id = #{finance_fee_particular_category_id}",:order=>"courses.code ASC").uniq
+        end
+      end
+    end
+    render :update do |page|
+      page.replace_html "batchs" ,:partial => "fee_collection_batchs"
+      if is_late == 1
+        page << "$('discount_types_radio').hide()"
+        page << "j('#fee_discount_discount').css('width','84%')"
+        page << "$('percent_span').show()"
+      else
+        page << "$('discount_types_radio').show()"
+        page << "j('#fee_discount_discount').css('width','94%')"
+        page << "$('percent_span').hide()"
+      end
+    end
+  end
+  
+  def fee_collection_batch_list
+    if params[:id].present?
       @fee_category=FinanceFeeCategory.find(params[:id])
       #@batches= Batch.find(:all,:joins=>"INNER JOIN `finance_fee_particulars` ON `batches`.id = `finance_fee_particulars`.batch_id INNER JOIN finance_fee_categories on finance_fee_categories.id=finance_fee_particulars.finance_fee_category_id INNER JOIN courses on courses.id=batches.course_id",:conditions=>"finance_fee_categories.name = '#{@fee_category.name}' and finance_fee_categories.description = '#{@fee_category.description}' and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
       @batches=Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
@@ -1770,7 +1909,75 @@ class FinanceController < ApplicationController
     render :update do |page|
       page.replace_html "batchs" ,:partial => "fee_collection_batchs"
     end
-
+  end
+  
+  def fee_collection_batch_update_student
+    if params[:id].present?
+      id_str = params[:id].split("-")
+      finance_fee_category_id = id_str[1]
+      if finance_fee_category_id.to_i > 0
+        finance_fee_particular_category_id = id_str[0]
+        
+        @fee_category = FinanceFeeCategory.find(finance_fee_category_id)
+        is_late = 0
+        if finance_fee_particular_category_id.index('F') == 0 
+          is_late = 1
+        end
+        if finance_fee_particular_category_id.index('F') == 0 or finance_fee_particular_category_id.to_i == 0
+          @batches=Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        else
+          @batches=Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false} and finance_fee_particulars.finance_fee_particular_category_id = #{finance_fee_particular_category_id}",:order=>"courses.code ASC").uniq
+        end
+      end
+    end
+    render :update do |page|
+      page.replace_html "batchs" ,:partial => "fee_collection_batch_student"
+      if is_late == 1
+        page << "$('discount_types_radio').hide()"
+        page << "j('#fee_discount_discount').css('width','84%')"
+        page << "$('percent_span').show()"
+      else
+        page << "$('discount_types_radio').show()"
+        page << "j('#fee_discount_discount').css('width','94%')"
+        page << "$('percent_span').hide()"
+      end
+    end
+  end
+  
+  def load_batch_student
+    if params[:id].present?
+      @batch_id = params[:id]
+      @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
+    end
+    render :update do |page|
+      page.replace_html "students" ,:partial => "fee_collection_student_list"
+    end
+  end
+  
+  def get_particular_by_category
+    if params[:id].present?
+      select_options = ["Total Fees", "0-" + params[:id].to_s]
+      finance_fee_particulars = FinanceFeeParticular.active.find(:all,:joins=>[:finance_fee_particular_category],:conditions=>"finance_fee_particulars.finance_fee_category_id =#{params[:id]} and finance_fee_particulars.is_deleted=#{false}",:group=>"finance_fee_particulars.finance_fee_particular_category_id").uniq
+      fines = Fine.active
+      @particular = [select_options] + finance_fee_particulars.map{|p| [p.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
+    end
+    render :update do |page|
+      page.replace_html "discount_on" ,:partial => "fee_discount_on"
+      page.replace_html "batchs" ,:text => ""
+    end
+  end
+  
+  def get_particular_by_category_student
+    if params[:id].present?
+      select_options = ["Total Fees", "0-" + params[:id].to_s]
+      finance_fee_particulars = FinanceFeeParticular.active.find(:all,:joins=>[:finance_fee_particular_category],:conditions=>"finance_fee_particulars.finance_fee_category_id =#{params[:id]} and finance_fee_particulars.is_deleted=#{false}",:group=>"finance_fee_particulars.finance_fee_particular_category_id").uniq
+      fines = Fine.active
+      @particular = [select_options] + finance_fee_particulars.map{|p| [p.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
+    end
+    render :update do |page|
+      page.replace_html "discount_on" ,:partial => "fee_discount_on_student"
+      page.replace_html "batchs" ,:text => ""
+    end
   end
 
   def fee_collection_new
@@ -3230,7 +3437,7 @@ class FinanceController < ApplicationController
       @fee_categories =  FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
       @fee_discount = BatchFeeDiscount.new
       render :update do |page|
-        page.replace_html "form-box", :partial => "batch_wise_discount_form"
+        page.replace_html "form-box", :partial => "batch_wise_discount_form";
         page.replace_html 'form-errors', :text =>""
       end
     elsif params[:type]== "category_wise"
@@ -3241,6 +3448,7 @@ class FinanceController < ApplicationController
         page.replace_html 'form-errors', :text =>""
       end
     elsif params[:type] == "student_wise"
+      @fee_categories = FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
       @courses = Course.active
       render :update do |page|
         page.replace_html "form-box", :partial => "student_wise_discount_form"
@@ -3293,18 +3501,44 @@ class FinanceController < ApplicationController
   end
 
   def batch_wise_discount_create
+    
     unless params[:fee_collection].blank?
-      FeeDiscount.transaction do
-        params[:fee_collection][:category_ids].each do |c|
-          # @fee_category = FinanceFeeCategory.find(params[:category])
-          @fee_discount = FeeDiscount.new(params[:fee_discount])
-          # @fee_discount.finance_fee_category_id =params[:category]
-          @fee_discount.receiver_type="Batch"
-          @fee_discount.receiver_id = c
-          @fee_discount.batch_id=c
-          unless @fee_discount.save
-            @error = true
-            raise ActiveRecord::Rollback
+      unless params[:discount_on].nil? or params[:discount_on].blank?
+        id_str = params[:discount_on][:discount_on].split("-")
+        finance_fee_category_id = id_str[1]
+        if finance_fee_category_id.to_i > 0
+          finance_fee_particular_category_id = id_str[0]
+          is_late = 0
+          if finance_fee_particular_category_id.index('F') == 0
+            is_late = 1
+            finance_fee_particular_category_id = finance_fee_particular_category_id.gsub("F","")
+          end
+        else
+          @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+          @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+          @error = true
+        end
+      else
+        @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+        @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+        @error = true
+      end
+      if ! @error
+        FeeDiscount.transaction do
+          params[:fee_collection][:category_ids].each do |c|
+            # @fee_category = FinanceFeeCategory.find(params[:category])
+            @fee_discount = FeeDiscount.new(params[:fee_discount])
+            # @fee_discount.finance_fee_category_id =params[:category]
+            @fee_discount.is_onetime=params[:fee_discount][:type]
+            @fee_discount.receiver_type="Batch"
+            @fee_discount.receiver_id = c
+            @fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+            @fee_discount.is_late = is_late
+            @fee_discount.batch_id = c
+            unless @fee_discount.save
+              @error = true
+              raise ActiveRecord::Rollback
+            end
           end
         end
       end
@@ -3317,19 +3551,43 @@ class FinanceController < ApplicationController
 
   def category_wise_fee_discount_create
     unless params[:fee_collection].blank?
-      FeeDiscount.transaction do
-        params[:fee_collection][:category_ids].each do |c|
-          #@fee_category = FinanceFeeCategory.find(c)
-          @fee_discount = FeeDiscount.new(params[:fee_discount])
-          #        @fee_discount.finance_fee_category_id = params[:category]
-          @fee_discount.receiver_type="StudentCategory"
-          @fee_discount.batch_id=c
-          unless @fee_discount.save
-            @error = true
-            @fee_discount.errors.add_to_base("#{t('select_student_category')}") if params[:fee_discount][:receiver_id].empty?
-            raise ActiveRecord::Rollback
-
-
+      unless params[:discount_on].nil? or params[:discount_on].blank?
+        id_str = params[:discount_on][:discount_on].split("-")
+        finance_fee_category_id = id_str[1]
+        if finance_fee_category_id.to_i > 0
+          finance_fee_particular_category_id = id_str[0]
+          is_late = 0
+          if finance_fee_particular_category_id.index('F') == 0
+            is_late = 1
+            finance_fee_particular_category_id = finance_fee_particular_category_id.gsub("F","")
+          end
+        else
+          @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+          @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+          @error = true
+        end
+      else
+        @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+        @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+        @error = true
+      end
+      
+      if ! @error
+        FeeDiscount.transaction do
+          params[:fee_collection][:category_ids].each do |c|
+            #@fee_category = FinanceFeeCategory.find(c)
+            @fee_discount = FeeDiscount.new(params[:fee_discount])
+            #        @fee_discount.finance_fee_category_id = params[:category]
+            @fee_discount.receiver_type="StudentCategory"
+            @fee_discount.is_onetime=params[:fee_discount][:type]
+            @fee_discount.batch_id=c
+            @fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+            @fee_discount.is_late = is_late
+            unless @fee_discount.save
+              @error = true
+              @fee_discount.errors.add_to_base("#{t('select_student_category')}") if params[:fee_discount][:receiver_id].empty?
+              raise ActiveRecord::Rollback
+            end
           end
         end
       end
@@ -3345,11 +3603,31 @@ class FinanceController < ApplicationController
     @fee_discount = FeeDiscount.new(params[:fee_discount])
     batch=Batch.find_by_id(params[:fee_discount][:batch_id])
     unless (params[:fee_discount][:finance_fee_category_id]).blank?
+      unless params[:discount_on].nil? or params[:discount_on].blank?
+        id_str = params[:discount_on][:discount_on].split("-")
+        finance_fee_category_id = id_str[1]
+        if finance_fee_category_id.to_i > 0
+          finance_fee_particular_category_id = id_str[0]
+          is_late = 0
+          if finance_fee_particular_category_id.index('F') == 0
+            is_late = 1
+            finance_fee_particular_category_id = finance_fee_particular_category_id.gsub("F","")
+          end
+        else
+          @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+          @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+          @error = true
+        end
+      else
+        @fee_discount = BatchFeeDiscount.new(params[:fee_discount])
+        @fee_discount.errors.add_to_base("#{t('fees_particular_cant_be_blank')}")
+        @error = true
+      end
       @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id)
-      unless (params[:students]).blank?
-        admission_no = (params[:students]).split(",")
-        admission_no.each do |a|
-          s = Student.find_by_admission_no(a)
+      unless (params[:fee_collection][:students]).blank?
+        student_ids = params[:fee_collection][:students]
+        student_ids.each do |si|
+          s = Student.find(si)
           unless s.nil?
             if FeeDiscount.find_by_type_and_receiver_id('StudentFeeDiscount',s.id,:conditions=>"finance_fee_category_id = #{@fee_category.id}").present?
               @error = true
@@ -3365,12 +3643,15 @@ class FinanceController < ApplicationController
           end
         end
         unless @error
-          admission_no.each do |a|
-            s = Student.find_by_admission_no(a)
+          student_ids.each do |si|
+            s = Student.find(si)
             @fee_discount =FeeDiscount.new(params[:fee_discount])
+            @fee_discount.is_onetime=params[:fee_discount][:type]
             @fee_discount.receiver_type="Student"
             @fee_discount.receiver_id = s.id
             @fee_discount.batch_id=s.batch_id
+            @fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+            @fee_discount.is_late = is_late
             unless @fee_discount.save
               @error = true
             end
@@ -3878,14 +4159,15 @@ class FinanceController < ApplicationController
     @fine=Fine.new
     @fine_rule=FineRule.new
     @fines=Fine.active
-
   end
 
 
 
   def fine_list
-    @fine=Fine.find(params[:id])
-    @fine_rules=@fine.fine_rules.order_in_fine_days
+    if params[:id].present?
+      @fine=Fine.find(params[:id])
+      @fine_rules=@fine.fine_rules.order_in_fine_days
+    end
     render :update do |page|
       page.replace_html "fines" ,:partial => "list_fines"
     end

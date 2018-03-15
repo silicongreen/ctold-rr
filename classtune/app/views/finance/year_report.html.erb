@@ -27,8 +27,8 @@
 <div id="page-yield">
 
   <div class="label-field-pair">
-    <label for="monthly_payslip_salary_date">Select Year</label>
-    <div class="text-input-bg">
+    <div class="label-container"><label for="monthly_payslip_salary_date">Select Year</label></div>
+    <div class="input-container">
 
 
       <%= select_year Date.today,{:prompt=> "#{t('select_year')}",:end_year => 2050},

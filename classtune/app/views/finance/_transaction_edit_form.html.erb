@@ -22,26 +22,26 @@
   <div id="create_user_form">
 
     <div class="label-field-pair">
-      <label for="title"><%= t('title') %> </label>
-      <div class="text-field-bg"><%= form.text_field :title %> </div>
+      <div class="label-container"><label for="title"><%= t('title') %> </label></div>
+      <div class="input-container"><%= form.text_field :title %> </div>
     </div>
     <div class="label-field-pair">
-      <label for="description"><%= t('description') %></label>
-      <div class="text-field-bg"><%= form.text_field :description %> </div>
+      <div class="label-container"><label for="description"><%= t('description') %></label></div>
+      <div class="input-container"><%= form.text_field :description %> </div>
     </div>
 
 
     <div class="label-field-pair">
-      <label for="amount"><%= t('amount') %></label>
-      <div class="text-field-bg"><%= form.text_field :amount, :value=>precision_label(@transaction.amount),:class=>'precision_text' %> </div>
+      <div class="label-container"><label for="amount"><%= t('amount') %></label></div>
+      <div class="input-container"><%= form.text_field :amount, :value=>precision_label(@transaction.amount),:class=>'precision_text' %> </div>
     </div>
     <div class="label-field-pair">
-      <label for="amount"><%= t('date_text') %></label>
-      <div class="text-field-bg"><%= calendar_date_select_tag 'transaction[transaction_date]', I18n.localize(@transaction.transaction_date, :format=>"%d %b %Y"), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %></div>
+      <div class="label-container"><label for="amount"><%= t('date_text') %></label></div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'transaction[transaction_date]', I18n.localize(@transaction.transaction_date, :format=>"%d %b %Y"), :year_range => 5.years.ago..0.years.ago,:popup=>"force" %></div>
     </div>
     <div class="label-field-pair">
-      <label for="category"><%= t('category') %></label>
-      <div class="text-input-bg"><%= select :transaction, :category_id,@categories.map { |c| [c.name, c.id] }, :selected => @transaction.category_id %></div>
+      <div class="label-container"><label for="category"><%= t('category') %></label></div>
+      <div class="input-container"><%= select :transaction, :category_id,@categories.map { |c| [c.name, c.id] }, :selected => @transaction.category_id %></div>
     </div>
 
     <%=  submit_tag "► #{t('save')}",:class=>'submit_button' %>

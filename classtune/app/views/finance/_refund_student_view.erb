@@ -4,19 +4,21 @@
 </script>
 <%if @refunds.present?%>
   <div id="payments_details">
-    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td><%= t('sl_no') %></td>
-        <td><%= t('student_name') %></td>
-        <td><%= t('amount') %></td>
-        <td><%= t('date_text') %> </td>
-        <td ><%= t('fee_collection_name') %></td>
-        <td ><%= t('refund_done') %></td>
-      </tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('sl_no') %></th>
+          <th><%= t('student_name') %></th>
+          <th><%= t('amount') %></th>
+          <th><%= t('date_text') %> </th>
+          <th><%= t('fee_collection_name') %></th>
+          <th><%= t('refund_done') %></th>
+        </tr>
+      </thead>
       <%i=@page*5%>
-      <tr class="tr-blank"></tr>
+      <tbody>
       <% @refunds.each do |f| %>
-        <tr class="tr-<%= cycle("odd","even") %>">
+        <tr class="<%= cycle("odd","even") %>">
 
           <td class="col-1"><%= i +=1 %></td>
           <td class="col-3" style="width:20%"> <%=f.finance_transaction.student_payee.full_name%></td>
@@ -26,6 +28,7 @@
           <td class="col-3" ><%= f.refunded_by %></td>
         </tr>
       <% end %>
+      </tbody>
     </table>
 
   </div>
@@ -41,12 +44,26 @@
 
 <%else%>
   <div id="payments_details">
-    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td style="text-align:center;">
-          <%=t('no_refunds_exists')%></td>
-      </tr>
-    </table></div>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('sl_no') %></th>
+          <th><%= t('student_name') %></th>
+          <th><%= t('amount') %></th>
+          <th><%= t('date_text') %> </th>
+          <th><%= t('fee_collection_name') %></th>
+          <th><%= t('refund_done') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="6">
+            <%=t('no_refunds_exists')%>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 <%end%></div>
 
 

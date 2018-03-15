@@ -35,16 +35,19 @@
   <% donations_income = 0 %>
   <% donations_expenses = 0 %>
 
-  <table id="listing">
-    <tr class="tr-head">
-      <td><%= t('description') %></td>
-      <td><%= t('expense') %></td>
-      <td><%= t('income') %></td>
-      <td><%= "#{t('receipt_or_voucher_no')}" %></td>
-      <td><%= t('date_text') %></td>
-    </tr>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('description') %></th>
+        <th><%= t('expense') %></th>
+        <th><%= t('income') %></th>
+        <th><%= "#{t('receipt_or_voucher_no')}" %></th>
+        <th><%= t('date_text') %></th>
+      </tr>
+    </thead>
+    <tbody>
     <% @donations.each do |d| %>
-      <tr class="tr-<%= cycle('even','odd') %>">
+      <tr class="<%= cycle('even','odd') %>">
         <td class="col-3"><%=d.title %></td>
         <% if d.master_transaction_id == 0  %>
           <td class="col-5"></td>
@@ -82,7 +85,7 @@
       <td></td>
       <td></td>
     </tr>
-
+    </tbody>
 
 
   </table>

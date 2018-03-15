@@ -26,6 +26,7 @@ module ApplicationHelper
   def get_stylesheets
     @direction = (rtl?) ? 'rtl/' : ''
     stylesheets = [] unless stylesheets
+    
     if controller.controller_path == 'user' and (controller.action_name == 'dashboard' || controller.action_name == 'new_student_registration' )
       stylesheets << @direction+'_layouts/dashboard'
     elsif controller.controller_path == 'user' and (controller.action_name == 'login' or controller.action_name == 'set_new_password' )
@@ -38,6 +39,7 @@ module ApplicationHelper
     stylesheets << @direction+'modalbox'
     stylesheets << @direction+'autosuggest-menu.css'
     stylesheets << 'calendar'
+    
     ["#{@direction}#{controller.controller_path}/#{controller.action_name}"].each do |ss|
      
       if File.exists? (Rails.root.join("public","stylesheets",ss+".css"))
@@ -50,6 +52,9 @@ module ApplicationHelper
       if Champs21Plugin.can_access_plugin?(mod[:plugin_name].to_s)
         stylesheets << @direction+(mod[:stylesheet_path].to_s)
       end
+    end
+    if controller.controller_path == 'finance'
+      stylesheets << @direction+controller.controller_path
     end
     return stylesheets
   end

@@ -38,22 +38,22 @@
 
     <%= t('finance_transactions_view') %>
   </div>
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-
-    <tr class="tr-head">
-      <td><%= t('sl_no') %></td>
-      <td><%= t('particulars') %></td>
-      <td><%= t('expenses') %> ( <%= currency %> )</td>
-      <td><%= t('income') %> ( <%= currency %> )</td>
-    </tr>
-    <tr class="tr-blank"></tr>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('sl_no') %></th>
+        <th><%= t('particulars') %></th>
+        <th><%= t('expenses') %> ( <%= currency %> )</th>
+        <th><%= t('income') %> ( <%= currency %> )</th>
+      </tr>
+    </thead>
+    <tbody>
     <% index = 0  %>
     <%income_total = 0%>
     <%expenses_total = 0%>
 
     <% unless @hr.nil? %>
-
-      <tr class="tr-odd">
+      <tr class="odd">
         <td class="col-1"><%= index+=1 %></td>
        
         <% unless @salary == 0 %>
@@ -67,10 +67,8 @@
         <td> </td>
 
       </tr>
-
     <% end %>
-
-    <tr class="tr-even">
+    <tr class="even">
       <td class="col-1"><%= index+=1 %></td>
       <% unless @donations_total == 0 %>
         <td class="col-2"><%= link_to "#{t('donations')}" , :action => 'donations_report',:start_date => @start_date,:end_date => @end_date%></td>
@@ -82,8 +80,7 @@
 
     </tr>
 
-
-    <tr class="tr-odd">
+    <tr class="odd">
       <td class="col-1"><%= index+=1 %></td>
       <% unless @transactions_fees == 0 %>
         <td class="col-2"><%= link_to "#{t('fees_account')}" , :action => 'fees_report' , :start_date => @start_date,:end_date => @end_date%> </td>
@@ -95,7 +92,7 @@
 
     </tr>
     <% Champs21Plugin::FINANCE_CATEGORY.each do |category| %>
-      <tr class="tr-<%=cycle('even','odd')%>">
+      <tr class="<%=cycle('even','odd')%>">
         <td class="col-1"><%= index+=1 %></td>
         <td class="col-2"><%= link_to "#{t(category[:category_name]+'_account')}" , category[:destination].merge(:start_date => @start_date,:end_date => @end_date)%> </td>
         <% if @category_transaction_totals["#{category[:category_name]}"][:category_type] == "income"   %>
@@ -116,7 +113,7 @@
     <% @other_transaction_categories.each_with_index do |t,i| %>
       <% income = t.total_income(@start_date,@end_date) %>
       <% expense = t.total_expense(@start_date,@end_date) %>
-      <tr class="tr-<%= cycle("even","odd") %>">
+      <tr class="<%= cycle("even","odd") %>">
         <td class ="col-1"><%=i+index+1%></td>
         <td class="col-2"><%= link_to t.name,:controller => "finance",:action => "income_details",:start_date => @start_date,:end_date => @end_date,:id => t.id %> </td>
         <td class="col-3" align="right"><%= precision_label(expense) %></td>
@@ -126,8 +123,7 @@
         <%expenses_total +=expense %>
       </tr>
     <%end%>
-    <tr class="tr-blank"></tr>
-    <tr class="tr-odd">
+    <tr class="odd">
       <td class="col-1"> </td>
       <td class="col-2"><%= t('grand_total') %></td>
       <% if @grand_total >= 0 %>
@@ -145,7 +141,7 @@
       <% end %>
 
     </tr>
-
+    </tbody>
   </table>
 
   <br/>

@@ -19,28 +19,25 @@
  <%=hidden_field_tag :category,@fee_category.id if @fee_category%>
   <div class="batch_select_box">
     <div class="label-field-pair">
-      <label> <%= t('select_batch') %><span class="necessary-field">*</span>:
-      </label>
-    </div>
-    <div class="fee_category_scroll">
-      <div class="sel-list">
-        <%= link_to_function t('all'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %>,
-        <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
-      </div>
-      <% @batches.each do |f| %>
-      
-        <div class="each_batch">
-          <% checked = true %>
-          <% unless params[:fee_collection].nil? %>
-            <% checked = params[:fee_collection][:category_ids].include?(f.id.to_s) if params[:fee_collection][:category_ids].present? %>
+        <div class="label-container"><label> <%= t('select_batch') %><span class="necessary-field">*</span>:</label></div>
+        <div class="fee_category_scroll">
+          <div class="sel-list" style="padding-bottom: 5px; ">
+            <%= link_to_function t('all'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %>,
+            <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+          </div>
+          <% @batches.each do |f| %>
+
+            <div class="each_batch">
+              <% checked = true %>
+              <% unless params[:fee_collection].nil? %>
+                <% checked = params[:fee_collection][:category_ids].include?(f.id.to_s) if params[:fee_collection][:category_ids].present? %>
+              <% end %>
+                <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box' %></div> 
+                <div class="checkbox_label"><label><%= f.full_name %></label></div>
+            </div>
+
           <% end %>
-          <%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box' %> <%= f.full_name %>
         </div>
-     
-      <% end %>
     </div>
   </div>
-
-<% else %>
-  <p class="flash-msg"> <%= t('finance.flash28') %> </p>
 <% end %>

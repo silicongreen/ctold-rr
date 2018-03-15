@@ -19,11 +19,18 @@
 
 <div id="error-box">
 <ul>
-  <%all_errors=errors.errors.full_messages-(["Receiver can't be blank", "Receiver type can't be blank"])%>
-  <% all_errors.each do |msg| %>
-  <li> <%= msg %></li>
+  <% unless errors[:errors].nil? %>
+    <% unless errors[:errors][:full_messages].nil? %>
+    <li style="list-style: none;"> <%= errors[:errors][:full_messages] %></li>
+    <% end %>
+  <% else %>
+    <%all_errors=errors.errors.full_messages-(["Receiver can't be blank", "Receiver type can't be blank"])%>
+    <% all_errors.each do |msg| %>
+    <li style="list-style: none;"> <%= msg %></li>
+    <% end %>
+    <%if @batch_error%>
+    <li style="list-style: none;" id="full_errors"></li>
+    <%end%>
   <% end %>
-  <%if @batch_error%>
-  <li id="full_errors"></li><%end%>
 </ul>
 </div>

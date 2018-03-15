@@ -32,51 +32,52 @@
     <div id="search-form">
       <% form_for :search,:url=>{:action=>"transactions_advanced_search"} do |f| %>
         <div class="label-field-pair">
-          <label for="name"><%= t('student_name') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="name"><%= t('student_name') %></label></div>
+          <div class="input-container">
             <%= f.text_field :first_name%>
           </div>
         </div>
 
         <div class="label-field-pair">
-          <label for="student_admission_no"><%= t('admission_number') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="student_admission_no"><%= t('admission_number') %></label></div>
+          <div class="input-container">
             <%= f.text_field :admission_no %>
           </div>
         </div>
       <div class="label-field-pair">
-          <label for="name"><%= t('employee_name') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="name"><%= t('employee_name') %></label></div>
+          <div class="input-container">
             <%= f.text_field :employee_name%>
           </div>
         </div>
       <div class="label-field-pair">
-          <label for="student_admission_no"><%= t('employee_number') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="student_admission_no"><%= t('employee_number') %></label></div>
+          <div class="input-container">
             <%= f.text_field :employee_number %>
           </div>
         </div>
 <%if Champs21Plugin.can_access_plugin?("champs21_instant_fee")%>
       <div class="label-field-pair">
-          <label for="name"><%= t('guest_name') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="name"><%= t('guest_name') %></label></div>
+          <div class="input-container">
             <%= f.text_field :guest_payee%>
           </div>
         </div>
 <%end%>
       <div class="label-field-pair">
-          <label for="name"><%= t('fee_collection_name') %></label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="name"><%= t('fee_collection_name') %></label></div>
+          <div class="input-container">
             <%= f.text_field :collection_name%>
           </div>
         </div>
         <div class="label-field-pair">
-          <label for="student_course"><%= t('category_name') %><%= image_tag("loader.gif",
+          <div class="label-container"><label for="student_course"><%= t('category_name') %><%= image_tag("loader.gif",
               :align => "absmiddle",
               :border => 0,
               :id => "loader",
               :style =>"display: none;" ) %></label>
-          <div class="text-input-bg">
+          </div>
+          <div class="input-container">
             <%cat_name=['Fee']%>
             <%Champs21Plugin::FINANCE_CATEGORY.flatten.each{|k,v| cat_name<<k[:category_name]}%>
             <%= select :search, :category_id, FinanceTransactionCategory.find_all_by_name(cat_name,:conditions=>{:deleted=>false}).map{|c| [c.name,c.id]},
@@ -84,8 +85,8 @@
           </div>
         </div>
       <div class="label-field-pair">
-          <label for="student_date_of_birth"><%= t('start_date') %> </label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="student_date_of_birth"><%= t('start_date') %> </label></div>
+          <div class="input-container">
             <%= calendar_date_select_tag 'date[start_date]', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 25.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%>
             <%#= calendar_date_select_tag 'date[start_date]',
@@ -93,8 +94,8 @@
           </div>
         </div>
       <div class="label-field-pair">
-          <label for="student_date_of_birth"><%= t('end_date') %> </label>
-          <div class="text-input-bg">
+          <div class="label-container"><label for="student_date_of_birth"><%= t('end_date') %> </label></div>
+          <div class="input-container">
             <%= calendar_date_select_tag 'date[end_date]', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 25.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%>
             <%#= calendar_date_select_tag 'date[end_date]',
@@ -128,42 +129,59 @@
         </div>
 <% unless @transactions.empty? %>
 
-       <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td><%= t('sl_no') %></td>
-        <td><%= t('payee_name') %></td>
-        <td><%= t('amount') %></td>
-        <td><%= t('cancelled_by') %></td>
-        <td><%= t('date_text') %> </td>
-        <td ><%= t('fee_collection_name') %></td>
-        <td ><%= t('finance_type') %></td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <% @transactions.each_with_index do |f , i| %>
-        <tr class="tr-<%= cycle("odd","even") %>">
-          <td class="col-1"><%= i +=1 %></td>
-          <%if f.payee.nil? and f.finance.nil?%>
-         <td class="col-3" style="width:20%"> <%="#{t('user_deleted')}"%></td>
-          <%else%>
-          <%if f.payee.nil?%>
-          <td class="col-3" style="width:20%"><%=f.finance.payee_name%></td>
-          <%else%>
-          <td class="col-3" style="width:20%"><%= "#{f.payee.full_name}-&#x200E; (#{f.payee_type=="Student" ? f.payee.admission_no : f.payee.employee_number })&#x200E;" %></td>
-          <%end%>
-          <%end%>
-          <td class="col-3"><%= precision_label(f.amount) %></td>
-          <td class="col-3" style="min-width:85px;"><%= f.user.present?? f.user.full_name  : t('user_deleted') %></td>
-          <td class="col-3" ><%= f.created_at.strftime("%m-%d-%Y") %></td>
-          <td class="col-2" ><div class="cancel" ><%= f.collection_name %></div></td>
-          <td class="col-3" ><%= f.finance_type %></td>
-        </tr>
-        <%end%>
+       <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <thead><!-- class="thead-inverse" -->
+            <tr>
+              <th><%= t('sl_no') %></th>
+              <th><%= t('payee_name') %></th>
+              <th><%= t('amount') %></th>
+              <th><%= t('cancelled_by') %></th>
+              <th><%= t('date_text') %> </th>
+              <th><%= t('fee_collection_name') %></th>
+              <th><%= t('finance_type') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @transactions.each_with_index do |f , i| %>
+              <tr class="<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i +=1 %></td>
+                <%if f.payee.nil? and f.finance.nil?%>
+               <td class="col-3" style="width:20%"> <%="#{t('user_deleted')}"%></td>
+                <%else%>
+                <%if f.payee.nil?%>
+                <td class="col-3" style="width:20%"><%=f.finance.payee_name%></td>
+                <%else%>
+                <td class="col-3" style="width:20%"><%= "#{f.payee.full_name}-&#x200E; (#{f.payee_type=="Student" ? f.payee.admission_no : f.payee.employee_number })&#x200E;" %></td>
+                <%end%>
+                <%end%>
+                <td class="col-3"><%= precision_label(f.amount) %></td>
+                <td class="col-3" style="min-width:85px;"><%= f.user.present?? f.user.full_name  : t('user_deleted') %></td>
+                <td class="col-3" ><%= f.created_at.strftime("%m-%d-%Y") %></td>
+                <td class="col-2" ><div class="cancel" ><%= f.collection_name %></div></td>
+                <td class="col-3" ><%= f.finance_type %></td>
+              </tr>
+            <%end%>
+          </tbody>
+       </table>
         <%else%>
         <div id="payments_details">
-          <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-        <tr class="tr-head">
-    <td style="text-align:center;">
-<%=t('no_reverted_transactions_exists')%></td></tr></table></div>
+          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <thead><!-- class="thead-inverse" -->
+            <tr>
+              <th><%= t('sl_no') %></th>
+              <th><%= t('payee_name') %></th>
+              <th><%= t('amount') %></th>
+              <th><%= t('cancelled_by') %></th>
+              <th><%= t('date_text') %> </th>
+              <th><%= t('fee_collection_name') %></th>
+              <th><%= t('finance_type') %></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr><td colspan="7"><%=t('no_reverted_transactions_exists')%></td></tr>
+          </tbody>
+          </table>
+        </div>
   
       <% end %>
     </table>

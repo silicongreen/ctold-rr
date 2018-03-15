@@ -18,8 +18,8 @@
 #under the License. -%>
 
 <div class="label-field-pair">
-      <label><%= t('master_fees_Category') %> :</label>
-      <div class="text-input-bg"><%= select "fee_discount","finance_fee_category_id", @fees_categories.map { |c| [c.name , c.id] },{:prompt=>"#{t('select_fee_category')}"}%></div>
+      <div class="label-container"><label><%= t('master_fees_Category') %> :</label></div>
+      <div class="input-container"><%= select "fee_discount","finance_fee_category_id", @fees_categories.map { |c| [c.name , c.id] },{:prompt=>"#{t('select_fee_category')}"}%></div>
 
     </div>
 

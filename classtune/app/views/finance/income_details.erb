@@ -40,17 +40,19 @@
 
       <%= @income_category.name %>
     </div>
-    <table id="listing" align="center" width="100%">
-      <tr class="tr-head">
-        <td class="name"><%= t('name') %></td>
-        <td class="description"><%= t('description') %></td>
-        <td class="amount"><%= t('amount') %></td>
-        <td class="transaction_date"><%= t('transaction_date') %></td>
-        <td class="transaction_date"><%= t('receipt_no') %></td>
-      </tr>
-      <tr class="tr-blank"></tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th class="name"><%= t('name') %></th>
+          <th class="description"><%= t('description') %></th>
+          <th class="amount"><%= t('amount') %></th>
+          <th class="transaction_date"><%= t('transaction_date') %></th>
+          <th class="transaction_date"><%= t('receipt_no') %></th>
+        </tr>
+      </thead>
+      <tbody>
       <% @incomes.each do |i| %>
-        <tr class="tr-<%= cycle('odd','even') %>">
+        <tr class="<%= cycle('odd','even') %>">
           <td class="name"><%= i.title %></td>
           <td class="description"><%= i.description %></td>
           <td class="amount">
@@ -60,11 +62,22 @@
           <td class="receipt_no"><%= i.receipt_no %></td>
         </tr>
       <% end %>
-
+      </tbody>  
     </table>
   </div>
 <% else %>
-  <br />
-  <br />
-  <p class="flash-msg"><%= t('no_transaction_for_the_given_period') %></p>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th class="name"><%= t('name') %></th>
+        <th class="description"><%= t('description') %></th>
+        <th class="amount"><%= t('amount') %></th>
+        <th class="transaction_date"><%= t('transaction_date') %></th>
+        <th class="transaction_date"><%= t('receipt_no') %></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td colspan="5"><%= t('no_transaction_for_the_given_period') %></td></tr>
+    </tbody>
+  </table>
 <% end %>

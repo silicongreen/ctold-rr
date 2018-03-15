@@ -1,5 +1,5 @@
 <% if @fine_rules.present? %>
-<div class="batch_select_box"> <div class="label-field-pair"></div>
+<div class="batch_select_box">
     <div class="fee_category1_scroll">
       <div class="fine-head">
       <div class="fine-days"><%=t('days')%></div>
@@ -13,7 +13,4 @@
       <% end %>
     </div>
   </div>
-
-<% else %>
-  <p class="flash-msg"> <%= t('no_fine') %> </p>
 <% end %>

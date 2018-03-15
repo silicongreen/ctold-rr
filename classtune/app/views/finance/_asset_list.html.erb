@@ -17,14 +17,16 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<table id="listing" width="99%" align="center">
-  <tr class="tr-head">
-    <td ><%= t('asset') %></td>
-    <td><%= t('created_at') %></td>
-    <td><%= t('total_amount') %></td>
-    <td></td>
-  </tr>
-
+<table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+  <thead><!-- class="thead-inverse" -->
+    <tr>
+      <th><%= t('asset') %></th>
+      <th><%= t('created_at') %></th>
+      <th><%= t('total_amount') %></th>
+      <th></td>
+    </tr>
+  </thead>
+  <tbody>
   <% @assets.each do |a| %>
     <% if a.is_inactive? %>
       <tr class="inactive">
@@ -42,7 +44,7 @@
 
       </tr>
     <% else %>
-      <tr class="tr-<%= cycle('odd', 'even')%> ">
+      <tr class="<%= cycle('odd', 'even')%> ">
         <td class="col-3"><%=link_to a.title ,:action=>"each_asset_view",:id => a.id%></td>
         <td class="col-3"><%=link_to a.created_at.strftime("%d-%m-%Y"),:action =>"each_asset_view",:id => a.id%></td>
         <td class="col-3"><%=  @currency_type + " "%><%= precision_label a.amount%></td>
@@ -54,4 +56,5 @@
       </tr>
     <% end %>
   <% end %>
+  </tbody>
 </table>

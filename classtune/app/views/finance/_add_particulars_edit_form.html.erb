@@ -31,10 +31,9 @@
 
   <%  unless @finance_fee_particulars.admission_no.nil? %>
     <div class="label-field-pair">
-    <div class="label-container"><label><%= t('admission_no') %> :</label> </div>
-    <div class="input-container"><%= form.text_field :admission_no, :value => @finance_fee_particulars.admission_no ,
-        :disabled => true %></div>
-   </div>
+      <div class="label-container"><label><%= t('admission_no') %> :</label> </div>
+      <div class="input-container"><%= form.text_field :admission_no, :value => @finance_fee_particulars.admission_no ,:disabled => true %></div>
+    </div>
   <% end %>
 
 

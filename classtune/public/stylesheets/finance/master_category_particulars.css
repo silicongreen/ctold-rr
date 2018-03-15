@@ -58,14 +58,15 @@
     background:  #373B3F;
 }
 
-#MB_frame .label-field-pair select {
+.label-field-pair select {
     -moz-border-radius:10px 10px 10px 10px;
     -webkit-border-radius:10px;
     background:none repeat scroll 0 0 #EEEEEE;
     border:1px solid #C6C6C6;
     margin:5px 10px 0 5px;
     padding:5px;
-    width:150px;
+    width:217px;
+    height: auto;
 }
 
 .label-field-pair2 {
@@ -128,11 +129,6 @@
 }
 .user_button:hover{
     background:  #373B3F;
-}
-
-.opt{
-    margin-left:200px;
-    width:250px;
 }
 
 .each_batch{

@@ -33,8 +33,9 @@
 
   <div id="batchs1">
     <% form_for :fees_submission_batch do %>
-      <div class="label-field-pair" id="hide1"><label><%= t('select_a_batch') %></label>
-        <div class="text-input-bg"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
+      <div class="label-field-pair" id="hide1">
+        <div class="label-container"><label><%= t('select_a_batch') %></label></div>
+        <div class="input-container"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
             {:prompt => "#{t('select_a_batch')}"},
             {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
             :with => "'batch_id='+value",
@@ -52,8 +53,9 @@
         <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
 
       </div>
-    <div class="label-field-pair" id="hide2"><label><%= t('select_a_batch') %></label>
-        <div class="text-input-bg"> <%= select :fees_submission_inactive, :batch_id, @inactive_batches.map { |c| [c.full_name, c.id] },
+    <div class="label-field-pair" id="hide2">
+        <div class="label-container"><label><%= t('select_a_batch') %></label></div>
+        <div class="input-container"> <%= select :fees_submission_inactive, :batch_id, @inactive_batches.map { |c| [c.full_name, c.id] },
             {:prompt => "#{t('select_a_batch')}"},
             {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
             :with => "'batch_id='+value",
@@ -70,9 +72,9 @@
         </div>
        <%#=link_to_function "show active batches","show_active_batches()",{:class=>'user_button'}%>
       </div>
-      <div class="label-field-pair"><label><%= t('select_fee_collection_date') %></label>
-
-        <div class="text-input-bg">
+      <div class="label-field-pair">
+        <div class="label-container"><label><%= t('select_fee_collection_date') %></label></div>
+        <div class="input-container">
           <div id="fees_collection_dates">
             <%= render :partial => "fees_collection_dates"  %>
           </div>

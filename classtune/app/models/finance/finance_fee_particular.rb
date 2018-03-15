@@ -19,6 +19,7 @@
 class FinanceFeeParticular < ActiveRecord::Base
 
   belongs_to :finance_fee_category
+  belongs_to :finance_fee_particular_category
   belongs_to :student_category
   belongs_to :receiver,:polymorphic=>true
   belongs_to :batch

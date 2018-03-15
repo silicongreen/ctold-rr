@@ -18,23 +18,23 @@
 #under the License. -%>
 
 <% unless @master_categories.empty? %>
- 
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-    <tr class="tr-head">
-      <td><%= t('sl_no') %></td>
-      <td><%= t('fees_name') %></td>
-      
-      <td><%= t('created_date') %> </td>
-      <td><%= t('delete_text') %> </td>
-    </tr>
-    <tr class="tr-blank"></tr>
-
+<div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px;">
+  <h2>Master Fee Categories</h2>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('sl_no') %></th>
+        <th><%= t('fees_name') %></th>
+        <th><%= t('created_date') %> </th>
+        <th><%= t('delete_text') %> </th>
+      </tr>
+    </thead>
+    
+    <tbody>
     <% @master_categories.each_with_index do |fees,i| %>
-      <tr class="tr-<%= cycle("odd","even") %>">
+      <tr class="<%= cycle("odd","even") %>">
         <td class="col-1"><%= i+1 %></td>
-        <td class="col-4"><%= link_to  fees.name, :action => 'master_category_particulars',:id => fees.id,:batch_id=>@batches.id %>
-        </td>
-        
+        <td class="col-4"><%= link_to  fees.name, :action => 'master_category_particulars',:id => fees.id,:batch_id=>@batches.id %></td>
         <td class="col-7"><%= I18n.l(fees.created_at,:format=>"%m-%d-%Y") %></td>
         <td class="col-7">
           <div class="options">
@@ -50,15 +50,9 @@
         </td>
       </tr>
     <% end %>
-
-
+    </tbody>  
   </table>
-
+</div>
 <% else %>
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-    <tr class="tr-head">
-      <td><%= t('no_categories_to_display') %>!</td>
-    </tr>
-  </table>
-
+<div style="border: 1px solid #ccc; padding: 20px; font-weight: bold; border-radius: 8px;"><%= t('no_categories_to_display') %>!</div>
 <% end%>

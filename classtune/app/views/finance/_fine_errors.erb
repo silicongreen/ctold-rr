@@ -3,8 +3,8 @@
   :url => {:action => 'fine_slabs_edit_or_create'},:html=>{:method=>:post} do |form1| %>
   <div id="add">
     <div class="label-field-pair">
-          <label for="reason">  <%= t('fine_name') %><span class="necessary-field">*</span></label>
-          <div class="text-input-bg"><%= form1.text_field :name%></div>
+          <div class="label-container"><label for="reason">  <%= t('fine_name') %><span class="necessary-field">*</span></label></div>
+          <div class="input-container"><%= form1.text_field :name%></div>
         </div>
   <%@fine.fine_rules.each_with_index do |slab,i|%>
     <%= hidden_field_tag "fine[fine_rules_attributes][#{i}][id]",slab.id %>
@@ -13,13 +13,13 @@
       <hr  />
 
       <div class="label-field-pair">
-        <label for="reason">  <%= t('days_after_due_date') %><span class="necessary-field">*</span></label>
-        <div class="text-input-bg"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_days]",value=slab.fine_days,options={:class=>"precision_text"}%></div>
+        <div class="label-container"><label for="reason">  <%= t('days_after_due_date') %><span class="necessary-field">*</span></label></div>
+        <div class="input-container"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_days]",value=slab.fine_days,options={:class=>"precision_text"}%></div>
       </div>
       <div class="label-field-pair">
           <%=link_to_function "&times",  "slab_delete('#{i}');", {:class => 'list_btn themed_text'} if i>0%>
-        <label for="reason">  <%= t('fine_amount') %><span class="necessary-field">*</span></label>
-        <div class="text-input-bg"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_amount]",value=precision_label(slab.fine_amount),options={:class=>"precision_text"}%></div>
+        <div class="label-container"><label for="reason">  <%= t('fine_amount') %><span class="necessary-field">*</span></label>
+        <div class="input-container"><%= text_field_tag  "fine[fine_rules_attributes][#{i}][fine_amount]",value=precision_label(slab.fine_amount),options={:class=>"precision_text"}%></div>
       </div>
       <div class="label_field_pair">
         <div class="fine-mode" >

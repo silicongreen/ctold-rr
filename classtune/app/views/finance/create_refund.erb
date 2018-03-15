@@ -27,8 +27,8 @@
     <div id="form-errors"><%= error_messages_for 'refund_rule' %></div>
     <div id="left-side-inputs">
       <div class="label-field-pair">
-        <label for="reason"> <%= t('fee_collection') %><span class="necessary-field">*</span>:</label>
-        <div class="text-input-bg">
+        <div class="label-container"><label for="reason"> <%= t('fee_collection') %><span class="necessary-field">*</span>:</label></div>
+        <div class="input-container">
           <%= form.select(:finance_fee_collection_id, @collections.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
             {:selected => @fee_collection.present? ? @fee_collection.name : nil , :prompt => "#{ t('select_fee_collection')}" })%>
         </div>
@@ -41,16 +41,21 @@
         </div>
       </div>
       <div class="label-field-pair">
-        <label for="reason">  <%= t('refund_name') %><span class="necessary-field">*</span>:</label>
-        <div class="text-input-bg"><%= form.text_field :name%></div>
+        <div class="label-container"><label for="reason">  <%= t('refund_name') %><span class="necessary-field">*</span>:</label></div>
+        <div class="input-container"><%= form.text_field :name%></div>
       </div>
       <div class="label-field-pair">
+<<<<<<< HEAD
         <label for="reason">  <%= t('refund_validity') %><span class="necessary-field">*</span>:</label>
         <div class="text-input-bg"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
+=======
+        <div class="label-container"><label for="reason">  <%= t('refund_validity') %><span class="necessary-field">*</span>:</label></div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>:default), :popup=>"force",:class=>'due_date'%></div>
+>>>>>>> Change on finance System
       </div>
       <div class="label-field-pair">
-        <label for="reason">  <%= t('refund_percentage') %><span class="necessary-field">*</span>:</label>
-        <div class="text-input-bg"><%= form.text_field :refund_percentage, :value=> precision_label(@refund_rule.refund_percentage), :class=>'precision_text'%></div>
+        <div class="label-container"><label for="reason">  <%= t('refund_percentage') %><span class="necessary-field">*</span>:</label></div>
+        <div class="input-container"><%= form.text_field :refund_percentage, :value=> precision_label(@refund_rule.refund_percentage), :class=>'precision_text'%></div>
       </div>
 
     </div>

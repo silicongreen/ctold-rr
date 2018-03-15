@@ -19,8 +19,8 @@
 
 <% remote_form_for :payslip_reject, :url=>{:controller=>'finance', :action=>'employee_payslip_reject', :id=>@id1, :id2=>@id2}, :before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)" do |f| %>
   <div class="label-field-pair">
-    <label for="employee_name" class="reason"><%= t('reason') %></label>
-    <div class="text-input-bg"><%= f.text_field :reason %></div>
+    <div class="label-container"><label for="employee_name" class="reason"><%= t('reason') %></label></div>
+    <div class="input-container"><%= f.text_field :reason %></div>
   </div>
 <%= f.submit "#{t('submit')}", :class=>"button", :id => 'submit_button' %>
 <% end %>

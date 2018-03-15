@@ -28,12 +28,14 @@
 
 <div id="page-yield">
   <div class="label-field-pair">
-    <label><%= t('select_fee_collection') %> <%= image_tag("loader.gif",
-        :align => "absmiddle",
-        :border => 0,
-        :id => "loader",
-        :style =>"display: none;" ) %></label>
-    <div class="text-input-bg">
+    <div class="label-container">
+        <label><%= t('select_fee_collection') %> <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader",
+          :style =>"display: none;" ) %></label>
+    </div>
+    <div class="input-container">
       <%= select  :fees_submission, :dates_id, @dates.map { |e| [e.full_name, e.id]},
         {:prompt => "#{t('select_fee_collection')}"},
         {:onChange => "#{remote_function( :url =>

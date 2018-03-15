@@ -54,6 +54,7 @@ multi_school_models:
 - Student
 - FinanceTransactionTrigger
 - FinanceFeeCategory
+- FinanceFeeParticularCategory
 - Liability
 - News
 - Syllabus

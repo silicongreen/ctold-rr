@@ -22,12 +22,12 @@
 <div id="form-errors"> </div>
 
  <div class="label-field-pair">
-    <label for="reason"><%= t('name') %></label>
-    <div class="text-input-bg"><%= form.text_field :name %></div>
+    <div class="label-container"><label for="reason"><%= t('name') %></label></div>
+    <div class="input-container"><%= form.text_field :name %></div>
  </div>
  <div class="label-field-pair">
-    <label for="reason"><%= t('discount') %> </label>
-    <div class="text-input-bg"><%= form.text_field :discount, :value=>precision_label(@fee_discount.discount),:class=>'precision_text' %></div>
+    <div class="label-container"><label for="reason"><%= t('discount') %> </label></div>
+    <div class="input-container"><%= form.text_field :discount, :value=>precision_label(@fee_discount.discount),:class=>'precision_text' %></div>
  </div>
 
 <div id="submit-button">

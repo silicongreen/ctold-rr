@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<label class="head_label"><%= t('create_master_category_for_fees') %><span></span></label>
+<label class="head_label"><h2><%= t('create_master_category_for_fees') %></h2><span></span></label>
 
 
 <div id="grading-levels-form">
@@ -39,17 +39,22 @@
 
     <div class="label-field-pair">
       <div class="label-container"><label><%= t('select_a_batch') %> :</label></div>
-      <%#= f.select :batch_id, @batches.map { |c| [c.full_name, c.id] },{:prompt => 'Select Batch'} %>
-      <div class="batches">
-         <div class="sel-list">
-           <%= t('select') %>: <%= link_to_function t('all'), "$$('input.MB_focusable').each(function(checkbox) { checkbox.checked = true; });" %>,
-      <%= link_to_function t('none'), "$$('input.MB_focusable').each(function(checkbox) { checkbox.checked = false; });" %>
-    </div>
-      <% @batches.each do |f| %>
-        <div class="each_batch">
-          <%= check_box_tag "finance_fee_category[category_batches_attributes][#{f.id}][batch_id]", f.id %> <label><%= f.full_name %></label>
+      <div style="clear: both;"></div>
+      <div style="width: 100%; padding: 10px;">
+        <%#= f.select :batch_id, @batches.map { |c| [c.full_name, c.id] },{:prompt => 'Select Batch'} %>
+        <div class="sel-list" style="padding-bottom: 5px; ">
+          <%= t('select') %>: <%= link_to_function t('all'), "$$('input.MB_focusable').each(function(checkbox) { checkbox.checked = true; });" %>,
+          <%= link_to_function t('none'), "$$('input.MB_focusable').each(function(checkbox) { checkbox.checked = false; });" %>
         </div>
-      <% end %></div>
+        <div class="batches">
+          <% @batches.each do |f| %>
+          <div class="each_batch">
+              <div class="checkbox_inline"><%= check_box_tag "finance_fee_category[category_batches_attributes][#{f.id}][batch_id]", f.id %></div> 
+              <div class="checkbox_label"><label><%= f.full_name %></label></div>
+          </div>
+          <% end %>
+        </div>
+      </div>
     </div>
     <div class="extender" style ="height:20px"></div>
     <div id ="sub-button">

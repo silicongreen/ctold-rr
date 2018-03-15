@@ -27,22 +27,23 @@
   <div id="flash_box"></div>
   <% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %>
   <div id="batch">
-    <div class="label-field-pair"><label><%= t('select_batch') %> : </label>
-      <div class="text-input-bg"> <%= select("id",:id,@batchs.map { |c| [c.full_name, c.id] },
+    <div class="label-field-pair">
+        <div class="label-container"><label><%= t('select_batch') %> : </label></div>
+        <div class="input-container"> <%= select("id",:id,@batchs.map { |c| [c.full_name, c.id] },
           {:prompt => "#{t('select_batch')}"},
           {:onChange => "#{remote_function(:url => {:action => "fee_collection_dates_batch"},
             :with => "'id='+value",
             :before => "Element.show('loader')",
             :success => "Element.hide('loader')")}"
           })%>
-      </div>
-      <div class="loader_div">
-        <%= image_tag("loader.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader",
-          :style =>"display: none;" ) %>
-      </div>
+        </div>
+        <div class="loader_div">
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+        </div>
     </div>
   </div>
   <div id="fee_collection_dates"></div>

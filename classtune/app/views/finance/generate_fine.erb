@@ -29,8 +29,8 @@
   :url => {:action => 'fine_slabs_edit_or_create'},:html=>{:method=>:post} do |form1| %>
      <div id="form-errors"><%= error_messages_for 'fine' %></div>
     <div class="label-field-pair">
-      <label for="reason"> <%= t('fine') %>:</label>
-      <div class="text-input-bg">
+      <div class="label-container"><label for="reason"> <%= t('fine') %>:</label></div>
+      <div class="input-container">
         <%= select(:fine,:id, @fines.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq.unshift([t("new_fine"),0]),
           {:selected => @fine.present? ? @fine.name : nil },
           { :include_blank => true, :onchange => "fine_select(value)"
@@ -70,17 +70,16 @@ evt.stop();
 
   function slab_delete(slab){
 
-var slab_delete =new Element('input' , {'type':'hidden','name':'fine[fine_rules_attributes]['+slab+'][_destroy]','value':1});
+    var slab_delete =new Element('input' , {'type':'hidden','name':'fine[fine_rules_attributes]['+slab+'][_destroy]','value':1});
     $$('.new_fine')[0].appendChild(slab_delete);
-    j('.slab'+slab).hide();
     alt_id = new Date().getTime();
     j('.slab'+slab).attr('id','new_slab'+alt_id)
    if (j('div[id^=remove-slab]').length == 0){
     if (confirm('<%=t('it_should_delete_the_fine')%>')){
      var fine_delete =new Element('input' , {'type':'hidden','name':'fine[is_deleted]','value':"true"});
       $$('.new_fine')[0].appendChild(fine_delete);
+      j('.slab'+slab).hide();
      }else{
-       
        j('div[id^=new_slab]').show();
        for(i=0;i<j('div[id^=new_slab]').length;i++){
          j("#"+j('div[id^=new_slab]')[i].id).attr('id','remove-slab'+i)
@@ -88,10 +87,15 @@ var slab_delete =new Element('input' , {'type':'hidden','name':'fine[fine_rules_
        j('.new_fine').children('[type=hidden]').remove()
      }
    }
+   else
+   {
+     j('.slab'+slab).remove();
+   }
     <%#*$$('.slab'+slab)[0].hide();%>
     
   }
-function remove_new_slab(sl){
+  
+  function remove_new_slab(sl){
   slab=j(sl).attr('id')
   j('.slab'+slab).remove();
   <%#*j('.slab'+slab)[0].hide();%>

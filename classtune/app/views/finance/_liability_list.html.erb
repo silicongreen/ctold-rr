@@ -18,16 +18,19 @@
 #under the License. -%>
 
 
-<table id="listing" width="99%" align="center">
-  <tr class="tr-head">
-    <td><%= t('liability') %></td>
-    <td><%= t('created_at') %></td>
-    <td><%= t('total_amount') %></td>
-    <td></td>
-  </tr>
+<table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+  <thead><!-- class="thead-inverse" -->
+    <tr>
+      <th><%= t('liability') %></th>
+      <th><%= t('created_at') %></th>
+      <th><%= t('total_amount') %></th>
+      <th></th>
+    </tr>
+  </thead>
 
+  <tbody>
   <% @liabilities.each do |l| %>
-
+    
     <% if l.is_solved? %>
       <tr class="solved">
         <td class="col-3"><%=link_to l.title+"(solved)" ,:action=>"each_liability_view",:id => l.id%></td>
@@ -58,4 +61,5 @@
       </tr>
     <% end %>
   <% end %>
+  </tbody>    
 </table>

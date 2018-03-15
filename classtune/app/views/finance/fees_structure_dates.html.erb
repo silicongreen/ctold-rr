@@ -26,8 +26,8 @@
 </div>
 <div id="page-yield">
   <div class="label-field-pair">
-    <label><%= t('select_fee_collection') %>: </label>
-    <div class="text-input-bg">
+    <div class="label-container"><label><%= t('select_fee_collection') %>: </label></div>
+    <div class="input-container">
       <%= select  :fees_submission, :dates_id, @dates.map { |e| [e.full_name, e.id]},
         {:prompt => "#{t('select_fee_collection')}"},
         {:onChange => "#{remote_function( :url =>

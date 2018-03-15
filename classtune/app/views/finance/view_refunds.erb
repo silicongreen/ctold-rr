@@ -43,12 +43,12 @@
 
     <div id="search_box_bg" class="box">
       <% remote_form_for(:student, :url => {:action=> 'refund_filter_by_date'},:before => "Element.show('loader_date')",:success => "Element.hide('loader_date')", :html=> {:multipart=>true,:id=>"date_search_form"}) do |s| %>
-        <div class="date-select"><div class="date-search">
+        <div class="date-select"><div class="date-search calendar-input">
             <label for="student_date_of_birth"><%= t('start_date') %> </label>
 
             <%= calendar_date_select_tag 's_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%></div>
-          <div class="date-search2"> <label for="student_date_of_birth"><%= t('end_date') %> </label>
+          <div class="date-search2 calendar-input"> <label for="student_date_of_birth"><%= t('end_date') %> </label>
             <%= calendar_date_select_tag 'e_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => "Element.show('loader_date');date();"%>
             <%= image_tag("loader.gif",

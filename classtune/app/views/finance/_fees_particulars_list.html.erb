@@ -20,20 +20,21 @@
   <div class="linker"><%= link_to_remote "#{t('add_particular')}", :url => { :action => 'add_particulars_new',:id => @collection_date.id} %></div>
 <br/>
 <% unless @finance_fee_particulars_list.empty? %>
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-    <tr class="tr-head">
-      <td><%= t('sl_no') %></td>
-      <td><%= t('particulars') %></td>
-      <td><%= t('student_text') %> <%= t('category') %></td>
-      <td><%= t('admission_no') %></td>
-      <td><%= t('amount') %> (<%= currency %>)</td>
-      <td><%= t('created_date') %> </td>
-      <td></td>
-
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+      <th><%= t('sl_no') %></th>
+      <th><%= t('particulars') %></th>
+      <th><%= t('student_text') %> <%= t('category') %></th>
+      <th><%= t('admission_no') %></th>
+      <th><%= t('amount') %> (<%= currency %>)</th>
+      <th><%= t('created_date') %> </th>
+      <th></th>
     </tr>
-    <tr class="tr-blank"></tr>
+    </thead>
+    <tbody>
     <% @finance_fee_particulars_list.each_with_index do |fees, i| %>
-      <tr class="tr-<%= cycle("odd","even") %>">
+      <tr class="<%= cycle("odd","even") %>">
         <td class="col-1"><%= i+1 %></td>
         <td class="col-2"><%= shorten_string(fees.name,50) %></td>
         <td class="col-3"><%= StudentCategory.find(fees.student_category_id).name unless fees.student_category_id.nil? %></td>
@@ -59,7 +60,23 @@
         </td>
       </tr>
     <% end %>
+    </tbody>
   </table>
 <% else %>
-<p class="flash-msg"><%= t('no_particulars') %></p>
+<table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('sl_no') %></th>
+        <th><%= t('particulars') %></th>
+        <th><%= t('student_text') %> <%= t('category') %></th>
+        <th><%= t('admission_no') %></th>
+        <th><%= t('amount') %> (<%= currency %>)</th>
+        <th><%= t('created_date') %> </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td colspan="7"><%= t('no_particulars') %></td></tr>
+    </tbody>
+</table>
 <% end %>

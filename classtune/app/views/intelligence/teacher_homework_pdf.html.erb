@@ -19,7 +19,7 @@
         <% std_count = 0 %>
         <% unless @report_data['employee_data'].blank? %>  
           <% @report_data['employee_data'].each do |employee| %>
-            <% if check_admin_stuff %>
+            <% if check_admin_stuff(employee['emp_dep']) %>
             <%  std_count = std_count+1; %>
             <% 
               if @report_data['day_type']!="1" && @time_range=="days"

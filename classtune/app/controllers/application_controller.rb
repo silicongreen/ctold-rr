@@ -70,8 +70,8 @@ class ApplicationController < ActionController::Base
     return false
   end
   
-  def check_admin_stuff(emp_api)
-    if !employee['emp_dep'].upcase.index("ADMIN") and !employee['emp_dep'].upcase.index("STUFF")
+  def check_admin_stuff(dpt)
+    if !dpt.upcase.index("ADMIN") and !dpt.upcase.index("STUFF")
       return true
     end
     return false

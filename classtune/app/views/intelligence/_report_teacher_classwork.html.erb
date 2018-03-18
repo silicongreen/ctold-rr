@@ -44,7 +44,7 @@
                             employee['frequency'] = "N/A"
                           end 
                         %>
-                        <% if !employee['emp_dep'].index("admin") %>
+                        <% if !employee['emp_dep'].upcase.index("ADMIN") %>
                         <tr>
                           <td class="col-2"><b><%= employee['emp_name'] %></b></td>
                           <td class="col-2"><b><%= employee['emp_dep'] %></b></td>

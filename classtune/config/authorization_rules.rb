@@ -963,8 +963,6 @@ authorization do
       :index,
       :add,
       :add_comment,
-      :list_students,
-      :list_employees,
       :all,
       :all_draft,
       :published_news,
@@ -1270,6 +1268,9 @@ authorization do
       :delete_asset,
       :fee_collection_view,
       :fee_collection_dates_batch,
+      :fee_collection_assign_discount,
+      :assign_fee_discount_to_collection,
+      :remove_fee_discount_from_collection,
       :pay_fees_defaulters,
       :fee_structure_fee_collection_date,
       :fees_student_specific_dates,
@@ -1730,7 +1731,7 @@ authorization do
     includes :reports_view
     includes :timetable_track
     has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
-      :classwork,:teacher_classwork,:get_teacher_classworks,:teacher_classwork_pdf,:teacher_homework_pdf,:get_classwork_report,:graph_for_classwork,
+      :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,
       :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan
       ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
@@ -2311,6 +2312,9 @@ authorization do
       :delete_asset,
       :fee_collection_view,
       :fee_collection_dates_batch,
+      :fee_collection_assign_discount,
+      :assign_fee_discount_to_collection,
+      :remove_fee_discount_from_collection,
       :pay_fees_defaulters,
       :fee_structure_fee_collection_date,
       :fees_student_specific_dates,
@@ -2529,8 +2533,6 @@ authorization do
       :index,
       :add,
       :add_comment,
-      :list_students,
-      :list_employees,
       :all,
       :all_draft,
       :published_news,
@@ -2539,7 +2541,6 @@ authorization do
       :comment_approved,
       :edit,
       :search_news_ajax,
-      :list_students,
       :view,
       :download_attachment,
       :comment_view]
@@ -3145,8 +3146,6 @@ authorization do
       :all,
       :search_news_ajax,
       :view,
-      :list_students,
-      :list_employees,
       :comment_view,
       :add_comment,
       :download_attachment,
@@ -3263,8 +3262,6 @@ authorization do
       :all,
       :search_news_ajax,
       :view,
-      :list_students,
-      :list_employees,
       :comment_view,
       :add_comment,
       :download_attachment,
@@ -3418,8 +3415,6 @@ authorization do
       :search_news_ajax,
       :view,
       :comment_view,
-      :list_students,
-      :list_employees,
       :add_comment,
       :download_attachment,
       :delete_comment]

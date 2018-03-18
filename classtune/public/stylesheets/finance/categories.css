@@ -95,4 +95,9 @@
     float:right;
 }
 
-
+.label-field-pair .label-container {
+    width: 45% !important;
+}
+.label-field-pair .input-container {
+    width: 51% !important;
+}

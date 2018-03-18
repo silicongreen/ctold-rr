@@ -221,3 +221,28 @@ a.next_page, a.prev_page {
     border-left: 1px solid #ccc !important;
     padding: 8px;
 }
+.small, .small_warning  {
+    font-size: 11px;
+    float: right;
+    width: auto !important;
+    margin-right: 10px;
+    text-align: center;
+    padding: 3px 5px;
+    background: #428bca;
+    border-radius: 4px;
+    border: 1px solid #357ebd;
+    color: #fff;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+.small_warning {
+    background: #f0ad4e;
+    border: 1px solid #eea236;
+}
+.small a, .small_warning a{
+    color: #fff !important;
+    font-size: 12px;
+}

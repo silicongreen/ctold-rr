@@ -1,12 +1,10 @@
-<%-# Champs21
-#Copyright 2010 teamCreative Private Limited
-#
-#This product includes software developed at
-#Project Champs21 - http://www.champs21.com/
-#
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
+<%-# Licensed to the Apache Software Foundation (ASF) under one
+#or more contributor license agreements.  See the NOTICE file
+#distributed with this work for additional information
+#regarding copyright ownership.  The ASF licenses this file
+#to you under the Apache License, Version 2.0 (the
+#"License"); you may not use this file except in compliance
+#with the License.  You may obtain a copy of the License at
 #
 #  http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -16,12 +14,13 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<label class="head_label"><%= t('one_time_fee_discount_list') %> <span></span></label>
 <% unless @discounts.blank? %>
 
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-  <hr style="border-top: 1px solid #ccc;" />
+ 
   <h4>Batch Wise Discount</h4>  
   
   <% batch_discount = @discounts.select{|d| d.receiver_type == 'Batch'} %>
@@ -37,22 +36,29 @@
     </thead>
     <tbody>
     <% batch_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+      <tr class="<%= cycle('odd', 'even')%>">
+        <td class="col-3"><%= f.name %></td>
+        <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+        <td class="col-3">
           <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
         </td>
        
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-              <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
+          <td class="col-1">
+            <div id="discount_option_<%= f.id %>" class="options">
+              <% if @fee_collection_discount.include?(f.id) %>  
+              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
+              <% else %>  
+              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}",:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>
+              <% end %>
             </div>
-            </td>
+            <div class="loader_div">
+              <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader_#{f.id}",
+                :style =>"display: none; padding-top: 5px;" ) %>
+            </div>
+          </td>
       </tr>
     <% end %>
     </tbody>
@@ -92,23 +98,30 @@
     </thead>
     <tbody>
     <% category_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.category_name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+      <tr class="<%= cycle('odd', 'even')%>">
+        <td class="col-3"><%= f.name %></td>
+        <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+        <td class="col-3"><%= f.category_name %></td>
+        <td class="col-3">
           <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
         </td>
        
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-              <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
+          <td class="col-1">
+            <div id="discount_option_<%= f.id %>" class="options">
+              <% if @fee_collection_discount.include?(f.id) %>  
+              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
+              <% else %>  
+              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}",:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>
+              <% end %>
             </div>
-            </td>
+            <div class="loader_div">
+              <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader_#{f.id}",
+                :style =>"display: none; padding-top: 5px;" ) %>
+            </div>  
+          </td>
       </tr>
     <% end %>
     </tbody>
@@ -150,24 +163,31 @@
     </thead>
     <tbody>
     <% student_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_short_name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_admission_no %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+      <tr class="<%= cycle('odd', 'even')%>">
+        <td class="col-3"><%= f.name %></td>
+        <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+        <td class="col-3"><%= f.student_short_name %></td>
+        <td class="col-3"><%= f.student_admission_no %></td>
+        <td class="col-3">
           <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
         </td>
        
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-            <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
+          <td class="col-1">
+            <div id="discount_option_<%= f.id %>" class="options">
+              <% if @fee_collection_discount.include?(f.id) %>  
+              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
+              <% else %>  
+              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}",:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>
+              <% end %>
             </div>
-            </td>
+            <div class="loader_div">
+              <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader_#{f.id}",
+                :style =>"display: none; padding-top: 5px;" ) %>
+            </div>  
+          </td>
       </tr>
     <% end %>
     </tbody>
@@ -204,9 +224,10 @@
     </thead>
     <tbody>
         <tr>
-            <td colspan="4"><%= t('no_discount_found') %></td>
+            <td colspan="5"><%= t('no_discount_found') %></td>
         </tr>
     </tbody>  
   </table>
 
 <% end %>
+  <div style="clear: both; height: 20px;"></div>

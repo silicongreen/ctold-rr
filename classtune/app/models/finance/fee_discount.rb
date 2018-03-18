@@ -45,8 +45,7 @@ class FeeDiscount < ActiveRecord::Base
          part_amt= particulars.select{|s| (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.pamt.to_f}.sum
         end
 
-
-        discounts=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("sum(#{part_amt}*fee_discounts.discount/IF(is_amount=1,#{part_amt},100)) as damt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and is_late=#{false} and is_onetime=#{is_onetime} and id<>#{ds_id} and is_deleted=#{false}")
+        discounts=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("sum(#{part_amt}*fee_discounts.discount/IF(is_amount=1,#{part_amt},100)) as damt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and is_late=#{false} and is_onetime=#{is_onetime} and id<>#{ds_id} and finance_fee_particular_category_id = 0 and is_deleted=#{false}")
         if receiver_type=='StudentCategory'
           students=batch.students.all(:conditions=>"student_category_id='#{receiver_id}'").collect(&:id)
           discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
@@ -57,11 +56,11 @@ class FeeDiscount < ActiveRecord::Base
         else
           discs=[]
           sc_part_amt= particulars.select{|s| (s.receiver_type=='StudentCategory') or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.pamt.to_f}.sum
-          discs=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{sc_part_amt}-sum(#{sc_part_amt}*fee_discounts.discount/IF(is_amount=1,#{sc_part_amt},100)) as damt"),:conditions=>"receiver_type='StudentCategory' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}
+          discs=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{sc_part_amt}-sum(#{sc_part_amt}*fee_discounts.discount/IF(is_amount=1,#{sc_part_amt},100)) as damt"),:conditions=>"receiver_type='StudentCategory' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and finance_fee_particular_category_id = 0 and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}
           s_part_amt= particulars.select{|s|  (s.receiver_type=='Student') or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.pamt.to_f}.sum
-          discs<<finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{s_part_amt}-sum(#{s_part_amt}*fee_discounts.discount/IF(is_amount=1,#{s_part_amt},100)) as damt"),:conditions=>"receiver_type='Student' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}.first
+          discs<<finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{s_part_amt}-sum(#{s_part_amt}*fee_discounts.discount/IF(is_amount=1,#{s_part_amt},100)) as damt"),:conditions=>"receiver_type='Student' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and finance_fee_particular_category_id = 0 and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}.first
           b_part_amt= particulars.select{|s| (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.pamt.to_f}.sum
-          discs<<finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{b_part_amt}-sum(#{b_part_amt}*fee_discounts.discount/IF(is_amount=1,#{b_part_amt},100)) as damt"),:conditions=>"receiver_type='Batch' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}.first
+          discs<<finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("#{b_part_amt}-sum(#{b_part_amt}*fee_discounts.discount/IF(is_amount=1,#{b_part_amt},100)) as damt"),:conditions=>"receiver_type='Batch' and is_late=#{false} and is_onetime=#{is_onetime} and batch_id='#{batch_id}' and finance_fee_particular_category_id = 0 and id<>#{ds_id} and is_deleted=#{false}").map{|a| a.damt.to_f}.first
           discs=discs.compact
           discount_amt= discounts.select{|s| (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
           disc_amt=discs.min

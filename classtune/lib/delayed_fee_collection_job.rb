@@ -1,10 +1,11 @@
 require 'i18n'
 class DelayedFeeCollectionJob
   attr_accessor :user,:collection,:fee_collection
-  def initialize(user,collection,fee_collection)
+  def initialize(user,collection,fee_collection, sent_remainder)
     @user = user
-    @collection=collection
-    @fee_collection=fee_collection
+    @collection = collection
+    @fee_collection = fee_collection
+    @sent_remainder = sent_remainder
   end
   include I18n
   def t(obj)
@@ -44,6 +45,8 @@ class DelayedFeeCollectionJob
               " #{t('end_date')} :"+@finance_fee_collection.end_date.to_s+" \n "+
               " #{t('due_date')} :"+@finance_fee_collection.due_date.to_s+" \n \n \n "+
               " #{t('check_your')}  #{t('fee_structure')}"
+            
+            
             recipient_ids = []
 
             @students.each do |s|
@@ -57,11 +60,13 @@ class DelayedFeeCollectionJob
             end
             recipient_ids = recipient_ids.compact
             BatchEvent.create(:event_id => new_event.id, :batch_id => b )
-            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
-                :recipient_ids => recipient_ids,
-                :subject=>subject,
-                :body=>body ))
-
+            if  @sent_remainder
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
+                  :recipient_ids => recipient_ids,
+                  :subject=>subject,
+                  :body=>body ))
+            end
+            
             prev_record = Configuration.find_by_config_key("job/FinanceFeeCollection/1")
             if prev_record.present?
               prev_record.update_attributes(:config_value=>Time.now)

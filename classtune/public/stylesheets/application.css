@@ -3750,6 +3750,9 @@ table th[class*="col-"] {
   display: table-cell;
   float: none;
 }
+.table-hover > tbody > tr {
+    cursor: pointer;
+}
 .table > thead > tr > td.active,
 .table > tbody > tr > td.active,
 .table > tfoot > tr > td.active,
@@ -3782,7 +3785,7 @@ table th[class*="col-"] {
 .table > thead > tr.success > th,
 .table > tbody > tr.success > th,
 .table > tfoot > tr.success > th {
-  background-color: #dff0d8;
+/*  background-color: #dff0d8;*/
 }
 .table-hover > tbody > tr > td.success:hover,
 .table-hover > tbody > tr > th.success:hover,

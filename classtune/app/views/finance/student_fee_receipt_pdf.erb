@@ -153,17 +153,42 @@
                       <%k+=1%>
                       <td class="mark-td"class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
                   </tr>
+                  
                   <% discounts_array = {} %>
-                    <% @discounts.each do |discounts| %>
+                    <% unless @discounts.nil? or @discounts.empty? %>
+                    <% @discounts.each_with_index do |discounts, key| %>
                       <% discounts.each do |d| %>
                         <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
                         <% if discounts_array[discount_text].nil? %>
                           <% discounts_array[discount_text] = 0 %>
                         <% end %>
-                        <% discounts_array[discount_text] = discounts_array[discount_text]+(total_payable * d.discount.to_f/ (d.is_amount?? total_payable : 100)) %>
+                        <% discounts_array[discount_text] = discounts_array[discount_text]+@discounts_amount[key][d.id] %>
+                      <% end %>
+                    <% end %>
+                    <% end %>
+
+                    <% onetime_discounts_array = {} %>
+                    <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
+                      <% @onetime_discounts.each_with_index do |discounts, key| %>
+                        <% unless discounts.nil? or discounts.empty? or discounts.blank? %>
+                          <% discounts.each do |d| %>
+                            <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                            <% if onetime_discounts_array[discount_text].nil? %>
+                              <% onetime_discounts_array[discount_text] = 0 %>
+                            <% end %>
+                            <%  onetime_discounts_array[discount_text] = onetime_discounts_array[discount_text]+@onetime_discounts_amount[key][d.id] %>
+                          <% end %>
+                        <% end %>
                       <% end %>
                     <% end %>
 
+                  <% onetime_discounts_array.each do |key,value| %>
+                    <%k+=1%>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <td class="mark-td"class="name-td"  colspan="2"><%= key %></td>
+                        <td  class="mark-td"><%= precision_label(value) %></td>
+                    </tr>
+                  <% end %>
                   <% discounts_array.each do |key,value| %>
                     <%k+=1%>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -236,12 +261,31 @@
                     <%unless financefee.is_paid%>
                       <%if @fine_rule[key] %>
                         <tr class="<%= cycle("odd","even") %>">
-                          <td class="mark-td"class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
-                          <td class="mark-td"class="col-6"><%=  precision_label(@fine_amount[key]) %></td>
+                          <td class="mark-td"class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
+                          <td class="mark-td"class="col-6"><%=  precision_label(@new_fine_amount[key]) %></td>
                         </tr>
                       <%end%>
                     <%end%>
-
+                    <% if @fine_amount[key] <= 0 %>
+                      <% unless @discounts_on_lates[key].nil? or @discounts_on_lates[key].empty? or @discounts_on_lates[key].blank? %>
+                        <% @discounts_on_lates[key].each do |d| %>
+                          <% if @discounts_late_amount[key][d.id] > 0 %>
+                            <tr class="<%= cycle("odd","even") %>">
+                              <td class="col-1"><%= i+=1 %></td>
+                              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                              <td class="col-2"><%= discount_text %></td>
+                              <td class="col-6" style="text-align: right;">
+                                <%= precision_label(@discounts_late_amount[key][d.id]) %>
+                              </td>
+                            </tr>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                      <tr class="<%= cycle("odd","even") %>">
+                        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></td>
+                        <td class="col-6"  style="text-align: right;"><%=  precision_label(@fine_amount[key]) %></td>
+                      </tr>      
+                    <% end %>  
                   <% end %>
                   <% key = key+1 %>      
                 <% end %>

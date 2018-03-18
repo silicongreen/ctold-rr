@@ -40,15 +40,13 @@
             {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
             :with => "'batch_id='+value",
             :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}"
+            :success => "Element.hide('loader')")}", :style=>"width: 90% !important; float: left;"
           }%>
-        </div>
-        <div class="loader_div">
           <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,
             :id => "loader",
-            :style =>"display: none; " ) %>
+            :style =>"display: none; " ) %>  
         </div>
         <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
 
@@ -59,16 +57,14 @@
             {:prompt => "#{t('select_a_batch')}"},
             {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
             :with => "'batch_id='+value",
-            :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}"
+            :before => "Element.show('loader1')",
+            :success => "Element.hide('loader1')")}", :style=>"width: 90% !important; float: left;"
           }%>
-        </div>
-        <div class="loader_div">
           <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,
-            :id => "loader",
-            :style =>"display: none; " ) %>
+            :id => "loader1",
+            :style =>"display: none; " ) %>  
         </div>
        <%#=link_to_function "show active batches","show_active_batches()",{:class=>'user_button'}%>
       </div>
@@ -129,6 +125,7 @@
       return true;
     }
   }
+  
   function validate_fine()
   {
     if(isNaN($('fine_fee').value)==false)
@@ -144,7 +141,8 @@
         alert("Please enter a positive value for fine");
         return false;
       }
-      else{
+      else
+      {
         return true;
       }
     }
@@ -155,6 +153,35 @@
       return false;
     }
   }
+  
+  function validate_vat()
+  {
+    if(isNaN($('vat_fee').value)==false)
+    {
+      if($('vat_fee').value <= 0)
+      {
+        $('fine_fee').value=""
+        alert("Please enter a positive value for VAT");
+        return false;
+      }
+      else if($('vat_fee').value=="")
+      {
+        alert("Please enter a positive value for VAT");
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    else
+    {
+      $('vat_fee').value=""
+      alert("Please enter a numeric value for VAT");
+      return false;
+    }
+  }
+  
   function prev_double(){
     $('fees_form').setAttribute("onsubmit", "return false")
     $('submit_button').disable();

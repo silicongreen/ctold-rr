@@ -35,12 +35,13 @@
     margin:0px auto;
 }
 
-.user_button {
+a.user_button {
     padding: 7px 10px;
     color: #fff;
     background: #27292B;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
+    border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
     font-weight: bold;
     font-size: 14px;
     border:none;
@@ -60,27 +61,33 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    margin: 20px 5px 0 0;
+    margin: 20px 5px 0 5px;
     padding: 7px 10px;
+    height: 33px;
     float:right;
-    -moz-border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
 }
 .submit_button:hover{
     background:  #373B3F;
 }
 
 .submit_button2 {
-    padding: 6px 8px;
-    color: #fff;
+    padding: 6px 8px !important;
+    color: #fff !important;
     background: #27292B !important;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    font-weight: bold;
-    font-size: 14px;
-    border:none;
-    cursor:pointer;
-    margin-top:3px;
+    -moz-border-radius:6px !important;
+    -webkit-border-radius:6px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    border:none !important;
+    cursor:pointer !important;
+    margin-top:5px !important;
+    width: 40% !important;
+    height: 34px !important;
+    float: right;
+    display: inline-block !important;
 }
 .submit_button2:hover{
     background:  #373B3F;
@@ -168,10 +175,10 @@
     margin-top:10px;
     margin-bottom:10px;
     float: left;
-    width: 100%
+    width: 98%
 }
 .header{
-    width:520px;
+    width:500px;
     margin:0px auto;
     padding:4px 0 1px;
 }

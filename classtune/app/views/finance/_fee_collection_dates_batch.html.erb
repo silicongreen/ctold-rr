@@ -39,12 +39,13 @@
       <td class="col-1">
          <div class="options">
         <% if f.check_fee_category(@batch.id) %>
-        
-          <span class="small"><%= link_to_remote t('delete_text'), :url => {:action => 'fee_collection_delete', :id => f.id,:batch_id=>@batch.id },:confirm=>"#{t('delete_confirm_msg')}" %></span>
-          <span class="small"><%= link_to_remote t('edit_text'), :url => {:action => 'fee_collection_edit', :id => f.id,:batch_id=>@batch.id} %></span>
+            <span class="small"><%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount', :id => f.id,:batch_id=>@batch.id} %></span>
+            <span class="small"><%= link_to_remote t('delete_text'), :url => {:action => 'fee_collection_delete', :id => f.id,:batch_id=>@batch.id },:confirm=>"#{t('delete_confirm_msg')}" %></span>
+            <span class="small"><%= link_to_remote t('edit_text'), :url => {:action => 'fee_collection_edit', :id => f.id,:batch_id=>@batch.id} %></span>
           <%else%>
-           <span class="small-strike"><%= t('delete_text') %></span>
-               <span class="small-strike"><%= t('edit_text') %></span>
+            <span class="small-strike"><%= t('assign_discount_text') %></span>
+            <span class="small-strike"><%= t('delete_text') %></span>
+            <span class="small-strike"><%= t('edit_text') %></span>
         <% end %>
          </div>
       </td>

@@ -26,7 +26,13 @@
   <div class="label-field-pair">
     <div class="label-container"><label><%= t('select_discount_type') %><span class="necessary-field">*</span> : </label></div>
     <div class="input-container"> <%= select("fee_discount",:type,[["#{t('one_time')}",1],["#{t('repeat_every_month')}",2]],
-        {:prompt => "#{t('select_discount_type')}"})%>
+        {:prompt => "#{t('select_discount_type')}"},
+        {:onchange => "#{remote_function(:url => {:action => "get_particular_by_category"},
+            :with => "'id='+0+'&discount_type='+$('fee_discount_type').value",
+            :before => "Element.show('loader1'); $('fee_discount_finance_fee_category_id').value='';",
+            :success => "Element.hide('loader1')")}",:autocomplete => "off"
+        })
+        %>
     </div>
   </div>
 
@@ -42,7 +48,7 @@
         <%= select("fee_discount","finance_fee_category_id", @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
           {:prompt => "#{t('select_category')}" },
           {:onchange => "#{remote_function(:url => {:action => "get_particular_by_category"},
-            :with => "'id='+value",
+            :with => "'id='+value+'&discount_type='+$('fee_discount_type').value",
             :before => "Element.show('loader1')",
             :success => "Element.hide('loader1')")}",:autocomplete => "off"
           })%>

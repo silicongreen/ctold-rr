@@ -42,10 +42,11 @@
         {:multiple => true,:onChange => "#{remote_function( :url =>
         {:action => "fees_submission_student"},
         :with => "'date='+jj('#fees_submission_dates_id').val()+'&id='+#{@student.id}",:before => "$('loader').show();",
-        :success => "$('loader').hide();") }"} %>
+        :success => "$('loader').hide();") }", :style=> "height: 320px !important;"} %>
     </div>
   </div>
-  <div id= "fee_submission">
+  <div style="clear: both;"></div>  
+  <div id= "fee_submission" style="padding-top: 5px;">
 
   </div>
 </div>

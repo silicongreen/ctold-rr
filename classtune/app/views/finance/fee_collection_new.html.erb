@@ -103,6 +103,15 @@
         <div class="label-container"><label for="reason">  <%= t('due_date') %>:</label></div>
         <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[due_date]', I18n.l(@finance_fee_collection.due_date || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
       </div>
+      <div class="label-field-pair">
+        <div class="label-container"><label for="reason"></label></div>
+        <div class="input-container">
+          <div class="each_batch" style="border-bottom: 0;">
+            <div class="checkbox_inline"><%= check_box_tag "sent_remainder", 1, true, :class=>'batches_box' %></div> 
+            <div class="checkbox_label"><label>Sent Reminder</label></div>
+          </div>
+        </div>
+      </div>
     </div>
 
 
@@ -165,14 +174,14 @@
   
   function executeOnChange()
   {
+    var monthNames = ["Jan' ", "Feb' ", "Mar' ", "Apr'", "May' ", "June' ",
+                         "July' ", "Aug' ", "Sep' ", "Oct' ", "Nov' ", "Dec' "
+    ];
      var d = new Date(j(".start_date").val());
-     console.log(d.getFullYear())
+     var yr = d.getFullYear();
+     var name = monthNames[d.getMonth()] + yr;
+     j("#finance_fee_collection_name").val(name);
   }
-  j(document).ready(function(){
-      j(document).on("change", ".start_date", function(){
-          alert("skajdhaks");
-      });
-  });
 </script>
 
 <style>

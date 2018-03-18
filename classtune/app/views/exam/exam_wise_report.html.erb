@@ -41,7 +41,7 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
   <div class="box">
-    <% form_for :exam_report, :url=>{:action=>'generated_report'}, :html=> {:id=>'new_student'} do |x| %>
+    <% form_for :exam_report, :url=>{:action=>'generated_report'}, :html=> {:id=>'new_student',:target=>'_blank'} do |x| %>
 
       
       <div class="label-field-pair">

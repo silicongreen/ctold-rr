@@ -250,22 +250,63 @@ class Reminders extends CActiveRecord
         }        
         public function ReadReminderNew($user_id,$id=0,$rtype=0,$rid=0)
         {
-            $criteria = new CDbCriteria;
-            $criteria->select = 't.id';
-            $criteria->compare('is_read', 0);
-            $criteria->compare('is_deleted_by_sender', 0);
-            $criteria->compare('is_deleted_by_recipient', 0);
-            $criteria->compare('recipient', $user_id);
-            if($id)
+            if(Yii::app()->user->isParent && $id)
             {
-                $criteria->compare('id', $id);
-            }
-            else if($rtype)
-            {
-                $criteria->compare('rtype', $rtype);
-                if($rid)
+                $reminder = new Reminders();
+                $r_data = $reminder->findByPk($id);
+                if($r_data)
                 {
-                    $criteria->compare('rid', $rid);
+                    $criteria = new CDbCriteria;
+                    $criteria->select = 't.id';
+                    $criteria->compare('is_read', 0);
+                    $criteria->compare('is_deleted_by_sender', 0);
+                    $criteria->compare('is_deleted_by_recipient', 0);
+                    $criteria->compare('recipient', $user_id);
+                    $criteria->compare('rtype',$r_data->rtype);
+                    $criteria->compare('rtype',$r_data->rid);
+                }
+                else 
+                {
+                    $criteria = new CDbCriteria;
+                    $criteria->select = 't.id';
+                    $criteria->compare('is_read', 0);
+                    $criteria->compare('is_deleted_by_sender', 0);
+                    $criteria->compare('is_deleted_by_recipient', 0);
+                    $criteria->compare('recipient', $user_id);
+                    if($id)
+                    {
+                        $criteria->compare('id', $id);
+                    }
+                    else if($rtype)
+                    {
+                        $criteria->compare('rtype', $rtype);
+                        if($rid)
+                        {
+                            $criteria->compare('rid', $rid);
+                        }
+                    }  
+                }
+                
+            }
+            else
+            {    
+                $criteria = new CDbCriteria;
+                $criteria->select = 't.id';
+                $criteria->compare('is_read', 0);
+                $criteria->compare('is_deleted_by_sender', 0);
+                $criteria->compare('is_deleted_by_recipient', 0);
+                $criteria->compare('recipient', $user_id);
+                if($id)
+                {
+                    $criteria->compare('id', $id);
+                }
+                else if($rtype)
+                {
+                    $criteria->compare('rtype', $rtype);
+                    if($rid)
+                    {
+                        $criteria->compare('rid', $rid);
+                    }
                 }
             }
             $obj_reminder = $this->findAll($criteria);

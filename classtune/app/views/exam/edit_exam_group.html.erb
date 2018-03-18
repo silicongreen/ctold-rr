@@ -73,6 +73,17 @@
         </div>
       </div>
       <div class="label-field-pair">
+        <label for="last_date_marks_entry"><%= "Last Date Marks Entry"%></label>
+        <div  class="text-input-bg">
+            <% unless @examgroup.last_date_marks_entry.blank? %>
+                <%= calendar_date_select_tag "exam_group[last_date_marks_entry]",
+                I18n.l(@examgroup.last_date_marks_entry,:format=>"%d %b %Y") ,:class=>"text-input-bg" %>
+            <% else %>
+                <%= calendar_date_select_tag "exam_group[last_date_marks_entry]","",:class=>"text-input-bg" %>
+            <% end %>
+        </div>
+      </div>
+      <div class="label-field-pair">
                       
         <label >Show In Connect?</label>
         <div  class="text-input-bg" id="exam-category-select">

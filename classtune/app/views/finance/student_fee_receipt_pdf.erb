@@ -17,7 +17,9 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <%  if @dates_array.count == 1 %>
-<% if MultiSchool.current_school.id == 312 %>
+<% if MultiSchool.current_school.id == 340 %>
+  <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
+<% elsif MultiSchool.current_school.id == 312 %>
   <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
 <% else %>
   <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>

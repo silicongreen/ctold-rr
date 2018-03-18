@@ -2328,6 +2328,16 @@ class FinanceController < ApplicationController
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}    
+      elsif MultiSchool.current_school.id == 340
+        render :pdf => 'student_fee_receipt_pdf',
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else
         render :pdf => 'student_fee_receipt_pdf',

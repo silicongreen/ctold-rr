@@ -207,6 +207,20 @@ class Reminders extends CActiveRecord
                         $reminder[$i]['subject'] = trim($value->subject);
                    }
                    $reminder[$i]['is_read'] = $value->is_read;
+                   if(Yii::app()->user->isParent)
+                   {
+                       $criteria2 = new CDbCriteria;
+                       $criteria2->select = 't.is_read';
+                       $criteria2->compare('recipient', Yii::app()->user->id);
+                       $criteria2->compare('rtype', $value->rtype);
+                       $criteria2->compare('rid', $value->rid);
+                       $obj_reminder_parent = $this->find($criteria2);
+                       if($obj_reminder_parent)
+                       {
+                           $reminder[$i]['is_read'] = $obj_reminder_parent->is_read;
+                       }
+                   }
+                   
                    
                    $reminder[$i]['batch_id'] = $value->batch_id;
                    $reminder[$i]['student_id'] = $value->student_id;

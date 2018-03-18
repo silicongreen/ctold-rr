@@ -44,14 +44,16 @@
                             employee['frequency'] = "N/A"
                           end 
                         %>
-                        <tr>
-                          <td class="col-2"><b><%= employee['emp_name'] %></b></td>
-                          <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
-                          <td class="col-2"><b><%= employee['total_class'] %></b></td>
-                          <td class="col-2"><b><%= employee['homework_given'] %></b></td>
-                          <td class="col-2"><b><%= employee['frequency'] %></b></td>
+                        <% if !employee['emp_dep'].index?("admin") %>
+                          <tr>
+                            <td class="col-2"><b><%= employee['emp_name'] %></b></td>
+                            <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
+                            <td class="col-2"><b><%= employee['total_class'] %></b></td>
+                            <td class="col-2"><b><%= employee['homework_given'] %></b></td>
+                            <td class="col-2"><b><%= employee['frequency'] %></b></td>
 
-                        </tr> 
+                          </tr> 
+                        <% end %>
                       <% end %>  
                     <% end %>
               </table>

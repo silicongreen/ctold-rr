@@ -39,6 +39,7 @@ class ApplicationController < ActionController::Base
   helper_method :school_smartcard_allowed?
   helper_method :dec_student_count_subscription
   helper_method :exam_marks_entry_allowed
+  helper_method :check_admin_stuff
   helper_method :check_free_school?
   helper_method :can_access_plugin?
   helper_method :can_access_feature?
@@ -64,6 +65,13 @@ class ApplicationController < ActionController::Base
 
   def exam_marks_entry_allowed(exam_group)
     if exam_group.marks_entry.to_i == 1 and (exam_group.last_date_marks_entry.blank? or @local_tzone_time.to_date <= exam_group.last_date_marks_entry)
+      return true
+    end
+    return false
+  end
+  
+  def check_admin_stuff(emp_api)
+    if !employee['emp_dep'].upcase.index("ADMIN") and !employee['emp_dep'].upcase.index("STUFF")
       return true
     end
     return false

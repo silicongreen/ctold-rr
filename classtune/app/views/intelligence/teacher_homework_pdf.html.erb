@@ -19,6 +19,7 @@
         <% std_count = 0 %>
         <% unless @report_data['employee_data'].blank? %>  
           <% @report_data['employee_data'].each do |employee| %>
+            <% if !employee['emp_dep'].upcase.index("ADMIN") %>
             <%  std_count = std_count+1; %>
             <% 
               if @report_data['day_type']!="1" && @time_range=="days"
@@ -41,6 +42,7 @@
                 <td class="col-pdf"><%= employee['homework_given'] %></td>
                 <td class="col-pdf"><%= employee['frequency'] %></td>
               </tr>
+            <% end %>  
           <% end %>  
         <% end %>
       </table>      

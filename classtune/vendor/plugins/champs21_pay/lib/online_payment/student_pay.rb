@@ -69,7 +69,7 @@ module OnlinePayment
           @has_fine_discount = false if @financefee.is_paid
           OnlinePayment.return_url = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1" unless OnlinePayment.return_url.nil?
           total_fees = 0
-          total_fees =@financefee.balance.to_f+params[:special_fine].to_f
+          total_fees =@financefee.balance.to_f+@fine_amount
           unless params[:fine].nil?
             unless @financefee.is_paid == true
               total_fees += params[:fine].to_f
@@ -252,7 +252,6 @@ module OnlinePayment
                 amount_from_gateway=params[:amount]
               end
               trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
-              abort(gateway_status.to_s+" "+amount_from_gateway.to_s+" "+total_fees.to_s)
            
               if gateway_status == true
               

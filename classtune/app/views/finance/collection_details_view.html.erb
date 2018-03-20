@@ -18,109 +18,295 @@
 #under the License. -%>
 
 <div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('fees_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('collection_details') %></div>
+    <%= show_header_icon %>
+    <h1><%= t('fees_text') %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= t('collection_details') %></div>
 </div>
 <div id="page-yield">
 
-  <div class="info">
-    <div class="name"><%= t('fee_collection_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.name %></div>
-    <div class="name"><%= t('fee_category_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.fee_category.name %></div>
-    <%if @fee_collection.fine%>
-    <div class="name"><%= t('fine_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.fine.name %></div>
-    <%end%>
-    <div class="name"><%= t('start_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.start_date %></div>
-    <div class="name"><%= t('end_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.end_date %></div>
-    <div class="name"><%= t('due_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.due_date %></div>
-    <div class="extender"></div>
-  </div>
-
-
-  <% unless @particulars.empty? %>
-
-    <div class="particulars">
-      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-        <thead><!-- class="thead-inverse" -->
-          <tr>
-            <th><%= t('sl_no') %></th>
-            <th><%= t('particulars') %></th>
-            <th><%= t('student_category') %></th>
-            <th><%= t('student_name') %></th>
-            <th><%= t('amount') %>( <%=currency  %> )</th>
-            <th><%= t('created_date') %></th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @total_fee=0 %>
-        <% @particulars.each_with_index do |fees,i| %>
-          <tr class="<%= cycle("odd","even") %>">
-            <td class="col-5"><%= i+1 %></td>
-            <td class="col-4"><%= fees.name %></td>
-            <td class="col-3">
-              <%if fees.receiver_type == "StudentCategory"%>
-                <%= fees.receiver.name%>
-              <% else %> - <% end %>
-            </td>
-            <td class="col-3">
-              <%if fees.receiver_type == "Student"%>
-                <%= fees.student_name %>
-              <% else %> - <% end %>
-            </td>
-            <td class="col-3">
-              <%= precision_label(fees.amount) %>
-            </td>
-            <% @total_fee=@total_fee+fees.amount%>
-            <td class="col-3"><%= fees.created_at.strftime("%m-%d-%Y") %></td>
-
-          </tr>
-        <% end %>
-        </tbody>  
-
-      </table>
+    <div class="details">
+        <div class="name"><%= t('fee_collection_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.name %></div>
+        <div class="name"><%= t('fee_category_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.fee_category.name %></div>
+        <%if @fee_collection.fine%>
+          <div class="name"><%= t('fine_name') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.fine.name %></div>
+        <%end%>
+        <div class="name"><%= t('start_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.start_date %></div>
+        <div class="name"><%= t('end_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.end_date %></div>
+        <div class="name"><%= t('due_date') %></div><div class="val themed_text"><span>:</span><%= @fee_collection.due_date %></div>
+        <div class="extender"></div>
     </div>
-  <% end %>
 
 
-  <% unless @discounts.blank? %>
+    <% unless @particulars.empty? %>
 
-    <div class="discount">
+      <div class="particulars">
+          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+              <thead><!-- class="thead-inverse" -->
+                  <tr>
+                      <th><%= t('sl_no') %></th>
+                      <th><%= t('particulars') %></th>
+                      <th><%= t('student_category') %></th>
+                      <th><%= t('student_name') %></th>
+                      <th><%= t('created_date') %></th>
+                      <th><%= t('amount') %>( <%=currency  %> )</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <% @total_fee=0 %>
+                  <% @particulars.each_with_index do |fees,i| %>
+                    <tr class="<%= cycle("odd","even") %>">
+                        <td class="col-5"><%= i+1 %></td>
+                        <td class="col-4"><%= fees.name %></td>
+                        <td class="col-3">
+                            <%if fees.receiver_type == "StudentCategory"%>
+                              <%= fees.receiver.name%>
+                            <% else %> - <% end %>
+                        </td>
+                        <td class="col-3">
+                            <%if fees.receiver_type == "Student"%>
+                              <%= fees.student_name %>
+                            <% else %> - <% end %>
+                        </td>
 
-      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-        <thead><!-- class="thead-inverse" -->
-          <tr>
-            <th><%= t('name') %></th>
-            <th><%= t('student_category') %></th>
-            <th><%= t('student_name') %></th>
-            <th><%= t('discount') %></th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @discounts.each do |f| %>
-          <tr class="<%= cycle('odd', 'even')%> ">
-            <td class="col-3"><%= f.name %></td>
-            <% if f.receiver_type == "StudentCategory" %>
-              <td class="col-3"><%= f.category_name   %></td>
-              <td class="col-3"></td>
-            <% elsif f.receiver_type == "Student" %>
-              <td class="col-3"></td>
-              <td class="col-3"><%= f.student_name   %></td>
-            <% elsif f.receiver_type == "Batch" %>
-              <td class="col-3"></td>
-              <td class="col-3"></td>
+                        <% @total_fee=@total_fee+fees.amount%>
+                        <td class="col-3"><%= fees.created_at.strftime("%m-%d-%Y") %></td>
+                        <td class="col-3"  style="text-align: right;">
+                            <%= precision_label(fees.amount) %>
+                        </td>
+
+                    </tr>
+                  <% end %>
+              </tbody>  
+
+          </table>
+      </div>
+    <% end %>
+
+
+    
+
+      <div class="discount">
+          <% unless @discounts.blank? %>
+          <% batch_discount = @discounts.select{|d| d.receiver_type == 'Batch'} %>
+          <% category_discount = @discounts.select{|d| d.receiver_type == 'StudentCategory'} %>
+          <% student_discount = @discounts.select{|d| d.receiver_type == 'Student'} %>
+          
+          <h4 >Discounts</h4>
+          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+                <thead><!-- class="thead-inverse" -->
+                    <tr>
+                        <th  colspan="2"><%= t('name') %></th>
+                        <th><%= "Total Created" %></th>
+                    </tr>
+                      
+                </thead>
+                <tbody>
+                    <tr class="even">
+                      <td class="col-3" colspan="2">Batch Wise Discount</td>
+                      <td class="col-3" >
+                          <a href="javascrip:void(0)" onclick="show_discount('batch_wise_discount')" class="user_button" /><font size="4"><%= batch_discount.count %></font></a>
+                      </td> 
+                    </tr>
+                      
+                    <tr class="odd">
+                      <td class="col-3"  colspan="2">Student Category Wise Discount</td>
+                      <td class="col-3">
+                          <a href="javascrip:void(0)" onclick="show_discount('category_wise_discount')" class="user_button" /><font size="4"><%= category_discount.count %></font></a>
+                      </td> 
+                    </tr>
+                    <tr class="even" >
+                      <td class="col-3"  colspan="2">Student Wise Discount</td>
+                      <td class="col-3">
+                          <a href="javascrip:void(0)" onclick="show_discount('student_wise_discount')" class="user_button" /><font size="4"><%= student_discount.count %></font></a>
+                      </td> 
+                    </tr>
+                </tbody>
+          </table>      
+          <h4 class="all_discount batch_wise_discount">Batch Wise Discount</h4>  
+
+          
+          <% if batch_discount.length > 0 %>
+            <table class="table table-striped table-bordered all_discount batch_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+                <thead><!-- class="thead-inverse" -->
+                    <tr>
+                        <th><%= t('name') %></th>
+                        <th><%= t('discount_type_txt') %></th>
+                        <th><%= t('discount') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% batch_discount.each do |f| %>
+                      <tr class="<%= cycle('odd', 'even')%>">
+                          <td class="col-3"><%= f.name %></td>
+                          <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                          <td class="col-3"  style="text-align: right;">
+                              <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                          </td>
+
+                      </tr>
+                    <% end %>
+                </tbody>
+            </table>
+           <% else %>
+            <table class="table table-striped table-bordered all_discount batch_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+              <thead><!-- class="thead-inverse" -->
+                <tr>
+                  <th><%= t('name') %></th>
+                  <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('discount') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td colspan="3"><%= t('no_discount_found_batch_wise') %></td>
+                  </tr>
+              </tbody>  
+            </table>
+           <% end %>
+
+          <h4 class="all_discount category_wise_discount">Student Category Wise Discount</h4>  
+          
+          <% if category_discount.length > 0 %>
+            <table class="table table-striped table-bordered all_discount category_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+                <thead><!-- class="thead-inverse" -->
+                    <tr>
+                        <th><%= t('name') %></th>
+                        <th><%= t('discount_type_txt') %></th>
+                        <th><%= t('student_category') %></th>
+                        <th><%= t('discount') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% category_discount.each do |f| %>
+                      <tr class="<%= cycle('odd', 'even')%>">
+                          <td class="col-3"><%= f.name %></td>
+                          <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                          <td class="col-3"><%= f.category_name %></td>
+                          <td class="col-3"  style="text-align: right;">
+                              <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                          </td>
+
+                      </tr>
+                    <% end %>
+                </tbody>
+            </table>
+          <% else %>
+          <table class="table table-striped table-bordered all_discount category_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+            <thead><!-- class="thead-inverse" -->
+              <tr>
+                <th><%= t('name') %></th>
+                <th><%= t('discount_type_txt') %></th>
+                <th><%= t('student_category') %></th>
+                <th><%= t('discount') %></th
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4"><%= t('no_discount_found_student_category_wise') %></td>
+                </tr>
+            </tbody>  
+          </table>
+          <% end %>
+
+          <h4 class="all_discount student_wise_discount">Student Wise Discount</h4>  
+         
+          <% if student_discount.length > 0 %>
+            <table class="table table-striped table-bordered all_discount student_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+                <thead><!-- class="thead-inverse" -->
+                    <tr>
+                        <th><%= t('name') %></th>
+                        <th><%= t('discount_type_txt') %></th>
+                        <th><%= t('student_name') %></th>
+                        <th><%= t('admission_no') %></th>
+                        <th><%= t('discount') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% student_discount.each do |f| %>
+                      <tr class="<%= cycle('odd', 'even')%>">
+                          <td class="col-3"><%= f.name %></td>
+                          <td class="col-3"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                          <td class="col-3"><%= f.student_short_name %></td>
+                          <td class="col-3"><%= f.student_admission_no %></td>
+                          <td class="col-3"  style="text-align: right;">
+                              <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                          </td>
+
+                      </tr>
+                    <% end %>
+                </tbody>
+            </table>
+            <% else %>
+            <table class="table table-striped table-bordered all_discount student_wise_discount" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+              <thead><!-- class="thead-inverse" -->
+                <tr>
+                  <th><%= t('name') %></th>
+                  <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('student_name') %></th>
+                  <th><%= t('admission_no') %></th>
+                  <th><%= t('discount') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td colspan="5"><%= t('no_discount_found_student_wise') %></td>
+                  </tr>
+              </tbody>  
+            </table>
             <% end %>
-            <td class="col-3">
-             <%= precision_label(@total_payable * f.discount.to_f/ (f.is_amount?? @total_payable : 100)) %>
-            </td>
+        <% else %>
+          <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+              <thead><!-- class="thead-inverse" -->
+                  <tr>
+                      <th><%= t('name') %></th>
+                      <th><%= t('student_category') %></th>
+                      <th><%= t('student_name') %></th>
+                      <th><%= t('discount') %></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td colspan="4"><%= t('no_discount_found') %></td>
+                  </tr>
+              </tbody>  
+          </table>
 
-          </tr>
         <% end %>
-        </tbody>  
-      </table>
     </div>
-  <% end %>
 
 </div>
+<style>
+    .selected-discount
+    {
+        
+    }
+    .all_discount
+    {
+        display: none;
+    }
+    a.user_button {
+        padding: 3px 24px;
+        color: #fff;
+        background: #27292B;
+        border-radius: 4px !important;
+        -webkit-border-radius: 4px !important;
+        -moz-border-radius: 4px !important;
+        font-weight: bold;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        margin: 0 auto;
+        text-decoration: none;
+        text-align: center;
+    }
+</style>    
+<script>
+  function show_discount(class_name)
+  {
+     j(".all_discount").hide();
+     j("."+class_name).slideDown();
+  }
+</script>  
 
 

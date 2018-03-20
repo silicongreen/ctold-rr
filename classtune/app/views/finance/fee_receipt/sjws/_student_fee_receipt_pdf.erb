@@ -74,8 +74,8 @@
             <table class="std_info" id="pdf-table">
                 <tr class="table-header">
                     <td class="name-td left border-left-none"  colspan="1" ><%= "SL" %></td>
-                    <td colspan="1" ><%= "PARTICULARS" %></td>
-                    <td class="mark-td border-right-none"> <%= "AMOUNT IN TK." %></td>
+                    <td colspan="1" class="align-center" ><%= "PARTICULARS" %></td>
+                    <td class="mark-td border-right-none no-warp"> <%= "AMOUNT IN TK." %></td>
                 </tr>
                 <% tr_count = tr_count+1 %>
                 <%k=0%>
@@ -89,7 +89,7 @@
                           <%k+=1%>
                           <td class="name-td left border-left-none" colspan="1"><%= k %></td>
                           <td class="name-td left" colspan="1"><%= fee.name %></td>
-                          <td class="mark-td border-right-none"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                          <td class="mark-td border-right-none align-right"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
                       </tr>
                       <% total_fees += fee.amount %>   
                 <% end %>
@@ -174,7 +174,7 @@
                       <%k+=1%>
                       <td colspan="1" class="col-8  left border-left-none"><%= k %></td>
                       <td class="col-8" colspan="1" ><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></td>
-                      <td class="col-6 border-right-none" ><%= precision_label(@new_fine_amount) %></td>
+                      <td class="col-6 border-right-none align-right" ><%= precision_label(@new_fine_amount) %></td>
                     </tr>
                   <%end%>
                 <%end%>
@@ -277,6 +277,7 @@
     
 </div>
 <style>
+
  #page-yield div.div-33
 {
     float:left;
@@ -396,5 +397,17 @@ div.no-padding-no-margin
     margin-top: 5px !important;
     margin-bottom: -15px !important;
     font-weight: bold;
+}
+tr.table-header td.align-right
+{
+    text-align: right !important;
+}
+tr.table-header td.align-center
+{
+    text-align: center;
+}
+.no-warp
+{
+    white-space: nowrap;
 }
 </style>    

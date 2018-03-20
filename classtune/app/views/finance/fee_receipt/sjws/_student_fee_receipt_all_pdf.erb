@@ -1,0 +1,55 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<%
+    @students.each do |std|
+      @student = std
+      @financefee = @student.finance_fee_by_date @date
+      unless @financefee.blank?
+        @due_date = @fee_collection.due_date
+
+        @paid_fees = @financefee.finance_transactions
+        @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
+        @currency_type = currency
+
+        @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+        @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+        @total_discount = 0
+        @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+        @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+        bal=(@total_payable-@total_discount).to_f
+        days=(Date.today-@date.due_date.to_date).to_i
+        auto_fine=@date.fine
+        if days > 0 and auto_fine
+          @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+          @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+        end
+        @fine_amount=0 if @financefee.is_paid
+        %> 
+        <% unless params[:front_page].blank? %>
+        <%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
+        <div class="page-break"></div>
+        <% end %>
+        <%=  render  :partial=>"finance/fee_receipt/south/student_fee_receipt_pdf" %>
+
+        <div class="page-break"></div>
+        <%
+      end  
+    end  
+%>
+

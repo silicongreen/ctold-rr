@@ -237,7 +237,6 @@ module OnlinePayment
                 amount_from_gateway=params[:amount]
               end
               trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
-              abort(gateway_status.to_s+" "+amount_from_gateway.to_s+" "+((FinanceTransaction.total(trans_id,total_fees).to_f)+@fine_amount).to_s)
            
               if gateway_status == true
               

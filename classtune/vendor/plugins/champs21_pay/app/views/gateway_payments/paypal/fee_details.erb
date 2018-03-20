@@ -117,12 +117,7 @@
         </tr>
         <% total_fees += fee.amount %>
       <% end %>
-      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('total_amount') %> </td>
-        <td class="col-6" style="text-align: right;">
-          <%= precision_label(total_fees) %>
-        </td>
-      </tr>  
+       
       
       <% unless @total_discount == 0 %>
         <tr class="tr-blank"></tr>
@@ -141,9 +136,9 @@
               <td class="col-2"><%= discount_text %></td>
               <td class="col-6" style="text-align: right;">
                 <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
-                  <%= precision_label(@onetime_discounts_amount[d.id]) %>
+                  (<%= precision_label(@onetime_discounts_amount[d.id]) %>)
                 <% else %>
-                <%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
+                  (<%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>)
                 <% end %>
               </td>
             </tr>
@@ -158,9 +153,9 @@
               <td class="col-2"><%= discount_text %></td>
               <td class="col-6" style="text-align: right;">
                 <% unless @discounts_amount[d.id].nil? or @discounts_amount[d.id].blank? %>  
-                  <%= precision_label(@discounts_amount[d.id]) %>
+                  (<%= precision_label(@discounts_amount[d.id]) %>)
                 <% else %>
-                <%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
+                  (<%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>)
                 <% end %>
               </td>
             </tr>
@@ -173,10 +168,16 @@
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>
 
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('total_amount') %> </td>
+        <td class="col-6" style="text-align: right;">
+          <%= precision_label(total_fees) %>
+        </td>
+      </tr> 
         <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
           <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('total_discount') %> </td>
           <td class="col-6" style="text-align: right;">
-            <%= precision_label(@total_discount) %>
+            (<%= precision_label(@total_discount) %>)
           </td>
         </tr>
 
@@ -245,7 +246,7 @@
             <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
             <td class="col-2"><%= discount_text %></td>
             <td class="col-6" style="text-align: right;">
-              <%= precision_label(@discounts_late_amount[d.id]) %>
+              (<%= precision_label(@discounts_late_amount[d.id]) %>)
             </td>
           </tr>
           <% end %>

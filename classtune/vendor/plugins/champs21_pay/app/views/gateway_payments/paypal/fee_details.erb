@@ -225,36 +225,7 @@
       <% end %>
         
       <%total_fees1=total_fees%>
-      <% if @paid_fees%>
-
-
-        <% unless @paid_fees.blank? %>
-          <% @paid_fees.each do |trans| %>
-            <% if trans.fine_included %>
-              <tr class="<%= cycle("odd","even") %>">
-                <td class="col-1"><%= i+=1 %></td>
-                <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
-                <td class="col-6"  style="text-align: right;">
-                  <%= precision_label(trans.fine_amount) %>
-                </td>
-              </tr>
-              <% total_fees += trans.fine_amount.to_f %>
-            <% end %>
-            
-            <% if trans.vat_included %>
-              <tr class="<%= cycle("odd","even") %>">
-                <td class="col-1"><%= i+=1 %></td>
-                <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>
-                <td class="col-6"  style="text-align: right;">
-                  <%= precision_label(trans.vat_amount) %>
-                </td>
-              </tr>
-              <% total_fees += trans.vat_amount.to_f %>
-            <% end %>
-              
-          <% end %>
-        <% end %>
-      <% end %>
+     
       <%unless @financefee.is_paid%>
         <%if @fine_rule%>
           <tr class="<%= cycle("odd","even") %>">
@@ -313,7 +284,7 @@
               </tr>
               <% total_fees += trans.vat_amount.to_f %>
             <% end %>
-            <% break %>  
+          
           <% end %>
         <% end %>
       

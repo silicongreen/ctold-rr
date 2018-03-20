@@ -3,12 +3,12 @@
   <%= hidden_field_tag :store_id,@store_id %>
   <input type="hidden" name="cart[0][product]" value="<%=@item_name%>" />
   <input type="hidden" name="cart[0][amopunt]" value="1" />
-  <%= hidden_field_tag :total_amount,sprintf("%0.2f",@amount).to_f,:readonly => true %>
+  <%= hidden_field_tag :total_amount,sprintf("%0.2f",@amount_to_pay).to_f,:readonly => true %>
   <%= hidden_field_tag :success_url,@return_url %>
   <%= hidden_field_tag :fail_url,@fail_url %>
   <%= hidden_field_tag :cancel_url,@cancel_url %>
   <%= hidden_field_tag :version,"2.00" %>
   <% if @paid_fees.blank? %>
-    <%= f.submit 'Pay Fee',:class => "submit_button",:style => @button_style %>
+    <%= f.submit '► Pay Fees',:class => "submit_button" %>
   <% end %>
 <% end %>

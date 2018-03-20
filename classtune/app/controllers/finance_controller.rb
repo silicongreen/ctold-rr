@@ -2422,17 +2422,17 @@ class FinanceController < ApplicationController
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      else
-        render :pdf => 'student_fee_receipt_all_pdf',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :page_size => 'A4',
-        :margin => {    :top=> 10,
-        :bottom => 0,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      end
+    else
+      render :pdf => 'student_fee_receipt_all_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :page_size => 'A4',
+      :margin => {    :top=> 10,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+     end
 
   end
 
@@ -2483,10 +2483,10 @@ class FinanceController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}    
-      elsif MultiSchool.current_school.id == 340
-        render :pdf => 'student_fee_receipt_pdf',
+      elsif MultiSchool.current_school.id == 325
+        ender :pdf => 'student_fee_receipt_pdf',
         :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'A4',
+        :page_size => 'A5',
         :margin => {    :top=> 10,
         :bottom => 0,
         :left=> 10,
@@ -2496,7 +2496,7 @@ class FinanceController < ApplicationController
       else
         render :pdf => 'student_fee_receipt_pdf',
         :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'A5',
+        :page_size => 'A4',
         :margin => {    :top=> 10,
         :bottom => 0,
         :left=> 10,

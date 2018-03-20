@@ -314,7 +314,7 @@ module OnlinePayment
                       
                       
 
-                      flash[:notice] = "#{t('payment_success')} #{online_transaction_id}"
+                      flash[:success] = "#{t('payment_success')} #{online_transaction_id}"
                     else
                       flash[:notice] = "#{t('payment_failed')}"
                     end

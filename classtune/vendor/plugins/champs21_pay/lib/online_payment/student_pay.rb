@@ -246,13 +246,15 @@ module OnlinePayment
                 unless @financefee.is_paid?
                   unless amount_from_gateway.to_f < 0
                    
-                    unless amount_from_gateway.to_f > (FinanceTransaction.total(trans_id,total_fees).to_f)+@fine_amount
+                    unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+                      
+                      
                       transaction = FinanceTransaction.new
                       transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
                       transaction.category = FinanceTransactionCategory.find_by_name("Fee")
                       transaction.payee = @student
                       transaction.finance = @financefee
-                      transaction.amount = @financefee.balance.to_f + @fine.to_f + @fine_amount.to_f #amount_from_gateway.to_f
+                      transaction.amount = total_fees
                       transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
                       transaction.fine_amount = @fine.to_f + @fine_amount.to_f
                       transaction.transaction_date = Date.today
@@ -264,8 +266,7 @@ module OnlinePayment
                       else
                         tid=transaction.id
                       end
-                      is_paid = (sprintf("%0.2f",total_fees.to_f+@fine.to_f + @fine_amount.to_f).to_f == amount_from_gateway.to_f) ? true : false
-                      #                    @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+                      is_paid = @financefee.balance==0 ? true : false
 
 
 

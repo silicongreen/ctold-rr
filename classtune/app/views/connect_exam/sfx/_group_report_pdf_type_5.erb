@@ -33,8 +33,21 @@
                       <td class="col-pdf td-align-left"><%= "Subject" %></b></td>
                       <% unless @report_data['report']['exams'].blank? %>  
                         <% @report_data['report']['exams'].each do |report| %>
+                         <% if !report['exam_name'].upcase.index("HALL EXAM").nil? %>
+                          <%  report['exam_name'] = "Hall Exam" %>
+                         <% end %>
+                         <% if !report['exam_name'].upcase.index("CLASS TEST").nil? %>
+                          <%  report['exam_name'] = "Class Test" %>
+                         <% end %>
+                         <% if !report['exam_name'].upcase.index("PBL").nil? %>
+                          <%  report['exam_name'] = "PBL/Port Folio" %>
+                         <% end %>
+                         <% if !report['exam_name'].upcase.index("ATTENDANCE").nil? %>
+                          <%  report['exam_name'] = "Attendance & Performance" %>
+                         <% end %>
                          <% if exam_number == 0 %>
                             <td class="col-pdf">
+                                
                                 <%= report['exam_name'] %><% unless @exam_marks[report['exam_id'].to_s].blank?  %><% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %> (<%= @exam_marks[report['exam_id'].to_s] %> %)<% end %>
                             </td>
                           

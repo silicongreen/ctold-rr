@@ -1,8 +1,8 @@
 
-#search_box_bg{width:auto;margin-top:10px; overflow: hidden; height:50px;padding-top:10px;float:left }
+#search_box_bg{width:auto;margin-top:10px; overflow: hidden; padding-top:10px;float:left }
 
 #search_box_bg label{padding-top:0px;color:#555;font-size:16px; float:left; width:auto; font-weight: bold;}
-#search_box_bg1{width:435px;padding-left:50px;margin-top:10px; overflow: hidden; height:50px;padding-top:10px;float:left }
+#search_box_bg1{width:435px;padding-left:50px;margin-top:10px; overflow: hidden; padding-top:10px;float:left }
 
 #search_box_bg1 label{padding-top:0px;color:#555;font-size:16px; float:left; width:80px; font-weight: bold;}
 #search_textbox input{
@@ -115,4 +115,8 @@ padding: 5px;
 .pdf-center{
     width:60%;
     float:right;
+}
+
+.calendar_date_select_popup_icon {
+    top: -2px !important;
 }

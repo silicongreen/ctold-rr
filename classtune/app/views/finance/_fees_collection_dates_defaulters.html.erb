@@ -21,4 +21,5 @@
    {:prompt => "#{t('select_fee_collection_date')}"},
   {:onChange => "#{remote_function( :url =>
     {:action => "fees_defaulters_students"},
-    :with => "'date='+value+'&batch_id='+$('fees_defaulters_batch_id').value") }"} %>
+    :with => "'date='+value+'&batch_id='+$('fees_defaulters_batch_id').value") }", :style=>"width: 90% !important; float: left;"
+  } %>

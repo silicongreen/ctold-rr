@@ -14,49 +14,66 @@
     <%= t('view_refunds') %>
   </div>
   <div class="both">
-    <div id="search_box_bg">
-      <label for="user_name"><%= t('search_by') %></label>
-      <div class="text-input-bg"><%= select :leave_management_all, :department_id, [t('date_text'),t('student_name'),t('fee_collection_name')],
-          {:selected=>'value'},
-          {:onChange => "change(value);"} %>
-        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+    <div id="search_box_bg" style="width: 33%;">
+      <div class="label-field-pair" style="width: 99%;">    
+        <div class="label-container" style="text-align: right; padding-top: 4px; font-weight: bold; font-size: 16px;"><%= t('search_by') %></div>
+        <div class="input-container">
+            <%= select :leave_management_all, :department_id, [t('date_text'),t('student_name')],
+            {:selected=>'value'},
+            {:onChange => "change(value);", :autocomplete => "off"} %>
+          <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+            <%#= ,t('fee_collection_name') %>
+        </div>
       </div>
     </div>
     <div id="search_box_bg1" class="search">
       <form name="search_form" action="" style="display:inline;">
         <%= hidden_field_tag("option", params['option'], :value => t('student_name')) %>
-        <label for="user_name"><%= t('search_text') %>
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader_search",
-            :style =>"display: none;" ) %>
-        </label>
-        <div id="search_textbox">
-          <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
-
+        <div class="label-field-pair" style="width: 99%; ">  
+          <div class="label-container" style="text-align: right; padding-top: 10px; font-weight: bold; font-size: 16px;">
+            <%= t('search_text') %>
+            <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader_search",
+              :style =>"display: none;" ) %>
+          </label>
+          </div>
+          <div class="input-container">
+            <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
+          </div>
         </div>
-
         <div class="extender"></div>
       </form>
     </div>
 
-    <div id="search_box_bg" class="box">
+    <div id="search_box_bg" class="box" style="width: 65%;">
       <% remote_form_for(:student, :url => {:action=> 'refund_filter_by_date'},:before => "Element.show('loader_date')",:success => "Element.hide('loader_date')", :html=> {:multipart=>true,:id=>"date_search_form"}) do |s| %>
-        <div class="date-select"><div class="date-search calendar-input">
-            <label for="student_date_of_birth"><%= t('start_date') %> </label>
-
-            <%= calendar_date_select_tag 's_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
-              :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%></div>
-          <div class="date-search2 calendar-input"> <label for="student_date_of_birth"><%= t('end_date') %> </label>
-            <%= calendar_date_select_tag 'e_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
+        <div class="date-select" style="width: 100%; float: left;">
+            <div class="label-field-pair" style="width: 48%; float: left;">
+                <div class="label-container" style="text-align: right; padding-top: 4px; font-weight: bold; font-size: 16px;">
+                    <%= t('start_date') %>
+                </div>
+                <div class="input-container calendar-input">
+                    <%= calendar_date_select_tag 's_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
+                        :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => ""%>
+                </div>
+            </div>
+            <div class="label-field-pair" style="width: 46%; float: left; padding-left: 2%;">
+                <div class="label-container" style="text-align: right; padding-top: 4px; font-weight: bold; font-size: 16px;">
+                    <%= t('end_date') %>
+                </div>
+                <div class="input-container calendar-input">
+                    <%= calendar_date_select_tag 'e_date', I18n.l(@date.present? ? @date.to_date : Date.today , :format=> :default),
               :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force", :onChange => "Element.show('loader_date');date();"%>
-            <%= image_tag("loader.gif",
-              :align => "absmiddle",
-              :border => 0,
-              :id => "loader_date",
-              :style =>"display: none; margin-bottom:10px;" ) %>
-          </div>
+                </div>
+                <%= image_tag("loader.gif",
+                  :align => "absmiddle",
+                  :border => 0,
+                  :id => "loader_date",
+                  :style =>"display: none; margin-bottom:10px;" ) %>
+            </div>
+            <div style="clear: both; height: 10px;"></div>
         </div>
       <%end%>
     </div>

@@ -28,7 +28,7 @@
     <div id="left-side-inputs">
       <div class="label-field-pair">
         <div class="label-container"><label for="reason"> <%= t('fee_collection') %><span class="necessary-field">*</span>:</label></div>
-        <div class="input-container">
+        <div class="input-container" style="width: 65%;">
           <%= form.select(:finance_fee_collection_id, @collections.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
             {:selected => @fee_collection.present? ? @fee_collection.name : nil , :prompt => "#{ t('select_fee_collection')}" })%>
         </div>
@@ -45,13 +45,8 @@
         <div class="input-container"><%= form.text_field :name%></div>
       </div>
       <div class="label-field-pair">
-<<<<<<< HEAD
-        <label for="reason">  <%= t('refund_validity') %><span class="necessary-field">*</span>:</label>
-        <div class="text-input-bg"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
-=======
         <div class="label-container"><label for="reason">  <%= t('refund_validity') %><span class="necessary-field">*</span>:</label></div>
         <div class="input-container calendar-input"><%= calendar_date_select_tag 'refund_rule[refund_validity]', I18n.l(@refund_rule.refund_validity || Date.today,:format=>:default), :popup=>"force",:class=>'due_date'%></div>
->>>>>>> Change on finance System
       </div>
       <div class="label-field-pair">
         <div class="label-container"><label for="reason">  <%= t('refund_percentage') %><span class="necessary-field">*</span>:</label></div>
@@ -66,3 +61,11 @@
     </div>
   <% end %>
 </div>
+
+<style>
+    .label-field-pair .label-container {
+      width: 35%;
+      padding-top: 4px;
+      float: left;
+    }
+</style>

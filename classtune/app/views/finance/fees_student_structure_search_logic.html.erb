@@ -18,7 +18,7 @@
 #under the License. -%>
 
 
-<table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+<table class="table table-striped table-bordered table-hover" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
   <thead><!-- class="thead-inverse" -->
   <% if @students_result.present? %>
     <tr>
@@ -30,9 +30,9 @@
   </thead>  
   <tbody>
     <% @students_result.each_with_index do |t, i| %>
-      <tr class="tr-<%= cycle('odd', 'even') %>">
+      <tr class="tr-<%= cycle('odd', 'even') %> success" onclick="location.href = j('#std_<%= t.id %>').attr('href');">
         <td class="col-5"><%= i+1 %></td>
-        <td class="col-3"><%=  link_to t.full_name, :action => "fees_structure_dates", :id => t.id %></td>
+        <td class="col-3"><%=  link_to t.full_name, {:action => "fees_structure_dates", :id => t.id}, :id => "std_#{t.id}" %></td>
         <td class="col-3"><%= t.batch.full_name %></td>
         <td class="col-1"><%= t.admission_no %></td></tr>
     <% end %>

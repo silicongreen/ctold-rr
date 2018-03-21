@@ -53,9 +53,11 @@ module ApplicationHelper
         stylesheets << @direction+(mod[:stylesheet_path].to_s)
       end
     end
-    if controller.controller_path == 'finance'
+    
+    if File.exists? (Rails.root.join("public","stylesheets",controller.controller_path+".css"))
       stylesheets << @direction+controller.controller_path
     end
+    
     return stylesheets
   end
 

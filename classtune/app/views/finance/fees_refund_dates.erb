@@ -27,7 +27,7 @@
 </div>
 
 <div id="page-yield">
-  <div class="label-field-pair">
+  <div class="label-field-pair" style="padding-left: 20%;">
     <div class="label-container">
         <label><%= t('select_fee_collection') %> <%= image_tag("loader.gif",
           :align => "absmiddle",
@@ -42,7 +42,8 @@
         {:action => "fees_refund_student"},
         :with => "'date='+value+'&id='+#{@student.id}",:before => "$('loader').show();",
         :method=>:get,
-        :success => "$('loader').hide();") }"} %>
+        :success => "$('loader').hide();") }", :autocomplete => "off"
+        } %>
     </div>
   </div>
   <div id= "fee_submission">

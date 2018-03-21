@@ -17,48 +17,10 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div class="details">
-  <% unless @fee_category.nil? %>
-    <div class="name">
-      <%= t('fee_category_name') %>
-    </div>
-    <div class="val themed_text">
-      <span>:</span>
-      <div class="val-align">
-        <%= @fee_category.name.capitalize %>
-      </div>
-    </div>
-  <% end %>
-  <% unless @student.student_category.nil? %>
-    <div class="name">
-      <%= t('student_category') %>
-    </div>
-    <div class="val themed_text">
-      <span>:</span>
-      <div class="val-align">
-        <%= @student.student_category.name.capitalize %>
-      </div>
-    </div>
-  <% else %>
-    <div class="name">
-      <%= t('student_category') %>
-    </div>
-    <div class="val themed_text">
-      <span>:</span>
-      <div class="val-align">
-        <%= t('n_a') %>
-      </div>
-    </div>
-  <% end %>
-  <div class="name">
-    <%= t('fees_collection_date_name')%>
-  </div>
-  <div class="val themed_text">
-    <span>:</span>
-    <div class="val-align">
-      <%= @date.name.capitalize  %>
-    </div>
-  </div>
+<div class="fee_structure">
+    <h2><%= @fee_category.name %> (<%= @fee_collection.name %>)</h2>
+    <hr style="border-top: 1px solid #ccc;" />
+    <div class="extender"></div>
 </div>
 <br />
 <%= error_messages_for "financefee" ,:header_message => nil%>
@@ -183,7 +145,8 @@
       <tr class="tr-blank"></tr>
       <tr class="tr-blank"></tr>   
         
-      <% unless @vat.nil? %>
+      <% unless @vat.nil? and @paid_fees.blank? %>
+        <% if @vat.to_f > 0.00 %>
         <tr class="<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
           <td class="col-2"><span class="themed_text"><%= "VAT" %></span></td>
@@ -197,8 +160,10 @@
           <% total_fees = @vat %>
         <% end %>
       <% end %>
+      <% end %>
 
       <% unless @fine.nil? %>
+        <% if @fine.to_f > 0.00 %>
         <tr class="<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
           <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= Date.today %></span></td>
@@ -212,6 +177,7 @@
           <% total_fees = @fine %>
         <% end %>
       <% end %>
+      <% end %>
         
       <%total_fees1=total_fees%>
       <% if @paid_fees%>
@@ -220,9 +186,33 @@
         <% unless @paid_fees.blank? %>
           <% @paid_fees.each do |trans| %>
             <% if trans.fine_included %>
+              <%  if @fine_rule and @has_fine_discount %>
+                <tr class="<%= cycle("odd","even") %>">
+                  <td class="col-1"><%= i+=1 %></td>
+                  <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
+                  <td class="col-6"  style="text-align: right;"><%= precision_label(@new_fine_amount) %></td>
+                </tr>
+                <% if @has_fine_discount %>    
+                  <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
+                    <% @discounts_on_lates.each do |d| %>
+                      <% if @discounts_late_amount[d.id] > 0 %>
+                      <tr class="<%= cycle("odd","even") %>">
+                        <td class="col-1"><%= i+1 %></td>
+                        <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                        <td class="col-2"><%= discount_text %></td>
+                        <td class="col-6" style="text-align: right;">
+                          <%= precision_label(@discounts_late_amount[d.id]) %>
+                        </td>
+                      </tr>
+                      <% end %>
+                      <% i += 1 %>
+                    <% end %>
+                  <% end %> 
+                <%end%>
+              <%end%>
               <tr class="<%= cycle("odd","even") %>">
                 <td class="col-1"><%= i+=1 %></td>
-                <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+                <td class="col-2"><span class="themed_text"><%= t('payment_fine') %> </span></td>
                 <td class="col-6"  style="text-align: right;">
                   <%= precision_label(trans.fine_amount) %>
                 </td>
@@ -231,6 +221,7 @@
             <% end %>
             
             <% if trans.vat_included %>
+              <% if trans.vat_amount.to_f > 0.00 %>
               <tr class="<%= cycle("odd","even") %>">
                 <td class="col-1"><%= i+=1 %></td>
                 <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>
@@ -239,6 +230,7 @@
                 </td>
               </tr>
               <% total_fees += trans.vat_amount.to_f %>
+            <% end %>
             <% end %>
               
           <% end %>
@@ -252,29 +244,29 @@
             <td class="col-6"  style="text-align: right;"><%= precision_label(@new_fine_amount) %></td>
           </tr>
         <%end%>
-      <%end%>
-      <% if @has_fine_discount %>    
-      <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
-        <% @discounts_on_lates.each do |d| %>
-          <% if @discounts_late_amount[d.id] > 0 %>
-          <tr class="<%= cycle("odd","even") %>">
-            <td class="col-1"><%= i+1 %></td>
-            <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
-            <td class="col-2"><%= discount_text %></td>
-            <td class="col-6" style="text-align: right;">
-              <%= precision_label(@discounts_late_amount[d.id]) %>
-            </td>
-          </tr>
+        <% if @has_fine_discount %>    
+        <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
+          <% @discounts_on_lates.each do |d| %>
+            <% if @discounts_late_amount[d.id] > 0 %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1"><%= i+1 %></td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right;">
+                <%= precision_label(@discounts_late_amount[d.id]) %>
+              </td>
+            </tr>
+            <% end %>
+            <% i += 1 %>
           <% end %>
-          <% i += 1 %>
-        <% end %>
-      <% end %> 
-      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;">Fine</td>
-        <td class="col-6"  style="text-align: right;">
-          <%= precision_label(@fine_amount) %>
-        </td>
-      </tr>    
+        <% end %> 
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;">Fine</td>
+          <td class="col-6"  style="text-align: right;">
+            <%= precision_label(@fine_amount) %>
+          </td>
+        </tr>    
+      <%end%>  
       <% end %>      
       <% unless @paid_fees.nil? %>
         <% paid=0 %>
@@ -361,7 +353,7 @@
               </div>
             <% else %>
               <div class="pay_fees_buttons">
-                <h4><%= t('fees_paid') %></h4>
+                <h4 class="info" style="padding: 4px 10px; margin: 18px 10px 0 !important;  border-radius: 4px;"><%= t('fees_paid') %></h4>
                 <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
               </div>

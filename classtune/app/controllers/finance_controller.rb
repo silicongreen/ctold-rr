@@ -4633,31 +4633,8 @@ class FinanceController < ApplicationController
       other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
       unless other_months.nil? or other_months.empty?
         other_months.each do |other_month|
-          fee = FinanceFee.first(:conditions=>"fee_collection_id = #{other_month.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{student.id}'")
-          paid_fees = fee.finance_transactions
-          if paid_fees.empty?
-            days_other = (Date.today-other_month.due_date.to_date).to_i
-
-            if fine_rule.is_amount
-              other_fee_particulars = other_month.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              total_payable = other_fee_particulars.map{|s| s.amount}.sum.to_f
-              total_discount = calculate_new_discount(other_month, batch, student, total_payable)
-              bal_other = (total_payable-total_discount).to_f
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*bal_other.fine_amount)/100 if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            else
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.fine_amount if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            end
-          end
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
         end
       end
       @fine_amount = @fine_amount + extra_fine
@@ -4671,31 +4648,8 @@ class FinanceController < ApplicationController
       other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
       unless other_months.nil? or other_months.empty?
         other_months.each do |other_month|
-          fee = FinanceFee.first(:conditions=>"fee_collection_id = #{other_month.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{student.id}'")
-          paid_fees = fee.finance_transactions
-          if paid_fees.empty?
-            days_other = (Date.today-other_month.due_date.to_date).to_i
-
-            if fine_rule.is_amount
-              other_fee_particulars = other_month.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              total_payable = other_fee_particulars.map{|s| s.amount}.sum.to_f
-              total_discount = calculate_new_discount(other_month, batch, student, total_payable)
-              bal_other = (total_payable-total_discount).to_f
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*bal_other.fine_amount)/100 if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            else
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.fine_amount if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            end
-          end
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
         end
       end
       @fine_amount[ind] = @fine_amount[ind] + extra_fine

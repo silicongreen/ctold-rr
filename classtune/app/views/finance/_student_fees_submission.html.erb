@@ -47,7 +47,7 @@
 </div>
 
 <% total_fees =0 %>
-<% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount}, :html => {:id => "fees_form"}, :before=>"prev_double()",:complete=>"set_back()" do |form| %>
+<% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
   <% unless @fee_particulars.nil? %>
     <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
       <thead><!-- class="thead-inverse" -->
@@ -344,6 +344,11 @@
             <%unless @financefee.balance == 0 %>
               <div class="pay_fees_buttons">
                 <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button',:onClick => "return validate_payment_mode()" %>
+                <%= image_tag("loader.gif",
+                        :align => "absmiddle",
+                        :border => 0,
+                        :id => "loader_pay",
+                        :style =>"display: none;" ) %>
                 <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' unless @trans.nil? %>
                 <%= link_to "► #{t('print_receipt')}",

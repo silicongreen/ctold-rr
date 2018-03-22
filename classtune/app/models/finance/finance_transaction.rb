@@ -246,6 +246,9 @@ INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id",
     FinanceTransaction.find_all_by_master_transaction_id(self.id).each do |f|
       f.destroy
     end
+    FinanceTransactionParticular.find_all_by_finance_transaction_id(self.id).each do |fp|
+      fp.destroy
+    end
   end
 
   def self.total_transaction_amount(transaction_category,start_date,end_date)

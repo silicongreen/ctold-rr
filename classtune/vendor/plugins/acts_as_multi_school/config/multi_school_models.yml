@@ -127,6 +127,7 @@ multi_school_models:
 - EmployeeSetting
 - CategoryBatch
 - AdditionalReportCsv
+- FinanceTransactionParticular
 
 general_models:
 - PrivilegeTag

@@ -669,6 +669,11 @@ module OnlinePayment
           @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
           @student = Student.find(params[:id])
           @batch=@student.batch
+          @student_has_due = false
+          @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+          unless @std_finance_fee_due.blank?
+            @student_has_due = true
+          end
           @financefee = @student.finance_fee_by_date @date
           @due_date = @fee_collection.due_date
           @paid_fees = @financefee.finance_transactions

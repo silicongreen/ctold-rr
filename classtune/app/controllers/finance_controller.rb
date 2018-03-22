@@ -2566,6 +2566,11 @@ class FinanceController < ApplicationController
     if @dates_array.count == 1
       @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
       @financefee = @student.finance_fee_by_date @date
+      @student_has_due = false
+      @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+      unless @std_finance_fee_due.blank?
+        @student_has_due = true
+      end
       @due_date = @fee_collection.due_date
       @paid_fees = @financefee.finance_transactions
       @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
@@ -4828,37 +4833,14 @@ class FinanceController < ApplicationController
   end
   
   def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
-    if MultiSchool.current_school.id == 340
+   if MultiSchool.current_school.id == 340
       #GET THE NEXT ALL months 
       extra_fine = 0
       other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
       unless other_months.nil? or other_months.empty?
         other_months.each do |other_month|
-          fee = FinanceFee.first(:conditions=>"fee_collection_id = #{other_month.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{student.id}'")
-          paid_fees = fee.finance_transactions
-          if paid_fees.empty?
-            days_other = (Date.today-other_month.due_date.to_date).to_i
-
-            if fine_rule.is_amount
-              other_fee_particulars = other_month.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              total_payable = other_fee_particulars.map{|s| s.amount}.sum.to_f
-              total_discount = calculate_new_discount(other_month, batch, student, total_payable)
-              bal_other = (total_payable-total_discount).to_f
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.is_amount ? fine_rule.fine_amount : (bal*bal_other.fine_amount)/100 if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            else
-              auto_fine_other = other_month.fine
-              if days_other > 0 and auto_fine_other
-                fine_rule = auto_fine_other.fine_rules.find(:last,:conditions=>["fine_days <= '#{days_other}' and created_at <= '#{other_month.created_at}'"],:order=>'fine_days ASC')
-                fine_amount = fine_rule.fine_amount if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            end
-          end
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
         end
       end
       @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine

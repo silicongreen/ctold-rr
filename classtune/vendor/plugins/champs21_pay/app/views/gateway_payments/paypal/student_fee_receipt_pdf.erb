@@ -268,6 +268,9 @@
                   </tr>
               </table>
               <center class="small">United City, Satarkul, Badda, Dhaka-1212, Tel:(+88) 09666785785</center>
+              <% if @student_has_due == true %>
+                <center class="due"><font color="red" >***Student Has Previous Due**</font></center>
+              <% end %>
                    
               
     </div>
@@ -323,6 +326,12 @@ table.vat_area tr td
 {
   float:left;
   clear:both;
+}
+center.due
+{
+  clear:both;
+  margin-top: 30px;
+  font-size: 12px;
 }
 center
 {

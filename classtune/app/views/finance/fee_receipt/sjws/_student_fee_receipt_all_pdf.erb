@@ -18,51 +18,31 @@
 #under the License. -%>
 <%
     @students.each do |std|
-      @student = std
-      @financefee = @student.finance_fee_by_date @date
-      unless @financefee.blank?
-        @due_date = @fee_collection.due_date
-        @paid_fees = @financefee.finance_transactions
-        @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
-
-        @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
-        @total_discount = 0
-        @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-
-        calculate_discount(@date, @student.batch, @student)
-
-        bal=(@total_payable-@total_discount).to_f
-        days=(Date.today-@date.due_date.to_date).to_i
-        auto_fine=@date.fine
-
-        @has_fine_discount = false
-        if days > 0 and auto_fine
-          @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-          @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-          calculate_extra_fine(@date, @batch, @student, @fine_rule)
-          @new_fine_amount = @fine_amount
-          get_fine_discount(@date, @batch, @student)
-          if @fine_amount < 0
-             @fine_amount = 0
-          end
-        end
-
-        @fine_amount=0 if @financefee.is_paid
-        @has_fine_discount = false if @financefee.is_paid
+        @student = std
+        @financefee = @all_financefee[std.id]
+        @discounts = @all_discounts[std.id]
+        @paid_fees = @all_paid_fees[std.id]
+        @fee_particulars = @all_fee_particulars[std.id]
+        @total_discount = @all_total_discount[std.id]
+        @total_payable = @all_total_payable[std.id]
+        @fine_rule = @all_fine_rule[std.id]
+        @fine_amount = @all_fine_amount[std.id]
+        @has_fine_discount = @all_has_fine_discount[std.id]
+        @onetime_discounts = @all_onetime_discounts[std.id]
+        @discounts_amount = @all_discounts_amount[std.id]
+        @onetime_discounts_amount = @all_onetime_discounts_amount[std.id]
+        @new_fine_amount = @all_new_fine_amount[std.id]
+        @discounts_on_lates = @all_discounts_on_lates[std.id]
+        @discounts_late_amount = @all_discounts_late_amount[std.id]
         %> 
         <% unless params[:front_page].blank? %>
         <%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
         <div class="page-break"></div>
         <% end %>
-        <% if MultiSchool.current_school.id == 312 %>
-          <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
-        <% else %>
-          <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_all_pdf" %>
-        <% end %>
+        <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
 
         <div class="page-break"></div>
-        <%
-      end  
+        <% 
     end  
 %>
-
+        

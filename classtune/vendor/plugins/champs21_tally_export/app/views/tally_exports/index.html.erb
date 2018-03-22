@@ -28,6 +28,17 @@
 
   <% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %>
   <div class="box">
+    <% if @only_import_export %>  
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "#{t('export_journal')}  ", :action => "export_journal" %></div>
+      <div class="link-descr"><%= t('export_journal_desc') %></div>
+    </div>
+      
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "#{t('export_receipt')}  ", :action => "export_receipt" %></div>
+      <div class="link-descr"><%= t('export_receipt_desc') %></div>
+    </div>
+    <% else %>  
     <div class="link-box">
       <div class="link-heading"><%= link_to "#{t('settings_text')}  ", :action => "settings" %></div>
       <div class="link-descr"><%= t('manage_settings_for_tally_export') %></div>
@@ -47,7 +58,7 @@
       <div class="link-heading"><%= link_to "#{t('failed_syncs')}  ", :action => "failed_syncs" %></div>
       <div class="link-descr"><%= t('view_all_failed_synchronizations') %></div>
     </div>
-
+    <% end %> 
   </div>
 
 </div>

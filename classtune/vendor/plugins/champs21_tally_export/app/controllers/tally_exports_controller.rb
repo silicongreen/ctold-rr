@@ -7,7 +7,8 @@ class TallyExportsController < ApplicationController
   in_place_edit_with_validation_for :tally_voucher_type, :voucher_name
 
   def index
-    
+    tally_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/tally.yml")['champs21']
+    @only_import_export = tally_config['only_import_export']
   end
 
   def settings
@@ -232,6 +233,12 @@ class TallyExportsController < ApplicationController
   
   def export_journal
     @option = 'journal'
+    @date_today = Date.today
+    end_of_month = @date_today.end_of_month
+    start_month = end_of_month - 60
+    
+    @finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false} and due_date >= '#{start_month.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{end_of_month.to_date.strftime("%Y-%m-%d")}'"] )
+    
     @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
     @inactive_batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>false},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
     @dates = []

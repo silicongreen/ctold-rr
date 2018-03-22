@@ -82,6 +82,7 @@ en:
   show_inactive_batches: "Show inactive batches"
   select_a_batch: "Select a Batch"
   select_fee_collection_date: "Select fee collection date"
+  select_fee_collection: "Select Fee Collection"
   select_one_payment_mode : "Please select one payment mode"
   fees_receipt_no: "Fees Receipt Number"
   fee_category_name: "Fee Category Name"

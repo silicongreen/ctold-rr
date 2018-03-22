@@ -2366,8 +2366,16 @@ class FinanceController < ApplicationController
           transaction.fine_included = true  unless params[:fine].nil?
           transaction.vat_amount = params[:vat].to_f
           transaction.vat_included = true  unless params[:vat].nil?
-          if params[:special_fine] and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
-            transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
+          total_fine_amount = 0
+          if params[:special_fine]
+            total_fine_amount +=params[:special_fine].to_f
+          end
+          if params[:fine]
+            total_fine_amount +=params[:fine].to_f
+          end
+          
+          if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+            transaction.fine_amount = total_fine_amount
             transaction.fine_included = true
             @fine_amount=0
           end
@@ -2397,10 +2405,12 @@ class FinanceController < ApplicationController
                       amount_particular = amount_particular - @onetime_discounts_amount[od.id]
                     end
                   end
-                  discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                  unless discounts.nil? or discounts.empty? 
-                    discounts.each do |od|
-                      amount_particular = amount_particular - @discounts_amount[od.id]
+                  unless @discounts.blank?
+                    discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                    unless discounts.nil? or discounts.empty? 
+                      discounts.each do |od|
+                        amount_particular = amount_particular - @discounts_amount[od.id]
+                      end
                     end
                   end
                   
@@ -2425,23 +2435,26 @@ class FinanceController < ApplicationController
               finance_transaction_particular.transaction_date = transaction.transaction_date
               finance_transaction_particular.save
             end
-            
-            @discounts.each do |od|
-              finance_transaction_particular = FinanceTransactionParticular.new
-              finance_transaction_particular.finance_transaction_id = transaction.id
-              finance_transaction_particular.particular_id = od.id
-              finance_transaction_particular.particular_type = 'Discount'
-              finance_transaction_particular.amount = @discounts_amount[od.id]
-              finance_transaction_particular.transaction_date = transaction.transaction_date
-              finance_transaction_particular.save
+            unless @discounts.blank?
+              @discounts.each do |od|
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = od.id
+                finance_transaction_particular.particular_type = 'Discount'
+                finance_transaction_particular.amount = @discounts_amount[od.id]
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
+              end
             end
             
-            if params[:special_fine] and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+            
+            
+            if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
               finance_transaction_particular = FinanceTransactionParticular.new
               finance_transaction_particular.finance_transaction_id = transaction.id
               finance_transaction_particular.particular_id = 0
               finance_transaction_particular.particular_type = 'Fine'
-              finance_transaction_particular.amount = params[:fine].to_f+params[:special_fine].to_f
+              finance_transaction_particular.amount = total_fine_amount
               finance_transaction_particular.transaction_date = transaction.transaction_date
               finance_transaction_particular.save
             end
@@ -3097,7 +3110,15 @@ class FinanceController < ApplicationController
             transaction.fine_amount = params[:fine].to_f
             transaction.vat_amount = params[:vat].to_f
             transaction.vat_included = true  unless params[:vat].nil?
-            if params[:special_fine] and total_fees==params[:fees][:fees_paid].to_f
+            total_fine_amount = 0
+            if params[:special_fine]
+              total_fine_amount +=params[:special_fine].to_f
+            end
+            if params[:fine]
+              total_fine_amount +=params[:fine].to_f
+            end
+            
+            if total_fine_amount and total_fees==params[:fees][:fees_paid].to_f
               transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
               transaction.fine_included = true
               @fine_amount=0

@@ -279,6 +279,101 @@ module OnlinePayment
                       transaction.transaction_date = Date.today
                       transaction.payment_mode = "Online Payment"
                       transaction.save
+                      if transaction.save
+                        is_paid =@financefee.balance==0 ? true : false
+                        @financefee.update_attributes( :is_paid=>is_paid)
+
+                        @paid_fees = @financefee.finance_transactions
+
+                        proccess_particulars_category = []
+                        loop_particular = 0
+                        @fee_particulars.each do |fp|
+                           finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                           unless proccess_particulars_category.include?(finance_fee_particular_category_id)
+                              proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
+                              f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                              amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
+
+                              onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                              unless onetime_discounts.nil? or onetime_discounts.empty? 
+                                onetime_discounts.each do |od|
+                                  amount_particular = amount_particular - @onetime_discounts_amount[od.id]
+                                end
+                              end
+                              unless @discounts.blank?
+                                discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                                unless discounts.nil? or discounts.empty? 
+                                  discounts.each do |od|
+                                    amount_particular = amount_particular - @discounts_amount[od.id]
+                                  end
+                                end
+                              end
+
+                              finance_transaction_particular = FinanceTransactionParticular.new
+                              finance_transaction_particular.finance_transaction_id = transaction.id
+                              finance_transaction_particular.particular_id = finance_fee_particular_category_id
+                              finance_transaction_particular.particular_type = 'ParticularCategory'
+                              finance_transaction_particular.amount = amount_particular
+                              finance_transaction_particular.transaction_date = transaction.transaction_date
+                              finance_transaction_particular.save
+
+                              loop_particular = loop_particular + 1
+                           end
+                        end
+
+                        @onetime_discounts.each do |od|
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = od.id
+                          finance_transaction_particular.particular_type = 'OnetimeDiscount'
+                          finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                        unless @discounts.blank?
+                          @discounts.each do |od|
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = od.id
+                            finance_transaction_particular.particular_type = 'Discount'
+                            finance_transaction_particular.amount = @discounts_amount[od.id]
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                        end
+
+                        if transaction.vat_included?
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = 0
+                          finance_transaction_particular.particular_type = 'Vat'
+                          finance_transaction_particular.amount = transaction.vat_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+
+                        if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = 0
+                          finance_transaction_particular.particular_type = 'Fine'
+                          finance_transaction_particular.amount = total_fine_amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+
+                        if @has_fine_discount
+                          @discounts_on_lates.each do |od|
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = od.id
+                            finance_transaction_particular.particular_type = 'Fine Discount'
+                            finance_transaction_particular.amount = @discounts_late_amount[od.id]
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                        end 
+                      end
                       payment.update_attributes(:finance_transaction_id => transaction.id)
                       unless @financefee.transaction_id.nil?
                         tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"

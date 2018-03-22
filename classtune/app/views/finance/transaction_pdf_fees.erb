@@ -35,11 +35,14 @@
         <div id="pdf-info">
             <table id="pdf-table" width="100%" cellspacing="0">
                 <tr class="table-header">
-                    <td class="col-pdf">Date</td>
-                    <% @all_fees_particulers.each do |fees_particuler| %>
-                      <td class="col-pdf"><%= fees_particuler %></td>
+                    <td class="col-pdf align-center">Date</td>
+                    <% @finance_fee_category.each do |fees_particuler| %>
+                      <td class="col-pdf align-center"><%= fees_particuler.name %></td>
                     <% end %>
-                    <td class="col-pdf">Total Collection</td>
+                    <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
+                      <td class="col-pdf align-center"><%= fees_extra_particuler %></td>
+                    <% end %>
+                    <td class="col-pdf align-center">Total Collection</td>
                 </tr>
                 <% fee_total = {} %>
                 <% grand_total = 0.0 %>
@@ -52,78 +55,131 @@
                     <tr class="page-break">
                         <td colspan="100"></td>
                     </tr> 
-                     <tr class="table-header">
-                          <td class="col-pdf">Date</td>
-                          <% @all_fees_particulers.each do |fees_particuler| %>
-                            <td class="col-pdf"><%= fees_particuler %></td>
-                          <% end %>
-                          <td class="col-pdf">Total Collection</td>
-                      </tr>
+                    <tr class="table-header">
+                        <td class="col-pdf">Date</td>
+                        <% @finance_fee_category.each do |fees_particuler| %>
+                          <td class="col-pdf"><%= fees_particuler.name %></td>
+                        <% end %>
+                        <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
+                          <td class="col-pdf"><%= fees_extra_particuler %></td>
+                        <% end %>
+                        <td class="col-pdf">Total Collection</td>
+                    </tr>
                   <% end %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td  class="col-pdf" style="white-space: nowrap;"><%= day %></td>
+                      <td style="white-space: nowrap;" class="align-center"><%= day %></td>
                       <% total_fees = 0.0 %>
                       <% i = 0 %>
-                      <% @all_fees_particulers.each do |fees_particuler| %>
 
+                      <% @finance_fee_category.each do |fees_particuler| %>
                         <% fee_amount = 0.0 %>
-                        <% unless @transactions.blank? %>
-                          <% @transactions.each do |trans| %>
-
-                            <% if trans.transaction_date == day %>
-                            <% if fees_particuler!="Fine" %>
-                            <%
-                              finance_fees = FinanceFee.find_by_id(trans.finance_id)
-                              if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                                student_data = Student.find finance_fees.student_id
-                                fee_collection = finance_fees.finance_fee_collection
-                    
-                                fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
-                                unless fee_particulars.blank?
-                                  fee_particulars.each do |fee_particular_new|
-                                    unless fee_particular_new.name.index(fees_particuler).nil?
-                                     fee_amount = fee_amount.to_f+fee_particular_new.amount
-                                    end  
-                                  end  
-                                end
-
-                              end
-                            %>
-                            <% if fees_particuler=="VAT" %>
-                                <%  fee_amount = fee_amount.to_f+trans.vat_amount %>
+                        <% unless @transactions_particular.blank? %>
+                          <% @transactions_particular.each do |transactions_particular| %>
+                            <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory" %>
+                              <% fee_amount+=transactions_particular.amount %>
                             <% end %>
-                      
-                            <% else %>
-                              <%  fee_amount = fee_amount.to_f+trans.fine_amount %>
-                            <% end %>
-                          <% end %>
                           <% end %>
                         <% end %>
-                        <% total_fees = total_fees.to_f+fee_amount.to_f  %>
+                        <% total_fees += fee_amount %>
+                        <td>
+                            <%= (fee_amount==0) ? "-" : precision_label(fee_amount) %>
+                        </td>
 
-                        <td  class="col-pdf"><%= (fee_amount==0) ? "-" : fee_amount %></td>
+
                         <% if fee_total[i].blank? %>
                           <% fee_total[i] = 0 %>
                         <% end %>
-                        <%  
-                        fee_total[i] = fee_total[i]+fee_amount 
-                        grand_total = grand_total.to_f+fee_amount.to_f
-
-                      %>
-                        <% i = i+1 %>
+                        <% fee_total[i] +=fee_amount %>
+                        <% grand_total +=fee_amount %>
+                        <% i +=1; %>
                       <% end %>
-                      <td  class="col-pdf"><%= (total_fees==0) ? "-" : total_fees %></td>
+ 
+
+                      <% discount_amount = 0 %> 
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
+                            <% discount_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %> 
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += discount_amount %>  
+                      <% total_fees -= discount_amount %>
+                      <% grand_total -= discount_amount %>
+
+                      <td>
+                          <%= (discount_amount==0) ? "-" : "["+precision_label(discount_amount).to_s+"]" %>
+                      </td>
+
+                      <% i +=1; %>
+                      <% fine_amount = 0 %>
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Fine"   %>
+                            <% fine_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %>
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += fine_amount %>  
+                      <% total_fees += fine_amount %>
+                      <% grand_total += fine_amount %>
+
+                      <td>
+                          <%= (fine_amount==0) ? "-" : precision_label(fine_amount) %>
+                      </td>
+
+                      <% i +=1; %>
+                      <% vat_amount = 0 %> 
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Vat"   %>
+                            <% vat_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %>
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += vat_amount %>  
+                      <% total_fees += vat_amount %>
+                      <% grand_total += vat_amount %>
+
+                      <td>
+                          <%= (vat_amount==0) ? "-" : precision_label(vat_amount) %>
+                      </td>
+                      <% i +=1; %>
+                      <td><%= (total_fees==0) ? "-" : precision_label(total_fees) %></td>
                   </tr>
                 <% end %>
                 <% c= 'even' %>
                 <tr class="table-header">
-                    <td  class="col-pdf" style="white-space: nowrap;">Total Collection</td>
+                    <td style="white-space: nowrap;" class="align-center">Total Collection</td>
                     <% i = 0 %>
-                    <% @all_fees_particulers.each do |fees_particuler| %>
-                      <td  class="col-pdf"><%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : fee_total[i] %></td>
+                    <% @finance_fee_category.each do |fees_particuler| %>
+                      <td>
+                          <%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : precision_label(fee_total[i]) %>
+                      </td>
                       <% i = i+1 %>
                     <% end %>
-                    <td  class="col-pdf"><%= (grand_total==0) ? "-" : grand_total %></td>
+                    <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
+                      <td>
+                          <%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : precision_label(fee_total[i]) %>
+                      </td>
+                      <% i = i+1 %>
+                    <% end %>
+                    <td><%= (grand_total==0) ? "-" : precision_label(grand_total) %></td>
                 </tr>  
 
 
@@ -133,3 +189,42 @@
     </div>
 
 </div>
+
+<style>
+    tr.odd td, tr.even td,tr.table-header td
+    {
+       text-align:right;
+    }
+    td.align-center
+    {
+       text-align:center !important;
+    }
+    .date span{
+        display: none;
+        color: #FFFFFF;
+        text-align: left;
+    }
+    .date{
+        position: relative;
+    }
+    td:hover .date span{
+        display: block;
+        position: absolute;
+        background-color: black;
+        border:1px solid #ccc;
+        min-height: 20px;
+        min-width: 100px;
+        left: 0px;
+        top: -60px;
+        color: #FFFFFF;
+        padding: 5px;
+        font-size: 13px;
+        text-align: center;
+    }
+    td
+    {
+      cursor: pointer;
+    }
+ 
+    
+</style>   

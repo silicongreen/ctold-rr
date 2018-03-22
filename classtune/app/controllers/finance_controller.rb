@@ -392,31 +392,17 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
+        
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-       
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-        @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fees"
-        @all_fees_particulers << "Yearly Session Charge"
-        unless finance_fee_collections.blank?
-          finance_fee_collections.each do |fee_collection|
-            fee_category = fee_collection.fee_category
-            fee_particulars = fee_category.fee_particulars
-            unless fee_particulars.blank?
-              fee_particulars.each do |fee_particular|
-                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-                  @all_fees_particulers << fee_particular.name
-                end
-              end
-            end
-          end
-        end
-        @all_fees_particulers << "Fine"
-        @all_fees_particulers << "VAT"
         
-        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+        @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+        @all_fees_extra_particulers = []
+        @all_fees_extra_particulers << "Discount"
+        @all_fees_extra_particulers << "Fine"
+        @all_fees_extra_particulers << "VAT"
+        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
+  
     
     end
     end
@@ -425,8 +411,11 @@ class FinanceController < ApplicationController
     csv = FasterCSV.generate do |csv|
       cols = []
       cols << "Month"
-      @all_fees_particulers.each do |fees_particuler|
-        cols << fees_particuler
+      @finance_fee_category.each do |fees_particuler|
+        cols << fees_particuler.name
+      end
+      @all_fees_extra_particulers.each do |fees_extra_particuler|
+        cols << fees_extra_particuler
       end
       cols << "Total Collection"
       csv << cols
@@ -436,33 +425,14 @@ class FinanceController < ApplicationController
         total_fees = 0.0
         cols = []
         cols << day
-        @all_fees_particulers.each do |fees_particuler|
+        i = 0
+        @finance_fee_category.each do |fees_particuler|
           fee_amount = 0.0
-          i = 0
-          unless @transactions.blank?
-            @transactions.each do |trans|
-              if trans.transaction_date == day
-                if fees_particuler!="Fine"
-                  finance_fees = FinanceFee.find_by_id(trans.finance_id)
-                  if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                    student_data = Student.find finance_fees.student_id
-                    fee_collection = finance_fees.finance_fee_collection
-                    fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
-                    unless fee_particulars.blank?
-                      fee_particulars.each do |fee_particular_new|
-                        unless fee_particular_new.name.index(fees_particuler).nil?
-                         fee_amount = fee_amount.to_f+fee_particular_new.amount
-                        end  
-                      end  
-                    end
-
-                  end
-                  if fees_particuler=="VAT"
-                    fee_amount = fee_amount.to_f+trans.vat_amount
-                  end
-                else
-                  fee_amount = fee_amount.to_f+trans.fine_amount
-                end  
+          
+          unless @transactions_particular.blank?
+            @transactions_particular.each do |transactions_particular|
+              if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory"
+                fee_amount+=transactions_particular.amount  
               end
             end
           end
@@ -479,6 +449,77 @@ class FinanceController < ApplicationController
           grand_total = grand_total.to_f+fee_amount.to_f
           i = i+1
         end
+        
+        discount_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")
+              discount_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if discount_amount!=0
+          cols << "["+discount_amount.to_s+"]"
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += discount_amount
+        total_fees -= discount_amount
+        grand_total -= discount_amount
+        i = i+1
+        
+        fine_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Fine" 
+              fine_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if fine_amount!=0
+          cols << fine_amount.to_s
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += fine_amount
+        total_fees += fine_amount
+        grand_total += fine_amount
+        i = i+1
+        
+        vat_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Vat"
+              vat_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if vat_amount!=0
+          cols << vat_amount.to_s
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += vat_amount
+        total_fees += vat_amount
+        grand_total += vat_amount
+        i = i+1
+        
+        
         if total_fees!=0
             cols << total_fees.to_s
         else
@@ -490,7 +531,7 @@ class FinanceController < ApplicationController
       cols = []
       cols << "Total Collection"
       i = 0
-      @all_fees_particulers.each do |fees_particuler|
+      @finance_fee_category.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
             cols << "-"
         else
@@ -498,6 +539,16 @@ class FinanceController < ApplicationController
         end
         i = i+1
       end
+      
+      @all_fees_extra_particulers.each do |fees_particuler|
+        if fee_total[i].blank? or fee_total[i] == 0
+            cols << "-"
+        else
+          cols << fee_total[i].to_s
+        end
+        i = i+1
+      end
+      
       if grand_total!=0
         cols << grand_total.to_s
       else
@@ -685,27 +736,13 @@ class FinanceController < ApplicationController
       unless @start_date > @end_date
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-        @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fees"
-        @all_fees_particulers << "Yearly Session Charge"
-        unless finance_fee_collections.blank?
-          finance_fee_collections.each do |fee_collection|
-            fee_category = fee_collection.fee_category
-            fee_particulars = fee_category.fee_particulars
-            unless fee_particulars.blank?
-              fee_particulars.each do |fee_particular|
-                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-                  @all_fees_particulers << fee_particular.name
-                end
-              end
-            end
-          end
-        end
-        @all_fees_particulers << "Fine"
-        @all_fees_particulers << "VAT"
-        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+        
+        @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+        @all_fees_extra_particulers = []
+        @all_fees_extra_particulers << "Discount"
+        @all_fees_extra_particulers << "Fine"
+        @all_fees_extra_particulers << "VAT"
+        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
         
       else
         flash[:warn_notice] = "#{t('flash17')}"
@@ -742,31 +779,12 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
-        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-       
-        finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-        @all_fees_particulers = []
-        @all_fees_particulers << "Tuition Fees"
-        @all_fees_particulers << "Yearly Session Charge"
-        unless finance_fee_collections.blank?
-          finance_fee_collections.each do |fee_collection|
-            fee_category = fee_collection.fee_category
-            fee_particulars = fee_category.fee_particulars
-            unless fee_particulars.blank?
-              fee_particulars.each do |fee_particular|
-                fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-                if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-                  @all_fees_particulers << fee_particular.name
-                end
-              end
-            end
-          end
-        end
-        @all_fees_particulers << "Fine"
-        @all_fees_particulers << "VAT"
-        
-        @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}' and finance_type='FinanceFee'"])
+        @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+        @all_fees_extra_particulers = []
+        @all_fees_extra_particulers << "Discount"
+        @all_fees_extra_particulers << "Fine"
+        @all_fees_extra_particulers << "VAT"
+        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
        
         render :pdf => 'transaction_pdf_fees',
         :margin => {:top=> 10,
@@ -2447,7 +2465,15 @@ class FinanceController < ApplicationController
               end
             end
             
-            
+            if transaction.vat_included?
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = 0
+              finance_transaction_particular.particular_type = 'Vat'
+              finance_transaction_particular.amount = transaction.vat_amount
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
+            end
             
             if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
               finance_transaction_particular = FinanceTransactionParticular.new
@@ -3128,6 +3154,101 @@ class FinanceController < ApplicationController
             transaction.payment_note = params[:fees][:payment_note]
             transaction.transaction_date = params[:fees][:transaction_date]
             transaction.save
+            if transaction.save
+              is_paid =@financefee.balance==0 ? true : false
+              @financefee.update_attributes( :is_paid=>is_paid)
+
+              @paid_fees = @financefee.finance_transactions
+
+              proccess_particulars_category = []
+              loop_particular = 0
+              @fee_particulars.each do |fp|
+                 finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+                 unless proccess_particulars_category.include?(finance_fee_particular_category_id)
+                    proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
+                    f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                    amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
+
+                    onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                    unless onetime_discounts.nil? or onetime_discounts.empty? 
+                      onetime_discounts.each do |od|
+                        amount_particular = amount_particular - @onetime_discounts_amount[od.id]
+                      end
+                    end
+                    unless @discounts.blank?
+                      discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                      unless discounts.nil? or discounts.empty? 
+                        discounts.each do |od|
+                          amount_particular = amount_particular - @discounts_amount[od.id]
+                        end
+                      end
+                    end
+
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = finance_fee_particular_category_id
+                    finance_transaction_particular.particular_type = 'ParticularCategory'
+                    finance_transaction_particular.amount = amount_particular
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
+
+                    loop_particular = loop_particular + 1
+                 end
+              end
+
+              @onetime_discounts.each do |od|
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = od.id
+                finance_transaction_particular.particular_type = 'OnetimeDiscount'
+                finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
+              end
+              unless @discounts.blank?
+                @discounts.each do |od|
+                  finance_transaction_particular = FinanceTransactionParticular.new
+                  finance_transaction_particular.finance_transaction_id = transaction.id
+                  finance_transaction_particular.particular_id = od.id
+                  finance_transaction_particular.particular_type = 'Discount'
+                  finance_transaction_particular.amount = @discounts_amount[od.id]
+                  finance_transaction_particular.transaction_date = transaction.transaction_date
+                  finance_transaction_particular.save
+                end
+              end
+
+              if transaction.vat_included?
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = 0
+                finance_transaction_particular.particular_type = 'Vat'
+                finance_transaction_particular.amount = transaction.vat_amount
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
+              end
+
+              if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = 0
+                finance_transaction_particular.particular_type = 'Fine'
+                finance_transaction_particular.amount = total_fine_amount
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
+              end
+
+              if @has_fine_discount
+                @discounts_on_lates.each do |od|
+                  finance_transaction_particular = FinanceTransactionParticular.new
+                  finance_transaction_particular.finance_transaction_id = transaction.id
+                  finance_transaction_particular.particular_id = od.id
+                  finance_transaction_particular.particular_type = 'Fine Discount'
+                  finance_transaction_particular.amount = @discounts_late_amount[od.id]
+                  finance_transaction_particular.transaction_date = transaction.transaction_date
+                  finance_transaction_particular.save
+                end
+              end 
+            end
             is_paid = @financefee.balance==0 ? true : false
             @financefee.update_attributes(:is_paid=>is_paid)
             flash[:warning] = "#{t('flash14')}"

@@ -490,9 +490,29 @@ class UserController < ApplicationController
     @school_code = MultiSchool.current_school.code.to_s
     @user = User.new(params[:user])
     if request.post?
-      @user.username = MultiSchool.current_school.code.to_s+'-'+params[:user][:username].to_s;
+      @user.username = MultiSchool.current_school.code.to_s+'-'+params[:user][:username].to_s
+      
+       
 
       if @user.save
+        @emp = Employee.new
+        cat = EmployeeCategory.active.find(:first)
+        pos = EmployeePosition.active.find(:first)
+        dpt = EmployeeDepartment.active.find(:first)
+
+        now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+
+        @emp.employee_category_id = cat.id
+        @emp.employee_position_id = pos.id
+        @emp.employee_department_id = dpt.id
+
+        @emp.nationality_id = 14
+        @emp.joining_date = now.to_date
+        @emp.date_of_birth = now.to_date
+        @emp.first_name = @user.first_name
+        @emp.user_id = @user.id
+        @emp.employee_number = params[:user][:username]
+        @emp.save(false)
         flash[:notice] = "#{t('flash17')}"
         redirect_to :controller => 'user', :action => 'profile', :id => @user.username
       else

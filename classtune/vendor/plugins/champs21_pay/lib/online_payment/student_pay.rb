@@ -82,14 +82,6 @@ module OnlinePayment
               total_fees = params[:fine].to_f
             end
           end
-          payment_urls = Hash.new
-                  if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-                    payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-                  end
-          validation_url = payment_urls["ssl_commerce_requested_url"]
-                  validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
-                  abort(validation_url)
-
           unless params[:vat].nil?
             unless @financefee.is_paid == true
               total_fees += params[:vat].to_f
@@ -231,10 +223,6 @@ module OnlinePayment
 
                   validation_url = payment_urls["ssl_commerce_requested_url"]
                   validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
-                
-                
-
-
                   val_id = params[:val_id]
                   requested_url=validation_url+"?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
                   uri = URI.parse(requested_url)
@@ -248,12 +236,10 @@ module OnlinePayment
                 
                 
                   @ssl_data = JSON::parse(response.body)
-                  abort(@ssl_data.inspect)
                   unless @ssl_data['status'] == "VALID"
                     gateway_status = false
                   end
                 end
-                abort(params[:status].to_s+" Status OK")
               end
 
               amount_from_gateway = 0

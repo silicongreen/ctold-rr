@@ -176,7 +176,7 @@
       <% unless @paid_fees.nil? or @paid_fees.empty? or @paid_fees.blank? %>
         <% unless @paid_fees.blank? %>
           <% @paid_fees.each do |trans| %>
-            <% if trans.fine_included %>
+            <% if trans.fine_included != 0 and trans.fine_amount.to_i > 0 %>
               <tr class="<%= cycle("odd","even") %>">
                 <td class="col-1"><%= i+=1 %></td>
                 <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
@@ -187,7 +187,7 @@
               <% total_fees += trans.fine_amount.to_f %>
             <% end %>
             
-            <% if trans.vat_included %>
+            <% if trans.vat_included != 0 and trans.vat_amount.to_i > 0 %>
               <tr class="<%= cycle("odd","even") %>">
                 <td class="col-1"><%= i+=1 %></td>
                 <td class="col-2"><span class="themed_text"><%= "Vat" %></span></td>

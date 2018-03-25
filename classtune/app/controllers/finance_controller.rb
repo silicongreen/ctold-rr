@@ -354,31 +354,21 @@ class FinanceController < ApplicationController
     fixed_category_name
     @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
     @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-    @all_fees_particulers = []
-    @all_fees_particulers << "Tuition Fees"
-    @all_fees_particulers << "Yearly Session Charge"
-    unless finance_fee_collections.blank?
-      finance_fee_collections.each do |fee_collection|
-        fee_category = fee_collection.fee_category
-        fee_particulars = fee_category.fee_particulars
-        unless fee_particulars.blank?
-          fee_particulars.each do |fee_particular|
-            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-              @all_fees_particulers << fee_particular.name
-            end
-          end
-        end
-      end
-    end
-    @all_fees_particulers << "Fine"
-    @all_fees_particulers << "VAT"
-    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+
+    @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+    @all_fees_extra_particulers = []
+    @all_fees_extra_particulers << "Discount"
+    @all_fees_extra_particulers << "Fine"
+    @all_fees_extra_particulers << "VAT"
+    @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"])
+  
     
     start_date = @fin_start_date.to_date
-    end_date = Date.today.to_date
-    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    end_date = @fin_end_date.to_date
+    if end_date > Date.today.to_date
+      end_date = Date.today.to_date
+    end
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)+1
     @dates = number_of_months.times.each_with_object([]) do |count, array|
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")
@@ -564,42 +554,37 @@ class FinanceController < ApplicationController
     fixed_category_name
     @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
     @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-    @all_fees_particulers = []
-    @all_fees_particulers << "Tuition Fees"
-    @all_fees_particulers << "Yearly Session Charge"
-    unless finance_fee_collections.blank?
-      finance_fee_collections.each do |fee_collection|
-        fee_category = fee_collection.fee_category
-        fee_particulars = fee_category.fee_particulars
-        unless fee_particulars.blank?
-          fee_particulars.each do |fee_particular|
-            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-              @all_fees_particulers << fee_particular.name
-            end
-          end
-        end
-      end
-    end
-    @all_fees_particulers << "Fine"
-    @all_fees_particulers << "VAT"
-    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+
+    @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+    @all_fees_extra_particulers = []
+    @all_fees_extra_particulers << "Discount"
+    @all_fees_extra_particulers << "Fine"
+    @all_fees_extra_particulers << "VAT"
+    @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"])
+  
     
     start_date = @fin_start_date.to_date
-    end_date = Date.today.to_date
-    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    end_date = @fin_end_date.to_date
+    if end_date > Date.today.to_date
+      end_date = Date.today.to_date
+    end
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)+1
     @dates = number_of_months.times.each_with_object([]) do |count, array|
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")
       array << [start_date.beginning_of_month + count.months,
                 start_date.end_of_month + count.months,month_name]
     end
+    
+    
     csv = FasterCSV.generate do |csv|
       cols = []
       cols << "Month"
-      @all_fees_particulers.each do |fees_particuler|
-        cols << fees_particuler
+      @finance_fee_category.each do |fees_particuler|
+        cols << fees_particuler.name
+      end
+      @all_fees_extra_particulers.each do |fees_extra_particuler|
+        cols << fees_extra_particuler
       end
       cols << "Total Collection"
       csv << cols
@@ -609,33 +594,14 @@ class FinanceController < ApplicationController
         total_fees = 0.0
         cols = []
         cols << day.last
-        @all_fees_particulers.each do |fees_particuler|
+        i = 0
+        @finance_fee_category.each do |fees_particuler|
           fee_amount = 0.0
-          i = 0
-          unless @transactions.blank?
-            @transactions.each do |trans|
-              if trans.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y")
-                if fees_particuler!="Fine"
-                  finance_fees = FinanceFee.find_by_id(trans.finance_id)
-                  if !finance_fees.blank? and finance_fees.balance.to_i == 0
-                    student_data = Student.find finance_fees.student_id
-                    fee_collection = finance_fees.finance_fee_collection
-                    fee_particulars = FinanceFeeParticular.find(:all,:conditions=>["finance_fee_category_id = ? and batch_id = ? and (receiver_type!=? or receiver_id=?) and (receiver_type!=? or receiver_id=?)",fee_collection.fee_category_id,student_data.batch_id,'StudentCategory',student_data.student_category_id,'Student',student_data.id])
-                    unless fee_particulars.blank?
-                      fee_particulars.each do |fee_particular_new|
-                        unless fee_particular_new.name.index(fees_particuler).nil?
-                         fee_amount = fee_amount.to_f+fee_particular_new.amount
-                        end  
-                      end  
-                    end
-
-                  end
-                  if fees_particuler=="VAT"
-                    fee_amount = fee_amount.to_f+trans.vat_amount
-                  end
-                else
-                  fee_amount = fee_amount.to_f+trans.fine_amount
-                end  
+          
+          unless @transactions_particular.blank?
+            @transactions_particular.each do |transactions_particular|
+              if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory"
+                fee_amount+=transactions_particular.amount  
               end
             end
           end
@@ -652,6 +618,77 @@ class FinanceController < ApplicationController
           grand_total = grand_total.to_f+fee_amount.to_f
           i = i+1
         end
+        
+        discount_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")
+              discount_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if discount_amount!=0
+          cols << "["+discount_amount.to_s+"]"
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += discount_amount
+        total_fees -= discount_amount
+        grand_total -= discount_amount
+        i = i+1
+        
+        fine_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_type == "Fine" 
+              fine_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if fine_amount!=0
+          cols << fine_amount.to_s
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += fine_amount
+        total_fees += fine_amount
+        grand_total += fine_amount
+        i = i+1
+        
+        vat_amount = 0
+        unless @transactions_particular.blank?
+          @transactions_particular.each do |transactions_particular|
+            if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_type == "Vat"
+              vat_amount+=transactions_particular.amount
+            end
+          end
+        end
+        
+        if vat_amount != 0
+          cols << vat_amount.to_s
+        else
+          cols << "-"
+        end 
+        
+        if fee_total[i].blank?
+           fee_total[i] = 0
+        end
+        fee_total[i] += vat_amount
+        total_fees += vat_amount
+        grand_total += vat_amount
+        i = i+1
+        
+        
         if total_fees!=0
             cols << total_fees.to_s
         else
@@ -663,7 +700,7 @@ class FinanceController < ApplicationController
       cols = []
       cols << "Total Collection"
       i = 0
-      @all_fees_particulers.each do |fees_particuler|
+      @finance_fee_category.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
             cols << "-"
         else
@@ -671,6 +708,16 @@ class FinanceController < ApplicationController
         end
         i = i+1
       end
+      
+      @all_fees_extra_particulers.each do |fees_particuler|
+        if fee_total[i].blank? or fee_total[i] == 0
+            cols << "-"
+        else
+          cols << fee_total[i].to_s
+        end
+        i = i+1
+      end
+      
       if grand_total!=0
         cols << grand_total.to_s
       else
@@ -684,33 +731,24 @@ class FinanceController < ApplicationController
   
   def transaction_pdf_fees_month
     fixed_category_name
+    
     @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
     @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-    finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["due_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"] )
-    @all_fees_particulers = []
-    @all_fees_particulers << "Tuition Fees"
-    @all_fees_particulers << "Yearly Session Charge"
-    unless finance_fee_collections.blank?
-      finance_fee_collections.each do |fee_collection|
-        fee_category = fee_collection.fee_category
-        fee_particulars = fee_category.fee_particulars
-        unless fee_particulars.blank?
-          fee_particulars.each do |fee_particular|
-            fee_particular.name = fee_particular.name.gsub(" 7.5%","")
-            if !@all_fees_particulers.include?(fee_particular.name) and fee_particular.name.index("Tuition Fees").nil? and fee_particular.name.index("Yearly Session Charge").nil? and fee_particular.name.index("VAT").nil?
-              @all_fees_particulers << fee_particular.name
-            end
-          end
-        end
-      end
-    end
-    @all_fees_particulers << "Fine"
-    @all_fees_particulers << "VAT"
-    @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}' and finance_type='FinanceFee'"])
+
+    @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+    @all_fees_extra_particulers = []
+    @all_fees_extra_particulers << "Discount"
+    @all_fees_extra_particulers << "Fine"
+    @all_fees_extra_particulers << "VAT"
+    @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@fin_start_date.to_date.strftime("%Y-%m-%d")}' and transaction_date <= '#{@fin_end_date.to_date.strftime("%Y-%m-%d")}'"])
+  
     
     start_date = @fin_start_date.to_date
-    end_date = Date.today.to_date
-    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)
+    end_date = @fin_end_date.to_date
+    if end_date > Date.today.to_date
+      end_date = Date.today.to_date
+    end
+    number_of_months = (end_date.year*12+end_date.month)-(start_date.year*12+start_date.month)+1
     @dates = number_of_months.times.each_with_object([]) do |count, array|
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")

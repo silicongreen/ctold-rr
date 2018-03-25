@@ -82,6 +82,13 @@ module OnlinePayment
               total_fees = params[:fine].to_f
             end
           end
+          payment_urls = Hash.new
+                  if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                    payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+                  end
+          validation_url = payment_urls["ssl_commerce_requested_url"]
+                  validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                  abort(validation_url)
 
           unless params[:vat].nil?
             unless @financefee.is_paid == true

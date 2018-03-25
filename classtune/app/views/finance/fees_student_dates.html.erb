@@ -54,6 +54,11 @@
 <div id="modal-box" style="display:none;"></div>
 
 <script type="text/javascript">
+  <% unless params[:id2].blank? %>
+    $jq = jQuery.noConflict();
+    $jq("#fees_submission_dates_id").val(<%= params[:id2] %>);
+    $jq("#fees_submission_dates_id").trigger("change");
+  <% end %>  
   function validate_payment_mode()
   {
     if ($('payment')!=null)

@@ -22,14 +22,6 @@
   <h1><%= t('transactions') %></h1>
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('finance_transactions_view') %></div>
-<div id="inner-tab-menu">
-  <ul>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('pdf_report')}",
-        {:controller => "finance", :action => "transaction_pdf_fees", :start_date => @start_date, :end_date=>@end_date},:target => '_blank' %></li>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "CSV REPORT",
-        {:controller => "finance", :action => "transaction_pdf_fees_csv", :start_date => @start_date, :end_date=>@end_date} %></li>
-  </ul>
-</div>
 </div>
 <div id="page-yield">
   <div class="bread_crumb">
@@ -40,11 +32,12 @@
 
     <%= t('finance_transactions_view') %>
   </div>
-  <% unless @finance_fee_category.blank? %>  
+  <% unless @finance_fee_category.blank? %> 
+  <h2><%= I18n.l(@start_date.to_date,:format=>"%d %b %Y") %></h2>
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
     <thead><!-- class="thead-inverse" -->
       <tr>
-        <th>Date</th>
+        <th class="align-right">Student Name</th>
         <% @finance_fee_category.each do |fees_particuler| %>
           <th><%= fees_particuler.name %></th>
         <% end %>
@@ -57,12 +50,13 @@
     <% fee_total = {} %>
     <% grand_total = 0.0 %>
     <tbody>
-    <% (@start_date.to_date..@end_date.to_date).each do |day| %>
+    <% unless @transactions.blank? %>
+    <% @transactions.each do |transactions| %>
     <tr class="tr-odd">
-      <td style="white-space: nowrap;" class="align-center">
-
-          <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
-      
+      <td style="white-space: nowrap;" class="align-left">
+          <a href="/finance/fees_student_dates/<%= transactions.student_payee.id %>/<%= transactions.finance.fee_collection_id %>" target="_blank" >
+            <%= transactions.student_payee.full_name %>
+          </a>    
       </td>
       <% total_fees = 0.0 %>
       <% i = 0 %>
@@ -70,12 +64,12 @@
       <% @finance_fee_category.each do |fees_particuler| %>
           <% fee_amount = 0.0 %>
           <% unless @transactions_particular.blank? %>
-              <% @transactions_particular.each do |transactions_particular| %>
-                <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory" %>
-                  <% fee_amount+=transactions_particular.amount %>
-                <% end %>
+            <% @transactions_particular.each do |transactions_particular| %>
+              <% if transactions_particular.finance_transaction_id == transactions.id and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory" %>
+                <% fee_amount+=transactions_particular.amount %>
               <% end %>
-          <% end %>
+            <% end %>
+          <% end %>  
           <% total_fees += fee_amount %>
           <td>
             <%= (fee_amount==0) ? "-" : precision_label(fee_amount) %>
@@ -97,12 +91,11 @@
           
       <% unless @transactions_particular.blank? %>
         <% @transactions_particular.each do |transactions_particular| %>
-          <% if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
+          <% if transactions_particular.finance_transaction_id == transactions.id and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
             <% discount_amount+=transactions_particular.amount %>
           <% end %>
-        <% end %> 
-      <% end %> 
-          
+        <% end %>
+      <% end %>    
       <% if fee_total[i].blank? %>
           <% fee_total[i] = 0 %>
       <% end %>
@@ -123,10 +116,10 @@
       
       <% unless @transactions_particular.blank? %>
         <% @transactions_particular.each do |transactions_particular| %>
-          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Fine"   %>
+          <% if transactions_particular.finance_transaction_id == transactions.id and transactions_particular.particular_type == "Fine"   %>
             <% fine_amount+=transactions_particular.amount %>
           <% end %>
-        <% end %> 
+        <% end %>
       <% end %>
       
       <% if fee_total[i].blank? %>
@@ -145,13 +138,13 @@
       <%#*Vat Calculation%>
       <% i +=1; %>
       <% vat_amount = 0 %> 
-       
+      
       <% unless @transactions_particular.blank? %>
         <% @transactions_particular.each do |transactions_particular| %>
-          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Vat"   %>
+          <% if transactions_particular.finance_transaction_id == transactions.id and transactions_particular.particular_type == "Vat"   %>
             <% vat_amount+=transactions_particular.amount %>
           <% end %>
-        <% end %> 
+        <% end %>
       <% end %>
       
       <% if fee_total[i].blank? %>
@@ -191,6 +184,11 @@
         <% end %>
         <td><%= (grand_total==0) ? "-" : precision_label(grand_total) %></td>
     </tr>
+    <% else %>
+      <tr class="tr-even">
+        <td style="white-space: nowrap;">No Transaction Found</td>
+      </tr>  
+    <% end %>    
     </tbody>
   </table>
   <% end %>  
@@ -231,6 +229,10 @@
     td
     {
       cursor: pointer;
+    }
+    .align-right
+    {
+        text-align:right !important;
     }
  
     

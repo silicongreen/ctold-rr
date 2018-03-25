@@ -53,14 +53,14 @@
                         <td colspan="100"></td>
                     </tr> 
                     <tr class="table-header">
-                        <td class="col-pdf">Date</td>
+                        <td class="col-pdf align-center">Date</td>
                         <% @finance_fee_category.each do |fees_particuler| %>
-                          <td class="col-pdf"><%= fees_particuler.name %></td>
+                          <td class="col-pdf align-center"><%= fees_particuler.name %></td>
                         <% end %>
                         <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
-                          <td class="col-pdf"><%= fees_extra_particuler %></td>
+                          <td class="col-pdf align-center"><%= fees_extra_particuler %></td>
                         <% end %>
-                        <td class="col-pdf">Total Collection</td>
+                        <td class="col-pdf align-center">Total Collection</td>
                     </tr>
                   <% end %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

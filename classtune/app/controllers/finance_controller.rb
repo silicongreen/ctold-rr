@@ -388,7 +388,8 @@ class FinanceController < ApplicationController
         @all_fees_extra_particulers << "Discount"
         @all_fees_extra_particulers << "Fine"
         @all_fees_extra_particulers << "VAT"
-        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"],:include=>"finance_transaction")
+        @transactions = FinanceTransaction.find(:all, :order => 'finance_transactions.transaction_date desc', :conditions => ["finance_transactions.transaction_date >= '#{@start_date}' and finance_transactions.transaction_date <= '#{@end_date}'"])
+        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'finance_transactions.transaction_date desc', :conditions => ["finance_transactions.transaction_date >= '#{@start_date}' and finance_transactions.transaction_date <= '#{@end_date}'"],:include=>"finance_transaction")
       end
     end
   end
@@ -430,7 +431,7 @@ class FinanceController < ApplicationController
       (@start_date.to_date..@end_date.to_date).each do |day|
         total_fees = 0.0
         cols = []
-        cols << day
+        cols << I18n.l(day.to_date,:format=>"%d %b %Y")
         i = 0
         @finance_fee_category.each do |fees_particuler|
           fee_amount = 0.0

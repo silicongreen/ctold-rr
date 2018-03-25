@@ -223,7 +223,7 @@ module OnlinePayment
                   end
 
                   validation_url = payment_urls["ssl_commerce_requested_url"]
-                  validation_url ||= "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+                  validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
                 
                 
 
@@ -241,11 +241,12 @@ module OnlinePayment
                 
                 
                   @ssl_data = JSON::parse(response.body)
-                
+                  abort(@ssl_data.inspect)
                   unless @ssl_data['status'] == "VALID"
                     gateway_status = false
                   end
                 end
+                abort(params[:status].to_s)
               end
 
               amount_from_gateway = 0
@@ -258,7 +259,6 @@ module OnlinePayment
               end
               trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
            
-              abort(gateway_status.to_s+" "+amount_from_gateway.to_s+" "+total_fees.to_s)
               if gateway_status == true
               
                 trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")

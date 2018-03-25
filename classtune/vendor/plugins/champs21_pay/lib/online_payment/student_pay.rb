@@ -246,7 +246,7 @@ module OnlinePayment
                     gateway_status = false
                   end
                 end
-                abort(params[:status].to_s)
+                abort(params[:status].to_s+" Status OK")
               end
 
               amount_from_gateway = 0

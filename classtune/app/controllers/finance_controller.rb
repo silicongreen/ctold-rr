@@ -476,8 +476,6 @@ class FinanceController < ApplicationController
            fee_total[i] = 0
         end
         fee_total[i] += discount_amount
-        total_fees -= discount_amount
-        grand_total -= discount_amount
         i = i+1
         
         fine_amount = 0
@@ -655,8 +653,6 @@ class FinanceController < ApplicationController
            fee_total[i] = 0
         end
         fee_total[i] += discount_amount
-        total_fees -= discount_amount
-        grand_total -= discount_amount
         i = i+1
         
         fine_amount = 0

@@ -106,8 +106,6 @@
                         <% fee_total[i] = 0 %>
                       <% end %>
                       <% fee_total[i] += discount_amount %>  
-                      <% total_fees -= discount_amount %>
-                      <% grand_total -= discount_amount %>
 
                       <td>
                           <%= (discount_amount==0) ? "-" : "["+precision_label(discount_amount).to_s+"]" %>

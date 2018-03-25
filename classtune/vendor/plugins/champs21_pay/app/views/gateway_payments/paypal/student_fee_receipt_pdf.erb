@@ -270,7 +270,9 @@
               <center class="small">United City, Satarkul, Badda, Dhaka-1212, Tel:(+88) 09666785785</center>
               <% if @student_has_due == true %>
                 <center class="due"><font color="red" >***Student Has Previous Due**</font></center>
-              <% end %>
+              <% else %>
+                <center class="due"><font color="green" >***No Previous Due**</font></center>
+              <% end %>  
                    
               
     </div>

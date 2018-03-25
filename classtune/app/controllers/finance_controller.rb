@@ -4813,8 +4813,6 @@ class FinanceController < ApplicationController
     end
   end
   
-  
-  
   def calculate_discount_index_all(date,batch,student,ind)
     one_time_discount = false
     one_time_total_amount_discount = false
@@ -5026,7 +5024,6 @@ class FinanceController < ApplicationController
       @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine
     end
   end
-  
   
   def calculate_extra_fine_index(date,batch,student,fine_rule,ind)
     if MultiSchool.current_school.id == 340

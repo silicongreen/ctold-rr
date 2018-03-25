@@ -516,6 +516,7 @@ en: # locale
   type: "Type"
   currency: "Currency"
   start_date: "Start Date"
+  export_date: "Export Date"
   end_date: "End Date"
   exam_text: "Exam"
   date_text: "Date"

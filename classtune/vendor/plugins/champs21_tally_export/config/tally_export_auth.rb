@@ -32,6 +32,8 @@ authorization do
       :load_student_details,
       :download_journal,
       :download_receipt,
+      :get_batches,
+      :export_batches,
       :failed_syncs
     ]
   end
@@ -68,6 +70,8 @@ authorization do
       :load_student_details,
       :download_journal,
       :download_receipt,
+      :get_batches,
+      :export_batches,
       :failed_syncs
     ]
   end

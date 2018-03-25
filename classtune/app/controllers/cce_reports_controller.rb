@@ -107,6 +107,7 @@ class CceReportsController < ApplicationController
       end
     end
   end
+  
   def assessment_wise_report
     @courses=Course.cce
     @batches=[]

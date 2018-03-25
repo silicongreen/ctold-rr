@@ -149,7 +149,7 @@
     color: #9B0C12;
 }
 .month{
-    -moz-border-radius:8px;
+/*    -moz-border-radius:8px;
     -webkit-border-radius:8px;
     width:400px;
     background: #fff;
@@ -159,7 +159,7 @@
     font-size:16px;
     color:#121212;
     font-weight:bold;
-    margin:0px 6px;
+    margin:0px 6px;*/
 }
 #register{
     background: #d7d7d7;
@@ -819,4 +819,73 @@ a.next_page, a.prev_page {
 .small a, .small_warning a{
     color: #fff !important;
     font-size: 12px;
+}
+
+ul.batch_ul, ul.batch_ul_assign {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+ 
+li.batchli {
+  font: 200 15px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+ 
+li.batchli:hover {
+  background: #c4e3f3;
+}
+
+li.active {
+  background: #428bca;
+}
+
+li.batchli:last-child {
+  border: none;
+}
+ 
+li.batchli span {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  width: 200px;
+ 
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+ 
+.assign_btn {
+    width: 80%;
+    height: 25px;
+    border: 1px solid #ccc;
+    padding: 3px;
+    background: #fff;
+    font-weight: bold;
+    font: 200 20px/1.2 Helvetica, Verdana, sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+}
+
+.assign_btn:not(:first-child) {
+    margin-top: 4px;
+}
+
+.assign_btn:hover {
+  background: #c4e3f3;
+}
+
+.assign_btn:visited {
+  background: #000;
+}
+
+.remove_one:after{
+    border-bottom: 2px solid #d5d5d5;
 }

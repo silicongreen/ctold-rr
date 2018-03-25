@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/stylesheets/tally_exports/fees_export.css">
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('export_receipt') %></h1>
@@ -5,76 +6,318 @@
 <div class='sub-header'><%= t('export_receipt_desc') %></div>
  <div id="inner-tab-menu">
     <ul>
-      <li class='themed_bg themed-dark-hover-background' id="active-batch-link"><%= link_to_function t('show_active_batches'), "show_active_batches()" %></li>
-      <li class='themed_bg themed-dark-hover-background' id="inactive-batch-link"><%= link_to_function t('show_inactive_batches'), "show_inactive_batches()" %></li>
+      <li class='themed_bg themed-dark-hover-background' id="active-batch-link"><%= link_to_function t('show_last_three_dates'), "show_last_three_dates()" %></li>
+      <li class='themed_bg themed-dark-hover-background' id="inactive-batch-link"><%= link_to_function t('show_all_dates'), "show_all_dates()" %></li>
     </ul>
   </div>
 </div>
-<link rel="stylesheet" href="/stylesheets/tally_exports/fees_export.css">
 <div id="page-yield">
-
-  <div id="batchs1">
-    <% form_for :fees_submission_batch do %>
-      <div class="label-field-pair" id="hide1"><label><%= t('select_a_batch') %></label>
-        <div class="text-input-bg"> <%= select :fees_submission, :batch_id, @batches.map { |c| [c.full_name, c.id] },
-            {:prompt => "#{t('select_a_batch')}"},
-            {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
-            :with => "'batch_id='+value+'&opt='+\"#{@option}\"",
+  <% form_remote_for :fees_submission_batch, :url => {:action => "download_receipt"}, :html => { :id => "tally_receipt_export" } do %>  
+  <div id="error"><% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %></div>
+  <div id="dates" style="margin-left: 20%; width: 80%;">
+      <%= hidden_field_tag "batches", "" %>
+      <%= hidden_field_tag "type", 3 %>
+      <div class="label-field-pair" id="hide1">
+        <div class="label-container"><%= t('select_fee_collection') %></div>
+        <div class="input-container"> 
+          <%= select :fees_submission, :date_id, @finance_fee_collections.map { |d| [d.full_name, d.id] },
+            {:prompt => "#{t('select_fee_collection')}"},
+            {:onChange => "#{remote_function(:url => {:action => "get_batches"},
+            :with => "'id='+value+'&check_paid='+1",
             :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}"
+            :success => "Element.hide('loader')")}", :autocomplete => "off"
           }%>
         </div>
-        <div class="loader_div">
-          <%= image_tag("loader.gif",
+        <%= image_tag("loader.gif",
             :align => "absmiddle",
             :border => 0,
             :id => "loader",
-            :style =>"display: none; " ) %>
-        </div>
-        <%#=link_to_function "show inactive batches","show_inactive_batches()",{:class=>'user_button'}%>
+            :style =>"display: none; padding-left: 20px; padding-top: 10px;" ) %>
+        <%#=link_to_function "show inactive batches","show_all_dates()",{:class=>'user_button'}%>
 
       </div>
-    <div class="label-field-pair" id="hide2"><label><%= t('select_a_batch') %></label>
-        <div class="text-input-bg"> <%= select :fees_submission_inactive, :batch_id, @inactive_batches.map { |c| [c.full_name, c.id] },
-            {:prompt => "#{t('select_a_batch')}"},
-            {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates"},
-            :with => "'batch_id='+value+'&opt='+\"#{@option}\"",
-            :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}"
-          }%>
-        </div>
-        <div class="loader_div">
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader",
-            :style =>"display: none; " ) %>
-        </div>
+      
+      <div class="label-field-pair" id="hide2">
+          <div class="label-container"><%= t('select_fee_collection') %></div>
+          <div class="input-container"> 
+            <%= select :fees_submission_all, :date_id, @all_finance_fee_collections.map { |c| [c.full_name, c.id] },
+              {:prompt => "#{t('select_fee_collection')}"},
+              {:onChange => "#{remote_function(:url => {:action => "get_batches"},
+              :with => "'id='+value",
+              :before => "Element.show('loader1')",
+              :success => "Element.hide('loader1')")}", :autocomplete => "off"
+            }%>
+          </div>
+          <div class="loader_div">
+              <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader1",
+                :style =>"display: none; " ) %>
+          </div>
        <%#=link_to_function "show active batches","show_active_batches()",{:class=>'user_button'}%>
       </div>
-      <div class="label-field-pair"><label><%= t('select_fee_collection_date') %></label>
-
-        <div class="text-input-bg">
-          <div id="fees_collection_dates">
-            <%= render :partial => "fees_collection_dates"  %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <div id="student"> </div>
-
-    <div id="modal-box" style="display:none;"></div>
   </div>
+  <div id="batchs1">
+      <%= render :partial => "fees_collection_batches"  %>
+  </div>  
+  <div style="clear: both; height: 10px;"  ></div>
+  <div id="student"> </div>
+  <div id="modal-box" style="display:none;"></div>  
   <div class="extender"></div>
+  <% end %>
 </div>
 
 <script type="text/javascript">
-   document.observe("dom:loaded", function() {
+  var shift_press = false;
+  var showing_custom = false;
+  var shift_key = 0;
+  document.observe("dom:loaded", function() {
       j('#hide2').hide();
       j('#active-batch-link').hide();
   });
   
-   j(document).ready(function(){
+  j(document).ready(function(){
+      j(document).on("click", "ul.batch_ul li.batchli", function(){
+            j(this).toggleClass('active');
+      });
+      
+      j(document).on("click", "ul.student_ul li.studentli", function(){
+            j(this).toggleClass('active');
+      });
+      
+      j(document).on("click", "ul.batch_ul_assign li.batchli", function(){
+            j(this).toggleClass('active');
+      });
+      
+      j(document).on("click", "ul.student_ul_assign li.studentli", function(){
+            j(this).toggleClass('active');
+      });
+      
+      j(document).on("click", "#customized", function(){
+            if ( showing_custom )
+            {
+                showing_custom = false;
+                j('.tab_select_button').css('border-bottom','1px solid #ccc');
+                j('.tab_select_button').css('border-bottom-left-radius','4px');
+                j('.tab_select_button').css('border-bottom-right-radius','4px');
+                j('#customized_div').css('border','0px solid #ccc');
+                j('#customized').html('&plus; Select Student');
+                j("#customized_div").html('');
+            }
+            else
+            {
+              var batch_id = '';
+              var count_batch = 0;
+              j("ul.batch_ul_assign li.batchli").each(function(){
+                  count_batch++;
+                  var id = this.id.replace("batch_","");
+                  batch_id += id + ","
+              });
+              if ( count_batch == 0 )
+              {
+                  alert("NO Batch is selected for export");
+              }
+              else
+              {
+                  j('#loader_custom').css("display",'inline-block');
+                  batch_id = batch_id.substr(0, batch_id.length - 1);
+                  new Ajax.Request('/tally_exports/export_batches',
+                    {asynchronous:true, evalScripts:true,
+                      parameters:'batches='+batch_id+'&check_paid=1',onSuccess:function(request){
+                          showing_custom = true;
+                          j('.tab_select_button').css('border-bottom','0');
+                          j('.tab_select_button').css('border-bottom-left-radius','0');
+                          j('.tab_select_button').css('border-bottom-right-radius','0');
+                          j('#customized_div').css('border','1px solid #ccc');
+                          j('#customized').html('&minus; Select Student');
+                          j('#loader_custom').hide();
+                      }
+                  })
+              }
+            }
+      });
+      
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("student_","");
+              var val = j(this).html();
+              if ( val.indexOf(srch_val) == -1  )
+              {
+                  j(this).removeClass('active');
+                  j(this).hide();
+              }
+              else
+              {
+                  j(this).show();
+              }
+          });
+      });
+      
+      j(document).on("click", "#export_all", function(){
+            var batch_id = "";
+            var count_batch = 0;
+            j("ul.batch_ul_assign li.batchli").each(function(){
+                count_batch++;
+                var id = this.id.replace("batch_","");
+                batch_id += id + ","
+            });
+            if ( count_batch == 0 )
+            {
+                alert("NO Batch is selected for export");
+            }
+            else
+            {
+                var s_particulars = "";
+                j(".export_particulars").each(function(){
+                    if ( j(this).prop("checked") )
+                    {
+                       s_particulars += j(this).val() + ",";
+                    }
+                });
+                s_particulars = s_particulars.substr(0, s_particulars.length - 1);
+                
+                batch_id = batch_id.substr(0, batch_id.length - 1);
+                j("#batches").val(batch_id);
+                //j("#tally_receipt_export").submit();
+                
+                var type = 3;
+                var student_ids = "";
+                if ( showing_custom )
+                {
+                    type = 0;
+                    student_ids = get_student_ids();
+                }
+                else
+                {
+                    type = 3;
+                }
+                
+                var win = window.open("/tally_exports/download_receipt?type=" + type + "&batches=" + batch_id + "&date_id=" + j('#fees_submission_date_id').val() + "&particulars=" + s_particulars + "&export_date=" + j('#export_date').val() + "&students=" + student_ids,"_blank"); 
+                win.focus();
+            }
+      });
+      
+      j(document).on("click", "span.update_all", function(){
+            j("ul.batch_ul li.batchli").each(function(){
+                var batch_html = j(this).html();
+                var id = this.id.replace("batch_","");
+                var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
+                j(".batch_ul_assign").append(html);
+                j(this).toggleClass('active');
+                j(this).remove();
+            });
+      });
+      
+      j(document).on("click", "span.update_all_student", function(){
+            j("ul.student_ul li.studentli").each(function(){
+                if ( j(this).css('display') != 'none' )
+                {
+                  var ul_id = j(this).parent().attr('id').replace("student_ul_","");
+                  var student_html = j(this).html();
+                  var id = this.id.replace("student_","");
+                  var html = '<li class="studentli" id="student_' + ul_id + '_' + id + '">' + student_html + '</li>';
+                  j(".student_ul_assign").append(html);
+                  j(this).toggleClass('active');
+                  j(this).remove();
+                }
+            });
+      });
+      
+      j(document).on("click", "span.remove_all", function(){
+            j("ul.batch_ul_assign li.batchli").each(function(){
+                var batch_html = j(this).html();
+                var id = this.id.replace("batch_","");
+                var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
+                j(".batch_ul").append(html);
+                j(this).toggleClass('active');
+                j(this).remove();
+            });
+      });
+      
+      j(document).on("click", "span.remove_all_student", function(){
+            j("ul.student_ul_assign li.studentli").each(function(){
+                var li_id = j(this).attr('id').replace("student_","");
+                var a_id = li_id.split("_");
+                var batch_id = a_id[0];
+                var student_id = a_id[1];
+                var student_html = j(this).html();
+                
+                var html = '<li class="studentli" id="student_' + student_id + '">' + student_html + '</li>';
+                
+                if ( j("#student_ul_" + batch_id).length > 0 )
+                {
+                  j("#student_ul_" + batch_id).append(html);
+                }
+                j(this).toggleClass('active');
+                j(this).remove();
+            });
+      });
+      
+      j(document).on("click", "span.update_one", function(){
+            j("ul.batch_ul li.batchli").each(function(){
+                if ( j(this).hasClass('active') )
+                {
+                  var batch_html = j(this).html();
+                  var id = this.id.replace("batch_","");
+                  var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
+                  j(".batch_ul_assign").append(html);
+                  j(this).toggleClass('active');
+                  j(this).remove();
+                }
+            });
+      });
+      
+      j(document).on("click", "span.update_one_student", function(){
+            j("ul.student_ul li.studentli").each(function(){
+                if ( j(this).css('display') != 'none' && j(this).hasClass('active') )
+                {
+                  var ul_id = j(this).parent().attr('id').replace("student_ul_","");
+                  var student_html = j(this).html();
+                  var id = this.id.replace("student_","");
+                  var html = '<li class="studentli" id="student_' + ul_id + '_' + id + '">' + student_html + '</li>';
+                  j(".student_ul_assign").append(html);
+                  j(this).toggleClass('active');
+                  j(this).remove();
+                }
+            });
+      });
+      
+      j(document).on("click", "span.remove_one", function(){
+            j("ul.batch_ul_assign li.batchli").each(function(){
+                if ( j(this).hasClass('active') )
+                {
+                  var batch_html = j(this).html();
+                  var id = this.id.replace("batch_","");
+                  var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
+                  j(".batch_ul").append(html);
+                  j(this).remove();
+                }
+            });
+      });
+      
+      j(document).on("click", "span.remove_one_student", function(){
+            j("ul.student_ul_assign li.studentli").each(function(){
+                if ( j(this).hasClass('active') )
+                {
+                  var li_id = j(this).attr('id').replace("student_","");
+                  var a_id = li_id.split("_");
+                  var batch_id = a_id[0];
+                  var student_id = a_id[1];
+                  var student_html = j(this).html();
+                  
+                  var html = '<li class="studentli" id="student_' + student_id + '">' + student_html + '</li>';
+                  if ( j("#student_ul_" + batch_id).length > 0 )
+                  {
+                    j("#student_ul_" + batch_id).append(html);
+                  }
+                  j(this).remove();
+                }
+            });
+      });
+      
       j(document).on("click", ".select_all", function(){
             if ( j(this).prop("checked") )
             {
@@ -133,18 +376,18 @@
             
       });
   });
-
-  function show_inactive_batches(){
-    $('fees_submission_batch_id').value=""
-   j('#hide2').show();
+  
+  function show_all_dates(){
+    $('fees_submission_all_date_id').value=""
+    j('#hide2').show();
     j('#hide1').hide();
     j('#active-batch-link').show();
     j('#inactive-batch-link').hide();
   }
 
-  function show_active_batches(){
-   $('fees_submission_inactive_batch_id').value=""
-   j('#hide1').show();
+  function show_last_three_dates(){
+    $('fees_submission_date_id').value=""
+    j('#hide1').show();
     j('#hide2').hide();
     j('#inactive-batch-link').show();
     j('#active-batch-link').hide();
@@ -203,5 +446,19 @@
   function set_back(){
     $('fees_form').removeAttr("onsubmit");
     setTimeout(function(){$('submit_button').enable();},15000);
+  }
+  
+  function get_student_ids()
+  {
+      var student_ids = ""
+      j("ul.student_ul_assign li.studentli").each(function(){
+          var li_id = j(this).attr('id').replace("student_","");
+          var a_id = li_id.split("_");
+          var batch_id = a_id[0];
+          var student_id = a_id[1];
+          student_ids += student_id + ","; 
+      });
+      student_ids = student_ids.substr(0, student_ids.length - 1);
+      return student_ids;
   }
 </script>

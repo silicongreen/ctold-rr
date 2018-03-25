@@ -246,6 +246,10 @@ class TallyExportsController < ApplicationController
       date_id = params[:id]
       @date = FinanceFeeCollection.find(date_id)
       @batches = @date.batches
+      @check_paid = "0"
+      unless params[:check_paid].nil? or params[:check_paid].empty?
+        @check_paid = params[:check_paid]
+      end
     end
     render :update do |page|
       page.replace_html "batchs1", :partial => "fees_collection_batches"
@@ -254,9 +258,12 @@ class TallyExportsController < ApplicationController
   
   def export_receipt
     @option = 'receipt'
-    @batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>true},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
-    @inactive_batches = Batch.find(:all,:conditions=>{:is_deleted=>false,:is_active=>false},:joins=>:course,:select=>"`batches`.*,CONCAT(courses.code,'-',batches.name) as course_full_name",:order=>"course_full_name")
-    @dates = []
+    @date_today = Date.today
+    end_of_month = @date_today.end_of_month
+    start_month = end_of_month - 90
+    
+    @finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false} and due_date >= '#{start_month.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{end_of_month.to_date.strftime("%Y-%m-%d")}'"] )
+    @all_finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false}"] )
   end
   
   def update_fees_collection_dates
@@ -271,6 +278,7 @@ class TallyExportsController < ApplicationController
   def export_batches
     unless params[:batches].nil? or params[:batches].empty?
       @batches = Batch.find(:all,:conditions=> ["is_deleted=#{false} and is_active=#{true} and id IN (" + params[:batches] + ")"])
+      @check_paid = params[:check_paid]
     end
     if request.xhr?
       render(:update) do |page|
@@ -286,7 +294,15 @@ class TallyExportsController < ApplicationController
       @batch   = Batch.find(params[:id])
       
       student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
-      @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+      unless params[:check_paid].nil? or params[:check_paid].empty?
+        if params[:check_paid].to_i == 1
+          @fees = FinanceFee.all(:conditions=>"is_paid=#{true} and fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+        else  
+          @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+        end
+      else
+        @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+      end
       
       @student_ids = []
       unless params[:student_ids].nil? or params[:student_ids].empty?
@@ -513,79 +529,120 @@ class TallyExportsController < ApplicationController
     end
   end
   
+  
+  
+  
+  
   def download_receipt
-    @batch   = Batch.find(params[:batch_id])
-    @date    = @fee_collection =  FinanceFeeCollection.find(params[:date])
-    @type    = params[:type]
-    
-    if @type.to_i == 0
-      student_ids = params[:students]
-      @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(finance_fees.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
-    else
-      student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
-      @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
-    end
-    
-    @dates   = @batch.finance_fee_collections
-    
-    #For Receipt we only need Paid User, So I am Removing the others 
-    @fees_data = @fees.select{|f| f.is_paid}
-    
+    auto_generate_voucher = false
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
-    
+
     row_1 = ["Date","Voucher No","Vtype","Type","To","Amount","Narration"]
-    
+
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new
 
     # Create the worksheet
-    new_book.create_worksheet :name => 'Receipt'
+    new_book.create_worksheet :name => 'Journal'
 
     # Add row_1
     new_book.worksheet(0).insert_row(0, row_1)
     
-    unless @fees_data.nil?
-      ind = 1
-      @fees_data.each do |fee|
-          student ||= fee.student
-          to = student.admission_no.gsub("SJW","")
-          to = to.gsub("FC","")
-          to = to.gsub("MC","")
-          @financefee = student.finance_fee_by_date @date
+    vtype = 'Journal'
+    ind = 1
+    
+    unless params[:batches].nil? or params[:batches].empty?
+      particulars = ['particular','discount','late']
+      unless params[:particulars].nil?
+        particulars = params[:particulars].split(",")
+      end
+      transaction_date = Date.today.to_date.strftime("%m/%d/%Y")
+      unless params[:export_date].nil?
+        transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+      end
+      @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
+      batches = params[:batches].split(",")
+      batches.each do |batch_id|
+        @batch   = Batch.find(batch_id)
+        
+        @type    = params[:type]
+        
+        if @type.to_i == 0
+          unless params[:students].nil? or params[:students].empty?
+            student_ids = params[:students]
+          else
+            student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
+          end
+          @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}') and batches.id = #{@batch.id}" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN batches ON batches.id = students.batch_id')
+        else
+          student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
+          @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+        end
+        
+        @dates   = @batch.finance_fee_collections
+
+        @fees_data = @fees.select{|f| f.is_paid}
+        
+        unless @fees_data.nil?
           
-          @due_date = @fee_collection.due_date
-          if @financefee.is_paid
-            @paid_fees = fee.finance_transactions
+          @fees_data.each do |fee|
+            student ||= fee.student
+            student ||= fee.student
+            to = student.admission_no.gsub("SJW","")
+            to = to.gsub("FC","")
+            to = to.gsub("MC","")
+            @financefee = student.finance_fee_by_date @date
             
-            unless @paid_fees.blank?
-              description = @paid_fees[0].title
-              @paid_fees.each do |trans|
-                voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
-                vtype = 'Receipt'
-                if trans.payment_mode.nil? or trans.payment_mode.blank? or trans.payment_mode.empty?
-                  type = "Cash"
-                else
-                  type = trans.payment_mode
+            @due_date = @fee_collection.start_date
+            #transaction_date = @due_date.to_date.strftime("%m/%d/%Y")
+            if auto_generate_voucher
+              voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
+            else
+              voucher_no = @due_date.strftime "%b-%y" 
+            end
+            
+            if @financefee.is_paid
+              @paid_fees = fee.finance_transactions
+              unless @paid_fees.blank?
+                description = @paid_fees[0].title
+                @paid_fees.each do |trans|
+                  vtype = 'Receipt'
+                  if trans.payment_mode.nil? or trans.payment_mode.blank? or trans.payment_mode.empty?
+                    type = "Cash"
+                  else
+                    type = trans.payment_mode
+                  end
+                  amount = trans.amount
+                  description = trans.title
+
+                  row_new = [transaction_date, voucher_no, vtype, type, to, amount, description]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
                 end
-                amount = trans.amount
-                description = trans.title
-                
-                row_new = [trans.transaction_date.to_date.strftime("%m/%d/%Y"), voucher_no, vtype, type, to, amount, description]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
               end
             end
             
           end
-          
+        end
+      end
+      
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+
+      send_data spreadsheet.string, :filename => @date.full_name + ".xls", :type =>  "application/vnd.ms-excel"
+    else
+      flash[:notice] = "#{t('no_batch_selected')}"
+      unless params[:date_id].nil? or params[:date_id].empty?
+        date_id = params[:date_id]
+        @date = FinanceFeeCollection.find(date_id)
+        @batches = @date.batches
+      end
+      render :update do |page|
+        page.replace_html "batchs1", :partial => "fees_collection_batches"
+        page.replace_html "error", :partial => "error_message"
       end
     end
-    
-    spreadsheet = StringIO.new 
-    new_book.write spreadsheet 
-    
-    send_data spreadsheet.string, :filename => @date.full_name + ".xls", :type =>  "application/vnd.ms-excel"
   end
   
   def load_fees_submission_batch

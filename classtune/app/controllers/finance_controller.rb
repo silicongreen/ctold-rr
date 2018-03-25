@@ -377,6 +377,22 @@ class FinanceController < ApplicationController
     end
   end
   
+  def date_wise_transaction
+    fixed_category_name
+    if date_format_check
+      unless @start_date > @end_date
+        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
+        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
+        @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
+        @all_fees_extra_particulers = []
+        @all_fees_extra_particulers << "Discount"
+        @all_fees_extra_particulers << "Fine"
+        @all_fees_extra_particulers << "VAT"
+        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"],:include=>"finance_transaction")
+      end
+    end
+  end
+  
   
   def transaction_pdf_fees_csv
     fixed_category_name
@@ -394,7 +410,7 @@ class FinanceController < ApplicationController
         @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
   
     
-    end
+      end
     end
     
    

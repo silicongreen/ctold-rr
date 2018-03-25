@@ -59,7 +59,11 @@
     <tbody>
     <% @dates.each do |day| %>
     <tr class="tr-odd">
-      <td style="white-space: nowrap;" class="align-center"><%= day.last %></td>
+      <td style="white-space: nowrap;" class="align-center">
+
+          <a href="/finance/update_monthly_report_fees?start_date=<%= day.first.strftime("%Y-%m-%d").to_date.beginning_of_month %>&end_date=<%= day.first.strftime("%Y-%m-%d").to_date.end_of_month %>" target="_blank" ><%= day.last %></a>
+      
+      </td>
       <% total_fees = 0.0 %>
       <% i = 0 %>
       

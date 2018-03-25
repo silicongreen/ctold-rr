@@ -34,6 +34,7 @@ authorization do
       :download_receipt,
       :get_batches,
       :export_batches,
+      :get_user_by_batches,
       :failed_syncs
     ]
   end
@@ -72,6 +73,7 @@ authorization do
       :download_receipt,
       :get_batches,
       :export_batches,
+      :get_user_by_batches,
       :failed_syncs
     ]
   end

@@ -270,11 +270,33 @@ class TallyExportsController < ApplicationController
   
   def export_batches
     unless params[:batches].nil? or params[:batches].empty?
-      @batches = Batch.find(:all,:conditions=> ["is_deleted=#{false} and is_active=#{true} and id IN (?)",params[:batches].split(",").join(",")])
+      @batches = Batch.find(:all,:conditions=> ["is_deleted=#{false} and is_active=#{true} and id IN (" + params[:batches] + ")"])
     end
     if request.xhr?
       render(:update) do |page|
         page.replace_html   'customized_div', :partial=>"student_batches_export"
+      end
+    end
+  end
+  
+  def get_user_by_batches
+    unless params[:id].nil? or params[:id].empty?
+      @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
+      
+      @batch   = Batch.find(params[:id])
+      
+      student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
+      @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+      
+      @student_ids = []
+      unless params[:student_ids].nil? or params[:student_ids].empty?
+        @student_ids = params[:student_ids].split(",")
+      end
+      
+    end
+    if request.xhr?
+      render(:update) do |page|
+        page.replace_html   'student_div', :partial=>"student_fees_batches"
       end
     end
   end
@@ -315,8 +337,12 @@ class TallyExportsController < ApplicationController
         @type    = params[:type]
         
         if @type.to_i == 0
-          student_ids = params[:students]
-          @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(finance_fees.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+          unless params[:students].nil? or params[:students].empty?
+            student_ids = params[:students]
+          else
+            student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
+          end
+          @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}') and batches.id = #{@batch.id}" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN batches ON batches.id = students.batch_id')
         else
           student_ids = @date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
           @fees = FinanceFee.all(:conditions=>"fee_collection_id = #{@date.id} and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
@@ -324,14 +350,7 @@ class TallyExportsController < ApplicationController
         
         @dates   = @batch.finance_fee_collections
 
-        if @type.to_i == 2
-          @fees_data = @fees.select{|f| f.is_paid}
-        elsif @type.to_i == 3
-         @fees_data = @fees.select{|f| !f.is_paid}
-        else
-          @fees_data = @fees
-        end
-        
+        @fees_data = @fees.select{|f| !f.is_paid}
         unless @fees_data.nil?
           
           @fees_data.each do |fee|
@@ -356,6 +375,7 @@ class TallyExportsController < ApplicationController
             total_amount = 0
             amount_paid = 0
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
+            
             if particulars.include?("particular")
               unless @fee_particulars.nil?
                   @fee_particulars.each do |fee_p|

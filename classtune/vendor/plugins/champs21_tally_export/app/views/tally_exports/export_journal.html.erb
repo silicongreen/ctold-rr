@@ -70,6 +70,7 @@
 
 <script type="text/javascript">
   var shift_press = false;
+  var showing_custom = false;
   var shift_key = 0;
   document.observe("dom:loaded", function() {
       j('#hide2').hide();
@@ -81,31 +82,78 @@
             j(this).toggleClass('active');
       });
       
+      j(document).on("click", "ul.student_ul li.studentli", function(){
+            j(this).toggleClass('active');
+      });
+      
       j(document).on("click", "ul.batch_ul_assign li.batchli", function(){
             j(this).toggleClass('active');
       });
       
+      j(document).on("click", "ul.student_ul_assign li.studentli", function(){
+            j(this).toggleClass('active');
+      });
+      
       j(document).on("click", "#customized", function(){
-            var batch_id = '';
-            var count_batch = 0;
-            j("ul.batch_ul_assign li.batchli").each(function(){
-                count_batch++;
-                var id = this.id.replace("batch_","");
-                batch_id += id + ","
-            });
-            if ( count_batch == 0 )
+            if ( showing_custom )
             {
-                alert("NO Batch is selected for export");
+                showing_custom = false;
+                j('.tab_select_button').css('border-bottom','1px solid #ccc');
+                j('.tab_select_button').css('border-bottom-left-radius','4px');
+                j('.tab_select_button').css('border-bottom-right-radius','4px');
+                j('#customized_div').css('border','0px solid #ccc');
+                j('#customized').html('&plus; Select Student');
+                j("#customized_div").html('');
             }
             else
             {
-                j('#loader_custom').css("display",'inline-block');
-                batch_id = batch_id.substr(0, batch_id.length - 1);
-                new Ajax.Request('/tally_exports/export_batches',
-                  {asynchronous:true, evalScripts:true,
-                    parameters:'batches='+batch_id+'',onSuccess:function(request){j('#loader_custom').hide();}
-                })
+              var batch_id = '';
+              var count_batch = 0;
+              j("ul.batch_ul_assign li.batchli").each(function(){
+                  count_batch++;
+                  var id = this.id.replace("batch_","");
+                  batch_id += id + ","
+              });
+              if ( count_batch == 0 )
+              {
+                  alert("NO Batch is selected for export");
+              }
+              else
+              {
+                  j('#loader_custom').css("display",'inline-block');
+                  batch_id = batch_id.substr(0, batch_id.length - 1);
+                  new Ajax.Request('/tally_exports/export_batches',
+                    {asynchronous:true, evalScripts:true,
+                      parameters:'batches='+batch_id+'',onSuccess:function(request){
+                          showing_custom = true;
+                          j('.tab_select_button').css('border-bottom','0');
+                          j('.tab_select_button').css('border-bottom-left-radius','0');
+                          j('.tab_select_button').css('border-bottom-right-radius','0');
+                          j('#customized_div').css('border','1px solid #ccc');
+                          j('#customized').html('&minus; Select Student');
+                          j('#loader_custom').hide();
+                      }
+                  })
+              }
             }
+      });
+      
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("student_","");
+              var val = j(this).html();
+              if ( val.indexOf(srch_val) == -1  )
+              {
+                  j(this).removeClass('active');
+                  j(this).hide();
+              }
+              else
+              {
+                  j(this).show();
+              }
+          });
       });
       
       j(document).on("click", "#export_all", function(){
@@ -134,7 +182,20 @@
                 batch_id = batch_id.substr(0, batch_id.length - 1);
                 j("#batches").val(batch_id);
                 //j("#tally_journal_export").submit();
-                var win = window.open("/tally_exports/download_journal?type=3&batches=" + batch_id + "&date_id=" + j('#fees_submission_date_id').val() + "&particulars=" + s_particulars + "&export_date=" + j('#export_date').val(),"_blank"); 
+                
+                var type = 3;
+                var student_ids = "";
+                if ( showing_custom )
+                {
+                    type = 0;
+                    student_ids = get_student_ids();
+                }
+                else
+                {
+                    type = 3;
+                }
+                
+                var win = window.open("/tally_exports/download_journal?type=" + type + "&batches=" + batch_id + "&date_id=" + j('#fees_submission_date_id').val() + "&particulars=" + s_particulars + "&export_date=" + j('#export_date').val() + "&students=" + student_ids,"_blank"); 
                 win.focus();
             }
       });
@@ -150,12 +211,46 @@
             });
       });
       
+      j(document).on("click", "span.update_all_student", function(){
+            j("ul.student_ul li.studentli").each(function(){
+                if ( j(this).css('display') != 'none' )
+                {
+                  var ul_id = j(this).parent().attr('id').replace("student_ul_","");
+                  var student_html = j(this).html();
+                  var id = this.id.replace("student_","");
+                  var html = '<li class="studentli" id="student_' + ul_id + '_' + id + '">' + student_html + '</li>';
+                  j(".student_ul_assign").append(html);
+                  j(this).toggleClass('active');
+                  j(this).remove();
+                }
+            });
+      });
+      
       j(document).on("click", "span.remove_all", function(){
             j("ul.batch_ul_assign li.batchli").each(function(){
                 var batch_html = j(this).html();
                 var id = this.id.replace("batch_","");
                 var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
                 j(".batch_ul").append(html);
+                j(this).toggleClass('active');
+                j(this).remove();
+            });
+      });
+      
+      j(document).on("click", "span.remove_all_student", function(){
+            j("ul.student_ul_assign li.studentli").each(function(){
+                var li_id = j(this).attr('id').replace("student_","");
+                var a_id = li_id.split("_");
+                var batch_id = a_id[0];
+                var student_id = a_id[1];
+                var student_html = j(this).html();
+                
+                var html = '<li class="studentli" id="student_' + student_id + '">' + student_html + '</li>';
+                
+                if ( j("#student_ul_" + batch_id).length > 0 )
+                {
+                  j("#student_ul_" + batch_id).append(html);
+                }
                 j(this).toggleClass('active');
                 j(this).remove();
             });
@@ -175,6 +270,21 @@
             });
       });
       
+      j(document).on("click", "span.update_one_student", function(){
+            j("ul.student_ul li.studentli").each(function(){
+                if ( j(this).css('display') != 'none' && j(this).hasClass('active') )
+                {
+                  var ul_id = j(this).parent().attr('id').replace("student_ul_","");
+                  var student_html = j(this).html();
+                  var id = this.id.replace("student_","");
+                  var html = '<li class="studentli" id="student_' + ul_id + '_' + id + '">' + student_html + '</li>';
+                  j(".student_ul_assign").append(html);
+                  j(this).toggleClass('active');
+                  j(this).remove();
+                }
+            });
+      });
+      
       j(document).on("click", "span.remove_one", function(){
             j("ul.batch_ul_assign li.batchli").each(function(){
                 if ( j(this).hasClass('active') )
@@ -183,6 +293,26 @@
                   var id = this.id.replace("batch_","");
                   var html = '<li class="batchli" id="batch_' + id + '">' + batch_html + '</li>';
                   j(".batch_ul").append(html);
+                  j(this).remove();
+                }
+            });
+      });
+      
+      j(document).on("click", "span.remove_one_student", function(){
+            j("ul.student_ul_assign li.studentli").each(function(){
+                if ( j(this).hasClass('active') )
+                {
+                  var li_id = j(this).attr('id').replace("student_","");
+                  var a_id = li_id.split("_");
+                  var batch_id = a_id[0];
+                  var student_id = a_id[1];
+                  var student_html = j(this).html();
+                  
+                  var html = '<li class="studentli" id="student_' + student_id + '">' + student_html + '</li>';
+                  if ( j("#student_ul_" + batch_id).length > 0 )
+                  {
+                    j("#student_ul_" + batch_id).append(html);
+                  }
                   j(this).remove();
                 }
             });
@@ -318,4 +448,17 @@
     setTimeout(function(){$('submit_button').enable();},15000);
   }
   
+  function get_student_ids()
+  {
+      var student_ids = ""
+      j("ul.student_ul_assign li.studentli").each(function(){
+          var li_id = j(this).attr('id').replace("student_","");
+          var a_id = li_id.split("_");
+          var batch_id = a_id[0];
+          var student_id = a_id[1];
+          student_ids += student_id + ","; 
+      });
+      student_ids = student_ids.substr(0, student_ids.length - 1);
+      return student_ids;
+  }
 </script>

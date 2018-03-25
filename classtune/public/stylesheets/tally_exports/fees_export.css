@@ -821,14 +821,14 @@ a.next_page, a.prev_page {
     font-size: 12px;
 }
 
-ul.batch_ul, ul.batch_ul_assign {
+ul.batch_ul, ul.batch_ul_assign, ul.student_ul, ul.student_ul_assign {
   list-style-type: none;
   margin: 0;
   padding: 0;
   outline: none;
 }
  
-li.batchli {
+li.batchli, li.studentli {
   font: 200 15px/1.5 Helvetica, Verdana, sans-serif;
   border-bottom: 1px solid #ccc;
   padding: 7px 10px;
@@ -836,7 +836,7 @@ li.batchli {
   text-align: left;
 }
  
-li.batchli:hover {
+li.batchli:hover, li.studentli:hover {
   background: #c4e3f3;
 }
 
@@ -844,11 +844,11 @@ li.active {
   background: #428bca;
 }
 
-li.batchli:last-child {
+li.batchli:last-child, li.studentli:last-child {
   border: none;
 }
  
-li.batchli span {
+li.batchli span, li.studentli span {
   text-decoration: none;
   color: #000;
   display: block;
@@ -888,4 +888,23 @@ li.batchli span {
 
 .remove_one:after{
     border-bottom: 2px solid #d5d5d5;
+}
+
+.tab_select_button {
+    display: inline-table;
+    text-align: left;
+    background: transparent !important;
+    color: #000 !important;
+    border: 1px solid #ccc;
+    padding: 4px 7px 5px 5px;
+    border-radius: 4px;
+/*    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;*/
+    font-weight: bold;
+    font-size: 14px;
+    cursor:pointer;
+    margin: 0 auto;
+    text-decoration: none;
+    float: none;
 }

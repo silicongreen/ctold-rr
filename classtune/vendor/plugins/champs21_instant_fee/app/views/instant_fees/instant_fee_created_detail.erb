@@ -37,62 +37,75 @@
 
   <div id="list_transactions">
     <div class="extender"></div>
-    <div class="details_fee">
-      <div class="info"><label><%= t('payee_name') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.payee_name %></div></div>
-      <div class="info"><label><%= t('category_name') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.category_name %></div></div>
-      <div class="info"><label><%= t('category_description') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.category_description %></div></div>
+    <div style="padding-bottom: 20px;">
+        <div style=""><label style="font-size: 16px;"><%= t('payee_name') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.payee_name %></div></div><br />
+        <div style="padding-top:10px;"><label style="font-size: 16px;"><%= t('category_name') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.category_name %></div></div>
       <% if @instant_fee.finance_transaction.present? %>
-        <div class="info"><label><%= t('receipt_no') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.finance_transaction.receipt_no %></div></div>
+        <% unless @instant_fee.finance_transaction.receipt_no.nil? or @instant_fee.finance_transaction.receipt_no.empty? %>
+        <div style="padding-top:10px;"><label style="font-size: 16px;"><%= t('receipt_no') %></label><span class="colon">:</span><div class="detail_describe themed_text"><%= @instant_fee.finance_transaction.receipt_no %></div></div>
+        <% end %>
       <% end %>
     </div>
+    <div style="clear: both; height: 20px;"></div>
     <% total_amount = 0 %>
+    <% total_quantity = 0 %>
     <% total_net_amount = 0 %>
-    <table class="sortable" id="listing" width="100%">
-      <tr class="tr-head">
-        <th class="col-sl"><%= t('sl_no') %></th>
-        <th class="col-2"><%= t('particular_name') %></th>
-        <th class="col-2"><%= t('amount') %></th>
-        <th class="col-2"><%= t('discount') %>(%)</th>
-        <th class="col-total"><%= t('total_amount') %></th>
-      </tr>
-      <tr class="tr-blank"></tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th class="col-sl"><%= t('sl_no') %></th>
+          <th class="col-2"><%= t('particular_name') %></th>
+          <th class="col-2"><%= t('amount') %></th>
+          <th class="col-2"><%= t('quantity') %></th>
+          <th class="col-2"><%= t('discount') %>(%)</th>
+          <th class="col-total"><%= t('total_amount') %></th>
+        </tr>
+      </thead>
+      <tbody>
       <% @instant_fee_details.each_with_index do |detail,index| %>
         <tr class="tr-<%= cycle('odd','even') %>">
           <td class="col-sl"><%= index +=1 %></td>
           <td class="col-2"><%= detail.particular_name %></td>
-          <td class="col-2">
+          <td class="col-2" style="text-align: right;">
             <%= precision_label(detail.amount) %>
           </td>
-          <td class="col-2">
+          <td class="col-2" style="text-align: center;">
+            <% if detail.quantity.to_i == 0 %>  
+              <span style="font-weight: bold; display: block; text-align: center;">  &minus;</span>
+            <% else %>
+            <%= detail.quantity %>
+            <% end %>
+          </td>
+          <td class="col-2" style="text-align: right;">
             <%= precision_label(detail.discount) %>
           </td>
-          <td class="col-total">
+          <td class="col-total" style="text-align: right;">
             <%= precision_label(detail.net_amount) %>
           </td>
           <% total_amount += detail.amount  unless detail.amount.nil?%>
+          <% total_quantity += detail.quantity  unless detail.quantity.nil?%>
           <% total_net_amount += detail.net_amount unless detail.net_amount.nil?%>
         </tr>
       <% end %>
       <tr class="tr-<%= cycle('odd','even') %>">
-        <td class="total themed_text" colspan ="2"><b><%= t('total') %></b></td>
-        <td class="col-2">
-          <%= precision_label(total_amount) %>
+        <td class="total themed_text" colspan ="2" style="text-align: right"><span style="font-weight: bold; display: block; text-align: right;"><%= t('total') %></span></td>
+        <td class="col-2" style="text-align: right;">
+            <span style="font-weight: bold; display: block; text-align: right;"><%= precision_label(total_amount) %></span>
+        </td>
+        <td class="col-2" style="text-align: right;">
+            &nbsp;
         </td>
         <td class="col-2"></td>
-        <td class="col-total">
-          <%= precision_label(total_net_amount) %>
+        <td class="col-total" style="text-align: right;">
+            <span style="font-weight: bold; display: block; text-align: right;"><%= precision_label(total_net_amount) %></span>
         </td>
       </tr>
       <tr>
-        <td colspan="5">
-          <div class="pay_fees">
-            <div class="options-pay">
-              <div class="print_reciept"><%= link_to "#{t('print_receipt')}", {:controller=> "instant_fees",:action => "print_reciept" ,:id=>@instant_fee.id}, :target => "_blank", :class=>"user_button"%>
-              </div>
-            </div>
-          </div>
+        <td colspan="6" style="text-align: center; padding: 20px;">
+          <%= link_to "#{t('print_receipt')}", {:controller=> "instant_fees",:action => "print_reciept" ,:id=>@instant_fee.id}, :target => "_blank", :class=>"print_receipt", :style=>" "%>
         </td>
       </tr>
+      </tbody>
     </table>
   </div>
 </div>

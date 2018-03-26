@@ -282,6 +282,7 @@ class InstantFeesController < ApplicationController
           i = 0
           @amounts = params[:amount]
           @discounts = params[:discount]
+          @quantity = params[:quantity]
           @total_fees = params[:total]
           if particular_ids.nil? or particular_ids.empty?
             @flag=1
@@ -289,6 +290,7 @@ class InstantFeesController < ApplicationController
             particular_ids.each do|particular|
               @instant_fee_details = @instant_fee.instant_fee_details.new
               @instant_fee_details.instant_fee_particular_id = particular
+              @instant_fee_details.quantity = @quantity[i]
               @instant_fee_details.amount = @amounts[i]
               @instant_fee_details.discount = @discounts[i]
               @instant_fee_details.net_amount = @total_fees[i]
@@ -306,6 +308,7 @@ class InstantFeesController < ApplicationController
             @custom_particulars.each do |custom_particular|
               @instant_fee_details = @instant_fee.instant_fee_details.new
               @instant_fee_details.custom_particular = custom_particular
+              @instant_fee_details.quantity = @quantity[i]
               @instant_fee_details.amount = @amounts[i]
               @instant_fee_details.discount = @discounts[i]
               @instant_fee_details.net_amount = @total_fees[i]
@@ -360,7 +363,15 @@ class InstantFeesController < ApplicationController
   def print_reciept
     @instant_fee = InstantFee.find(params[:id])
     @instant_fee_details = @instant_fee.instant_fee_details.all
-    render :pdf =>'instant_fee_reciept'
+#    render :pdf =>'instant_fee_reciept'
+    render :pdf => 'instant_fee_reciept',
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}}
   end
 
   def report_detail
@@ -423,8 +434,9 @@ class InstantFeesController < ApplicationController
   def instant_fee_transaction_filter_by_date
     @category=params[:category_id]
     #@category=nil if params[:category_id]=='Custom'
-    @start_date=params[:s_date]
-    @end_date=params[:e_date]
+    @start_date=params[:s_date].to_date.strftime("%Y-%m-%d")
+    @end_date=params[:e_date].to_date.strftime("%Y-%m-%d")
+    
     unless @category=='Custom'
       @transactions=FinanceTransaction.paginate(:per_page=>10,:page=>params[:page],:order=>'created_at desc',:joins=>"INNER JOIN instant_fees ON instant_fees.id=finance_id INNER JOIN instant_fee_categories ON instant_fee_categories.id=instant_fee_category_id",:conditions=>["finance_type='InstantFee' AND instant_fees.instant_fee_category_id='#{params[:category_id]}' AND finance_transactions.created_at >= '#{@start_date}' and finance_transactions.created_at < '#{@end_date.to_date+1.day}'"])
     else

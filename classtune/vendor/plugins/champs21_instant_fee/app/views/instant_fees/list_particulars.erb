@@ -40,3 +40,17 @@
   <div id="modal-box" style="display:none;"></div>
   <div id="information"></div>
 </div>
+<script>
+  j(document).ready(function(){
+      j(document).on("click",".has_quantity",function(){
+          if ( j(this).prop("checked") )
+          {
+              j("#quantity_div").show();
+          }
+          else
+          {
+              j("#quantity_div").hide();
+          }
+      });
+  });
+</script>

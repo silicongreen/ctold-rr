@@ -17,44 +17,43 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <script type="text/javascript"> 
-  function setOption(optn) {
-    if (optn=='guest'){
-      $('payee_select').hide();
-      $('search_textbox').hide();
-    }
-    else
-    {
-      $('payee_select').show();
-      $('search_textbox').show();
-    }
-    document.getElementById("option").value = optn;}
+  function setOption(optn) 
+  {
+      if (optn=='guest')
+      {
+        $('payee_select').hide();
+      }
+      else
+      {
+        $('payee_select').show();
+      }
+      document.getElementById("option").value = optn;
+  }
 </script>
 <div id="partial-content">
   <div id="search_box_bg">
     <form name="search_form" action="" style="display:inline;">
       <%= hidden_field_tag("option", params['option'], :value => "student") %>
-      <label for="user_name" id ="payee_select"><%= "#{t('select_payee')}"%>
-      </label>
-      <div id="search_textbox">
-
-        <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
-
-      </div>
-      <div class="radio_button">
-        <div class="radio-label">
-          <input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('student')" /><%= t('student_text') %>
-          <input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('employee')" /><%= t('employee_text') %>
-          <input type="radio" name="setopt" id ="search_former_students_radio" onclick="setOption('guest')" /><%= t('guest')  %>
+        <div class="label-field-pair" id="payee_select" style="width: 99%;">  
+          <div class="label-container" style="text-align: right; padding-top: 10px; font-weight: bold; font-size: 16px;">
+            <%= t('select_payee') %>
+          </div>
+          <div class="input-container">
+            <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
+            <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader",
+              :style =>"display: none;" ) %>  
+          </div>
         </div>
-        <div class="img_loading">
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader",
-            :style =>"display: none;" ) %>
-        </div>
-      </div>
-
+        <div class="radio_button">
+          <div class="radio-label">
+            <input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('student')" /><%= t('student_text') %>
+            <input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('employee')" /><%= t('employee_text') %>
+            <!--input type="radio" name="setopt" id ="search_former_students_radio" onclick="setOption('guest')" /--><%#= t('guest')  %>
+          </div>
+        </div>  
     </form>
   </div>
 
@@ -78,6 +77,11 @@
 <div id="fee_window"></div>
 
 <script type="text/javascript">
+  function precision(x)
+  {
+    return Number.parseFloat(x).toFixed(2);
+  }
+  
   function validate_guest(){
     err_text = "";
     if ($('guest_payee').select('input')[0].value.trim()=="")
@@ -156,78 +160,63 @@
   var i=1;
   function insRow()
   {
-    var x=document.getElementById('listing');
-    var txt1 = document.createElement('input');
-    var txt2 = document.createElement('input');
-    var txt3 = document.createElement('input');
-    var txt4 = document.createElement('input');
-    var anchor = document.createElement('a');
-    var anchortext = document.createTextNode('x');
-    anchor.appendChild(anchortext);
-    var div1 = document.createElement('div');
-    var div2 = document.createElement('div');
-    var div3 = document.createElement('div');
-    var div4 = document.createElement('div');
-    div1.setAttribute('type', 'text');
-    div1.setAttribute('class', 'text-input-bg');
-    div2.setAttribute('type', 'text');
-    div2.setAttribute('class', 'text-input-bg1');
-    div3.setAttribute('type', 'text');
-    div3.setAttribute('class', 'text-input-bg1');
-    div4.setAttribute('type', 'text');
-    div4.setAttribute('class', 'text-input-bg1');
-    txt1.setAttribute('type', 'text');
-    txt1.setAttribute('class', 'particular_name');
-    txt1.setAttribute('name', 'name[]');
-    txt2.setAttribute('type', 'text');
-    txt2.setAttribute('class', 'text-input-bg1 input');
-    txt2.setAttribute('class', 'amount precision_text');
-    txt2.setAttribute('name', 'amount[]');
-    txt2.setAttribute('id', 'amount_' + (i + x.rows.length -6).toString());
-    txt2.setAttribute('onchange','update_total_by_amount(this)');
-    txt2.setAttribute('value',"<%= precision_label(0) %>");
-    txt3.setAttribute('type', 'text');
-    txt3.setAttribute('class', 'text-input-bg1 input precision_text');
-    txt3.setAttribute('name', 'discount[]');
-    txt3.setAttribute('id', 'discount_'  + (i + x.rows.length -6).toString());
-    txt3.setAttribute('onchange','update_total_by_discount(this)');
-    txt3.setAttribute('value','<%= precision_label(0) %>');
-    txt4.setAttribute('type', 'text');
-    txt4.setAttribute('class', 'particular_total');
-    txt4.setAttribute('name', 'total[]');
-    txt4.setAttribute('id', 'total_check_' + (i + x.rows.length -6).toString());
-    txt4.setAttribute('value',"<%= precision_label(0) %>");
-    txt4.setAttribute('readonly','true');
-    anchor.setAttribute('href','#');
-    anchor.setAttribute('onclick','delRow(this.parentNode.parentNode.rowIndex)');
-    anchor.setAttribute('id','delete_row');
-    anchor.setAttribute('class','themed_text');
-    div1.appendChild(txt1);
-    div2.appendChild(txt2);
-    div3.appendChild(txt3);
-    div4.appendChild(txt4);
-    var row = x.insertRow(x.rows.length - 6);
-    row.setAttribute('class', 'tr-odd');
-    i = x.rows.length - 8;
-    var y=row.insertCell(0);
-    y.setAttribute('class', 'col-2');
-    var z=row.insertCell(1);
-    z.setAttribute('class', 'col-2');
-    var m=row.insertCell(2);
-    m.setAttribute('class', 'col-6');
-    var n=row.insertCell(3);
-    n.setAttribute('class', 'col-2');
-    var o=row.insertCell(4);
-    o.setAttribute('class', 'col-2');
-    var p=row.insertCell(5);
-    p.setAttribute('class','col-select')
-    y.innerHTML="" + i;
-    z.appendChild(div1);
-    m.appendChild(div2);
-    n.appendChild(div3);
-    o.appendChild(div4);
-    p.appendChild(anchor);
-    i++;
+    var sn = parseInt(j("#instant_fee tr.particulars_tr:last td:first span").html());
+    var current_sn = sn + 1;
+    var clone_tr = j("#instant_fee tr.particulars_tr:last").clone();
+    j(clone_tr).attr("id","tr_fee_particular_" + current_sn);
+    if ( ! j(clone_tr).hasClass('particulars_tr_custom') )
+    {
+      j(clone_tr).addClass("particulars_tr_custom");
+    }
+    //clone_tr.hide();
+    j("#instant_fee tr.particulars_tr:last").after(clone_tr);
+    j("#instant_fee tr.particulars_tr:last td:first span").html(current_sn);
+    j("#instant_fee tr.particulars_tr:last td:first span").attr("id", "sn_span_" + current_sn);
+    
+    var clonetxt = j("#instant_fee tr.particulars_tr:last td.feeamount div input").clone();
+    j(clonetxt).attr("name","name[]");
+    j(clonetxt).attr("id","name_" + current_sn);
+    j(clonetxt).addClass("particular_name");
+    j(clonetxt).removeClass("amount");
+    j(clonetxt).removeClass("precision_text");
+    j(clonetxt).removeAttr("onchange");
+    j(clonetxt).removeAttr("disabled");
+    j(clonetxt).attr("value","");
+    j(clonetxt).css("margin-left","0");
+    
+    var cloneQuantityTxt = j("#instant_fee tr.particulars_tr:last td.feeamount div input").clone();
+    j(cloneQuantityTxt).attr("name","quantity[]");
+    j(cloneQuantityTxt).attr("id","quantity_" + current_sn);
+    j(cloneQuantityTxt).removeClass("amount");
+    j(cloneQuantityTxt).removeClass("precision_text");
+    j(cloneQuantityTxt).removeAttr("disabled");
+    j(cloneQuantityTxt).attr("onchange","update_total_by_quantity(this)");
+    j(cloneQuantityTxt).attr("value","1");
+    
+    j("#instant_fee tr.particulars_tr:last td.feename").addClass('label-field-pair');
+    j("#instant_fee tr.particulars_tr:last td.feename").html('<div class="input-container" style="width: 77%;">' + j('<div>').append(clonetxt).html() + '</div>');
+    
+    j("#instant_fee tr.particulars_tr:last td.feeamount div input").val(precision(0.0));
+    j("#instant_fee tr.particulars_tr:last td.feeamount div input").attr("id","amount_" + current_sn);
+    j("#instant_fee tr.particulars_tr:last td.feeamount div input").removeAttr("disabled");
+    
+    j("#instant_fee tr.particulars_tr:last td.feequantity").html('<div class="input-container" style="width: 40%;">' + j('<div>').append(cloneQuantityTxt).html() + '</div>');
+    
+    j("#instant_fee tr.particulars_tr:last td.feediscount div input").val(0);
+    j("#instant_fee tr.particulars_tr:last td.feediscount div input").attr("id","discount_" + current_sn);
+    j("#instant_fee tr.particulars_tr:last td.feediscount div input").removeAttr("disabled");
+    
+    j("#instant_fee tr.particulars_tr:last td.feetotal span").html(precision(0.0));
+    j("#instant_fee tr.particulars_tr:last td.feetotal span").attr("id","total_check_span_" + current_sn);
+    
+    j("#instant_fee tr.particulars_tr:last td.feetotal div input").val(precision(0.0));
+    j("#instant_fee tr.particulars_tr:last td.feetotal div input").attr("id","total_check_" + current_sn);
+    j("#instant_fee tr.particulars_tr:last td.feetotal div input").removeAttr("disabled");
+    
+    j("#instant_fee tr.particulars_tr:last td.feecross").html('<a href="javascript:;" id="cross_' + current_sn + '" class="cross">&#10008;</a>');
+    //j("#instant_fee tr.particulars_tr:last td.feecross input").val(current_sn);
+    //j("#instant_fee tr.particulars_tr:last td.feecross input").prop("checked",true);
+    //j("#instant_fee tr.particulars_tr:last td.feecross label").attr("for","check_" + current_sn);
   }
 
   function delRow(i)
@@ -252,54 +241,74 @@
   {
     var discount = che.id.replace('check',"discount");
     var amount = che.id.replace('check',"amount");
+    var quantity = che.id.replace('check',"quantity");
+    var name = che.id.replace('check',"name");
     var total = che.id.replace('check',"total_check");
-    var amount_text = document.getElementById(amount).value;
+    var total_span = che.id.replace('check',"total_check_span");
+    var amount_text = document.getElementById(amount).value * document.getElementById(quantity).value;
     var discount_text = document.getElementById(discount).value;
     if (isNaN(discount_text) == false && isNaN(amount_text) == false)
     {
-      if(che.checked){
+      if(che.checked)
+      {
         document.getElementById(amount).removeAttribute('disabled');
+        document.getElementById(quantity).removeAttribute('disabled');
         document.getElementById(discount).removeAttribute('disabled');
         document.getElementById(total).removeAttribute('disabled');
+        if (j("#" + name).length == 1)
+        {
+            document.getElementById(name).removeAttribute('disabled');
+        }
         if(amount_text == 0 || "")
         {
-          document.getElementById(total).value = 0.0;
-          amount_text = document.getElementById(amount).value = 0.0
+          document.getElementById(total).value = precision(0.0);
+          document.getElementById(total_span).innerHTML = precision(0.0);
+          amount_text = document.getElementById(amount).value = precision(0.0);
         }
         else
         {
           if(amount_text < 0)
           {
             alert("Amount can not be negative.")
-            document.getElementById(amount).value = 0.0
+            document.getElementById(amount).value = precision(0.0);
             col5total();
             return false;
           }
           if (discount_text == 0 || "")
           {
-            document.getElementById(total).value = amount_text.value
+            document.getElementById(total).value = precision(amount_text.value)
+            document.getElementById(total_span).innerHTML = precision(amount_text.value)
           }
           if (discount_text <= 100)
           {
             if(discount_text < 0)
             {
               alert("Discount cannot be negative.")
-              document.getElementById(discount).value = 0.0;
+              document.getElementById(discount).value = 0;
               col5total();
               return false;
             }
             else
-              document.getElementById(total).value = roundVal(parseFloat(amount_text - (amount_text * discount_text/100)));
+            {
+              document.getElementById(total).value = precision(roundVal(parseFloat(amount_text - (amount_text * discount_text/100))));
+              document.getElementById(total_span).innerHTML = precision(roundVal(parseFloat(amount_text - (amount_text * discount_text/100))));
+            }
           }
         }
 
       }
       else
       {
-        document.getElementById(total).value = 0.0;
+        document.getElementById(total).value = precision(0.0);
+        document.getElementById(total_span).innerHTML = precision(0.0);
         document.getElementById(amount).setAttribute('disabled','true');
         document.getElementById(discount).setAttribute('disabled','true');
         document.getElementById(total).setAttribute('disabled','true');
+        document.getElementById(quantity).setAttribute('disabled','true');
+        if (j("#" + name).length == 1)
+        {
+            document.getElementById(name).setAttribute('disabled','true');
+        }
       }
       col5total();
     }
@@ -308,43 +317,53 @@
     col5total();
   }
 
-  function update_total_by_amount(text_box){
+  function update_total_by_amount(text_box)
+  {
+    var quantity = text_box.id.replace('amount',"quantity");
     var discount = text_box.id.replace('amount',"discount");
     var total = text_box.id.replace('amount',"total_check");
+    var total_span = text_box.id.replace('amount',"total_check_span");
     var discount_text = document.getElementById(discount).value
+    var quantity_value = document.getElementById(quantity).value
     if (isNaN(discount_text) == false && isNaN(text_box.value)== false)
     {
       if(text_box.value < 0)
       {
-        alert("Amount can not be negative.")
-        text_box.value = 0.0;
-        document.getElementById(total).value = 0.0;
-        col5total();
-        return false;
+          alert("Amount can not be negative.")
+          text_box.value = precision(0.0);
+          document.getElementById(total).value = precision(0.0);
+          document.getElementById(total_span).innerHTML = precision(0.0);
+          col5total();
+          return false;
       }
       if(text_box.value == "")
       {
-        text_box.value = 0.0;
-        document.getElementById(total).value = 0.0;
-        col5total();
-        return false;
+          text_box.value = precision(0.0);
+          document.getElementById(total).value = precision(0.0);
+          document.getElementById(total_span).innerHTML = precision(0.0);
+          col5total();
+          return false;
       }
       if (discount_text == 0 || "")
       {
-        document.getElementById(total).value = text_box.value
-        document.getElementById(discount).value = 0.0
+        document.getElementById(total).value = precision(text_box.value * quantity_value);
+        document.getElementById(total_span).innerHTML = precision(text_box.value * quantity_value);
+        document.getElementById(discount).value = 0;
       }
       if (discount_text <= 100)
       {
         if(discount_text < 0)
         {
-          alert("Discount can not be negative.")
-          document.getElementById(discount).value = 0.0
-          col5total();
-          return false;
+            alert("Discount can not be negative.")
+            document.getElementById(discount).value = 0;
+            col5total();
+            return false;
         }
         else
-          document.getElementById(total).value = roundVal(parseFloat(text_box.value - (text_box.value * discount_text/100)));
+        {
+          document.getElementById(total).value = precision(roundVal(parseFloat((text_box.value * quantity_value) - ((text_box.value * quantity_value) * discount_text/100))));
+          document.getElementById(total_span).innerHTML = precision(roundVal(parseFloat((text_box.value * quantity_value) - ((text_box.value * quantity_value) * discount_text/100))));
+        }
       }
       else
         alert('Discount cannot be greater than 100% ');
@@ -352,34 +371,104 @@
     }
     else
     {
-      text_box.value = 0.0
-      document.getElementById(total).value = 0.0
+      text_box.value = precision(0.0);
+      document.getElementById(total).value = precision(0.0);
+      document.getElementById(total_span).innerHTML = precision(0.0);
+      alert('Please enter numeric value for amount and discount')
+      col5total();
+    }
+  }
+  
+  function update_total_by_quantity(quantity_box)
+  {
+    var amount = quantity_box.id.replace('quantity',"amount");
+    var discount = quantity_box.id.replace('quantity',"discount");
+    var total = quantity_box.id.replace('quantity',"total_check");
+    var total_span = quantity_box.id.replace('quantity',"total_check_span");
+    var discount_text = document.getElementById(discount).value
+    var text_box = document.getElementById(amount)
+    var quantity_value = quantity_box.value
+
+    if (isNaN(discount_text) == false && isNaN(text_box.value)== false)
+    {
+      if(text_box.value < 0)
+      {
+          alert("Amount can not be negative.")
+          text_box.value = precision(0.0);
+          document.getElementById(total).value = precision(0.0);
+          document.getElementById(total_span).innerHTML = precision(0.0);
+          col5total();
+          return false;
+      }
+      if(text_box.value == "")
+      {
+          text_box.value = precision(0.0);
+          document.getElementById(total).value = precision(0.0);
+          document.getElementById(total_span).innerHTML = precision(0.0);
+          col5total();
+          return false;
+      }
+      if (discount_text == 0 || "")
+      {
+        document.getElementById(total).value = precision(text_box.value * quantity_value);
+        document.getElementById(total_span).innerHTML = precision(text_box.value * quantity_value);
+        document.getElementById(discount).value = 0;
+      }
+      if (discount_text <= 100)
+      {
+        if(discount_text < 0)
+        {
+            alert("Discount can not be negative.")
+            document.getElementById(discount).value = 0;
+            col5total();
+            return false;
+        }
+        else
+        {
+          document.getElementById(total).value = precision(roundVal(parseFloat((text_box.value * quantity_value) - ((text_box.value * quantity_value) * discount_text/100))));
+          document.getElementById(total_span).innerHTML = precision(roundVal(parseFloat((text_box.value * quantity_value) - ((text_box.value * quantity_value) * discount_text/100))));
+        }
+      }
+      else
+        alert('Discount cannot be greater than 100% ');
+      col5total();
+    }
+    else
+    {
+      text_box.value = precision(0.0);
+      document.getElementById(total).value = precision(0.0);
+      document.getElementById(total_span).innerHTML = precision(0.0);
       alert('Please enter numeric value for amount and discount')
       col5total();
     }
   }
 
-  function update_total_by_discount(text_box){
+  function update_total_by_discount(text_box)
+  {
     var amount = text_box.id.replace('discount',"amount");
+    var quantity = text_box.id.replace('discount',"quantity");
     var total = text_box.id.replace('discount',"total_check");
-    var amount_text = document.getElementById(amount).value
+    var total_span = text_box.id.replace('discount',"total_check_span");
+    var amount_text = document.getElementById(amount).value * document.getElementById(quantity).value;
     if (isNaN(amount_text) == false && isNaN(text_box.value)== false)
     {
       if(text_box.value == "")
       {
-        text_box.value = 0.0;
-        document.getElementById(total).value = amount_text;
+        text_box.value = precision(0.0);
+        document.getElementById(total).value = precision(amount_text);
+        document.getElementById(total_span).innerHTML = precision(amount_text);
         col5total();
         return false;
       }
       if (amount_text == 0 )
       {
-        document.getElementById(total).value = 0.0;
+        document.getElementById(total).value = precision(0.0);
+        document.getElementById(total_span).innerHTML = precision(0.0);
       }
       if(amount_text < 0)
       {
         alert("Amount can not be negative.");
-        document.getElementById(amount).value = 0.0;
+        document.getElementById(amount).value = precision(0.0);
         col5total();
         return false;
       }
@@ -390,19 +479,21 @@
           if(text_box.value < 0)
           {
             alert("discount can not be negative.");
-            text_box.value = 0.0;
-            document.getElementById(total).value = amount_text;
+            text_box.value = precision(0.0);
+            document.getElementById(total).value = precision(amount_text);
+            document.getElementById(total_span).innerHTML = precision(amount_text);
             col5total();
             return false;
           }
           else
           {
-            document.getElementById(total).value = roundVal(parseFloat(amount_text - (amount_text * text_box.value/100)));
+            document.getElementById(total).value = precision(roundVal(parseFloat(amount_text - (amount_text * text_box.value/100))));
+            document.getElementById(total_span).innerHTML = precision(roundVal(parseFloat(amount_text - (amount_text * text_box.value/100))));
           }
         }
         else
         {
-          text_box.value = 0.0
+          text_box.value = precision(0.0);
           alert('Discount cannot be greater than 100% ');
         }
         col5total();
@@ -410,19 +501,22 @@
     }
     else
     {
-      text_box.value = 0.0
-      document.getElementById(total).value = amount_text;
+      text_box.value = precision(0.0);
+      document.getElementById(total).value = precision(amount_text);
+      document.getElementById(total_span).innerHTML = precision(amount_text);
       alert('Please enter numeric value for amount and discount')
       col5total();
     }
   }
 
-  function attacher(){
+  function attacher()
+  {
     $$('.par_check').invoke('observe','change', assign_amt);
     col5total()
   }
 
-  function col5total(){
+  function col5total()
+  {
     var total = 0;
     $$('.particular_total').each(function(el)
     {
@@ -430,11 +524,11 @@
       {
         total = roundVal(total + parseFloat(el.value));}
       else{
-        el.value = 0.0;
+        el.value = precision(0.0);
         alert ('please enter a numeric value for total');}
     });
-    $("total").innerHTML = roundVal(total);
-    $('total_fees').value = roundVal(total);
+    $("total_span").innerHTML = precision(roundVal(total));
+    $('total_fees').value = precision(roundVal(total));
   }
 
 
@@ -487,6 +581,7 @@
       return true;
     }
   }
+  
   function validate_make_fee_from_custom_category()
   {
     if(validate_category())
@@ -560,5 +655,39 @@
     }
     else return false;
   }
+</script>
+
+<script>
+  j(document).ready(function(){
+      j(document).on("click", ".cross", function(){
+          var id = this.id.replace("cross_","");
+          j("#tr_fee_particular_" + id).remove();
+          var no_particular = 1;
+          j("#instant_fee tr.particulars_tr").each(function(){
+               if ( ! j(this).hasClass("particulars_tr_custom") )
+               {
+                    no_particular++;
+               }
+          });
+          j("#instant_fee tr.particulars_tr").each(function(){
+              if ( j(this).hasClass("particulars_tr_custom") )
+              {
+                  var id = this.id;
+                  j("#" + id + " td:first span").html(no_particular);
+                  j("#" + id + " td:first span").attr("id", "sn_span_" + no_particular);
+                  j("#" + id + " td.feeamount div input").attr("id","amount_" + no_particular);
+                  j("#" + id + " td.feequantity div input").attr("id","amount_" + no_particular);
+                  j("#" + id + " td.feediscount div input").attr("id","discount_" + no_particular);
+                  j("#" + id + " td.feetotal span").attr("id","total_check_span_" + no_particular);
+                  j("#" + id + " td.feetotal div input").attr("id","total_check_" + no_particular);
+                  j("#" + id + " td.feecross a").attr("id","cross_" + no_particular);
+                  j(this).attr("id","tr_fee_particular_" + no_particular);
+      
+                  no_particular++;
+              }
+          });
+          col5total();
+      });
+  });
 </script>
 

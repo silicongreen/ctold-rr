@@ -1,13 +1,21 @@
 .options{
-    float:left;
     max-width:50px;
+    padding-bottom: 14px !important;
 }
 .options a{
     margin-left:10px;
     margin-right:10px;
     margin-top:5px;
+    margin-bottom:20px;
     font-size: 12px;
     color: #b7b7a6;
+    border: 1px solid #ccc;
+    padding: 6px;
+    border-radius: 5px;
+}
+.options a:hover{
+    background: #999;
+    color: #000;
 }
 .submit_button {
     margin-top:15px;

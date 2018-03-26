@@ -20,9 +20,22 @@
 <div id="page-yield" class="available_sections1">
   <div class="page1"></div>
   <div class="section1 row">
-    <div class="hor_line"></div>
-    <h2><%= t('instant_fee_reciept') %></h2>
-    <div class="hor_line"></div>
+    <center>
+        <div id="pdf-header-south" class="general-header">
+          <% if MultiSchool.current_school.id == 325 %>  
+
+          <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/325/mev-logo.png")),:width=> '12%' %></h4>
+          <% else %>
+          <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '12%' %></h4>
+          <% end %>
+
+          <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
+          <% if MultiSchool.current_school.id == 325 %>
+            <h5 align="center">House#08, Road# 11/2, Block #B, Section #10, Mirpur, Dhaka-1216</h5>
+            <h5 align="center">Phone : 9030096, Mobile : 01811-655022, 01678-850500</h5>
+          <% end %>
+        </div>
+    </center>
     <div class="extender"> </div>
   </div>
   <div class="section1 row">`
@@ -52,6 +65,7 @@
           <td class="col-pdf sl_no"><%= t('sl_no') %></td>
           <td class="col-pdf name"><%= t('particular_name') %></td>
           <td class="col-pdf amnt"><%= t('amount') %></td>
+          <td class="col-pdf amnt"><%= t('quantity') %></td>
           <td class="col-pdf amnt"><%= t('discount') %>(%)</td>
           <td class="col-pdf amnt"><%= t('net_amount') %></td>
         </tr>
@@ -66,9 +80,10 @@
         <tr class="<%= cycle('even','odd') %>">
           <td class="col-pdf sl_no"><%=  index += 1 %></td>
           <td class="col-pdf name"><%= detail.particular_name %></td>
-          <td class="col-pdf amnt"> <%= precision_label(detail.amount) %></td>
-          <td class="col-pdf amnt"><%= precision_label(detail.discount) %></td>
-          <td class="col-pdf amnt"><%= precision_label(detail.net_amount) %></td>
+          <td class="col-pdf amnt" style="text-align: right;"> <%= precision_label(detail.amount) %></td>
+          <td class="col-pdf amnt" style="text-align: center;"> <%= precision_label(detail.quantity) %></td>
+          <td class="col-pdf amnt" style="text-align: right;"><%= precision_label(detail.discount) %></td>
+          <td class="col-pdf amnt" style="text-align: right;"><%= precision_label(detail.net_amount) %></td>
 
         </tr>
       </table>
@@ -81,9 +96,10 @@
       <tr class="<%= cycle('even','odd') %>">
         <td class="col-pdf sl_no"></td>
         <td class="col-pdf name"><b><%= "Total" %></b></td>
-        <td class="col-pdf amnt"><%= precision_label(total_amount) %></td>
+        <td class="col-pdf amnt" style="text-align: right;"><%= precision_label(total_amount) %></td>
         <td class="col-pdf amnt"></td>
-        <td class="col-pdf amnt"><%= precision_label(total_net_amount) %></td>
+        <td class="col-pdf amnt"></td>
+        <td class="col-pdf amnt" style="text-align: right;"><%= precision_label(total_net_amount) %></td>
       </tr>
     </table>
   </div>

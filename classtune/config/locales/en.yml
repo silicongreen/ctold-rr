@@ -758,6 +758,7 @@ en: # locale
   contact_details: "Contact Details"
   additional_detail: "Additional Details"
   select_category: "Select category"
+  quantity: "Quantity"
   less_than: "less than"
   greater_than: "greater than"
   equal_to: "equal to"

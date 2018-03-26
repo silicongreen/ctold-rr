@@ -2701,7 +2701,7 @@ class FinanceController < ApplicationController
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}    
       elsif MultiSchool.current_school.id == 325
-        ender :pdf => 'student_fee_receipt_pdf',
+        render :pdf => 'student_fee_receipt_pdf',
         :orientation => 'Landscape', :zoom => 1.00,
         :page_size => 'A5',
         :margin => {    :top=> 10,

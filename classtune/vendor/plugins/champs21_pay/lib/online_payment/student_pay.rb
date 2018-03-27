@@ -272,6 +272,9 @@ module OnlinePayment
                       transaction.fine_amount = @fine.to_f + @fine_amount.to_f
                       transaction.transaction_date = Date.today
                       transaction.payment_mode = "Online Payment"
+          	      
+            	      total_fine_amount = @fine.to_f + @fine_amount.to_f
+
                       transaction.save
                       if transaction.save
                         is_paid =@financefee.balance==0 ? true : false

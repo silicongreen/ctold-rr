@@ -54,14 +54,18 @@ module OnlinePayment
           @total_discount = 0
 
           calculate_discount(@date, @financefee.batch, @student)
-
+          
           bal=(@total_payable-@total_discount).to_f
+          
+         
           days=(Date.today-@date.due_date.to_date).to_i
           auto_fine=@date.fine
           @has_fine_discount = false
+          @fine_amount = 0
           if days > 0 and auto_fine
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+            
             calculate_extra_fine(@date, @financefee.batch, @student, @fine_rule)
             @new_fine_amount = @fine_amount
             get_fine_discount(@date, @financefee.batch, @student)
@@ -74,7 +78,10 @@ module OnlinePayment
           @has_fine_discount = false if @financefee.is_paid
           OnlinePayment.return_url = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1" unless OnlinePayment.return_url.nil?
           total_fees = 0
+          
           total_fees =@financefee.balance.to_f+@fine_amount
+          
+          
           unless params[:fine].nil?
             unless @financefee.is_paid == true
               total_fees += params[:fine].to_f
@@ -314,7 +321,6 @@ module OnlinePayment
                             finance_transaction_particular.amount = amount_particular
                             finance_transaction_particular.transaction_date = transaction.transaction_date
                             finance_transaction_particular.save
-                
                             loop_particular = loop_particular + 1
                           end
                         end

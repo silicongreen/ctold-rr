@@ -365,7 +365,7 @@ module OnlinePayment
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
-            
+                        abort("here what the f")
                         if @has_fine_discount
                           @discounts_on_lates.each do |od|
                             finance_transaction_particular = FinanceTransactionParticular.new

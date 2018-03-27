@@ -356,7 +356,7 @@ module OnlinePayment
                           finance_transaction_particular.save
                         end
             
-                        if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+                        if total_fine_amount
                           finance_transaction_particular = FinanceTransactionParticular.new
                           finance_transaction_particular.finance_transaction_id = transaction.id
                           finance_transaction_particular.particular_id = 0
@@ -365,7 +365,6 @@ module OnlinePayment
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
-                        abort("here what the f")
                         if @has_fine_discount
                           @discounts_on_lates.each do |od|
                             finance_transaction_particular = FinanceTransactionParticular.new

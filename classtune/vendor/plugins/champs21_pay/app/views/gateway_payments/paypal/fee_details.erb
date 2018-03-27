@@ -37,7 +37,7 @@
 <% end %>
   
 <% unless flash[:success].nil? %>
-  <div id="success" class="success"><li><%= flash[:success] %></li></ul></div>
+  <div id="success" class="success"><%= flash[:success] %></div>
 <% end %>
 
 <% unless flash[:warning].nil? %><p class="flash-msg"><%= flash[:warning] %></p><% end %>

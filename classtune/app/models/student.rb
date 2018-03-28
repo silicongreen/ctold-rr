@@ -83,8 +83,7 @@ class Student < ActiveRecord::Base
 
   before_save :save_biometric_info
 
-  after_create :set_sibling, :add_fee_collection
-  after_update :check_std_category
+  after_create :set_sibling
 
   #  after_create :create_default_menu_links
 

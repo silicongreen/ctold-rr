@@ -68,7 +68,7 @@
 
 
  <% 
-    @employee = Employee.find_by_user_id(current_user.id)
+    @employee = Employee.find_by_user_id(@current_user.id)
     @config = Configuration.find_by_config_key('LeaveSectionManager')
     if (@config.blank? or @config.config_value.blank? or @config.config_value.to_i != 1)
       @count_student = ApplyLeaveStudent.count(:conditions=>["viewed_by_teacher is NULL or viewed_by_teacher = ?",false])

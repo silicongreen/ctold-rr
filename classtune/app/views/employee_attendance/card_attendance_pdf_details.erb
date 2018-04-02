@@ -172,15 +172,15 @@
                           <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;">Name</td>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="5"><%= e.employee_info %> </td>
+                            <td class="col-pdf" colspan="5"><%= e.employee_info %> <%= e.id %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> <%= e.id %></td>
                             <% end %>
                           <% else %>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="6"><%= e.employee_info %> </td>
+                            <td class="col-pdf" colspan="6"><%= e.employee_info %> <%= e.id %></td>
                             <% else %>
-                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> <%= e.id %></td>
                             <% end %>
                           <% end %>
                       </tr>

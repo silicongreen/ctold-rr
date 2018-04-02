@@ -355,3 +355,4 @@ div.div-50 #pdf-info{
     float:left;
     margin-top:10px;
 }
+.page-break-continues { display:block; clear:both; page-break-after:always; }

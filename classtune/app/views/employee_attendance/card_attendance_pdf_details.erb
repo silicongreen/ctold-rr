@@ -66,7 +66,7 @@
                     <% employee_attendances.each do |e| %>
                       <% k = k + 1 %>
                       <tr class="<%= cycle('odd', 'even') %>">
-                        <td class="col-pdf"><%= i %></td>
+                        <td class="col-pdf"><%= i %>&nbsp;<%= e[8] %></td>
                         <td class="col-pdf"><%= e[0] %></td>
                         <td class="col-pdf"><%= e[1] %></td>
                         <td class="col-pdf"><%= e[5] %></td>
@@ -172,15 +172,15 @@
                           <% if newPage %>
                             <td class="col-pdf" style="border-right: 2px solid #000;">Name</td>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="5"><%= e.employee_info %> <%= e.id %> </td>
+                            <td class="col-pdf" colspan="5"><%= e.employee_info %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> <%= e.id %></td>
+                            <td class="col-pdf" colspan="5" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
                             <% end %>
                           <% else %>
                             <% if j % 4 == 0 %>
-                            <td class="col-pdf" colspan="6"><%= e.employee_info %> <%= e.id %></td>
+                            <td class="col-pdf" colspan="6"><%= e.employee_info %> </td>
                             <% else %>
-                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> <%= e.id %></td>
+                            <td class="col-pdf" colspan="6" style="border-right: 3px solid #000;"><%= e.employee_info %> </td>
                             <% end %>
                           <% end %>
                       </tr>

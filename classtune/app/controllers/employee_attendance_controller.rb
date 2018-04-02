@@ -527,6 +527,7 @@ class EmployeeAttendanceController < ApplicationController
                 emp[5] = total_late
                 emp[6] = total_leave 
                 emp[7] = employee.dept_id 
+                emp[8] = employee.id
                 data[k] = emp
                 k += 1
               end

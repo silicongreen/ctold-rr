@@ -253,7 +253,7 @@ class Settings {
             $attendance_logs->attendance = $attendance;
             $attendance_logs->school_id = Yii::app()->user->schoolId;
             $attendance_logs->created_at = date("Y-m-d H:i:s");
-            $attendance_logs->updated_at = round(microtime(true));
+            $attendance_logs->updated_at = microtime(true);
             $attendance_logs->save();
         } 
         else
@@ -267,7 +267,7 @@ class Settings {
             $attendance_logs->attendance = $attendance;
             $attendance_logs->school_id = Yii::app()->user->schoolId;
             $attendance_logs->created_at = date("Y-m-d H:i:s");
-            $attendance_logs->updated_at = round(microtime(true));
+            $attendance_logs->updated_at = microtime(true);
             $attendance_logs->save();
         }    
     }

@@ -242,6 +242,15 @@ class AttendanceController extends Controller
                 $student = new Students();
                 $all_student = $student->getBatchStudentFull($sub_data->batch_id);
             }
+            $subatt = new SubjectAttendances();
+            $att_data_current = $subatt->getAttendence($subject_id, $date);
+            if($att_data_current)
+            {
+                foreach($att_data_current as $value)
+                {
+                    Settings::save_attt_to_log($value,2,true);
+                }    
+            }
             
             $total_student = count($all_student);
             $std_att_data = $this->formateStdData($student_id, $late);
@@ -264,10 +273,11 @@ class AttendanceController extends Controller
                     $ids[] = $student_id;
                     $newattendence = new SubjectAttendances();
                     $newattendence->is_late = $student_data['late'];
-
+                    $att_type = 0;
                     if ($newattendence->is_late)
                     {
                         $lates_array[] = 1;
+                        $att_type = 1;
                         $late++;
                     } else
                     {
@@ -285,6 +295,7 @@ class AttendanceController extends Controller
                     $newattendence->updated_at = date("Y-m-d H:i:s");
                     $newattendence->school_id = Yii::app()->user->schoolId;
                     $newattendence->save();
+                    Settings::save_attt_to_log($newattendence,$att_type,true);
                     $att_id[] = $newattendence->id;
                 }
                 if ($att_id)

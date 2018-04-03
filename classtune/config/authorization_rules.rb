@@ -1823,6 +1823,7 @@ authorization do
       :to => [
       :index,
       :rollcall,
+      :get_att_log,
       :subjects,
       :get_subject_student,
       :save_attendance_subject,

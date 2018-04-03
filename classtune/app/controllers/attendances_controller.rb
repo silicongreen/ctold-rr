@@ -1037,6 +1037,26 @@ def show_before
     format.js { render :action => 'show' }
   end
 end
+def get_att_log
+  student_id = params[:student_id]
+  date = params[:date].to_date
+  sub_id = 0
+  unless params[:subject_id].blank?
+    sub_id = params[:subject_id]
+  end
+  all_log = AttendanceLog.find_all_by_student_id_and_date_and_subject_id(student_id,date,0,:limit=>10,:order=>"created_at DESC")
+  data = []
+  att_text = ["Absent","late","Present"]
+  unless all_log.blank?
+    all_log.each do |log|
+     logdata = {:employee_name=>log.employee.full_name,:status=>att_text[log.attendance],:date=>I18n.l(log.created_at, :format=>'%d %b %Y %I:%M %p')}
+     data << logdata 
+    end
+  end
+  @data = JSON.generate(data)
+  render :text =>@data
+  
+end
 
 def subject_wise_register
   if params[:subject_id].present?

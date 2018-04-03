@@ -982,8 +982,9 @@ class CalenderController extends Controller
                             $rfordelete->delete();
                         }
                     }
-
+                    Settings::save_attt_to_log($previous_attendence,2);
                     $previous_attendence->delete();
+                    
                 }
             }
 
@@ -1009,10 +1010,12 @@ class CalenderController extends Controller
                 $newattendence->created_at = date("Y-m-d H:i:s");
                 $newattendence->updated_at = date("Y-m-d H:i:s");
                 $newattendence->school_id = Yii::app()->user->schoolId;
+                $att_type = 0;
                 if ($late && $late == 1)
                 {
                     $newattendence->forenoon = 1;
                     $newattendence->afternoon = 0;
+                    $att_type = 1;
                 }
                 else
                 {
@@ -1020,6 +1023,7 @@ class CalenderController extends Controller
                     $newattendence->afternoon = 1;
                 }
                 $newattendence->save();
+                Settings::save_attt_to_log($newattendence,$att_type);
 
                 if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
                 {
@@ -1086,7 +1090,7 @@ class CalenderController extends Controller
                                 $rfordelete->delete();
                             }
                         }
-
+                        Settings::save_attt_to_log($previous_attendence,2);
                         $previous_attendence->delete();
                     }
                 }
@@ -1115,10 +1119,12 @@ class CalenderController extends Controller
                 $newattendence->created_at = date("Y-m-d H:i:s");
                 $newattendence->updated_at = date("Y-m-d H:i:s");
                 $newattendence->school_id = Yii::app()->user->schoolId;
+                $att_type = 0;
                 if ($late && $late == 1)
                 {
                     $newattendence->forenoon = 1;
                     $newattendence->afternoon = 0;
+                    $att_type = 1;
                 }
                 else
                 {
@@ -1126,6 +1132,7 @@ class CalenderController extends Controller
                     $newattendence->afternoon = 1;
                 }
                 $newattendence->save();
+                Settings::save_attt_to_log($newattendence,$att_type);
 
                 if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
                 {

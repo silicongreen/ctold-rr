@@ -1,0 +1,47 @@
+
+  <% @teacher_name = "TEACHER'S SIGNATURE" %>
+  <% sbj_data = Subject.find_by_id(@subject_id_current) %>
+  <% 
+    unless sbj_data.blank?
+      emp = sbj_data.employees
+      unless emp.blank?
+        @teacher_name = emp[0].full_name
+      end
+    end
+   %>
+  <table class='sjws_table_head footer_sign' width="100%" >                 
+
+      <tr>
+          <td class="col-pdf align-center"><b><%= @teacher_name %></b></td>  
+          <td class="col-pdf border-none">&nbsp;</td>
+          <td class="col-pdf align-center"><b>Date</b></td>                          
+      </tr>
+  </table>
+
+ <style>
+ table.footer_sign
+ {
+    float:left !important;
+    width:800px !important;
+    font-size: 17px !important;
+ }
+ table.footer_sign tr
+ {
+    width:100% !important;
+    font-size: 17px !important;
+ }
+table.sjws_table_head tr td.align-center
+ {
+    text-align: center !important;
+    width:33% !important;
+    border-top:1px solid black;
+    font-size: 17px !important;
+    font-family: "Times New Roman", Times, serif !important;
+ }
+ table.sjws_table_head tr td.border-none
+ {
+    text-align: center !important;
+    width:33% !important;
+ }
+
+ </style>

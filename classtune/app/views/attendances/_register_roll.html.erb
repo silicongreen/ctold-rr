@@ -40,7 +40,13 @@
 
           <tr class="tr-<%= cycle('odd', 'even') %>">
               <td class="col-2"><%= student['roll_no'] %></td>
-              <td class="col-2"><%= student['student_name'] %></td>
+              <td class="col-2 student-name-attendance tooltips" id="student-name-attendance-<%=student['student_id']%>">
+
+                  <%= student['student_name'] %>
+                  <% if @current_user.admin? %>
+                  <div class="attendance-log" id="attednace-log-<%=student['student_id']%>" >Getting Attendance Log Info...</div>
+                  <% end %>
+              </td>
               <td class="col-2">
                   <% if student['status']==1 %>
                     <span class="checkmark">
@@ -203,7 +209,6 @@
     .CSSTableGenerator table tr td 
     {
         font-weight: bold;
-        overflow: hidden;
     }
     .CSSTableGenerator table tr td:last-child
     {
@@ -288,4 +293,82 @@
         margin: 0 !important;
         padding: 0 !important;
     }
-</style>  
+</style> 
+<% if @current_user.admin? %>
+<style>
+    td.tooltips {
+      position: relative !important;
+      display: inline;
+      cursor: pointer;
+    }
+    td.tooltips:hover {
+      background:#D4F7DA;
+    }
+    
+  
+    td.tooltips div {
+      position: absolute;
+      width:140px;
+      color: #FFFFFF;
+      background: #000000;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      visibility: hidden;
+      border-radius: 0px;
+    }
+    td.tooltips div:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -8px;
+      width: 0; height: 0;
+      border-top: 8px solid #000000;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+    td:hover.tooltips div {
+      visibility: visible;
+      opacity: 0.8;
+      bottom: 75px;
+      left: 24%;
+      margin-left: -76px;
+      min-width: 100%;
+      height: auto;
+      z-index: 999;
+    }
+</style>    
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq(".student-name-attendance").on({
+      mouseenter: function () {
+        var this_id = this.id;
+        std_id = this_id.replace("student-name-attendance-","");
+        jq.getJSON("/attendances/get_att_log", {
+          student_id: std_id,
+          date: jq('#attandence_date').val()
+        })
+        .done(function( data ) {
+          var log_string = "";
+          jq.each( data, function( i, item ) {
+            log_string +=""+item.employee_name+"&nbsp;&nbsp;"+item.status+"&nbsp;&nbsp;"+item.date+"<br/>";
+          });
+          
+          if(log_string!="")
+          {
+            jq("#"+this_id).off("mouseenter");
+            jq("#"+this_id).removeClass("student-name-attendance");
+            jq('#attednace-log-'+std_id).html(log_string);
+          }
+          else
+          {
+            jq('#attednace-log-'+std_id).html("No Log Found");
+          }  
+        });
+      }  
+    });
+  });
+</script> 
+<% end %>

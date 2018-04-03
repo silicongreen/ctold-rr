@@ -240,6 +240,38 @@ class Settings {
     
     public static $_ar_language = array( 'en' => 'ENG', 'bn' => 'BAN',);
     
+    public static function save_attt_to_log( $att_data, $attendance = 0, $is_subject=false )
+    {
+        if($is_subject == false)
+        {
+            $attendance_logs = new AttendanceLogs();
+            $attendance_logs->employee_id = Yii::app()->user->profileId;
+            $attendance_logs->date = $att_data->month_date;
+            $attendance_logs->student_id = $att_data->student_id;
+            $attendance_logs->batch_id = $att_data->batch_id;
+            $attendance_logs->subject_id = 0;
+            $attendance_logs->attendance = $attendance;
+            $attendance_logs->school_id = Yii::app()->user->schoolId;
+            $attendance_logs->created_at = date("Y-m-d H:i:s");
+            $attendance_logs->updated_at = date("Y-m-d H:i:s");
+            $attendance_logs->save();
+        } 
+        else
+        {
+            $attendance_logs = new AttendanceLogs();
+            $attendance_logs->employee_id = Yii::app()->user->profileId;
+            $attendance_logs->date = $att_data->attendance_date;
+            $attendance_logs->student_id = $att_data->student_id;
+            $attendance_logs->batch_id = $att_data->batch_id;
+            $attendance_logs->subject_id = $att_data->subject_id;
+            $attendance_logs->attendance = $attendance;
+            $attendance_logs->school_id = Yii::app()->user->schoolId;
+            $attendance_logs->created_at = date("Y-m-d H:i:s");
+            $attendance_logs->updated_at = date("Y-m-d H:i:s");
+            $attendance_logs->save();
+        }    
+    }
+    
     public static function getProfileImagePaidPath($free_user_id)
     {
         $profile_image = "";

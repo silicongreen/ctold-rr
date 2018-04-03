@@ -1044,7 +1044,7 @@ def get_att_log
   unless params[:subject_id].blank?
     sub_id = params[:subject_id]
   end
-  all_log = AttendanceLog.find_all_by_student_id_and_date_and_subject_id(student_id,date,0,:limit=>10,:order=>"created_at DESC")
+  all_log = AttendanceLog.find_all_by_student_id_and_date_and_subject_id(student_id,date,0,:limit=>10,:order=>"updated_at DESC")
   data = []
   att_text = ["Absent","late","Present"]
   unless all_log.blank?

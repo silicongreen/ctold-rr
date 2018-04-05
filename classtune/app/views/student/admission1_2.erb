@@ -16,14 +16,36 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('sibling') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('step_2') %></div>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+<div class="header-wrapper">
 
 
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= t('admission') %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="page-yield">
  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
@@ -64,15 +86,39 @@ function sibling_value(guardians){
 
 }}
 </script>
+    <div id="admission1_form">
+      <div class="f1-steps">
+          <div class="f1-progress">
+              <div class="f1-progress-line" data-now-value="40.5" data-number-of-steps="3" style="width: 40.5%;"></div>
+          </div>
+          <div class="f1-step">
+              <div class="f1-step-icon"><div class="fa">1</div></div>
+              <p>Student Information</p>
+          </div>
+          <div class="f1-step active">
+              <div class="f1-step-icon"><div class="fa">2</div></div>
+              <p>Select Siblings</p>
+          </div>
+          <div class="f1-step">
+              <div class="f1-step-icon"><div class="fa">3</div></div>
+              <p>Previous Details</p>
+          </div>
+          <div class="f1-step">
+              <div class="f1-step-icon"><div class="fa">4</div></div>
+              <p>Aditional Information</p>
+          </div>
+      </div>
+    </div>    
     <%=hidden_field_tag :configure,params[:configure]%>
     <div class="sibling">
           <div id="sibling-selected"><%= t('sibling_selected') %>:</div>
           <div id="sibling-selected-name" class="themed_text"><span class="not-selected">(<%= t('not_selected') %>)</span></div>
-          <div id="update-button"><%=submit_tag  ("► #{t('save_and_proceed')}"),  :class => "user_button"%>
+          <div id="update-button">
+            <%=submit_tag  ("► #{t('save_and_proceed')}"),  :class => "btn btn-success"%>
             <%if params[:configure].present?%>
-            <%=link_to ("► #{t('cancel')}"),{:action=>"guardians",:id=>params[:id]},:class => "user_button"%></div>
+            <%=link_to ("► #{t('cancel')}"),{:action=>"guardians",:id=>params[:id]},:class => "btn btn-success"%></div>
             <%else%>
-          <%=link_to ("► #{t('skip')}"),{:action=>"admission2",:id=>params[:id]},:class => "user_button"%></div>
+            <%=link_to ("► #{t('skip')}"),{:action=>"admission2",:id=>params[:id]},:class => "btn btn-success"%></div>
           <%end%>
     </div>
           <div class="extender"></div>
@@ -129,3 +175,8 @@ function sibling_value(guardians){
   <div id="information"></div>
 
 </div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>  

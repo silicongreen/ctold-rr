@@ -163,7 +163,7 @@
 
       });
       j(document).ready(function() {
-         <% if !params[:action].blank? and params[:action].index('edit').nil? %>
+         <% if !params[:action].blank? and params[:action].index('edit').nil? and params[:id].blank? %>
             if(j("#student_batch_name").length)
             {
               if(j("#student_batch_name").val()!="")

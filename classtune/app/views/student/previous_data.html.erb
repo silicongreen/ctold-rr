@@ -16,13 +16,39 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('admission') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('previous_details') %></div>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<div class="header-wrapper">
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= t('admission') %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="page-yield">
 
@@ -34,62 +60,60 @@
 
   <% form_for :student_previous_details do |a| %>
   <%#= error_messages_for 'employee_bank_details' %>
+   <div id="admission1_form"> 
+    <div class="f1-steps">
+              <div class="f1-progress">
+                  <div class="f1-progress-line" data-now-value="60.5" data-number-of-steps="2" style="width: 60.5%;"></div>
+              </div>
+              <div class="f1-step">
+                  <div class="f1-step-icon"><div class="fa">1</div></div>
+                  <p>Student Information</p>
+              </div>
+              <div class="f1-step">
+                  <div class="f1-step-icon"><div class="fa">2</div></div>
+                  <p>Guardian Info</p>
+              </div>
+              <div class="f1-step active">
+                  <div class="f1-step-icon"><div class="fa">3</div></div>
+                  <p>Previous Details</p>
+              </div>
+              <div class="f1-step">
+                  <div class="f1-step-icon"><div class="fa">4</div></div>
+                  <p>Aditional Information</p>
+              </div>
+          </div> 
+   </div>  
 
-    <span class="span-sub-heading"><%= t('previous_educational_details') %></span>
-    <hr class="sub-heading"></hr>
-    <div id="form-contents">
+    <div class="col-sm-12" style="padding:0px;">
+            <fieldset>
+              <legend><%= t('previous_educational_details') %></legend>
       <%= a.hidden_field :student_id, :value => @student.id %>
-      <div class="label-field-pair">
+      <div class="form-group col-sm-6 even">
         <label><%= t('institution_name') %></label>
-        <div class="text-input-bg"><%= a.text_field :institution %></div>
-        <div class="extender"></div>
+        <%= a.text_field :institution, :class=>"form-control" %>
       </div>
-      <div class="label-field-pair">
+      <div class="form-group col-sm-6">
         <label><%= t('course_text') %></label>
-        <div class="text-input-bg"><%= a.text_field :course %></div>
-        <div class="extender"></div>
+        <%= a.text_field :course, :class=>"form-control" %>
       </div>
-      <div class="label-field-pair">
+      <div class="form-group col-sm-6 even">
         <label><%= t('year') %></label>
-        <div class="text-input-bg"><%= a.text_field :year %></div>
-        <div class="extender"></div>
+        <%= a.text_field :year, :class=>"form-control" %>
       </div>
-      <div class="label-field-pair">
+      <div class="form-group col-sm-6">
         <label><%= t('total_mark') %></label>
-        <div class="text-input-bg"><%= a.text_field :total_mark %></div>
-        <div class="extender"></div>
+        <%= a.text_field :total_mark, :class=>"form-control" %>
       </div>
-      <div class="save-proceed-button">
-        <%= link_to "► #{t('skip')}", {:controller => "student", :action => "admission4", :id => @student.id },:class=>'user_button' %>
+      <div class="form-group col-sm-6 even">
+        <%= link_to "► #{t('skip')}", {:controller => "student", :action => "admission4", :id => @student.id },:class=>'btn btn-success' %>
 
-        <%= submit_tag "► #{t('save_and_proceed')}", :disable_with => "► #{t('please_wait')}" %>
+        <%= submit_tag "► #{t('save_and_proceed')}", :disable_with => "► #{t('please_wait')}",:class=>'btn btn-success' %>
 
       </div>
+    </div>        
+    </div>   
     </div>
   <% end %>
-  <div class="ajax-subject">
-    <ul id="added-subjects">
-      <%  unless @previous_subject.nil? %>
-        <% @previous_subject.each  do |p| %>
-
-          <li><div class="name"><%= p.subject %></div>
-            <div class="themed_text val"><span>:</span><%= p.mark %></div>
-            <div class="delete"><%= link_to_remote image_tag("/images/buttons/delete-new.png", :border => 0),
-                :url => {:action => "delete_previous_subject", :id => p.id},
-                :loading=>"$('loader').show();" ,:loaded=>"$('loader').hide();",
-
-                :update => "added_subjects"%></div>
-          </li>
-
-        <% end %>
-      <% end %>
-    </ul>
-    <%= link_to_remote "#{t('add_subject')}", :url=>{:controller=>"student",:action=>"previous_subject", :id=>@student.id},:loading=>"$('loader').show();" ,:loaded=>"$('loader').hide();"%>
-    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
-    <div id="subject">
-
-    </div>
-  </div>
 </div>
 
 

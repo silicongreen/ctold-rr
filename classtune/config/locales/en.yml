@@ -475,7 +475,7 @@ en: # locale
   courses_text: "Classes"
   batch: "Batch"
   delete_text: "Delete"
-  admission_number: "Student ID<br /> (office use)"
+  admission_number: "Student ID (office use)"
   minmarks_cant_be_blank: "Minimum Mark can't be blank"
   maxmarks_cant_be_blank: "Maximum Mark can't be blank"
   all: "All"

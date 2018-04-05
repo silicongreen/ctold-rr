@@ -1159,7 +1159,7 @@ authorization do
   role :general_settings do
     has_permission_on [:configuration], :to => [:index,:settings,:permissions]
     has_permission_on [:single_access_tokens], :to => [:index,:new,:create,:destroy]
-    has_permission_on [:student], :to => [:add_additional_details, :change_field_priority, :delete_additional_details, :edit_additional_details, :categories,:category_delete,:category_edit,:category_update ]
+    has_permission_on [:student], :to => [:add_additional_details,:add_student_session,:edit_student_session,:delete_student_session, :change_field_priority, :delete_additional_details, :edit_additional_details, :categories,:category_delete,:category_edit,:category_update ]
   end
 
   role :finance_control do
@@ -1544,6 +1544,7 @@ authorization do
       :add_bank_details,
       :edit_bank_details,
       :add_additional_details,
+      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_bank_details,
@@ -2633,6 +2634,7 @@ authorization do
       :category_delete,
       :categories,
       :add_additional_details,
+      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_additional_details,
@@ -2869,6 +2871,7 @@ authorization do
       :admission3_1,
       :admission3_2,
       :add_additional_details,
+      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_additional_details,

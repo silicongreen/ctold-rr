@@ -630,6 +630,7 @@ end
     @course_name = ""
     @courses = []
     inserts = []
+    @std_session = StudentSession.active
     if Batch.active.find(:all, :group => "name").length == 1
       batches = Batch.active
       batch_name = batches[0].name
@@ -645,33 +646,27 @@ end
     @config = Configuration.find_by_config_key('AdmissionNumberAutoIncrement')
     @categories = StudentCategory.active
     if request.post?
-      #abort(params[:student_activation_code].inspect)      
-      #      @activation_code_no_error = true
-      #      @activation_code_free = params[:student][:student_activation_code]
-      #      if @user.is_visible and @user.admin
-      #        if params[:student][:student_activation_code]==""
-      #          @activation_code_no_error = false
-      #          @student.errors.add("Activation Code", "must not be empty")
-      #        else
-      #          @activation_code = StudentActivationCode.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id,:code=> @activation_code_free,:is_active=>1}) 
-      #          #abort(@activation_code.inspect) 
-      #          if @activation_code.nil?
-      #            @activation_code_no_error = false
-      #            @student.errors.add("Invalid", "Activation Code"+MultiSchool.current_school.id.to_s+" ="+@activation_code_free+"=")
-      #          end
-      #        end
-      #      end
+     
+      if MultiSchool.current_school.id == 340 and params[:id].blank?
+        std_session = StudentSession.find(@student.session_id)
+        std_id_match = "SJW"+std_session.admission_session
+        last_admitted_student_sjws = Student.find(:first,:conditions=>["admission_no like ?",std_id_match+"%"],:order=>"admission_no desc")
+        unless last_admitted_student_sjws.blank?
+          @student.admission_no = last_admitted_student_sjws.admission_no.next
+        else
+          @student.admission_no = std_id_match+"001"
+        end  
+        
+      end
       
-      #Huffas: Save to Free and Student Guardian Log
       @student.save_log = true
       @student.save_to_free = true
       #Huffas: Task end
       @activation_code_no_error = true
       
-      
       if @activation_code_no_error == true 
         if @config.config_value.to_i == 1
-          @exist = Student.find_by_admission_no(params[:student][:admission_no])
+          @exist = Student.find_by_admission_no(@student.admission_no)
           #abort(@student.inspect)
           if @exist.nil?
             @status = @student.save
@@ -685,26 +680,6 @@ end
         end
         
         if @status
-
-          #          username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
-          #          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
-          #          api_endpoint = champs21_api_config['api_url']
-          #          uri = URI(api_endpoint + "api/user/createuser")
-          #          http = Net::HTTP.new(uri.host, uri.port)
-          #          auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-          #          auth_req.set_form_data({"paid_id" => @student.user.id, "paid_username" => username, "paid_password" => params[:student][:pass],"password" => params[:student][:pass], "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username, "user_type" => "2" })
-          #          auth_res = http.request(auth_req)
-          #          @auth_response = JSON::parse(auth_res.body)
-          #          
-          #          unless @activation_code.nil?
-          #            @activation_code.update_attributes(:is_active=> 0,:student_id=> @student.id)
-          #          end
-          #          inserts.push "('#{@student.admission_no}','#{username}','#{@student.pass}','#{@student.first_name}','#{@student.middle_name}','#{@student.last_name}','#{@student.user.id}','#{MultiSchool.current_school.id}')"
-          #          sql = "insert into students_guardians (`admission_no`,`s_username`,`s_password`,`s_first_name`,`s_middle_name`,`s_last_name`,`student_id`,`school_id`) VALUES #{inserts.join(", ")}"
-          #          CONN.execute sql    
-          
-          
-          
           sms_setting = SmsSetting.new()
           if sms_setting.application_sms_active and @student.is_sms_enabled
             recipients = []
@@ -1047,6 +1022,49 @@ end
       redirect_to :action => "profile", :id => @student.id
     end
   end
+  
+  def add_student_session
+    @all_details = StudentSession.find(:all)
+    @additional_details = StudentSession.find(:all, :conditions=>{:status=>true})
+    @inactive_additional_details = StudentSession.find(:all, :conditions=>{:status=>false})
+    @student_session = StudentSession.new(params[:student_session])
+    if request.post? 
+      if @student_session.save
+        flash[:notice] = "Saved Successfully"
+        redirect_to :controller => "student", :action => "add_student_session"
+      end
+    end
+  end
+  def edit_student_session
+    @all_details = StudentSession.find(:all)
+    @additional_details = StudentSession.find(:all, :conditions=>{:status=>true})
+    @inactive_additional_details = StudentSession.find(:all, :conditions=>{:status=>false})
+    @student_session = StudentSession.find(params[:id])
+    if request.get?
+      render :action=>'add_student_session'
+    else
+      if @student_session.update_attributes(params[:student_session])
+        flash[:notice] = "Saved Successfully"
+        redirect_to :action => "add_student_session"
+      else
+        render :action=>"add_student_session"
+      end
+    end
+  end
+  def delete_student_session
+    students = Student.find(:all ,:conditions=>"session_id = #{params[:id]}")
+    if students.blank?
+      StudentSession.find(params[:id]).destroy
+      @additional_details = StudentSession.find(:all, :conditions=>{:status=>true})
+    @inactive_additional_details = StudentSession.find(:all, :conditions=>{:status=>false})
+      flash[:notice]="Successfully Deleted"
+      redirect_to :action => "add_student_session"
+    else
+      flash[:notice]="Sorry Student Already Assigned For This Session"
+      redirect_to :action => "add_student_session"
+    end
+  end
+  
   def add_additional_details
     @all_details = StudentAdditionalField.find(:all, :order=>"priority ASC")
     @additional_details = StudentAdditionalField.find(:all, :conditions=>{:status=>true},:order=>"priority ASC")

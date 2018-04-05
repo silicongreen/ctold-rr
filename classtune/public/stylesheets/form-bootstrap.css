@@ -1,0 +1,196 @@
+select {
+    display: block;
+    width: 90%;
+    height: auto;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+*
+{
+    -webkit-box-sizing:content-box;
+    box-sizing:content-box;
+}
+#admission1_form *
+{
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+}
+#parents *
+{
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+}
+ul#parents-list {
+    height: auto;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+ul#parents-list li.listodd {
+    background: none repeat scroll 0 0 #E4EBFE;
+    border: 1px solid #BECFFB;
+    height: auto;
+    list-style-type: none;
+    margin-left: 0px;
+    padding: 0.5em 0 0.5em 50px;
+    width: 90%;
+}
+ul#parents-list li.listeven {
+    background: #EEF2FD;
+    border: 1px solid #BECFFB;
+    height: auto;
+    width: 90%;
+    list-style-type: none;
+    padding: 0.5em 0 0.5em 50px;
+    margin-left: 0px;
+}
+#add-more-parent
+{
+    margin-left:0px;
+}
+.form-control
+{
+    height:auto;
+    width: 90%;
+}
+.form-control-date
+{
+    width: 90%;
+}
+.calendar_date_select .cds_header select.month {
+    width: 90px;
+    margin: 0 auto;
+}
+.calendar_date_select .cds_header select.year {
+    width: 90px;
+    margin: 0 auto;
+}
+input#student_photo
+{
+    height:35px !important;
+}
+.form-group
+{
+    margin-bottom:10px;
+}
+
+.calendar_date_select_popup_icon
+{
+    border: 0px;
+    cursor: pointer;
+    float: right;
+    margin: -7.2% 10.5%;
+    width: 27px;
+}
+.col-sm-6
+{
+    padding-right: 0px;
+    padding-left:0px;
+}
+legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: green;
+    border: 0;
+    border-bottom: 1px solid green;
+}
+
+.col-sm-6.even {
+    clear:both;
+}
+#page-yield
+{
+    margin: 0px;
+}
+fieldset
+{
+    margin-top:20px;
+}
+.f1 {
+    padding: 25px; background: #fff;
+    -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+}
+.f1 h3 { margin-top: 0; margin-bottom: 5px; text-transform: uppercase; }
+
+.f1-steps { overflow: hidden; position: relative; margin-top: 20px; }
+
+.f1-progress { position: absolute; top: 24px; left: 0; width: 100%; height: 1px; background: #ddd; }
+.f1-progress-line { position: absolute; top: 0; left: 0; height: 1px; background: green; }
+
+.f1-step { position: relative; float: left; width: 25%; padding: 0 5px; }
+
+.f1-step-icon {
+    display: inline-block; width: 40px; height: 40px; margin-top: 4px; background: #ddd;
+    font-size: 16px; color: #fff; line-height: 40px;
+    -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;
+}
+.f1-step.activated .f1-step-icon {
+    background: #fff; border: 1px solid green; color: green; line-height: 38px;
+}
+.f1-step.active .f1-step-icon {
+    width: 48px; height: 48px; margin-top: 0; background: green; font-size: 22px; line-height: 48px;
+}
+
+.f1-step p { color: #ccc; margin:0px; }
+.f1-step.activated p { color: green; }
+.f1-step.active p { color: green; }
+
+.f1 fieldset { display: none; text-align: left; }
+
+.f1-buttons { text-align: right; }
+
+.f1 .input-error { border-color: green; }
+.f1-step {
+    position: relative;
+    float: left;
+    width: 23%;
+    padding: 0 11.8%;
+}
+.fa
+{
+    margin-left:16px;
+}
+.active .fa
+{
+    margin-left:18px;
+}
+#update-button
+{
+    margin-top:0px;
+}
+.f1-step p
+{
+    width: 150px;
+    /* margin: 0 auto; */
+    float: left;
+    margin-left: -39px;
+}
+.f1-step:nth-child(3) p
+{
+    width: 150px;
+    /* margin: 0 auto; */
+    float: left;
+    margin-left: -22px;
+}
+.f1-step:nth-child(4) p
+{
+    width: 150px;
+    /* margin: 0 auto; */
+    float: left;
+    margin-left: -30px;
+}

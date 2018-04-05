@@ -67,6 +67,10 @@
         <div class="link-heading"><%= link_to "#{t('add_admission_additional_detail')}", :controller=>"student", :action => "add_additional_details" %></div>
         <div class="link-descr"><%= t('set_some_additional_details') %></div>
       </div>
+      <div class="link-box">
+        <div class="link-heading"><%= link_to "Add Student Session", :controller=>"student", :action => "add_student_session" %></div>
+        <div class="link-descr"><%= "Add And Manage Sessions" %></div>
+      </div>
     <% end %>
     <% if sms_enable? %>
       <div class="link-box">

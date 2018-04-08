@@ -66,7 +66,7 @@ ul#parents-list li.listeven {
 }
 .form-control-date
 {
-    width: 90%;
+    width: 83%;
 }
 .calendar_date_select .cds_header select.month {
     width: 90px;
@@ -90,7 +90,7 @@ input#student_photo
     border: 0px;
     cursor: pointer;
     float: right;
-    margin: -7.2% 10.5%;
+    margin: -7.2% 9.5%;
     width: 27px;
 }
 .col-sm-6

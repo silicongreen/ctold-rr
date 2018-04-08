@@ -185,8 +185,8 @@ class EventController < ApplicationController
       event.is_published = params[:is_published];
       event.save
     end
-    reminder_subject = "#{t('new_event')} : #{event.title}"
-    reminder_body = " #{t('event_description')} : #{event.description} <br/> #{t('start_date')} : " + event.start_date.strftime("%d/%m/%Y %I:%M %p") + " <br/> #{t('end_date')} : " + event.end_date.strftime("%d/%m/%Y %I:%M %p")
+    reminder_subject = "#{event.title}"
+    reminder_body = "#{event.description}<br/>#{t('start_date')} : " + event.start_date.strftime("%d/%m/%Y %I:%M %p") + "<br/>#{t('end_date')} : " + event.end_date.strftime("%d/%m/%Y %I:%M %p")
     reminder_recipient_ids = []
     batch_ids = {}
     student_ids = {}

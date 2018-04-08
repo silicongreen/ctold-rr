@@ -493,6 +493,7 @@ en: # locale
   year: "Year"
   total_mark: "Total mark"
   total_marks: "Total marks"
+  medium_of_instructions: "Medium of Instruction"
   save_and_proceed: "Save & Proceed"
   save: "Save"
   setting: "Setting"

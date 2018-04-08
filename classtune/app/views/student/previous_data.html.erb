@@ -58,7 +58,7 @@
   <%= error_messages_for 'previous_data' %>
 
 
-  <% form_for :student_previous_details do |a| %>
+  <% form_for :previous_data do |a| %>
   <%#= error_messages_for 'employee_bank_details' %>
    <div id="admission1_form"> 
     <div class="f1-steps">
@@ -67,11 +67,11 @@
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">1</div></div>
-                  <p>Student Information</p>
+                  <p><a href="/student/edit/<%= params[:id] %>?steps=one">Student Information</a></p>
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">2</div></div>
-                  <p>Guardian Info</p>
+                  <p><a href="/student/admission2/<%= params[:id] %>">Guardian Information</a></p>
               </div>
               <div class="f1-step active">
                   <div class="f1-step-icon"><div class="fa">3</div></div>
@@ -101,7 +101,7 @@
         <%= a.text_field :year, :class=>"form-control" %>
       </div>
       <div class="form-group col-sm-6">
-        <label><%= t('total_mark') %></label>
+        <label><%= t('medium_of_instructions') %></label>
         <%= a.text_field :total_mark, :class=>"form-control" %>
       </div>
       <div class="form-group col-sm-6 even">

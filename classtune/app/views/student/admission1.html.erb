@@ -146,7 +146,7 @@
                   <div class="form-group col-sm-6">
                     <label for="student_phone2"><%= "Designated Number for SMS" %><span class="necessary-field">*</span></label>
                     <%= s.text_field :sms_number, :class=>"form-control" %>
-                </div>
+                  </div>
               </fieldset>
           </div>
 
@@ -165,7 +165,7 @@
                       {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section&section_partial=sections&page=course_data&partial_view=courses_data&page_batch=batches&partial_view_batch=batches'" ,:before => "$('loading_2').show();",
                       :success => "$('loading_2').hide();")}"} %>
                     <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
-                </div>
+               </div>
 
               <div class="form-group col-sm-6 even">
                   <label for="student_grade"><%= t('first_name') %><span class="necessary-field">*</span> </label>

@@ -60,7 +60,7 @@
         <div class="extender"></div>
       </div>
       <div class="label-field-pair">
-        <label><%= t('total_mark') %></label>
+        <label><%= t('medium_of_instructions') %></label>
         <div class="text-input-bg"><%= a.text_field :total_mark %></div>
         <div class="extender"></div>
       </div>
@@ -71,26 +71,6 @@
       </div>
     </div>
   <% end %>
-  <div class="ajax-subject">
-    <ul id="added-subjects">
-      <%  unless @previous_subject.nil? %>
-        <% @previous_subject.each  do |p| %>
-
-          <li><div><span class="name"><%= p.subject %></span>
-            <span class="themed_text val"><span>:</span><%= p.mark %></span>
-            <span class="delete"><%= link_to_remote image_tag("/images/buttons/delete-new.png", :border => 0),
-                :url => {:action => "delete_previous_subject", :id => p.id},
-
-                :update => "added_subjects"%></span></div></li>
-
-        <% end %>
-      <% end %>
-    </ul>
-    <%= link_to_remote "#{t('add_subject')}", :url=>{:controller=>"student",:action=>"previous_subject", :id=>@student.id}%>
-    <div id="subject">
-
-    </div>
-  </div>
 </div>
 
 

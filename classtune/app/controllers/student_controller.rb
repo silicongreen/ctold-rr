@@ -743,7 +743,7 @@ end
         if params[:configure].present?
           redirect_to :controller => "student", :action => "profile", :id => params[:id]
         else
-          redirect_to :controller => "student", :action => "previous_data", :id => params[:id]
+          redirect_to :controller => "student", :action => "admission2", :id => params[:id]
         end
       end
     else
@@ -882,10 +882,19 @@ end
 
   def previous_data
     @student = Student.find(params[:id])
-    @previous_data = StudentPreviousData.new params[:student_previous_details]
+    new_entry = false
+    @previous_data = StudentPreviousData.find_by_student_id(params[:id])
+    if @previous_data.nil?
+      @previous_data = StudentPreviousData.new params[:previous_data]
+      new_entry = true
+    end
     @previous_subject = StudentPreviousSubjectMark.find_all_by_student_id(@student)
     if request.post?
-      @previous_data.save
+      if new_entry
+        @previous_data.save
+      else
+        @previous_data.update_attributes(params[:previous_data])
+      end  
       redirect_to :action => "admission4", :id => @student.id
     else
       return
@@ -1328,6 +1337,28 @@ end
     @batches = Batch.active
     @student.biometric_id = BiometricInformation.find_by_user_id(@student.user_id).try(:biometric_id)
     @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")
+    
+    @action_name_main = "profile"
+    if !params[:steps].blank? and params[:steps]=="one"
+      @already_sibling_selected = false
+      @guardian_already_added = false
+      if @student.id != @student.sibling_id
+        @already_sibling_selected = true
+      else
+        unless @student.guardians.blank?
+          @guardian_already_added = true
+        end
+      end  
+      if @already_sibling_selected == false
+        if Configuration.find_by_config_key('EnableSibling').present? and Configuration.find_by_config_key('EnableSibling').config_value=="1" and @guardian_already_added == false
+          @action_name_main = "admission1_2"
+        else
+          @action_name_main = "admission2"
+        end
+      else
+        @action_name_main = "admission2"
+      end  
+    end
 
     if request.post?
       params[:student].delete "pass"
@@ -1347,11 +1378,15 @@ end
             @auth_response = JSON::parse(auth_res.body)
             
             flash[:notice] = "#{t('flash3')}"
-            redirect_to :controller => "student", :action => "profile", :id => @student.id
+            redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
           end
         else
           flash[:notice] = "#{t('flash_msg11')}"
-          redirect_to :controller => "student", :action => "edit", :id => @student.id
+          if !params[:steps].blank? and params[:steps]=="one"
+            redirect_to :controller => "student", :action => "edit",:steps=>"one", :id => @student.id
+          else 
+            redirect_to :controller => "student", :action => "edit", :id => @student.id
+          end
         end
       else
         if @student.update_attributes(params[:student])
@@ -1366,7 +1401,7 @@ end
           @auth_response = JSON::parse(auth_res.body)
           
           flash[:notice] = "#{t('flash3')}"
-          redirect_to :controller => "student", :action => "profile", :id => @student.id
+          redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]
@@ -1530,7 +1565,11 @@ end
       end
       #      end
       flash[:notice] = "#{t('student.flash4')}"
-      redirect_to :controller => "student", :action => "guardians", :id => @student.id
+      if !params[:steps].blank? and params[:steps]=="one" 
+          redirect_to :controller => "student", :action => "admission2", :id => @student.id
+      else
+          redirect_to :controller => "student", :action => "guardians", :id => @student.id
+      end
     end
   end
 

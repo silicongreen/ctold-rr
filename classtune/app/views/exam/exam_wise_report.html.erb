@@ -82,8 +82,7 @@
         :border => 0,
         :id => "loader",
         :style =>"display: none;" ) %>
-
-      <%= submit_tag "", :value => "► #{t('view')}", :class => "submit_button" %>
+      <a href="javascript:void(0)" onClick="$('new_student').submit();" class="user_button" ><%= " ► #{t('view')}" %></a>
       <% # x.submit 'View' %>
 
     <% end %>

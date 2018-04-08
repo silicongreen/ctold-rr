@@ -93,7 +93,7 @@ function sibling_value(guardians){
           </div>
           <div class="f1-step">
               <div class="f1-step-icon"><div class="fa">1</div></div>
-              <p>Student Information</p>
+              <p><a href="/student/edit/<%= params[:id] %>?steps=one">Student Information</a></p>
           </div>
           <div class="f1-step active">
               <div class="f1-step-icon"><div class="fa">2</div></div>
@@ -180,3 +180,12 @@ function sibling_value(guardians){
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>  
+<style>
+    .f1-step:nth-child(3) p
+    {
+        width: 150px;
+        /* margin: 0 auto; */
+        float: left;
+        margin-left: -24px;
+    }
+</style>    

@@ -62,11 +62,11 @@
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">1</div></div>
-                  <p>Student Information</p>
+                  <p><a href="/student/edit/<%= params[:id] %>?steps=one">Student Information</a></p>
               </div>
               <div class="f1-step active">
                   <div class="f1-step-icon"><div class="fa">2</div></div>
-                  <p>Guardian Info</p>
+                  <p>Guardian Information</p>
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">3</div></div>
@@ -78,10 +78,16 @@
               </div>
           </div>    
         <fieldset>
-                      <legend><%= t('saved_message') %> <%= @student.full_name %></legend>
+          <legend><%= t('saved_message') %> <%= @student.full_name %></legend>
           <ul id="parents-list">
               <%- @student.guardians.each do |p| -%>
-              <li class="list<%=cycle('odd', 'even')%>"><%= p.full_name %> - <%= p.relation %> </li>
+              <li class="list<%=cycle('odd', 'even')%>">
+                  <%= p.full_name %> - <%= p.relation %> &nbsp; &nbsp;
+                  <% if permitted_to? :edit_guardian,:student %>
+                    <%= link_to "► #{t('edit_text')}",
+                    { :controller => 'student', :action => 'edit_guardian', :id => p.id,:student_id=>@student.id,:steps=>"one"}, :class=>"btn btn-success" %>
+                  <% end %>
+              </li>
               <%  end %>
               <div id="add-more-parent">
                   <%= link_to_function "► #{t('add_another_guardian')}", :class => "btn btn-success" do |page|
@@ -90,7 +96,7 @@
                     end %>
               </div>
               <div id="skip">
-                  <%= link_to "► #{t('finish')}", {:controller => "student", :action => "admission3", :id => @student.id }, :class => "btn btn-success" %>
+                  <%= link_to "► #{t('save_and_proceed')}", {:controller => "student", :action => "admission3", :id => @student.id }, :class => "btn btn-success" %>
               </div>
               <script type="text/javascript">
                 Event.observe(window, 'load', function () {
@@ -124,11 +130,11 @@
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">1</div></div>
-                  <p>Student Information</p>
+                  <p><a href="/student/edit/<%= params[:id] %>?steps=one">Student Information</a></p>
               </div>
               <div class="f1-step active">
                   <div class="f1-step-icon"><div class="fa">2</div></div>
-                  <p>Guardian Info</p>
+                  <p>Guardian Information</p>
               </div>
               <div class="f1-step">
                   <div class="f1-step-icon"><div class="fa">3</div></div>
@@ -190,6 +196,15 @@
                       <div class="form-group col-sm-6">
                           <label for="parent_detail_occupation"><%= t('occupation') %></label>
                           <%= f.text_field :occupation, :class=>"form-control" %>
+                      </div>
+                      <div class="form-group col-sm-6 even">
+                          <label for="parent_detail_occupation"><%= "Organization" %></label>
+                          <%= f.text_field :organization, :class=>"form-control" %>
+                      </div>
+
+                      <div class="form-group col-sm-6">
+                          <label for="parent_detail_occupation"><%= "Passport" %></label>
+                          <%= f.text_field :passport, :class=>"form-control" %>
                       </div>
 
 
@@ -275,7 +290,7 @@
                   </fieldset>
               </div> 
               <div class="form-group col-sm-6 even">
-                  <%= submit_tag "", :value => " ► #{t('finish')}",  :name => "commit", :class => "btn btn-success", :disable_with => "► #{t('please_wait')}" %>
+                  <%= submit_tag "", :value => " ► #{t('save_and_proceed')}",  :name => "commit", :class => "btn btn-success", :disable_with => "► #{t('please_wait')}" %>
               
                   <%= link_to "► #{t('click_here_to_skip')}", {:controller => "student", :action => "admission3", :id => @student.id }, :class => "btn btn-success" %>
               </div>

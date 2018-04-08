@@ -70,30 +70,10 @@
         <div class="profile_info_text_top"><%=@previous_data.year %></div>
       </div>
       <div class="new_profile_info_area1">
-        <div class="profile_info_label_top2"><%= t('total_mark') %></div>
+        <div class="profile_info_label_top2"><%= t('medium_of_instructions') %></div>
         <div class="profile_info_text_top2"><%=@previous_data.total_mark %></div>
       </div>
-      <div class="new_profile_info_area1">
-        <div class="profile_info_label_top"></div>
-        <div class="profile_info_text_top"><u><%= t('subject') %></u></div>
-      </div>
-      <% unless @previous_subjects.blank? %>
-        <div class="prev_subject_box">
-          <% @previous_subjects.each do |s| %>
-            <% a =cycle('2','') %>
-            <div class="new_profile_info_area2">
-              <div class="profile_info_label_top_1<%=a %>"><%= s.subject %> </div>
-              <div class="profile_info_text_top_1<%=a %>"><%= s.mark %> </div>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="new_profile_info_area1">
-          <div class="profile_info_label_top"></div>
-          <div class="profile_info_text_top"><u>(<%= t('no_previous_subject') %>)</u></div>
-        </div>
-      <% end %>
-    <% end %>
+      
 
     <% if permitted_to? :previous_data_edit,:student %>
     <div class="buttons">

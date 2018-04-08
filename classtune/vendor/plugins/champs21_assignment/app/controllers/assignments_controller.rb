@@ -412,10 +412,10 @@ class AssignmentsController < ApplicationController
         @students = []
         unless assigned_students.blank?
           assigned_students.each do |std|
-            unless std.blank?
-              unless std.batch_id.blank?
-                if std.batch_id == @subject.batch_id
-                  @students << std
+            unless std.student.blank?
+              unless std.student.batch_id.blank?
+                if std.student.batch_id == @subject.batch_id
+                  @students << std.student
                 end
               end
             end 

@@ -409,8 +409,18 @@ class AssignmentsController < ApplicationController
         @students = @subject.batch.students
       else
         assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@subject.id,@subject.batch_id)
-        @students = assigned_students.map{|s| s.student}
-        @students.reject!{|e| e.batch_id!=@subject.batch_id}
+        @students = []
+        unless assigned_students.blank?
+          assigned_students.each do |std|
+            unless std.blank?
+              unless std.batch_id.blank?
+                if std.batch_id == @subject.batch_id
+                  @students << std
+                end
+              end
+            end 
+          end
+        end
         @students=@students.compact
       end
     end

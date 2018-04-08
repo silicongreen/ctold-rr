@@ -16,7 +16,7 @@
               <td>Student's ID </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;&nbsp;<%= @student.admission_no %></td>
           </tr>
           <tr>
-              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name %></td>
+              <td>Student's Name </td><td colspan="3" class="font-light">:&nbsp;&nbsp;&nbsp;<%= @student.full_name.upcase %></td>
           </tr>
           <tr>
               <td>Date of Birth </td><td class="font-light">:&nbsp;&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
@@ -183,9 +183,9 @@
                             end
                           end
                         
-                            if midterm_total.to_f>0
-                              midterm_30  = (midterm_total.to_f*30)/100
-                            end
+                          if midterm_total.to_f>0
+                            midterm_30  = (midterm_total.to_f*30)/100
+                          end
                           %>
 
 

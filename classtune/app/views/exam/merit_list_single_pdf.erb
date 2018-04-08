@@ -1,0 +1,146 @@
+<%
+total_u = 0
+unless @report_data['report']['subjects'].blank?
+  @report_data['report']['subjects'].each do |subjects|
+    total_mark = 0
+    full_mark = 0
+    unless @report_data['report']['exams'].blank?
+      loop=0
+      @report_data['report']['exams'].each do |report|
+        loop = loop+1  
+        if loop>2
+          break
+        end
+        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+          total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+        end  
+        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
+          full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i 
+        end 
+        midterm_total = 0
+        midterm_30 = 0
+        unless @report_data['report']['exams'].blank? 
+          loop=0 
+          @report_data['report']['exams'].each do |report| 
+
+            loop = loop+1  
+            if loop>2
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+                midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
+              end
+            end
+
+          end
+        end
+
+        if midterm_total.to_f>0
+          midterm_30  = (midterm_total.to_f*30)/100
+        end
+        
+        if total_mark.to_f>0 and full_mark.to_f>0
+          main_mark = (total_mark.to_f/full_mark.to_f)*100 
+          total_70 = (total_mark.to_f*70)/100
+        else
+          main_mark = 0
+          total_70 = 0
+        end
+        accumulated = midterm_30+total_70
+        grade = GradingLevel.percentage_to_grade(accumulated, @batch.id)
+        if !grade.blank? and !grade.name.blank?
+          if grade.name == "U"
+            total_u +=1
+          end  
+        end  
+      end  
+    end  
+    
+  end  
+end  
+%>
+<% 
+  result = ""
+  promotion_status = ""
+  merit_position = ""
+  new_roll = ""
+  new_section = ""
+  if !@exam_comment.blank?
+    all_comments = @exam_comment.comments
+    if !all_comments.blank?
+      all_comments_array = all_comments.split("|")
+      result = all_comments_array[0]
+      if !all_comments_array[1].nil?
+        promotion_status = all_comments_array[1]
+        if !all_comments_array[2].nil?
+          merit_position = all_comments_array[2]
+          if !all_comments_array[3].nil?
+            new_roll = all_comments_array[3]
+            if !all_comments_array[4].nil?
+              new_section = all_comments_array[4]
+            end
+          end
+
+        end
+
+      end
+    end
+  end
+%>
+<% unless result.blank?  %>
+<tr class="table-header">
+    <td class="col-pdf"><%= @student.class_roll_no %></td>
+    <td class="col-pdf"><%= @student.full_name.upcase %></td>
+    <td class="col-pdf"><%= result %></td>
+    <td class="col-pdf"><%= promotion_status %></td>
+    <td class="col-pdf"><%= merit_position %></td>
+    <td class="col-pdf"><%=  new_roll %></td>
+    <td class="col-pdf"><%= new_section %></td>
+</tr>
+<% else %>
+<% if total_u == 0 or (@batch.course.course_name!="VIII" and @batch.course.course_name!="IX" and @batch.course.course_name!="X" and  total_u<2) %>
+    <% if total_u > 0   %>
+     <% result = "Passed Under Consideration" %>
+    <% else %>
+     <% result = "Passed" %>
+    <% end %>
+    <% if @promoted_to!="0" %>
+    <% promotion_status = "Promoted to STD- "+@promoted_to %>
+    <% else %>
+    <% promotion_status = "N/A" %>
+    <% end %>
+    <% unless @student_position[@student.id.to_i].blank? %>
+    <% merit_position = @student_position[@student.id.to_i] %>
+    <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
+       <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
+    <% else %>
+       <% new_roll = "N/A" %>
+    <% end %>
+
+    <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
+       <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
+    <% else %>
+       <% new_section = "N/A" %>
+    <% end %>
+     <% else %>
+     <%
+       merit_position = "N/A"
+       new_roll = "N/A"
+       new_section = "N/A"
+     %>
+     <% end %>
+ <% else %>
+   <% result = "Failed" %>
+   <% promotion_status = "Not Promoted" %>
+   <% new_roll = "N/A" %>
+   <% merit_position = "N/A" %>
+   <% new_section = "N/A" %>
+ <% end %>
+  <tr class="table-header">
+      <td class="col-pdf"><%= @student.class_roll_no %></td>
+      <td class="col-pdf"><%= @student.full_name.upcase %></td>
+      <td class="col-pdf"><%= result %></td>
+      <td class="col-pdf"><%= promotion_status %></td>
+      <td class="col-pdf"><%= merit_position %></td>
+      <td class="col-pdf"><%= new_roll %></td>
+      <td class="col-pdf"><%= new_section %></td>
+  </tr>
+<% end %>

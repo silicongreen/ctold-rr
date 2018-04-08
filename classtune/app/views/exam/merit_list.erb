@@ -1,0 +1,159 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="available_sections1 baf_shaheen">
+    <div class="page1"> </div>
+    <div class="section1 row" >
+        <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+            </div>
+            <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
+            <table width="100%" >
+                <thead>
+                    <tr>
+                        <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
+                        <td align="right"><b>Class : 
+                                <% if @batch.name == "General" %>
+                                  <%= @batch.course.full_name %>
+                                <% else %>
+                                  <%= @batch.name %> ,<%= @batch.course.full_name %>
+                                <% end %></b>
+                        </td>
+                    </tr>
+                </thead>    
+            </table>
+            <% if !@report_data.blank? %>
+              <table id="pdf-table" width="100%" cellspacing="0">
+                  <tr class="table-header">
+                      <td class="col-pdf">Roll</td>
+                      <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">Result</td>
+                      <td class="col-pdf">Promotion Status</td>
+                      <td class="col-pdf">Merit Position</td>
+                      <td class="col-pdf">New Roll</td>
+                      <td class="col-pdf">New Section</td>
+                  </tr>  
+                  <% @all_subject_exam = @report_data['report']['subjects'] %>
+                  <% @all_student_subject = StudentsSubject.find_all_by_batch_id(@batch.id) %>
+                  <% std_count = 0 %>
+                  <% @report_data['report']['students'].each do |std| %>
+                    <%  std_count = std_count+1; %>
+                    <% if std_count>20 %>
+                      <tr class="page-break">
+                          <td colspan="100">&nbsp;</td>
+                      </tr>
+                      <tr class="table-header">
+                          <td class="col-pdf">Roll</td>
+                          <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">Result</td>
+                          <td class="col-pdf">Promotion Status</td>
+                          <td class="col-pdf">Merit Position</td>
+                          <td class="col-pdf">New Roll</td>
+                          <td class="col-pdf">New Section</td>
+                      </tr>
+                    <% end %>    
+                    <%
+                    subjects_new = []
+                    subjects_ids = []
+                    unless @all_subject_exam.blank? 
+                      @all_subject_exam.each do |subjects|
+                        if subjects['elective_group_id'].to_i!=0 && MultiSchool.current_school.id!=319 && MultiSchool.current_school.id!=324
+                          @all_student_subject.each do |sub_std|
+                            if subjects['id'].to_i == sub_std.subject_id and std['id'].to_i == sub_std.student_id and !subjects_ids.include?(subjects['id'].to_i)
+                              subjects_new << subjects
+                              subjects_ids << subjects['id'].to_i
+                            end 
+                          end 
+                          elsif !subjects_ids.include?(subjects['id'].to_i)
+                          subjects_new << subjects 
+                          subjects_ids << subjects['id'].to_i
+                        end 
+                      end
+                      end
+                    @report_data['report']['subjects'] = subjects_new
+                    @student = Student.find_by_id(std['id'].to_i)
+
+                    unless @student.blank?
+
+                      @report_data['report']['no_exam_subject_resutl'] = []
+                      @report_data['report']['exams'] = []
+                      @report_data['report']['comments'] = []
+                      @report_data['report']['comments2'] = []
+                      @report_data['present'] = 0;
+                      if !@report_data['report']['all_result'][std['id']]['exams'].blank?
+
+
+                        @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
+
+                        if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
+                          @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
+                          end
+                        if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments2'].blank?
+                          @report_data['report']['comments2'] = @report_data['report']['exam_comments'][std['id']]['comments2']
+                          end
+
+                        if !@report_data['report']['no_exam_comments'].blank? and !@report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl'].blank?
+                          @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
+                          end 
+
+                        if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
+                          @report_data['present'] = @report_data['present_all'][std['id']]
+                          end 
+
+                        if !@report_data['absent_all'].blank? and !@report_data['absent_all'][std['id']].blank?
+                          @report_data['absent'] = @report_data['absent_all'][std['id']]
+                          end 
+
+                        if !@report_data['first_term_total'].blank?
+                          @report_data['total_first_term'] = @report_data['first_term_total']
+                          end 
+                        if !@report_data['first_term_present_all'].blank? and !@report_data['first_term_present_all'][std['id']].blank?
+                          @report_data['present_first_term'] = @report_data['first_term_present_all'][std['id']]
+                          end
+                        if !@report_data['first_term_absent_all'].blank? and !@report_data['first_term_absent_all'][std['id']].blank?
+                          @report_data['absent_first_term'] = @report_data['first_term_absent_all'][std['id']]
+                          end
+                        if !@report_data['first_term_total_new'].blank? and !@report_data['first_term_total_new'][std['id']].blank?
+                          @report_data['total_new_std_first_term'] = @report_data['first_term_total_new'][std['id']]
+                          end
+
+                        if !@report_data['total_new'].blank? and !@report_data['total_new'][std['id']].blank?
+                          @report_data['total_new_std'] = @report_data['total_new'][std['id']]
+                          end 
+
+                        @exam_comment = {}
+                        @exam_comment_all.each do |ec|
+                          if ec.student_id.to_i == std['id'].to_i
+                            @exam_comment = ec
+                          break
+                          end
+                        end
+                        %>
+                        <%= render :file => '/exam/merit_list_single_pdf' %>
+
+                      <% end %>
+                    <% end %>
+
+                  <% end %>
+              </table>     
+            <% end %>
+        </center>
+    </div>
+</div>

@@ -3083,7 +3083,7 @@ end
     
     @subjects_code = @subject.code
     
-    @tmp_subject_to_test = Subject.active.find_by_code_and_batch_id(@subjects_code, b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false")
+    @tmp_subject_to_test = Subject.active.find_by_code_and_batch_id(@subjects_code, b,:conditions=>"subjects.elective_group_id IS NOT NULL")
     unless @tmp_subject_to_test.nil?
       appropriate_elective_subject_id = @tmp_subject_to_test.id
     end

@@ -56,6 +56,7 @@
                   <% @report_data['report']['students'].each do |std| %>
                     <%  std_count = std_count+1; %>
                     <% if std_count>20 %>
+                      <% std_count = 0 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr>

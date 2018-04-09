@@ -2764,6 +2764,15 @@ class ExamController < ApplicationController
       @tabulation_data = student_response['data']
     end
     finding_data
+    render :pdf => 'merit_list',
+        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
   end
   
   def continues

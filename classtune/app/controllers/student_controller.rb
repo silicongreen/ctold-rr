@@ -21,7 +21,7 @@ class StudentController < ApplicationController
   filter_access_to [:reports], :attribute_check=>true, :load_method => lambda { current_user }
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
-  before_filter  :set_precision
+  before_filter :set_precision
   before_filter :protect_other_student_data, :except =>[:edit_guardian_own,:get_previous_exam,:update_is_promoted,:insert_into_new_parent_student_table,:show,:class_test_report,:previous_batch_report,:combined_exam,:progress_report,:class_test_report_single,:term_test_report]
   before_filter :default_time_zone_present_time
   before_filter :only_allowed_when_parmitted , :only=>[:edit_guardian_own,:edit_student_guardian]
@@ -34,6 +34,24 @@ class StudentController < ApplicationController
     :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details, :form_to_apply, :noc_letter, :noc_letter_update, :close_letter
   ]
   CONN = ActiveRecord::Base.connection
+  
+  def graduation_lists
+    @schoo_batch_id = Batch.all.map(&:id)
+    @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
+  end
+  
+  def get_graduation_students
+    @archived_students = []
+    unless params[:transfer_id].blank?
+      transfer_session = BatchTransfer.find params[:transfer_id]
+      unless transfer_session.blank?
+        @archived_students = ArchivedStudent.find_all_by_batch_id_and_status_description(transfer_session.from_id,transfer_session.session)
+      end
+    end
+    render :update do |page|
+      page.replace_html 'students', :partial => 'get_graduation_students'
+    end
+  end
   
   def get_previous_exam
     unless params[:batch_id].blank?

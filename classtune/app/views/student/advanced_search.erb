@@ -17,13 +17,67 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('student_text') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('advanced_search_text') %></div>
+<script type="text/javascript"> function setOption(optn) {document.getElementById("option").value = optn;} </script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %> 
+
+
+<div class="header-wrapper">
+
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= t('advanced_search_text') %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li>
+        <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
+      </li>
+      <li>
+          <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+      </li>
+      <li>
+        <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+      </li>
+      <li class="active">
+          <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
+      </li>
+  
+    </ul>
+  </div>
 
 </div>
+
+
 <div id="page-yield">
   <% unless flash[:notice].nil? %>
     <div class="show-msg"><div class="flash-msg"><%= flash[:notice] %></div> </div>
@@ -31,56 +85,56 @@
   <% unless params[:search] %>
     <div id="search-form">
       <% form_for @search, :html => {:id => "new_student"} do |f| %>
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6">
           <label for="name"><%= t('name') %></label>
-          <div class="text-input-bg">
-            <%= f.text_field :first_name_or_middle_name_or_last_name_like %>
-          </div>
+          
+            <%= f.text_field :first_name_or_middle_name_or_last_name_like, :class=>"form-control" %>
+          
         </div>
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6">
           <label for="student_admission_no"><%= t('admission_number') %></label>
-          <div class="text-input-bg">
-            <%= f.text_field :admission_no_equals %>
-          </div>
+          
+            <%= f.text_field :admission_no_equals, :class=>"form-control" %>
+         
         </div>
         
         <% if Batch.active.find(:all, :group => "name").length > 1  %> 
-          <div class="label-field-pair">
+          <div class="form-group col-sm-6">
             <label for="student_grade"><%= t('shift_label') %></label>
-            <div class="text-input-bg"><%= select :advv_search, :batch_name, Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]},
+            <%= select :advv_search, :batch_name, Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]},
             {:prompt => "#{t('select')}"},
             {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_adv&section_partial=sections_adv&page=course_adv&partial_view=courses_adv&page_batch=batches_adv&partial_view_batch=batches_adv'" ,:before => "$('loading_2').show();",
             :success => "$('loading_2').hide();")}"}%>
             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
-          </div>
+        
         <% else %>
-          <div class="label-field-pair" style="display: none;">
+          <div class="form-group col-sm-6" style="display: none;">
             <label for="student_grade"><%= t('shift_label') %></label>
-            <div class="text-input-bg"><%= select :advv_search, :batch_name, Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]},
+            <%= select :advv_search, :batch_name, Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]},
             {:prompt => "#{t('select')}"},
             {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_adv&section_partial=sections_adv&page=course_adv&partial_view=courses_adv&page_batch=batches_adv&partial_view_batch=batches_adv'" ,:before => "$('loading_2').show();",
             :success => "$('loading_2').hide();")}"}%>
             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %></div>
-          </div>
+          <
         <% end %>
         
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6">
           <label for="student_grade"><%= t('class_label') %></label>
-          <div class="text-input-bg"><div id="course_adv"> <%= render :partial => 'student/courses_adv', :object => @courses %></div></div>
+          <div id="course_adv"> <%= render :partial => 'student/courses_adv', :object => @courses %></div>
         </div>
         
-        <div class="label-field-pair" id="section_data_div">
+        <div class="form-group col-sm-6" id="section_data_div">
           <label for="student_grade"><%= t('section_label') %></label>
-          <div class="text-input-bg"><div id="section_adv"> <%= render :partial => 'sections_adv', :object => @classes %></div></div>
+          <div id="section_adv"> <%= render :partial => 'sections_adv', :object => @classes %></div>
         </div>
         
-        <div class="label-field-pair" style="display: none;">
+        <div class="form-group col-sm-6" style="display: none;">
           <label for="student_course"><%= t('course_text') %><%= image_tag("loader.gif",
               :align => "absmiddle",
               :border => 0,
               :id => "loader",
               :style =>"display: none;" ) %></label>
-          <div class="text-input-bg">
+          
             <%= select :advv_search, :course_id, Course.active.map{|c| [c.course_name+" "+c.section_name, c.id]},
               {:prompt=>"#{t('select_a_course')}"},
               {:onChange => "#{remote_function(:url => {:action => "list_batches"},
@@ -88,54 +142,47 @@
               :before => "Element.show('loader')",
               :success => "Element.hide('loader')"
               )}"}%>
-          </div>
+        
         </div>
-        <div class="label-field-pair" id="course_batches" style="display: none;">
+        
+        <div class="form-group col-sm-6" id="course_batches" style="display: none;">
           <label for="student_batch"><%= t('batch') %></label>
-          <div class="text-input-bg" >
-            <div class="text-input-bg"><div id="batches_adv"> <%= render :partial => 'batches_adv', :object => @batch_id %></div></div>  
-          </div>
+          <div id="batches_adv"> <%= render :partial => 'batches_adv', :object => @batch_id %></div></div>  
+          
         </div>
-        <div class="label-field-pair" style="display: none;">
+        <div class="form-group col-sm-6" style="display: none;">
           <label for="student_category"><%= t('category') %></label>
-          <div class="text-input-bg">
+          
             <%= f.collection_select :student_category_id_equals,StudentCategory.active,:id,:name,{:prompt=>"#{t('select_category')}"}%>
-          </div>
+       
         </div>
-        <div class="label_field_pair">
-          <label class="label_for_student" for="student_gender"><%= t('gender') %></label>
-          <div class="student_gender_value">
-            <%= f.radio_button  :gender_equals, "" %>
-            <label class="label_for_gender" for="student_gender_true"><%= t('all') %></label>
-            <%= f.radio_button  :gender_equals, "m"%>
-            <label class="label_for_gender" for="student_gender_false"><%= t('male') %></label>
-            <%= f.radio_button  :gender_equals, "f" %>
-            <label class="label_for_gender" for="student_gender_false"><%= t('female') %></label>
-          </div>
+        <div class="form-group col-sm-6" style="margin-top:18px;" >
+              <div class="col-sm-12" style="padding:0px; font-weight: bold;"><%= t('gender') %></div>
+              <label class="radio-inline"><%= f.radio_button  :gender_equals, "" %><%= t('all') %></label>
+              <label class="radio-inline"><%= f.radio_button  :gender_equals, "m"%><%= t('male') %></label>
+              <label class="radio-inline"><%= f.radio_button  :gender_equals, "f" %><%= t('female') %></label>
         </div>
-        <div class="label-field-pair" style="display: none;">
+       
+        <div class="form-group col-sm-6" style="display: none;">
           <label for="student_blood_group"><%= t('blood_group') %></label>
-          <div class="text-input-bg">
-            <%= select :search, :blood_group_like, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=>"#{t('select')}"}%>
-          </div>
+           <%= select :search, :blood_group_like, ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],{:prompt=>"#{t('select')}"}%>
+         
         </div>
 
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6">
           <label for="student_country">
             <%= t('country') %>
           </label>
-          <div class="text-input-bg">
-            <%= f.collection_select :nationality_id_equals, Country.all,:id,:name,{:prompt=>"#{t('select')}"}%>
-          </div>
+          <%= f.collection_select :nationality_id_equals, Country.all,:id,:name,{:prompt=>"#{t('select')}"}%>
         </div>
 
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6" style="display:none;">
           <label for="student_grade"><% if MultiSchool.current_school.id == 340  %>
                   <%= t('admission_date_2')  %>
                 <% else %>  
                   <%= t('admission_date') %>
                 <% end %></label>
-          <div class="text-input-bg">
+          
             <%= select :advv_search,:doa_option,[["#{t('equal_to')}","Equal to"],["#{t('less_than')}","Less than"],["#{t('greater_than')}","Greater than"]],{:prompt=>"#{t('option')}"},
               {:onChange => "#{remote_function(:url => {:action => "list_doa_year"},
               :with=>"'doa_option='+value",
@@ -152,11 +199,10 @@
               <%= select :advv_search,:doa_year,[],{:prompt=>"#{t('select')}"} %>
             </div>
             <div id="doa_year_hidden"></div>
-          </div>
         </div>
-        <div class="label-field-pair">
+        <div class="form-group col-sm-6" style="display:none;">
           <label for="student_birth_date"><%= t('birth_date') %></label>
-          <div class="text-input-bg">
+          
             <%= select :advv_search,:dob_option,[["#{t('equal_to')}","Equal to"],["#{t('less_than')}","Less than"],["#{t('greater_than')}","Greater than"]],{:prompt=>"#{t('option')}"},
               {:onChange => "#{remote_function(:url => {:action => "list_dob_year"},
               :with=>"'dob_option='+value",
@@ -174,23 +220,17 @@
               <%= select :advv_search,:dob_year,[],{:prompt=>"#{t('select')}"} %>
             </div>
             <div id="dob_year_hidden"></div>
-          </div>
         </div>
-        <div class="label_field_pair">
-          <label class="label_for_student" for="student_gender"><%= t('status') %></label>
-          <div class="student_gender_value">
-            <%= f.radio_button  :is_active_equals, "true", {:checked => 'checked'} %>
-            <label class="label_for_gender" for="student_gender_true"><%= t('present') %></label>
-            <%= f.radio_button  :is_active_equals, "false" %>
-            <label class="label_for_gender" for="student_gender_false"><%= t('former') %></label>
-            <%= f.radio_button  :is_active_equals, "", {:checked => false} %>
-            <label class="label_for_gender" for="student_gender_false"><%= t('all') %></label>
-
-          </div>
+        <div class="form-group col-sm-6" style="margin-top:18px;" >
+              <div class="col-sm-12" style="padding:0px; font-weight: bold;"><%= t('status') %></div>
+              <label class="radio-inline"><%= f.radio_button  :is_active_equals, "true", {:checked => 'checked'} %><%= t('present') %></label>
+              <label class="radio-inline"><%= f.radio_button  :is_active_equals, "false" %><%= t('former') %></label>
+              <label class="radio-inline"><%= f.radio_button  :is_active_equals, "", {:checked => false} %><%= t('all') %></label>
         </div>
 
-
-        <%= f.submit "#{t('search_text')}", :class=>'submit' %>
+        <div class="form-group col-sm-6 even" >
+          <%= f.submit "#{t('search_text')}", :class=>'btn btn-success' %>
+        </div>    
       <% end %>
     </div>
   <% else %>
@@ -216,20 +256,22 @@
         </div>
 
 
-        <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+        <table class="table" align="center" width="100%" cellpadding="1" cellspacing="1">
           <% unless @students.empty? %>
+            <thead>
             <tr class="tr-head">
-              <td>
+              <th>
                 <%= t('sl_no') %>
-              </td>
-              <td>
+              </th>
+              <th>
                 <%= t('first_name') %>
-              </td>
-              <td><%= t('batch') %></td>
-              <td><%= t('adm_no') %></td>
+              </th>
+              <th><%= t('batch') %></th>
+              <th><%= t('adm_no') %></th>
 
             </tr>
-            <tr class="tr-blank"></tr>
+            </thead>
+            <tbody>
             <% @students.each_with_index do |student, i| %>
               <tr class="tr-<%= cycle('odd', 'even') %>">
                 <td class="col-1"><%= ((@students.current_page - 1) * @students.per_page) + (i + 1) %></td>
@@ -242,6 +284,7 @@
                 <td class="col-2"><%= student.admission_no %></td>
               </tr>
             <% end %>
+           </tbody>   
           <% else %>
 
             <tr class="tr-<%= cycle('odd', 'even') %>">

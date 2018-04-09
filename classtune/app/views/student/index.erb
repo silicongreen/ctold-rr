@@ -18,59 +18,86 @@
 #under the License. -%>
 
 <script type="text/javascript"> function setOption(optn) {document.getElementById("option").value = optn;} </script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %> 
 
 
+<div class="header-wrapper">
 
-<div id="content-header">
-  <div class="header-icon student-icon"></div>
-  <h1><%= t('student_details') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('view_details') %></div>
-  <div id="inner-tab-menu">
-    <ul>
-      <%
-       valid_user_for_ad_check = false
-       if @current_user.employee?
-          employee= @current_user.employee_record
-          @employee_obj = Employee.find_by_id(employee.id)
-          @employee_batches = @employee_obj.batches
-          if !@employee_batches.empty?
-            valid_user_for_ad_check = true
-          end  
-        end  
-      
-      %>
-      <% if @current_user.admin? || valid_user_for_ad_check %>
-       <li class='themed_bg themed-dark-hover-background'><%= link_to "Check New Student Admission", :controller=>"student", :action=>"web_register" %></li>
-      <% end %>  
-      <li class='themed_bg themed-dark-hover-background'><%= link_to t('view_all'), :controller=>"student", :action=>"view_all" %></li>
-      <li class='themed_bg themed-dark-hover-background' ><%= link_to t('advanced'), :controller=>"student", :action=>"advanced_search" %></li>
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+        <%= t('student_details') %>
+      </div>
+      <div class="clearfix"></div>
+      <div class="header-title-sub-text">
+        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="tabbed-header-wrapper">
+    <ul class="header-tabs">
+      <li class="active">
+        <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
+      </li>
+      <li>
+          <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+      </li>
+      <li>
+        <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+      </li>
+      <li>
+          <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
+      </li>
+  
     </ul>
   </div>
 
 </div>
 <div id="page-yield">
-  <div id="search_box_bg">
+
     <form name="search_form" action="" style="display:inline;">
       <%= hidden_field_tag("option", params['option'], :value => "active") %>
-      <label for="user_name"><%= t('search_text') %>
-        <%= image_tag("loader.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader",
-          :style =>"display: none;" ) %>
-      </label>
-      <div id="search_textbox">
-        <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
+      <div class="form-group col-sm-6">
+        <label for="user_name"><%= t('search_text') %>
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+        </label>
+        <%= text_field_tag("query", params['query'], :autocomplete => 'off',:class=>"form-control") %>
 
       </div>
-      <div class="radio_button">
-        <input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('active')" /><%= t('present_student') %>
-        <input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('former')" /><%= t('former_student') %>
+      <div class="form-group col-sm-6" style="margin-top:30px;">
+          <label class="radio-inline"><input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('active')" /><%= t('present_student') %></label>
+        <label class="radio-inline"><input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('former')" /><%= t('former_student') %></label>
       </div>
       <div class="extender"></div>
     </form>
-  </div>
+
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
 
   <div id="view_all">

@@ -16,6 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+
 <table class="table" align="center" width="100%" cellpadding="1" cellspacing="1">
   <% unless @archived_students.blank? %>
     <thead>
@@ -30,7 +31,7 @@
     <% @archived_students.each_with_index do |student, i| %>
       <tr>
         <td><%= i+1 %></td>
-        <td><%= link_to student.full_name, {:controller => 'archived_student', :action => 'profile', :id => student.id} %></td>
+        <td><%= link_to student.full_name, {:controller => 'archived_student', :action => 'profile', :id => student.id}, :target=>"_blank" %></td>
         <td><%= student.batch.full_name %></td>
         <td><%= student.admission_no %></td>
       </tr>

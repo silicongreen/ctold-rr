@@ -1,0 +1,93 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+
+
+<div class="header-wrapper">
+
+
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= "Graduation List" %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+      <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+      <ul class="header-tabs">
+        <li>
+          <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
+        </li>
+        <li>
+            <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+        </li>
+        <li class="active">
+          <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+        </li>
+        <li>
+            <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
+        </li>
+
+      </ul>
+    </div>
+</div> 
+
+<div id="page-yield">
+    <div id="admission1_form">
+      <div class="form-group col-sm-6">
+           <label for="student_grade"><%= "Sessions" %></label>
+           <%= select :graduation, :session, options_for_select(@graduation_session.map {|b| [b.session, b.id]}),
+             {:prompt => "#{t('select')}"},
+             {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_graduation_students"}, :with => "'transfer_id='+value" ,:before => "$('loading_2').show();",
+             :success => "$('loading_2').hide();")}"} %>
+           <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+      </div>
+      <div class="form-group col-sm-12" id="students">
+          
+      </div> 
+        
+    </div>     
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>  

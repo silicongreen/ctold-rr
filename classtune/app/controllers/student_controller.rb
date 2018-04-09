@@ -37,7 +37,7 @@ class StudentController < ApplicationController
   
   def graduation_lists
     @schoo_batch_id = Batch.all.map(&:id)
-    @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
+    @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC',:group=>"from_id")
   end
   
   def get_graduation_students

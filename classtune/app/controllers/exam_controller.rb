@@ -2765,7 +2765,7 @@ class ExamController < ApplicationController
     end
     finding_data
     render :pdf => 'merit_list',
-        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+        :orientation => 'Landscape', :zoom => 1.00,
         :margin => {    :top=> 10,
         :bottom => 10,
         :left=> 10,

@@ -93,7 +93,7 @@ table#pdf-table{
 
 
 .page-break td{
-    height: 180px;
+    height: 80px;
     border: 1px solid #fff;
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;

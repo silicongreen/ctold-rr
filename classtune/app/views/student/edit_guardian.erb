@@ -148,13 +148,17 @@
                           <label for="parent_detail_occupation"><%= "Organization" %></label>
                           <%= f.text_field :organization, :class=>"form-control", :value => @parent.organization %>
                       </div>
-
-                      <div class="form-group col-sm-6">
-                          <label for="parent_detail_occupation"><%= "Passport" %></label>
-                          <%= f.text_field :passport, :class=>"form-control", :value => @parent.passport %>
+                      <div class="label-field-pair">
+                        <label for="parent_detail_education"><%= "Designation" %></label>
+                        <%= f.text_field :designation, :class=>"form-control", :value => @parent.designation %>
                       </div>
 
                       <div class="form-group col-sm-6 even">
+                          <label for="parent_detail_occupation"><%= "NID/Passport Number" %></label>
+                          <%= f.text_field :passport, :class=>"form-control", :value => @parent.passport %>
+                      </div>
+
+                      <div class="form-group col-sm-6">
                           <label for="parent_detail_income"><%= t('income') %></label>
                           <%= f.text_field :income, :class=>"form-control", :value => @parent.income %>
                       </div>

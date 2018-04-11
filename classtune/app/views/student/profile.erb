@@ -144,7 +144,18 @@
             </div>
 
             <div id="personal_info" class="row_wrapper">
-
+                <% unless @student.serial_no.nil? or @student.serial_no.blank? %>
+                <div class="row">
+                    <div class="row_label">
+                        <div><%= "Serial Number" %></div>
+                    </div>
+                    <div class="row_data">
+                        <div><%= @student.serial_no %></div>
+                    </div>
+                </div>
+                <% end %>
+                
+                <div class="clearfix"></div>
                 <div class="row">
                     <div class="row_label">
                         <div><%= t('roll_number') %></div>

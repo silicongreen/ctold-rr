@@ -321,7 +321,7 @@ class ExamConnect extends CActiveRecord
                 } 
               $result['max_mark_ct'] = $max_mark_ct;
               $result['max_mark_st'] = $max_mark_st;
-               if (Yii::app()->user->schoolId == "340")
+               if (Yii::app()->user->schoolId == "340" or Yii::app()->user->schoolId == "319")
                 {
                  
                    if(isset($result['students']))

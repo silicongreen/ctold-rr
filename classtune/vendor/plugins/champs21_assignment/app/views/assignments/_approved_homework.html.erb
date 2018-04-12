@@ -1,0 +1,64 @@
+<% unless @assignments.nil? %>
+  <% unless @assignments.empty? %>
+    <% total_homework = @assignments.count %>
+    <% i = 1 %>
+    <% @assignments.each_with_index do |assignment,i| %>
+      <%
+        unless assignment.subject.employees.nil?
+          emp_name = assignment.subject.employees[0].first_name
+          unless assignment.subject.employees[0].middle_name.nil?
+            emp_name += ' ' + assignment.subject.employees[0].middle_name
+          end
+          unless assignment.subject.employees[0].last_name.nil?
+            emp_name += ' ' + assignment.subject.employees[0].last_name
+          end
+        end
+      %>
+      <div class="portlet-subcontent" style="width:100%">     
+        <div class="timetable_left">
+          <% if assignment.subject.icon_number? %>
+                <%= image_tag("icons/subjects/"+assignment.subject.icon_number , :size=> "83x60", :alt=> assignment.subject.name) %>
+          <% else %>
+                <%= image_tag("icons/subjects/8.png" , :size=> "83x60", :alt=> assignment.subject.name) %>
+          <% end %>
+
+        </div>
+        <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
+          <div class="subcontent-header themed_text">
+              <%=  link_to assignment.subject.name.to_s+' - '+assignment.title, assignment%>
+              <br/>
+              Class : <%= assignment.subject.batch.course.course_name %>
+
+          </div>                           
+          <div class="subcontent-info"><%= emp_name %> </div>              
+        </div>
+        <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
+          <div class="subcontent-date"><b style="color:#000;">Assign Date &nbsp;:&nbsp; </b><%= I18n.l(assignment.created_at,:format=>"%A, %d %B, %Y") %></div>  
+          <div class="subcontent-date"><b style="color:#000;">Due Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </b><%= I18n.l(assignment.duedate,:format=>"%A, %d %B, %Y") %></div>                                    
+        </div>
+      </div>
+      <% if i<total_homework %>
+        <div style="float: left; margin: 7px; width: 95%;"></div> 
+      <% else %>
+       <div style=" margin: 7px;float: left; width: 95%;"></div> 
+      <% end %>
+      <% i = i+1 %>
+    <% end %>
+  <% else %>
+    <div class="portlet-subcontent" style="width:98%; padding: 10px; ">  
+          <%= "No Homework Found"%>
+    </div>    
+    
+  <% end %>  
+  <% posted_params = params %>
+  <% posted_params.delete(:page) %>
+  <% posted_params.delete(:authenticity_token) %>
+  <%= will_paginate @assignments, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer', :params => posted_params ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  } %>
+  <div style="float:right; clear:both;">
+  <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader_paginate",
+            :style =>"display: none;" ) %>
+  </div>     
+<% end %>

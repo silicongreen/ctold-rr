@@ -1,0 +1,232 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+// Put jQuery 1.10.2 into noConflict mode.
+  var $jq1 = jQuery.noConflict(true);
+</script>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<div class="box_content">
+    <div class="partial_homework" style="padding: 0px 0px;">
+        <!--<h2 class="f2 routine">HOMEWORK</h2>-->
+
+
+        <div class="header-wrapper">
+            <div class="header-title">
+                <div class="header-icon">
+                    <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+                </div>
+                <div class="header-title-text-wrapper">
+                    <div class="header-title-main-text f2">
+                        <%= link_to "Homework", :controller => 'assignments', :action => 'index' %> 
+                        <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%d %b %Y") %></span>
+                    </div>      
+                </div>    
+            </div>
+
+            <div class="tabbed-header-wrapper">
+                <ul class="header-tabs">
+                    <li>
+                        <%= link_to "All Homework",
+                          {:controller=>"assignments", :action=>"index"},
+                          {:class => 'f2'}
+                      %>
+                    </li>
+                    <% @config = Configuration.find_by_config_key('HomeworkWillForwardOnly') %>
+                    <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and (@current_user.admin? or (@current_user.employee? and @current_user.employee_entry.homework_publisher == 1)) %>
+                      <li>
+                          <%= link_to "Forwarded Homework",
+                            {:controller=>"assignments", :action=>"publisher"},
+                            {:class => 'f2'}
+                        %>
+
+                      </li>
+                    <% end %>
+                    <% if !@current_user.admin? %>
+                      <% if  permitted_to? :new,:assignments %>
+                        <li>          
+                            <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new"}, :class => 'f2' %>
+                        </li>
+                        <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) %>
+                          <li class="active">          
+                              <%= link_to "Approved Homework", {:controller => "assignments", :action => "approved_homework"}, :class => 'f2' %>
+                          </li>
+                        <% end %>
+                      <% end %>
+                    <% end %>    
+                </ul>
+            </div>
+              <div class="col-sm-12">
+                  <div class="form-group col-sm-4 even">
+                      <label for="assignment_subject"><%= "Subjects"%></label>
+                        <% unless @subjects.nil? %>
+                            <%= select :assignment, :subject,
+                              @subjects.map {|s| ["#{s.name}  - Class : #{s.batch.course.course_name}",s.id]},
+                              {:prompt => "#{t('select_subject_and_class')}"},
+                              {:onChange => "#{remote_function(:url => {:action => "subject_assignments_approved"},
+                              :with => "'subject_id='+ value +'&due_date='+ $('assignment_duedate').value+'&publish_date='+ $('assignment_publish_date').value",
+                              :before => "Element.show('loader')",
+                              :success => "Element.hide('loader')"
+                              )}"} %>
+                        
+                        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="duedate"><%= "#{t('due_date')}"%></label>
+                            <%= calendar_date_select_tag "assignment_duedate", '' ,
+                              :class=>"form-control form-control-date",
+                              :readonly=>true,
+                              :popup=>:force,
+                              :onchange => "#{remote_function(:url => {:action => "subject_assignments_approved"},
+                            :with => "'due_date='+ value +'&subject_id='+ $('assignment_subject').value+'&publish_date='+ $('assignment_publish_date').value",
+                            :before => "Element.show('loader')",
+                            :success => "Element.hide('loader')"
+                            )}"
+                          %>
+                          <div class="clear-date">Clear</div>
+                          <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="duedate"><%= "Published"%></label>
+                        
+                            <%= calendar_date_select_tag "assignment_publish_date", '' ,
+                              :class=>"form-control form-control-date",
+                              :readonly=>true,
+                              :popup=>:force,
+                              :onchange => "#{remote_function(:url => {:action => "subject_assignments_approved"},
+                            :with => "'publish_date='+ value +'&subject_id='+ $('assignment_subject').value+'&due_date='+ $('assignment_duedate').value",
+                            :before => "Element.show('loader')",
+                            :success => "Element.hide('loader')"
+                            )}"
+                          %>
+                        <div class="clear-date2">Clear</div>
+                        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+                    </div>
+                     
+                  <% else %>
+                    <p class="flash-msg"> <%= "#{t('there_are_no_subjects_assigned_to_this_employee')}"%> </p>
+                  <% end %>
+              </div>
+
+
+              <div class="clearfix"></div>
+
+          </div> 
+        
+          <div id="page-yield">
+              <div id="subject_assignments_list" style="clear: both">
+               <%= render :partial => 'approved_homework', :object => @assignments %>
+              </div>
+          </div>
+
+
+      </div>
+  </div>        
+
+  <%= stylesheet_link_tag 'list_table' %>
+
+  <style type="text/css">
+      .col-sm-4
+      {
+          width: 29.333% !important;
+      }
+      .col-sm-12
+      {
+          padding:10px;
+      }
+      .calendar_date_select_popup_icon {
+          border: 0px;
+          cursor: pointer;
+          float: right;
+          margin: -10.9% 9.5%;
+          width: 27px;
+      }
+      .attachment {
+          background: url("/images/assignment/paperclip.png") no-repeat left;
+          padding-left: 11px;
+          height: 35px;
+      }
+      .form-control-date
+      {
+          width:70%;
+      }
+      .clear-date {
+          color: #db3434;
+          cursor: pointer;
+          float: right;
+          font-size: 12px;
+          margin-right: 20px;
+          margin-top: -23px;
+          width: 0;
+      }
+      .clear-date2 {
+          color: #db3434;
+          cursor: pointer;
+          float: right;
+          font-size: 12px;
+          margin-right: 20px;
+          margin-top: -23px;
+          width: 0;
+      }
+      div h2.routine
+      {
+
+          width: 60%;
+      }
+      .pagination
+      {
+          margin-bottom:30px;
+      }
+
+
+      .CSSTableGenerator table thead tr th{
+          text-align: center;
+          padding: 10px;
+      }
+      .CSSTableGenerator td a
+      {
+          color: inherit;
+          padding : 0;
+          background-color: inherit;
+          float: none;  
+          display: block;
+
+      }
+      .CSSTableGenerator td a:hover
+      {
+          color: inherit;
+          padding : 0;
+          background-color: inherit;
+          float: none;
+          display: block;
+
+      }
+      .CSSTableGenerator table tr td 
+      {
+          text-align: center;
+          font-weight: bold;
+          overflow: hidden;
+          padding: 5px !important;
+      }
+      .CSSTableGenerator table tr td:last-child
+      {
+          padding: 0;
+          width: 15%;
+      }
+      #page-yield
+      {
+          margin-top:0px;
+      }
+  </style>
+
+  <% content_for :head do %>
+    <%= javascript_include_tag "custom/assignment" %>
+  <% end %>
+  <%= stylesheet_link_tag 'pagination_and_table' %>
+  <%= stylesheet_link_tag 'tadded-header' %>          

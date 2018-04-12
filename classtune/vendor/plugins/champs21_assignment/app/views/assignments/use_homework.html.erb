@@ -1,0 +1,97 @@
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <a href="/assignments"><h1><%#= "#{t('assignments_text')}"%></h1></a>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= "#{t('create_a_new_assignment')}"%></div>
+
+</div>-->
+<div class="header-wrapper">
+  <div class="header-title">
+    <div class="header-icon">
+      <%= image_tag '/images/icons/lessonplan_icon.png', :html => {:alt => 'Lessonplan'} %>
+    </div>
+    <div class="header-title-text-wrapper">
+      <div class="header-title-main-text f2">
+       <%= link_to "Homework", :controller => 'assignments', :action => 'index' %>   
+       <span style="float: left;clear:both;font-size: 15px;"><%= Time.now.strftime("%d %b %Y") %></span>
+      </div>
+      <div class="header-title-sub-text f5">
+        
+        </div>
+      </div>
+    </div>    
+<div class="clearfix"></div>
+</div>
+<div id="page-yield" class="ch_homework_answers_wrapper"  style="margin-top: 0px;">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <% form_for(@assignment, :url => {:action=> 'create_use_homwork',:used_id=>params[:id]}, :html=> {:id=>'new_student'}) do |f| %>
+    <%= error_messages_for :assignment %>
+    <div class="assignment_container">
+        <div class="assignment_form">
+            <div style="background: #EDEDEE; padding: 10px;float:left; clear:both;" >
+              <h2><%= @main_assignment.title %></h2>
+              <p><%= @main_assignment.content.strip %></p>
+              <% unless @main_assignment.attachment_file_name.nil? %>
+              <div class="worksheet">                            
+                <%= link_to 'Worksheet', :controller => "assignments", :action => "download_attachment" , :id=>@main_assignment.id %>
+              </div>
+              <% end %>
+            </div>
+             
+        <div class="label-field-pair"  style="float:left; clear:both; margin-top: 20px;">
+          <label  for="assignment_subject"><%= "#{t('subject_and_class')}"%></label>    <div class="text-input-bg" >    <%= select :assignment, :subject_id,
+              @subjects_main.map {|s| ["#{s.name}  - #{s.batch.full_name}",s.id]},
+              {:prompt=>"#{t('select_subject_and_class')}"},
+              {:onChange => "#{remote_function(:url => {:action => "subjects_students_list"},
+              :with => "'subject_id='+ value",
+              :before => "Element.show('loader')",
+              :success => "Element.hide('loader')"
+              )}"} %></div>
+            <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
+        </div>
+        
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "Published date"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "assignment[created_at]",
+             I18n.l(Date.today,:format=>"%d %b %Y"),:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate"><%= "#{t('due_date')}"%></label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "assignment[duedate]",
+              I18n.l(1.week.since,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>     
+        <div id ="assignment-submit"   style="float:left; clear:both;">
+          <%= f.submit "#{t('publish_new_assignment')}" ,:class=>"submit_button", :disable_with => "#{t('please_wait')}"%>
+        </div>
+       </div>
+      <div id="subjects_student_list">
+        <% if @current_user.employee?  %>
+          <%= render :partial=> "subjects_student_list" %>
+        <% end %>   
+      </div>
+
+    </div>
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<style>  
+    .submit_button
+    {
+        margin-left: 0px;
+    }
+    .worksheet
+    {
+      float:left;clear:both;height: 27px;width: 35%; color:red !important;  
+    }
+    .worksheet a
+    {
+        color:red;
+    }
+</style>    

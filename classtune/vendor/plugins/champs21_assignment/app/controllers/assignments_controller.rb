@@ -2,7 +2,7 @@ class AssignmentsController < ApplicationController
   before_filter :login_required
   before_filter :check_permission, :only=>[:index]
   filter_access_to :all,:except=>[:show]
-  filter_access_to :show,:attribute_check=>true
+  filter_access_to :show
   before_filter :default_time_zone_present_time
   before_filter :only_publisher_admin_allowed , :only=>[:publisher,:show_publisher,:get_homework_filter_publisher,:showsubjects_publisher,:publisher_homework,:deny_homework,:subject_assignments_publisher]
   
@@ -67,6 +67,157 @@ class AssignmentsController < ApplicationController
       format.js { render :action => 'get_homework_filter_publisher' }
     end
    
+  end
+  def use_homework
+    @subjects = current_user.employee_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
+    subject_class = []
+    subject_id = []
+    unless @subjects.blank?
+      @subjects.each do |subject|
+        subject_class << subject.name+"-"+subject.batch.course.course_name
+        subject_id << subject.id
+      end  
+    end
+    is_publish = [1,3]
+    @main_assignment = Assignment.find(:first,:select=>"assignments.*,courses.course_name as course_name_asignment,subjects.name as subject_name_asignment",:conditions=>["CONCAT(subjects.name,'-',courses.course_name) IN (?) and assignments.is_published IN (?) and assignments.id = ?",subject_class,is_publish,params[:id]],:joins=>[{:subject=>{:batch=>[:course]}}])
+    unless @main_assignment.blank?
+      @assignment= Assignment.new
+      @subjects_main = Subject.find(:all,:conditions=>["subjects.name = ? and courses.course_name = ? and subjects.is_deleted = ? and subjects.id IN (?)",@main_assignment.subject_name_asignment,@main_assignment.course_name_asignment,false,subject_id],:joins=>[{:batch=>[:course]}])
+    else
+      flash[:notice]="You are not allowed to use this homework"
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end  
+  
+  end
+  
+  
+  def create_use_homwork
+    @main_assignment = Assignment.find(params[:used_id])
+    student_ids = params[:assignment][:student_ids]
+    params[:assignment].delete(:student_ids)
+    @subject = Subject.find_by_id(params[:assignment][:subject_id])
+    @assignment = Assignment.new(params[:assignment])
+    @assignment.title = @main_assignment.title
+    @assignment.content = @main_assignment.content
+    @assignment.assignment_type = @main_assignment.assignment_type
+    @assignment.attachment_file_name = @main_assignment.attachment_file_name
+    @assignment.student_list = student_ids.join(",") unless student_ids.nil?
+    @assignment.employee = current_user.employee_record
+    @assignment.used_id = @main_assignment.id
+    @assignment.is_published = 1
+    students = Student.find_all_by_id(student_ids)
+    available_user_ids = []
+    batch_ids = {}
+    student_ids = {}
+
+    students.each do |st|
+      available_user_ids << st.user_id
+      batch_ids[st.user_id] = st.batch_id
+      student_ids[st.user_id] = st.id
+      @student = Student.find(st.id)
+      unless @student.student_guardian.empty?
+        guardians = @student.student_guardian
+        guardians.each do |guardian|
+          #            guardian = Guardian.find(@student.immediate_contact_id)
+
+          unless guardian.user_id.nil?
+            available_user_ids << guardian.user_id
+            batch_ids[guardian.user_id] = @student.batch_id
+            student_ids[guardian.user_id] = @student.id
+          end
+        end  
+      end
+    end
+    #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+    unless @subject.nil?
+      if @assignment.save
+        if @assignment.is_published==1
+          Delayed::Job.enqueue(
+            DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => available_user_ids,
+              :subject=>"#{t('new_homework_added')} : "+@assignment.title,
+              :rtype=>4,
+              :rid=>@assignment.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
+          )
+        end
+        flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
+        redirect_to :action=>:index
+      else
+        if current_user.employee?
+          @subjects = current_user.employee_record.subjects
+        
+          @subjects.reject! {|s| !s.batch.is_active?}
+          @students = @subject.batch.students
+        end
+        render :action=>:use_homework,:id=>params[:used_id]
+      end
+    else
+      unless @assignment.save
+        @subjects = current_user.employee_record.subjects
+        render :action=>:use_homework,:id=>params[:used_id]
+      end
+    end
+  end
+  
+  
+  def approved_homework    
+    @subjects_main = current_user.employee_record.subjects.active
+    @subjects_main.reject! {|s| !s.batch.is_active}
+    
+    @subjects = []
+    subject_class = []
+    unless @subjects_main.blank?
+      @subjects_main.each do |subject|
+        unless subject_class.include?(subject.name+"-"+subject.batch.course.course_name)
+           @subjects << subject
+           subject_class << subject.name+"-"+subject.batch.course.course_name
+        end
+        
+      end  
+    end
+   
+    @assignments = []
+    is_publish = [1,3]
+    unless subject_class.blank?
+      @assignments = Assignment.paginate :select=>"assignments.*",:conditions=>["CONCAT(subjects.name,'-',courses.course_name) IN (?) and assignments.is_published IN (?) and (assignments.used_id = ? or assignments.used_id is NULL)",subject_class,is_publish,false],:joins=>[{:subject=>{:batch=>[:course]}}],:order=>"assignments.created_at desc", :page=>params[:page], :per_page => 10
+    end
+  end
+  def subject_assignments_approved
+    @due_date = params[:due_date]
+    @publish_date= params[:publish_date]
+    @subject = Subject.find_by_id params[:subject_id]
+    @subjects = current_user.employee_record.subjects.active
+    @subjects.reject! {|s| !s.batch.is_active}
+    subject_class = []
+    unless @subjects.blank?
+      @subjects.each do |subject|
+        subject_class << "'"+subject.name+"-"+subject.batch.course.course_name+"'"
+      end  
+    end
+    @assignments = []
+    is_publish = [1,3]
+    conditions = "CONCAT(subjects.name,'-',courses.course_name) IN ("+subject_class.join(",")+") and assignments.is_published IN (#{is_publish.join(',')}) and (assignments.used_id = 0 or assignments.used_id is NULL)"
+    unless  @publish_date.blank?
+      @publish_date = @publish_date.to_datetime.strftime("%Y-%m-%d")
+      conditions+=" and DATE(assignments.created_at) = '#{@publish_date}'"
+    end
+    unless  @due_date.blank?
+      @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
+      conditions+=" and DATE(assignments.duedate) = '#{@due_date}'"
+    end
+    unless  @subject.blank?
+      conditions+=" and subjects.name = '#{@subject.name}'"
+    end
+    @assignments = Assignment.paginate :conditions=>conditions,:order=>"duedate desc",:joins=>[{:subject=>{:batch=>[:course]}}],:order=>"assignments.created_at desc", :page=>params[:page]
+    
+    
+    render(:update) do |page|
+      page.replace_html 'subject_assignments_list', :partial=>'approved_homework'
+    end
   end
   
   def index

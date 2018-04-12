@@ -39,6 +39,11 @@
                     <li>          
                       <%= link_to t('create_new_assignment'), {:controller => "assignments", :action => "new"}, :class => 'f2' %>
                     </li>
+                    <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) %>
+                    <li>          
+                      <%= link_to "Approved Homework", {:controller => "assignments", :action => "approved_homework"}, :class => 'f2' %>
+                    </li>
+                    <% end %>
                   <% end %>
                 <% end %>    
               </ul>

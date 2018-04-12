@@ -54,6 +54,10 @@ authorization do
       :assignment_student_list,
       :subject_assignments3,
       :create,
+      :show,
+      :use_homework,
+      :create_use_homwork,
+      :subject_assignments_approved,
       :destroy,
       :published_homework,
       :publisher_homework,
@@ -69,15 +73,13 @@ authorization do
       :subjects_students_list,
       :showsubjects,
       :showsubjects_publisher,
+      :approved_homework,
       :update]
     has_permission_on [:assignment_answers],
       :to=>[
       :download_attachment,
       :evaluate_assignment,
       :show]
-      has_permission_on :assignments, :to=>:show, :join_by=> :or do
-       if_attribute :employee_id => is {user.employee_record.id if user.employee and user.employee_record}
-     end
    
   end
   

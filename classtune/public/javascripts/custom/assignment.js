@@ -5,6 +5,10 @@ jqss(document).ready(function() {
         jqss('#assignment_duedate').val('');
         jqss('#assignment_duedate').trigger('change');
     });
+    jqss(document).on('click', '.clear-date2', function() {
+        jqss('#assignment_publish_date').val('');
+        jqss('#assignment_publish_date').trigger('change');
+    });
     
  
     

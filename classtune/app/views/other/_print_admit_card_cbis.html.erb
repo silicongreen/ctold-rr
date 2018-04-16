@@ -23,15 +23,13 @@
         <% i += 1 %>
         
         <% unless i % 2 == 0 %>
-          <div style="float:left;clear:both; width:100%; height:5mm;"></div>
-        <% end %>
-        <% if j % 3 == 0 %>
           <div style="float:left;clear:both; width:100%; height:3mm;"></div>
         <% end %>
+      
         <div class="col-xs-6" style="border:1px solid black; padding:0px; margin-left: 5%; margin-right: 5%; width: 90%;">
             
             <div class="col-xs-12" style="padding:0px;">
-              <div class="col-xs-12" style="padding:0px;"><center><img style='margin-top:5px; height:60px;' src='<%= current_school_detail.logo.url  %> ' /></center></div>
+              <div class="col-xs-12" style="padding:0px;"><center><img style='margin-top:5px; height:60px;' src='/images/school_logo/246/cherry-logo-bran-new.jpg' /></center></div>
               <div class="col-xs-12"><center><h4><b><font size="5"><%=Configuration.get_config_value('InstitutionName'); %></font></b></h4></center></div>
               <div class="col-xs-12"><center><font size="3">Play Group - 'A' Level, Edexcel Center No- 96440, UK</font></center></div>
             
@@ -84,9 +82,9 @@
         </div> 
         
         <% if i % 2 == 0 %>
-          <div style="float:left;clear:both; width:100%; height:5mm;"></div>
+          <div style="float:left;clear:both; width:100%; height:3.5mm;"></div>
         <% else %>
-          <div style="float:left;clear:both; width:100%; height:10mm;"></div>
+          <div style="float:left;clear:both; width:100%; height:15mm;"></div>
         <% end %>
         <% end %>
     </body>

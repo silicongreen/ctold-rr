@@ -25,6 +25,12 @@
 
                   <% end %>  
                 </div>
+                <% if MultiSchool.current_school.code == "sis" %>
+                <div class="category-code" style="width:20%">
+                   <% exam_quarter = get_exam_result_quarter() %>
+                   <%= exam_quarter[subgroup.quarter.to_s] %>
+                </div>
+                <% end %>
                 <div class="category-edit">
                   <%= link_to_remote(t('edit_text'),
                     :url => { :controller=>"subjects",:action => 'edit_subgroup', :id =>subgroup.id},

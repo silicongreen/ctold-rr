@@ -124,16 +124,24 @@ class ApplicationController < ActionController::Base
     return student_response
   end
   
-  def get_subject_group(subject_id)
+  def get_subject_group(subject_id,quarter_number = 0)
     require "yaml"
-    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id],:order=>"priority ASC")   
+    if quarter_number > 0
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and quarter=? and (parent_id is null or parent_id = 0)",subject_id,quarter_number],:order=>"priority ASC")
+    else
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id],:order=>"priority ASC")   
+    end
     return subject_subgroup  
   end
   
-  def get_subject_sub_group(subject_subgroup_id)
+  def get_subject_sub_group(subject_subgroup_id,quarter_number = 0)
     require "yaml"
     vreturn = false
-    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["parent_id = ?",subject_subgroup_id],:order=>"priority ASC")
+    if quarter_number > 0
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["parent_id=? and quarter=?",subject_subgroup_id,quarter_number],:order=>"priority ASC")
+    else
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["parent_id=?",subject_subgroup_id],:order=>"priority ASC")
+    end
     unless subject_subgroup.blank?
       vreturn = subject_subgroup.map(&:name)
     end    
@@ -141,10 +149,16 @@ class ApplicationController < ActionController::Base
   end
   
   
-  def has_subject_group(subject_id)
+  def has_subject_group(subject_id,quarter_number = 0)
     require "yaml"
     vreturn = false
-    subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id])
+    if quarter_number > 0
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and quarter=? and (parent_id is null or parent_id = 0)",subject_id,quarter_number])
+    else
+      subject_subgroup = SubjectSubgroup.find(:all,:conditions=>["subject_id=? and (parent_id is null or parent_id = 0)",subject_id])
+    end  
+      
+ 
     unless subject_subgroup.blank?
       vreturn = true
     end   

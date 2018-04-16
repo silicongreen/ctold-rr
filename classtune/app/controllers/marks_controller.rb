@@ -332,6 +332,7 @@ class MarksController < ApplicationController
     @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
     k = 0
     data = []
+    c_exam_array = []
     @exam_connect.each do |exam_connect|
      
       exam_connect_batch = exam_connect.batch_name+" "+exam_connect.course_name+" "+exam_connect.section_name
@@ -340,14 +341,15 @@ class MarksController < ApplicationController
          
       @exam_group_ids = @group_exams.map(&:exam_group_id)
         
-      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject],:conditions =>["subjects.is_deleted = ?", false])
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name,subjects.no_exams_sjws as no_exams_sis",:joins=>[:subject],:conditions =>["subjects.is_deleted = ?", false])
       exams.each do |exam|   
         if !@subjects.include?(exam.subject_id) 
           if @employee_subjects.include?(exam.subject_id) or @current_user.admin?
             @subjects << exam.subject_id
               
-            data[k] = []
+            
             if school_id == 340
+              data[k] = []
               #Sir John Wilson School
               if exam_connect.result_type == 1
                 data[k][0] = exam_connect_batch.to_s
@@ -428,16 +430,38 @@ class MarksController < ApplicationController
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
                 data[k][4] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>Pupil Progress Report</a>"
               end
-
+              k = k+1
+            elsif school_id == 348
+              if exam_connect.result_type != 3 or exam_connect.result_type != 4 
+                unless c_exam_array.include?(exam_connect.id.to_i)
+                  data[k] = []
+                  data[k][0] = exam_connect_batch.to_s
+                  data[k][1] = exam_connect.name.to_s
+                  data[k][2] = "All"
+                  data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+                  c_exam_array << exam_connect.id.to_i
+                  k = k+1
+                end
+              else
+                if exam.no_exams_sis.to_i == 0
+                  data[k] = []
+                  data[k][0] = exam_connect_batch.to_s
+                  data[k][1] = exam_connect.name.to_s
+                  data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
+                  data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
+                  k = k+1
+                end
+              end  
             else
+              data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
               data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
               data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
               data[k][3] = "<a href='/exam/comment_tabulation_pdf/#{exam_connect.id.to_s}' target='_blank'>Comment Entry</a>"
               data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}' target='_blank'>Results</a>"
-
+              k = k+1
             end
-            k = k+1
+            
           end
         end    
       end 

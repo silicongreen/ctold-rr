@@ -141,12 +141,32 @@
          
         </div>
       </div>
+      <div class="label-field-pair">
+          <% exam_quarter = get_exam_result_quarter() %>
+       <label >Quarter</label>
+        <div  class="text-input-bg">
+          <%= select :exam_grouping,:quarter_number,options_from_collection_for_select(exam_quarter, :first, :last,@exam_connect.quarter_number.to_s) %>
+        </div>
+      </div>
        
         <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate">Publish Date</label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "exam_grouping[published_date]",
               @exam_connect.published_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.published_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate">Next Session/Term Begins</label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[next_session_begins]",
+              @exam_connect.next_session_begins.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.next_session_begins,:format=>"%d %b %Y"), 
+              :class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair">
+          <label><%= "Promoted To" %> : </label>
+          <div class="text-input-bg"><%= f.text_field :promoted_to,:value=> @exam_connect.promoted_to %>
           </div>
         </div>
         <% 

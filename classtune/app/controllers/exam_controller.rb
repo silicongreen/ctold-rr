@@ -858,24 +858,25 @@ class ExamController < ApplicationController
       end
       
         
-      
-      params[:exam].each_pair do |student_id, details|
-        @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
-        if @exam_comments.nil?
-          
-          ExamConnectSubjectComment.create do |score|
-            score.subject_id       = @exam_subject.id
-            score.student_id       = student_id
-            score.exam_connect_id  = exam_subject_id_array[0]
-            score.employee_id      = current_user.employee_record.id
-            score.comments         = details[:comments]
-            score.effort           = details[:effort] # For Sir John Wilson School
-          end
-        else
-          if !details[:comments].blank? || !details[:effort].blank? 
-            @exam_comments.update_attributes(details)
+      unless params[:exam].blank?
+        params[:exam].each_pair do |student_id, details|
+          @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student_id} )
+          if @exam_comments.nil?
+
+            ExamConnectSubjectComment.create do |score|
+              score.subject_id       = @exam_subject.id
+              score.student_id       = student_id
+              score.exam_connect_id  = exam_subject_id_array[0]
+              score.employee_id      = current_user.employee_record.id
+              score.comments         = details[:comments]
+              score.effort           = details[:effort] # For Sir John Wilson School
+            end
           else
-            @exam_comments.destroy
+            if !details[:comments].blank? || !details[:effort].blank? 
+              @exam_comments.update_attributes(details)
+            else
+              @exam_comments.destroy
+            end
           end
         end
       end
@@ -957,7 +958,6 @@ class ExamController < ApplicationController
   def new_exam_connect
     @batch = Batch.find(params[:id])
     @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
-    @exam_groups.reject!{|e| e.exam_type=="Grades"}
     
     if request.post?
       #abort params.inspect
@@ -976,7 +976,7 @@ class ExamController < ApplicationController
               flash[:notice]="#{t('flash25')}"
               return
             else
-              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type], :batch_id => params[:id], :school_id => MultiSchool.current_school.id,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
+              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to], :batch_id => params[:id], :school_id => MultiSchool.current_school.id,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
               @exam_connect_id = @exam_connect.id
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
@@ -1017,7 +1017,7 @@ class ExamController < ApplicationController
               flash[:notice]="#{t('flash25')}"
               return
             else              
-              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
+              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
                      
               @exam_connect_id = @exam_connect.id
               
@@ -2802,6 +2802,7 @@ class ExamController < ApplicationController
             @report_data = @student_response['data']
           end 
       else
+       
         @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
           get_continues(@id,@batch.id)
           report_data = []
@@ -2810,6 +2811,7 @@ class ExamController < ApplicationController
           end
           report_data
         }
+       
       end
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
       render_connect_exam("continues",false,file_name)  
@@ -4210,6 +4212,30 @@ class ExamController < ApplicationController
             :bottom => 40,
             :left=> 10,
             :right => 10}
+        elsif MultiSchool.current_school.id == 348
+          if @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 6
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Landscape',
+            :margin => {    :top=> 0,
+            :bottom => 15,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          else
+           render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Portrait',
+            :margin => {    :top=> 10,
+            :bottom => 15,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_sis_footer.html'}}
+          end
         elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
           if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7)
             render :pdf => template,

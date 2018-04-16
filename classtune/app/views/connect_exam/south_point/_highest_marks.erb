@@ -161,7 +161,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                     ct_full_mark4 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                   end
-                  end
+                end
 
                 if report['exam_category'] == '4'
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
@@ -169,7 +169,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
                     else
                     st_marks4 << 0
                   end      
-                  end
+                end
 
                 if report['exam_category'] == '1'
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
@@ -292,7 +292,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
 
         obtained_mark3 = avg_mark_ct3.to_f+avg_mark_st3.to_f
         full_mark3 = ct_full_mark3.to_i+st_full_mark3.to_i
-        main_mark3 = (obtained_mark2.to_f/full_mark2.to_f)*100
+        main_mark3 = (obtained_mark3.to_f/full_mark3.to_f)*100
 
         #Calculation 4th Quarter Mark
         st_marks4.sort! {|x,y| y <=> x }
@@ -300,19 +300,19 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
 
         if ct_full_mark4.to_i == 20 
           avg_mark_ct4 = (ct_marks4[0].to_f+ct_marks4[1].to_f)/2
-          else 
+        else 
           avg_mark_ct4 = ct_marks4[0].to_f
-          end 
+        end 
 
         if st_full_mark4.to_i == 10 
           avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f+st_marks4[2].to_f)/3
-          else st_full_mark4.to_i == 5  
+        else st_full_mark4.to_i == 5  
           avg_mark_st4 = (st_marks4[0].to_f+st_marks4[1].to_f)/2
-          end
+        end
 
         obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
         full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
-        main_mark4 = (obtained_mark2.to_f/full_mark2.to_f)*100
+        main_mark4 = (obtained_mark4.to_f/full_mark4.to_f)*100
 
         #Calculation First Term (40/20) Mark
         full_mark_first_term = full_mark1+full_mark2+first_term_full_mark

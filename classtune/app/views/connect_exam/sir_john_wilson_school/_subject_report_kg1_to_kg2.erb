@@ -141,7 +141,6 @@
             @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => subjects['id'], :student_id => @student.id} )
             if !@exam_comments.blank?
               exam_comment = @exam_comments['comments']
-            #exam_effort = @exam_comments['effort']
               end
           %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

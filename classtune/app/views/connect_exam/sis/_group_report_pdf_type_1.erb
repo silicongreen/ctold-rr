@@ -1,0 +1,130 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+<% c = 'even' %>
+  <div id="page-yield"  class="available_sections1 sis">
+      <div class="section1 row" >
+          <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center">
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '40%' %></h4>
+                <h2 align="center"><%= @batch.course.course_name %>: <%= @connect_exam_obj.name %></h2>
+            </div>
+          </center>
+      </div>
+      
+      
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  
+                  <tr class="even">
+                    <td class="col-pdf no-warp  align-left"><b><%= "DEVELOPMENT CHECKLIST" %></b></td>
+                    <td class="col-pdf no-warp"><b><%= "GRADE" %></b></td>
+                  </tr>
+                  <tr class="odd">
+                    <td class="col-pdf align-left">
+                        <table class="std_info_table" width="100%" cellspacing="0">
+                          <tr>
+                              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
+                              <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
+                          </tr>
+                          <tr>
+                              <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
+                              <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+                          </tr>
+                        </table>
+                    </td>
+                    <td class="col-pdf align-left">
+                        <b>
+                        <%= "A Excellent" %><br/>
+                        <%= "B+ Very Good" %><br/>
+                        <%= "B Good" %>
+                        </b>
+                    </td>
+                  </tr>
+                  
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr class="even">
+                          
+                          <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
+                          <td class="col-pdf no-warp align-left"></td>    
+
+                      </tr> 
+                      
+                        <% if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                          <% iloop = 0 %>
+                          <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                              <% subject_groups.each do |group_name| %>
+                                <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
+                                <% unless subject_subgroup.blank? %>
+                                   <tr class="even">
+                                    <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
+                                    <td class="col-pdf no-warp align-left"></td>
+                                   </tr>
+                                    <% subject_subgroup.each do |sub_group_name| %>
+                                      <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                        <tr class="even">
+                                        <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
+                                        <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                        <% wordString_split = wordString.split("|") %>
+                                        <% unless wordString_split[iloop.to_i].blank? %>
+                                            <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                            <% break %>
+                                        <% else %>
+                                          <td class="col-pdf no-warp align-left"></td>
+                                        <% end %>
+                                        </tr>    
+                                       <% else %>
+                                           <td class="col-pdf no-warp align-left"></td> 
+                                       <% end %>
+                                      <% iloop+=1 %> 
+                                    <% end %>
+                                <% else %>
+                                    <tr class="even">
+                                    <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
+                                    <% @report_data['report']['exams'].each do |report| %>
+                                       <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                          <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                          <% wordString_split = wordString.split("|") %>
+                                          <% unless wordString_split[iloop.to_i].blank? %>
+                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <% break %>
+                                          <% else %>
+                                            <td class="col-pdf no-warp align-left"></td>
+                                          <% end %>
+                                       <% else %>
+                                           <td class="col-pdf no-warp align-left"></td> 
+                                       <% end %>     
+                                    <% end %>
+                                    </tr>          
+                                    <% iloop+=1 %> 
+                                <% end %>
+                                   
+                          <% end %>
+                        <% end %>           
+                      
+                    <% end %>  
+                  <% end %>    
+                   <tr class="even">
+                          
+                          <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
+                          <td class="col-pdf no-warp align-left"><br/><br/></td>    
+
+                   </tr>  
+                    <tr class="even">
+                          
+                          <td class="col-pdf no-warp align-left"><b>Teacher in charge</b></td>
+                          <td class="col-pdf no-warp align-left"><br/><br/></td>    
+
+                   </tr> 
+
+              </table>
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>

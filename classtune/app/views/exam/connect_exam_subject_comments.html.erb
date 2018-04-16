@@ -2,6 +2,8 @@
   <%= render  :partial=>"/connect_exam/sir_john_wilson_school/connect_exam_subject_comments" %>
 <% elsif MultiSchool.current_school.id == 340 && @exam_connect.result_type==12 %> 
   <%= render  :partial=>"/connect_exam/sir_john_wilson_school/connect_exam_subject_comments_assesment" %>
+<% elsif MultiSchool.current_school.id == 348 %> 
+  <%= render  :partial=>"/connect_exam/sis/connect_exam_subject_comments" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/connect_exam_subject_comments" %>
 <% end %>

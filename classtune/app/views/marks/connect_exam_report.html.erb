@@ -47,6 +47,8 @@
   <%= render  :partial=>"/marks/connect_exam_report_south" %>
 <% elsif MultiSchool.current_school.id == 340 %>
   <%= render  :partial=>"/marks/connect_exam_report_sjws" %>
+<% elsif MultiSchool.current_school.id == 348 %>
+  <%= render  :partial=>"/marks/connect_exam_report_sis" %>
 <% else %>
   <%= render  :partial=>"/marks/connect_exam_report_general" %>
 <% end %>

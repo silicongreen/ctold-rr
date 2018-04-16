@@ -1881,8 +1881,187 @@ div.sjis-new
      padding: 4px 4px 4px 4px !important; 
    
  }
-  .sjis-new table.left-table tr.even td
-  {
-      padding: 8px 4px 8px 4px !important
-  }
+.sjis-new table.left-table tr.even td
+{
+    padding: 8px 4px 8px 4px !important
+}
+
+
+
+.sis table tr.odd table.std_info_table tr td
+{
+    border:none !important;
+    text-align: left !important;
+    padding: 5px 0px !important;
+    font-weight:bold;
+    font-size: 18px !important;
+}
+.sis table tr td.align-left
+{
+    text-align: left !important;
+}
+.sis table tr.odd td, .sis table tr.even td
+{
+    font-size: 18px !important;
+    padding: 8px !important;
+}
+.sis h2
+{
+    font-size: 26px !important;
+}
+
+.sis-final table.std_info_table
+{
+    border:1px solid black;
+    margin-bottom:15px !important;
+}
+.sis-final table.std_info_table tr td
+{
+    border:none !important;
+    text-align: left !important;
+    padding: 15px !important;
+    font-weight:bold;
+    font-size: 22px !important;
+}
+.sis-final table tr td.align-right
+{
+    text-align: right !important;
+}
+.sis-final table tr td.align-left
+{
+    text-align: left !important;
+}
+.sis-final table tr.odd td, .sis-final table tr.even td
+{
+    font-size: 22px !important;
+    padding: 15px !important;
+}
+.sis-final table.left-table
+{
+    float:left;
+    margin-top: 20px;
+   
+}
+.sis-final table.odd-table
+{
+    margin-left: 4%;
+} 
+.sis-final table.even-table
+{
+    clear:both;
+}
+.sis-final .line
+{
+    float:left;
+    clear:both;
+    margin-top:40px;
+    margin-bottom:20px;
+    border-bottom: 2px solid red;
+    width:100%;
+}
+.width-60
+{
+    width:60%;
+    height: 27px;
+}
+.width-30
+{
+    width:30%;
+    height: 27px;
+}
+.width-20
+{
+    width:20%;
+    height: 27px;
+}
+.height-50
+{
+    width:80%;
+    height: 51px;
+}
+.height-40
+{
+    width:80%;
+    height: 42px;
+}
+
+.sis-final .marks-sub
+{
+    width:10%;
+}
+
+.landscape table tr.odd td, .landscape table tr.even td
+{
+    font-size: 16px !important;
+    padding: 3px 5px !important;
+    height: 15px;
+}
+.landscape table.std_info_table tr td
+{
+    padding: 5px !important;
+    font-weight:normal;
+    font-size: 16px !important;
+}
+.landscape table.std_info_table
+{
+    border:1px solid black;
+    margin-bottom:0px !important;
+}
+table.no-border
+{
+    border:0 !important;
+    padding: 0 !important;
+}
+.landscape table.no-border tr td.align-left
+{
+    text-align:left !important;
+}
+.landscape table.std_info_table tr td
+{
+   text-align:center !important; 
+}
+.landscape table.std_info_table tr td.align-left
+{
+    text-align:left !important;
+}
+.landscape table.std_info_table tr td.align-right
+{
+    text-align:right !important;
+}
+.width-25
+{
+    width:25%;
+}
+.landscape table.left-table
+{
+    float:left;
+    margin-top: 8px;
+   
+}
+.height-18
+{
+   height: 43px !important; 
+}
+table.height-exam tr td
+{
+    height: 31px !important;
+    padding-left: 8px !important;
+}
+.width-18
+{
+    width: 18%;
+}
+.landscape table.margin-bottom-20
+{
+    margin-bottom: 20px !important;
+}
+.width-33
+{
+    width: 33% !important;
+}
+.left-clear-both
+{
+    float:left;
+    clear:both;
+}
 

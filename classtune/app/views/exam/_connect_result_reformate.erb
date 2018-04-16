@@ -60,9 +60,10 @@
       <% total_subject = total_subject+1 %> 
       <% subjects_new << subjects %>
 
+    <% elsif MultiSchool.current_school.id == 348 %>
+      <% subjects_new << subjects %>
     <% else %>
       <%#  @report_data['report']['subjects'].delete_at(i) %>
-
     <% end %>
     <% i = i+1 %>
   <% end %> 

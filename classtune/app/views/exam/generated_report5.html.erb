@@ -33,7 +33,7 @@
         
       
     </div>
-    <% unless @current_user.student? or @current_user.parent? %>
+    <% unless @current_user.student? or @current_user.parent? or MultiSchool.current_school.id == 348 %>
           <div id="inner-tab-menu">
             <ul style="margin: 10px 20px 0 0;">
               <li class="themed_bg themed-dark-hover-background"><%= link_to "All result",

@@ -40,7 +40,6 @@
         <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/connectexam/0<%= p.exam_connect_id.to_s %>/connect_exam_<%= p.exam_connect_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
       </tr>
       <% end %>
-      <% end %>
     <% end %>
   </table> 
 <% end %>
@@ -63,6 +62,14 @@
         <td class="col-1"><%= p.exam_group.name %></td>
         <td class="col-1"><%= p.exam_group.exam_date %></td>
         <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/examgroup/0<%= p.exam_group_id.to_s %>/group_exam_<%= p.exam_group_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
+      </tr>
+      <% else %>
+      <tr class="tr-<%= cycle('odd', 'even') %>">
+        <td class="col-1"><%= p.exam_group.name %></td>
+        <td class="col-1"><%= p.exam_group.exam_date %></td>
+        <td class="col-1">
+            <%= link_to "Show", {:controller => "exam", :action => "student_wise_generated_report", :student=>p.student_id,:exam_group=>p.exam_group_id},:target => '_blank' %>
+        </td>
       </tr>
       <% end %>
       <% end %>

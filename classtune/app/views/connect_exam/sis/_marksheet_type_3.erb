@@ -25,7 +25,7 @@
       <h4 align="center">For Subject Teacher</h4>
       
       <div id ="main_info">
-          <table>
+          <table id="pdf-table" width="100%" cellspacing="0">
               <tr>
                  <% if !@employee.nil? %> 
                   <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
@@ -51,7 +51,7 @@
           <td class="name">Name</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            <% total_full_mark = total_full_mark+rs['maximum_marks'] %>
+            <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
             <% colspan = colspan+1 %>
           <% end %>  
           

@@ -432,7 +432,7 @@ class MarksController < ApplicationController
               end
               k = k+1
             elsif school_id == 348
-              if exam_connect.result_type != 3 or exam_connect.result_type != 4 
+              if exam_connect.result_type != 3 and exam_connect.result_type != 5 
                 unless c_exam_array.include?(exam_connect.id.to_i)
                   data[k] = []
                   data[k][0] = exam_connect_batch.to_s

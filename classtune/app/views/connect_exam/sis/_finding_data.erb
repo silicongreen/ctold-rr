@@ -1,0 +1,81 @@
+
+<% if @student_position.blank? %>
+  
+  <%
+  @student_list = []
+  unless @tabulation_data.blank?
+    @tabulation_data['report'].each do |tab|
+      unless tab['students'].blank?
+      tab['students'].each do |std| 
+        total_marks_obtain = 0
+        tab['subjects'].each do |sub|
+          q3_mark = 0
+          q4_mark = 0
+          final_term_mark = 0
+          q3_fullmark = 0
+          q4_fullmark = 0
+          final_term_fullmark = 0
+          total_mark = 0
+          tab['exams'].each do |report|
+            if report['quarter'] == '3'
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                q3_mark = q3_mark.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                q3_fullmark = q3_fullmark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end
+            if report['quarter'] == '4'
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                q4_mark = q4_mark.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                q4_fullmark = q4_fullmark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end
+            if report['quarter'] == '6'
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                final_term_mark = final_term_mark.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                final_term_fullmark = final_term_fullmark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end
+          end
+          
+          q3_mark_20 = 0
+          q4_mark_20 = 0
+          final_term_mark_60 = 0 
+          if q3_fullmark > 0 && q3_mark > 0
+            q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
+          end 
+          if q4_fullmark > 0 && q4_mark > 0
+            q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
+          end 
+          if final_term_fullmark > 0 && final_term_mark > 0
+            final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+          end
+          total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+          total_marks_obtain = total_marks_obtain+total_mark
+       
+        end
+        mark_less_obtain = 100000-total_marks_obtain.to_f
+        @student_list << [mark_less_obtain.to_f,std['first_name']+" "+std['last_name'],std['id'].to_i]
+        
+
+      end
+      end
+    end
+   end
+    @student_position = {}
+    unless @student_list.blank?
+      @sorted_students = @student_list.sort
+      position = 0
+      @sorted_students.each do|s|
+          position = position+1
+          @student_position[s[2].to_i] = position
+      end
+    end
+  end
+
+%> 

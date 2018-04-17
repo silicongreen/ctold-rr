@@ -1464,11 +1464,11 @@ class ExamController < ApplicationController
 
   def student_wise_generated_report
     
-    @exam_group = ExamGroup.active.find(params[:exam_group])
+    @exam_group = ExamGroup.find(params[:exam_group])
     @student = Student.find_by_id(params[:student])
     @for_save = params[:for_save]
     
-    @batch = @student.batch
+    @batch = @exam_group.batch
     @assigned_employee=@batch.employees
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
     student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")

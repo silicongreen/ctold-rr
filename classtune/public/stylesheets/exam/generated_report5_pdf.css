@@ -2047,6 +2047,10 @@ table.height-exam tr td
     height: 31px !important;
     padding-left: 8px !important;
 }
+.width-15
+{
+    width: 15%;
+}
 .width-18
 {
     width: 18%;

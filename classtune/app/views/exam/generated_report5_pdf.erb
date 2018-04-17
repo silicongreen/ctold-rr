@@ -34,7 +34,7 @@
   <%= render  :partial=>"/connect_exam/sfx/group_report" %>
 <% elsif MultiSchool.current_school.id == 323 %>
   <%= render  :partial=>"/connect_exam/baf_shaheen/group_report" %>
-<% elsif MultiSchool.current_school.id == 2 or MultiSchool.current_school.id == 312  %>
+<% elsif MultiSchool.current_school.id == 312  %>
   <%= render  :partial=>"/connect_exam/south_point/group_report" %>
 <% elsif MultiSchool.current_school.id == 325  %>
   <%= render  :partial=>"/connect_exam/mirpur_english/group_report" %>
@@ -55,7 +55,7 @@
   <% else %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/single_report" %> 
   <% end %>
-<% elsif MultiSchool.current_school.id == 324  %>
+<% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 2  %>
   <%= render  :partial=>"/connect_exam/sjis/group_report" %>
 <% elsif File.exists?(Rails.root.join("app", "views", "connect_exam",MultiSchool.current_school.code, "_group_report.erb")) %>
     <%= render  :partial=>"/connect_exam/#{MultiSchool.current_school.code}/group_report" %>

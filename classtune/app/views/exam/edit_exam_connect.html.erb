@@ -219,7 +219,12 @@
               
               <% is_already_grouped = already_grouped.present? %>                
               <td class="col-1"><%= check_box_tag "exam_grouping[exam_group_ids][]", e.id,is_already_grouped,{:class=>'right',:id=>"check#{i}",:onClick=>"set_weightage(this,#{count})"} %></td>
-              <td class="col-2"><%= e.name %></td>
+              <td class="col-2"><%= e.name %>
+                  <% exam_quarter = get_exam_result_quarter() %>
+                  <% unless exam_quarter[e.quarter.to_s].blank? %>
+                  [<%= exam_quarter[e.quarter.to_s] %>]
+                  <% end %>
+              </td>
              
               <% if is_already_grouped==true %>
                 

@@ -33,7 +33,7 @@ class ExamGroup < ActiveRecord::Base
   after_save :invalidate_student_cache, :on=>:update
   named_scope :active, :conditions => {:is_deleted=>false}
 
-  validates_uniqueness_of :cce_exam_category_id, :scope=>:batch_id, :message=>"already assigned for another Exam Group",:unless => lambda { |e| e.cce_exam_category_id.nil?}
+#  validates_uniqueness_of :cce_exam_category_id, :scope=>:batch_id, :message=>"already assigned for another Exam Group",:unless => lambda { |e| e.cce_exam_category_id.nil?}
   
   def removable?
     self.exams.reject{|e| e.removable?}.empty?

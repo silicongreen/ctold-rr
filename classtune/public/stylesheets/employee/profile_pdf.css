@@ -13,7 +13,7 @@
 .hor_line{
     width:800px;
     background: #333333;
-    height: 1px;
+    height: 2px;
 }
 
 h2.heading{
@@ -63,7 +63,7 @@ h2.heading{
 
 .even td{
    
-   padding: 12px 12px 12px 15px;
+  padding: 12px 12px 12px 15px;
   border-left:  1px solid #ADACAB;
   border-bottom: 1px solid #ADACAB;
 }

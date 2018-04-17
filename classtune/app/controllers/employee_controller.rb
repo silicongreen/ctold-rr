@@ -1295,8 +1295,14 @@ class EmployeeController < ApplicationController
 #      @att_text = @attendence_text['data']['text']
 #      @att_image = @attendence_text['data']['profile_picture']
 #    end
-    
-    render :pdf => 'profile_pdf'
+
+    render :pdf => "profile_pdf",
+            :margin => {    :top=> 0,
+            :bottom => 15,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
 
 
     #    respond_to do |format|

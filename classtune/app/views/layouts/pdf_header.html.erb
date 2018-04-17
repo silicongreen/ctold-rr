@@ -140,7 +140,7 @@
 <% elsif MultiSchool.current_school.id == 2%>
 <div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 %>potrait_header_south_point<% end %><% end %>">
     <table width="100%">
-        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '100%' %></span></td>
+        <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '180%' %></span></td>
         <td class="name-td name-td-south">
             
               <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>

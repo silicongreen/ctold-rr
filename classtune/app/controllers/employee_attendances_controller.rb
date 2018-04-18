@@ -56,7 +56,10 @@ class EmployeeAttendancesController < ApplicationController
     @date = params[:employee_attendance][:attendance_date]
     @reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
     if @attendance.save
-      leaves_taken = @reset_count.leave_taken
+      leaves_taken = 0
+      unless @reset_count.blank?
+        leaves_taken = @reset_count.leave_taken
+      end
       if @attendance.is_half_day
         leave = leaves_taken.to_f+(0.5)
         @reset_count.update_attributes(:leave_taken => leave)
@@ -88,7 +91,10 @@ class EmployeeAttendancesController < ApplicationController
     @employee = Employee.find(@attendance.employee_id)
     date = @attendance.attendance_date
     @reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
-    leaves_taken = @reset_count.leave_taken
+    leaves_taken = 0
+    unless @reset_count.blank?
+      leaves_taken = @reset_count.leave_taken
+    end
     day_status = @attendance.is_half_day
     leave_type = EmployeeLeaveType.find_by_id(@attendance.employee_leave_type_id)
     @application_count = ApplyLeave.count(:conditions => ["(employee_id = ? AND approved = ?) AND ((? BETWEEN start_date AND end_date) OR (? BETWEEN start_date AND end_date) OR (start_date BETWEEN ? AND ?) OR (end_date BETWEEN ? AND ?))",@employee.id,true,date,date,date,date,date,date])
@@ -116,7 +122,11 @@ class EmployeeAttendancesController < ApplicationController
           end
           @reset_count.update_attributes(:leave_taken => leave)
           @new_reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
-          leaves_taken = @new_reset_count.leave_taken
+          leaves_taken = 0
+          unless @new_reset_count.blank?
+            leaves_taken = @new_reset_count.leave_taken
+          end
+          
           if @attendance.is_half_day
             leave = leaves_taken.to_f+(0.5)
             @new_reset_count.update_attributes(:leave_taken => leave)
@@ -137,7 +147,10 @@ class EmployeeAttendancesController < ApplicationController
   def destroy
     @attendance = EmployeeAttendance.find(params[:id])
     @reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
-    leaves_taken = @reset_count.leave_taken
+    leaves_taken = 0
+    unless @reset_count.blank?
+      leaves_taken = @reset_count.leave_taken
+    end
     total_employee_leave = @reset_count.leave_count
     created_at = @attendance.created_at || @attendance.attendance_date.to_datetime
     reset_date = @reset_count.reset_date

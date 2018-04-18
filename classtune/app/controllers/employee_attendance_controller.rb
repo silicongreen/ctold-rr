@@ -316,10 +316,18 @@ class EmployeeAttendanceController < ApplicationController
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
           @report_date_from = params[:report_date_from]
           @report_date_to = params[:report_date_to]
-
-          @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
-          @report_date = @report_date_from.to_date.strftime("%B %Y")
           
+          if MultiSchool.current_school.id == 312
+            @previous_month = @report_date_from.to_date << 1
+            @report_date_from_string = @previous_month.strftime("%Y").to_s+"-"+@previous_month.strftime("%m").to_s+"-"+"25"
+            @report_date_from = @report_date_from_string.to_date.strftime("%Y-%m-%d")
+            @report_date_to_string = @report_date_to.to_date.strftime("%Y").to_s+"-"+@report_date_to.to_date.strftime("%m").to_s+"-"+"24"
+            @report_date_to = @report_date_to_string.to_date.strftime("%Y-%m-%d")
+          else
+            @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+            @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
+          end  
+            @report_date = @report_date_from.to_date.strftime("%B %Y")
           events = Event.find(:all, :select => "title, start_date, end_date", :conditions => ["( (start_date BETWEEN ? AND ?) OR (end_date BETWEEN ? AND ?) OR (start_date <= ? AND end_date >= ?) ) AND is_holiday = 1 AND is_published = 1", @report_date_from, @report_date_to, @report_date_from, @report_date_to,@report_date_from, @report_date_to])
           @event_dates = []
           p = 0
@@ -550,8 +558,17 @@ class EmployeeAttendanceController < ApplicationController
           @report_date_from = params[:report_date_from]
           @report_date_to = params[:report_date_to]
 
-          @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
-          @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
+          if MultiSchool.current_school.id == 312
+            @previous_month = @report_date_from.to_date << 1
+            @report_date_from_string = @previous_month.strftime("%Y").to_s+"-"+@previous_month.strftime("%m").to_s+"-"+"25"
+            @report_date_from = @report_date_from_string.to_date.strftime("%Y-%m-%d")
+            @report_date_to_string = @report_date_to.to_date.strftime("%Y").to_s+"-"+@report_date_to.to_date.strftime("%m").to_s+"-"+"24"
+            @report_date_to = @report_date_to_string.to_date.strftime("%Y-%m-%d")
+          else
+            @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+            @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
+          end
+          
           @report_date = @report_date_from.to_date.strftime("%B %Y")
           
           events = Event.find(:all, :select => "title, start_date, end_date", :conditions => ["( (start_date BETWEEN ? AND ?) OR (end_date BETWEEN ? AND ?) OR (start_date <= ? AND end_date >= ?) ) AND is_holiday = 1 AND is_published = 1", @report_date_from, @report_date_to, @report_date_from, @report_date_to,@report_date_from, @report_date_to])
@@ -575,12 +592,22 @@ class EmployeeAttendanceController < ApplicationController
           event_dates_count = @event_dates.length
           
           order_str = "employee_positions.order_by asc"
+          adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
+          unless adv_attendance_config['exclude_details_dept_id_main_report_' + MultiSchool.current_school.id.to_s].nil?
+            exclude_dept_ids = adv_attendance_config['exclude_details_dept_id_main_report_' + MultiSchool.current_school.id.to_s]
+          else
+            exclude_dept_ids = "0"
+          end
+          conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
           
           Rails.cache.delete("employees_data_#{MultiSchool.current_school.id}")
           @employees = Rails.cache.fetch("employees_data_#{MultiSchool.current_school.id}"){
-            employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+            employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
             employees
           }
+          
+          
+          
           
           data = []
           unless @employees.nil? or @employees.empty?
@@ -716,7 +743,9 @@ class EmployeeAttendanceController < ApplicationController
                       leave = ' - '
                     end
                   end
-                  
+                  if @event_dates.include?(d)
+                    late = ' - '
+                  end
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []
                     emp[0] = employee.employee_info

@@ -268,13 +268,25 @@ class EmpattendanceController < ApplicationController
       
       page = ( start.to_i / per_page.to_i ) + 1
       
-      b_filtered_search = false
+      b_filtered_search = true
       has_filter = false
-      conditions = ""
-      filters_conditions = ""
+      adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
+      unless adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s].nil?
+        exclude_dept_ids = adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
+      else
+        exclude_dept_ids = "0"
+      end
+      conditions = filters_conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
+      
+#      conditions = ""
+#      filters_conditions = ""
       unless search_value.nil? or search_value.empty? or search_value.blank?
-        conditions = " ((employee_number LIKE '%" + search_value.to_s + "%') OR (first_name LIKE '%" + search_value.to_s + "%')) "
-        filters_conditions = " ((employee_number LIKE '%" + search_value.to_s + "%') OR (first_name LIKE '%" + search_value.to_s + "%')) "
+        if b_filtered_search == true
+            conditions += " AND "
+            filters_conditions+=" AND "
+        end
+        conditions += " ((employee_number LIKE '%" + search_value.to_s + "%') OR (first_name LIKE '%" + search_value.to_s + "%')) "
+        filters_conditions += " ((employee_number LIKE '%" + search_value.to_s + "%') OR (first_name LIKE '%" + search_value.to_s + "%')) "
         has_filter = true
         if is_second_filter_enable
             conditions += " AND "
@@ -295,7 +307,12 @@ class EmpattendanceController < ApplicationController
         end
         b_filtered_search = true
       else
+        
         if is_second_filter_enable
+           if b_filtered_search == true
+                conditions += " AND "
+                filters_conditions+=" AND "
+            end
             b = 0
             filter_field.each do |field|
               conditions += " (" + field + " = '" + filter_data[b] + "') "

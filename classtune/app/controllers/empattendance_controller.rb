@@ -147,8 +147,19 @@ class EmpattendanceController < ApplicationController
       @report_date_from = params[:report_date_from]
       @report_date_to = params[:report_date_to]
       
-      @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
-      @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
+      if MultiSchool.current_school.id == 312 and !params[:report_for].blank? and params[:report_for].to_i == 2
+        @previous_month = @report_date_from.to_date << 1
+        @report_date_from_string = @previous_month.strftime("%Y").to_s+"-"+@previous_month.strftime("%m").to_s+"-"+"25"
+        @report_date_from = @report_date_from_string.to_date.strftime("%Y-%m-%d")
+        @report_date_to_string = @report_date_to.to_date.strftime("%Y").to_s+"-"+@report_date_to.to_date.strftime("%m").to_s+"-"+"24"
+        @report_date_to = @report_date_to_string.to_date.strftime("%Y-%m-%d")
+      else
+        @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+        @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
+      end 
+      
+#      @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
+#      @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
       @year = @report_date_from.to_date.strftime("%Y")
       @month = @report_date_from.to_date.strftime("%m")
      
@@ -530,6 +541,7 @@ class EmpattendanceController < ApplicationController
                 end  
               elsif @report_for.to_i == 2 or @report_for.to_i == 3
                 in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
+                #lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
                 lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
                 #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
                 total_late = lateAttendances

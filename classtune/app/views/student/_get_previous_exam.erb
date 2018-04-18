@@ -41,9 +41,11 @@
       </tr>
       <% end %>
     <% end %>
+    <% end %>
   </table> 
 <% end %>
-  
+<% school_ids = [348,312,340] %>
+<% unless school_ids.include?(MultiSchool.current_school.id)  %>  
 <% unless @previous_group_exam.empty? %>
   <br/>
   <div class="position-name"><%= "Exam Report" %></div>
@@ -75,4 +77,5 @@
       <% end %>
     <% end %>
   </table> 
+<% end %>
 <% end %>

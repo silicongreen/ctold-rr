@@ -45,8 +45,11 @@ class DelayedBatchTranfer
   end
 
   def perform
-   
-    unless @students.blank?
+    saved_batch = PdfSave.find_by_batch_id_and_status(@from,true)
+    if !@students.blank? and !saved_batch.blank?
+      
+      batch_saved = PdfSave.find(saved_batch.id)
+      batch_saved.destroy
       
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"
       @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
@@ -76,11 +79,6 @@ class DelayedBatchTranfer
         end
       end 
       
-      @connect_exam.each do |ec|
-        save_combained_pdf(ec.id,@user_cookie_variable)
-      end
-
-     
       
       students.each do |s|    
         if @graduation == false

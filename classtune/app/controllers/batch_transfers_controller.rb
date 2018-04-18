@@ -21,7 +21,18 @@ class BatchTransfersController < ApplicationController
   filter_access_to :all
    
   def index
-    @batches = Batch.active 
+    @batche_ids = []
+    pdf_saved = PdfSave.find(:all,:conditions => ["status = ?",true])
+    unless pdf_saved.blank?
+      @batche_ids = pdf_saved.map(&:batch_id)
+    end
+    @batches = Batch.find(:all,:select=>"courses.course_name as course_name_batch",:conditions=>["batches.id IN (?) and batches.is_deleted = ? and courses.is_deleted = ?",@batche_ids,false,false],:group=>"courses.course_name",:joins=>[:course]) 
+    
+    saved_batch = PdfSave.find(:all)
+    @show_pdf_save_button = true
+    unless saved_batch.blank?
+      @show_pdf_save_button = false
+    end
   end
 
   def show
@@ -43,6 +54,15 @@ class BatchTransfersController < ApplicationController
     if defaulter_students.include? false
       flash[:notice] = "#{t('flash5')}"
     end
+  end
+  
+  def save_pdf
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    Delayed::Job.enqueue(DelayedPdfSaved.new(request.domain,current_user,@local_tzone_time))
+    flash[:notice] = "Report Saving Started. You can Tranfer batches when completed"
+    redirect_to :controller => 'batch_transfers'
   end
 
   def transfer
@@ -123,8 +143,14 @@ class BatchTransfersController < ApplicationController
     if params[:course_name].present?
       @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0", params[:course_name]])
       @course_ids = @courses_data.map{|c| c.id} 
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?) and is_deleted = 0 and is_active = 1", @course_ids])
-      @batches_name = Batch.find(:all, :conditions => ["course_id IN (?) and is_deleted = 0 and is_active = 1", @course_ids], :group => "name").map{|bn| bn.name}
+      @batche_ids = []
+      pdf_saved = PdfSave.find(:all,:conditions => ["status = ?",true])
+      unless pdf_saved.blank?
+        @batche_ids = pdf_saved.map(&:batch_id)
+      end
+      @batches = Batch.find(:all, :conditions => ["course_id IN (?) and id IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_ids])
+      @batches_name = Batch.find(:all, :conditions => ["course_id IN (?) and id IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_ids], :group => "name").map{|bn| bn.name}
+      
       render(:update) do |page|
         page.replace_html 'update_batch', :partial=>'list_courses'
       end

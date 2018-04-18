@@ -129,6 +129,7 @@ multi_school_models:
 - AdditionalReportCsv
 - FinanceTransactionParticular
 - StudentSession
+- PdfSave
 
 general_models:
 - PrivilegeTag

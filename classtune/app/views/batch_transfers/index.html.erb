@@ -35,13 +35,18 @@
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
+  <% if @show_pdf_save_button %>
+      <b><font color="red">Please Click the link below to Save The Exam Result</font></b>
+      <br/><br/>
+      <%= link_to "Save Exam Result", :controller => "batch_transfers", :action => "save_pdf" %> 
+  <% else %>  
   <div class="label-field-pair">
     <label><%= t('select_a_course') %>:
       <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
     </label>
     <div class="text-input-bg">
       <%= select :courses, :name,
-        Course.active_courses.map {|c| [c.course_name, c.course_name]},
+        @batches.map {|c| [c.course_name_batch, c.course_name_batch]},
         {:prompt => "#{t('select_a_course')}"},
         {:onChange => "#{remote_function(:url => {:action => "update_batch"},
         :with => "'course_name='+ value",
@@ -49,6 +54,7 @@
         :success => "Element.hide('loader')"
         )}"} %>
     </div></div>
+   <% end %> 
 
   <div id="update_batch"></div>
 

@@ -280,13 +280,14 @@ class EmpattendanceController < ApplicationController
       page = ( start.to_i / per_page.to_i ) + 1
       
       b_filtered_search = true
-      has_filter = false
+      has_filter = true
       adv_attendance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/adv_attendance_report.yml")['school']
       unless adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s].nil?
         exclude_dept_ids = adv_attendance_config['exclude_details_dept_id_' + MultiSchool.current_school.id.to_s]
       else
         exclude_dept_ids = "0"
       end
+      #exclude_dept_ids = "0"
       conditions = filters_conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
       
 #      conditions = ""
@@ -542,7 +543,7 @@ class EmpattendanceController < ApplicationController
               elsif @report_for.to_i == 2 or @report_for.to_i == 3
                 in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
                 #lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
-                lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
+                lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time) and event_dates.include?(ca.date.to_s)}.size
                 #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
                 total_late = lateAttendances
               end

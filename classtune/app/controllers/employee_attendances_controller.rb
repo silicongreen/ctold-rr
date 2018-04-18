@@ -112,7 +112,9 @@ class EmployeeAttendancesController < ApplicationController
             else
               leave = leaves_taken.to_f-(0.5)
             end
-            @reset_count.update_attributes(:leave_taken => leave)
+            unless @reset_count.blank?
+              @reset_count.update_attributes(:leave_taken => leave)
+            end
           end
         else
           if half_day
@@ -120,7 +122,9 @@ class EmployeeAttendancesController < ApplicationController
           else
             leave = leaves_taken.to_f-(1.0)
           end
-          @reset_count.update_attributes(:leave_taken => leave)
+          unless @reset_count.blank?
+            @reset_count.update_attributes(:leave_taken => leave)
+          end
           @new_reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
           leaves_taken = 0
           unless @new_reset_count.blank?
@@ -153,21 +157,27 @@ class EmployeeAttendancesController < ApplicationController
     end
     total_employee_leave = @reset_count.leave_count
     created_at = @attendance.created_at || @attendance.attendance_date.to_datetime
-    reset_date = @reset_count.reset_date
-    if created_at > reset_date
+    unless @reset_count.blank?
+      reset_date = @reset_count.reset_date
+    end
+    if reset_date.blank? or created_at > reset_date
       if @attendance.is_half_day
         leave = leaves_taken - (0.5)
       else
         leave = leaves_taken - (1)
       end
-      @reset_count.update_attributes(:leave_taken => leave)
+      unless @reset_count.blank?
+        @reset_count.update_attributes(:leave_taken => leave)
+      end
     else
       if @attendance.is_half_day
         total_leave = total_employee_leave.to_f + (0.5)
       else
         total_leave = total_employee_leave.to_f + (1)
       end
-      @reset_count.update_attributes(:leave_count => total_leave)
+      unless @reset_count.blank?
+        @reset_count.update_attributes(:leave_count => total_leave)
+      end
     end
     @attendance.delete
     respond_to do |format|

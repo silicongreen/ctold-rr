@@ -107,8 +107,11 @@
                           %>
                         <% end %>
                        <% end %> 
-                           <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %> 
-                           <% main_mark = main_mark.round() %>
+                            <%  main_mark = 0 %>
+                            <% if subject_obtain_mark.to_f > 0 and subject_full_mark.to_f > 0 %>
+                             <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %> 
+                             <% main_mark = main_mark.round() %>
+                            <% end %>
                         <td>
                            <% total_mark = total_mark+main_mark %>
                            <%= mock_1.round()  %>|<%= main_mark %><hr/>

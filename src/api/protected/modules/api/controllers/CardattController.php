@@ -300,25 +300,25 @@ class CardattController extends Controller
             
             if($all_emp_id)
             {
-               $absent_employee = $emp->getEmployeeNotInEmployeeNumber($student_id_array,$school_id,$all_std_admission); 
-               $em_attendance = new EmployeeAttendances();
-               $em_attendance->deleteAttendanceEmployee($school_id,$date,$all_emp_id);
-               
-               if($absent_employee)
-               {
-                   foreach($absent_employee as $value)
-                   {
-                       $em_attendance = new EmployeeAttendances();
-                       $em_attendance->employee_id = $value->id;
-                       $em_attendance->attendance_date = $date;
-                       $em_attendance->created_at = date("Y-m-d H:i:s");
-                       $em_attendance->updated_at = date("Y-m-d H:i:s");
-                       $em_attendance->school_id = $school_id;
-                       $em_attendance->reason = "From Smart Card";
-                       $em_attendance->is_half_day = 0;
-                       $em_attendance->save();
-                   }    
-               }
+//               $absent_employee = $emp->getEmployeeNotInEmployeeNumber($student_id_array,$school_id,$all_std_admission); 
+//               $em_attendance = new EmployeeAttendances();
+//               $em_attendance->deleteAttendanceEmployee($school_id,$date,$all_emp_id);
+//               
+//               if($absent_employee)
+//               {
+//                   foreach($absent_employee as $value)
+//                   {
+//                       $em_attendance = new EmployeeAttendances();
+//                       $em_attendance->employee_id = $value->id;
+//                       $em_attendance->attendance_date = $date;
+//                       $em_attendance->created_at = date("Y-m-d H:i:s");
+//                       $em_attendance->updated_at = date("Y-m-d H:i:s");
+//                       $em_attendance->school_id = $school_id;
+//                       $em_attendance->reason = "From Smart Card";
+//                       $em_attendance->is_half_day = 0;
+//                       $em_attendance->save();
+//                   }    
+//               }
                
             }
             // employee attendance

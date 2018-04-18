@@ -57,12 +57,13 @@
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
             <% total_mark = 0 %>
-            <% mock_1 = 0 %>
-            <% mock_2 = 0 %>
+            
             <% grades = [] %>
             <% grade_count = {} %>
             
             <% @report_data['report']['subjects'].each do |sub| %>
+                  <% mock_1 = 0 %>
+                  <% mock_2 = 0 %>
                   <% subjectdata = Subject.find(sub['id'].to_i) %>
                   <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
                   <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>

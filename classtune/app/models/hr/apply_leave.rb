@@ -21,7 +21,8 @@ class ApplyLeave < ActiveRecord::Base
   belongs_to :employee
   belongs_to :employee_leave_type
   before_create :check_leave_count
-  
+  has_attached_file :attachment ,
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname"
   cattr_reader :per_page
   @@per_page = 12
   

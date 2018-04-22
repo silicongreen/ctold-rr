@@ -134,6 +134,12 @@
                     <label for="student_phone2"><%= "Designated Number for SMS" %><span class="necessary-field">*</span></label>
                     <%= s.text_field :sms_number, :class=>"form-control" %>
                   </div>
+                  <% if MultiSchool.current_school.id == 340  %>
+                  <div class="form-group col-sm-6">
+                    <label for="student_phone2"><%= "Form Serial Number" %><span class="necessary-field">*</span></label>
+                    <%= s.text_field :serial_no, :class=>"form-control" %>
+                  </div>
+                  <% end %>
               </fieldset>
           </div>
           

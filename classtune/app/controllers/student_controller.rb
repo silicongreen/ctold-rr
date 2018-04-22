@@ -2080,13 +2080,14 @@ end
         @att_image = @attendence_text['data']['profile_picture']
       end
     end
+    render :pdf => "profile_pdf",
+            :margin => {    :top=> 0,
+            :bottom => 15,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     
-    render :pdf=>'profile_pdf',:margin => {
-      :top=> 40,
-      :bottom => 20,
-      :left=> 10,
-      :right => 10 
-    }
   end
 
   def show_previous_details

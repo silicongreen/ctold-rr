@@ -56,6 +56,12 @@
         <%= @applied_leave.end_date.strftime("%d %b, %Y") %></li>
       <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('reason') %>:</div>
         <%= @applied_leave.reason %></li>
+      <% unless @applied_leave.attachment_file_name.nil? %>
+        <li class="list<%= cycle('odd','even') %> download-link">
+          <div class="category-name"><%= "Document" %>:</div>
+          <%= link_to 'Download Attachment', :controller => "student_attendance", :action => "download_attachment",:target=>"employee" , :id=>@applied_leave.id %>
+        </li>
+      <% end %>
       <li class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('status') %>:</div>
         <%= "#{t('approved')}" if @applied_leave.approved == true and @applied_leave.viewed_by_manager == true %>
         <%= "#{t('denied')}" if @applied_leave.approved == false and @applied_leave.viewed_by_manager == true %>
@@ -70,3 +76,10 @@
 
   </div>
 </div>
+<style type="text/css">
+    .download-link a 
+    {
+      color:red;
+      font-weight: bold;
+    }
+ </style>   

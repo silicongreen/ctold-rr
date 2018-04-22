@@ -113,21 +113,21 @@
             <tr class="odd left"><td><%= t('name') %></td><td class="right"><%= shorten_string(p.full_name,35) %></td></tr>
             <tr class="even left"><td><%= t('relation') %></td><td class="right"><%= p.relation  %></td></tr>
             <tr class="odd left"><td><%= t('date_of_birth') %></td><td class="right"><%= p.dob.strftime('%d %B, %Y') unless p.dob.nil? %></td></tr>
-            <tr class="odd left"><td><%= t('education') %></td><td class="right"><%= p.education %></td></tr>
-            <tr class="even left"><td><%= t('email') %></td><td class="right"><%= p.email  %></td></tr>
+            <tr class="even left"><td><%= t('education') %></td><td class="right"><%= p.education %></td></tr>
+            <tr class="odd left"><td><%= t('email') %></td><td class="right"><%= p.email  %></td></tr>
 
-            <tr class="odd left"><td><%= t('office_phone1') %></td><td class="right"><%= p.office_phone1 %></td></tr>
-            <tr class="even left"><td><%= t('office_phone2') %></td><td class="right"><%= p.office_phone2 %></td></tr>
+            <tr class="even left"><td><%= t('office_phone1') %></td><td class="right"><%= p.office_phone1 %></td></tr>
+            <tr class="odd left"><td><%= t('office_phone2') %></td><td class="right"><%= p.office_phone2 %></td></tr>
 
-            <tr class="odd left"><td><%= t('mobile_phone_no') %></td><td class="right"><%= p.mobile_phone  %></td></tr>
-            <tr class="even left"><td><%= t('address') %></td><td class="right"><%= p.office_address_line1%> <%= p.office_address_line2%></td></tr>
-            <tr class="odd left"><td><%= t('city') %></td><td class="right"><%= p.city %> </td></tr>
-            <tr class="even left"><td><%= t('state') %></td><td class="right"><%= p.state %>  </td></tr>
-            <tr class="odd left"><td><%= t('country') %></td><td class="right"><%= p.country.nil? ? "" : p.country.name %> </td></tr>
-            <tr class="even left"><td><%= t('income') %></td><td class="right"><%= p.income %></td></tr>
-            <tr class="odd left"><td><%= t('occupation') %></td><td class="right"><%= p.occupation %></td></tr>
+            <tr class="even left"><td><%= t('mobile_phone_no') %></td><td class="right"><%= p.mobile_phone  %></td></tr>
+            <tr class="odd left"><td><%= t('address') %></td><td class="right"><%= p.office_address_line1%> <%= p.office_address_line2%></td></tr>
+            <tr class="even left"><td><%= t('city') %></td><td class="right"><%= p.city %> </td></tr>
+            <tr class="odd left"><td><%= t('state') %></td><td class="right"><%= p.state %>  </td></tr>
+            <tr class="even left"><td><%= t('country') %></td><td class="right"><%= p.country.nil? ? "" : p.country.name %> </td></tr>
+            <tr class="odd left"><td><%= t('income') %></td><td class="right"><%= p.income %></td></tr>
+            <tr class="even left"><td><%= t('occupation') %></td><td class="right"><%= p.occupation %></td></tr>
             <tr class="odd left"><td><%= "Organization" %></td><td class="right"><%= p.organization %></td></tr>
-            <tr class="odd left"><td><%= "Designation" %></td><td class="right"><%= p.designation %></td></tr>
+            <tr class="even left"><td><%= "Designation" %></td><td class="right"><%= p.designation %></td></tr>
             <tr class="odd left"><td><%= "NID/Passport Number" %></td><td class="right"><%= p.passport %></td></tr>
           </table>
           <div class="extender"></div>

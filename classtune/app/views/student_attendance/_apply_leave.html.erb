@@ -5,7 +5,7 @@
   <% end %>
   <%= error_messages_for :leave_apply %>
 
-  <% form_for :leave_apply, :html => {:id => 'new_student'} do |l| %>
+  <% form_for :leave_apply, :html => {:id => 'new_student',:multipart => true} do |l| %>
     <%= l.hidden_field :student_id, :value=>@student.id %>
 
     <div class="row">
@@ -61,6 +61,19 @@
       <div class="row_data full_width">
         <div class="redactor_wrapper">
           <%= fckeditor_textarea :leave_apply, :reason %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="row_label">
+        <div>
+          <%= "Document" %>
+        </div>
+      </div>
+      <div class="row_data"  style="padding-top:10px;">
+        <div>
+            <%= l.file_field  :attachment %> 
         </div>
       </div>
     </div>

@@ -169,7 +169,7 @@
       <% unless reporting_manager.nil? and not @current_user.admin? %>
         <div id="application-list">
 
-          <% form_for :leave_apply, :html => {:id => 'new_student'} do |l| %>
+          <% form_for :leave_apply, :html => {:id => 'new_student',:multipart => true} do |l| %>
 
             <%= error_messages_for :leave_apply %>
             <%= l.hidden_field :employee_id, :value=>@employee.id %>
@@ -242,6 +242,20 @@
                 </div>
               </div>
             </div>
+             <div class="row">
+              <div class="row_label">
+                <div>
+                  <%= "Document" %>
+                </div>
+              </div>
+              <div class="row_data"  style="padding-top:10px;">
+                <div>
+                    <%= l.file_field  :attachment %> 
+                </div>
+              </div>
+            </div>
+            
+            
 
             <div id="submit-button">
               <%=  submit_tag("#{t('apply')}") %>

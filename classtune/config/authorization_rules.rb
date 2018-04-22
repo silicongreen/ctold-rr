@@ -837,6 +837,7 @@ authorization do
       :update_leave_history,
       :month_report,
       :subject_report,
+      :download_attachment,
       :subject_report_pdf
     ] 
   end
@@ -955,6 +956,7 @@ authorization do
       :month,
       :student_report,
       :leaves,
+      :download_attachment,
       :leave_history,
       :update_leave_history,
       :month_report,
@@ -1091,13 +1093,13 @@ authorization do
   role :student_attendance_view do
     has_permission_on [:attendance], :to => [:index,:report,:student_report]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
-    has_permission_on [:student_attendance], :to => [:index, :student]
+    has_permission_on [:student_attendance], :to => [:index, :student,:download_attachment]
   end
 
   role :student_attendance_register do
     has_permission_on [:attendance], :to => [:index,:register,:register_attendance]
     has_permission_on [:attendances], :to => [:index, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register,:daily_register]
-    has_permission_on [:student_attendance], :to => [:index]
+    has_permission_on [:student_attendance], :to => [:index,:download_attachment]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
   end
 
@@ -1864,7 +1866,7 @@ authorization do
     has_permission_on [:sms_settings],  :to => [:index, :update_general_sms_settings]
     has_permission_on [:class_timings],  :to => [:index, :edit, :destroy, :show, :new, :create, :update]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
-    has_permission_on [:student_attendance], :to => [:index, :student, :month, :student_report]
+    has_permission_on [:student_attendance], :to => [:index, :student, :month, :student_report,:download_attachment]
     has_permission_on [:configuration], :to => [:index,:settings,:permissions, :add_weekly_holidays, :delete]
     has_permission_on [:single_access_tokens], :to => [:index,:new,:create,:destroy]
     has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group]
@@ -3198,7 +3200,7 @@ authorization do
     has_permission_on [:timetable], :to => [:student_view, :update_student_tt,:student_timetable_pdf]
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
-      :subject_report_pdf,:month_report_data, :new_calendar,:year_report,:graph_code, :month, :student_report]
+      :subject_report_pdf,:month_report_data,:download_attachment, :new_calendar,:year_report,:graph_code, :month, :student_report]
     has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
@@ -3331,7 +3333,7 @@ authorization do
     has_permission_on [:timetable], :to => [:student_view,:update_timetable_view, :student_timetable_pdf]
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
-      :subject_report_pdf,:month_report_data, :year_report,:graph_code,:new_calendar, :month, :student_report, :leaves, :leave_history,:individual_leave_applications,:own_leave_application,:cancel_application, :update_leave_history]
+      :subject_report_pdf,:month_report_data,:download_attachment, :year_report,:graph_code,:new_calendar, :month, :student_report, :leaves, :leave_history,:individual_leave_applications,:own_leave_application,:cancel_application, :update_leave_history]
     has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]

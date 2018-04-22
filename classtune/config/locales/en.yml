@@ -1511,7 +1511,7 @@ en: # locale
   birth_place: "Birth Place"
   mother_tongue: "Mother Tongue"
   religion: "Religion"
-  address_line: "Present Address"
+  address_line: "Office Address"
   phone: "Phone"
   parent_guardian_details_step2: "Step 2 - Parent/guardian details"
   emergency_contact_step3: "Step 3 - Emergency contact"

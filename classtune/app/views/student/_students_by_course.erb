@@ -24,7 +24,11 @@
       <tr class="tr-head">
         <td><%= t('sl_no') %></td>
         <td><%= t('name') %></td>
+        <% unless MultiSchool.current_school.id != 348 %>
         <td><%= t('roll_number') %></td>
+        <% else %>
+        <td style='white-space:nowrap;'><%= t('date_of_birth') %></td>
+        <% end %>
         <td><%= t('adm_no') %></td>
         <td></td>
       </tr>
@@ -44,11 +48,15 @@
             <%= link_to r.full_name,:controller => "student", :action => "profile", :id => r.id %>
           </td>
           <td class="col-1">
+            <% unless MultiSchool.current_school.id != 348 %>
             <% if @current_user.admin? %>
               <%= text_field_tag "student[#{r.id}][class_roll_no]", r.class_roll_no, :class=>"marks-box" %>
             <% else %>
               <%= r.class_roll_no %>
-            <% end %>   
+            <% end %>  
+            <% else %>
+              <%= I18n.l(r.date_of_birth,:format=>"%d %b %Y") unless r.date_of_birth.nil? %>
+            <% end %>  
           </td>
 
           <td class="col-1">
@@ -70,5 +78,7 @@
   
   <% end %>
    <br/>
+   <% unless MultiSchool.current_school.id != 348 %>
    <div  style="float:left; clear:both; margin:10px;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :id=> 'submit_button' %></div>
+   <% end %>
 </div>

@@ -121,7 +121,13 @@
       <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name"><%= t('reason') %>:</div>
         <%= @applied_leave.reason %>
       </li>
-      <% if @applied_leave.forward.to_i == 1 %>
+      <% unless @applied_leave.attachment_file_name.nil? %>
+        <li class="list<%= cycle('odd','even') %> download-link">
+          <div class="category-name"><%= "Document" %>:</div>
+          <%= link_to 'Download Attachment', :controller => "student_attendance", :action => "download_attachment",:target=> @target, :id=>@applied_leave.id %>
+        </li>
+      <% end %>
+      <% if @target == "student" && @applied_leave.forward.to_i == 1  %>
         <li style="height:auto !important;" class="list<%= cycle('odd','even') %>"><div class="category-name">Forwarder Message:</div>
           <%= @applied_leave.forwarder_remark %>
         </li>
@@ -160,7 +166,7 @@
 
     <div class="buttons">
         
-      <% if((@applied_leave.approved == false or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)))  %>
+      <% if(@target == "student" && ((@applied_leave.approved == false or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id))))  %>
         <div class="approve_button">    <%= link_to_remote "► #{t('approve')}",
             :url => {:action => "approve_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'} %>
         </div>
@@ -179,7 +185,7 @@
       
      
       
-      <% if((@applied_leave.approved == true or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id))) %>
+      <% if(@target == "student" && ((@applied_leave.approved == true or @applied_leave.approved.nil? and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)) or (@target == "student" and @applied_leave.viewed_by_teacher == false and (@applied_leave.forward.to_i == 0 or @current_user.employee_record.id == @applied_leave.employee_id)))) %>
         <div class="cancel_button"><%= link_to_remote "► #{t('deny')}",
             :url => {:action => "deny_remarks", :id=>@applied_leave.id, :target => @target, :request_from => @request_from},:html=> {:class=>'user_button'}  %>
         </div>
@@ -205,3 +211,10 @@
 
 <div id="modal-box" style="display:none;"> </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+<style>
+    .download-link a 
+    {
+      color:red;
+      font-weight: bold;
+    }
+</style>    

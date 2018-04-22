@@ -147,15 +147,27 @@
                 <% unless @student.serial_no.nil? or @student.serial_no.blank? %>
                 <div class="row">
                     <div class="row_label">
-                        <div><%= "Serial Number" %></div>
+                        <div><%= "Form Serial Number" %></div>
                     </div>
                     <div class="row_data">
                         <div><%= @student.serial_no %></div>
                     </div>
                 </div>
                 <% end %>
+                <% unless @student.sms_number.nil? or @student.sms_number.blank? %>
+                  <div class="row">
+                      <div class="row_label">
+                          <div><%= "Designated Number for SMS" %></div>
+                      </div>
+                      <div class="row_data">
+                          <div><%= @student.sms_number %></div>
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                <% end %>
                 
                 <div class="clearfix"></div>
+                <% unless @student.class_roll_no.nil? or @student.class_roll_no.blank? %>
                 <div class="row">
                     <div class="row_label">
                         <div><%= t('roll_number') %></div>
@@ -164,6 +176,7 @@
                         <div><%= @student.class_roll_no %></div>
                     </div>
                 </div>
+                <% end %>
                 
                 <div class="clearfix"></div>
                 
@@ -382,17 +395,7 @@
                   <div class="clearfix"></div>
                 <% end %>
                   
-                 <% unless @student.sms_number.nil? or @student.sms_number.blank? %>
-                  <div class="row">
-                      <div class="row_label">
-                          <div><%= "Designated Number for SMS" %></div>
-                      </div>
-                      <div class="row_data">
-                          <div><%= @student.sms_number %></div>
-                      </div>
-                  </div>
-                  <div class="clearfix"></div>
-                <% end %>
+                 
 
                 
 

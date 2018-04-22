@@ -20,12 +20,26 @@ class StudentAttendanceController < ApplicationController
   before_filter :login_required
   #before_filter :check_permission, :only=>[:index, :leaves]
   before_filter :only_assigned_employee_allowed
-  before_filter :protect_other_student_data, :except=>[:own_leave_application,:year_report,:graph_code,:month_report,:subject_report,:subject_report_pdf,:new_calendar, :cancel_application, :month_report_data]
+  before_filter :protect_other_student_data, :except=>[:own_leave_application,:download_attachment,:year_report,:graph_code,:month_report,:subject_report,:subject_report_pdf,:new_calendar, :cancel_application, :month_report_data]
   before_filter :protect_applied_leave_parent, :only => [:own_leave_application, :cancel_application]
   before_filter :default_time_zone_present_time
   filter_access_to :all
   before_filter :check_status
  
+  def download_attachment
+    if params[:target] == "student"
+      @leave =  ApplyLeaveStudent.find params[:id]
+    else
+      @leave =  ApplyLeave.find params[:id]
+    end  
+    unless @leave.nil?
+      filename = @leave.attachment_file_name
+      send_file  @leave.attachment.path, :type=>@leave.attachment.content_type,:filename => filename
+    else
+      flash[:notice]="No File Found For Download"
+      redirect_to :controller=>:user ,:action=>:dashboard
+    end
+  end
   def index
     permitted_modules = Rails.cache.fetch("permitted_modules_student_attendance_#{current_user.id}"){
       @student_attendance_modules_tmp = []

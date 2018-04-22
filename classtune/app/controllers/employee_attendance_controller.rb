@@ -316,6 +316,7 @@ class EmployeeAttendanceController < ApplicationController
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?
           @report_date_from = params[:report_date_from]
           @report_date_to = params[:report_date_to]
+          @report_date = @report_date_from.to_date.strftime("%B %Y")
           
           if MultiSchool.current_school.id == 312
             @previous_month = @report_date_from.to_date << 1
@@ -327,7 +328,7 @@ class EmployeeAttendanceController < ApplicationController
             @report_date_from = @report_date_from.to_date.strftime("%Y-%m-%d")
             @report_date_to = @report_date_to.to_date.strftime("%Y-%m-%d")
           end  
-            @report_date = @report_date_from.to_date.strftime("%B %Y")
+            
           events = Event.find(:all, :select => "title, start_date, end_date", :conditions => ["( (start_date BETWEEN ? AND ?) OR (end_date BETWEEN ? AND ?) OR (start_date <= ? AND end_date >= ?) ) AND is_holiday = 1 AND is_published = 1", @report_date_from, @report_date_to, @report_date_from, @report_date_to,@report_date_from, @report_date_to])
           @event_dates = []
           p = 0

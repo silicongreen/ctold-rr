@@ -431,9 +431,10 @@ class EmployeeAttendanceController < ApplicationController
                       end
                       num_week_off_days = a_week_off_days.length
                     end
-                    in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
+                    in_ofc_time = @employee_setting.start_time.strftime("%H%M").to_i
+
                     #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'").size
-                    lateAttendances = cardAttendanceAllDates.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time) and !@event_dates.include?(ca.date.to_s) and !a_week_off_days.include?(ca.date)}.size
+                    lateAttendances = cardAttendanceAllDates.select{|ca| ca.min_time.strftime("%H%M").to_i > in_ofc_time and !@event_dates.include?(ca.date.to_s) and !a_week_off_days.include?(ca.date)}.size
                     total_late = lateAttendances
                 else
                   total_late = 0
@@ -744,9 +745,9 @@ class EmployeeAttendanceController < ApplicationController
                       leave = ' - '
                     end
                   end
-#                  if @event_dates.include?(d)
-#                    late = ' - '
-#                  end
+                  if @event_dates.include?(d)
+                    late = ' - '
+                  end
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []
                     emp[0] = employee.employee_info

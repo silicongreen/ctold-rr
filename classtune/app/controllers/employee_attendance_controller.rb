@@ -744,9 +744,9 @@ class EmployeeAttendanceController < ApplicationController
                       leave = ' - '
                     end
                   end
-                  if @event_dates.include?(d)
-                    late = ' - '
-                  end
+#                  if @event_dates.include?(d)
+#                    late = ' - '
+#                  end
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []
                     emp[0] = employee.employee_info

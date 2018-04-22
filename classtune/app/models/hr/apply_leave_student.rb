@@ -21,7 +21,8 @@ class ApplyLeaveStudent < ActiveRecord::Base
   belongs_to :student
   
   attr_accessor :redactor_to_update, :redactor_to_delete
-  
+  has_attached_file :attachment ,
+    :url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname"
   cattr_reader :per_page
   @@per_page = 12
 

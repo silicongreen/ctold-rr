@@ -110,6 +110,12 @@
           <div class="text-input-bg"><%= f.text_field :minimum_marks %></div>
         </div>
       <% end %>
+        <div class="label-field-pair">
+          <label >No Schedule</label>
+          <div  class="text-input-bg" id="exam-group-select">
+            <%= f.select :no_date, [['No',0],['Yes',1]] %>
+          </div>
+        </div>
 
 
       <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %>

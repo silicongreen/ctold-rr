@@ -919,11 +919,11 @@ class ExamController < ApplicationController
       end
      
     else
-      assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@exam_subject.id,@exam_subject.batch_id)
+      assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@exam_subject.id,@exam_subject.batch_id,:order=>"students.first_name ASC, students.middle_name ASC, students.last_name ASC",:include=>[:student])
       @students = []
       @studentids = []
       assigned_students.each do |s|
-        student = Student.find_by_id(s.student_id)
+        student = s.student
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
             unless @studentids.include?(student.id)
@@ -940,7 +940,11 @@ class ExamController < ApplicationController
         end
       end
       unless @students.blank?
-        @ordered_students = @students.sort
+        if MultiSchool.current_school.id == 319
+          @ordered_students = @students
+        else
+          @ordered_students = @students.sort
+        end
         @students=[]
         @ordered_students.each do|s|
           @students.push s[3]

@@ -32,7 +32,11 @@
     <% else %>
     <p style="padding-left: 10px; font-size: 16px;"><%= "Attendance Report" %></p>
     <% end %>
-    <p style="padding-left: 10px; font-size: 16px;"><%= "Report Date: #{@report_date}" %></p>
+    <% if MultiSchool.current_school.id == 312 %>
+      <p style="padding-left: 10px; font-size: 16px;"><%= "Report Date: #{@report_date_from} - #{@report_date_to}" %></p>
+    <% else %>
+      <p style="padding-left: 10px; font-size: 16px;"><%= "Report Date: #{@report_date}" %></p>
+    <% end %>
     
 
 

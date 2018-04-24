@@ -658,10 +658,14 @@ class EmployeeAttendanceController < ApplicationController
                   leave = ' - '
               else 
                 employee_setting = @settings.select{ |s| s.employee_id == employee.id}
+                a_week_off_days = []
                 unless employee_setting.blank?
                   @employee_setting = employee_setting[0]
                   unless @employee_setting.weekdays.blank? or @employee_setting.weekdays.nil? or @employee_setting.weekdays.empty?
                     emp_weekdays = @employee_setting.weekdays.split(",").map(&:to_i)
+                    if MultiSchool.current_school.id == 312 && !emp_weekdays.include?(6)
+                      emp_weekdays << 6
+                    end
                     week_off_day = num_weekdays - emp_weekdays
                     if @report_date_to.to_date > Date.today
                       a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
@@ -671,6 +675,9 @@ class EmployeeAttendanceController < ApplicationController
                     num_week_off_days = a_week_off_days.length
                   else
                     emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
+                    if MultiSchool.current_school.id == 312 && !emp_weekdays.include?(6)
+                      emp_weekdays << 6
+                    end
                     week_off_day = num_weekdays - emp_weekdays
                     if @report_date_to.to_date > Date.today
                       a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
@@ -681,6 +688,9 @@ class EmployeeAttendanceController < ApplicationController
                   end
                 else
                   emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
+                  if MultiSchool.current_school.id == 312 && !emp_weekdays.include?(6)
+                    emp_weekdays << 6
+                  end
                   week_off_day = num_weekdays - emp_weekdays
                   if @report_date_to.to_date > Date.today
                     a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
@@ -747,6 +757,9 @@ class EmployeeAttendanceController < ApplicationController
                   end
                   if @event_dates.include?(d)
                     late = ' - '
+                  end
+                  if week_off_day.include?(d)
+                    absent = ' - '
                   end
                   unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                     emp = []

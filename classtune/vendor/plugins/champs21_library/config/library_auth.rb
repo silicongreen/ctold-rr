@@ -85,6 +85,7 @@ authorization do
       :delete_card_setting,
       :movement_log,
       :movement_log_csv,
+      :movement_log_details,
       :library_report,
       :library_report_pdf,
       :batch_library_report,

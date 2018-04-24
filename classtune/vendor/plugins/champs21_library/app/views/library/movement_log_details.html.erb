@@ -1,0 +1,116 @@
+<%-#
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><a href="/library" style="color:#666666; text-decoration: none;" ><%= "#{t('library_text')}"%></a></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "#{t('book_movement_log')}"%></div>
+
+<% unless flash[:notice].nil? %>
+  <p class="flash-msg"> <%= flash[:notice] %> </p>
+<% end %>
+</div>
+
+<div class="hor_line"></div>
+<div id="information">
+  <% unless @log.blank? %>
+  
+  <div class="extender"></div>
+  <div id="page-yield" class="ch_book_wrapper">
+    <div class="extender"></div>
+    <table id="report_table" align="center" width="100%" cellpadding="1" cellspacing="1">
+      <tr class="tr-head sub-heading">
+        <td><%= t('no_text') %></td>
+        <td class="batch_order">
+            <%= "Book Number" %>
+        </td>
+        <td class="batch_order">
+            <%= "#{t('borrowed_by')}" %>
+        </td>
+        <td>
+            User Type
+        </td>
+        <td>
+            Status
+        </td>
+        <td>
+            Issue Date
+        </td>
+        <td>
+            Return date
+        </td>
+        
+      </tr>
+      <%j=0 %>
+      <% @log.each_with_index do |r,@i| %>
+        <% if params[:page].present? %>
+          <% if params[:page].to_i >= 1 %>
+            <% @i = @i  + (params[:page].to_i - 1) * @log.per_page.to_i %>
+          <% end %> <%else %> <% @i = @i %>
+        <% end %>
+        <% j+=1 %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-5"> <%=@i+1 %></td>
+          <% if @sort_order=="book_number ASC" or @sort_order=="book_number DESC" %>
+            <td class="col-4 batch_order_select"><%=r.book_number%></td>
+          <% else %>
+            <td class="col-4"><%=r.book_number%></td>
+          <% end %>
+          <% if @sort_order=="first_name ASC" or @sort_order=="first_name DESC" %>
+            <% if r.student? %>
+              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no} (Student)" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
+            <% else %>
+              <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number} (Employee)" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
+            <% end %>
+          <% else %>
+            <% if r.student? %>
+              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no}" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>
+            <% else %>
+              <td class="col-2"><%=link_to "#{r.first_name} #{r.last_name} - #{r.employee_number}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.employee_id}%></td>
+            <% end %>
+          <% end %>
+          <% if r.student? %>
+              <td class="col-2">Student</td>
+            <% else %>
+              <td class="col-2">Employee</td>
+            <% end %>
+          <% if @sort_order=="status ASC" or @sort_order=="status DESC" %>
+            <td class="col-4 batch_order_select"><% case r.book_status when 'Lost'%><%= "#{t('lost')}" %> <% when 'Binding' %> <%= "#{t('binding')}" %> <% else %><%= t("#{r.status.downcase}") %><% end %></td>
+          <% else %>
+            <td class="col-4"><% case r.book_status when 'Lost'%><%= "#{t('lost')}" %> <% when 'Binding' %> <%= "#{t('binding')}" %> <% else %><%= t("#{r.status.downcase}") %><% end %></td>
+          <% end %>
+          <% if @sort_order=="issue_date ASC" or @sort_order=="issue_date DESC" %>
+            <td class="col-4 batch_order_select" style="white-space: nowrap;"><%= r.issue_date %></td>
+          <% else %>
+            <td class="col-4"  style="white-space: nowrap;"><%=r.issue_date %></td>
+          <% end %>
+          <% if @sort_order=="due_date ASC" or @sort_order=="due_date DESC" %>
+            <td class="col-4 batch_order_select"  style="white-space: nowrap;"><%= r.due_date %></td>
+          <% else %>
+            <td class="col-4"  style="white-space: nowrap;"><%=r.due_date %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+   
+  <% else %>
+    <p class="flash-msg"> <%= t('no_record_found') %></p>
+  <% end %>
+</div>
+</div>

@@ -419,8 +419,8 @@ class UserController < ApplicationController
   def list_parent_user
     unless params[:batch_id].blank?
       batch = params[:batch_id]
-      user_ids = Guardian.find(:all, :select=>'guardians.user_id',:joins=>'INNER JOIN students ON students.immediate_contact_id = guardians.id', :conditions => 'students.batch_id = ' + batch + ' AND is_active=1').collect(&:user_id).compact
-      @users = User.find_all_by_id(user_ids,:conditions=>"is_deleted is false",:order =>'first_name ASC')
+      user_ids = Guardian.find(:all, :select=>'guardians.user_id',:joins=>'LEFT JOIN guardian_students ON guardian_students.guardian_id = guardians.id left join students on guardian_students.student_id = students.id', :conditions => 'students.batch_id = ' + batch + ' AND is_active=1').collect(&:user_id).compact
+      @users = User.find_all_by_id(user_ids,:order =>'first_name ASC')
     else
       @users=[]
     end

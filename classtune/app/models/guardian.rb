@@ -23,6 +23,7 @@ class Guardian < ActiveRecord::Base
   belongs_to :ward, :class_name => 'Student', :foreign_key=>:sibling_id
   belongs_to :user
   has_many   :wards,:class_name => 'Student', :foreign_key => 'sibling_id', :primary_key=>:ward_id
+  has_many   :guardian_students
 
   validates_presence_of :first_name, :relation,:ward_id
   validates_format_of     :email, :with => /^[A-Z0-9._%-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i,   :allow_blank=>true,

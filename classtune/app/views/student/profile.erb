@@ -106,10 +106,18 @@
             <div id="profile_picture_display">
                 <% if @student.photo.file? %>
                   <% @profile_image = @student.photo.url %>
+                  
                 <% else %>
                   <% @profile_image = "master_student/profile/default_student.png" %>
                 <% end %>
                 <%= image_tag "#{@profile_image}" %>
+                <% if @student.photo.file? %>
+                <% if @current_user.admin? or permitted_to? :remove_photo, :student %>
+                <div class="image-delete-link" />
+                   <%= link_to '<img src="/images/buttons/delete-new.png" />', {:controller => 'student', :action => 'remove_photo', :id => @student.id}, :confirm => "Do you realy want to remove this photo?" %>
+                </div>
+                <% end %>
+                <% end %>
 
             </div>
 
@@ -734,5 +742,18 @@
     }
     .header-wrapper  .header-form-wrapper .icon-wrapper a:hover > .edit-icon {
         background: url("/images/icons/edit_hover.png") no-repeat scroll 0 0 / 35px 35px rgba(0, 0, 0, 0);
+    }
+    .image-delete-link
+    {
+        float: right;
+        clear: both;
+        margin-top: -13px;
+        margin-right: 3px;
+        color: red;
+    }
+    #profile_picture_display img
+    {
+      float:left;
+      clear:both;
     }
 </style>

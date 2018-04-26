@@ -13,7 +13,7 @@ class ApiModule extends CWebModule {
     }
 
     public function beforeControllerAction($controller, $action) {
-        $controller_widthout_session = array("user", "freeuser", "freeschool", "spelltv","sciencerocks", 'notice','acacal','paid','cardatt');
+        $controller_widthout_session = array("user", "freeuser", "freeschool", "spelltv","sciencerocks", 'notice','sync','acacal','paid','cardatt');
         if (!in_array($controller->id, $controller_widthout_session) && !isset(Yii::app()->user->user_secret)) {
             $temp = (int) isset(Yii::app()->user->user_secret);
 

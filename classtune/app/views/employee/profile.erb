@@ -37,10 +37,10 @@
     </div>
   </div>
 
-  <% if @current_user.admin? or permitted_to? :edit, :student%>
+  <% if @current_user.admin? or permitted_to? :edit, :employee%>
     <div class="header-form-wrapper">
       <div class="icon-wrapper">
-        <%= link_to '<div class="edit-icon"></div>', :controller => 'student', :action => 'edit', :id => @employee.id %>
+        <%= link_to '<div class="edit-icon"></div>', :controller => 'employee', :action => 'edit', :id => @employee.id %>
       </div>
     </div>
   <% end %>
@@ -207,6 +207,11 @@
       <div id="profile_picture_display">
         <% if @employee.photo.file? %>
           <%= image_tag @employee.photo.url %>
+          <% if @current_user.admin? or permitted_to? :remove_photo, :employee%>
+          <div class="image-delete-link" />
+            <%= link_to 'Remove Photo', {:controller => 'employee', :action => 'remove_photo', :id => @employee.id}, :confirm => "Do you realy want to remove this photo?" %>
+          </div>
+          <% end %>
         <% else %>
           <%= image_tag "HR/default_employee.png" %>
         <% end %>      
@@ -234,3 +239,21 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
+<style>
+    #profile_picture_display img
+    {
+      float:left;
+      clear:both;
+    }
+    .image-delete-link
+    {
+        float:left;
+        clear:both;
+        margin-top:15px;
+        color: red;
+    }
+    .image-delete-link a
+    {
+        color: red;
+    }
+</style>    

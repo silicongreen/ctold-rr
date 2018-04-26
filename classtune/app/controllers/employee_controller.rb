@@ -27,6 +27,14 @@ class EmployeeController < ApplicationController
       :view_payslip ]
   before_filter :limit_employee_profile_access , :only => [:profile,:profile_pdf]
 
+  def remove_photo
+    @employee = Employee.find(params[:id])
+    @employee.photo.destroy
+    @employee.photo.clear
+    @employee.save
+    flash[:notice] = "Photo Successfully Removed"
+    redirect_to :controller => "employee", :action => "profile", :id=>params[:id]
+  end
   def late_employee
     @today = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d')
     @employee = Employee.all

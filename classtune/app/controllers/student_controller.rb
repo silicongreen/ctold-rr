@@ -40,6 +40,15 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC',:group=>"from_id")
   end
   
+  def remove_photo
+    @student = Student.find(params[:id])
+    @student.photo.destroy
+    @student.photo.clear
+    @student.save
+    flash[:notice] = "Photo Successfully Removed"
+    redirect_to :controller => "student", :action => "profile", :id=>params[:id]
+  end
+  
   def get_graduation_students
     @archived_students = []
     unless params[:transfer_id].blank?

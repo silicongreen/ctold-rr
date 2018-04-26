@@ -2578,6 +2578,7 @@ authorization do
     has_permission_on [:student],
       :to => [
       :academic_pdf,
+      :remove_photo,
       :insert_into_new_parent_student_table,
       :profile,
       :admission1,
@@ -2773,6 +2774,7 @@ authorization do
     has_permission_on [:employee],
       :to => [
       :index,
+      :remove_photo,
       :add_category,
       :references,
       :edit_references,

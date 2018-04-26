@@ -122,9 +122,13 @@
                       <% else  %>
                         <label for="student_admission_date"><%= t('admission_date') %> <span class="necessary-field">*</span> </label>
                       <% end %>
-
-                      <%= calendar_date_select_tag 'student[admission_date]', I18n.l(Date.today,:format=>"%d %b %Y"),
+                        <% unless @student.admission_date.blank? %>
+                          <%= calendar_date_select_tag 'student[admission_date]', I18n.l(@student.admission_date,:format=>"%d %b %Y"),
                         :year_range => 15.years.ago..5.years.from_now, :class=>"form-control form-control-date", :readonly=>true, :popup=>"force" %>
+                        <% else %>
+                          <%= calendar_date_select_tag 'student[admission_date]', I18n.l(Date.today,:format=>"%d %b %Y"),
+                        :year_range => 15.years.ago..5.years.from_now, :class=>"form-control form-control-date", :readonly=>true, :popup=>"force" %>
+                        <% end %>
                   </div>
                   <div class="form-group col-sm-6 even">
                       <label for="class_roll_no"><%= t('roll_number') %> </label>
@@ -168,7 +172,7 @@
                     <label for="student_grade"><%= t('shift_label') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
                     <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i),
                       {:prompt => "#{t('select')}"},
-                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section&section_partial=sections&page=course_data&partial_view=courses_data&page_batch=batches&partial_view_batch=batches'" ,:before => "$('loading_2').show();",
+                      {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section&section_partial=sections&page=course_data&partial_view=courses_data&page_batch=batches&partial_view_batch=batches&course_name=#{@course_name}&section_name=#{@section_name}'" ,:before => "$('loading_2').show();",
                       :success => "$('loading_2').hide();")}"} %>
                     <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
                </div>
@@ -204,9 +208,13 @@
 
               <div class="form-group col-sm-6 even">
                   <label for="student_date_of_birth"><%= t('date_of_birth') %> <span class="necessary-field">*</span> </label>
+                  <% unless @student.date_of_birth.blank? %>
+                   <%= calendar_date_select_tag 'student[date_of_birth]',
+                    I18n.l(@student.date_of_birth,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control form-control-date" %>
+                  <% else %>
                   <%= calendar_date_select_tag 'student[date_of_birth]',
                     I18n.l(Date.today-5.years,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control form-control-date" %>
-
+                  <% end %>
               </div>
 
 

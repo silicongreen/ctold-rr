@@ -159,6 +159,7 @@ class StudentController < ApplicationController
   def get_section_data
     @batch_name = ""
     @class_name = ""
+    
     batch_id = 0
     unless params[:student].nil?
       unless params[:student][:batch_name].nil?
@@ -199,6 +200,10 @@ class StudentController < ApplicationController
     end
     
     @selected_section = 0
+    
+    unless params[:section_name].blank?
+      @selected_section = params[:section_name].to_i
+    end
     
     @batch_id = 0
     @courses = []
@@ -275,6 +280,13 @@ class StudentController < ApplicationController
   @classes = []
   @batch_id = ''
   @course_name = ""
+  @section_name = ""
+  unless params[:course_name].blank?
+    @course_name = params[:course_name]
+  end
+  unless params[:section_name].blank?
+    @section_name = params[:section_name]
+  end
   render :update do |page|
     if params[:page].nil?
       page.replace_html 'course', :partial => 'courses', :object => @courses
@@ -655,6 +667,7 @@ end
     @batches = []
     @batch_no = 0
     @course_name = ""
+    @section_name = ""
     @courses = []
     inserts = []
     @std_session = StudentSession.active
@@ -731,6 +744,7 @@ end
           @batch_id = params[:student][:batch_id]
           @batch_no = params[:student][:batch_name]
           @course_name = params[:student][:class_name]
+          @section_name = params[:student][:section]
         end
       end
     end

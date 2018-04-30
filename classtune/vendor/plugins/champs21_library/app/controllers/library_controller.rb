@@ -130,7 +130,35 @@ class LibraryController < ApplicationController
   end
   
   def movement_log_details
-    @log= BookMovement.find(:all,:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'due_date ASC')
+    @log= BookMovement.find(:all,:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'due_date ASC')
+  end
+  
+  def movement_log_details_csv
+    log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'due_date ASC')
+   
+  
+    csv_string=FasterCSV.generate do |csv|
+      cols=["#{t('no_text')}","#{t('book_number')}","#{t('book_title')}","#{t('borrowed_by') }","#{t('status') }","#{t('issue_date')}","#{t('due_date')}"]
+      csv << cols
+      log.each_with_index do |s,i|
+        col=[]
+        col<< "#{i+1}"
+        col<< "#{s.book_number}"
+        col<< "#{s.title}"
+        if s.student?
+          col<< "#{s.first_name} #{s.last_name} - #{s.admission_no}"
+        else
+          col<< "#{s.first_name} #{s.last_name} - #{s.employee_number}"
+        end
+        col<< "#{s.status}"
+        col<< "#{s.issue_date}"
+        col<< "#{s.due_date}"
+        col=col.flatten
+        csv<< col
+      end
+    end
+    filename = "#{t('library_text')}#{t('book_movement_log')}- #{Time.now.to_date.to_s}.csv"
+    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   end
 
   def movement_log
@@ -138,9 +166,9 @@ class LibraryController < ApplicationController
     @sort_order=params[:sort_order]
     if params[:book_log].nil?
       if @sort_order.nil?
-        @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
+        @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
       else
-        @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
+        @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
       end
     else
       if params[:book_log][:date2].blank?
@@ -161,15 +189,15 @@ class LibraryController < ApplicationController
       
       if @sort_order.nil?
         if params[:book_log][:type]=="Due Date"
-          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ? and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
+          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ? and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
         else
-          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date <= ?  and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
+          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date <= ?  and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>'due_date ASC',:group=>"users.id")
         end
       else
         if params[:book_log][:type]=="Due Date"
-          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
+          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
         else
-          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date<= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
+          @log= BookMovement.paginate(:select=>"students.id as student_id,count(book_movements.id) as number_of_book,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date<= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:page=>params[:page],:per_page=>20,:order=>@sort_order,:group=>"users.id")
         end
       end
     end
@@ -181,35 +209,55 @@ class LibraryController < ApplicationController
   end
 
   def movement_log_csv
+    
     sort_order=params[:sort_order]
     if params[:book_log].nil?
       if sort_order.nil?
-        log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date= ? ", Date.today],:order=>'due_date ASC')
+        log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:order=>'due_date ASC')
       else
-        log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date= ? ", Date.today],:order=>sort_order)
+        log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned'"],:order=>sort_order)
       end
     else
+      if params[:book_log][:date2].blank?
+        params[:book_log][:date2] = "2080-01-01"
+      end
+      if params[:book_log][:date].blank?
+        params[:book_log][:date] = "1977-01-01"
+      end
+      extra_condition = " AND users.id != ?"
+      extra_params = 0
+      if !params[:book_log][:batch].blank? and !params[:book_log][:user_type].blank? and params[:book_log][:user_type].to_i == 1
+        extra_condition = " AND students.batch_id = ? "
+        extra_params = params[:book_log][:batch]
+      end
+      
+      params[:book_log][:date] = params[:book_log][:date].to_date
+      params[:book_log][:date2] = params[:book_log][:date2].to_date
+      
       if sort_order.nil?
         if params[:book_log][:type]=="Due Date"
-          log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date= ? ",params[:book_log][:date]],:order=>'due_date ASC')
+          log = BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ? and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:order=>'due_date ASC')
         else
-          log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date= ? ",params[:book_log][:date]],:order=>'due_date ASC')
+          log = BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date <= ?  and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:order=>'due_date ASC')
         end
       else
         if params[:book_log][:type]=="Due Date"
-          log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date= ? ",params[:book_log][:date]],:order=>sort_order)
+          log = BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.due_date >= ? and book_movements.due_date <= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:order=>sort_order)
         else
-          log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date= ? ",params[:book_log][:date]],:order=>sort_order)
+          log = BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and book_movements.issue_date >= ? and book_movements.issue_date<= ?   and users.student = ?"+extra_condition,params[:book_log][:date],params[:book_log][:date2],params[:book_log][:user_type],extra_params],:order=>sort_order)
         end
       end
+      
     end
+  
     csv_string=FasterCSV.generate do |csv|
-      cols=["#{t('no_text')}","#{t('book_number')}","#{t('borrowed_by') }","#{t('status') }","#{t('issue_date')}","#{t('due_date')}"]
+      cols=["#{t('no_text')}","#{t('book_number')}","#{t('book_title')}","#{t('borrowed_by') }","#{t('status') }","#{t('issue_date')}","#{t('due_date')}"]
       csv << cols
       log.each_with_index do |s,i|
         col=[]
         col<< "#{i+1}"
         col<< "#{s.book_number}"
+        col<< "#{s.title}"
         if s.student?
           col<< "#{s.first_name} #{s.last_name} - #{s.admission_no}"
         else

@@ -1446,6 +1446,7 @@ end
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]
+          @section_name = params[:student][:section]
           @batch_id = params[:student][:batch_id]
           @batch_no = params[:student][:batch_name]
           @course_name = params[:student][:class_name];
@@ -1466,6 +1467,7 @@ end
 
       @classes = Course.find(:all, :conditions => ["course_name LIKE ?",@course_name])
       @selected_section = @course_data.id
+      @section_name = @course_data.id
       
       batch = Batch.find @batch_id
       batch_name = batch.name

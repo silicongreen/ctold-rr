@@ -30,6 +30,10 @@
 <div class="hor_line"></div>
 <div id="information">
   <% unless @log.blank? %>
+  <div class="submit-button">
+    <%= link_to "#{t('export_as_csv')}" ,{:action=>'movement_log_details_csv',:user_id=>params[:user_id]} %>
+  </div>
+  <div class="extender"></div>
   
   <div class="extender"></div>
   <div id="page-yield" class="ch_book_wrapper">
@@ -38,7 +42,10 @@
       <tr class="tr-head sub-heading">
         <td><%= t('no_text') %></td>
         <td class="batch_order">
-            <%= "Book Number" %>
+            <%= "#{t('book_number')}" %>
+        </td>
+        <td class="batch_order">
+            <%= "#{t('book_title')}" %>
         </td>
         <td class="batch_order">
             <%= "#{t('borrowed_by')}" %>
@@ -72,6 +79,7 @@
           <% else %>
             <td class="col-4"><%=r.book_number%></td>
           <% end %>
+          <td class="col-4" style="white-space: nowrap;"><%=r.title %></td>
           <% if @sort_order=="first_name ASC" or @sort_order=="first_name DESC" %>
             <% if r.student? %>
               <td class="col-2 batch_order_select"><%=link_to "#{r.first_name} #{r.last_name} - #{r.admission_no} (Student)" ,{:controller=>'student',:action=>'profile' ,:id=>r.student_id}%></td>

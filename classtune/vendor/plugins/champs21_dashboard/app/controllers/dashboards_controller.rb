@@ -106,7 +106,7 @@ class DashboardsController < ApplicationController
       end
     
       
-      @event = Event.find(:last, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'")
+      @event = Event.find(:first, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'",:order=>"end_date ASC")
       time_diff4 = Time.now-time_now
       time_now = Time.now
       @att_text = ''

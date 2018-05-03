@@ -3,9 +3,7 @@
 
 Date.prototype.toFormattedString = function(include_time) {
         var hour;
-    //var str = Date.padded2(this.getDate()) + "/" + Date.padded2(this.getMonth() + 1) + "/" + this.getFullYear();
-    //var str = this.getFullYear() + "-" + Date.padded2(this.getMonth() + 1) + "-" +Date.padded2(this.getDate());
-    var str =  this.getDate() + " "+Date.months_small[this.getMonth()]+" "+ this.getFullYear();
+    var str = this.getFullYear() + "-" + Date.padded2(this.getMonth() + 1) + "-" +Date.padded2(this.getDate());
     if (include_time) {
         hour = Date.padded2(this.getHours());
         str += " " + hour + ":" + this.getPaddedMinutes();
@@ -17,16 +15,16 @@ Date.prototype.toFormattedString = function(include_time) {
 // as the timezone is not displayed in the input,
 // this could be tricky (or just unnessesary)
 Date.parseFormattedString = function (string) {
-//   var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
-//                "([T| ]([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
-//                "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
-//   var d = string.match(new RegExp(regexp));
+   var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
+                "([T| ]([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
+                "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
+   var d = string.match(new RegExp(regexp));
 
-   var date = new Date(string);
+   var date = new Date(d[1], 0, 1);
 
-//   if (d[3]) { date.setMonth(d[3] - 1); }
-//   if (d[5]) { date.setDate(d[5]); }
-//   if (d[7]) { date.setHours(d[7]); }
-//   if (d[8]) { date.setMinutes(d[8]); }
+   if (d[3]) { date.setMonth(d[3] - 1); }
+   if (d[5]) { date.setDate(d[5]); }
+   if (d[7]) { date.setHours(d[7]); }
+   if (d[8]) { date.setMinutes(d[8]); }
    return date;
 };

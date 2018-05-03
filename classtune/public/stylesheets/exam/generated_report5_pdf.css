@@ -2076,7 +2076,7 @@ table.height-exam tr td
     float:left;
     clear:both;
 }
-.lanscape_header_south_point table td.name-td.name-td-south h5
+div#pdf-header-south.lanscape_header_south_point table td.name-td h5
 {
     font-size: 14px !important;
     font-weight: normal !important;

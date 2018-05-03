@@ -1,0 +1,49 @@
+<% bottom_string = "<br/><br/>" %>
+<% bottom_string2 = "" %>
+<% unless params[:bottom].blank?  %>
+  <% bottom = params[:bottom].to_i %>
+  <%  
+    $i = 0
+    while $i < bottom  do
+       bottom_string = bottom_string.to_s+"<br/>"
+       bottom_string2 = bottom_string2.to_s+"<br/>"
+       $i +=1
+    end
+  %>
+<% end %>
+
+
+
+<div id="pdf-footer">		
+              		
+              <table id="listing table-design" class="margin-top-bottom-10" width="100%">		
+                  <thead>          		
+ 		
+                      <tr>		
+                          <td class="">		
+                              <%= bottom_string %>		
+                              <%= "---------------------------------------------------" %><br />		
+                              <font size='3'><b><%= "Class Teacher" %></b></font>		
+                          </td>		
+                          <td class="">		
+                               <%= bottom_string %>		
+                              <%= "---------------------------------------------------" %><br />		
+                              <font size='3'><b><%= "Teacher In charge" %></b></font>		
+                          </td>		
+                          <td class="">		
+                               <%= bottom_string %>		
+                              <%= "---------------------------------------------------" %><br />		
+                              <font size='3'><b><%= "Principal" %></b></font>		
+                          </td>		
+ 		
+                          <td class=""><center>	
+                            <%= bottom_string2 %>
+                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />		
+                            <%= "--------------------------------------------------" %><br />		
+                            <font size='3'><b><%= "F. Principal" %></b></font>		
+                            </center>		
+                          </td>		
+                 </tr>		
+ 		
+               </table>		
+         </div>

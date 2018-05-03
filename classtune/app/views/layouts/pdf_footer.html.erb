@@ -144,36 +144,70 @@
         <% elsif MultiSchool.current_school.id == 312 %>
           
           <div id="pdf-footer">
+             
+                <% if @connect_exam_obj.blank? || @connect_exam_obj.result_type.to_i != 1 || @connect_exam_obj.result_type.to_i != 6  %>
+                  <table id="listing table-design"  width="100%">
+                      <thead>          
+
+                          <tr>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "----------------------------------------------------------" %><br />
+                                  <font size='5'><b><%= "Class Teacher" %></b></font>
+                              </td>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "----------------------------------------------------------" %><br />
+                                  <font size='5'><b><%= "Teacher In charge" %></b></font>
+                              </td>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "----------------------------------------------------------" %><br />
+                                  <font size='5'><b><%= "Principal" %></b></font>
+                              </td>
+
+                              <td class=""><center>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />
+                                <%= "----------------------------------------------------------" %><br />
+                                <font size='5'><b><%= "F. Principal" %></b></font>
+                                </center>
+                              </td>
+                      </tr>
+
+                  </table>
+                <% else %>
+                  <table id="listing table-design"  width="100%">
+                      <thead>          
+
+                          <tr>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "--------------------------------------------------------------------------------------" %><br />
+                                  <font size='3'><b><%= "Class Teacher" %></b></font>
+                              </td>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "--------------------------------------------------------------------------------------" %><br />
+                                  <font size='3'><b><%= "Teacher In charge" %></b></font>
+                              </td>
+                              <td class="">
+                                  <br /><br /><br /><br /><br />
+                                  <%= "--------------------------------------------------------------------------------------" %><br />
+                                  <font size='3'><b><%= "Principal" %></b></font>
+                              </td>
+
+                              <td class=""><center>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />
+                                <%= "--------------------------------------------------------------------------------------" %><br />
+                                <font size='3'><b><%= "F. Principal" %></b></font>
+                                </center>
+                              </td>
+                      </tr>
+
+                  </table>
               
-              <table id="listing table-design"  width="100%">
-                  <thead>          
-
-                      <tr>
-                          <td class="">
-                              <br /><br /><br /><br /><br />
-                              <%= "----------------------------------------------------------" %><br />
-                              <font size='5'><b><%= "Class Teacher" %></b></font>
-                          </td>
-                          <td class="">
-                              <br /><br /><br /><br /><br />
-                              <%= "----------------------------------------------------------" %><br />
-                              <font size='5'><b><%= "Teacher In charge" %></b></font>
-                          </td>
-                          <td class="">
-                              <br /><br /><br /><br /><br />
-                              <%= "----------------------------------------------------------" %><br />
-                              <font size='5'><b><%= "Principal" %></b></font>
-                          </td>
-
-                          <td class=""><center>
-                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />
-                            <%= "----------------------------------------------------------" %><br />
-                            <font size='5'><b><%= "F. Principal" %></b></font>
-                            </center>
-                          </td>
-                  </tr>
-
-              </table>
+                <% end %>
+                 
           </div>
         
         <% elsif MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 342 %>

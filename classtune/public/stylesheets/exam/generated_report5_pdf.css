@@ -2068,3 +2068,13 @@ table.height-exam tr td
     float:left;
     clear:both;
 }
+
+.lanscape_header_south_point h5
+{
+    font-size: 9px !important;
+}
+.lanscape_header_south_point h4
+{
+    font-size: 15px !important;
+}
+

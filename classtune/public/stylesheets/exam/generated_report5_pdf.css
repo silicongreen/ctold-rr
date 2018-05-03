@@ -700,7 +700,7 @@ table#pdf-table{
 
 
 
-///SFX
+
 .sfx margin-top-bottom-50
 {
     margin: 50px !important;
@@ -814,7 +814,7 @@ sfx  .table-header td{
 
 
 
-///baf shaheen
+
 .baf_shaheen table td
 {
     font-size:26px;
@@ -969,7 +969,7 @@ div.baf_shaheen
 
 
 
-//South Point
+
 
 .south_point table td
 {
@@ -1097,7 +1097,7 @@ div.baf_shaheen
 
 
 
-///baf shaheen
+
 .mirpur_english table td
 {
     font-size:22px;
@@ -1470,7 +1470,7 @@ table.float-left-clear-both
     font-size: 18px;
 }
 
-//new CSS
+
 
 
 /***************SJWS START************/
@@ -1709,7 +1709,7 @@ tr.t-small td
 
 
 
-///sjis
+
 .sjis-new table td
 {
     font-size:24px;
@@ -2068,13 +2068,3 @@ table.height-exam tr td
     float:left;
     clear:both;
 }
-
-.lanscape_header_south_point h5
-{
-    font-size: 12px !important;
-}
-.lanscape_header_south_point h4
-{
-    font-size: 15px !important;
-}
-

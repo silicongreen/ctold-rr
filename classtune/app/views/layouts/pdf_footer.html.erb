@@ -145,7 +145,7 @@
           
           <div id="pdf-footer">
              
-                <% if @connect_exam_obj.blank? || @connect_exam_obj.result_type.to_i != 1 || @connect_exam_obj.result_type.to_i != 6  %>
+                <% if @connect_exam_obj.blank? || (@connect_exam_obj.result_type.to_i != 1 && @connect_exam_obj.result_type.to_i != 6)  %>
                   <table id="listing table-design"  width="100%">
                       <thead>          
 

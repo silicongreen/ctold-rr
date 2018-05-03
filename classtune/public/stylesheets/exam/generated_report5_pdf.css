@@ -2088,6 +2088,11 @@ table.padding-margin-0 tr, table.padding-margin-0 tr td
     padding: 0px !important;
     margin: 0px !important;
 }
+table.padding-margin-0
+{
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
 
 
 

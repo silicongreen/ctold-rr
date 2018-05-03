@@ -253,9 +253,7 @@ div.sjis
     margin-top: 0px;
 
 }
-.header-wrapper .header-title-sub-text {
-    letter-spacing: unset;
-}
+
 .timetable_last a
 {
     -moz-border-radius: 3px;
@@ -1454,13 +1452,13 @@ table tr td.promoted_section_final
 }
 table.float-left-clear-both
 {
-    flooat:left;
+    float:left;
     clear:both;
     width:100%;
 }
 table.float-left-clear-both
 {
-    flooat:left;
+    float:left;
     clear:both;
     width:100%;
     margin-top:0px;

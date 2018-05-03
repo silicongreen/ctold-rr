@@ -18,5 +18,4 @@
 
 class Nationality < ActiveRecord::Base
   default_scope :order=>'nationality ASC'
-  attr_accessor :name
 end

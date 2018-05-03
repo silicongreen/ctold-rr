@@ -80,7 +80,7 @@
         </tr>
         <tr class="even">
           <td class="col-pdf name"> <%= t('nationality') %></td>
-          <td class="col-pdf amnt bnla"> <%= @student.nationality.name unless @student.nationality_id.nil? %></td>
+          <td class="col-pdf amnt bnla"> <%= @student.nationality.nationality.nationality unless @student.nationality_id.nil? %></td>
         </tr>
         <tr class="odd">
           <td class="col-pdf name"> <%= t('dual_nationality') %></td>

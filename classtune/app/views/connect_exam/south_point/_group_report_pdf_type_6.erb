@@ -26,7 +26,7 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
-      
+      <p class="top_margin">&nbsp;</p>
       <table  width="100%" >
             <thead>
                 <tr>
@@ -335,3 +335,16 @@
     });
   </script>
 <% end %>
+  <style>
+  p.top_margin
+  {
+      line-height: 2px !important;
+      padding: 0px !important;
+      margin: 0px !important;
+  }
+  .st_joseph_bg #grouped_exam_report table#pdf-table tr.table-header td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.even td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.odd td.col-pdf
+  {
+      padding: 3px 5px !important;
+  }
+      
+</style>  

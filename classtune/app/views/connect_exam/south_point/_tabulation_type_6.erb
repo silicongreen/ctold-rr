@@ -115,43 +115,46 @@
                     <% subject_full_mark = 0 %>
                     <% subject_obtain_mark = 0 %>
                     <% check_subject_exam = false %>
-                    <% jloop = 0 %>
                     <% @report_data['report']['exams'].each do |rs| %>
-                      <% if jloop == 1 %>
-                        <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
-                        <% unless @examobj.blank?  %>
-                          <% check_exam = false %>
-                          <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                          <% if @exam_score_all.blank? %>
-                              <% check_exam = false %>
-                          <% else %>
-                            <% @exam_score_all.each do |score| %>
-                            <%
-                              unless score.marks.blank?
-                                check_exam = true
-                                check_subject_exam = true
-                                break
-                              end
-                            %>
-                            <% end %>
+                      <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
+                      <% unless @examobj.blank?  %>
+                        <% check_exam = false %>
+                        <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                        <% if @exam_score_all.blank? %>
+                            <% check_exam = false %>
+                        <% else %>
+                          <% @exam_score_all.each do |score| %>
+                          <%
+                            unless score.marks.blank?
+                              check_exam = true
+                              check_subject_exam = true
+                              break
+                            end
+                          %>
                           <% end %>
                         <% end %>
-                        <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
-
-                          <%
-
-                              subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                              subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-
-
-                          %>
-                        <% end %>
                       <% end %>
-                      <% jloop = jloop+1 %>
+                      <% groupExamObj = ExamGroup.find_by_id(rs['exam_id'].to_i) %>
+                        <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                          <%
+                              check_exam = true
+                              check_subject_exam = true
+                          %>
+                      <% end %>
+                      <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
+
+                        <%
+
+                            subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                            subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+
+
+                        %>
+                      <% end %>
                      <% end %> 
                          <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                       <td>
-                        <% if check_subject_exam == true %>
+                         <% if check_subject_exam == true %>
                           <% total_mark = total_mark+subject_obtain_mark.to_f %>
                           <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -168,9 +171,9 @@
                           <% else %>
                              N/A  
                           <% end %>
-                         <% end %>   
+                         <% end %>
                       </td> 
-                  <% end %>   
+                  <% end %>    
              <% end %> 
              <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
                     <td>

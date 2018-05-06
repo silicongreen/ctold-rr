@@ -86,7 +86,7 @@
               <% end %>
             <% end %>
             <% end %> 
-            <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1 || @exam_connect.result_type == 6)   && !@exams.blank? %>
+            <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1)   && !@exams.blank? %>
               <td><b><%= "Class Participation" %></b></td>
             <% else %>  
               <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
@@ -142,7 +142,7 @@
                   <div class="label-field-pair2">
                   
                   <div class="text-input-bg2">
-                    <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1 || @exam_connect.result_type == 6) && !@exams.blank? %>
+                    <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1) && !@exams.blank? %>
                       <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '4', :onkeyup => "checkValueMax(#{50},this)",:onkeydown => "checkValueMax(#{50},this)" %>
                     <% else %>  
                       <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %>

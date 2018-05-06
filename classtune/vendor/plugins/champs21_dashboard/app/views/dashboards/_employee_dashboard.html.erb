@@ -155,9 +155,7 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:royalblue; color:white;'><span style='text-align:center;width:80%; float:left;'>Student Form</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'student', :action => 'studentformlist' %>
       <% end %>
       <%  if @current_user.admin? %>
-        <% if MultiSchool.current_school.id == 340 %>
-          <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Siblings</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'user', :action => 'make_siblings' %>
-        <% end %>  
+        <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Siblings</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'user', :action => 'make_siblings' %>
         <%=  link_to "<img src='/images/dashpallete/big_icon/ci-green.png' style='width:100%; margin-top:5px;'>", :controller => 'intelligence', :action => 'index' %><br/>
       <% end %>
       

@@ -62,9 +62,8 @@
                   <% else %>
                       <% subject_full_mark = 0 %>
                       <% subject_obtain_mark = 0 %>
-                      <% jloop = 0 %>
+
                       <% @report_data['report']['exams'].each do |rs| %>
-                        <% if jloop == 1 %>
                         <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                         <% unless @examobj.blank?  %>
                           <% check_exam = false %>
@@ -82,6 +81,13 @@
                             <% end %>
                           <% end %>
                         <% end %>
+                        <% groupExamObj = ExamGroup.find_by_id(rs['exam_id'].to_i) %>
+                        <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                          <%
+                              check_exam = true
+                              check_subject_exam = true
+                          %>
+                        <% end %>
                         <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
 
                           <%
@@ -92,8 +98,6 @@
 
                           %>
                         <% end %>
-                        <% end %>
-                        <% jloop = jloop+1 %>
                        <% end %> 
                            <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                         <td>
@@ -143,7 +147,7 @@
     </center>
   </div>
   
-  <script>
+ <script>
   var comments_connect_exam = "";
   var std_ids_connect_exam = "";
   var jj = jQuery.noConflict();

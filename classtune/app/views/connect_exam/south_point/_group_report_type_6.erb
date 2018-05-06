@@ -67,6 +67,32 @@
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>
                                 <% if report['quarter'] != '6'%>
+                                  <% check_exam = false %>
+                                    <% unless @examobj.blank?  %>
+                                    <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                                      <% if @exam_score_all.blank? %>
+                                        <% check_exam = false %>
+                                      <% else %>
+                                      <% @exam_score_all.each do |score| %>
+                                      <%
+                                        if !score.marks.blank? and score.marks.to_i > 0
+                                          check_exam = true
+                                          check_subject_exam = true
+                                          break
+                                        end
+                                      %>
+                                      <% end %>
+                                    <% end %>
+                                <% end %>
+                          
+                                <% groupExamObj = ExamGroup.find_by_id(report['exam_id'].to_i) %>
+                                <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                                  <%
+                                      check_exam = true
+                                      check_subject_exam = true
+                                  %>
+                                <% end %>
+                                  <% if check_exam == true %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
 
@@ -74,6 +100,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
 
+                                  <% end %>
                                   <% end %>
                                 <% end %>
                           
@@ -98,17 +125,17 @@
                                 <td class="col-2"><%= personal_and_social[i] %></td>
                                 <td class="col-2">
                                   <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 1  %>
-                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                                 <td class="col-2">
                                   <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 2  %>
-                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                                 <td class="col-2">
                                   <% if !all_comments_array2[i].blank? and all_comments_array2[i].to_i == 3  %>
-                                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                   <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                             <% else %>
@@ -127,6 +154,33 @@
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>
                                 <% if report['quarter'] == '6'%>
+                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
+                                    <% check_exam = false %>
+                                    <% unless @examobj.blank?  %>
+                                    <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
+                                      <% if @exam_score_all.blank? %>
+                                        <% check_exam = false %>
+                                      <% else %>
+                                      <% @exam_score_all.each do |score| %>
+                                      <%
+                                        if !score.marks.blank? and score.marks.to_i > 0
+                                          check_exam = true
+                                          check_subject_exam = true
+                                          break
+                                        end
+                                      %>
+                                      <% end %>
+                                    <% end %>
+                                <% end %>
+                          
+                                <% groupExamObj = ExamGroup.find_by_id(report['exam_id'].to_i) %>
+                                <% if !groupExamObj.blank? && groupExamObj.exam_category == 2  %>
+                                  <%
+                                      check_exam = true
+                                      check_subject_exam = true
+                                  %>
+                                <% end %>
+                                  <% if check_exam == true %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
 
@@ -134,6 +188,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
 
+                                  <% end %>
                                   <% end %>
                                 <% end %>
                           
@@ -158,17 +213,17 @@
                                 <td class="col-2"><%= personal_and_social[i] %></td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 1  %>
-                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 2  %>
-                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                                 <td class="col-2">
                                   <% if !all_comments_array[i].blank? and all_comments_array[i].to_i == 3  %>
-                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                                   <% end %>
                                 </td>
                             <% else %>
@@ -194,17 +249,17 @@
                             <td class="col-2"><%= personal_and_social[j] %></td>
                             <td class="col-2">
                               <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 1  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                             <td class="col-2">
                               <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 2  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                             <td class="col-2">
                               <% if !all_comments_array2[j].blank? and all_comments_array2[j].to_i == 3  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                         <% else %>
@@ -221,17 +276,17 @@
                             <td class="col-2"><%= personal_and_social[j] %></td>
                             <td class="col-2">
                               <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 1  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                             <td class="col-2">
                               <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 2  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                             <td class="col-2">
                               <% if !all_comments_array[j].blank? and all_comments_array[j].to_i == 3  %>
-                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %>
+                                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")),:width=> '30%' %>
                               <% end %>
                             </td>
                         <% else %>
@@ -247,5 +302,5 @@
                       
                   <% end %>     
 
-              </table>       
+              </table>     
   <% end %>

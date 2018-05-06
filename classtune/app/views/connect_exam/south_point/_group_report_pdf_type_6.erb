@@ -86,6 +86,7 @@
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>
                                 <% if report['quarter'] != '6'%>
+                                  <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
                                   <% check_exam = false %>
                                     <% unless @examobj.blank?  %>
                                     <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>

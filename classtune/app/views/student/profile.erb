@@ -277,7 +277,7 @@
                             <div><%= "Employee/Staff Name" %></div>
                         </div>
                         <div class="row_data">
-                            <div><%= @student.student_category.name %></div>
+                            <div><%= emp_data.full_name %></div>
                         </div>
                     </div>
                     <% end %>
@@ -302,7 +302,7 @@
                           <div><%= t('dual_nationality') %></div>
                       </div>
                       <div class="row_data">
-                          <div><%= @student.dual_nationality.name %></div>
+                          <div><%= @student.dual_nationality.nationality.nationality %></div>
                       </div>
                   </div>
                   <div class="clearfix"></div>

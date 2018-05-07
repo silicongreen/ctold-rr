@@ -357,7 +357,7 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
           end
 
         if @subject_highest_mark_final_term[sub['id'].to_i].blank?
-          @subject_highest_mark_final_term[sub['id'].to_i] = first_term_round
+          @subject_highest_mark_final_term[sub['id'].to_i] = final_term_round
           elsif final_term_round.to_i > @subject_highest_mark_final_term[sub['id'].to_i].to_i
           @subject_highest_mark_final_term[sub['id'].to_i] = final_term_round.to_i
         end

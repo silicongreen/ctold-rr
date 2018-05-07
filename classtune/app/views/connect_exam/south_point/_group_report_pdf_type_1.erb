@@ -537,7 +537,7 @@
                                   <td class="col-pdf td-align-left" valign="top">Class Teacher Comments</td>
                               </tr>
                               <tr class="table-header">
-                                  <td class="col-pdf comment_section_final td-align-left" valign="top">
+                                  <td class="col-pdf comment_section_final comment_section_final_new td-align-left" valign="top">
                                       <% if !@exam_comment.blank? %>
 
                                         <%= @exam_comment.comments %>
@@ -629,6 +629,10 @@
   .st_joseph_bg #grouped_exam_report table#pdf-table tr.table-header td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.even td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.odd td.col-pdf
   {
       padding: 0px 3px !important;
+  }
+  table tr td.comment_section_final
+  {
+     height: 56px !important;   
   }
       
 </style>    

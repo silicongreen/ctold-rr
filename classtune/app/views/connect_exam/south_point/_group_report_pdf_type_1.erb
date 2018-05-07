@@ -493,7 +493,7 @@
                     <% class_per_percentize = class_performance.to_f/total_subject.to_f %>
                     <% 
                       class_per_percentize = class_per_percentize.round()
-                      class_per_percentize_main = (class_per_percentize/50)*100
+                      class_per_percentize_main = (class_per_percentize.to_f/50)*100
                       grade = GradingLevel.percentage_to_grade(class_per_percentize_main, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         class_per_grade = grade.name
@@ -505,7 +505,7 @@
                     <% class_per_percentize2 = class_performance2.to_f/total_subject.to_f %>
                     <% 
                       class_per_percentize2 = class_per_percentize2.round()
-                      class_per_percentize_main2 = (class_per_percentize2/50)*100
+                      class_per_percentize_main2 = (class_per_percentize2.to_f/50)*100
                       grade = GradingLevel.percentage_to_grade(class_per_percentize_main2, @batch.id)
                       if !grade.blank? and !grade.name.blank?
                         class_per_grade2 = grade.name

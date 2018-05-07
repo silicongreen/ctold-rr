@@ -508,7 +508,7 @@
                       class_per_percentize_main2 = (class_per_percentize2/50)*100
                       grade = GradingLevel.percentage_to_grade(class_per_percentize_main2, @batch.id)
                       if !grade.blank? and !grade.name.blank?
-                        class_per_grade2 = "A"
+                        class_per_grade2 = grade.name
                       end 
                     %>
                   <% end %>

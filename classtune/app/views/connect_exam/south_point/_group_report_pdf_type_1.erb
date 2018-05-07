@@ -32,9 +32,9 @@
                   %>
                   <% c = 'even'  %>
                   <tr class="table-header">
-                      <td class="col-pdf" colspan="8"><%= first_term_exam_name %> Examination</td>
-                      <td class="col-pdf" colspan="7"><%= final_term_exam_name %> Examination</td>
-                      <td class="col-pdf" colspan="2">Combined Result</td>
+                      <td class="col-pdf" colspan="8" class="no-warp"><%= first_term_exam_name %> Examination</td>
+                      <td class="col-pdf" colspan="7" class="no-warp"><%= final_term_exam_name %> Examination</td>
+                      <td class="col-pdf" colspan="2" class="no-warp">Combined Result</td>
                   </tr>    
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></td>
@@ -628,7 +628,7 @@
   }
   .st_joseph_bg #grouped_exam_report table#pdf-table tr.table-header td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.even td.col-pdf, .st_joseph_bg #grouped_exam_report table#pdf-table tr.odd td.col-pdf
   {
-      padding: 2px 5px !important;
+      padding: 0px 3px !important;
   }
       
 </style>    

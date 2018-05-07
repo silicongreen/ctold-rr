@@ -116,6 +116,9 @@
                     <% subject_obtain_mark = 0 %>
                     <% check_subject_exam = false %>
                     <% @report_data['report']['exams'].each do |rs| %>
+                      <% if rs['quarter'] != '6' %>
+                        <% next %>
+                      <% end %>
                       <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
                       <% unless @examobj.blank?  %>
                         <% check_exam = false %>

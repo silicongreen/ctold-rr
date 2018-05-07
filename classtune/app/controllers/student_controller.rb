@@ -699,6 +699,10 @@ end
         
       end
       
+      if @student.student_category_id != 433
+        @student.staff_id = 0
+      end
+      
       @student.save_log = true
       @student.save_to_free = true
       #Huffas: Task end
@@ -1403,6 +1407,9 @@ end
 
     if request.post?
       params[:student].delete "pass"
+      if params[:student][:student_category_id] != "433"
+        params[:student][:staff_id] = 0
+      end
       #abort(params[:student].inspect)
       unless params[:student][:image_file].blank?
         unless params[:student][:image_file].size.to_f > 280000

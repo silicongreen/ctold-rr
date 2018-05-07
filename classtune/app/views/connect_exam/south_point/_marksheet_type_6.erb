@@ -93,6 +93,9 @@
             <td class="name-std"><%= std['name'] %></td>
             <% jloop = 0 %>
             <% @report_data['result']['ALL'].each do |rs| %>
+              <% if rs['quarter'] != '6' %>
+                <% next %>
+              <% end %>
               <% if jloop == 1 %>
                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
 

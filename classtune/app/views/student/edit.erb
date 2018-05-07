@@ -223,6 +223,10 @@
                   <label for="student_category"><%= t('std_category') %></label>
                   <%= select :student, :student_category_id, @student_categories.map {|c| [c.name, c.id]}, { :prompt => 'Select category' } %>
               </div>
+               <div class="form-group col-sm-6" id="staff_id" >
+                  <label for="staff_id"><%= "Employee/Staff Name" %></label>
+                  <%= select :student, :staff_id, options_for_select(Employee.find(:all,:order=>"first_name asc, last_name asc").map {|c| [c.full_name, c.id]},@student.staff_id), { :prompt => "Select Staff/Employee Name" } %>
+              </div>
               
             </fieldset>
           </div>    
@@ -309,3 +313,32 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/student_edit_velki" %>
 <% end %>
+      <style>
+  #staff_id
+  {
+      display:none;
+  }
+</style>
+
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+   
+    if(jq("#student_student_category_id").val()==433)
+    {
+      jq("#staff_id").show();
+    }  
+    jq(document).on("change","#student_student_category_id",function(){
+
+      if(jq(this).val()==433)
+      {
+          jq("#staff_id").show();
+      } 
+      else
+      {
+          jq("#student_stuff_id").val("");
+          jq("#staff_id").hide();
+      }  
+    });
+  });
+</script>

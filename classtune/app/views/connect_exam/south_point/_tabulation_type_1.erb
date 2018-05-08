@@ -599,7 +599,7 @@
                   <%= tf_mark.round().to_s+"<hr/>" %> 
                   <%= cmb_mark.round().to_s %> 
               </td>
-              <td>
+              <td class="no-warp">
                   <% i = 1 %>
                   <% total_grade_std = grades1.count  %>
                   <% grades1.each do |grade| %>
@@ -663,3 +663,16 @@
   
   
 </div>
+
+<style>
+    #page-yield #pdf-table tr.table-header td,#pdf-table tr.odd td,#pdf-table tr.even td
+    {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+    .no-warp 
+    {
+        white-space: nowrap;
+    }
+    
+</style>    

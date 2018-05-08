@@ -532,8 +532,12 @@ class EmployeeAttendanceController < ApplicationController
                   total_absent = 0
                 end
               end
+              hide_blank = true
+              unless adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s].nil?
+                hide_blank = adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s]
+              end
               
-              unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+              if hide_blank == false or !cardAttendance.blank?  
                 emp = []
                 emp[0] = employee.employee_info
                 emp[1] = employee.position_name
@@ -770,7 +774,12 @@ class EmployeeAttendanceController < ApplicationController
                   if week_off_day.include?(d)
                     absent = ' - '
                   end
-                  unless cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
+                  hide_blank = true
+                  unless adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s].nil?
+                    hide_blank = adv_attendance_config['hide_blank_' + MultiSchool.current_school.id.to_s]
+                  end
+
+                  if hide_blank == false or !cardAttendance.blank? 
                     emp = []
                     emp[0] = employee.employee_info
                     emp[1] = employee.id

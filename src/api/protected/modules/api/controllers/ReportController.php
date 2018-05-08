@@ -249,7 +249,7 @@ class ReportController extends Controller
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
             
             $adata_first_term = array();
-            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1)
             {
                 $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report['students']);
             }

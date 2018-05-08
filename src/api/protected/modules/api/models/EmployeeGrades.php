@@ -114,6 +114,14 @@ class EmployeeGrades extends CActiveRecord
 		return parent::model($className);
 	}
         
+        public function getByName($name,$school_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("t.name='".$name."' and t.school_id='".$school_id."'");
+            $data = $this->find($criteria);
+            return (!empty($data)) ? $data : false;
+        }
+        
         public function getForSchool($school_id)
         {
             $criteria = new CDbCriteria();

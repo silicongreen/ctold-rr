@@ -134,6 +134,13 @@ class EmployeePositions extends CActiveRecord
             
             
         } 
+        public function getPositionByName($name,$school_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("t.name='".$name."' and t.school_id='".$school_id."'");
+            $data = $this->find($criteria);
+            return (!empty($data)) ? $data : false;
+        }
         public function getPositionBySyncId($sync_id,$name,$school_id)
         {
             $criteria = new CDbCriteria;

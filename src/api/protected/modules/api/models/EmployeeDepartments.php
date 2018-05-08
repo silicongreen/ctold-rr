@@ -133,6 +133,13 @@ class EmployeeDepartments extends CActiveRecord
             
             
         } 
+        public function getByName($name,$school_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("t.name='".$name."' and t.school_id='".$school_id."'");
+            $data = $this->find($criteria);
+            return (!empty($data)) ? $data : false;
+        }
         public function getDepartmentBySyncId($sync_id,$name,$school_id)
         {
             $criteria = new CDbCriteria;

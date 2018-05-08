@@ -370,6 +370,17 @@ class Employees extends CActiveRecord {
       return $this->find($criteria);
     }
     
+    public function getEmpByAdmission($school_id,$admission)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.id';      
+        $criteria->compare('employee_number',$admission);          
+        $criteria->compare('school_id', $school_id);
+        $data = $this->findAll($criteria); 
+        return (!empty($data)) ? $data : false;
+        
+    } 
+    
     public function getMechineEmp($school_id,$all_emp_admission)
     {
         $criteria = new CDbCriteria();

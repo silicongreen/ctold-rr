@@ -23,7 +23,15 @@
   copy << "School Copy"
   copy << "Bank Copy"
   
+  student_classes = ["Playgroup","Nursery","KG II","KG I","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9","Grade 10","Grade 11","Grade 12"]
   
+  @promoted_to = ""
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+      @promoted_to = student_classes[array_index+1]
+    end
+  end
 %>
  <% unless params[:front_page].blank? %>
 <%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
@@ -224,6 +232,7 @@
                 <% end %>
                 <% if paid.to_i<=0 %> 
                   <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount.round()%>
+                  <% if params[:hide_vat].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b><%= "Total(Without VAT)" %></b></td>
@@ -232,6 +241,18 @@
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %></b></td>
                   </tr>
+                  <% end %>
+                  <% if !params[:hide_vat].blank? %>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td colspan="2" class="col-8"><b><%= "Total Payable Amount" %></b></td>
+                      <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
+                  </tr>
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %></b></td>
+                  </tr>
+                  <% end %>
+                  
                   <% if params[:show_two].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
@@ -268,6 +289,17 @@
 
                         <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
                     </tr>
+                  <% elsif !params[:show_one].blank? %>
+                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                        <td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
+                        <%
+                          
+                          balance3 = balance+1000
+                        %>
+
+                        <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
+                    </tr>
                   <% else %>
                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
@@ -294,7 +326,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance2.round())}" %></td>
                   </tr>
                 <% end %>
-                  
+                  <% if !params[:hide_vat].blank? %>
                   <% @fee_particulars.each do |fee| %>
                       <%  if !fee.name.index("VAT").blank? %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -357,6 +389,19 @@
 
                         <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
                     </tr>
+                  <% elsif !params[:show_one].blank? %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+
+                        <td colspan="2" class="col-8">Payable amount with fine of 1000 Tk( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
+                        <%
+                          fine_vat = (1000*7.5)/100
+                          fine_vat = fine_vat.ceil
+                          total_fine = 1000+fine_vat.to_i
+                          balance3 = balance+total_fine
+                        %>
+
+                        <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
+                    </tr>
                   <% else %>
                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
@@ -382,6 +427,7 @@
 
                       <td class="col-pdf"><%= "#{precision_label(balance2.round())}" %></td>
                   </tr>
+                <% end %>
                 <% end %>
                 <% end %>
                 <% if ((k+1)%1)==0 %>

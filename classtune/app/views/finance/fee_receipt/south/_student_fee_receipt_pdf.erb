@@ -437,6 +437,10 @@
 
                     <% end %>
                 </table>
+              <% if !params[:show_one].blank? %>
+                <h3 align="center">This Fees Receipt is to be used for Enrolment in next class<% unless @promoted_to.blank? %> (<%= @promoted_to %>) <% end %>
+                of next session (2018-2019) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
+              <% end %>
               <h3>&nbsp;</h3>
               <h3>&nbsp;</h3>
               <table class="signature">

@@ -1,5 +1,9 @@
+<% if MultiSchool.current_school.id == 280 %>
+    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_sjs" %>
+<% else %>
 <% if @exam_group.exam_category == 5 %>
    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_type_5" %>
 <% else %>
    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation" %>
+<% end %>
 <% end %>

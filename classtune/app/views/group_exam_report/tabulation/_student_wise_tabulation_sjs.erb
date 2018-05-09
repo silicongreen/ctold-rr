@@ -1,0 +1,145 @@
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+        <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+      </div>
+      <h4 align="center">Tabulation Sheet, <%= @exam_group.name %></h4>
+      <table width="100%" >
+            <thead>
+                <tr>
+                    <td><b>Year: <%= @exam_group.exam_date.blank? ? @exam_group.created_at.strftime("%B-%Y"):@exam_group.exam_date.strftime("%B-%Y") %> </b></td>
+                    <td align="right"><b>Class : 
+                        <% if @batch.name == "General" %>
+                        <%= @batch.course.full_name %>
+                        <% else %>
+                           <%= @batch.name %> ,<%= @batch.course.full_name %>
+                        <% end %></b>
+                    </td>
+                </tr>
+            </thead>    
+      </table>
+     
+<% if !@students.blank? %>
+  <% extender = 0 %>
+  <% std_count = 0 %>
+  <% c  = 'even' %>
+  <% j = 0 %>
+  <% rank = 0 %>  
+  <% last_mark = 0 %>
+  <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+          <% total_subject = 0 %>
+          <% @exams.each do |exam|  %>
+            <td><%= exam.subject.code %></td>
+            <% total_subject = total_subject+1 %>
+          <% end %>
+          <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id != 246 %>
+          <td class="col-pdf">Position</td>
+          <% end %>
+        </tr>
+        <% colspan_total = total_subject+4 %>
+        <% colspan_fourth = colspan_total.to_f/4 %>
+        <% colspan_fourth_int = colspan_fourth.to_i %>
+        <% last_colspan = colspan_total-(colspan_fourth_int*3) %>
+  <% @students.each do |student| %>
+  <% 
+    @student = student
+    exam_score = []
+    @exams.each do |exam| 
+      exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
+    end
+      
+  %>
+    <% j = j+1 %>
+    <%  std_count = std_count+1; %>
+    <% if std_count>15 && extender ==0 %>
+        <% std_count = 0 %>
+        <% extender = 1 %>
+        
+        <tr class="page-break1">
+            <td colspan="100">&nbsp;</td>
+        </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @exams.each do |exam|  %>
+            <td><%= exam.subject.code %></td>
+          <% end %>
+          <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id != 246 %>
+          <td class="col-pdf">Position</td>
+          <% end %>
+          
+        </tr>
+    <% elsif std_count>16 && extender ==1 %>
+        <% std_count = 0 %>
+        <% extender = 1 %>
+       
+        <tr class="page-break2">
+            <td colspan="100">&nbsp;</td>
+        </tr> 
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+       
+          <% @exams.each do |exam|  %>
+            <td><%= exam.subject.code %></td>
+          <% end %>
+          <td class="col-pdf">Total</td>
+          <% if MultiSchool.current_school.id != 246 %>
+          <td class="col-pdf">Position</td>
+          <% end %>
+        </tr>
+    <% end %>
+    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+      <td class="name-std"><%= student.class_roll_no %></td>
+      <td class="name-std"><%= student.full_name %></td>
+      <% total = 0 %>
+      <% off_rank  = false %>
+      <% @exams.each do |exam|  %>
+          <td>
+          
+          <% exam_score.each do |es| %>
+              <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
+                <%= es.marks.present? ? es.marks.to_f: '0' %><hr/>
+                <% if es.marks.present? %>
+                  <% total = total+es.marks.to_f %>
+                <% end %>
+                <%= es.grading_level.present? ? es.grading_level : "N/A" %>
+                
+                <% if es.grading_level.blank? or es.grading_level.name == "F" %>
+                    <% off_rank = true %>
+                <% end %>
+              <% end %>
+          <% end %>   
+          </td>
+          
+      <% end %>
+      <% if total != last_mark && off_rank == false %>
+          <% rank = rank+1 %>
+          <% last_mark = total %>
+      <% end %>    
+      <td class="col-pdf"><%= total %></td>
+      <% if MultiSchool.current_school.id != 246 %>
+      <% if off_rank == false %>
+        <td class="name-std"><%= rank %></td>
+      <% else %>
+        <td class="name-std"><%= "N/A" %></td>
+      <% end %>
+      <% end %>  
+ 
+    </tr>
+    
+    <% if student.equal? @students.last %>
+      
+    <% end %>
+
+<% end %>
+<% end %>

@@ -5,6 +5,6 @@ school:
  hide_blank_312: true
  hide_blank_246: false
  exclude_details_dept_id_312: "2265,2261,1995"
- exclude_details_dept_id_246: "2070,1605,2264,1604"
+ exclude_details_dept_id_246: "2070,1605,2264"
  exclude_details_dept_id_main_report_312: "2265"
  not_late_show_312: "2265,2261,1995"

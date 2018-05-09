@@ -253,7 +253,7 @@
                   </tr>
                   <% end %>
                   
-                  <% if params[:show_two].blank? %>
+                  <% if params[:show_two].blank? && params[:show_one].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
                       <% date_two = date_one+1.months %>
@@ -326,7 +326,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance2.round())}" %></td>
                   </tr>
                 <% end %>
-                  <% if !params[:hide_vat].blank? %>
+                  <% if params[:hide_vat].blank? %>
                   <% @fee_particulars.each do |fee| %>
                       <%  if !fee.name.index("VAT").blank? %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

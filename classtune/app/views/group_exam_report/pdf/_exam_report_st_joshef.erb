@@ -1,4 +1,10 @@
 </div>
+<%
+    @dt_year = @exam_group.created_at.strftime("%Y") 
+    @dt_start = @dt_year.to_s+"-01-01 00:00:00"
+    @dt_end   = @dt_year.to_s+"-12-31 00:00:00"
+    @student_detention_count = Detention.count(:all,:conditions=>{:student_id=>@student.id,:created_at => @dt_start..@dt_end})
+%>
 <div id="page-yield">
 
     <h4 align="center">&nbsp;</h4>
@@ -160,12 +166,8 @@
                       <td class="col-pdf">Days Present</td> <td class="col-pdf"> <%= @present %> </td>
                       <td class="col-pdf">Average Marks</td> <td class="col-pdf"> <%= sprintf( "%0.01f",avgparcent) %> % </td>
                       <%  grade = GradingLevel.percentage_to_grade(avgparcent, @batch.id) %>
-
-                      <% if !grade.blank?  and !grade.credit_points.blank? %>
-                        <td class="col-pdf">CGPA</td> <td class="col-pdf"> <%= grade.credit_points %> </td>
-                      <% else %>
-                        <td class="col-pdf">CGPA</td> <td class="col-pdf" >-</td>
-                      <% end %>    
+                      <td class="col-pdf">Detention</td> <td class="col-pdf" ><%= @student_detention_count  %></td>
+                         
 
 
                   </tr> 

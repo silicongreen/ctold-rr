@@ -503,6 +503,7 @@
                         q4_mark = q4_mark+obtained_mark4.round()
                         f_mark = f_mark+final_term_mark.round()
                         tf_mark = tf_mark+obtained_mark_final_term.round()
+                        main_mark = (main_mark.to_f/100)*full_mark_final_term.to_f
                         cmb_mark = cmb_mark+main_mark.round()
 
                         %>
@@ -598,7 +599,7 @@
                   <%= tf_mark.round().to_s+"<hr/>" %> 
                   <%= cmb_mark.round().to_s %> 
               </td>
-              <td>
+              <td class="no-warp">
                   <% i = 1 %>
                   <% total_grade_std = grades1.count  %>
                   <% grades1.each do |grade| %>
@@ -664,3 +665,15 @@
   
   
 </div>
+
+<style>
+    #page-yield #pdf-table tr.table-header td,#pdf-table tr.odd td,#pdf-table tr.even td
+    {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+    .no-warp 
+    {
+        white-space: nowrap;
+    } 
+</style> 

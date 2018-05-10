@@ -452,8 +452,8 @@
             <% else %>
                 <td class="col-pdf"><b>N/A</b></td>
             <% end %>
-
-            <td class="col-pdf"><%= main_mark.round().to_s %></td>
+            <% main_mark_new = (main_mark.to_f/100)*full_mark_final_term %>
+            <td class="col-pdf"><%= main_mark_new.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>

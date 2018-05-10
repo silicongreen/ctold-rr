@@ -4837,7 +4837,7 @@ class FinanceController < ApplicationController
       one_time_total_amount_discount= true
       @all_onetime_discounts_amount[ind] = []
       @all_onetime_discounts[ind].each do |d|
-        @all_onetime_discounts_amount[ind][d.id] = @all_total_payable * d.discount.to_f/ (d.is_amount?? @all_total_payable : 100)
+        @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
         @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
       end
     else
@@ -4878,7 +4878,7 @@ class FinanceController < ApplicationController
           @all_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
           @all_discounts_amount[ind] = []
           @all_discounts[ind].each do |d|
-            @all_discounts_amount[ind][d.id] = @all_total_payable * d.discount.to_f/ (d.is_amount?? @all_total_payable : 100)
+            @all_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
             @all_total_discount[ind] = @all_total_discount[ind] + @all_discounts_amount[ind][d.id]
           end
         end

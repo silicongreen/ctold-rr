@@ -1,0 +1,123 @@
+<% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <%  unless @grading_levels.empty? %>
+                
+                    <table  id="pdf-table" class="margin-top-bottom-10 font-size-2 gradding"  width="70%">
+                         <tr  class="even">
+                          <td colspan="3" class="col-pdf"><b>Grading System</b></td>
+                          <td colspan="3" class="col-pdf"><b>Attendance</b></td>
+                         </tr>
+                         <tr class="odd">
+                          <td class="col-pdf"><b>Mark</b></td>
+                          <td class="col-pdf"><b>Grade</b></td>
+                          <td class="col-pdf"><b>Meaning</b></td>
+                          <td class="col-pdf"><b>&nbsp</b></td>
+                          <% if @report_data['total_first_term'].nil? %>
+                            <td class="col-pdf"><b>&nbsp;</b></td>
+                          <% else %>
+                            <td class="col-pdf"><b>First Term</b></td>
+                            <td class="col-pdf"><b>Final Term</b></td>
+                          <% end %>  
+                         </tr>
+                         <% l = 0; %>
+                         
+                         <% @grading_levels.each_with_index do |grade,index| %>
+                         <% l = l+1 %>
+                         <tr class="even">
+
+                          <td class="col-pdf">
+                            <% if grade.max_score.nil? %>  
+                              <%= '%i%' % grade.min_score %>
+                            <% else %>  
+                              <% min_score = grade.min_score.to_f  %>
+                              <% max_score = grade.max_score.to_f  %>
+                              <% min_score = min_score.to_i %>
+                              <% max_score = max_score.to_i %>
+
+                              <% if min_score.to_i == 0  %>
+                                <% below = max_score.to_i+1 %>
+                                <%=  "Below "+below.to_s+"%"  %>
+                              <% else %>
+                                <%= min_score.to_s+"%" + " - " + max_score.to_s+"%" %>
+                              <% end %>
+                            <% end %> 
+                          </td>
+                          <td class="col-pdf"><%= grade.name %></td>
+                          <td class="col-pdf"><%= grade.description %></td>
+                          <% if @report_data['total_first_term'].nil? %>
+                            <% if l == 1 %>
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @report_data['total'] %></td>
+
+                            <% elsif l == 2 %>
+                                <td class="col-pdf">Days Present</td>
+                                <% unless @report_data['total_new_std'].blank?  %>
+                                  <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['present'] %></td>
+                                <% end %>
+                            <% elsif l == 3 %>
+                                <td class="col-pdf">Days Absent</td>
+                                <% unless @report_data['absent'].nil?  %>
+                                  <td class="col-pdf"><%= @report_data['absent'] %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                <% end %>
+                            <% else %>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                            <% end %>
+                          <% else %>  
+                            <% if l == 1 %>
+                                <td class="col-pdf">Total Working day</td>
+                                <td class="col-pdf"><%= @report_data['total_first_term'] %></td>
+                                <td class="col-pdf"><%= @report_data['total'] %></td>
+
+                            <% elsif l == 2 %>
+                                <td class="col-pdf">Days Present</td>
+                                <% unless @report_data['total_new_std_first_term'].blank?  %>
+                                  <td class="col-pdf"><%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['present_first_term'] %></td>
+                                <% end %>
+                                <% unless @report_data['total_new_std'].blank?  %>
+                                  <td class="col-pdf"><%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['present'] %></td>
+                                <% end %>
+                            <% elsif l == 3 %>
+                                <td class="col-pdf">Days Absent</td>
+                                <% unless @report_data['absent_first_term'].nil?  %>
+                                  <td class="col-pdf"><%= @report_data['absent_first_term'] %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['total_first_term']-@report_data['present_first_term'] %></td>
+                                <% end %>
+                                <% unless @report_data['absent'].nil?  %>
+                                  <td class="col-pdf"><%= @report_data['absent'] %></td>
+                                <% else %>
+                                  <td class="col-pdf"><%= @report_data['total']-@report_data['present'] %></td>
+                                <% end %>
+                            <% else %>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                                <td class="col-pdf"></td>
+                            <% end %>
+                          <% end %>      
+                         </tr>
+                         <% end %>
+                         <tr  class="even">
+                             <td class="col-pdf" colspan="6" ><b>Promoted To&nbsp:&nbsp;</b></td>
+                         </tr>
+
+                    </table>     
+                    
+
+              <% end %> 
+<style>
+    .margin-top-bottom-10
+    {
+        margin:10px auto !important;
+    }
+</style>    

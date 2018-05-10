@@ -27,13 +27,18 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <p class="top_margin">&nbsp;</p>
+      <% extra_string = "1" %>
+      <% if @batch.name == "Day" %>
+      <% extra_string = "2" %>
+      <% end %> 
       <table  width="100%" >
             <thead>
                 <tr>
                    
                     <td><b>Student's Name : <%= "#{@student.full_name}" %> </b></td>
                     <td align="right"><b>Roll No. : <%= "#{@student.class_roll_no}" %></b></td>
-                    <td align="right"><b>Section Name. : <%= @batch.course.section_name %></b></td>
+                    <td align="right"><b>Section: <%= @batch.course.section_name %></b></td>
+                    <td align="right"><b>Batch: <%= extra_string %></b></td>
                 </tr>
             </thead>    
       </table>    

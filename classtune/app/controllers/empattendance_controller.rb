@@ -53,6 +53,9 @@ class EmpattendanceController < ApplicationController
       valid_req = true
       if params[:attendance_report_for].to_i == 2
         current_year = Date.today.year
+        if params[:year_value]
+          current_year = params[:year_value]
+        end
         current_day = Date.today.day
         month = params[:attendance_report_month].to_i
         

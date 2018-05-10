@@ -21,6 +21,18 @@
       <%= select_tag "attendance_report_month",options_for_select(@months,0), :autocomplete => :off %>
     </div>
   </div>
+  <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
+      <label for="duedate">Year</label>
+      <%
+        @months = [['-', '']]
+        (1..12).each {|m| @months << [Date::MONTHNAMES[m], m]}
+      %>
+      <div  class="text-input-bg select_tag">
+          <input type="text" value="<%= @date_today.to_date.year.to_s %>" name="year_value" style="margin-left: 17px;
+    width: 188px;
+    height: 22px;" />
+      </div>
+    </div>
 <% elsif @option_type.to_i == 3 %>
   <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;margin-left: 17px;">
     <label for="duedate">Select From date</label>

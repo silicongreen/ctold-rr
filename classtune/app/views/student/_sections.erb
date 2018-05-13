@@ -23,6 +23,16 @@
     j("#section_label").show();
   </script>  
   <% if @selected_section.to_i > 0 %>
+  <script type="text/javascript">
+
+  j.ajax({
+    type: "POST",
+    url: "/student/get_batches",
+    data: j('#new_student').serialize() + "&course_id=" + <%= @selected_section.to_s %>
+  })
+  .done(function( msg ) {
+  });
+</script>
   <%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
       {:prompt => "#{t('select')}"},
       {:onChange => "#{remote_function(:url => {:action => "get_batches"}, :with => "'course_id='+value+'&'+$('new_student').serialize()" ,:before => "$('loading_1').show();",

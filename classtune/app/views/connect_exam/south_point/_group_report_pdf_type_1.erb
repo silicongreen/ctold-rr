@@ -392,7 +392,7 @@
 
 
                         %>
-                          <td class="col-pdf"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp"><%= subjects['name'] %></td>
                           <td class="col-pdf"><%= obtained_mark1.round().to_s %></td>
                           <td class="col-pdf"><%= obtained_mark2.round().to_s %></td>
                           <td class="col-pdf"><%= (first_term_ab == true)?"AB":first_term_mark.round().to_s %></td>
@@ -639,6 +639,10 @@
   .st_joseph_bg table.comment-table
   {
     width: 49% !important;
+  }
+  #grouped_exam_report #pdf-table td.no-warp
+  {
+      white-space: nowrap !important;
   }
       
 </style>    

@@ -2435,6 +2435,7 @@ en: # locale
   flash_msg45: "No time table entries present"
   flash_msg46: "Exam is assigned to other sections of this classes successfully"
   flash_msg47: "Exam can't be assigned to other sections of this classes, please retry later"
+  flash_msg48: "No Batches selected"
   
 #added by RR
   attendance_was_successfully_created: "Attendance was successfully created."

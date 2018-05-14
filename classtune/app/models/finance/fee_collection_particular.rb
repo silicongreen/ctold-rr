@@ -34,7 +34,7 @@ class FeeCollectionParticular < ActiveRecord::Base
     if admission_no.present?
       student = Student.find_by_admission_no(admission_no)
       student ||= ArchivedStudent.find_by_admission_no(admission_no)
-      student.present? ? "#{student.first_name} (#{student.admission_no})" : "N.A. (N.A.)"
+      student.present? ? "#{student.full_name} <br /><b>Admission No:</b> #{student.admission_no}" : "N.A. (N.A.)"
     end
   end
 end

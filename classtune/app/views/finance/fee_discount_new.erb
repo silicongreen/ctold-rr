@@ -82,7 +82,7 @@
           j('.std_name').each(function(){
               var stdid = this.id.replace("std_","");
               var val = j(this).html();
-              if ( val.indexOf(srch_val) == -1  )
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
               {
                   j('.students_box').each(function(){
                       if ( this.value == stdid )

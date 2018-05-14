@@ -144,7 +144,7 @@ class FinanceFee < ActiveRecord::Base
     end
 
     bal = ( total_payable - total_discount )
-    finance_fee = FinanceFee.find(fee.id)
+    finance_fee = FinanceFee.find_by_id_and_is_paid(fee.id, false)
     finance_fee.update_attributes(:balance=>bal)
   end
   

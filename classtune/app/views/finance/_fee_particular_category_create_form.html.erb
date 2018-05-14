@@ -60,12 +60,11 @@
           <tbody>
             <% @finance_fee_particular_categories.each_with_index do |finance_fee_particular_category,i| %>
               <tr id="tr_<%=  finance_fee_particular_category.id %>" class="<%= cycle("odd","even") %> tr_finance_fee_particular">
-                  <td class="col-4 name"><%= finance_fee_particular_category.name %></td>
-                  <td class="col-4 desc"><%= (finance_fee_particular_category.description.length > 30) ? finance_fee_particular_category.description[0..30] + "..." : finance_fee_particular_category.description %></td>
-                  <td class="edit_btn_td">
+                  <td class="col-4 name" style="width: 30%;"><%= finance_fee_particular_category.name %></td>
+                  <td class="col-4 desc" style="width: 45%;"><%= (finance_fee_particular_category.description.length > 30) ? finance_fee_particular_category.description[0..30] + "..." : finance_fee_particular_category.description %></td>
+                  <td class="edit_btn_td" style="width: 25%;">
                       <div class="edit_btn">
                       <% if finance_fee_particular_category.fee_particular_exists %>
-                        <span class="small-strike"><%= t('delete_text') %></span>
                       <% else %>
                         <span class="small"> <%= link_to_remote t('delete_text'),:confirm=>"#{t('delete_confirm_msg')}", :url => { :action => 'particular_category_delete',:id => finance_fee_particular_category.id} %></span>
                       <% end %>

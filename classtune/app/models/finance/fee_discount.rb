@@ -166,7 +166,7 @@ class FeeDiscount < ActiveRecord::Base
   def student_name
     s = Student.find_by_id(self.receiver_id)
     s ||= ArchivedStudent.find_by_former_id(self.receiver_id)
-    s.present? ? "#{s.first_name} (#{s.admission_no})" : "N.A. (N.A.)"
+    student.present? ? "#{s.full_name} <br /><b>Admission No:</b> #{s.admission_no}" : "N.A. (N.A.)"
   end
   
   def student_short_name

@@ -53,7 +53,7 @@ class FinanceFeeParticular < ActiveRecord::Base
     if receiver_id.present?
       student = Student.find_by_id(receiver_id)
       student ||= ArchivedStudent.find_by_former_id(receiver_id)
-      student.present? ? "#{student.first_name} &#x200E;(#{student.admission_no})&#x200E;" : "N.A. (N.A.)"
+      student.present? ? "#{student.full_name} <br /><b>Admission No:</b> #{student.admission_no}" : "N.A. (N.A.)"
     end
   end
 

@@ -72,7 +72,7 @@
           </td>
           <td class="col-select feecross" style="padding-top: 18px;">
               <%= check_box_tag 'particular_ids[]',fee.id,true,:class => 'par_check css-checkbox',:id => "check_#{i}",:onclick=> "assign_amt(this)" %>
-              <label for="check_<%=  i %>" class="css-label lite-plus"></label>  
+              <label for="check_<%=  i %>" class="css-label lite-green-check"></label>  
           </td>
         </tr>
         <% total_fees += fee.amount %>

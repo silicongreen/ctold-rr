@@ -87,6 +87,19 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
      return true
    end
   end
+  
+  def all_fees_paid(batch)
+   transaction = FinanceTransaction.find(:all,:joins=>"INNER JOIN fee_transactions on finance_transactions.id = fee_transactions.finance_transaction_id
+                                                       INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id
+                                                       INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finance_fees.fee_collection_id=#{id} and students.batch_id=#{batch}"])
+    
+    finanace_fees = FinanceFee.find_all_by_fee_collection_id_and_batch_id(id,batch)
+    if transaction.length == finanace_fees.length
+      return true
+    else
+      return false
+    end
+  end
 #    finance_fees = FinanceFee.find_all_by_fee_collection_id(self.id)
 #    flag = 1
 #    finance_fees.each do |f|

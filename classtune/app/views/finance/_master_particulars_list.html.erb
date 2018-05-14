@@ -28,10 +28,10 @@
         <th><%= t('sl_no') %></th>
         <th><%= t('particulars') %></th>
         <th><%= t('particular_category') %></th>
-        <!--th><%#= t('student_category')%></th>
-        <th><%#= t('admission_number') %></th-->
+        <th><%= t('student_category')%></th>
+        <th><%= t('student_name') %></th>
         <th><%= t('amount') %> ( <%=currency  %> )</th>
-        <th><%= t('created_date') %></th>
+        <!--th><%#= t('created_date') %></th-->
         <th></th>
       </tr>
     </thead>
@@ -45,39 +45,30 @@
         </td>
         <td class="col-4">
           <% if fees.finance_fee_particular_category_id == 0 %>  
-            -
+            <span style="font-weight: bold; display: block; text-align: center;">-</span>
           <% else %>
             <%= shorten_string(fees.finance_fee_particular_category.name,80) %>
           <% end %>
         </td>
-        <!--td class="col-3">
-          <%#if fees.receiver_type=="StudentCategory"%>
-            <%#= fees.receiver.name%>
-          <%# else %> - <%# end %>
+        <td class="col-3" style="text-align: center;">
+          <%  if fees.receiver_type=="StudentCategory"%>
+            <%= fees.receiver.name%>
+          <% else %> <span style="font-weight: bold; display: block; text-align: center;">-</span> <% end %>
         </td>
         <td class="col-3">
-          <%#if fees.receiver_type=="Student"%>
-            <%#= fees.student_name%>
-          <%# else %> - <%# end %>
-        </td-->
-        <td class="col-3">
+          <%if fees.receiver_type=="Student"%>
+            <%= fees.student_name%>
+          <% else %> <span style="font-weight: bold; display: block; text-align: center;">-</span> <% end %>
+        </td>
+        <td class="col-3" style="text-align: right;">
           <%= precision_label fees.amount %>
         </td>
-        <td class="col-3"><%= fees.created_at.strftime("%m-%d-%Y") %></td>
+        <!--td class="col-3" style="text-align: center;"><%#= fees.created_at.strftime("%m-%d-%Y") %></td-->
         <td class="col-3">
           <%if fees.collection_exist %>
-         <span class="small"> <%= link_to_remote "#{t('edit_text')}", :url => { :action => 'master_category_particulars_edit',:id => fees.id} %></span>
-    <%else%>
-          <span class="small-strike"><%= t('edit_text') %></span>
-    <%end%>
-<%#  unless @finance_fee_category.check_fee_collection == false %>
-          <span class="small"> <%= link_to_remote t('delete_text'),:confirm=>"#{t('delete_msg')}", :url => { :action => 'master_category_particulars_delete',:id => fees.id} %></span>
-    <%# else %>
-    <%#*<span class="small-strike">delete</span>%>
-    <%# end %>
-    <%#*<span class="small">%>
-    <%#= link_to_remote t('edit'), :url => { :action => 'master_category_particulars_edit',:id => fees.id} %>
-    <%#*</span>%>
+            <span class="small"><%= link_to_remote  '&#10008;',:confirm=>"#{t('delete_msg')}", :url => { :action => 'master_category_particulars_delete',:id => fees.id} %></span>
+            <span class="small"> <%= link_to_remote "&#9998;", :url => { :action => 'master_category_particulars_edit',:id => fees.id} %></span>
+          <%end%>
         </td>
       </tr>
     <% end %>
@@ -106,3 +97,52 @@
   </table>
 
 <% end%>
+<style>
+    .label-field-pair .label-container {
+      padding-top: 0px !important;
+    }
+</style>
+<script>
+  j(document).ready(function(){
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("std_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+  });
+</script>    

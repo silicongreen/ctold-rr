@@ -21,6 +21,8 @@ class FeeDiscountCollection < ActiveRecord::Base
   has_many   :finance_fee_collections, :class_name => "FinanceFeeCollection"
   has_many   :fee_discounts, :class_name => "FeeDiscount"
   
+  validates_uniqueness_of :finance_fee_collection_id,  :scope => [:fee_discount_id,:batch_id,:is_late]
+  
   named_scope :active,:conditions => {:is_deleted => false}
   
 end

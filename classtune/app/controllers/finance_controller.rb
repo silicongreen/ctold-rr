@@ -1539,21 +1539,24 @@ class FinanceController < ApplicationController
       if params[:particular] and params[:particular][:batch_ids]
         batches=Batch.find(params[:particular][:batch_ids])
         @cat_ids=params[:particular][:batch_ids]
-        if params[:particular][:receiver_id].present?
-          all_admission_no = admission_no=params[:particular][:receiver_id].split(',')
-          all_students = batches.map{|b| b.students.map{|stu| stu.admission_no}}.flatten
-          rejected_admission_no = admission_no.select{|adm| !all_students.include? adm}
-          unless (rejected_admission_no.empty?)
+        if params[:finance_fee_particular][:receiver_type]=="Student"
+          
+          @selected_student_ids = all_student_ids = student_ids = params[:fee_collection][:students]
+          all_students = batches.map{|b| b.students.map{|stu| stu.id}}.flatten
+          
+          rejected_student_id = student_ids.select{|adm| !all_students.include? adm.to_i}
+          
+          unless (rejected_student_id.empty?)
             @error = true
             @finance_fee_particular = FinanceFeeParticular.new(params[:finance_fee_particular])
             @finance_fee_particular.batch_id=1
             @finance_fee_particular.save
-            @finance_fee_particular.errors.add_to_base("#{rejected_admission_no.join(',')} #{t('does_not_belong_to_batch')} #{batches.map{|batch| batch.full_name}.join(',')}")
+            @finance_fee_particular.errors.add_to_base("#{rejected_student_id.join(',')} #{t('does_not_belong_to_batch')} #{batches.map{|batch| batch.full_name}.join(',')}")
           end
-
-          selected_admission_no = all_admission_no.select{|adm| all_students.include? adm}
-          selected_admission_no.each do |a|
-            s = Student.find_by_admission_no(a)
+          
+          selected_student_id = all_student_ids.select{|adm| all_students.include? adm.to_i}
+          selected_student_id.each do |a|
+            s = Student.find(a)
             if s.nil?
               @error = true
               @finance_fee_particular = FinanceFeeParticular.new(params[:finance_fee_particular])
@@ -1561,10 +1564,10 @@ class FinanceController < ApplicationController
               @finance_fee_particular.errors.add_to_base("#{a} #{t('does_not_exist')}")
             end
           end
+          
           unless @error
-
-            selected_admission_no.each do |a|
-              s = Student.find_by_admission_no(a)
+            selected_student_id.each do |a|
+              s = Student.find(a)
               batch=s.batch
               @finance_fee_particular = batch.finance_fee_particulars.new(params[:finance_fee_particular])
               @finance_fee_particular.receiver_id=s.id
@@ -1603,7 +1606,12 @@ class FinanceController < ApplicationController
 
         @render=true
         if params[:finance_fee_particular][:receiver_type]=="Student"
-          @student=true
+          unless params[:particular][:batch_ids].nil? or params[:particular][:batch_ids].empty?
+            @student=true
+            batches=Batch.find(params[:particular][:batch_ids])
+            batches_id = batches.map(&:id)
+            @students = Student.active.find(:all, :conditions => "batch_id IN (" + batches_id.join(",") + ")", :order => 'first_name ASC, middle_name ASC, last_name ASC')
+          end
         elsif params[:finance_fee_particular][:receiver_type]=="StudentCategory"
           @category=true
         else
@@ -1639,21 +1647,20 @@ class FinanceController < ApplicationController
 
   def fees_particulars_create2
     batch=Batch.find(params[:finance_fee_particular][:batch_id])
-    if params[:particular] and params[:particular][:receiver_id]
-
-      all_admission_no = admission_no=params[:particular][:receiver_id].split(',')
-      all_students = batch.students.map{|stu| stu.admission_no}.flatten
-      rejected_admission_no = admission_no.select{|adm| !all_students.include? adm}
-      unless (rejected_admission_no.empty?)
+    if params[:finance_fee_particular][:receiver_type]=="Student"
+      all_student_ids = student_ids = params[:fee_collection][:students]
+      all_students = batch.students.map{|stu| stu.id}.flatten
+      rejected_student_id = student_ids.select{|sid| !all_students.include? sid.to_i}
+      unless (rejected_student_id.empty?)
         @error = true
         @finance_fee_particular = batch.finance_fee_particulars.new(params[:finance_fee_particular])
         @finance_fee_particular.save
-        @finance_fee_particular.errors.add_to_base("#{rejected_admission_no.join(',')} #{t('does_not_belong_to_batch')} #{batch.full_name}")
+        @finance_fee_particular.errors.add_to_base("#{rejected_student_id.join(',')} #{t('does_not_belong_to_batch')} #{batch.full_name}")
       end
 
-      selected_admission_no = all_admission_no.select{|adm| all_students.include? adm}
-      selected_admission_no.each do |a|
-        s = Student.find_by_admission_no(a)
+      selected_student_id = all_student_ids.select{|sid| all_students.include? sid.to_i}
+      selected_student_id.each do |a|
+        s = Student.find(a)
         if s.nil?
           @error = true
           @finance_fee_particular = batch.finance_fee_particulars.new(params[:finance_fee_particular])
@@ -1662,14 +1669,14 @@ class FinanceController < ApplicationController
         end
       end
       unless @error
-        unless selected_admission_no.present?
+        unless selected_student_id.present?
           @finance_fee_particular=batch.finance_fee_particulars.new(params[:finance_fee_particular])
           @finance_fee_particular.save
           @finance_fee_particular.errors.add_to_base("#{t('admission_no_cant_be_blank')}")
           @error = true
         else
-          selected_admission_no.each do |a|
-            s = Student.find_by_admission_no(a)
+          selected_student_id.each do |a|
+            s = Student.find(a)
             @finance_fee_particular = batch.finance_fee_particulars.new(params[:finance_fee_particular])
             @finance_fee_particular.receiver_id=s.id
             @error = true unless @finance_fee_particular.save
@@ -1677,7 +1684,6 @@ class FinanceController < ApplicationController
         end
       end
     elsif params[:finance_fee_particular][:receiver_type]=="Batch"
-
       @finance_fee_particular = batch.finance_fee_particulars.new(params[:finance_fee_particular])
       @finance_fee_particular.receiver_id=batch.id
       @error = true unless @finance_fee_particular.save
@@ -1877,8 +1883,28 @@ class FinanceController < ApplicationController
         page.replace_html "student", :partial => "student_category_particulars"
       end
     elsif select_value == "Student"
-      render :update do |page|
-        page.replace_html "student", :partial => "student_admission_particulars"
+      unless params[:batch_id].nil? or params[:batch_id].empty?
+        unless params[:selected].nil? or params[:selected].empty?
+          @selected_student_ids = params[:selected].split(",")
+        else
+          @selected_student_ids = []
+        end
+        if params[:batch_id].present?
+          if params[:batch_id].index(",") 
+            @batch_id = params[:batch_id]
+            @students = Student.active.find(:all, :conditions => "batch_id IN (" + @batch_id + ")", :order => 'first_name ASC, middle_name ASC, last_name ASC')
+          else
+            @batch_id = params[:batch_id]
+            @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
+          end
+        end
+        render :update do |page|
+          page.replace_html "student" ,:partial => "fee_collection_student_list_new"
+        end
+      else
+        render :update do |page|
+          page.replace_html "student" ,:text => "<p class='flash-msg'>#{t('flash_msg48')}</p>"
+        end
       end
     elsif select_value == "Batch"
       render :update do |page|
@@ -2136,25 +2162,25 @@ class FinanceController < ApplicationController
       
       if is_late
         fee_discount_collection = FeeDiscountCollection.new(
-            :finance_fee_collection_id => @fee_collection_id,
-            :fee_discount_id           => @discount_id,
-            :batch_id                  => @batch_id,
-            :is_late                   => 1
-        )
-        if fee_discount_collection.save
-          render :update do |page|
-            page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+              :finance_fee_collection_id => @fee_collection_id,
+              :fee_discount_id           => @discount_id,
+              :batch_id                  => @batch_id,
+              :is_late                   => 1
+          )
+          if fee_discount_collection.save
+            render :update do |page|
+              page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+            end
           end
-        end
       else
         @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
         CollectionDiscount.create(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
-        
-        @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
-        
+
+        @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
         @fee.each do |fe|
           s = fe.student
-          
+
           unless s.has_paid_fees
               FinanceFee.update_student_fee(@fee_collection, s, fe)
           end
@@ -2189,26 +2215,32 @@ class FinanceController < ApplicationController
       batch_id = discount.batch_id
       
       fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_id, @batch_id])
+      
       unless fee_discount_collection.nil?
+        
         fee_discount_collection.destroy
         
-        @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
-        collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
-        collection_discount.destroy
-        
-        @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
-        
-        @fee.each do |fe|
-          s = fe.student
-          
-          unless s.has_paid_fees
-              FinanceFee.update_student_fee(@fee_collection, s, fe)
+        unless is_late
+          @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
+          collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
+          collection_discount.destroy
+
+          @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
+          @fee.each do |fe|
+            s = fe.student
+
+            unless s.has_paid_fees
+                FinanceFee.update_student_fee(@fee_collection, s, fe)
+            end
           end
         end
         
         render :update do |page|
           page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_remove'
         end
+      else
+        render :text => ''
       end
     else
       render :text => ''
@@ -2332,14 +2364,14 @@ class FinanceController < ApplicationController
         @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
         @total_discount = 0
         
-        calculate_discount(@date, @batch, @student)
+        calculate_discount(@date, @batch, @student, @fee.is_paid)
 
         bal=(@total_payable-@total_discount).to_f
         days=(Date.today-@date.due_date.to_date).to_i
         auto_fine=@date.fine
         
         @has_fine_discount = false
-        if days > 0 and auto_fine
+        if days > 0 and auto_fine and @fee.is_paid == false
           @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
           calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -2387,14 +2419,14 @@ class FinanceController < ApplicationController
     
     @total_discount = 0
     
-    calculate_discount(@date, @batch, @student)
+    calculate_discount(@date, @batch, @student, @financefee.is_paid)
     
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     
     @has_fine_discount = false
-    if days > 0 and auto_fine
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -2601,13 +2633,13 @@ class FinanceController < ApplicationController
       @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
       @all_total_discount[student.id] = 0
       @all_total_payable[student.id] = @all_fee_particulars[student.id].map{|s| s.amount}.sum.to_f
-      calculate_discount_index_all(@date, @student.batch, @student,@student.id)
+      calculate_discount_index_all(@date, @student.batch, @student,@student.id, @all_financefee[@iloop].is_paid)
     
       bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
       days=(Date.today-@date.due_date.to_date).to_i
       auto_fine=@date.fine
       @all_has_fine_discount[@iloop] = false
-      if days > 0 and auto_fine
+      if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
         
         @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
@@ -2620,7 +2652,6 @@ class FinanceController < ApplicationController
       end
 
       @all_fine_amount[@iloop]=0 if @all_financefee[@iloop].is_paid
-      @has_fine_discount[@iloop] = false if @all_financefee[@iloop].is_paid
       
     end
 
@@ -2669,14 +2700,14 @@ class FinanceController < ApplicationController
       @total_discount = 0
       @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
       
-      calculate_discount(@date, @student.batch, @student)
+      calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
       
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
       auto_fine=@date.fine
       
       @has_fine_discount = false
-      if days > 0 and auto_fine
+      if days > 0 and auto_fine and @financefee.is_paid == false
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -2757,13 +2788,13 @@ class FinanceController < ApplicationController
         @total_discount[@iloop] = 0
         @total_payable[@iloop]=@fee_particulars[@iloop].map{|s| s.amount}.sum.to_f
 
-        calculate_discount_index(@date[@iloop], @financefee[@iloop].batch, @student, @iloop)
+        calculate_discount_index(@date[@iloop], @financefee[@iloop].batch, @student, @iloop, @financefee[@iloop].is_paid)
 
         bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
         days=(Date.today-@date[@iloop].due_date.to_date).to_i
         auto_fine=@date[@iloop].fine
         @has_fine_discount[@iloop] = false
-        if days > 0 and auto_fine
+        if days > 0 and auto_fine and @financefee[@iloop].is_paid == false
           @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
           @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
           calculate_extra_fine_index(@date[@iloop], @financefee[@iloop].batch, @student, @fine_rule[@iloop],@iloop)
@@ -2775,7 +2806,6 @@ class FinanceController < ApplicationController
         end
 
         @fine_amount[@iloop]=0 if @financefee[@iloop].is_paid
-        @has_fine_discount[@iloop] = false if @financefee[@iloop].is_paid
         @iloop = @iloop+1
       end
       
@@ -2825,14 +2855,14 @@ class FinanceController < ApplicationController
       @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
       @total_discount = 0
     
-      calculate_discount(@date, @batch, @student)
+      calculate_discount(@date, @batch, @student, @financefee.is_paid)
       
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
       auto_fine=@date.fine
       @has_fine_discount = false
       
-      if days > 0 and auto_fine
+      if days > 0 and auto_fine and @financefee.is_paid == false
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -2882,12 +2912,12 @@ class FinanceController < ApplicationController
       @total_discount = 0
       @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
       
-      calculate_discount(@date, @batch, @student)
+      calculate_discount(@date, @batch, @student, @financefee.is_paid)
       bal=(@total_payable-@total_discount).to_f
       days=(Date.today-@date.due_date.to_date).to_i
       auto_fine=@date.fine
       @has_fine_discount = false
-      if days > 0 and auto_fine
+      if days > 0 and auto_fine and @financefee.is_paid == false
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -2947,13 +2977,13 @@ class FinanceController < ApplicationController
         @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
         @total_discount = 0
         
-        calculate_discount(@date, @financefee.batch, @student)
+        calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
         
         bal=(@total_payable-@total_discount).to_f
         days=(Date.today-@date.due_date.to_date).to_i
         auto_fine=@date.fine
         @has_fine_discount = false
-        if days > 0 and auto_fine
+        if days > 0 and auto_fine and @financefee.is_paid == false
           @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
           calculate_extra_fine(@date, @financefee.batch, @student, @fine_rule)
@@ -3005,13 +3035,13 @@ class FinanceController < ApplicationController
           @total_discount[@iloop] = 0
           @total_payable[@iloop]=@fee_particulars[@iloop].map{|s| s.amount}.sum.to_f
           
-          calculate_discount_index(@date[@iloop], @financefee[@iloop].batch, @student, @iloop)
+          calculate_discount_index(@date[@iloop], @financefee[@iloop].batch, @student, @iloop, @financefee[@iloop].is_paid)
         
           bal=(@total_payable[@iloop]-@total_discount[@iloop]).to_f
           days=(Date.today-@date[@iloop].due_date.to_date).to_i
           auto_fine=@date[@iloop].fine
           @has_fine_discount[@iloop] = false
-          if days > 0 and auto_fine
+          if days > 0 and auto_fine and @financefee[@iloop].is_paid == false
             @fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[@iloop].created_at}'"],:order=>'fine_days ASC')
             @fine_amount[@iloop]=@fine_rule[@iloop].is_amount ? @fine_rule[@iloop].fine_amount : (bal*@fine_rule[@iloop].fine_amount)/100 if @fine_rule[@iloop]
             calculate_extra_fine_index(@date[@iloop], @financefee[@iloop].batch, @student, @fine_rule[@iloop],@iloop)
@@ -3023,7 +3053,6 @@ class FinanceController < ApplicationController
           end
 
           @fine_amount[@iloop]=0 if @financefee[@iloop].is_paid
-          @has_fine_discount[@iloop] = false if @financefee[@iloop].is_paid
           @iloop = @iloop+1
         end
         render :update do |page|
@@ -3058,13 +3087,13 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@date, @student.batch, @student)
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
       
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     @has_fine_discount = false
-    if days > 0 and auto_fine
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -3100,13 +3129,13 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@date, @student.batch, @student)
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
     
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
-    @has_fine_discount = false
-    if days > 0 and auto_fine
+    @has_fine_discount = false 
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -3146,7 +3175,7 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@date, @student.batch, @student)
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
     
     total_fees = @financefee.balance.to_f+Champs21Precision.set_and_modify_precision(params[:special_fine]).to_f
     unless params[:fine].nil?
@@ -3159,7 +3188,7 @@ class FinanceController < ApplicationController
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     @has_fine_discount = false
-    if days > 0 and auto_fine
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -3356,7 +3385,7 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@fee_collection, @finance_fee.batch, @student)
+    calculate_discount(@fee_collection, @finance_fee.batch, @student, @finance_fee.is_paid)
     
     render :update do |page|
       page.replace_html "fees_structure" , :partial => "fees_structure"
@@ -3427,13 +3456,13 @@ class FinanceController < ApplicationController
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     @total_discount = 0
 
-    calculate_discount(@date, @batch, @student)
+    calculate_discount(@date, @batch, @student, @financefee.is_paid)
 
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     @has_fine_discount = false
-    if days > 0 and auto_fine
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -4313,13 +4342,13 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@date, @student.batch, @student)
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
     
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     @has_fine_discount = false
-    if days > 0 and auto_fine
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
       calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -4500,7 +4529,7 @@ class FinanceController < ApplicationController
       @total_discount = 0
       @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
       
-      calculate_discount(@date, @student.batch, @student)
+      calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
       
       @collection=FinanceFeeCollection.find_by_name(@date.name,:conditions=>{:is_deleted=>false})
       @refund_rule=@collection.refund_rules.find(:first,:order=>'refund_validity ASC',:conditions=>["refund_validity >=  '#{Date.today}'"])
@@ -4514,7 +4543,7 @@ class FinanceController < ApplicationController
       days=(Date.today-@date.due_date.to_date).to_i
       auto_fine=@date.fine
       @has_fine_discount = false
-      if days > 0 and auto_fine
+      if days > 0 and auto_fine and @financefee.is_paid == false
         @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
         @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
         calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -4581,7 +4610,7 @@ class FinanceController < ApplicationController
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
     
-    calculate_discount(@date, @student.batch, @student)
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
     
     fee_refund=@financefee.fee_refund
     @refund_amount=fee_refund.amount.to_f

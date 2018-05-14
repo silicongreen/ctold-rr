@@ -95,13 +95,13 @@
           <div class="input-container2">
             <div class="opt"><%= radio_button("finance_fee_particular","receiver_type","Batch",
                 {:checked=>@all,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
-                  :with => "'select_value='+value")}"}) %><%= t('all') %></div>
+                  :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('all') %></div>
             <div class="opt"><%=  radio_button("finance_fee_particular","receiver_type","Student",
                 {:checked=>@student,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
-                  :with => "'select_value='+value")}"}) %><%= t('admission_no') %></div>
+                  :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('admission_no') %></div>
             <div class="opt"> <%= radio_button("finance_fee_particular","receiver_type","StudentCategory",
                 {:checked=>@category,:onchange => "#{remote_function(:url => {:action => "student_or_student_category"},
-                  :with => "'select_value='+value")}"}) %><%= t('student_category') %> </div>
+                  :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('student_category') %> </div>
           </div>
         </div>
 
@@ -137,3 +137,20 @@
     <% end %>
   </div>
 </div>
+<script>
+  function selected_batches()
+  {
+      var batches = "";
+      j(".category_select").each(function(){
+          if ( j(this).prop('checked') )
+          {
+              batches += this.value + ",";
+          }
+      });
+      if ( j.trim(batches).length > 0 )
+      {
+          batches = batches.substr(0, batches.length - 1);
+      }
+      return batches;
+  }
+</script>

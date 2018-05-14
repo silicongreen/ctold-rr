@@ -90,7 +90,7 @@
           <% end %>    
         
           <% if @subject.no_exams == true %>
-           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+           <tr class="table-header">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="no-warp"><%= std['name'] %></td> 
             <td class="col-pdf" colspan="13">N/A</td>
@@ -100,7 +100,7 @@
            </tr> 
           <% else %>    
           <% total_mark = 0 %>
-          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+          <tr class="table-header">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="no-warp"><%= std['name'] %></td>
             <% obtained_mark = 0 %>

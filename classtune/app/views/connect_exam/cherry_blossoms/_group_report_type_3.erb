@@ -185,14 +185,6 @@
                               <b>&nbsp;&nbsp;<%= comments %></b>
                           </td>
                       </tr>
-                      <tr class="odd">
-                          <td>
-                              <b>Promoted To: </b>
-                          </td>  
-                          <td>
-                              <b>&nbsp;&nbsp;<%= @promoted_to %></b>
-                          </td>
-                      </tr>
               </table>
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
               <% if @grading_levels.blank? %>

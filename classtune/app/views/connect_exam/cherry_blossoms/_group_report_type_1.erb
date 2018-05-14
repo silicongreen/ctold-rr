@@ -1,4 +1,15 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+<%  
+  student_classes = ["Play Group","Nursery","KG I","KG II","Standard I","Standard II","Standard III","Standard IV","Standard V","Standard VI","Standard VII","Standard VIII","Standard IX","Standard X","A Levels"]
+  
+  @promoted_to = ""
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+      @promoted_to = student_classes[array_index+1]
+    end
+  end
+%>
     <div id="page-yield"  class="available_sections1 academia cherry_blossoms">
        
         <div class="academia_box">

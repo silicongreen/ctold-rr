@@ -4795,7 +4795,7 @@ class FinanceController < ApplicationController
     /(\d{4}-\d{2}-\d{2})/.match(date)
   end
 
-  def calculate_discount(date,batch,student)
+  def calculate_discount(date,batch,student,is_paid)
     one_time_discount = false
     one_time_total_amount_discount = false
     onetime_discount_particulars_id = []
@@ -4855,7 +4855,7 @@ class FinanceController < ApplicationController
     end
   end
   
-  def calculate_discount_index_all(date,batch,student,ind)
+  def calculate_discount_index_all(date,batch,student,ind,is_paid)
     one_time_discount = false
     one_time_total_amount_discount = false
     onetime_discount_particulars_id = []
@@ -4915,7 +4915,7 @@ class FinanceController < ApplicationController
     end
   end
   
-  def calculate_discount_index(date,batch,student,ind)
+  def calculate_discount_index(date,batch,student,ind,is_paid)
     one_time_discount = false
     one_time_total_amount_discount = false
     onetime_discount_particulars_id = []

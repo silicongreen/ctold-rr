@@ -20,7 +20,7 @@
 
 
 <% if MultiSchool.current_school.id == 246 %>
-  <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
+  <% if !@connect_exam_obj.blank? && (@connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 4 ) %>
     <div id="pdf-footer" class="st-joshef-footer">
 
       <table id="listing table-design"  width="100%"  style="margin-top:10px;">

@@ -269,7 +269,7 @@
                       </div>
                   </div>
                   <div class="clearfix"></div>
-                  <% if @student.student_category == 433 && !@student.staff_id.nil? && @student.staff_id != 0 %>
+                  <% if @student.student_category.id == 433 && !@student.staff_id.nil? && @student.staff_id != 0 %>
                     <% emp_data = Employee.find_by_id(@student.staff_id) %>
                     <% unless emp_data.blank? %>
                     <div class="row">

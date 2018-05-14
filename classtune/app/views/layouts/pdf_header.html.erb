@@ -21,7 +21,7 @@
 <% if MultiSchool.current_school.id == 246 %>
   <%#Cherry Blossoms International School%>
 
-    <% if !@connect_exam_obj.blank? && @connect_exam_obj.result_type.to_i == 3 %>
+    <% if !@connect_exam_obj.blank? && (@connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 4 )  %>
     <div id="pdf-header-south" class="general-header cbis-header">
         <table width="100%">
             

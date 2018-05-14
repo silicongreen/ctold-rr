@@ -16,7 +16,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div id="content-header">
     <%= show_header_icon %>
     <h1>Siblings</h1>
@@ -60,3 +62,25 @@
 </div>
 
 <div class="extender"></div>
+<script>
+var jj = jQuery.noConflict();
+jj( function() {
+    var cache = {};
+    jj( "input" ).autocomplete({
+      minLength: 2,
+      source: function( request, response ) {
+        var term = request.term;
+        if ( term in cache ) {
+          response( cache[ term ] );
+          return;
+        }
+        jj.get(  "/user/search_users", { term:term } )
+        .done(function( data ) {
+          cache[ term ] = JSON.parse(data);
+          response( JSON.parse(data));
+        });
+      }
+    });
+  });
+
+</script>

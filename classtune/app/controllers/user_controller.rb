@@ -132,6 +132,21 @@ class UserController < ApplicationController
     end
   end
 
+  def search_users
+    require 'json'
+    require "yaml"
+    data = []
+    term = params[:term]
+    students = Student.find(:all,:conditions=>["users.username like ? OR students.first_name like ? OR students.last_name like ? OR concat('students.first_name',' ','students.last_name') like ? OR concat('students.first_name',' ','students.middle_name',' ','students.last_name') like ?",'%'+term+'%','%'+term+'%','%'+term+'%','%'+term+'%','%'+term+'%'],:include=>[:user])
+    unless students.blank?
+      students.each do |student|
+        data_user = {:value=>student.user.username,:label=>student.first_name+" "+student.last_name+"("+student.batch.full_name+")"}
+        data << data_user
+      end
+    end
+    @data = JSON.generate(data)
+    render :text=>@data
+  end
   def all
     @users = User.active.all
   end

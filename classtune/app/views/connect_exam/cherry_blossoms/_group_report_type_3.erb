@@ -1,4 +1,15 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+<%  
+  student_classes = ["Play Group","Nursery","KG I","KG II","Standard I","Standard II","Standard III","Standard IV","Standard V","Standard VI","Standard VII","Standard VIII","Standard IX","Standard X","A Levels"]
+  
+  @promoted_to = ""
+  if student_classes.include?(@batch.course.course_name)
+    array_index = student_classes.index @batch.course.course_name
+    if array_index < student_classes.count
+      @promoted_to = student_classes[array_index+1]
+    end
+  end
+%>
 <p>&nbsp;</p>
   <div id="page-yield"  class="available_sections1 st_joseph_bg">
       <table id="pdf-table" class="margin-top-bottom-10" width="99%" cellspacing="0">
@@ -124,6 +135,7 @@
                       
                     <% end %>  
                   <% end %> 
+                      <% avgparcent = 0 %>
                       <% if full_marks_total > 0 %>
                         <% avgparcent = (total_marks_student.to_f/full_marks_total.to_f)*100 %>
                         <tr>
@@ -150,20 +162,38 @@
 
 
               </table>
+              <% 
+              if avgparcent < 60 
+                comments = "Satisfactory"
+              elsif avgparcent >60 and avgparcent < 71
+                comments = "Good"
+              elsif avgparcent >70 and avgparcent < 81
+                comments = "Very Good"
+              elsif avgparcent >80 and avgparcent < 91
+                comments = "Well Done"
+              elsif avgparcent >91
+                comments = "Excellent"
+              end  
+                
+              %>
+              
+              <% en %>
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20 float-left" width="38%" >
                       <tr class="table-header">
                           <td class="col-pdf t-left">
                               <b>Teacher's Remark</b>
-                          </td>                      
+                          </td> 
+                          <td class="col-pdf t-left">
+                              <b>&nbsp;&nbsp;<%= comments %></b>
+                          </td>
                       </tr>
                       <tr class="table-header">
-                          <td class="col-pdf">
-                              <% if !@exam_comment.blank? %>
-                                <%= @exam_comment.comments %>
-                              <% else %>     
-                                &nbsp;<br /><br /><br /><br />
-                              <% end %>
-                          </td>                      
+                          <td class="col-pdf t-left">
+                              <b>Promoted To: </b>
+                          </td>  
+                          <td class="col-pdf t-left">
+                              <b>&nbsp;&nbsp;<%= @promoted_to %></b>
+                          </td>
                       </tr>
               </table>
               <% @grading_levels = GradingLevel.for_batch(@batch.id) %>

@@ -258,6 +258,12 @@ end
           reminderrecipients = []          
           employees = Employee.find(teacher_id)          
           reminderrecipients.push employees.user_id unless employees.user_id.nil?
+          
+          reminderrecipients2 = []
+          if MultiSchool.current_school.id == 319
+            reminderrecipients2 = User.find(:all,:conditions=>["admin = ?",true]).map(&:id) 
+          end
+         
           if !reminderrecipients.nil? and @meeting.forward == 1
             Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => reminderrecipients,
@@ -265,6 +271,15 @@ end
             :rtype=>12,
             :rid=>@meeting.id,
             :body=>"New Meeting Request Send from #{@current_user.guardian_entry.first_name} at #{@meeting.datetime}" ))
+          end 
+          
+          if !reminderrecipients2.nil? and @meeting.forward == 1
+            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => reminderrecipients2,
+            :subject=>"New Meeting Request",
+            :rtype=>12,
+            :rid=>@meeting.id,
+            :body=>"New Meeting Request Send from #{@current_user.guardian_entry.first_name} to #{employees.first_name} at #{@meeting.datetime}" ))
           end 
          
           if @meeting.forward == false

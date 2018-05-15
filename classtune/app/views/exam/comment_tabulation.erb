@@ -41,7 +41,11 @@
       <%= render  :partial=>"/connect_exam/comment_tabulation" %>
     <% end %>
   </div>
-<%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %><div id="success-messege" style ="display: none; margin-bottom:10px; color: green;">Successfully Saved...</div><input type="button" value="Save Comments" name="exam_comment_save_all" id="exam_comment_save_all" />
+  <div class="right-div">  
+    <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader2", :style =>"display: none;" ) %>
+    <div id="success-messege" style ="display: none; margin-bottom:10px; color: green;">Successfully Saved...</div>
+    <input type="button" value="Save Comments" name="exam_comment_save_all" id="exam_comment_save_all" />
+  </div>
 </div>
 
 <script>
@@ -142,6 +146,19 @@
 #page-yield
 {
     margin:0px 0px;
+}
+.right-div
+{
+    width: 100%;
+    float:right;
+    background: #fff;
+    clear:both;
+    text-align: right;
+}
+.right-div img, .right-div input, .right-div div
+{
+    float: right;
+    clear: both;
 }
 </style>    
 <% end %>

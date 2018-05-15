@@ -232,7 +232,7 @@ class ReportController extends Controller
             $this_term = $cont_exam->findByPk($connect_exam_id);
 
             $previous_exam = 0;
-            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1)
             {
                 $previous_exam = $first_term_id;
             }

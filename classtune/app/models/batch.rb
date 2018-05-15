@@ -121,6 +121,18 @@ class Batch < ActiveRecord::Base
     end
     return false
   end
+  
+  def all_class_teacher
+    class_teacher = BatchTutor.find_by_batch_id_and_class_teacher(self.id,true)
+    all_employes = []
+    unless class_teacher.blank?
+      employee = Employee.find_by_id(class_teacher.employee_id)
+      unless employee.blank?
+        all_employes << employee
+      end
+    end
+    return all_employes
+  end
 
   def timetable_entry_validation
     if self.timetable_entries.present? and ( self.start_date_changed? or self.end_date_changed? )

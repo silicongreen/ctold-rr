@@ -106,7 +106,7 @@ class ExamController < ApplicationController
     
     @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
     elective_subjects = []
@@ -1315,7 +1315,7 @@ class ExamController < ApplicationController
       @students=Student.find_all_by_batch_id(@batch.id, :order=>"class_roll_no ASC")
     end
     
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
     elective_subjects = []
@@ -1398,7 +1398,7 @@ class ExamController < ApplicationController
     
     @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
     elective_subjects = []
@@ -1473,7 +1473,7 @@ class ExamController < ApplicationController
     @for_save = params[:for_save]
     
     @batch = @exam_group.batch
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
     student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
     elective_subjects = []
@@ -2752,7 +2752,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee = @batch.employees
+    @assigned_employee = @batch.all_class_teacher
     @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
           get_continues(@id,@batch.id)
           report_data = []
@@ -2798,7 +2798,7 @@ class ExamController < ApplicationController
       FileUtils.chown 'champs21','champs21',file_name
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
-      @assigned_employee=@batch.employees
+      @assigned_employee=@batch.all_class_teacher
       if MultiSchool.current_school.id == 312
           get_continues(@id,@batch.id)
           @report_data = []
@@ -2871,7 +2871,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     if  MultiSchool.current_school.id == 312
         get_tabulation(@id,@batch.id)
         @report_data = []
@@ -2900,7 +2900,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     pdf_name = "comment_tabulation_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
     dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s)
     unless File.directory?(dirname)
@@ -2953,7 +2953,7 @@ class ExamController < ApplicationController
     @subject_id = params[:subject_id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
       
     get_tabulation(@id,@batch.id)
     @report_data = []
@@ -2980,7 +2980,7 @@ class ExamController < ApplicationController
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     
     pdf_name = "tabulation_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
     dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"tabulation","0"+@connect_exam_obj.id.to_s)
@@ -3045,7 +3045,7 @@ class ExamController < ApplicationController
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id) 
     @subject = Subject.find(@subject_id)
-    @assigned_employee=@batch.employees
+    @assigned_employee=@batch.all_class_teacher
     
     
     pdf_name = "marksheet_connect_exam_"+@subject_id.to_s+"_"+@connect_exam_obj.id.to_s+".pdf"
@@ -3392,7 +3392,7 @@ class ExamController < ApplicationController
     if params[:student].nil?
       @type = params[:type]
       @batch = Batch.find(params[:exam_report][:batch_id])
-      @assigned_employee=@batch.employees
+      @assigned_employee=@batch.all_class_teacher
       @student = @batch.students.first
       if @student.blank?
         flash[:notice] = "#{t('flash5')}"
@@ -3410,7 +3410,7 @@ class ExamController < ApplicationController
     else
       @student = Student.find(params[:student])
       @batch = Batch.find_by_id(params[:batch_id])
-      @assigned_employee=@batch.employees
+      @assigned_employee=@batch.all_class_teacher
       if @student.blank?
         flash[:notice] = "#{t('flash5')}"
         redirect_to :action=>'grouped_exam_report_new' and return

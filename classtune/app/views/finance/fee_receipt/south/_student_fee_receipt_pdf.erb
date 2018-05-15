@@ -392,7 +392,7 @@
                   <% elsif !params[:show_one].blank? %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                        <td colspan="2" class="col-8">Payable amount with fine of 1000 Tk( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
+                        <td colspan="2" class="col-8">Payable amount with fine of 1000 Tk+VAT( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
                         <%
                           fine_vat = (1000*7.5)/100
                           fine_vat = fine_vat.ceil

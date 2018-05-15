@@ -117,4 +117,17 @@ class PayrollCategories extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function getPayRollCategory($school_id)
+        {
+            $criteria=new CDbCriteria;
+            $criteria->select = "t.id,t.name";
+            $criteria->compare('school_id',$school_id);
+            $data = $this->findAll($criteria);
+            if($data)
+            {
+                return $data;
+            }
+            return false;
+        }        
 }

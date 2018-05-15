@@ -238,9 +238,9 @@
                       <td colspan="2" class="col-8"><b><%= "Total(Without VAT)" %></b></td>
                       <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
                   </tr>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %></b></td>
-                  </tr>
+                  <%#*<tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">%>
+                      <%#*<td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %><%#</b></td>%>
+                  <%#*</tr>%>
                   <% end %>
                   <% if !params[:hide_vat].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -290,16 +290,16 @@
                         <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
                     </tr>
                   <% elsif !params[:show_one].blank? %>
-                    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                    <%#*<tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">%>
 
-                        <td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></b> ) and permission of the Principal is needed</td>
-                        <%
+                        <%#*<td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %><%#</b> ) and permission of the Principal is needed</td>%>
+                        <%#
                           
                           balance3 = balance+1000
-                        %>
+                        %>#
 
-                        <td class="col-pdf"><%= "#{precision_label(balance3.round())}" %></td>
-                    </tr>
+                        <%#*<td class="col-pdf"><%= "#{precision_label(balance3.round())}" %><%#</td>%>
+                    <%#*</tr>%>
                   <% else %>
                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>

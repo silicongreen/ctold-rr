@@ -321,8 +321,10 @@ class TallyExportsController < ApplicationController
     auto_generate_voucher = false
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
-
-    row_1 = ["Date","Voucher No","Vtype","By","To","Amount","Narration"]
+    
+    date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
+    
+    row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
 
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new
@@ -341,9 +343,11 @@ class TallyExportsController < ApplicationController
       unless params[:particulars].nil?
         particulars = params[:particulars].split(",")
       end
-      transaction_date = Date.today.to_date.strftime("%m/%d/%Y")
+      #transaction_date = Date.today.to_date.strftime("%m/%d/%Y")
+      transaction_date = Date.today.to_date.strftime("%e-%b-%Y")
       unless params[:export_date].nil?
-        transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        transaction_date = params[:export_date].to_date.strftime("%e-%b-%Y")
       end
       @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
       batches = params[:batches].split(",")
@@ -375,6 +379,11 @@ class TallyExportsController < ApplicationController
             by = student.admission_no.gsub("SJW","")
             by = by.gsub("FC","")
             by = by.gsub("MC","")
+            
+            student_admission_no = student.admission_no.gsub("SJW","")
+            student_admission_no = student_admission_no.gsub("FC","")
+            student_admission_no = student_admission_no.gsub("MC","")
+            
             @financefee = student.finance_fee_by_date @date
             
             @due_date = @fee_collection.start_date
@@ -382,7 +391,7 @@ class TallyExportsController < ApplicationController
             if auto_generate_voucher
               voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
             else
-              voucher_no = @due_date.strftime "%b-%y" 
+              voucher_no = @due_date.strftime "%M%Y" + "-" 
             end
             
             if @financefee.is_paid
@@ -395,11 +404,29 @@ class TallyExportsController < ApplicationController
             if particulars.include?("particular")
               unless @fee_particulars.nil?
                   @fee_particulars.each do |fee_p|
+                    s_initial = ""
+                    vn = ""
                     description = fee_p.name.capitalize + " payment for " + student.full_name
+                    fee_name = fee_p.name.capitalize;
+                    a_fee_name = fee_name.split(" ")
+                    if a_fee_name.length == 2
+                      s_initial = a_fee_name[0].capitalize[0, 1] + a_fee_name[1].capitalize[0, 1]
+                    elsif a_fee_name.length == 1
+                      s_initial = a_fee_name[0].capitalize[0, 2]
+                    else  
+                      s_initial = a_fee_name[0].capitalize[0, 3]
+                    end
+                    vn = student_admission_no + "-" + voucher_no + s_initial
                     to = fee_p.name
                     total_amount = fee_p.amount
                     amount_paid += total_amount
-                    row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
+                    
+                    row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
+                    dt_due = @due_date.strftime "%M%Y";
+                    bill = student_admission_no + "-" + s_initial + "-" + dt_due;
+                    
+                    #new_book.row(ind).set_format(0, date)
+                    row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, "", fee_name, total_amount, fee_name, description, bill]
                     new_book.worksheet(0).insert_row(ind, row_new)
                     ind += 1
                   end
@@ -412,11 +439,15 @@ class TallyExportsController < ApplicationController
             calculate_discount(@date, @batch, student)
             if @total_discount > 0
               if particulars.include?("discount")
+                s_initial = "DIS"
+                vn = student_admission_no + "-" + voucher_no + s_initial
                 description = "Discount for " + student.full_name
                 vtype = 'Journal'
-                to = "Discount"
+                dl = "Discount"
                 total_amount = @total_discount
-                row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
+                dt_due = @due_date.strftime "%M%Y";
+                bill = student_admission_no + "-TF-" + dt_due;
+                row_new = [transaction_date, vn, vtype, dl, total_amount, dl, student_admission_no, total_amount, "", description, bill]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
               end
@@ -426,86 +457,37 @@ class TallyExportsController < ApplicationController
             days=(Date.today-@date.due_date.to_date).to_i
             auto_fine=@date.fine
 
-            if @financefee.is_paid
-              unless @paid_fees.blank?
-                fine_found = false
-                amnt = 0
-                @paid_fees.each do |trans|
-                  if trans.fine_included
-                    amnt += trans.fine_amount
-                    fine_found = true
-                  end
-                end
-                if fine_found && amnt > 0 && particulars.include?("late")
-                  description = "Fine for " + student.full_name
-                  vtype = 'Journal'
-                  to = "Fine"
-                  row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
-                  new_book.worksheet(0).insert_row(ind, row_new)
-                  ind += 1
-                end
-                if days > 0 and auto_fine and particulars.include?("late")
-                  fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-                  fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
-                  extra_fine = calculate_extra_fine(@date, fine_rule)
-                  fine_amount = fine_amount + extra_fine
-
-                  fine_discount = 0
-                  fine_discount = get_fine_discount(@date, @batch, student, fine_amount)
-                  description = "Fine Discount for " + student.full_name
-                  vtype = 'Journal'
-                  to = "Fine Discount"
-                  total_amount = fine_amount
-                  row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
-                  new_book.worksheet(0).insert_row(ind, row_new)
-                  ind += 1
-                end
-                
-                amnt = 0
-                vat_found = false
-                unless @paid_fees.blank?
-                  description = @paid_fees[0].title + " - VAT"
-                  @paid_fees.each do |trans|
-                    if trans.vat_included
-                      amnt += trans.vat_amount
-                      vat_found = true
-                    end
-                  end
-                end
-
-                if vat_found && amnt > 0 && particulars.include?("late")
-                  vtype = 'Journal'
-                  to = "VAT"
-                  row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
-                  new_book.worksheet(0).insert_row(ind, row_new)
-                  ind += 1
-                end
-              end
-            else
-              if days > 0 and auto_fine and particulars.include?("late")
+            if days > 0 and auto_fine and particulars.include?("late")
                 fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
                 fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
                 extra_fine = calculate_extra_fine(@date, fine_rule)
                 fine_amount = fine_amount + extra_fine
 
                 description = "Fine for " + student.full_name
+                s_initial = "FI"
+                vn = student_admission_no + "-" + voucher_no + s_initial
                 vtype = 'Journal'
                 to = "Fine"
                 total_amount = fine_amount
-                row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
+                dt_due = @due_date.strftime "%M%Y";
+                bill = student_admission_no + "-FI-" + dt_due;
+                row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, "",to,total_amount,to, description, bill]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
 
                 fine_discount = 0
                 fine_discount = get_fine_discount(@date, @batch, student, fine_amount)
-                description = "Fine Discount for " + student.full_name
-                vtype = 'Journal'
-                to = "Fine Discount"
-                total_amount = fine_amount
-                row_new = [transaction_date, voucher_no, vtype, by, to, total_amount, description]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
-              end
+                if fine_discount > 0
+                  description = "Fine Discount for " + student.full_name
+                  s_initial = "FID"
+                  vn = student_admission_no + "-" + voucher_no + s_initial
+                  vtype = 'Journal'
+                  to = "Fine"
+                  total_amount = fine_amount
+                  row_new = [transaction_date, vn, vtype, to, total_amount, "Fine", student_admission_no, total_amount, "",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
+                end
             end
           end
         end

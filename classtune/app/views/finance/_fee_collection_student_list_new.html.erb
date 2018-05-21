@@ -1,0 +1,61 @@
+<%-# Licensed to the Apache Software Foundation (ASF) under one
+#or more contributor license agreements.  See the NOTICE file
+#distributed with this work for additional information
+#regarding copyright ownership.  The ASF licenses this file
+#to you under the Apache License, Version 2.0 (the
+#"License"); you may not use this file except in compliance
+#with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% if @students.present? %>
+<input type="hidden" name="none_click" id="none_click" value="0" />
+ <%=hidden_field_tag :category,@fee_category.id if @fee_category%>
+   <div class="batch_select_box">
+    <div class="label-field-pair" style="width: 100% !important;">
+        <div class="label-container"><label style="width: 75%;"><%= t('select_student') %>:</label></div>
+        <div class="fee_category_scroll" style="background: #fff; height: 300px; max-height: 300px;  width: 68%; margin-left: 0px; margin-top: 0; float: left; border: 1px solid #ccc; border-radius: 7px;">
+          <div class="sel-list" style="padding-bottom: 10px; padding-top: 4px; width: 100%; border-bottom: 1px solid #ccc;">
+              <div style="display: inline-block; float: left; width: 50%;">
+                <input type="text" name="search_std" id="search_std" />  
+              </div>  
+              <div style="display: inline-block; float: right; width: 35%; text-align: right; padding-right: 10px;">
+                <%= link_to_function t('all'), "$('none_click').value = 0; $$('input.students_box').each(function(checkbox) { checkbox.checked = true; });" %>,
+                <%= link_to_function t('none'), "$('none_click').value = 1; $$('input.students_box').each(function(checkbox) { checkbox.checked = false; });" %>
+              </div>
+              <div style="clear: both;"></div>
+          </div>
+          <div class="sel-list" style="width: 92%; padding: 4%;">
+          <% @students.each do |s| %>
+
+            <div class="each_batch" style="padding-bottom: 8px;">
+              <% checked = true %>
+              <% unless @selected_student_ids.nil? or @selected_student_ids.empty? %>  
+                <% if @selected_student_ids.include?(s.id.to_s) %>
+                <% checked = true %>
+                <% elsif @selected_student_ids.include?(s.id) %>
+                <% checked = true %>
+                <% else %>
+                <% checked = false %>
+                <% end %>
+              <% end %>  
+              <% unless params[:fee_collection].nil? %>
+                <% checked = params[:fee_collection][:category_ids].include?(s.id.to_s) if params[:fee_collection][:category_ids].present? %>
+              <% end %>
+                <div class="checkbox_inline"><%= check_box_tag "fee_collection[students][]", s.id, checked, :class=>'students_box' %></div> 
+                <div class="checkbox_label"><label id="std_<%= s.id %>" class="std_name"><%= s.full_name %></label></div>
+            </div>
+
+          <% end %>
+          </div>    
+        </div>
+    </div>
+  </div>
+<% end %>

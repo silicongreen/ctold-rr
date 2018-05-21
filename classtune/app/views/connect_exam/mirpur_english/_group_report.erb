@@ -73,7 +73,7 @@
                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
                if @batch.course.course_name == "Level -X"
                  main_mark_sub = 0
-                 if rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i > 0 && s['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_i > 0
+                 if rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i > 0 && rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_i > 0
                   main_mark_sub = (rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_f)*100
                  end 
                  grade = GradingLevel.percentage_to_grade(main_mark_sub, @batch.id)

@@ -467,7 +467,7 @@ class TallyExportsController < ApplicationController
                 s_initial = "FI"
                 vn = student_admission_no + "-" + voucher_no + s_initial
                 vtype = 'Journal'
-                to = "Fine"
+                to = "Late Fine"
                 total_amount = fine_amount
                 dt_due = @due_date.strftime "%M%Y";
                 bill = student_admission_no + "-FI-" + dt_due;
@@ -512,15 +512,12 @@ class TallyExportsController < ApplicationController
   end
   
   
-  
-  
-  
   def download_receipt
     auto_generate_voucher = false
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
 
-    row_1 = ["Date","Voucher No","Vtype","Type","To","Amount","Narration"]
+    row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
 
     # Create a new Workbook
     new_book = Spreadsheet::Workbook.new
@@ -539,10 +536,12 @@ class TallyExportsController < ApplicationController
       unless params[:particulars].nil?
         particulars = params[:particulars].split(",")
       end
-      transaction_date = Date.today.to_date.strftime("%m/%d/%Y")
+      transaction_date = Date.today.to_date.strftime("%e-%b-%Y")
       unless params[:export_date].nil?
-        transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        transaction_date = params[:export_date].to_date.strftime("%e-%b-%Y")
       end
+      
       @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
       batches = params[:batches].split(",")
       batches.each do |batch_id|
@@ -574,6 +573,11 @@ class TallyExportsController < ApplicationController
             to = student.admission_no.gsub("SJW","")
             to = to.gsub("FC","")
             to = to.gsub("MC","")
+            
+            student_admission_no = student.admission_no.gsub("SJW","")
+            student_admission_no = student_admission_no.gsub("FC","")
+            student_admission_no = student_admission_no.gsub("MC","")
+            
             @financefee = student.finance_fee_by_date @date
             
             @due_date = @fee_collection.start_date
@@ -581,7 +585,8 @@ class TallyExportsController < ApplicationController
             if auto_generate_voucher
               voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
             else
-              voucher_no = @due_date.strftime "%b-%y" 
+              #voucher_no = @due_date.strftime "%b-%y" 
+              voucher_no = @due_date.strftime "%M%Y" + "-" 
             end
             
             if @financefee.is_paid
@@ -595,10 +600,17 @@ class TallyExportsController < ApplicationController
                   else
                     type = trans.payment_mode
                   end
+                  
+                  s_initial = "CASH"
+                  vn = student_admission_no + "-" + voucher_no + s_initial
+                  
                   amount = trans.amount
                   description = trans.title
 
-                  row_new = [transaction_date, voucher_no, vtype, type, to, amount, description]
+                  dt_due = @due_date.strftime "%M%Y";
+                  bill = student_admission_no + "-CASH-" + dt_due;
+                
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
                   new_book.worksheet(0).insert_row(ind, row_new)
                   ind += 1
                 end

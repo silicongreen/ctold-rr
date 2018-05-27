@@ -130,7 +130,7 @@
           std_marks_core_subject = 5000-std_marks_core_subject.round()
           subject_count_std = 5000-subject_count_std
           @student_avg_mark[std['id'].to_i] = u_grade
-          @student_list << [std_marks_full_new.to_f,std_marks_core_subject,subject_count_std,std['first_name']+" "+std['last_name'],std['id'].to_i]
+          @student_list << [std_marks_full_new.to_f,std['id'].to_i]
         else
           @student_avg_mark[std['id'].to_i] = u_grade
         end  
@@ -151,16 +151,16 @@
       if array_index < student_classes.count
           @promoted_to = student_classes[array_index+1]
           if @promoted_to == "I"
-            @sections = ["Camellia","Marigold","Cosmos"]
+            @sections = ["Marigold","Camellia","Jasmine","Lily"]
           end
           if @promoted_to == "II"
-            @sections = ["Rose","Sunflower","Gardenia"]
+            @sections = ["Rose","Sunflower","Gardenia","Lilac"]
           end
           if @promoted_to == "III"
-            @sections = ["Orchid","Tulip","Jasmine"]
+            @sections = ["Orchid","Tulip","Cosmos","Lotus"]
           end
           if @promoted_to == "IV"
-            @sections = ["Daisy","Daffodil"]
+            @sections = ["Daisy","Daffodil","Salvia"]
           end
           if @promoted_to == "V"
             @sections = ["Bluebell","Lavender"]
@@ -188,11 +188,27 @@
     end  
 
     unless @student_list.blank?
+      position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
       @sorted_students = @student_list.sort
       position = 0
+      p_rank_loop = 0
+      prev_student = 0
+      prev_mark = 0
       @sorted_students.each do|s|
-          position = position+1
-          @student_position[s[4].to_i] = position
+          new_mark = s[0]
+          if new_mark == prev_mark and position != 0
+            if p_rank_loop == 0
+              @student_position[prev_student] = @student_position[prev_student].to_s+position_rank[p_rank_loop].to_s
+            end
+            p_rank_loop = p_rank_loop+1
+            @student_position[s[1].to_i] = position.to_s+position_rank[p_rank_loop].to_s      
+          else
+            position = position+1
+            @student_position[s[1].to_i] = position
+            prev_student = s[1].to_i
+            p_rank_loop = 0
+          end
+          prev_mark = s[0]
       end
 
       @iloop = 0
@@ -209,31 +225,25 @@
             @jloop = 0
             @new_sections = @new_sections.reverse
           end
-          @iloop +=1
-
-          if @sorted_students[@sloop][4].to_i == 9998344 || @sorted_students[@sloop][4].to_i == 99911700 || @sorted_students[@sloop][4].to_i == 9998058 || @sorted_students[@sloop][4].to_i == 9998051
-            @student_section[@iloop] = @sections[0]
+          @iloop +=1 
+          @student_section[@iloop] = @new_sections[@jloop]
+          if @new_sections[@jloop] == @sections[0]
             @student_roll[@iloop] = @s_a_loop
             @s_a_loop +=1
-          else
-            @student_section[@iloop] = @new_sections[@jloop]
-            if @new_sections[@jloop] == @sections[0]
-              @student_roll[@iloop] = @s_a_loop
-              @s_a_loop +=1
-            end
+          end
 
-            if @new_sections[@jloop] == @sections[1]
-              @student_roll[@iloop] = @s_b_loop
-              @s_b_loop +=1
-            end
+          if @new_sections[@jloop] == @sections[1]
+            @student_roll[@iloop] = @s_b_loop
+            @s_b_loop +=1
+          end
 
-            if @sections.count>2
-              if @new_sections[@jloop] == @sections[2]
-                @student_roll[@iloop] = @s_c_loop
-                @s_c_loop +=1
-              end
+          if @sections.count>2
+            if @new_sections[@jloop] == @sections[2]
+              @student_roll[@iloop] = @s_c_loop
+              @s_c_loop +=1
             end
           end
+         
 
           @jloop +=1
           @sloop +=1

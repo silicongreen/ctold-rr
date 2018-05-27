@@ -62,21 +62,23 @@
                                     <td class="col-pdf no-warp align-left"></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
-                                      <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                                        <tr class="even">
-                                        <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
-                                        <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
-                                        <% wordString_split = wordString.split("|") %>
-                                        <% unless wordString_split[iloop.to_i].blank? %>
-                                            <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
-                                            <% break %>
-                                        <% else %>
-                                          <td class="col-pdf no-warp align-left"></td>
-                                        <% end %>
-                                        </tr>    
-                                       <% else %>
-                                           <td class="col-pdf no-warp align-left"></td> 
-                                       <% end %>
+                                      <% @report_data['report']['exams'].each do |report| %>
+                                          <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                            <tr class="even">
+                                            <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
+                                            <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                            <% wordString_split = wordString.split("|") %>
+                                            <% unless wordString_split[iloop.to_i].blank? %>
+                                                <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                                <% break %>
+                                            <% else %>
+                                              <td class="col-pdf no-warp align-left"></td>
+                                            <% end %>
+                                            </tr>    
+                                           <% else %>
+                                               <td class="col-pdf no-warp align-left"></td> 
+                                           <% end %>
+                                       <% end %>    
                                       <% iloop+=1 %> 
                                     <% end %>
                                 <% else %>

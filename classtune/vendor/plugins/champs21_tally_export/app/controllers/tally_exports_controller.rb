@@ -234,8 +234,8 @@ class TallyExportsController < ApplicationController
   def export_journal
     @option = 'journal'
     @date_today = Date.today
-    end_of_month = @date_today.end_of_month
-    start_month = end_of_month - 90
+    end_of_month = @date_today.next_month.end_of_month
+    start_month = end_of_month - 120
     
     @finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false} and due_date >= '#{start_month.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{end_of_month.to_date.strftime("%Y-%m-%d")}'"] )
     @all_finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false}"] )
@@ -259,8 +259,8 @@ class TallyExportsController < ApplicationController
   def export_receipt
     @option = 'receipt'
     @date_today = Date.today
-    end_of_month = @date_today.end_of_month
-    start_month = end_of_month - 90
+    end_of_month = @date_today.next_month.end_of_month
+    start_month = end_of_month - 120
     
     @finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false} and due_date >= '#{start_month.to_date.strftime("%Y-%m-%d")}' and due_date <= '#{end_of_month.to_date.strftime("%Y-%m-%d")}'"] )
     @all_finance_fee_collections = FinanceFeeCollection.find(:all,:order=>'due_date DESC',:conditions => ["is_deleted = #{false}"] )

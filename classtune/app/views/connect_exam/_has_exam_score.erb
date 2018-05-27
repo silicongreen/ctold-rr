@@ -26,7 +26,7 @@
       @has_exam_score = []
       unless @exam_score_all.blank?
         @exam_score_all.each do |score|
-            if !score.marks.blank? and !@has_exam_score.include?(score.exam_id)
+            if !@has_exam_score.include?(score.exam_id)
               exammain = score.exam
               unless exammain.blank?
                 @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s

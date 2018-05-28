@@ -68,6 +68,10 @@
     @ranked_student.each do |ras|
       continue = false
       @report_data['report']['students'].each do |std|
+        std_info = Student.find_by_id(std['id'].to_i)
+        if std_info.batch_id != @batch.id
+          next
+        end
         if std['id'].to_i == ras.student_id.to_i
           continue = true
           break

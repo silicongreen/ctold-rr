@@ -69,9 +69,6 @@
       continue = false
       @report_data['report']['students'].each do |std|
         std_info = Student.find_by_id(std['id'].to_i)
-        if !std.blank? and !std['first_name'].blank?
-          next
-        end
         if std_info.batch_id != @batch.id
           next
         end
@@ -150,13 +147,12 @@
             <% 
              
             %>
-            
             <% unless @report_data.blank? %>
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
                       
-                      <td class="col-pdf">Roll1</td>
+                      <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
                       <% total_subject = 0 %>
                       <% @report_data['report']['subjects'].each do |sub| %>
@@ -196,7 +192,7 @@
                     <% if std_info.batch_id != @batch.id %>
                       <% next %>
                     <% end %>
-                    <% if !std.blank? %>
+                    <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
                     <% if std_count>10 && extender ==0 %>

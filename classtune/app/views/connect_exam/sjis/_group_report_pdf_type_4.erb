@@ -175,6 +175,7 @@
                                     <% converted_total_30 = converted_total_30 %>
                                     <% end %>
                                     <% full_mark = full_mark+30 %>
+                                    <% total_mark = total_mark.to_f+converted_total_30.to_f %>
                                     <% total_term = total_term.to_f+converted_total_30.to_f %>
                                     <% total_term = total_term.round() %>
                                     <% if exam_no == 1  %>
@@ -192,9 +193,10 @@
                               <td class="col-pdf no-warp">
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
+                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                   
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% total_term = total_term.round() %>
-                                    <% total_mark = total_mark+total_term %>
                                     <% if exam_no == 1  %>
                                         <% total_term1 = total_term1.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% total_term1 = total_term1.round() %>

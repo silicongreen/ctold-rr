@@ -66,6 +66,16 @@
     p = 0
     last_total_score = 0
     @ranked_student.each do |ras|
+      continue = false
+      @report_data['report']['students'].each do |std|
+        if std['id'].to_i == ras.student_id.to_i
+          continue = true
+          break
+        end
+      end
+      if continue == false
+        next
+      end
       ranked_std = true
       @report_data['report']['subjects'].each do |sub|
         if ranked_std == false

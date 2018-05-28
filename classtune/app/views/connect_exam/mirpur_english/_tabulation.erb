@@ -195,7 +195,7 @@
                     <% if std_info.batch_id != @batch.id %>
                       <% next %>
                     <% end %>
-                    <% if !std.blank? and !std['first_name'].blank? %>
+                    <% if !std.blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
                     <% if std_count>10 && extender ==0 %>

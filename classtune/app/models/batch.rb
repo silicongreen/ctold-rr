@@ -123,7 +123,7 @@ class Batch < ActiveRecord::Base
   end
   
   def all_class_teacher
-    class_teacher = BatchTutor.find_by_batch_id_and_class_teacher(self.id,true)
+    class_teacher = BatchTutor.find_all_by_batch_id_and_class_teacher(self.id,true)
     all_employes = []
     unless class_teacher.blank?
       employee = Employee.find_by_id(class_teacher.employee_id)

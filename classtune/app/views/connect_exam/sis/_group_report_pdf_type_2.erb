@@ -32,7 +32,7 @@
                     <% total_subject = @report_data['report']['subjects'].count %>
                     <% per_group = total_subject.to_f/2 %>
                     <% per_group = per_group.round %>
-                    <table id="pdf-table" width="48%" class="left-table odd-table" cellspacing="0">
+                    <table id="pdf-table" width="48%" class="left-table even-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       
                       <% sub_loop +=1  %>
@@ -111,7 +111,8 @@
                       
                     <% end %> 
                     </table>
-                    <table id="pdf-table" width="48%" class="left-table eventable" cellspacing="0">
+                    <% sub_loop = 0 %>
+                    <table id="pdf-table" width="48%" class="left-table odd-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       
                       <% sub_loop +=1  %>

@@ -43,23 +43,25 @@
               
                       <% 
                       extra_class = ""
-                      if(tclass == "odd")
-                        dif = total_right-total_left-last_top_left
-                        if(dif > 0)
-                          extra_class = "top-margin-minus-"+dif.to_s
-                          last_top_left = dif
-                          last_top_right = 0
-                          total_top = total_top+dif
-                        end  
-                      end
-                      if(tclass == "even")
-                        dif = total_left-total_right-last_top_right
-                        if(dif > 0)
-                          extra_class = "top-margin-minus-"+dif.to_s
-                          last_top_left = 0
-                          last_top_right = dif
-                          total_top = total_top+dif
-                        end  
+                      if sub_loop > 0
+                        if(tclass == "odd")
+                          dif = total_right-total_left-last_top_left
+                          if(dif > 0)
+                            extra_class = "top-margin-minus-"+dif.to_s
+                            last_top_left = dif
+                            last_top_right = 0
+                            total_top = total_top+dif
+                          end  
+                        end
+                        if(tclass == "even")
+                          dif = total_left-total_right-last_top_right
+                          if(dif > 0)
+                            extra_class = "top-margin-minus-"+dif.to_s
+                            last_top_left = 0
+                            last_top_right = dif
+                            total_top = total_top+dif
+                          end  
+                        end
                       end
                       %>
                       

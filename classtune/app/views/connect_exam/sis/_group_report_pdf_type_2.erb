@@ -29,59 +29,23 @@
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
-                    <% class_loop = 0 %>
-                    <% class_array_total = [] %>
-                    <% class_array = [] %>
-                    <% last_top_left = 0 %>
-                    <% last_top_right = 0 %>
-                    <% total_top = 0 %>
-                    <% @report_data['report']['subjects'].each do |subjects| %>
-                      <%
-                        total_now = 0
-                        if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number)
-                            subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number)
-                            total_now = subject_groups.count
-                            subject_groups.each do |group_name|
-                              subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number)
-                              unless subject_subgroup.blank?
-                                total_now = total_now+subject_subgroup.count
-                              end
-                            end
-                        end
-                        class_array_total[class_loop] = total_now
-                        class_loop +=1
-                      %>
-                    <% end %>
-                    <% unless class_array_total.blank? %>
-                    <%
-                      loop_total = 0
-                      class_array_total.each do |total|
-                        class_array[loop_total] = ""
-                        if loop_total > 1 && loop_total % 2 != 0
-                          if class_array_total[loop_total-3] > class_array_total[loop_total-2]
-                            dif = class_array_total[loop_total-3]-class_array_total[loop_total-2]
-                            class_array[loop_total] = "top-margin-minus-"+dif.to_s
-                          end
-                          if class_array_total[loop_total-2] > class_array_total[loop_total-3]
-                            dif = class_array_total[loop_total-2]-class_array_total[loop_total-3]
-                            class_array[loop_total-1] = "top-margin-minus-"+dif.to_s
-                          end
-                        end
-                        loop_total = loop_total+1
-                      end
-                    %>
-                    <% end %>
-                     <%= debug class_array.inspect %>
+                    <% total_subject = @report_data['report']['subjects'].count %>
+                    <% per_group = total_subject.to_f/2 %>
+                    <% per_group = per_group.round %>
+                    <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% tclass = 'odd' %>
                       <% if sub_loop % 2 == 0 %>
                         <% tclass = "even" %>
                       <% end %>
                       <% sub_loop +=1  %>
+                      <% if sub_loop > per_group %>
+                        <% break %>
+                      <% end %>
               
                     
                       
-                      <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table <%= class_array[sub_loop] %>" cellspacing="0">
+                      
                       <tr class="odd">
                           
                           <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
@@ -147,8 +111,91 @@
                                  
                           <% end %>
                         <% end %>           
-                      </table>
-                    <% end %>  
+                      
+                    <% end %> 
+                    </table>
+                    <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table" cellspacing="0">
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% tclass = 'odd' %>
+                      <% if sub_loop % 2 == 0 %>
+                        <% tclass = "even" %>
+                      <% end %>
+                      <% sub_loop +=1  %>
+                      <% if sub_loop <= per_group %>
+                        <% next %>
+                      <% end %>
+              
+                    
+                      
+                      
+                      <tr class="odd">
+                          
+                          <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
+                          <td class="col-pdf no-warp align-left marks-sub"></td>    
+
+                      </tr> 
+                      
+                        <% if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                          <% iloop = 0 %>
+                          <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                              <% subject_groups.each do |group_name| %>
+                                <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
+                                <% unless subject_subgroup.blank? %>
+                                   <tr class="odd">
+                                    <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
+                                    <td class="col-pdf no-warp align-left"></td>
+                                   </tr>
+                                    <% subject_subgroup.each do |sub_group_name| %>
+                                       <% @report_data['report']['exams'].each do |report| %>
+                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                          <tr class="even">
+                                          <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
+                                          <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                          <% wordString_split = wordString.split("|") %>
+                                          <% unless wordString_split[iloop.to_i].blank? %>
+                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              
+                                          <% else %>
+                                            <td class="col-pdf no-warp align-left"></td>
+                                          <% end %>
+                                          </tr> 
+                                          <% break %>
+                                        <% else %>
+                                            <tr class="even">
+                                              <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
+                                             <td class="col-pdf no-warp align-left"></td> 
+                                            </tr>
+                                            <% break %>
+                                         <% end %>
+                                      <% end %>    
+                                      <% iloop+=1 %> 
+                                    <% end %>
+                                <% else %>
+                                    <tr class="odd">
+                                    <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
+                                    <% @report_data['report']['exams'].each do |report| %>
+                                       <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
+                                          <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                                          <% wordString_split = wordString.split("|") %>
+                                          <% unless wordString_split[iloop.to_i].blank? %>
+                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              
+                                          <% else %>
+                                            <td class="col-pdf no-warp align-left"></td>
+                                          <% end %>
+                                       <% else %>
+                                           <td class="col-pdf no-warp align-left"></td> 
+                                       <% end %>     
+                                    <% end %>
+                                    </tr>          
+                                    <% iloop+=1 %> 
+                                <% end %>
+                                 
+                          <% end %>
+                        <% end %>           
+                      
+                    <% end %> 
+                    </table>
                   <% end %> 
                 
                 <div class='line'></div>

@@ -68,9 +68,6 @@
     @ranked_student.each do |ras|
       ranked_std = true
       @report_data['report']['subjects'].each do |sub|
-        if ranked_std == false
-          break
-        end
         subject_full_mark = 0
         subject_obtain_mark = 0
         subjectdata = Subject.find(sub['id'].to_i)
@@ -83,25 +80,9 @@
             if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s].blank? and @check_exam_score==true
                 subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i
                 subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f
-                if rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_i > 0
-                  main_mark_sub = (rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][ras.student_id.to_s]['full_mark'].to_f)*100
-                  grade = GradingLevel.percentage_to_grade(main_mark_sub, @batch.id)
-                  if !grade.blank? and !grade.name.blank?
-                    if grade.name == "F"
-                      ranked_std = false
-                    end
-                  end
-                end
+                
             end
              
-          end
-          if subject_full_mark>0
-            main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
-            grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-            if !grade.blank? and !grade.name.blank? and grade.name == "F"
-              ranked_std = false
-              break
-            end
           end
         end
       end
@@ -164,6 +145,9 @@
 
                       <td>Total</td>
                       <td>Grade Count</td>
+                      <% unless @ranked_positions.blank? %>
+                        <td>Position</td>
+                      <% end %>
 
                   </tr>
 
@@ -200,7 +184,9 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
-                         
+                          <% unless @ranked_positions.blank? %>
+                           <td>Position</td>
+                          <% end %>
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -228,6 +214,9 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
+                          <% unless @ranked_positions.blank? %>
+                            <td>Position</td>
+                          <% end %>
                         
 
                       </tr>
@@ -361,6 +350,13 @@
                               <% i = i+1 %>
                             <% end %>
                         </td> 
+                        <% unless @ranked_positions.blank? %>
+                           <% unless @ranked_positions[std['id'].to_i].blank? %>
+                              <td><%= @ranked_positions[std['id'].to_i] %></td>
+                           <% else %>
+                              <td>N/A</td>
+                           <% end %>
+                        <% end %>
                         
                       
 

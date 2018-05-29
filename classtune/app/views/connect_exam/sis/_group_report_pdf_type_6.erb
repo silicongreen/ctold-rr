@@ -200,10 +200,11 @@
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                        
                         <% next %>
                       <% end %>
                       <% wordString_main = "" %>
-                  
+                      <%= "here" %>
                       <% @report_data['report']['exams'].each do |report| %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                           <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>

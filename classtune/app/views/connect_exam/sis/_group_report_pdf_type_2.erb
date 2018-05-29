@@ -29,13 +29,41 @@
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
+                    <% total_left = 0 %>
+                    <% total_right = 0 %>
+                    <% last_top_left = 0 %>
+                    <% last_top_right = 0 %>
+                    <% total_top = 0 %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% tclass = 'odd' %>
                       <% if sub_loop % 2 == 0 %>
                         <% tclass = "even" %>
                       <% end %>
                       <% sub_loop +=1  %>
-                      <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table" cellspacing="0">
+              
+                      <% 
+                      extra_class = ""
+                      if(tclass == "odd")
+                        dif = total_right-total_left-last_top_left
+                        if(dif > 0)
+                          extra_class = "top-margin-minus-"+dif.to_s
+                          last_top_left = dif
+                          last_top_right = 0
+                          total_top = total_top+dif
+                        end  
+                      end
+                      if(tclass == "even")
+                        dif = total_left-total_right-last_top_right
+                        if(dif > 0)
+                          extra_class = "top-margin-minus-"+dif.to_s
+                          last_top_left = 0
+                          last_top_right = dif
+                          total_top = total_top+dif
+                        end  
+                      end
+                      %>
+                      
+                      <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table <%= extra_class %>" cellspacing="0">
                       <tr class="odd">
                           
                           <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
@@ -98,12 +126,19 @@
                                     </tr>          
                                     <% iloop+=1 %> 
                                 <% end %>
-                                   
+                               <% 
+                               if(tclass == "odd")
+                                 total_left = iloop
+                               else
+                                 total_right = iloop
+                               end
+                               %>    
                           <% end %>
                         <% end %>           
                       </table>
                     <% end %>  
-                  <% end %>  
+                  <% end %> 
+                
                 <div class='line'></div>
                 <table id="pdf-table" width="24%" class="left-table even-table" cellspacing="0">
                       <% class_grade = "height-50" %>
@@ -178,6 +213,34 @@
 {
     font-size: 22px !important;
     padding: 8px !important;
+}
+.top-margin-minus-1
+{
+    margin-top: -30px !important;
+}
+.top-margin-minus-2
+{
+    margin-top: -60px !important;
+}
+.top-margin-minus-3
+{
+    margin-top: -90px !important;
+}
+.top-margin-minus-4
+{
+    margin-top: -120px !important;
+}
+.top-margin-minus-5
+{
+    margin-top: -150px !important;
+}
+.top-margin-minus-6
+{
+    margin-top: -180px !important;
+}
+.top-margin-minus-7
+{
+    margin-top: -210px !important;
 }
 </style>
 <% end %>

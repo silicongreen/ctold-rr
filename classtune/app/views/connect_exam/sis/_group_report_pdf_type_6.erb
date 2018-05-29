@@ -181,7 +181,7 @@
                       <%  if @all_subjects.include?(report['id'].to_i) %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
-                          <td class="col-pdf"><b><%= report['subject_comment'] %>/b></td>
+                          <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
                       </tr>
                       <% end %>
                     <% end %>

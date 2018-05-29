@@ -32,12 +32,9 @@
                     <% total_subject = @report_data['report']['subjects'].count %>
                     <% per_group = total_subject.to_f/2 %>
                     <% per_group = per_group.round %>
-                    <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table" cellspacing="0">
+                    <table id="pdf-table" width="48%" class="left-table odd-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% tclass = 'odd' %>
-                      <% if sub_loop % 2 == 0 %>
-                        <% tclass = "even" %>
-                      <% end %>
+                      
                       <% sub_loop +=1  %>
                       <% if sub_loop > per_group %>
                         <% break %>
@@ -114,12 +111,9 @@
                       
                     <% end %> 
                     </table>
-                    <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table" cellspacing="0">
+                    <table id="pdf-table" width="48%" class="left-table eventable" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% tclass = 'odd' %>
-                      <% if sub_loop % 2 == 0 %>
-                        <% tclass = "even" %>
-                      <% end %>
+                      
                       <% sub_loop +=1  %>
                       <% if sub_loop <= per_group %>
                         <% next %>

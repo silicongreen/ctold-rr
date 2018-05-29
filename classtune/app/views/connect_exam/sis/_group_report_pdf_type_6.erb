@@ -34,7 +34,7 @@
               <table id="pdf-table"  width="30%" class="left-table even-table" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                      <td class="col-pdf"><%= "Subject" %></td>
+                      <td class="col-pdf"><%= "Subject" %><%= @connect_exam_obj.quarter_number.to_s %></td>
                       <% if @connect_exam_obj.quarter_number == 5 %>
                         <td class="col-pdf height-18">First Term<br/>(Grade)</td>
                       <% else %>

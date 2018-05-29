@@ -29,11 +29,48 @@
                   <% unless @report_data['report']['subjects'].blank? %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
-                    <% total_left = 0 %>
-                    <% total_right = 0 %>
+                    <% class_loop = 0 %>
+                    <% class_array_total = [] %>
+                    <% class_array = [] %>
                     <% last_top_left = 0 %>
                     <% last_top_right = 0 %>
                     <% total_top = 0 %>
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <%
+                        total_now = 0
+                        if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number)
+                            subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number)
+                            total_now = subject_groups.count
+                            subject_groups.each do |group_name|
+                              subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number)
+                              unless subject_subgroup.blank?
+                                total_now = total_now+subject_subgroup.count
+                              end
+                            end
+                        end
+                        class_array_total[class_loop] = total_now
+                        class_loop +=1
+                      %>
+                    <% end %>
+                    <% unless class_array_total.blank? %>
+                    <%
+                      loop_total = 0
+                      class_array_total.each do |total|
+                        class_array[loop_total] = ""
+                        if loop_total > 1 && loop_total % 2 != 0
+                          if class_array_total[loop_total-3] > class_array_total[loop_total-2]
+                            dif = class_array_total[loop_total-3]-class_array_total[loop_total-2]
+                            class_array[loop_total] = "top-margin-minus-"+dif.to_s
+                          end
+                          if class_array_total[loop_total-2] > class_array_total[loop_total-3]
+                            dif = class_array_total[loop_total-2]-class_array_total[loop_total-3]
+                            class_array[loop_total-1] = "top-margin-minus-"+dif.to_s
+                          end
+                        end
+                        loop_total = loop_total+1
+                      end
+                    %>
+                    <% end %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% tclass = 'odd' %>
                       <% if sub_loop % 2 == 0 %>
@@ -41,31 +78,9 @@
                       <% end %>
                       <% sub_loop +=1  %>
               
-                      <% 
-                      extra_class = ""
-                      if sub_loop > 0
-                        if(tclass == "even")
-                          dif = total_right-total_left-last_top_left
-                          if(dif > 0)
-                            extra_class = "top-margin-minus-"+dif.to_s
-                            last_top_left = dif
-                            last_top_right = 0
-                            total_top = total_top+dif
-                          end  
-                        end
-                        if(tclass == "odd")
-                          dif = total_left-total_right-last_top_right
-                          if(dif > 0)
-                            extra_class = "top-margin-minus-"+dif.to_s
-                            last_top_left = 0
-                            last_top_right = dif
-                            total_top = total_top+dif
-                          end  
-                        end
-                      end
-                      %>
+                     
                       
-                      <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table <%= extra_class %>" cellspacing="0">
+                      <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table <%= class_array[sub_loop] %>" cellspacing="0">
                       <tr class="odd">
                           
                           <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
@@ -128,13 +143,7 @@
                                     </tr>          
                                     <% iloop+=1 %> 
                                 <% end %>
-                               <% 
-                               if(tclass == "even")
-                                 total_left = iloop
-                               else
-                                 total_right = iloop
-                               end
-                               %>    
+                                 
                           <% end %>
                         <% end %>           
                       </table>

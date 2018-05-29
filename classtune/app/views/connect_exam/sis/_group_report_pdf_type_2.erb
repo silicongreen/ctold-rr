@@ -44,7 +44,7 @@
                       <% 
                       extra_class = ""
                       if sub_loop > 0
-                        if(tclass == "odd")
+                        if(tclass == "even")
                           dif = total_right-total_left-last_top_left
                           if(dif > 0)
                             extra_class = "top-margin-minus-"+dif.to_s
@@ -53,7 +53,7 @@
                             total_top = total_top+dif
                           end  
                         end
-                        if(tclass == "even")
+                        if(tclass == "odd")
                           dif = total_left-total_right-last_top_right
                           if(dif > 0)
                             extra_class = "top-margin-minus-"+dif.to_s
@@ -129,7 +129,7 @@
                                     <% iloop+=1 %> 
                                 <% end %>
                                <% 
-                               if(tclass == "odd")
+                               if(tclass == "even")
                                  total_left = iloop
                                else
                                  total_right = iloop

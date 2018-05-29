@@ -71,6 +71,7 @@
                       end
                     %>
                     <% end %>
+                     <%= debug class_array.inspect %>
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% tclass = 'odd' %>
                       <% if sub_loop % 2 == 0 %>
@@ -78,7 +79,7 @@
                       <% end %>
                       <% sub_loop +=1  %>
               
-                     <%= debug class_array.inspect %>
+                    
                       
                       <table id="pdf-table" width="48%" class="left-table <%= tclass %>-table <%= class_array[sub_loop] %>" cellspacing="0">
                       <tr class="odd">

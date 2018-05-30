@@ -28,9 +28,9 @@
           </table>
       </div>
 
-      <div class="current_batch" style="margin-left:0px;">
+      <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
-              <table id="pdf-table"  width="30%" class="left-table even-table marks-table" cellspacing="0" >
+              <table id="pdf-table"  width="30%" class="left-table even-table" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><%= "Subject" %></td>
@@ -120,13 +120,13 @@
                         
                           if first_term_fullmark > 0
                             total_full_mark = q1_fullmark.to_i+q2_fullmark.to_i+first_term_fullmark.to_i
-                            total_mark_firt_term = q1_mark.to_f+q2_mark.to_f+first_term_mark.to_f
-                            total_mark = total_mark_firt_term.to_f/total_full_mark.to_f
+                            total_mark_first_term = q1_mark.to_f+q2_mark.to_f+first_term_mark.to_f
+                            total_mark = (total_mark_first_term.to_f/total_full_mark.to_f)*100
                           end 
                           if final_term_fullmark > 0
                             total_full_mark = q3_fullmark.to_i+q4_fullmark.to_i+final_term_fullmark.to_i
                             total_mark_final_term = q3_mark.to_f+q4_mark.to_f+final_term_mark.to_f
-                            total_mark = total_mark_final_term.to_f/total_full_mark.to_f
+                            total_mark = (total_mark_final_term.to_f/total_full_mark.to_f)*100
                           end
                         
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
@@ -352,10 +352,3 @@
   </div>
 
 <% end %>
-
-<style>
-.sis-final .current_batch table.marks-table tr.odd td, .sis-final .current_batch table.marks-table tr.even td
-{
-    padding: 1px 4px !important;
-}
-</style>

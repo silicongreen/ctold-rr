@@ -399,14 +399,14 @@
                  <% end %>
                  <% unless @student_position[@student.id.to_i].blank? %>
                  <% merit_position = @student_position[@student.id.to_i] %>
-                 <% unless @student_roll[@student_position[@student.id.to_i].to_i].blank? %>
-                    <% new_roll = @student_roll[@student_position[@student.id.to_i].to_i] %>
+                 <% unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank? %>
+                    <% new_roll = @student_roll[@student_real_position[@student.id.to_i].to_i] %>
                  <% else %>
                     <% new_roll = "N/A" %>
                  <% end %>
               
-                 <% unless @student_section[@student_position[@student.id.to_i].to_i].blank? %>
-                    <% new_section = @student_section[@student_position[@student.id.to_i].to_i] %>
+                 <% unless @student_section[@student_real_position[@student.id.to_i].to_i].blank? %>
+                    <% new_section = @student_section[@student_real_position[@student.id.to_i].to_i] %>
                  <% else %>
                     <% new_section = "N/A" %>
                  <% end %>

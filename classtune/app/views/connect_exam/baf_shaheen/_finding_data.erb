@@ -139,6 +139,7 @@
     end
    end
 
+    @student_real_position = {}
     @student_position = {}
     @student_section = {}
     @student_roll = {}
@@ -191,6 +192,7 @@
       position_rank = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
       @sorted_students = @student_list.sort
       position = 0
+      real_position = 0
       p_rank_loop = 0
       prev_student = 0
       prev_mark = 0
@@ -209,6 +211,8 @@
             p_rank_loop = 0
           end
           prev_mark = s[0]
+          real_position = real_position+1
+          @student_real_position[s[1].to_i] = real_position
       end
 
       @iloop = 0
@@ -219,6 +223,7 @@
       @s_a_loop = 1
       @s_b_loop = 1
       @s_c_loop = 1
+      @s_d_loop = 1
       @new_sections = @sections
       while @iloop < @sorted_students.count do
           if @jloop > (@new_sections.count-1)
@@ -226,6 +231,7 @@
             @new_sections = @new_sections.reverse
           end
           @iloop +=1 
+          
           @student_section[@iloop] = @new_sections[@jloop]
           if @new_sections[@jloop] == @sections[0]
             @student_roll[@iloop] = @s_a_loop
@@ -243,8 +249,12 @@
               @s_c_loop +=1
             end
           end
-         
-
+          if @sections.count>3
+            if @new_sections[@jloop] == @sections[3]
+              @student_roll[@iloop] = @s_d_loop
+              @s_d_loop +=1
+            end
+          end
           @jloop +=1
           @sloop +=1
       end

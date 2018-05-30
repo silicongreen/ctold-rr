@@ -30,7 +30,7 @@
 
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
-              <table id="pdf-table"  width="30%" class="left-table even-table" cellspacing="0" >
+              <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><%= "Subject" %></td>
@@ -352,3 +352,11 @@
   </div>
 
 <% end %>
+
+<style>
+ .sis-final table tr.odd td, .sis-final table tr.even td
+{
+    font-size: 22px !important;
+    padding: 8px !important;
+}   
+</style>    

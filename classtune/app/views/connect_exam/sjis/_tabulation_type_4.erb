@@ -185,8 +185,9 @@
                           <td>Total</td>
                           <td>Grade Count</td>
                           <% unless @ranked_positions.blank? %>
-                           <td>Position</td>
+                            <td>Position</td>
                           <% end %>
+                         
 
                       </tr>
                     <% elsif std_count>13 && extender ==1 %>
@@ -277,14 +278,15 @@
                                %>
                               <% end %>
                             <% end %>
+                            
                             <% if subject_full_mark_ct1 > 0 %>
                               <% subject_full_mark = subject_full_mark+30 %>
                               <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
                               <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
                             <% end %>
                             <% if subject_full_mark_ct2 > 0 %> 
-                              <% subject_full_mark = subject_full_mark+30 %>
-                              <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
+                              <% subject_full_mark = subject_full_mark+subject_full_mark+30 %>
+                              <% subjects_marks_ct_converted = subjects_marks_ct_converted+((subject_obtain_mark_ct2/subject_full_mark_ct2)*30) %>
                               <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
                             <% end %>
                             

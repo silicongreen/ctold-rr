@@ -128,7 +128,9 @@
                             <% end %>
                           <% end %>
                         <% end %>  
-
+                        <% if @exam_subject.no_exams_sjws.to_i != 1 %>
+                            <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
+                        <% end %> 
 
                     </tr>
                     <% @students.each do |student| %>
@@ -254,7 +256,9 @@
                               <% end %>
                             <% end %>  
                           <% end %>
-
+                          <% if @exam_subject.no_exams_sjws.to_i != 1 %>
+                            <td><%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></td>
+                          <% end %>
 
 
                       <tr>

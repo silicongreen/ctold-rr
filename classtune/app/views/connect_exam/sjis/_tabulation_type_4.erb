@@ -282,13 +282,14 @@
                             <% if subject_full_mark_ct1 > 0 %>
                               <% subject_full_mark = subject_full_mark+30 %>
                               <% subjects_marks_ct_converted = (subject_obtain_mark_ct1/subject_full_mark_ct1)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
+                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
                             <% end %>
                             <% if subject_full_mark_ct2 > 0 %> 
                               <% subject_full_mark = subject_full_mark+30 %>
                               <% subjects_marks_ct_converted = (subject_obtain_mark_ct2/subject_full_mark_ct2)*30 %>
-                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted.round() %>
+                              <% subject_obtain_mark = subject_obtain_mark+subjects_marks_ct_converted %>
                             <% end %>
+                            <% subject_obtain_mark = subject_obtain_mark.round() %>
                             
 
                             <% main_mark = 0 %>
@@ -298,7 +299,7 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                                  <%= subject_obtain_mark %><hr/>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%

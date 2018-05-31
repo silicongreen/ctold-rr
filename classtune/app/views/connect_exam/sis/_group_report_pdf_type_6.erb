@@ -169,22 +169,25 @@
                           total_mark = total_mark.round()
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
                           total_marks_obtain = total_marks_obtain+total_mark
-                          
+                          extra_string = ""
+                          if @batch.course.course_name == "IV"
+                            extra_string = "rowspan='2'"
+                          end  
                           if total_mark > 0
                           %>
                           <% if @batch.course.course_name == "IV" %>
-                            <td class="col-pdf"><b><%= total_mark %></b></td>
+                          <td class="col-pdf" <%= extra_string %>><b><%= total_mark %></b></td>
                           <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
-                            <td class="col-pdf"><b><%= grade.name %></b></td>
+                            <td class="col-pdf" <%= extra_string %>><b><%= grade.name %></b></td>
                           <% else %>
-                            <td class="col-pdf"><b>N/A</b></td>
+                            <td class="col-pdf" <%= extra_string %>><b>N/A</b></td>
                           <% end %> 
                           <% else %>
                             <% if @batch.course.course_name == "IV" %>
-                              <td class="col-pdf"><b>-</b></td>
+                              <td class="col-pdf" <%= extra_string %>><b>-</b></td>
                             <% end %>
-                            <td class="col-pdf"><b>AB</b></td>
+                            <td class="col-pdf" <%= extra_string %>><b>AB</b></td>
                           <% end %> 
                           
 

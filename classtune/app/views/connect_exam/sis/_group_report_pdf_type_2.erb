@@ -36,7 +36,7 @@
                     <% else %>
                       <% per_group = per_group.round %>
                     <% end %>
-                    <table id="pdf-table" width="48%" class="left-table even-table" cellspacing="0">
+                    <table id="pdf-table" width="48%" class="left-table even-table left-table-nursery" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       
                       <% sub_loop +=1  %>
@@ -268,6 +268,10 @@
 {
     font-size: 22px !important;
     padding: 6px !important;
+}
+.sis-final table.left-table-nursery tr.odd td, .sis-final table.left-table-nursery tr.even td
+{
+    padding: 7px !important;
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {

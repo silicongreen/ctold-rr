@@ -62,6 +62,7 @@
                     <tr class="tr-head fixed-position">
                         <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
                         <% unless @exams.blank? %>
+                        
                           <% @exams.each do |exam| %>
                             <% if has_subject_group(@exam_subject.id,@exam_connect.quarter_number) && @exam_subject.no_exams_sjws.to_i == 1 %>
                               

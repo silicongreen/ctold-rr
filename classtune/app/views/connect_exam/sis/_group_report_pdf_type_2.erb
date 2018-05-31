@@ -60,14 +60,14 @@
                               <% subject_groups.each do |group_name| %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
-                                   <tr class="odd">
+                                   <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
                                     <td class="col-pdf no-warp align-left"></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% @report_data['report']['exams'].each do |report| %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                                          <tr class="even">
+                                          <tr class="even subgroup">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
@@ -80,7 +80,7 @@
                                           </tr> 
                                           <% break %>
                                         <% else %>
-                                            <tr class="even">
+                                            <tr class="even subgroup">
                                               <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
                                              <td class="col-pdf no-warp align-left"></td> 
                                             </tr>
@@ -90,7 +90,7 @@
                                       <% iloop+=1 %> 
                                     <% end %>
                                 <% else %>
-                                    <tr class="odd">
+                                    <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
@@ -272,6 +272,10 @@
 .sis-final table.left-table-nursery tr.odd td, .sis-final table.left-table-nursery tr.even td
 {
     padding: 8px !important;
+}
+.sis-final table.left-table-nursery tr.subgroup td, .sis-final table.left-table-nursery tr.subgroup td
+{
+    padding: 7px !important;
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {

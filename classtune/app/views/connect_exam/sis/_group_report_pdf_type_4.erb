@@ -72,7 +72,9 @@
                               if report['quarter'] == '1'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q1_mark = q1_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   q1_fullmark = q1_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
@@ -81,7 +83,9 @@
                               if report['quarter'] == '2'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q2_mark = q2_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   q2_fullmark = q2_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
@@ -90,7 +94,9 @@
                               if report['quarter'] == '3'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q3_mark = q3_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   q3_fullmark = q3_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
@@ -99,7 +105,9 @@
                               if report['quarter'] == '4'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q4_mark = q4_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   q4_fullmark = q4_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
@@ -108,7 +116,9 @@
                               if report['quarter'] == '5'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   first_term_mark = first_term_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   first_term_fullmark = first_term_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
@@ -117,7 +127,9 @@
                               if report['quarter'] == '6'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   final_term_mark = final_term_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
-                                  has_mark = true
+                                  if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
+                                    has_mark = true
+                                  end
                                 end
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
                                   final_term_fullmark = final_term_fullmark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i

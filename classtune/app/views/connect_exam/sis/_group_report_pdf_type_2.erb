@@ -221,7 +221,7 @@
                      </tr>
               
                 </table>
-                <table id="pdf-table" width="72%" class="left-table odd-table" cellspacing="0">
+                <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
@@ -268,6 +268,10 @@
 {
     font-size: 22px !important;
     padding: 6px !important;
+}
+.sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
+{
+    padding: 12px !important;
 }
 </style>
 <% end %>

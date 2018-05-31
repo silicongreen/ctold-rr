@@ -31,7 +31,11 @@
                     <% sub_loop = 0 %>
                     <% total_subject = @report_data['report']['subjects'].count %>
                     <% per_group = total_subject.to_f/2 %>
-                    <% per_group = per_group.round %>
+                    <% if @batch.course.course_name.upcase == "NURSERY" %>
+                      <% per_group = per_group.floor %>
+                    <% else %>
+                      <% per_group = per_group.round %>
+                    <% end %>
                     <table id="pdf-table" width="48%" class="left-table even-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       

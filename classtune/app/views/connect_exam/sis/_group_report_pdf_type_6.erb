@@ -34,11 +34,19 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><%= "Subject" %></td>
-                      <% if @connect_exam_obj.quarter_number == 5 %>
-                        <td class="col-pdf height-18">First Term<br/>(Grade)</td>
-                      <% else %>
-                        <td class="col-pdf height-18">Final Term<br/>(Grade)</td>
-                      <% end %>
+                      <% if @batch.course.course_name == "IV" %>
+                        <% if @connect_exam_obj.quarter_number == 5 %>
+                          <td class="col-pdf height-18" colspan="2">First Term<br/>(Grade)</td>
+                        <% else %>
+                          <td class="col-pdf height-18" colspan="2">Final Term<br/>(Grade)</td>
+                        <% end %>
+                      <% else %>  
+                        <% if @connect_exam_obj.quarter_number == 5 %>
+                          <td class="col-pdf height-18">First Term<br/>(Grade)</td>
+                        <% else %>
+                          <td class="col-pdf height-18">Final Term<br/>(Grade)</td>
+                        <% end %>
+                      <% end %>  
                   </tr>
 
                   <% total_marks_obtain = 0 %>
@@ -148,20 +156,27 @@
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                           end
-                        
+                          total_mark = total_mark.round()
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
                           total_marks_obtain = total_marks_obtain+total_mark
                           
                           if total_mark > 0
                           %>
+                          <% if @batch.course.course_name == "IV" %>
+                            <td class="col-pdf"><b><%= total_mark %></b></td>
+                          <% end %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
                             <td class="col-pdf"><b>N/A</b></td>
                           <% end %> 
                           <% else %>
+                            <% if @batch.course.course_name == "IV" %>
+                              <td class="col-pdf"><b>-</b></td>
+                            <% end %>
                             <td class="col-pdf"><b>AB</b></td>
-                          <% end %>  
+                          <% end %> 
+                          
 
                       </tr> 
                     <% end %>  

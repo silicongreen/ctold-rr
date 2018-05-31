@@ -619,8 +619,17 @@ class GroupedExams extends CActiveRecord
             $criteria->select = 't.*'; 
             $criteria->with = array(
                 'examgroup' => array(
-                    'select' => 'examgroup.id',
-                    ),
+                    'select' => 'examgroup.id,examgroup.quarter',
+                    'with' => array('Exams' => array(
+                            'select' => 'Exams.maximum_marks,Exams.id',
+                            'with' => array(
+                                'Subjects' => array(
+                                    'select' => 'Subjects.id',
+                                )
+                            )
+                        )
+                    )
+                ),
                 'examconnect' => array(
                     'select' => "examconnect.id,examconnect.result_type"
                  )
@@ -628,10 +637,38 @@ class GroupedExams extends CActiveRecord
             $criteria->order = "t.priority ASC,examgroup.created_at ASC";
             $examgroups = $this->findAll($criteria);
             
+            $subjects_ids = array();
+            if($examgroups)
+            {
+                foreach($examgroups as $value)
+                {
+                   
+                    if(isset($value['examgroup']['Exams']))
+                    {
+                        
+                        foreach($value['examgroup']['Exams'] as $exam)
+                        {
+                            
+                            if(isset($exam['Subjects']->id))
+                            {
+                                if(!in_array($exam['Subjects']->id, $subjects_ids))
+                                {
+                                    $subjects_ids[] =$exam['Subjects']->id; 
+                                }        
+                            }    
+                        }
+                        
+                    }
+                }
+            }
+            
+            
+            
             $subjectObj = new Subjects();
             
-            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id, $student_id,$send_no_exam);
-            $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id, $student_id);
+            $all_subject_without_no_exam = $subjectObj->getSubject($batch_id,$student_id,$subjects_ids);
+            $subject_no_exam = $subjectObj->getSubjectNoExam($batch_id,$student_id,$subjects_ids);
+            
             $results = array();
             
             $subject_result = array();

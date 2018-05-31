@@ -33,12 +33,16 @@
               <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                      <td class="col-pdf"><%= "Subject" %></td>
+                      <% if @batch.course.course_name == "IV" %>
+                        <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
+                      <% else %>
+                        <td class="col-pdf"><%= "Subject" %></td>
+                      <% end %>
                       <% if @batch.course.course_name == "IV" %>
                         <% if @connect_exam_obj.quarter_number == 5 %>
-                          <td class="col-pdf height-18" colspan="2">First Term<br/>(Grade)</td>
+                          <td class="col-pdf height-18" colspan="2">First Term</td>
                         <% else %>
-                          <td class="col-pdf height-18" colspan="2">Final Term<br/>(Grade)</td>
+                          <td class="col-pdf height-18" colspan="2">Final Term</td>
                         <% end %>
                       <% else %>  
                         <% if @connect_exam_obj.quarter_number == 5 %>
@@ -48,6 +52,12 @@
                         <% end %>
                       <% end %>  
                   </tr>
+                  <% if @batch.course.course_name == "IV" %>
+                  <tr class="even">
+                    <td class="col-pdf height-18">Marks</td>
+                    <td class="col-pdf height-18">Grade</td>
+                  </tr>
+                  <% end %>
 
                   <% total_marks_obtain = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 

@@ -73,6 +73,7 @@
                             <% @top_exam_group.each do |top_exam| %>
                               <% this_term = 0 %>
                               <% this_full_marks = 0 %>
+                              
                               <% @report_data['report']['exams'].each do |report| %>
                                   <% if !report['exam_name'].index(top_exam).nil? %>
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -87,16 +88,16 @@
                                   <% end %>
                               <% end %>
                                       
-                              <% if total_terms[top_loop.to_i].blank? %>
-                                   total_terms[top_loop.to_i] = 0   
+                              <% if total_terms[top_loop].blank? %>
+                                   total_terms[top_loop] = 0   
                               <% end %>  
-                              <% if full_marks_term[top_loop.to_i].blank? %>
-                                   full_marks_term[top_loop.to_i] = 0   
+                              <% if full_marks_term[top_loop].blank? %>
+                                   full_marks_term[top_loop] = 0   
                               <% end %> 
                                    
-                              <% total_terms[top_loop.to_i] = total_terms[top_loop.to_i]+this_term.round() %>
+                              <% total_terms[top_loop] = total_terms[top_loop]+this_term.round() %>
                                    
-                              <% full_marks_term[top_loop.to_i] = full_marks_term[top_loop.to_i]+this_full_marks.round() %>
+                              <% full_marks_term[top_loop] = full_marks_term[top_loop]+this_full_marks.round() %>
                                    
                               <% top_loop = top_loop+1 %>
                               <td><%= this_term.round() %></td>

@@ -1,0 +1,47 @@
+
+<%  
+    if @all_exam_groups.nil?
+        @all_group_exams = GroupedExam.find(
+                :all,
+                :conditions => [
+                  "connect_exam_id = ?",
+                  @connect_exam_obj.id
+                ]
+        )
+      
+        unless @all_group_exams.blank?
+          @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+          @all_exam_groups = ExamGroup.find(
+            :all,
+            :conditions => ["id IN (?)", @all_exam_group_id]
+          )
+        end  
+      
+        @top_exam_group = []
+        @top_exam_group_count = []
+        unless @all_exam_groups.blank?
+          @all_exam_groups.each do |exam_group|
+            exam_group_name_array = exam_group.name.split(" ")
+            main_exam_name = exam_group_name_array[0]+" "+exam_group_name_array[1]
+            if !@top_exam_group.include?(main_exam_name)
+               @top_exam_group << main_exam_name
+            end  
+          end  
+        end
+
+        unless @top_exam_group.blank?
+          @top_exam_group.each do |top_exam|
+              e_count = 0
+              @all_exam_groups.each do |exam_group|  
+                if !exam_group.name.index(top_exam).nil?
+                  e_count = e_count+1
+                end
+              end
+              @top_exam_group_count << e_count+3
+          end 
+        end
+  
+    end
+
+%>
+<%= render  :partial=>"/connect_exam/kinderland/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

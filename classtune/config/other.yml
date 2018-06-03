@@ -1,9 +1,10 @@
 resulttype:
- numbers: "323,2,325,340,342,312,348"
+ numbers: "323,2,325,340,342,312,348,3"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_342: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall,Test,Final"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
+ type_3: "Term Exam"
  type_312: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_348: "QUARTER(PG-N),TERM(PG-N),QUARTER(KGI-KGII),TERM(KGI-KGII),QUARTER(I-IV),TERM(I-IV)"
  type_340: "QUARTER (CLASS 5-12),TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM EXAM (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM EXAM (CLASS 10-12),HALL EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT (CLASS 5-9),TERM REPORT CARD(CLASS 10-12),ASSESMENT(KG 1-CLASS 4),REPORT CARD(KG 1-KG 2),REPORT CARD(CLASS 1-CLASS 4)"

@@ -1,0 +1,209 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+ <p>&nbsp;<p>
+  <div id="page-yield"  class="available_sections1 kinderland-new">
+
+      
+      <div class="student_information">
+      <h4><b>Student's Information</b></h4>
+      <%= render  :partial=>"/connect_exam/kinderland/student_information" %>
+      </div>
+      <div class="grade_information">
+      <%= render  :partial=>"/connect_exam/kinderland/gradding_level" %>
+      </div>
+      <div class ="current_batch" style="margin-left:0px;">
+          <div id="grouped_exam_report">
+
+              <h4 class="h4-evaluation result-in-details"><b>Result in Details</b></h4>
+              <table id="pdf-table" width="99.8%" cellspacing="0">
+                  <% c = 'even'  %>
+                  
+                  <% unless @top_exam_group.blank? %>
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% jloop = 0 %>
+                        <% @top_exam_group.each do |top_exam| %>
+                          <% colspan = @top_exam_group_count[jloop] %>
+                          <td class="col-pdf group_exam" colspan="<%= colspan %>"><%= top_exam.upcase %></td>
+                          <% jloop = jloop+1 %>
+                        <% end %>
+                      <% end %>
+                      
+                  </tr>
+                  
+                  <tr class="table-header">
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"><b><%= "SUBJECT" %></b></td>     
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% @top_exam_group.each do |top_exam| %>
+                        <% ct = 0 %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                         
+                          <% if !report['exam_name'].index(top_exam).nil? %>
+                          <% exam_name_new = report['exam_name'].gsub(top_exam+" ", "") %>
+                          <td class="col-pdf">
+                              <%= exam_name_new.upcase %>
+                              
+                          </td>
+                          <% end %>
+                        <% end %>
+                          
+                        <td class="col-pdf">
+                            TOTAL
+                        </td>
+                        <td class="col-pdf">
+                            GRADE
+                        </td>
+                          
+                     
+                        <% end %>
+                      <% end %>
+                      
+                  </tr>
+                  <% end %>
+
+                  <% total_terms = [] %>
+                  <% full_marks_term = [] %>
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                         
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <% unless @report_data['report']['exams'].blank? %>
+                            <% top_loop = 0 %>
+                            <% @top_exam_group.each do |top_exam| %>
+                              <% this_term = 0 %>
+                              <% this_full_marks = 0 %>
+                              <% @report_data['report']['exams'].each do |report| %>
+                                  <% if !report['exam_name'].index(top_exam).nil? %>
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                      <td><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %></td>
+                                      <% this_term = this_term+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round()  %>
+                                    <% else %>
+                                      <td>N/A</td>
+                                    <% end %> 
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                        <% this_full_marks = this_full_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% else %>
+                                  <% end %>
+                              <% end %>
+                              <% if total_terms[top_loop].blank? %>
+                                   total_terms[top_loop] = 0   
+                              <% end %>  
+                              <% if full_marks_term[top_loop].blank? %>
+                                   full_marks_term[top_loop] = 0   
+                              <% end %> 
+                              <% total_terms[top_loop] = total_terms[top_loop]+this_term.round() %>
+                              <% full_marks_term[top_loop] = full_marks_term[top_loop]+this_full_marks.round() %>
+                              <% top_loop = top_loop+1 %>
+                              <td><%= this_term.round() %></td>
+                              <% grade_mark = (this_term.to_f/this_full_marks.to_f)*100 %>
+                              <%  grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id) %>
+                              <% if !grade.blank? and !grade.name.blank? %>
+                                <td class="col-pdf"><%= grade.name %></td>
+                              <% else %>
+                                <td class="col-pdf">N/A</td>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                      </tr> 
+                    <% end %>  
+                  <% end %>          
+                  <tr class="odd">
+                      <td class="col-pdf border-left-none"><b>Total Mark</b></td>
+
+                      
+                      <% unless @report_data['report']['exams'].blank? %> 
+                        <% jloop = 0 %>
+                        <% @top_exam_group.each do |top_exam| %>
+                            <% colspan = @top_exam_group_count[jloop]-2 %>
+                            <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
+                            <td class="col-pdf"><%=  total_terms[jloop] %></td>
+                            <% grade_mark = (total_terms[jloop].to_f/full_marks_term[jloop])*100 %>
+                            <% grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">N/A</td>
+                            <% end %>
+                           
+                        <% end %>
+                      <% end %>  
+                  </tr>   
+
+              </table>
+
+              
+              <h4 class="h4-evaluation"><b>Evaluation</b></h4>
+              <table id="pdf-table" class="evaluation" width="99.8%" >
+                   
+                      
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              No. of Working Days
+                          </td> 
+                          <td class="col-pdf align-center border-right-none" width="50%">
+                              <%= @report_data['total'] %>
+                          </td>
+                      </tr>
+                      <tr class="odd">
+                          <td class="col-pdf border-left-none" width="50%">
+                              Attendance
+                          </td> 
+                          <td class="col-pdf align-center  border-right-none" width="50%">
+                              <%#= @report_data['present'] %>
+                              <%= @report_data['present'] %>
+                          </td>
+                      </tr>   
+                      
+              </table>
+             
+            
+              <%= render  :partial=>"/connect_exam/kinderland/signs" %>
+               
+
+          </div>
+      </div>
+
+
+
+  </div>
+
+<% end %>
+<%= stylesheet_link_tag 'list_table' %>
+
+<% if params[:page_height] %>
+  <script type="text/javascript">
+    var body = document.body,
+            html = document.documentElement;
+    var pg_height = parseInt(<%= params[:page_height] %>)
+    var page = new Element('div', {'class': 'page1'});
+    var pageBreak = new Element('div', {'class': 'page-break1'});
+    var insertPageBreak = function () {
+        body.appendChild(pageBreak.cloneNode(true))
+    };
+    var insertPage = function () {
+        body.appendChild(page.cloneNode(true));
+    };
+    var currPage = function () {
+        return $$('.page1').last()
+    };
+    var current_page_height = 0
+    var i = 0
+    $$('.available_sections1 .section1').each(function (el) {
+        a = parseInt(el.getHeight());
+        c = current_page_height + a;
+        current_page_height = c;
+        if (c > pg_height) {
+            current_page_height = a
+            body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+            document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+            document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+            i += 1
+            el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+            insertPageBreak();
+            insertPage();
+        }
+        currPage().appendChild(el);
+    });
+  </script>
+<% end %>

@@ -86,14 +86,18 @@
                                     <% else %>
                                   <% end %>
                               <% end %>
-                              <% if total_terms[top_loop].blank? %>
-                                   total_terms[top_loop] = 0   
+                                      
+                              <% if total_terms[top_loop.to_i].blank? %>
+                                   total_terms[top_loop.to_i] = 0   
                               <% end %>  
-                              <% if full_marks_term[top_loop].blank? %>
-                                   full_marks_term[top_loop] = 0   
+                              <% if full_marks_term[top_loop.to_i].blank? %>
+                                   full_marks_term[top_loop.to_i] = 0   
                               <% end %> 
-                              <% total_terms[top_loop] = total_terms[top_loop]+this_term.round() %>
-                              <% full_marks_term[top_loop] = full_marks_term[top_loop]+this_full_marks.round() %>
+                                   
+                              <% total_terms[top_loop.to_i] = total_terms[top_loop.to_i]+this_term.round() %>
+                                   
+                              <% full_marks_term[top_loop.to_i] = full_marks_term[top_loop.to_i]+this_full_marks.round() %>
+                                   
                               <% top_loop = top_loop+1 %>
                               <td><%= this_term.round() %></td>
                               <% grade_mark = (this_term.to_f/this_full_marks.to_f)*100 %>

@@ -237,6 +237,31 @@
 
               </table>
           </div>
+        <% elsif MultiSchool.current_school.id == 3 %>
+           <div id="pdf-footer">
+
+              <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+                  <thead>          
+
+                      <tr>
+                          <td class="">
+                              <%= "----------------------------------------------------------------" %><br />
+                              <font size='5'><%= "Class Teacher" %></font>
+                          </td>
+                          <td class="">
+                              <%= "----------------------------------------------------------------" %><br />
+                              <font size='5'><%= "Teacher In charge" %></font>
+                          </td>
+                          <td class="">
+                              <%= "----------------------------------------------------------------" %><br />
+                              <font size='5'><%= "Principal" %></font>
+                          </td>
+
+                  </td>
+                  </tr>
+
+              </table>
+          </div>
         <% else %>
           <div id="pdf-footer">
 

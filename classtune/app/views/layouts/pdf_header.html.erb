@@ -100,6 +100,9 @@
   <h6 align="center">CONDUCT BY BROTHERS OF HOLY CROSS</h6>
 </div>
 <% elsif MultiSchool.current_school.id == 3 %>
+<div id="pdf-header-south" class="sfx-header">
+  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '50%' %></h4>
+</div>
 <% elsif MultiSchool.current_school.id == 323 %>
  
 <% elsif MultiSchool.current_school.id == 25 %>

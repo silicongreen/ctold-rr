@@ -19,7 +19,7 @@
                   
                   <% unless @top_exam_group.blank? %>
                   <tr class="table-header">
-                      <td class="col-pdf border-left-none no-warp  align-left-baf"><%= debug @top_exam_group.inspect %></td>
+                      <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
                         <% jloop = 0 %>
                         <% @top_exam_group.each do |top_exam| %>

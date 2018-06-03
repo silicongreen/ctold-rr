@@ -89,10 +89,10 @@
                               <% end %>
                                       
                               <% if total_terms[top_loop].blank? %>
-                                   total_terms[top_loop] = 0   
+                                   <%  total_terms[top_loop] = 0 %>  
                               <% end %>  
                               <% if full_marks_term[top_loop].blank? %>
-                                   full_marks_term[top_loop] = 0   
+                                   <%  full_marks_term[top_loop] = 0  %> 
                               <% end %> 
                                    
                               <% total_terms[top_loop] = total_terms[top_loop]+this_term.round() %>

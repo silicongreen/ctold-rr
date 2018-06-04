@@ -203,7 +203,7 @@
 
                               <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
-                              <td class="col-pdf"><%= report['subject_name'] %></td>
+                              <td class="col-pdf border-left-none  no-warp align-left-baf"><%= report['subject_name'].upcase %></td>
                               <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>
                                       <td></td>

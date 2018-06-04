@@ -19,12 +19,13 @@
 
 <div class="students-table">
   <% form_remote_for :student, :url=>{:action=>"save_roll_no"},:before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)" do |form| %>
-  <table align="center" width="100%" cellpadding="1" cellspacing="1" style="float:left; clear:both;">
+    <%
+    male = 0
+    female = 0
+    %>
+    <table align="center" width="100%" cellpadding="1" cellspacing="1" style="float:left; clear:both;">
     <%if !@students.empty? %>
-      <%
-      male = 0
-      female = 0
-      %>
+      
       <tr class="tr-head">
         <td><%= t('sl_no') %></td>
         <td><%= t('name') %></td>
@@ -84,10 +85,7 @@
         <td></td>
       </tr>
       <tr class="tr-head">
-        <td>Male</td>
-        <td><%= male %></td>
-        <td>Female</td>
-        <td><%= female %></td>
+          <td colspan="4"><b>Male : <%= male %>,&nbsp;&nbsp; Female : <%= female %></b></td>
       </tr>
         
     <% else %>
@@ -100,6 +98,7 @@
   
   <% end %>
    <br/>
+   
    <% if MultiSchool.current_school.id != 340 %>
    <div  style="float:left; clear:both; margin:10px;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :id=> 'submit_button' %></div>
    <% end %>

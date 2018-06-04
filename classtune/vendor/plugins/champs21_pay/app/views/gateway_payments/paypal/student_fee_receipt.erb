@@ -46,7 +46,7 @@
                   <%k+=1%>
                   <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
               </tr>
-
+              <% unless @discounts.blank? %>
               <% @discounts.each do |d| %>
                 <%k+=1%>
                 <tr style="border: 1px solid #ADACAB;" class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -55,6 +55,7 @@
                     <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="name-td"><%= discount_text %></td>
                     <td style="padding: 12px 15px 12px 12px;border: 1px solid #ADACAB;border-left: 0px solid #fff;border-top: 0px solid #fff;" class="mark-td"><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %></td>
                 </tr>
+              <% end %>
               <% end %>
 
               <tr style="border: 1px solid #ADACAB;" class="tr-blank"></tr>

@@ -230,6 +230,12 @@
                       <td class="col-pdf no-warp align-left"><b>Teacher-in-charge</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
                      </tr>
+                     <% if @batch.course.course_name.upcase == "NURSERY" %>
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Principal</b></td>
+                      <td class="col-pdf no-warp align-left width-60"><br/></td>
+                     </tr>
+                     <% end %>
                     
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Parent's Signature</b></td>
@@ -279,7 +285,7 @@
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {
-    padding: 13px !important;
+    padding: 10px !important;
 }
 </style>
 <% else %>

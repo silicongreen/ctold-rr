@@ -21,6 +21,10 @@
   <% form_remote_for :student, :url=>{:action=>"save_roll_no"},:before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)" do |form| %>
   <table align="center" width="100%" cellpadding="1" cellspacing="1" style="float:left; clear:both;">
     <%if !@students.empty? %>
+      <%
+      male = 0
+      female = 0
+      %>
       <tr class="tr-head">
         <td><%= t('sl_no') %></td>
         <td><%= t('name') %></td>
@@ -39,6 +43,11 @@
         <td></td>
       </tr>
       <% @students.each_with_index do |r, i| %>
+        <% if !r.gender.blank? && r.gender.upcase == "F" %>
+          <% female = female+1 %>
+        <% else %>
+          <% male = male+1 %>
+        <% end %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
           <td class="col-1">
             <%= i+1 %>
@@ -68,6 +77,19 @@
           </td>
         </tr>
       <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr class="tr-head">
+        <td>Male</td>
+        <td><%= male %></td>
+        <td>Female</td>
+        <td><%= female %></td>
+      </tr>
+        
     <% else %>
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <td class="col-2"><%= t('no_students_found') %></td>

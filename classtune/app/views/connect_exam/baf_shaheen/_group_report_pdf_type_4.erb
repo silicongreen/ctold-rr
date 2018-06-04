@@ -272,11 +272,11 @@
                               <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                               <td class="col-pdf"><%= report['subject_name'] %></td>
-                              <% unless @report_data['report']['exams'].blank? %>  
-                                  <% @report_data['report']['exams'].each do |report| %>
-                                      <td></td>
-                                  <% end %>
-                               <% end %> 
+                              <td class="col-pdf"></td>
+                              <td class="col-pdf"></td>
+                              <td class="col-pdf"></td>
+                              <td class="col-pdf"></td>
+                              <td class="col-pdf"></td> 
                               <td class="col-pdf"></td>
                               <td class="col-pdf"><%= report['subject_comment'] %></td>
                               <td class="col-pdf border-right-none"></td>

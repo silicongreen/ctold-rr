@@ -1,3 +1,4 @@
+<% group_count = 0  %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
  <p>&nbsp;<p>
   <div id="page-yield"  class="available_sections1 sjis-new">
@@ -16,8 +17,9 @@
               <h4 class="h4-evaluation result-in-details"><b>Result in Details</b></h4>
               <table id="pdf-table" width="99.8%" cellspacing="0">
                   <% c = 'even'  %>
-                  
+                 
                   <% unless @top_exam_group.blank? %>
+                  <% group_count = @top_exam_group.count %> 
                   <tr class="table-header">
                       <td class="col-pdf border-left-none no-warp  align-left-baf"></td>
                       <% unless @report_data['report']['exams'].blank? %> 
@@ -214,7 +216,7 @@
     });
   </script>
 <% end %>
-  <% @top_exam_group.count > 3 %>
+  <% group_count > 3 %>
   <style>
     .sjis-new tr.table-header td, .sjis-new tr.odd td, .sjis-new tr.even td
     {

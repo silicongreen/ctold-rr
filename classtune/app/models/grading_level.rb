@@ -33,11 +33,8 @@ class GradingLevel < ActiveRecord::Base
   before_destroy :delete_cache 
   
   def delete_cache
-    unless self.batch_id.blank?
-      Rails.cache.delete("grading_level_batch_#{self.batch_id}")
-    else
-      Rails.cache.delete("grading_level_school_#{MultiSchool.current_school.id}")
-    end  
+    keygradinglevel = "grading_level_"
+    Rails.cache.delete_matched(/#{keygradinglevel}*/) 
   end
 
   def validate
@@ -80,12 +77,18 @@ class GradingLevel < ActiveRecord::Base
   
   class << self
     def default
-      gradding_level = GradingLevel.find(:all,:conditions => { :batch_id => nil, :is_deleted => false }, :order => 'min_score desc')
+      gradding_level = Rails.cache.fetch("grading_level_school_#{MultiSchool.current_school.id}"){
+          grades = GradingLevel.find(:all,:conditions => { :batch_id => nil, :is_deleted => false }, :order => 'min_score desc')
+          grades
+        }
       gradding_level
     end 
 
     def for_batch(batch_id)
-      gradding_level = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc') 
+      gradding_level = Rails.cache.fetch("grading_level_batch_#{batch_id}"){
+          batch_grades = GradingLevel.find_all_by_batch_id(batch_id, :conditions=> 'is_deleted = false', :order => 'min_score desc')
+          batch_grades
+        }
       gradding_level
     end
     

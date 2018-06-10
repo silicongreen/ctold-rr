@@ -830,39 +830,39 @@ module OnlinePayment
         end
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee")
           @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
-          @financefee = @student.finance_fee_by_date @date
-          @student_has_due = false
-          @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
-          unless @std_finance_fee_due.blank?
-            @student_has_due = true
+        @financefee = @student.finance_fee_by_date @date
+        @student_has_due = false
+        @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+        unless @std_finance_fee_due.blank?
+          @student_has_due = true
+        end
+        @due_date = @fee_collection.due_date
+        @paid_fees = @financefee.finance_transactions
+        @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
+
+        @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+        @total_discount = 0
+        @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+
+        calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
+
+        bal=(@total_payable-@total_discount).to_f
+        days=(Date.today-@date.due_date.to_date).to_i
+        auto_fine=@date.fine
+
+        @has_fine_discount = false
+        if days > 0 and auto_fine and @financefee.is_paid == false
+          @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+          @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+          calculate_extra_fine(@date, @batch, @student, @fine_rule)
+          @new_fine_amount = @fine_amount
+          get_fine_discount(@date, @batch, @student)
+          if @fine_amount < 0
+             @fine_amount = 0
           end
-          @due_date = @fee_collection.due_date
-          @paid_fees = @financefee.finance_transactions
-          @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
-      
-          @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
-          @total_discount = 0
-          @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-      
-          calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
-      
-          bal=(@total_payable-@total_discount).to_f
-          days=(Date.today-@date.due_date.to_date).to_i
-          auto_fine=@date.fine
-      
-          @has_fine_discount = false
-          if days > 0 and auto_fine and @financefee.is_paid == false
-            @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-            @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-            calculate_extra_fine(@date, @batch, @student, @fine_rule)
-            @new_fine_amount = @fine_amount
-            get_fine_discount(@date, @batch, @student)
-            if @fine_amount < 0
-              @fine_amount = 0
-            end
-          end
-      
-          @fine_amount=0 if @financefee.is_paid
+        end
+
+        @fine_amount=0 if @financefee.is_paid
 
           respond_to do |format|
             format.pdf do

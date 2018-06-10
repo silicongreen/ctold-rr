@@ -2685,6 +2685,7 @@ class FinanceController < ApplicationController
     @batch=Batch.find(params[:batch_id])
     @currency_type = currency
     if @dates_array.count == 1
+      abort("here i am")
       @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
       @financefee = @student.finance_fee_by_date @date
       @student_has_due = false

@@ -829,6 +829,7 @@ module OnlinePayment
           student_fee_receipt_pdf_without_gateway and return
         end
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee")
+          @student = Student.find(params[:id])
           @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
           @financefee = @student.finance_fee_by_date @date
           @student_has_due = false

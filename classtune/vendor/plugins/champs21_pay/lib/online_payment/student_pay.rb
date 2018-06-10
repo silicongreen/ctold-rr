@@ -53,7 +53,7 @@ module OnlinePayment
           @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           @total_discount = 0
 
-          calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
+          calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
           
           bal=(@total_payable-@total_discount).to_f
           
@@ -829,14 +829,15 @@ module OnlinePayment
           student_fee_receipt_pdf_without_gateway and return
         end
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee")
-          @student = Student.find(params[:id])
           @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
-          @financefee = @student.finance_fee_by_date @date
+          @student = Student.find(params[:id])
+          @batch=@student.batch
           @student_has_due = false
           @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
           unless @std_finance_fee_due.blank?
             @student_has_due = true
           end
+          @financefee = @student.finance_fee_by_date @date
           @due_date = @fee_collection.due_date
           @paid_fees = @financefee.finance_transactions
           @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
@@ -852,7 +853,7 @@ module OnlinePayment
           auto_fine=@date.fine
 
           @has_fine_discount = false
-          if days > 0 and auto_fine and @financefee.is_paid == false
+          if days > 0 and auto_fine
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
             calculate_extra_fine(@date, @batch, @student, @fine_rule)
@@ -864,6 +865,7 @@ module OnlinePayment
           end
 
           @fine_amount=0 if @financefee.is_paid
+          @has_fine_discount = false if @financefee.is_paid
 
           respond_to do |format|
             format.pdf do

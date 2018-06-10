@@ -1,0 +1,406 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<%
+  copy = []
+  copy << "Bank Copy"
+  copy << "School Copy"
+  copy << "Student Copy"
+%>
+
+<div id="page-yield" class="available_sections">
+    <% copy.each do |cp| %>
+    <div class="div-33" >
+            
+               <table class="vat_area">
+                   <tr>
+                       <td class="left">&nbsp;</td>
+                       <td class="right"><b><%= cp.upcase %></b></td>
+                   </tr>
+               </table>
+       
+            <div class="logo-left-div"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '95%' %></div>
+            <div class="school-left-div"><%=Configuration.get_config_value('InstitutionName').upcase; %></div>
+            <div class="left-clear"></div>
+            <% total_fees = 0 %>
+            
+            <table class="std_info" id="pdf-table">
+                <tr class="table-header">
+                    <td class="left border-left-none">Date:</td> <td>&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
+                    <td class="right">Student ID:</td> <td  class="border-right-none">&nbsp;<%=  @student.admission_no %></td>
+                </tr>
+                <tr class="table-header">
+                    <td class="left border-left-none" colspan="1" >Name:</td> <td colspan="3"  class="border-right-none">&nbsp;<%=  "#{@student.full_name}" %></td>
+                </tr>
+                <tr class="table-header">
+                    <td class="left border-left-none">Class:</td> <td colspan="3"  class="border-right-none">&nbsp;<%=  "#{@student.batch.course.course_name}" %></td>
+                </tr>
+            </table> 
+            
+            <div class="no-padding-no-margin">Paid For Month(s) Of : <%=  "#{@date.name.capitalize}" %></div>
+          
+       
+            <% tr_count = 0 %>
+            <table class="std_info" id="pdf-table">
+                <tr class="table-header">
+                    <td class="name-td left border-left-none"  colspan="1" ><%= "SL" %></td>
+                    <td colspan="1" class="align-center" ><%= "PARTICULARS" %></td>
+                    <td class="mark-td border-right-none no-warp"> <%= "AMOUNT IN TK." %></td>
+                </tr>
+                <% tr_count = tr_count+1 %>
+                <%k=0%>
+                <% i = 0  %>
+                <% c= 'even' %>
+                <% vat_amount = 0 %>
+                <% @fee_particulars.each do |fee| %>
+                  
+                      <tr  class="table-header">
+
+                          <%k+=1%>
+                          <td class="name-td left border-left-none" colspan="1"><%= k %></td>
+                          <td class="name-td left" colspan="1"><%= fee.name %></td>
+                          <td class="mark-td border-right-none align-right"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% total_fees += fee.amount %>   
+                <% end %>
+
+                <% unless @total_discount == 0 %>
+                    <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
+                      <% @onetime_discounts.each do |d| %>
+                        <% k += 1 %>
+                        <tr  class="table-header">
+                          <td class="name-td left border-left-none" colspan="1"><%= k %></td>
+                          <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                          <td class="name-td left"  colspan="1"><%= discount_text %></td>
+                          <td class="mark-td border-right-none">
+                            <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
+                              <%= precision_label(@onetime_discounts_amount[d.id]) %>
+                            <% else %>
+                            <%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
+                            <% end %>
+                          </td>
+                        </tr>
+                       
+                      <% end %>
+                    <% end %> 
+                        
+                    <% unless @discounts.nil? or @discounts.empty? or @discounts.blank? %>  
+                      <% @discounts.each do |d| %>
+                        <%k+=1%>
+                        <tr  class="table-header">
+                          <td class="name-td left border-left-none" colspan="1"><%= k %></td>
+                          <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                          <td class="name-td left"  colspan="1"><%= discount_text %></td>
+                          <td class="mark-td border-right-none">
+                            <% unless @discounts_amount[d.id].nil? or @discounts_amount[d.id].blank? %>  
+                              <%= precision_label(@discounts_amount[d.id]) %>
+                            <% else %>
+                            <%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
+                            <% end %>
+                          </td>
+                        </tr>
+                        <% i += 1 %>
+                      <% end %>
+                    <% end %>
+
+                  <% total_fees = (@total_payable-@total_discount) %>
+                 
+
+
+                <% end %>
+
+                <% if @paid_fees%>
+
+
+
+                  <% unless @paid_fees.blank? %>
+                    <% @paid_fees.each do |trans| %>
+                      <% if trans.fine_included != 0 and trans.fine_amount.to_i > 0 %>
+                        <tr  class="table-header">
+                            <%k+=1%>
+                            <td class="col-2 left border-left-none"  colspan="1"><%= k %></td>
+                            <td class="col-2 left"  colspan="1"><span><%= t('fine_on') %><%= trans.transaction_date %></span></td>
+
+                            <td class="col-4 border-right-none"><%= "#{precision_label(trans.fine_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.fine_amount.to_f %>
+                      <% end %>
+                      <% if trans.vat_included != 0 and trans.vat_amount.to_i > 0 %>
+                        <tr  class="table-header">
+                            <%k+=1%>
+                            <td class="col-2 left border-left-none"  colspan="1"><%= k %></td>
+                            <td class="col-2 left"  colspan="1"><span><%= "Vat"  %></span></td>
+
+                            <td class="col-4 border-right-none"><%= "#{precision_label(trans.vat_amount.to_f)}" %></td>
+                        </tr>
+                        <% total_fees += trans.vat_amount.to_f %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <%end%>
+                <%unless @financefee.is_paid %>
+                  <%if @fine_rule%>
+                    <tr  class="table-header">
+                      <%k+=1%>
+                      <td colspan="1" class="col-8  left border-left-none"><%= k %></td>
+                      <td class="col-8" colspan="1" ><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></td>
+                      <td class="col-6 border-right-none align-right" ><%= precision_label(@new_fine_amount) %></td>
+                    </tr>
+                  <%end%>
+                <%end%>
+                
+
+                  
+                <% if @has_fine_discount %>    
+                <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
+                  <% @discounts_on_lates.each do |d| %>
+                    <% if @discounts_late_amount[d.id] > 0 %>
+                    <tr  class="table-header">
+                      <td colspan="1" class="col-8  left border-left-none"><%= k+1 %></td>
+                      <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                      <td class="col-8" colspan="1" ><%= discount_text %></td>
+                      <td class="col-6 border-right-none" >
+                        <%= precision_label(@discounts_late_amount[d.id]) %>
+                      </td>
+                    </tr>
+                    <% end %>
+                    <% k += 1 %>
+                  <% end %>
+                <% end %> 
+                <tr  class="table-header">
+                  <td colspan="1" class="col-8  left border-left-none"><%= k+1 %></td>
+                  <td class="col-8" colspan="1" >Fine (After Discount)</td>
+                  <td class="col-6 border-right-none" >
+                    <%= precision_label(@fine_amount) %>
+                  </td>
+                </tr> 
+                <% k += 1 %>
+                <% end %>
+                
+                <% unless @paid_fees.nil? %>
+                  <% paid=0 %>
+                  <% @paid_fees.each{|a| paid += a.amount.to_f} %>
+                  <% total_fees -= paid %>
+                  <% if paid.to_i > 0 %>
+                    <tr  class="table-header">
+                     <td colspan="1" class="col-8  left border-left-none"><%= k+1 %></td>
+                     <td colspan="1" class="col-8"><%= t('payment_done') %></td>
+                     <td class="col-6 border-right-none" >
+                       <%= precision_label(paid) %>
+                     </td>
+                   </tr>
+                   <% k += 1 %>
+                  <% end %>
+                <% end %>
+                      
+                <% total_payable_particuler = 10 %> 
+                <%
+                  particuler_remain  = total_payable_particuler - k
+                %>  
+                      
+                <%  $i = 0 %>
+                 <% while $i < particuler_remain  do %>
+                <tr  class="table-header">
+                    <%k+=1%>
+                    <td colspan="1" class="col-8  left border-left-none"><%= k %></td>
+                    <td class="col-8 left" colspan="1" ></td>
+                    <td class="col-6 border-right-none" ></td>
+                </tr>
+                  <%  $i = $i+1 %>
+                <%  end %>      
+                      
+                      
+                <% if paid.to_i<=0 %> 
+                  <%balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount%>
+                  
+
+                  <tr  class="table-header">
+                      <%k+=1%>
+                      <td colspan="1" class="col-8  left border-left-none"></td>
+                      <td colspan="1" class="col-8"><b>Grand Total</b></td>
+                      <td class="col-pdf border-right-none"><b><%= "#{precision_label(balance)}" %></b></td>
+                  </tr>
+
+
+                  
+                
+                <% end %>
+                <% if ((k+1)%1)==0 %>
+              </table>
+              </center>
+              <% if balance.to_i > 0 %>
+              <h2 class='in-words'>Taka (in Words) : <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></h2>
+              <% end %>
+
+              <% end %>
+              <table class="signature">
+                  <tr>
+                      <td>Parent's Signature</td>
+                      <td>Authorized Signature</td>
+                  </tr>
+              </table>
+                   
+              
+    </div>
+    
+    <% end %>
+    
+    
+</div>
+<style>
+
+ #page-yield div.div-33
+{
+    float:left;
+    width: 32%;
+    margin-right: 15px;
+    border: 1px solid black;
+    min-height: 680px
+    
+} 
+#page-yield div.div-33 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-33:last-child
+{
+    margin-right: 0px;
+}
+table.vat_area tr td
+{
+    font-size: 10px;
+   
+}
+.registration_numer
+{
+  font-size: 10px;
+}
+.logo-left-div
+{
+  float:left;
+  width: 16%;
+  margin-left: 10px;
+}
+.school-left-div
+{
+  float: left;
+  width: 70%;
+  margin-left: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left-clear
+{
+  float:left;
+  clear:both;
+}
+center.due
+{
+  clear:both;
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+center
+{
+  clear:both;
+  margin-top: 1px;
+  font-size: 11px;
+}
+center.small
+{
+    font-size: 9px;
+    margin-top:10px;
+    margin-bottom: -15px;
+}
+.std_info .table-header td{
+    padding: 3px !important;
+    border-top: 1px solid black !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    font-weight: normal;
+    background: #fff;
+    font-size: 11px;
+   
+}
+.std_info tr.table-header td.border-left-none
+{
+    border-left: none !important;
+}
+.std_info tr.table-header td.border-right-none
+{
+    border-right: none !important;
+}
+table#pdf-table{
+    border: none;
+    border-bottom: 1px solid black;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+table.std_info
+{
+    width:99.6%;
+    margin-left: 1px;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:80px;
+}
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 3px 10px;
+    width: 30%;
+    text-align: center;
+    font-size: 11px;
+    
+}
+.in-words
+{
+  float:left;
+  clear:both;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 11px;
+  letter-spacing:normal !important;
+  
+}
+div.no-padding-no-margin
+{
+    padding: 0px 5px !important;
+    font-size: 11px;
+    margin-top: 5px !important;
+    margin-bottom: -15px !important;
+    font-weight: bold;
+}
+tr.table-header td.align-right
+{
+    text-align: right !important;
+}
+tr.table-header td.align-center
+{
+    text-align: center;
+}
+.no-warp
+{
+    white-space: nowrap;
+}
+</style>    

@@ -18,6 +18,8 @@
 #under the License. -%>
 <% if MultiSchool.current_school.id == 312 %>
   <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_all_pdf" %>
+<% if MultiSchool.current_school.id == 3 %>
+  <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_all_pdf" %>
 <% elsif MultiSchool.current_school.id == 325 %>
   <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_all_pdf" %>
 <% else %>

@@ -42,13 +42,15 @@
             <table class="std_info" id="pdf-table">
                 <tr class="table-header">
                     <td class="left border-left-none">Date:</td> <td>&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
-                    <td class="right">Student ID:</td> <td  class="border-right-none">&nbsp;<%=  @student.admission_no %></td>
+                    <td class="right">Due Date:</td> <td  class="border-right-none">&nbsp;<%= @date.to_date.strftime("%d-%m-%Y").to_s %></td>
                 </tr>
                 <tr class="table-header">
-                    <td class="left border-left-none" colspan="1" >Name:</td> <td colspan="3"  class="border-right-none">&nbsp;<%=  "#{@student.full_name}" %></td>
+                    <td class="left border-left-none">Student ID:</td> <td>&nbsp;<%=  @student.admission_no %></td>
+                    <td class="right">Name:</td> <td class="border-right-none">&nbsp;<%=  "#{@student.full_name}" %></td>
                 </tr>
                 <tr class="table-header">
-                    <td class="left border-left-none">Class:</td> <td colspan="3"  class="border-right-none">&nbsp;<%=  "#{@student.batch.course.course_name}" %></td>
+                    <td class="left border-left-none">Class:</td> 
+                    <td colspan="3"  class="border-right-none">&nbsp;<%=  "#{@student.batch.course.course_name}" %></td>
                 </tr>
             </table> 
             

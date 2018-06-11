@@ -41,7 +41,7 @@
             
             <table class="std_info" id="pdf-table">
                 <tr class="table-header">
-                    <td class="left border-left-none">Date:</td> <td>&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
+                    <td class="left border-left-none">Date:</td> <td>&nbsp;<%=  Time.now.strftime("%d-%m-%Y") %></td>
                     <td class="right">Due Date:</td> <td  class="border-right-none">&nbsp;<%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %></td>
                 </tr>
                 <tr class="table-header">

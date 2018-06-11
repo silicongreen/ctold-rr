@@ -75,14 +75,7 @@ class Sms
         $sms_params = array();
         if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))
         {
-            $configobj = new Configurations();
-            $config_id = $configobj->getConfigId("TotalSmsCount", $school_id);
-
-            if ($config_id)
-            {
-                $configmain = $configobj->findByPk($config_id);
-                $configmain->config_value = $configmain->config_value + count($sms_numbers);
-            }
+            
             foreach ($sms_numbers as $key => $value)
             {
                 $sms_msg = new SmsMessages();
@@ -150,14 +143,7 @@ class Sms
             $sms_params = array();
             if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))
             {
-                $configobj = new Configurations();
-                $config_id = $configobj->getConfigId("TotalSmsCount", $school_id);
-
-                if ($config_id)
-                {
-                    $configmain = $configobj->findByPk($config_id);
-                    $configmain->config_value = $configmain->config_value + count($sms_numbers);
-                }
+                
                 foreach ($sms_numbers as $key => $value)
                 {
                     $sms_msg = new SmsMessages();

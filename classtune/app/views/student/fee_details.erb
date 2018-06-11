@@ -212,4 +212,6 @@
 
     </div>
   <% end %>
+   <%= link_to "► #{t('print_receipt')}",
+                  {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@student.batch_id},:target => '_blank', :class=> 'user_button' %>
 </div>

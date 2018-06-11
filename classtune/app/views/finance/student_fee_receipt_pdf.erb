@@ -21,6 +21,8 @@
   <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>
 <% elsif MultiSchool.current_school.id == 312 %>
   <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
+<% elsif MultiSchool.current_school.id == 3 %>
+  <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_pdf" %>
 <% else %>
   <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
 <% end %>

@@ -34,8 +34,8 @@
                    </tr>
                </table>
        
-            <div class="logo-left-div"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '95%' %></div>
-            <div class="school-left-div"><%=Configuration.get_config_value('InstitutionName').upcase; %></div>
+            <div class="logo-left-div"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '95%' %></div>
+            <div class="school-left-div">Singapore School Kinderland </div>
             <div class="left-clear"></div>
             <% total_fees = 0 %>
             

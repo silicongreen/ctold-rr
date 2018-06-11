@@ -89,7 +89,9 @@ class ApplicationController < ActionController::Base
       "seventy","seventy one","seventy two","seventy three","seventy four","seventy five","seventy six","seventy seven","seventy eight","seventy nine",
       "eighty","eighty one","eighty two","eighty three","eighty four","eighty five","eighty six","eighty seven","eighty eight","eighty nine",
       "ninety","ninety one","ninety two","ninety three","ninety four","ninety five","ninety six","ninety seven","ninety eight","ninety nine",
-      "one hundred","one hundred one","one hundred two","one hundred three","one hundred four","one hundred five","one hundred six","one hundred seven","one hundred eight","one hundred nine"
+      "one hundred","one hundred one","one hundred two","one hundred three","one hundred four","one hundred five","one hundred six","one hundred seven","one hundred eight","one hundred nine",
+      "one hundred ten","one hundred eleven","one hundred twelve","one hundred thirteen","one hundred fourteen","one hundred fifteen","one hundred sixteen","one hundred seventeen","one hundred eighteen","one hundred nineteen",
+      "one hundred twenty"
       ]
 
     set2 = ["","","twenty","thirty","forty","fifty","sixty",

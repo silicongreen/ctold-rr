@@ -216,19 +216,10 @@
                             
                             <%
                             subject_grade = "N/A"
-                            last_grade_score = 0
-                            @grading_levels.each_with_index do |grade,index|
-                              if grade.max_score.nil? 
-                                if accumulated.to_f > grade.min_score.to_f and grade.min_score.to_f > last_grade_score.to_f
-                                  last_grade_score = grade.min_score.to_f
-                                  subject_grade = grade.name
-                                end  
-                              else
-                                if accumulated.to_f > grade.min_score.to_f and accumulated.to_f < grade.max_score.to_f
-                                  subject_grade = grade.name
-                                end  
-                              end  
-                            end 
+                            grade = GradingLevel.percentage_to_grade(accumulated, @batch.id)
+                            if !grade.blank? and !grade.name.blank?
+                              subject_grade = grade.name 
+                            end  
                             %>
                              <% if subject_grade == "U" %>
                               <% total_u +=1 %>

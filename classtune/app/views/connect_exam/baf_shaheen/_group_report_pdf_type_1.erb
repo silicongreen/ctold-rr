@@ -97,7 +97,7 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
 
-                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <td class="col-pdf border-left-none no-warp align-left-baf"><%= subjects['id'] %><%= subjects['name'].upcase %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
                               <td class="col-pdf no-warp">

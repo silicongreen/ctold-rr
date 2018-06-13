@@ -36,10 +36,10 @@
         @discounts_late_amount = @all_discounts_late_amount[std.id]
         %> 
         <% unless params[:front_page].blank? %>
-        <%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
+        <%=  render  :partial=>"finance/fee_receipt/kinderland/front_page_pdf" %>
         <div class="page-break"></div>
         <% end %>
-        <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
+        <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_pdf" %>
 
         <div class="page-break"></div>
         <% 

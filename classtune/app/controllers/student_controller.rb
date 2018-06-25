@@ -277,28 +277,19 @@ class StudentController < ApplicationController
     #        class_data
     #      }
     
-  @classes = []
-  @batch_id = ''
-  @course_name = ""
-  @section_name = ""
-  unless params[:course_name].blank?
-    @course_name = params[:course_name]
-  end
-  unless params[:section_name].blank?
-    @section_name = params[:section_name]
-  end
-  render :update do |page|
-    if params[:page].nil?
-      page.replace_html 'course', :partial => 'courses', :object => @courses
-      unless params[:section_page].nil? and params[:section_partial].nil?
-        page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
-      end
-      unless params[:page_batch].nil? and params[:partial_view_batch].nil?
-        page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
-      end
-    else
-      if params[:partial_view].nil?
-        page.replace_html params[:page], :partial => 'courses', :object => @courses
+    @classes = []
+    @batch_id = ''
+    @course_name = ""
+    @section_name = ""
+    unless params[:course_name].blank?
+      @course_name = params[:course_name]
+    end
+    unless params[:section_name].blank?
+      @section_name = params[:section_name]
+    end
+    render :update do |page|
+      if params[:page].nil?
+        page.replace_html 'course', :partial => 'courses', :object => @courses
         unless params[:section_page].nil? and params[:section_partial].nil?
           page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
         end
@@ -306,17 +297,26 @@ class StudentController < ApplicationController
           page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
         end
       else
-        page.replace_html params[:page], :partial => params[:partial_view], :object => @courses
-        unless params[:section_page].nil? and params[:section_partial].nil?
-          page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+        if params[:partial_view].nil?
+          page.replace_html params[:page], :partial => 'courses', :object => @courses
+          unless params[:section_page].nil? and params[:section_partial].nil?
+            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+          end
+          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+          end
+        else
+          page.replace_html params[:page], :partial => params[:partial_view], :object => @courses
+          unless params[:section_page].nil? and params[:section_partial].nil?
+            page.replace_html params[:section_page], :partial => params[:section_partial], :object => @classes
+          end
+          unless params[:page_batch].nil? and params[:partial_view_batch].nil?
+            page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
+          end
         end
-        unless params[:page_batch].nil? and params[:partial_view_batch].nil?
-          page.replace_html params[:page_batch], :partial => params[:partial_view_batch], :object => @classes
-        end
-      end
-    end  
+      end  
+    end
   end
-end
 
   
   def get_classes_publisher
@@ -1110,7 +1110,7 @@ end
     if students.blank?
       StudentSession.find(params[:id]).destroy
       @additional_details = StudentSession.find(:all, :conditions=>{:status=>true})
-    @inactive_additional_details = StudentSession.find(:all, :conditions=>{:status=>false})
+      @inactive_additional_details = StudentSession.find(:all, :conditions=>{:status=>false})
       flash[:notice]="Successfully Deleted"
       redirect_to :action => "add_student_session"
     else
@@ -1582,8 +1582,8 @@ end
   def only_allowed_when_parmitted
     @config = Configuration.find_by_config_key('ParentCanEdit')
     if @config.blank? or @config.config_value.blank? or @config.config_value.to_i == 0
-        flash[:notice] = "#{t('flash_msg4')}"
-        redirect_to :controller => 'user', :action => 'dashboard'
+      flash[:notice] = "#{t('flash_msg4')}"
+      redirect_to :controller => 'user', :action => 'dashboard'
     else
       @allow_access = true
     end 
@@ -1616,9 +1616,9 @@ end
       #      end
       flash[:notice] = "#{t('student.flash4')}"
       if !params[:steps].blank? and params[:steps]=="one" 
-          redirect_to :controller => "student", :action => "admission2", :id => @student.id
+        redirect_to :controller => "student", :action => "admission2", :id => @student.id
       else
-          redirect_to :controller => "student", :action => "guardians", :id => @student.id
+        redirect_to :controller => "student", :action => "guardians", :id => @student.id
       end
     end
   end
@@ -2114,12 +2114,12 @@ end
       end
     end
     render :pdf => "profile_pdf",
-            :margin => {    :top=> 0,
-            :bottom => 15,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :margin => {    :top=> 0,
+      :bottom => 15,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     
   end
 
@@ -2157,7 +2157,7 @@ end
         extra_condition+= " and student_forms.is_delete=true"
       end  
     elsif @current_user.employee?
-        extra_condition+= " and student_forms.employee_id="+@current_user.employee_record.id.to_s
+      extra_condition+= " and student_forms.employee_id="+@current_user.employee_record.id.to_s
     else
       extra_condition+= " and student_forms.is_delete=true"
     end  
@@ -3248,30 +3248,43 @@ end
   end
 
   def fee_details
-    @date  = FinanceFeeCollection.find(params[:id2])
+    @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
     @financefee = @student.finance_fee_by_date @date
-    @fee_collection = FinanceFeeCollection.find(params[:id2])
+    @student_has_due = false
+    @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+    unless @std_finance_fee_due.blank?
+      @student_has_due = true
+    end
     @due_date = @fee_collection.due_date
+    @paid_fees = @financefee.finance_transactions
+    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
-    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
-    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
-    @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch)}
+    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-    @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
-    total_fees = @financefee.balance.to_f+params[:special_fine].to_f
-    unless params[:fine].nil?
-      total_fees += params[:fine].to_f
-    end
+
+    calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
+
     bal=(@total_payable-@total_discount).to_f
     days=(Date.today-@date.due_date.to_date).to_i
     auto_fine=@date.fine
-    if days > 0 and auto_fine
+
+    @has_fine_discount = false
+    if days > 0 and auto_fine and @financefee.is_paid == false
       @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
       @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+      calculate_extra_fine(@date, @batch, @student, @fine_rule)
+      @new_fine_amount = @fine_amount
+      get_fine_discount(@date, @batch, @student)
+      if @fine_amount < 0
+         @fine_amount = 0
+      end
     end
 
-    @paid_fees = @financefee.finance_transactions
+    @fine_amount=0 if @financefee.is_paid
+    unless params[:mobile_view].blank?
+      render 'mobile_fee_details',:layout => false
+    end
   end
   
   #  # Graphs
@@ -3745,6 +3758,374 @@ end
     
   end
   
+  def date_format(date)
+    /(\d{4}-\d{2}-\d{2})/.match(date)
+  end
+
+  def calculate_discount(date,batch,student,is_paid)
+    one_time_discount = false
+    one_time_total_amount_discount = false
+    onetime_discount_particulars_id = []
+
+    one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    @onetime_discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    if @onetime_discounts.length > 0
+      one_time_total_amount_discount= true
+      @onetime_discounts_amount = []
+      @onetime_discounts.each do |d|
+        @onetime_discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+        @total_discount = @total_discount + @onetime_discounts_amount[d.id]
+      end
+    else
+      @onetime_discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if @onetime_discounts.length > 0
+        one_time_discount = true
+        @onetime_discounts_amount = []
+        i = 0
+        @onetime_discounts.each do |d|   
+          onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @onetime_discounts_amount[d.id] = discount_amt
+          @total_discount = @total_discount + discount_amt
+          i = i + 1
+        end
+      end
+    end
+
+    unless one_time_total_amount_discount
+      if onetime_discount_particulars_id.empty?
+        onetime_discount_particulars_id[0] = 0
+      end
+      discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if discounts_on_particulars.length > 0
+        @discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        @discounts_amount = []
+        @discounts.each do |d|   
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @discounts_amount[d.id] = discount_amt
+          @total_discount = @total_discount + discount_amt
+        end
+      else  
+        unless one_time_discount
+          @discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          @discounts_amount = []
+          @discounts.each do |d|
+            @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+            @total_discount = @total_discount + @discounts_amount[d.id]
+          end
+        end
+      end
+    end
+  end
+  
+  def calculate_discount_index_all(date,batch,student,ind,is_paid)
+    one_time_discount = false
+    one_time_total_amount_discount = false
+    onetime_discount_particulars_id = []
+    
+    one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    if @all_onetime_discounts[ind].length > 0
+      one_time_total_amount_discount= true
+      @all_onetime_discounts_amount[ind] = []
+      @all_onetime_discounts[ind].each do |d|
+        @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
+        @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
+      end
+    else
+      @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if @all_onetime_discounts[ind].length > 0
+        one_time_discount = true
+        @all_onetime_discounts_amount[ind] = []
+        i = 0
+        @all_onetime_discounts[ind].each do |d|   
+          onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @all_onetime_discounts_amount[ind][d.id] = discount_amt
+          @all_total_discount[ind] = @all_total_discount[ind] + discount_amt
+          i = i + 1
+        end
+      end
+    end
+
+    unless one_time_total_amount_discount
+      if onetime_discount_particulars_id.empty?
+        onetime_discount_particulars_id[0] = 0
+      end
+      discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if discounts_on_particulars.length > 0
+        @all_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        @all_discounts_amount[ind] = []
+        @all_discounts[ind].each do |d|   
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @all_discounts_amount[ind][d.id] = discount_amt
+          @all_total_discount[ind] = @all_total_discount[ind] + discount_amt
+        end
+      else  
+        unless one_time_discount
+          @all_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          @all_discounts_amount[ind] = []
+          @all_discounts[ind].each do |d|
+            @all_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
+            @all_total_discount[ind] = @all_total_discount[ind] + @all_discounts_amount[ind][d.id]
+          end
+        end
+      end
+    end
+  end
+  
+  def calculate_discount_index(date,batch,student,ind,is_paid)
+    one_time_discount = false
+    one_time_total_amount_discount = false
+    onetime_discount_particulars_id = []
+    
+    one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    if @onetime_discounts[ind].length > 0
+      one_time_total_amount_discount= true
+      @onetime_discounts_amount[ind] = []
+      @onetime_discounts[ind].each do |d|
+        @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+        @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
+      end
+    else
+      @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if @onetime_discounts[ind].length > 0
+        one_time_discount = true
+        @onetime_discounts_amount[ind] = []
+        i = 0
+        @onetime_discounts[ind].each do |d|   
+          onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @onetime_discounts_amount[ind][d.id] = discount_amt
+          @total_discount[ind] = @total_discount[ind] + discount_amt
+          i = i + 1
+        end
+      end
+    end
+
+    unless one_time_total_amount_discount
+      if onetime_discount_particulars_id.empty?
+        onetime_discount_particulars_id[0] = 0
+      end
+      discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if discounts_on_particulars.length > 0
+        @discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        @discounts_amount[ind] = []
+        @discounts[ind].each do |d|   
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          @discounts_amount[ind][d.id] = discount_amt
+          @total_discount[ind] = @total_discount[ind] + discount_amt
+        end
+      else  
+        unless one_time_discount
+          @discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          @discounts_amount[ind] = []
+          @discounts[ind].each do |d|
+            @discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+            @total_discount[ind] = @total_discount[ind] + @discounts_amount[ind][d.id]
+          end
+        end
+      end
+    end
+  end
+  
+  def calculate_new_discount(date,batch,student,total_payable)
+    total_discount = 0
+    one_time_discount = false
+    one_time_total_amount_discount = false
+    onetime_discount_particulars_id = []
+
+    one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    onetime_discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    if onetime_discounts.length > 0
+      one_time_total_amount_discount= true
+      onetime_discounts_amount = []
+      onetime_discounts.each do |d|
+        onetime_discounts_amount[d.id] = total_payable * d.discount.to_f/ (d.is_amount?? total_payable : 100)
+        total_discount = total_discount + onetime_discounts_amount[d.id]
+      end
+    else
+      onetime_discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if onetime_discounts.length > 0
+        one_time_discount = true
+        onetime_discounts_amount = []
+        i = 0
+        onetime_discounts.each do |d|   
+          onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          onetime_discounts_amount[d.id] = discount_amt
+          total_discount = total_discount + discount_amt
+          i = i + 1
+        end
+      end
+    end
+
+    unless one_time_total_amount_discount
+      if onetime_discount_particulars_id.empty?
+        onetime_discount_particulars_id[0] = 0
+      end
+      discounts_on_particulars = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      if discounts_on_particulars.length > 0
+        discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        discounts_amount = []
+        discounts.each do |d|   
+          fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
+          discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
+          discounts_amount[d.id] = discount_amt
+          total_discount = total_discount + discount_amt
+        end
+      else  
+        unless one_time_discount
+          discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          discounts_amount = []
+          discounts.each do |d|
+            discounts_amount[d.id] = total_payable * d.discount.to_f/ (d.is_amount?? total_payable : 100)
+            total_discount = total_discount + discounts_amount[d.id]
+          end
+        end
+      end
+    end
+    return total_discount
+  end
+  
+  def calculate_extra_fine(date,batch,student,fine_rule)
+    if MultiSchool.current_school.id == 340
+      #GET THE NEXT ALL months 
+      extra_fine = 0
+      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
+      unless other_months.nil? or other_months.empty?
+        other_months.each do |other_month|
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
+        end
+      end
+      @fine_amount = @fine_amount + extra_fine
+    end
+  end
+  
+  def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
+    if MultiSchool.current_school.id == 340
+      #GET THE NEXT ALL months 
+      extra_fine = 0
+      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
+      unless other_months.nil? or other_months.empty?
+        other_months.each do |other_month|
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
+        end
+      end
+      @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine
+    end
+  end
+  
+  def calculate_extra_fine_index(date,batch,student,fine_rule,ind)
+    if MultiSchool.current_school.id == 340
+      #GET THE NEXT ALL months 
+      extra_fine = 0
+      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
+      unless other_months.nil? or other_months.empty?
+        other_months.each do |other_month|
+          fine_amount = fine_rule.fine_amount if fine_rule
+          extra_fine = extra_fine + fine_amount
+        end
+      end
+      @fine_amount[ind] = @fine_amount[ind] + extra_fine
+    end
+  end
+  
+  def get_fine_discount(date,batch,student)
+    if @fine_amount > 0
+      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
+      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
+        @discounts_on_lates = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        if @discounts_on_lates.length > 0
+          @has_fine_discount = true
+          @discounts_late_amount = []
+          @discounts_on_lates.each do |d|   
+            if @fine_amount > 0
+              discount_amt = @new_fine_amount * d.discount.to_f/ (d.is_amount?? @new_fine_amount : 100)
+              @fine_amount = @fine_amount - discount_amt
+              if @fine_amount < 0
+                discount_amt = 0
+              end
+              @discounts_late_amount[d.id] = discount_amt
+            else
+              @discounts_late_amount[d.id] = 0
+            end
+          end
+        end
+      end
+    end
+  end
+  
+  def get_fine_discount_index(date,batch,student,ind)
+    if @fine_amount[ind] > 0
+      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
+      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
+        @discounts_on_lates[ind] = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        if @discounts_on_lates[ind].length > 0
+          @has_fine_discount[ind] = true
+          @discounts_late_amount[ind] = []
+          @discounts_on_lates[ind].each do |d|   
+            if @fine_amount[ind] > 0
+              discount_amt = @new_fine_amount[ind] * d.discount.to_f/ (d.is_amount?? @new_fine_amount[ind] : 100)
+              @fine_amount[ind] = @fine_amount[ind] - discount_amt
+              if @fine_amount[ind] < 0
+                discount_amt = 0
+              end
+              @discounts_late_amount[ind][d.id] = discount_amt
+            else
+              @discounts_late_amount[ind][d.id] = 0
+            end
+          end
+        end
+      end
+    end
+  end
+  
+  
+  def get_fine_discount_index_all(date,batch,student,ind)
+    
+    if @all_fine_amount[ind] > 0
+      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
+      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
+        @all_discounts_on_lates[ind] = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        if @all_discounts_on_lates[ind].length > 0
+          @all_has_fine_discount[ind] = true
+          @all_discounts_late_amount[ind] = []
+          @all_discounts_on_lates[ind].each do |d|   
+            if @all_fine_amount[ind] > 0
+              discount_amt = @all_new_fine_amount[ind] * d.discount.to_f/ (d.is_amount?? @all_new_fine_amount[ind] : 100)
+              @all_fine_amount[ind] = @all_fine_amount[ind] - discount_amt
+              if @all_fine_amount[ind] < 0
+                discount_amt = 0
+              end
+              @all_discounts_late_amount[ind][d.id] = discount_amt
+            else
+              @all_discounts_late_amount[ind][d.id] = 0
+            end
+          end
+        end
+      end
+    end
+  end
+  
   def get_class_test_report(batch_id = 0)
     require 'net/http'
     require 'uri'
@@ -3845,13 +4226,13 @@ end
     
     unless reminderrecipients.nil?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-      :recipient_ids => reminderrecipients,
-      :subject=>"Your application status for "+title+" is updated",
-      :rtype=>1000,
-      :rid=>@formData.id,
-      :student_id => student_ids,
-      :batch_id => batch_ids,
-      :body=>"Your application status for "+title+" is updated. please check student profile form." ))
+          :recipient_ids => reminderrecipients,
+          :subject=>"Your application status for "+title+" is updated",
+          :rtype=>1000,
+          :rid=>@formData.id,
+          :student_id => student_ids,
+          :batch_id => batch_ids,
+          :body=>"Your application status for "+title+" is updated. please check student profile form." ))
     end
     
   end
@@ -3875,11 +4256,11 @@ end
     
     unless available_user_ids.nil?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-      :recipient_ids => available_user_ids,
-      :subject=>title+" Need Your Action",
-      :rtype=>1000,
-      :rid=>@formData.id,
-      :body=>title+" is forwarded to you. Need your action" ))
+          :recipient_ids => available_user_ids,
+          :subject=>title+" Need Your Action",
+          :rtype=>1000,
+          :rid=>@formData.id,
+          :body=>title+" is forwarded to you. Need your action" ))
     end
     
   end
@@ -3914,11 +4295,11 @@ end
     
     unless available_user_ids.nil?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-      :recipient_ids => available_user_ids,
-      :subject=>title+" Status Updated",
-      :rtype=>1000,
-      :rid=>@formData.id,
-      :body=>title+" Status Updated. Need your action" ))
+          :recipient_ids => available_user_ids,
+          :subject=>title+" Status Updated",
+          :rtype=>1000,
+          :rid=>@formData.id,
+          :body=>title+" Status Updated. Need your action" ))
     end
     
     
@@ -3954,11 +4335,11 @@ end
     
     unless available_user_ids.nil?
       Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
-      :recipient_ids => available_user_ids,
-      :subject=>"New "+title+" Submitted",
-      :rtype=>1000,
-      :rid=>@studentForm.id,
-      :body=>"New "+title+" Submitted from #{@current_user.guardian_entry.first_name}. Need your action" ))
+          :recipient_ids => available_user_ids,
+          :subject=>"New "+title+" Submitted",
+          :rtype=>1000,
+          :rid=>@studentForm.id,
+          :body=>"New "+title+" Submitted from #{@current_user.guardian_entry.first_name}. Need your action" ))
     end
     
     

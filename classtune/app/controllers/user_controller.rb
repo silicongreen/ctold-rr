@@ -721,7 +721,9 @@ class UserController < ApplicationController
       session[:api_info] = user_info
     
       flash.clear
-      if !params[:connect_exam].blank? and !params[:batch_id].blank? and !params[:student].blank?
+      if !params[:fees].blank? and !params[:student].blank?
+         successful_user_login_fees(authenticated_user,params[:student]) and return
+      elsif !params[:connect_exam].blank? and !params[:batch_id].blank? and !params[:student].blank?
          successful_user_login_pdf(authenticated_user,params[:connect_exam],params[:batch_id],params[:student]) and return     
       else
         successful_user_login(authenticated_user) and return
@@ -1072,7 +1074,12 @@ class UserController < ApplicationController
   end
 
   private
-  
+  def successful_user_login_fees(user,student)
+    cookies.delete("_champs21_session")
+    session[:user_id_main] = user.id
+    session[:user_id] = user.id
+    redirect_to ({:controller => 'student', :action => 'fees',:id =>student,:mobile_view=>1  })
+  end
   def successful_user_login_pdf(user,connect_exam,batch_id,student)
     cookies.delete("_champs21_session")
     session[:user_id_main] = user.id

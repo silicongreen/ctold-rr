@@ -20,11 +20,11 @@ class NoticeController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'getnotice', 'getsinglenotice', 'acknowledge', 'downloadnoticeattachment','pushnotification'),
+                'actions' => array('index', 'getnotice', 'getsinglenotice', 'acknowledge', 'downloadnoticeattachment','downloadleavestudent','downloadleaveemployee','pushnotification'),
                 'users' => array('@'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('downloadnoticeattachment','getnoticeschool','getteacher','pushnotification'),
+                'actions' => array('downloadnoticeattachment','downloadleavestudent','downloadleaveemployee','getnoticeschool','getteacher','pushnotification'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -60,6 +60,48 @@ class NoticeController extends Controller {
         }
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+    public function actionDownloadleaveStudent() {
+        $id = Yii::app()->request->getParam('id');
+        
+        if ($id) {
+            $leave = new ApplyLeaveStudents();
+            $leaveObj = $leave->findByPk($id);
+            if ($leaveObj && $leaveObj->attachment_file_name) {
+                
+                $url = Settings::$paid_image_path . "uploads/applyleavestudent/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
+                
+                $url = str_replace("&", "%26",$url);
+                if (file_exists($url)) 
+                {
+                    return Yii::app()->getRequest()->sendFile($leaveObj->attachment_file_name, @file_get_contents($url));
+                }
+                else
+                {
+                    echo "Something Went Wrong";
+                }    
+            }
+        }
+    }
+    public function actionDownloadLeaveEmployee() {
+        $id = Yii::app()->request->getParam('id');
+        
+        if ($id) {
+            $leave = new ApplyLeaves();
+            $leaveObj = $leave->findByPk($id);
+            if ($leaveObj && $leaveObj->attachment_file_name) {
+                
+                $url = Settings::$paid_image_path . "uploads/applyleave/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
+                if (file_exists($url)) 
+                {
+                    return Yii::app()->getRequest()->sendFile($leaveObj->attachment_file_name, @file_get_contents($url));
+                }
+                else
+                {
+                    echo "Something Went Wrong";
+                }    
+            }
+        }
     }
 
     public function actionDownloadnoticeattachment() {

@@ -3242,6 +3242,9 @@ end
       flash[:notice] = "#{t('status_updated')}"
       redirect_to :action => "fees", :id => @student.id
     end
+    unless params[:mobile_view].blank?
+      render "mobile_fees",:layout => false
+    end
   end
 
   def fee_details

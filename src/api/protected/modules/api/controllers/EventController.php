@@ -327,6 +327,11 @@ class EventController extends Controller
                     $leave[$i]['leave_type'] = $value['leavetype']->name;
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;
+                    $leave[$i]['attachment_file_name'] = ""; 
+                    if($value->attachment_file_name)
+                    {
+                        $leave[$i]['attachment_file_name'] = $value->attachment_file_name;
+                    }
                     if (!$value->approving_manager)
                     {
                         $leave[$i]['status'] = 2;
@@ -439,6 +444,11 @@ class EventController extends Controller
                     {
                         $leave[$i]['leave_subject'] = $value->leave_subject;
                     }
+                    $leave[$i]['attachment_file_name'] = ""; 
+                    if($value->attachment_file_name)
+                    {
+                        $leave[$i]['attachment_file_name'] = $value->attachment_file_name;
+                    }
                     $leave[$i]['reason'] = $value->reason;
                     if (!$value->viewed_by_teacher && !$value->approved)
                     {
@@ -470,6 +480,30 @@ class EventController extends Controller
         Yii::app()->end();
     }
     
+    private function upload_attachment($file, $obj, $folder = "applyleavestudent" )
+    {
+        $obj->attachment_updated_at = date("Y-m-d H:i:s");
+        $obj->updated_at = date("Y-m-d H:i:s");
+        $uploads_dir = Settings::$paid_image_path . "uploads/".$folder."/attachments/" . $obj->id . "/original/";
+        $file_name = str_replace(" ", "+", $file['attachment_file_name']['name']);
+        $tmp_name = $file["attachment_file_name"]["tmp_name"];
+
+        if (!is_dir($uploads_dir))
+        {
+            @mkdir($uploads_dir, 0777, true);
+        }
+
+        $uploads_dir = $uploads_dir . $file_name;
+
+
+        if (@move_uploaded_file($tmp_name, "$uploads_dir"))
+        {
+            $obj->attachment_file_name = $file['attachment_file_name']['name'];
+            $obj->save();
+        }
+        return $uploads_dir;
+    }
+    
     public function actionAddLeaveStudent()
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
@@ -495,8 +529,14 @@ class EventController extends Controller
                 }
                 $leave->created_at = date("Y-m-d H:i:s");
                 $leave->updated_at = date("Y-m-d H:i:s");
-                if($leave->save()){
+                if ($leave->save()) {
                     $leave_id = $leave->id;
+                    if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name'])) {
+                        $leave->updated_at = date("Y-m-d H:i:s");
+                        $leave->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                        $leave->attachment_file_size = Yii::app()->request->getPost('file_size');
+                        $this->upload_attachment($_FILES, $leave);
+                    }
                 }
 
                 //reminder code
@@ -586,10 +626,18 @@ class EventController extends Controller
                     $leave->created_at = date("Y-m-d H:i:s");
                     $leave->updated_at = date("Y-m-d H:i:s");
                     $leave->save();
+                    
 
                     //reminder
                     if(isset($leave->id))
                     {
+                        if (isset($_FILES['attachment_file_name']['name']) && !empty($_FILES['attachment_file_name']['name'])) 
+                        {
+                            $leave->updated_at = date("Y-m-d H:i:s");
+                            $leave->attachment_content_type = Yii::app()->request->getPost('mime_type');
+                            $leave->attachment_file_size = Yii::app()->request->getPost('file_size');
+                            $this->upload_attachment($_FILES, $leave,"applyleave");
+                        }
 
                         $reminder = new Reminders();
                         $reminder->sender = Yii::app()->user->id;

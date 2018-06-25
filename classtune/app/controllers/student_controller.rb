@@ -3248,21 +3248,25 @@ class StudentController < ApplicationController
   end
 
   def fee_details
-    @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
+   
+   
+    
+    @date  = FinanceFeeCollection.find(params[:id2])
     @financefee = @student.finance_fee_by_date @date
-    @student_has_due = false
-    @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
-    unless @std_finance_fee_due.blank?
-      @student_has_due = true
-    end
+    @fee_collection = FinanceFeeCollection.find(params[:id2])
     @due_date = @fee_collection.due_date
-    @paid_fees = @financefee.finance_transactions
-    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
-    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+    @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+    @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+    @discounts=@date.fee_discounts.all(:conditions=>"batch_id=#{@financefee.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch)}
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-
+    @total_discount =@discounts.map{|d| @total_payable * d.discount.to_f/(d.is_amount? ? @total_payable : 100)}.sum.to_f unless @discounts.nil?
+    total_fees = @financefee.balance.to_f+params[:special_fine].to_f
+    unless params[:fine].nil?
+      total_fees += params[:fine].to_f
+    end
+    
     calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
 
     bal=(@total_payable-@total_discount).to_f
@@ -3281,7 +3285,7 @@ class StudentController < ApplicationController
       end
     end
 
-    @fine_amount=0 if @financefee.is_paid
+    @paid_fees = @financefee.finance_transactions
     unless params[:mobile_view].blank?
       render 'mobile_fee_details',:layout => false
     end

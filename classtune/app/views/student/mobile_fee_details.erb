@@ -232,12 +232,7 @@
                           <% end %>
                       </td>
                   </tr>
-                  <tr cellpadding="1" cellspacing="1">
-                      <td colspan="3" > 
-                          <%= link_to "► #{t('print_receipt')}",
-                          {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@student.batch_id},:target => '_blank', :class=> 'btn btn-success' %>
-                      </td>    
-                  </tr>
+                  
                    
   </table>
 <% end %> 

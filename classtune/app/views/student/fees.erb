@@ -73,7 +73,7 @@
           <div class="due-date"><%= d.due_date %></div>
           <% paid = @student.check_fee_pay(d)  %>
           <div class="category-edit">
-            <%= (paid) ? t('paid') : "#{t('unpaid')} - #{precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}" %>
+            <%= (paid) ? t('paid') : "Payable - #{precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}" %>
           </div>
         </li>
       <% end %>

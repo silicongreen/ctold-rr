@@ -19,23 +19,13 @@
 <%
   copy = []
   copy << "Student Copy"
-  copy << "School Copy"
-  copy << "Bank Copy"
   
 %>
 
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
-    <div class="div-33" >
-            
-               <table class="vat_area">
-                   <tr>
-                       <td class="left">&nbsp;</td>
-                       <td class="right"><b><%= cp.upcase %></b></td>
-                   </tr>
-               </table>
-       
-            <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '95%' %></h4>
+    <div>
+            <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/sjws_logo.png")),:width=> '95%' %></h4>
             
             <div class="left-clear"></div>
             <% total_fees = 0 %>

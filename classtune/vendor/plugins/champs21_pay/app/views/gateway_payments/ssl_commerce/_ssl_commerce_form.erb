@@ -9,6 +9,6 @@
   <%= hidden_field_tag :cancel_url,@cancel_url %>
   <%= hidden_field_tag :version,"2.00" %>
   <% if @paid_fees.blank? %>
-    <%= f.submit '► Pay Fees',:class => "submit_button" %>
+    <%= f.submit '► Pay Fees',:class => "submit_button btn btn-success" %>
   <% end %>
 <% end %>

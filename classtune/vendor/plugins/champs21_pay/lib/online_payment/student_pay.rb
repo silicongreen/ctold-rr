@@ -436,7 +436,11 @@ module OnlinePayment
           
           end
           @fine_amount=0 if (@student.finance_fee_by_date @date).is_paid
-          render 'gateway_payments/paypal/fee_details'
+          unless params[:mobile_view].blank?
+            render 'gateway_payments/paypal/mobile_fee_details',:layout => false
+          else
+            render 'gateway_payments/paypal/fee_details'
+          end
         else
           fee_details_without_gateway
         end

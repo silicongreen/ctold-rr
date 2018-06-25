@@ -15,8 +15,14 @@
           student_id = @current_user.guardian_entry.current_ward_id                 
         %>
         <% end %>
-        <%= link_to "Fees", {:controller => 'student',:action=>:fees, :id=>student_id,:mobile_view=>1}, :class=>"btn btn-primary",:role=>"button" %>
-        <div class="alert alert-info" role="alert"><%= @student.full_name %> >> <%= @date.name.capitalize  %></div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"> <%= link_to "All Fees", {:controller => 'student',:action=>:fees, :id=>student_id,:mobile_view=>1} %></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= @date.name.capitalize  %></li>
+          </ol>
+        </nav>
+        
+        <div class="alert alert-info" role="alert"><%= @student.full_name %></div>
 
         <% unless flash[:success].nil? %>
           <div class="alert alert-success" role="alert"><%= flash[:success] %></div>

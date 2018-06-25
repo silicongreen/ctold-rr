@@ -23,7 +23,7 @@
                 <% paid = @student.check_fee_pay(d)  %>
                 <% unless paid %>
 
-                  <%= link_to "#{d.name}, Due Date : #{d.due_date}, #{precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"list-group-item list-group-item-action list-group-item-secendery" %>
+                  <%= link_to "#{d.name} | Due Date : #{d.due_date} | #{currency}: #{precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)}", {:action=>:fee_details, :id=>@student.id, :id2=>d.id,:mobile_view=>1}, :class=>"list-group-item list-group-item-action list-group-item-secendery" %>
 
                 <% end %>  
 

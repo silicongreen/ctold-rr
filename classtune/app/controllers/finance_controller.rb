@@ -2675,7 +2675,7 @@ class FinanceController < ApplicationController
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-     end  
+    else 
       render :pdf => 'student_fee_receipt_all_pdf',
       :orientation => 'Landscape', :zoom => 1.00,
       :page_size => 'A4',

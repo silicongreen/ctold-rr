@@ -132,37 +132,6 @@ class FinanceFees extends CActiveRecord
             $criteria->with = array(
                 'collection' => array(
                     'select' => 'collection.name,collection.due_date'
-                )
-            );
-            $objfess = $this->findAll($criteria);
-            
-            $afees = array();
-            $i = 0;
-            if($objfess)
-                foreach ($objfess as $key => $value)
-                {
-                    $afees[$i]['id'] = $value->id;
-                    $afees[$i]['is_paid'] = $value->is_paid;
-                    $afees[$i]['balance'] = $value->balance;
-                    $afees[$i]['name'] = $value['collection']->name;
-                    $afees[$i]['duedate'] = $value['collection']->due_date;
-                    $i++;
-                }
-            return  $afees;   
-        }
-        
-        public function feesStudentDue($student_id)
-        {
-            $criteria = new CDbCriteria;
-
-            $criteria->select = 't.id, t.is_paid, t.balance';
-
-            $criteria->compare("t.student_id", $student_id);
-            $criteria->compare("t.is_paid", 0);
-            $criteria->addCondition("collection.due_date>='".date("Y-m-d")."'");
-            $criteria->with = array(
-                'collection' => array(
-                    'select' => 'collection.name,collection.due_date'
                 ),
                 'feetransactions' => array(
                     'select' => 'feetransactions.id',
@@ -194,8 +163,40 @@ class FinanceFees extends CActiveRecord
                                 $balance = $balance+$falue['transaction']->amount;
                             }    
                         } 
-                        $afees[$i]['balance'] = 10;
-                    }   
+                        $afees[$i]['balance'] = $balance;
+                    } 
+                    $afees[$i]['name'] = $value['collection']->name;
+                    $afees[$i]['duedate'] = $value['collection']->due_date;
+                    $i++;
+                }
+            return  $afees;   
+        }
+        
+        public function feesStudentDue($student_id)
+        {
+            $criteria = new CDbCriteria;
+
+            $criteria->select = 't.id, t.is_paid, t.balance';
+
+            $criteria->compare("t.student_id", $student_id);
+            $criteria->compare("t.is_paid", 0);
+            $criteria->addCondition("collection.due_date>='".date("Y-m-d")."'");
+            $criteria->with = array(
+                'collection' => array(
+                    'select' => 'collection.name,collection.due_date'
+                )
+            );
+            $objfess = $this->findAll($criteria);
+            
+            $afees = array();
+            $i = 0;
+            if($objfess)
+                foreach ($objfess as $key => $value)
+                {
+                    $afees[$i]['id'] = $value->id;
+                    $afees[$i]['is_paid'] = $value->is_paid;
+                    $afees[$i]['balance'] = $value->balance;
+                      
                     $afees[$i]['name'] = $value['collection']->name;
                     $afees[$i]['duedate'] = $value['collection']->due_date;
                     $i++;

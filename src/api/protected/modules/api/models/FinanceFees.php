@@ -185,6 +185,7 @@ class FinanceFees extends CActiveRecord
                     $afees[$i]['balance'] = $value->balance;
                     if(isset($value['feetransactions']) && count($value['feetransactions']) > 0)
                     {
+                        
                         $balance = 0;
                         foreach($value['feetransactions'] as $falue)
                         {
@@ -193,7 +194,7 @@ class FinanceFees extends CActiveRecord
                                 $balance = $balance+$falue['transaction']->amount;
                             }    
                         } 
-                        $afees[$i]['balance'] = $balance;
+                        $afees[$i]['balance'] = 10;
                     }   
                     $afees[$i]['name'] = $value['collection']->name;
                     $afees[$i]['duedate'] = $value['collection']->due_date;

@@ -53,7 +53,8 @@ class FinanceFees extends CActiveRecord
 		return array(
                     'collection' => array(self::BELONGS_TO, 'FinanceFeeCollections', 'fee_collection_id',
                                 'joinType' => 'INNER JOIN',
-                    )
+                    ),
+                    'feetransactions' => array(self::HAS_MANY, 'FeeTransactions', 'finance_fee_id')
 		);
 	}
 
@@ -127,7 +128,7 @@ class FinanceFees extends CActiveRecord
             $criteria->select = 't.id, t.is_paid, t.balance';
 
             $criteria->compare("t.student_id", $student_id);
-            $criteria->addCondition("(t.is_paid=1 OR collection.due_date<'".date("Y-m-d")."')");
+            $criteria->compare("t.is_paid",1);
             $criteria->with = array(
                 'collection' => array(
                     'select' => 'collection.name,collection.due_date'
@@ -162,6 +163,14 @@ class FinanceFees extends CActiveRecord
             $criteria->with = array(
                 'collection' => array(
                     'select' => 'collection.name,collection.due_date'
+                ),
+                'feetransactions' => array(
+                    'select' => 'feetransactions.id',
+                    'with' => array(
+                        'transaction' => array(
+                            'select' => 'transaction.amount'
+                        ),
+                    )
                 )
             );
             $objfess = $this->findAll($criteria);
@@ -174,6 +183,18 @@ class FinanceFees extends CActiveRecord
                     $afees[$i]['id'] = $value->id;
                     $afees[$i]['is_paid'] = $value->is_paid;
                     $afees[$i]['balance'] = $value->balance;
+                    if(isset($value['feetransactions']) && count($value['feetransactions']) > 0)
+                    {
+                        $balance = 0;
+                        foreach($value['feetransactions'] as $falue)
+                        {
+                            if(isset($falue['transaction']))
+                            {
+                                $balance = $balance+$falue['transaction']->amount;
+                            }    
+                        } 
+                        $afees[$i]['balance'] = $balance;
+                    }   
                     $afees[$i]['name'] = $value['collection']->name;
                     $afees[$i]['duedate'] = $value['collection']->due_date;
                     $i++;

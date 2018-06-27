@@ -284,7 +284,7 @@ class EventController extends Controller
                 foreach ($leaveobj as $value)
                 {
                    
-                    $leave[$i]['notice_id'] = $value->id;
+                    $leave[$i]['leave_id'] = $value->id;
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;
                     $leave[$i]['attachment_file_name'] = ""; 
@@ -330,7 +330,7 @@ class EventController extends Controller
             if ($leaveobj)
                 foreach ($leaveobj as $value)
                 {
-                    $leave[$i]['notice_id'] = $value->id;
+                    $leave[$i]['leave_id'] = $value->id;
                     $leave[$i]['leave_type'] = $value['leavetype']->name;
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;

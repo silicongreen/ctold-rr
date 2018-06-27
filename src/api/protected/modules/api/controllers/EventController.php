@@ -499,6 +499,10 @@ class EventController extends Controller
         {
             @mkdir($uploads_dir, 0777, true);
         }
+        else
+        {
+            chmod($uploads_dir, 0777);
+        }    
 
         $uploads_dir = $uploads_dir . $file_name;
 

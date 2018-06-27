@@ -487,7 +487,7 @@ class EventController extends Controller
         Yii::app()->end();
     }
     
-    private function upload_attachment($file, $obj, $folder = "applyleavestudent" )
+    private function upload_attachment($file, $obj, $folder = "apply_leave_students" )
     {
         $obj->attachment_updated_at = date("Y-m-d H:i:s");
         $obj->updated_at = date("Y-m-d H:i:s");
@@ -643,7 +643,7 @@ class EventController extends Controller
                             $leave->updated_at = date("Y-m-d H:i:s");
                             $leave->attachment_content_type = Yii::app()->request->getPost('mime_type');
                             $leave->attachment_file_size = Yii::app()->request->getPost('file_size');
-                            $this->upload_attachment($_FILES, $leave,"applyleave");
+                            $this->upload_attachment($_FILES, $leave,"apply_leaves");
                         }
 
                         $reminder = new Reminders();

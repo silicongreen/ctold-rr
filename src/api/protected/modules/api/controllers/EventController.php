@@ -339,7 +339,7 @@ class EventController extends Controller
                     {
                         $leave[$i]['attachment_file_name'] = $value->attachment_file_name;
                     }
-                    if (!$value->approving_manager)
+                    if (!$value->viewed_by_manager)
                     {
                         $leave[$i]['status'] = 2;
                     }

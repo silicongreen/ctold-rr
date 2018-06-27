@@ -286,6 +286,11 @@ class EventController extends Controller
                    
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;
+                    $leave[$i]['attachment_file_name'] = ""; 
+                    if($value->attachment_file_name)
+                    {
+                        $leave[$i]['attachment_file_name'] = $value->attachment_file_name;
+                    }
                     $leave[$i]['leave_subject']  = "";
                     if($value->leave_subject)
                     {

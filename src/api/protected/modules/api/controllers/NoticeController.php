@@ -69,7 +69,7 @@ class NoticeController extends Controller {
             $leaveObj = $leave->findByPk($id);
             if ($leaveObj && $leaveObj->attachment_file_name) {
                 
-                $url = Settings::$paid_image_path . "uploads/applyleavestudent/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
+                $url = Settings::$paid_image_path . "uploads/apply_leave_students/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
                 
                 $url = str_replace("&", "%26",$url);
                 if (file_exists($url)) 
@@ -91,7 +91,7 @@ class NoticeController extends Controller {
             $leaveObj = $leave->findByPk($id);
             if ($leaveObj && $leaveObj->attachment_file_name) {
                 
-                $url = Settings::$paid_image_path . "uploads/applyleave/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
+                $url = Settings::$paid_image_path . "uploads/apply_leaves/attachments/" . $id . "/original/" . urlencode($leaveObj->attachment_file_name);
                 if (file_exists($url)) 
                 {
                     return Yii::app()->getRequest()->sendFile($leaveObj->attachment_file_name, @file_get_contents($url));

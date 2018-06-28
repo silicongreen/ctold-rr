@@ -18,12 +18,7 @@
           student_id = @current_user.guardian_entry.current_ward_id                 
         %>
         <% end %>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"> <%= link_to "All Fees", {:controller => 'student',:action=>:fees, :id=>student_id,:mobile_view=>1} %></li>
-            <li class="breadcrumb-item active" aria-current="page"><%= @date.name.capitalize  %></li>
-          </ol>
-        </nav>
+      
         
         <div class="alert alert-info" role="alert"><%= @student.full_name %> Test pay</div>
 

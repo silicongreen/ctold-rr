@@ -219,7 +219,7 @@ class ApplyLeaveStudents extends CActiveRecord
             $batches = $esubject->getBatchId($profile_id);
             $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
-            $criteria->select = "t.id,t.student_id,t.approved,t.leave_subject,t.reason,t.start_date,t.end_date,t.created_at";
+            $criteria->select = "t.id,t.student_id,t.approved,t.attachment_file_name,t.leave_subject,t.reason,t.start_date,t.end_date,t.created_at";
             $criteria->addCondition("DATE(t.start_date) >= '" . $today . "'");
             $criteria->addInCondition("students.batch_id", $batches);
             $criteria->addCondition("t.approving_teacher IS NULL");
@@ -254,6 +254,11 @@ class ApplyLeaveStudents extends CActiveRecord
                 $return_array[$i]['student_name'] = $students_name;
                 $return_array[$i]['batch'] = $value['students']['batchDetails']['courseDetails']->course_name." ".$value['students']['batchDetails']->name;
                 $return_array[$i]['approved'] = $value->approved;
+                $return_array[$i]['attachment_file_name'] = ""; 
+                if($value->attachment_file_name)
+                {
+                    $return_array[$i]['attachment_file_name'] = $value->attachment_file_name;
+                }
                 $return_array[$i]['leave_subject']  = "";
                 if($value->leave_subject)
                 {

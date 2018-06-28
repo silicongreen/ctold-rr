@@ -167,7 +167,7 @@ class ApplyLeaveStudents extends CActiveRecord
                 $school_id = Yii::app()->user->schoolId;
             }
             $criteria = new CDbCriteria;
-            $criteria->select = "t.id,t.student_id,t.leave_subject,t.approved,t.reason,t.start_date,t.end_date, t.viewed_by_teacher";
+            $criteria->select = "t.id,t.student_id,t.leave_subject,t.approved,t.attachment_file_name,t.reason,t.start_date,t.end_date, t.viewed_by_teacher";
             $criteria->addCondition("DATE(start_date) <= '" . $date . "'");
             $criteria->addCondition("DATE(end_date) >= '" . $date . "'");
             $criteria->compare('school_id', $school_id);
@@ -192,6 +192,11 @@ class ApplyLeaveStudents extends CActiveRecord
                 if($value->leave_subject)
                 {
                     $return_array['leave_subject'][$i] = $value->leave_subject;
+                }
+                $return_array[$i]['attachment_file_name'] = ""; 
+                if($value->attachment_file_name)
+                {
+                    $return_array[$i]['attachment_file_name'] = $value->attachment_file_name;
                 }
               
                 $return_array['viewed_by_teacher'][$i] = $value->viewed_by_teacher;

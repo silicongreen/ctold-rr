@@ -1,13 +1,15 @@
 <html lang="en">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    </head>
     <body>
         <% if @current_user.parent? %>
         <% 
@@ -34,7 +36,7 @@
 
           <% total_fees = 0  %>
           <table class="table table-striped">
-              <thead><!-- class="thead-inverse" -->
+              <thead>
                   <tr>
                       <th><%= t('sl_no') %> </th>
                       <th><%= t('particulars') %></th>
@@ -110,7 +112,7 @@
                     <% total_fees = (@total_payable-@total_discount)%>
                     <tr cellpadding="1" cellspacing="1">
                         <td colspan="2"  style=" font-weight: bold;"><%= t('total_fees') %> </td>
-                        <td >
+                        <td>
                             <%= precision_label(total_fees) %>
                         </td>
                     </tr>
@@ -237,7 +239,8 @@
                       <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
                       <tr>
                           <td colspan="3">
-                              <div class="pay_fees"><div class="pay_fees_buttons">
+                              <div class="pay_fees">
+                                  <div class="pay_fees_buttons">
 
                                       <% if @active_gateway == "Paypal" %>
                                         <%= paypal_pay_button(@certificate,@merchant_id,"FEE #{@fee_collection.name}",total_fees,"http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
@@ -247,20 +250,22 @@
                                         <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
                                       <% end %>
                                      
-                                  </div></div>  
+                                  </div>
+                              </div>  
                           </td>
                       </tr>
                     <% end %>
                   <% else %>
                     <tr>
-                    <td colspan="3">
-                       <center><font color="red">***Student Has Previous Due***</font></center> 
-                   </td>
-        </tr>    
+                      <td colspan="3">
+                         <center><font color="red">***Student Has Previous Due***</font></center> 
+                      </td>
+                    </tr>    
 
-      <% end %>    
+                 <% end %>   
+          </tbody>    
   </table>
-<% end %> 
+  <% end %> 
 </body>
 
 </html>

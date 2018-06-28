@@ -71,13 +71,13 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>40 && extender ==0 %>
+          <% if std_count>50 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>50 && extender ==1 %>
+          <% elsif std_count>55 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -136,6 +136,14 @@
 <style>
     #page-yield *
     {
-        font-size: 18px !important;
+        font-size: 17px !important;
+    }
+    .even td{
+
+    padding: 4px;
+    }
+
+    .odd td{
+        padding: 4px;
     }
 </style>    

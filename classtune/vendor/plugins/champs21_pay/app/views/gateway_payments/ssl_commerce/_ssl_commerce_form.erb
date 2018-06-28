@@ -7,7 +7,7 @@
   <% unless params[:mobile_view].blank? %>
     <% extra_string = "&mobile_view=1" %>
   <% end %>
-  <%= hidden_field_tag :total_amount,sprintf("%0.2f",@amount_to_pay).to_f,:readonly => true %>
+  <%= hidden_field_tag :total_amount,sprintf("%0.2f",@amount_to_pay).to_f %>
   <%= hidden_field_tag :success_url,@return_url+extra_string %>
   <%= hidden_field_tag :fail_url,@fail_url+extra_string %>
   <%= hidden_field_tag :cancel_url,@cancel_url+extra_string %>

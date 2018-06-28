@@ -1,14 +1,16 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
     <!-- Latest compiled and minified CSS -->
     <head>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
 
       <!-- Optional theme -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
 
       <!-- Latest compiled and minified JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>Pay Fees</title>
     </head>
     <body>
         <% if @current_user.parent? %>
@@ -55,7 +57,7 @@
                     </tr>
                     <% total_fees += fee.amount %>
                   <% end %>
-                  <tr cellpadding="1" cellspacing="1">
+                  <tr>
                       <td colspan="2"  style=" font-weight: bold;"><%= t('total_amount') %> </td>
                       <td>
                           <%= precision_label(total_fees) %>
@@ -63,8 +65,8 @@
                   </tr>  
 
                   <% unless @total_discount == 0 %>
-                    <tr cellpadding="1" cellspacing="1">
-                        <td ></td>
+                    <tr>
+                        <td></td>
                         <td colspan="2"><span><%= t('discount') %></span></td>
                     </tr>
                     <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
@@ -102,7 +104,7 @@
                       <% end %>
                     <% end %>
 
-                    <tr cellpadding="1" cellspacing="1">
+                    <tr>
                         <td colspan="2"  style=" font-weight: bold;"><%= t('total_discount') %> </td>
                         <td>
                             <%= precision_label(@total_discount) %>
@@ -110,7 +112,7 @@
                     </tr>
 
                     <% total_fees = (@total_payable-@total_discount)%>
-                    <tr cellpadding="1" cellspacing="1">
+                    <tr>
                         <td colspan="2"  style=" font-weight: bold;"><%= t('total_fees') %> </td>
                         <td>
                             <%= precision_label(total_fees) %>
@@ -204,7 +206,7 @@
                           <% i += 1 %>
                         <% end %>
                       <% end %> 
-                      <tr cellpadding="1" cellspacing="1">
+                      <tr>
                           <td colspan="2"  style=" font-weight: bold;">Fine</td>
                           <td >
                               <%= precision_label(@fine_amount) %>
@@ -216,7 +218,7 @@
                     <% paid=0 %>
                     <% @paid_fees.each{|a| paid += a.amount.to_f} %>
                     <% total_fees -= paid %>
-                    <tr cellpadding="1" cellspacing="1">
+                    <tr>
                         <td colspan="2"  style=" font-weight: bold;"><%= t('payment_done') %></td>
                         <td>
                             <%= precision_label(paid) %>
@@ -224,7 +226,7 @@
                     </tr>
                   <% end %>
                   <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
-                  <tr cellpadding="1" cellspacing="1">
+                  <tr>
                       <td colspan="2" style=" font-weight: bold;"><%= t('amount_to_pay') %> :</td>
                       <td>
                           <% unless precision_label(balance+@fine_amount.to_f).to_f == 0 %>

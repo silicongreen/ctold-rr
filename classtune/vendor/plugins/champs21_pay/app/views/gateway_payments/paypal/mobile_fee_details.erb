@@ -33,11 +33,11 @@
         <% unless flash[:warning].nil? %>
           <div class="alert alert-danger" role="alert"><%= flash[:warning] %></div>
         <% end %>
-        
+        <div class="alert alert-info" role="alert"><%= @student.full_name %> Test2</div>
 
         <% unless @fee_particulars.nil? %>
           
-           <div class="alert alert-info" role="alert"><%= @student.full_name %> Test2</div>
+           
 
           <% total_fees = 0  %>
           <table class="table table-striped">

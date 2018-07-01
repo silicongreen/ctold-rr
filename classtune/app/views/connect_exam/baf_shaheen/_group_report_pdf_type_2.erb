@@ -212,11 +212,9 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_70) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
-                            <td class="col-pdf"><%= accumulated %> | 
+                            <td class="col-pdf"><%= accumulated %>
 
-                            <% if !@student_subject_marks[subjects['id'].to_i].blank? and !@student_subject_marks[subjects['id'].to_i][@student.id.to_i].blank? %>
-                              <%= @student_subject_marks[subjects['id'].to_i][@student.id.to_i] %>
-                            <% end %>
+                      
                             </td>
                             
                             <%

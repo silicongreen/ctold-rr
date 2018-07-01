@@ -31,28 +31,8 @@
         total_subject = 0
         u_grade = 0
         tab['subjects'].each do |sub|
-          subjectdata = Subject.find(sub['id'].to_i)
-          %>
-          <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-          <%
-          if @has_exam_student == false
-            next
-          end  
-          has_exam = false
-          loop = 0
-          tab['exams'].each do |rs|
-            loop = loop+1  
-            if loop>2
-              break
-            end
-            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
-              has_exam = true
-              break
-            end  
-          end 
-          if has_exam == false
-            next
-          end  
+         
+           
           if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
             
             subject_count_std = subject_count_std+1

@@ -35,6 +35,7 @@
           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_i.to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
           <%
           has_exam = false
+          loop = 0
           tab['exams'].each do |rs|
             loop = loop+1  
             if loop>2

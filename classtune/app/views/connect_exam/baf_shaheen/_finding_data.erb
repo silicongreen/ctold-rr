@@ -53,7 +53,7 @@
           if has_exam == false
             next
           end  
-          if (@has_exam_student == true && has_exam == true)
+          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
             
             subject_count_std = subject_count_std+1
             std_subject_marks_final = 0

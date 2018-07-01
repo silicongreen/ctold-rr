@@ -2,9 +2,28 @@
 total_u = 0
 unless @report_data['report']['subjects'].blank?
   @report_data['report']['subjects'].each do |subjects|
+    subjectdata = Subject.find(subjects['id'].to_i)
+    %>
+    <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+    <%
     total_mark = 0
     full_mark = 0
+    has_exam = false
+    if @has_exam_student == false
+      next
+    end  
     unless @report_data['report']['exams'].blank?
+      loop=0
+      @report_data['report']['exams'].each do |report|
+        loop = loop+1  
+        if loop>2
+          break
+        end 
+        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+          has_exam = true
+          break
+        end    
+      end  
       loop=0
       @report_data['report']['exams'].each do |report|
         loop = loop+1  
@@ -52,7 +71,8 @@ unless @report_data['report']['subjects'].blank?
           end  
         end  
       end  
-    end  
+    
+    end
     
   end  
 end  

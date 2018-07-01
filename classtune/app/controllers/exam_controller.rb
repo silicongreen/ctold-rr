@@ -2767,7 +2767,6 @@ class ExamController < ApplicationController
     if student_response['status']['code'].to_i == 200
       @tabulation_data = student_response['data']
     end
-    finding_data
     render :pdf => 'merit_list',
         :orientation => 'Portrait', :zoom => 1.00,
         :margin => {    :top=> 10,

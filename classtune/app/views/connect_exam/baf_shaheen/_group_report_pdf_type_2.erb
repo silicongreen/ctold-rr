@@ -299,7 +299,7 @@
                       </tr>   
 
               </table>
-
+              <% unless @current_user.student? or @current_user.parent? %>
               <% 
                 result = ""
                 promotion_status = ""
@@ -554,6 +554,7 @@
                       </tr>
                       
               </table>
+              <% end %>
               <% end %>
           </div>
       </div>

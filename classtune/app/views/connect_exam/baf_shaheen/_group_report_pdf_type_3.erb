@@ -236,7 +236,7 @@
                       </tr>   
 
               </table>
-
+              <% unless @current_user.student? or @current_user.parent? %>
                 <% 
                   result = ""
                   if !@exam_comment.blank?
@@ -308,7 +308,7 @@
                       </tr>
                       
               </table>
-
+              <% end %>
           </div>
       </div>
 

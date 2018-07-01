@@ -24,6 +24,9 @@ unless @report_data['report']['subjects'].blank?
           break
         end    
       end  
+      if has_exam == false
+        next
+      end 
       loop=0
       @report_data['report']['exams'].each do |report|
         loop = loop+1  

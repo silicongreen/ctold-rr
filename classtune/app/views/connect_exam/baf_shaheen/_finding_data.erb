@@ -8,6 +8,7 @@
   <% end %>
   <%
   @student_list = []
+  @student_subject_marks = {}
   @subject_highest = {}
   @student_avg_mark = {}
   unless @tabulation_data.blank?
@@ -34,6 +35,9 @@
           %>
           <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_i.to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
           <%
+          if @has_exam_student == false
+            next
+          end  
           has_exam = false
           loop = 0
           tab['exams'].each do |rs|
@@ -44,6 +48,9 @@
             if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
               has_exam = true
             end  
+          end 
+          if has_exam == false
+            next
           end  
           if (@has_exam_student == true && has_exam = true)
             
@@ -80,20 +87,19 @@
             #end
 
             std_marks_full = std_marks_full+subject_full_marks.round()
-
+            
+            @student_subject_marks[sub['id'].to_i] = {}
+            
+            @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
            
            subject_grade = ""
            grade = GradingLevel.percentage_to_grade(subject_full_marks, @batch.id)
            if !grade.blank? and !grade.name.blank?
-             subject_grade = grade.name
-           end   
-            
-
-
-
-            if subject_grade == "U"
+             if grade.name == "U"
               u_grade = u_grade+1
-            end  
+             end
+           end   
+           
 
             if @subject_highest[sub['id'].to_i].blank?
               @subject_highest[sub['id'].to_i] = subject_full_marks

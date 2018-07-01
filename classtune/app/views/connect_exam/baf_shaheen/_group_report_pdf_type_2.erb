@@ -212,7 +212,7 @@
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_mark) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", total_70) %></td>
                             <td class="col-pdf"><%= sprintf( "%0.02f", midterm_30) %></td>
-                            <td class="col-pdf"><%= accumulated %></td>
+                            <td class="col-pdf"><%= accumulated %> | <%= @student_subject_marks[subjects['id'].to_i][@student.id.to_i] %></td>
                             
                             <%
                             subject_grade = "N/A"

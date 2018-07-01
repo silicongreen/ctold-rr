@@ -24,12 +24,14 @@
         subject_count_std = 0
         total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
         std_subject_id = total_std_subject.map(&:subject_id)
+        
         std_marks_full = 0
         std_marks_core_subject = 0
         total_subject = 0
         u_grade = 0
         tab['subjects'].each do |sub|
-          if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+          subjectdata = Subject.find(sub['id'].to_i)
+          if (batch_subject_id.include?(sub['id'].to_i) and subjectdata.elective_group_id.blank?) or std_subject_id.include?(sub['id'].to_i)
             
             subject_count_std = subject_count_std+1
             std_subject_marks_final = 0
@@ -75,7 +77,7 @@
 
 
 
-            if subject_grade == "U"
+            if subject_grade == "U" or subject_grade == "E"
               u_grade = u_grade+1
             end  
 

@@ -41,7 +41,7 @@
             if loop>2
               break
             end
-            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+            if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank? and rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained']!="AB"
               has_exam = true
             end  
           end  

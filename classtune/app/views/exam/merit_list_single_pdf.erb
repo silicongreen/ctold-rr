@@ -4,8 +4,29 @@ unless @report_data['report']['subjects'].blank?
   @report_data['report']['subjects'].each do |subjects|
     total_mark = 0
     full_mark = 0
+    subjectdata = Subject.find(subjects['id'].to_i)
+    %>
+    <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+    <%
+    if @has_exam_student == false
+      next
+    end  
     unless @report_data['report']['exams'].blank?
       loop=0
+      has_exam = false
+      @report_data['report']['exams'].each do |report|
+        loop = loop+1  
+        if loop>2
+          break
+        end
+        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+          has_exam = true
+          break
+        end    
+      end  
+      if has_exam == false
+        next
+      end 
       @report_data['report']['exams'].each do |report|
         loop = loop+1  
         if loop>2
@@ -18,21 +39,20 @@ unless @report_data['report']['subjects'].blank?
           full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i 
         end 
       end
-        midterm_total = 0
-        midterm_30 = 0
-        unless @report_data['report']['exams'].blank? 
-          loop=0 
-          @report_data['report']['exams'].each do |report| 
+      midterm_total = 0
+      midterm_30 = 0
+      loop=0 
+      @report_data['report']['exams'].each do |report| 
 
-            loop = loop+1  
-            if loop>2
-              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
-                midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
-              end
-            end
-
+        loop = loop+1  
+        if loop>2
+          if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
+            midterm_total = midterm_total.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f 
           end
         end
+
+      end
+        
 
         if midterm_total.to_f>0
           midterm_30  = (midterm_total.to_f*30)/100

@@ -88,7 +88,9 @@
 
             std_marks_full = std_marks_full+subject_full_marks.round()
             
-            @student_subject_marks[sub['id'].to_i] = {}
+            if @student_subject_marks[sub['id'].to_i].blank?
+              @student_subject_marks[sub['id'].to_i] = {}
+            end
             
             @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
            

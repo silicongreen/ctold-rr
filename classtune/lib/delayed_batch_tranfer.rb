@@ -67,17 +67,12 @@ class DelayedBatchTranfer
             create_group_exam_student(@batch,s,eg,now,batch_student.id)
           end
         end
-      end
-     
-
-      students.each do |s| 
-        batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)
         unless @connect_exam.blank?
           @connect_exam.each do |ec|
             create_combined_exam_student(@batch,s,ec,now,batch_student.id) 
           end
         end
-      end 
+      end
       
       
       students.each do |s|    

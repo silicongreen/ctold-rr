@@ -238,7 +238,7 @@
                         <% main_mark = subject_obtain_mark %>  
                 
                        <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <hr/><%= subject_obtain_mark.to_i %>
+                       <hr/>T:<%= subject_obtain_mark.to_i %>
                      
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>

@@ -213,13 +213,13 @@
                       <% end %>
                       
                       
-                      <% if iloop == 1 or iloop == 3  %>
-
+                       <% if iloop == 1 or iloop == 3  %>
+                        A:
                       <% elsif iloop == 2  %>
-
+                        F:
                       <% else  %>
-
-                      <% end %>  
+                        M:
+                      <% end %>
                         
                         
                       <%= rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round().to_i %>

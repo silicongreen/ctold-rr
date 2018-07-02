@@ -212,8 +212,10 @@
                         <%  subject_mark_midterm = subject_mark_midterm+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f %>
                       <% end %>
                       
-                      
-                       <% if iloop == 1 or iloop == 3  %>
+                      <% if iloop == 3  %>
+                        <hr/>
+                      <% end %>
+                      <% if iloop == 1 or iloop == 3  %>
                         A:
                       <% elsif iloop == 2  %>
                         F:
@@ -227,9 +229,7 @@
                       |
                       <% end %>
                       
-                      <% if iloop == 2  %>
-                        <hr/>
-                      <% end %>
+                      
                         
                     <% end %>
                    <% end %>

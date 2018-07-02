@@ -738,9 +738,19 @@ class ApplicationController < ActionController::Base
 
   def check_if_loggedin
     if session[:user_id]
-      if !params[:fees].blank? and !params[:student].blank?
+      if !params[:fees].blank? and !params[:student].blank? and !params[:user_id].blank?
+        Rails.cache.delete("user_main_menu#{session[:user_id]}")
+        Rails.cache.delete("user_autocomplete_menu#{session[:user_id]}")
+        cookies.delete("_champs21_session")
+        session[:user_id_main] = params[:user_id]
+        session[:user_id] = params[:user_id]
         redirect_to ({:controller => 'student', :action => 'fees',:id =>params[:student],:mobile_view=>1  })
-      elsif !params[:connect_exam].blank? and !params[:batch_id].blank? and !params[:student].blank?
+      elsif !params[:connect_exam].blank? and !params[:batch_id].blank? and !params[:student].blank? and !params[:user_id].blank?
+        Rails.cache.delete("user_main_menu#{session[:user_id]}")
+        Rails.cache.delete("user_autocomplete_menu#{session[:user_id]}")
+        cookies.delete("_champs21_session")
+        session[:user_id_main] = params[:user_id]
+        session[:user_id] = params[:user_id]
         redirect_to ({:controller => 'exam', :action => 'generated_report5_pdf', :connect_exam =>params[:connect_exam],:batch_id =>params[:batch_id],:student =>params[:student],:page_height=>450,:type=>"grouped"  })
       else
         redirect_to :controller => 'user', :action => 'dashboard'

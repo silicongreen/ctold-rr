@@ -229,7 +229,7 @@
                               <% end %>
                             <td><b><%= subject_grade %></b></td>
                               
-                            <% unless @subject_highest[subjects['id'].to_i].blank? %> 
+                            <% if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank? %> 
                               
                                 <td class="col-pdf border-right-none"><b><%= @subject_highest[subjects['id'].to_i].round() %></b></td>
                             <% else %>

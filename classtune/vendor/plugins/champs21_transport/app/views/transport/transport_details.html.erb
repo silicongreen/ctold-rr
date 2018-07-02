@@ -15,9 +15,9 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
 
-  <div class="label-field-pair-select-class">
-    <label for="student-detail-select-class"><%= t('select_a_vehicle') %></label>
-    <div class="text-input-bg"><%= select :transport , :vehicle_id,
+  <div class="label-field-pair" style="width: 550px; margin: auto; padding-bottom: 20px;">
+    <div class="label-container" style=""><label for="student-detail-select-class"><%= t('select_a_vehicle') %></label></div>
+    <div class="input-container"><%= select :transport , :vehicle_id,
         @vehicles.map{|r| [r.vehicle_no,r.id]},
         {:prompt => "#{t('select_vehicle')}"},
         {:onChange => "#{remote_function(:url => {:action => "ajax_transport_details"},

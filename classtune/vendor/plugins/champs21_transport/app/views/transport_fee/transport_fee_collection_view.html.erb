@@ -13,19 +13,21 @@
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
   <% unless flash[:error].nil? %><div id="errorExplanation" class="errorExplanation"><ul><li><%= flash[:error] %></li></ul></div><% end %>
   <div class="box">
-    <div class="label-field-pair"><label><%= t('select_a_user_type') %></label>
-      <div class="text-input-bg"><%= select :user_type,"",
-          [["#{t('employee_text')}",'employee'],["#{t('student_text')}",'student']],
-          {:prompt => "#{t('select_one')}"},
-          {:onChange => "#{remote_function(:url => {:action => "update_user_ajax"},
-          :with => "'user_type='+ value",
-          :before => "Element.show('loader')",
-          :success => "Element.hide('loader')"
-          )}"}
-      %>
-      </div>
-      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none;" ) %>
+    <div class="label-field-pair">
+        <div class="label-container" style=""><label><%= t('select_a_user_type') %></label></div>
+        <div class="input-container" style="padding-top: 5px;"><%= select :user_type,"",
+            [["#{t('employee_text')}",'employee'],["#{t('student_text')}",'student']],
+            {:prompt => "#{t('select_one')}"},
+            {:onChange => "#{remote_function(:url => {:action => "update_user_ajax"},
+             :with => "'user_type='+ value",
+             :before => "Element.show('loader')",
+             :success => "Element.hide('loader')"
+            )}"}
+          %>
+        </div>
+        <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none;" ) %>
     </div>
+    <div style="clear: both;"></div>
     <div id="batch_list" class="label-field-pair"></div>
   </div>
   <div id="fee_collection_list"></div>

@@ -122,25 +122,9 @@ display: block;
     width: 30px;
 }
 .label-field-pair {
-    margin:5px 0;
-    width:450px;
+    width: 680px !important;
 }
-.label-field-pair label {
-    color:#444444;
-    display:block;
-    float:left;
-    font-size:14px;
-    font-weight:600;
-    margin:0 0 10px;
-    padding-top:10px;
-    width:200px;
-}
-.text-input-bg {
-    background:none repeat scroll 0 0 transparent;
-    float:left;
-    height:28px;
-    width:250px;
-}
+
 table#listing td.col6 p a {
     -moz-border-radius:10px 10px 10px 10px;
     background:none repeat scroll 0 0 #27292B;
@@ -156,7 +140,7 @@ table#listing td.col6 p a {
 
 .box{
     margin: 0 auto;
-    width: 500px;
+    width: 680px;
 
 }
 

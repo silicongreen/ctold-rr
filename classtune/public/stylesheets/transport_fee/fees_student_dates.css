@@ -1,3 +1,10 @@
+.filter-box {
+    width: 680px;
+    margin: auto;
+}
+.label-field-pair {
+    width: 680px !important;
+}
 .user_button {
     margin: 0px;
 }
@@ -140,7 +147,10 @@ table#listing td div.user_button input, table#listing td div.user_button a{
 }
 .pay_fees {
     float: right;
-    margin-top: 38px;
+    margin-top: 45px;
+}
+a.user_button {
+    padding: 8px 10px !important;
 }
 h4 {
     float: right;

@@ -2098,6 +2098,16 @@ class FinanceController < ApplicationController
     unless params[:sent_remainder].nil?
       sent_remainder = true
     end
+    
+    include_transport = false
+    unless params[:include_transport].nil?
+      include_transport = true
+    end
+    
+    include_employee = false
+    unless params[:include_employee].nil?
+      include_employee = true
+    end
     @user = current_user
     @fee_categories=FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
     unless params[:finance_fee_collection].nil?
@@ -2107,8 +2117,8 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder))
-
+      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee))
+      
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')
 
@@ -2124,6 +2134,26 @@ class FinanceController < ApplicationController
     if params[:id].present?
       @batch= Batch.find(params[:id])
       @finance_fee_collections = @batch.finance_fee_collections
+      render :update do |page|
+        page.replace_html 'fee_collection_dates', :partial => 'fee_collection_dates_batch'
+      end
+    else
+      render :update do |page|
+        page.replace_html 'fee_collection_dates', :text => ''
+      end
+    end
+  end
+  
+  def sent_notification
+    if params[:batch_id].present?
+      @batch=Batch.find(params[:batch_id])
+      @finance_fee_collections = @batch.finance_fee_collections
+      
+      @user = current_user
+      
+      Delayed::Job.enqueue(DelayedFeeCollectionNotificationJob.new(@user, params[:id], params[:batch_id]))
+      flash[:notice]="Notification will sent for selected Fee collection"
+      
       render :update do |page|
         page.replace_html 'fee_collection_dates', :partial => 'fee_collection_dates_batch'
       end

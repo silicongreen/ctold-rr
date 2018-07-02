@@ -46,7 +46,7 @@
     width:305px;
 }
 .link-heading a {
-    color:#990000;
+    color:#fff;
     font-weight:bold;
 }
 .label-field-pair {
@@ -94,7 +94,7 @@
 }
 
 .link-descr {
-    color:#666666;
+    color:#fff;
     font-size:14px;
     margin-top:5px;
     text-align:justify;

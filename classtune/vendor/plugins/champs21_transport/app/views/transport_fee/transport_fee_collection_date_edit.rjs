@@ -1,2 +1,2 @@
 page.replace_html 'modal-box', :partial => 'transport_fee_collection_edit'
-page << "Modalbox.show($('modal-box'), {title: ''});"
+page << "Modalbox.show($('modal-box'), {title: '', width: 650});"

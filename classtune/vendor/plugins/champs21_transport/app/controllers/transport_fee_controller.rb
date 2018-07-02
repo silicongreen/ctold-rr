@@ -360,6 +360,7 @@ class TransportFeeController < ApplicationController
     @transport_fee = TransportFee.find(params[:fees][:transport_fee_id])
     @transport_fee_collection = @transport_fee.transport_fee_collection
     category_id = FinanceTransactionCategory.find_by_name("Transport").id
+    
     @transaction = FinanceTransaction.new
     unless params[:fees][:payment_mode].blank?
       @transaction.title = @transport_fee.transport_fee_collection.name
@@ -380,6 +381,8 @@ class TransportFeeController < ApplicationController
         @transport_fee.update_attributes(:transaction_id => @transaction.id)
         flash[:notice]="#{t('fee_paid')}"
         flash[:warn_notice]=nil
+      else
+        abort(@transaction.errors.full_messages.inspect)
       end
     else
       flash[:notice]=nil

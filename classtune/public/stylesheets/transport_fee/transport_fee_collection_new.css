@@ -1,14 +1,14 @@
 .label-field-pair{
-    width: 460px;
+    width: 600px;
 }
 #left-side-inputs{
-    width: 460px;
+    width: 600px;
     float: left;
 }
 #batchs{
     float: right;
-    height: 243px;
-    width: 460px;
+    height: 150px;
+    width: 300px;
 }
 #batchs .batch_select_box{
     -moz-border-radius:10px;
@@ -16,7 +16,7 @@
     background:#EEEEEE;
     border:1px solid #C6C6C6;
     height: 241px;
-    width: 453px;
+    width: 300px;
     padding-left: 5px;
 }
 .each_batch{

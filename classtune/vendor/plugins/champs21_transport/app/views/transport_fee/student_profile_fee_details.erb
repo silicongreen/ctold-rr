@@ -23,82 +23,99 @@
     <div class="extender"> </div>
   </div>
   <% if @paid_fees.nil? %>
-    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td><%= t('particulars') %> </td>
-        <td><%= t('amount') %> (<%= currency %>  )</td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-even">
-        <td class="col-2"><%= t('fare') %></td>
-        <td class="col-6"><%=precision_label @fee.bus_fare.to_f%></td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-odd">
-        <td class="col-8"><%= t('amount_to_be_paid') %></td>
-        <% total_fees = @student.transport_fee_balance(params[:id2]) %>
-        <td class="col-6"><%= precision_label total_fees %></td>
-      </tr>
-      <% if (Champs21Plugin.can_access_plugin?("champs21_pay") and PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Transport Fee") %>
-        <% unless (@current_user.admin? or @current_user.employee?) %>
-          <% if total_fees == 0 %>
-            <tr>
-              <td colspan="5">
-                <%= link_to "► #{t('print_receipt')}",
-                  {:controller => "transport_fee", :action => "transport_fee_receipt_pdf", :id => @fee.finance_transaction(:id)},:target => '_blank', :class=> 'user_button' %>
-              </td>
-            </tr>
-          <% else %>
-            <tr>
-              <td colspan="3">
-                <% if @active_gateway == "Paypal" %>
-                  <%= paypal_pay_button(@certificate,@merchant_id,"TRANSPORT FEE #{@fee.transport_fee_collection.name}",total_fees,"http://#{request.host_with_port}/transport_fee/student_profile_fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
-                <% elsif @active_gateway == "Authorize.net" %>
-                  <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"TRANSPORT FEE (#{@student.full_name}-#{@student.admission_no}-#{@fee.transport_fee_collection.name})","http://#{request.host_with_port}/transport_fee/student_profile_fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",@paid_fees,"float: right;margin: 18px 0 0;") %>
-                <% end %>
-              </td>
-            </tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('particulars') %> </th>
+          <th><%= t('amount') %> (<%= currency %>  )</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="tr-even">
+          <td class="col-2"><%= t('fare') %></td>
+          <td class="col-6"><%=precision_label @fee.bus_fare.to_f%></td>
+        </tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-odd">
+          <td class="col-8"><%= t('amount_to_be_paid') %></td>
+          <% total_fees = @student.transport_fee_balance(params[:id2]) %>
+          <td class="col-6"><%= precision_label total_fees %></td>
+        </tr>
+        <% if (Champs21Plugin.can_access_plugin?("champs21_pay") and PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Transport Fee") %>
+          <% unless (@current_user.admin? or @current_user.employee?) %>
+            <% if total_fees == 0 %>
+              <tr>
+                <td colspan="5">
+                  <%= link_to "► #{t('print_receipt')}",
+                    {:controller => "transport_fee", :action => "transport_fee_receipt_pdf", :id => @fee.finance_transaction(:id)},:target => '_blank', :class=> 'user_button' %>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <td colspan="3">
+                  <% if @active_gateway == "Paypal" %>
+                    <%= paypal_pay_button(@certificate,@merchant_id,"TRANSPORT FEE #{@fee.transport_fee_collection.name}",total_fees,"http://#{request.host_with_port}/transport_fee/student_profile_fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1",@paid_fees,"float: right;margin: 18px 0 0;") %>
+                  <% elsif @active_gateway == "Authorize.net" %>
+                    <%= authorize_net_pay_button(@merchant_id,@certificate,total_fees,"TRANSPORT FEE (#{@student.full_name}-#{@student.admission_no}-#{@fee.transport_fee_collection.name})","http://#{request.host_with_port}/transport_fee/student_profile_fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1&only_path=false",@paid_fees,"float: right;margin: 18px 0 0;") %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </tbody>
     </table>
   <% else %>
-    <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
-        <td><%= t('particulars') %></td>
-        <td><%= t('payment_date') %></td>
-        <td><%= t('payment_mode') %></td>
-        <td><%= t('payment_notes') %></td>
-        <td><%= t('amount') %> (<%= currency %>  )</td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-even">
-        <td class="col-1"><%= t('fare') %></td>
-        <td class="col-3"><%= @paid_fees.transaction_date %></td>
-        <td class="col-3"><%= @paid_fees.payment_mode %></td>
-        <td class="col-2"><%= @paid_fees.payment_note %></td>
-        <td class="col-3"><%= precision_label @paid_fees.amount.to_f %></td>
-      </tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-blank"></tr>
-      <tr class="tr-odd">
-        <td class="col-8" colspan="4"><%= t('amount_to_be_paid') %></td>
-        <% total_fees = @student.transport_fee_balance(params[:id2]) %>
-        <td class="col-3"><%= precision_label total_fees %></td>
-      </tr>
-      <% if (Champs21Plugin.can_access_plugin?("champs21_pay") and PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Transport Fee") %>
-        <% unless (@current_user.admin? or @current_user.employee?) %>
-          <% if total_fees == 0 %>
-            <tr>
-              <td colspan="5">
-                <%= link_to "► #{t('print_receipt')}",
-                  {:controller => "transport_fee", :action => "transport_fee_receipt_pdf", :id => @fee.finance_transaction.try(:id)},:target => '_blank', :class=> 'user_button' %>
-              </td>
-            </tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('particulars') %></th>
+          <th><%= t('payment_date') %></th>
+          <th><%= t('payment_mode') %></th>
+          <th><%= t('payment_notes') %></th>
+          <th><%= t('amount') %> (<%= currency %>  )</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="tr-even">
+          <td class="col-1"><%= t('fare') %></td>
+          <td class="col-3"><%= @paid_fees.transaction_date %></td>
+          <td class="col-3"><%= @paid_fees.payment_mode %></td>
+          <td class="col-2"><%= @paid_fees.payment_note %></td>
+          <td class="col-3"><%= precision_label @paid_fees.amount.to_f %></td>
+        </tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-odd">
+          <td class="col-8" colspan="4"><%= t('amount_to_be_paid') %></td>
+          <% total_fees = @student.transport_fee_balance(params[:id2]) %>
+          <td class="col-3"><%= precision_label total_fees %></td>
+        </tr>
+        <% if (Champs21Plugin.can_access_plugin?("champs21_pay") and PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Transport Fee") %>
+          <% unless (@current_user.admin? or @current_user.employee?) %>
+            <% if total_fees == 0 %>
+              <tr>
+                <td colspan="5">
+                  <%= link_to "► #{t('print_receipt')}",
+                    {:controller => "transport_fee", :action => "transport_fee_receipt_pdf", :id => @fee.finance_transaction.try(:id)},:target => '_blank', :class=> 'user_button' %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
+      </tbody>
     </table>
   <% end %>
 </div>
+<style>
+    a {
+      font-size: 11px;
+      text-decoration: underline;
+      font-family: verdana;
+    }
+    td {
+      font-size: 12px;
+      font-family: verdana;
+    }
+</style>

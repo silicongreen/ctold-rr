@@ -100,16 +100,17 @@ table#report_table td.col-7{
     word-break: break-word;
 }
 .pagination_list{
-    width:100%;
+    width:96.5%;
     height:25px;
     border:1px solid #CCCCCC;
     margin-top:30px;
-    background:#efefef
+    background:#f5f5f5;
+    padding: 5px;
 }
 .pagination {
     float: right;
     position: relative;
-    margin-top: 4px;
+    margin-top: 2px !important;
     margin-left: 5px;
     margin-right: 5px;
 }
@@ -117,26 +118,30 @@ table#report_table td.col-7{
     color:#27292b;
     font-weight:bold;
     text-transform: none;
-    background: none;
+    background: #fff;;
     text-decoration:none;
     border:none;
     font-size: 13px;
+    padding: 3px 3px !important;
 }
 .pagination .disabled {
     color: #27292b;
     font-size: 13px;
     font-weight: normal;
     text-transform: none;
-    background: none;
+    background: #ccc !important;
+    border: 1px solid #666 !important;
+    padding: 2px 3px !important;
     text-decoration: none;
     border: none;
 }
 .pagination_text{
     float:left;
-    margin-left: 625px;
+    padding-left: 20px;
+    font-family: verdana;
     font-size: 13px;
     color:#333333;
-    margin-top: 5px;
+    margin-top: 3px;
 }
 #page-yield {
     margin-right: 10px;

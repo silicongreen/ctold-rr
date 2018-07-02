@@ -16,28 +16,41 @@
   <% unless flash[:warn_notice].nil? %>
     <div id="errorExplanation" class="errorExplanation"> <%= flash[:warn_notice] %> </div>
   <% end %>
-  <table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
-    <tr class="tr-head"><td><%= t('vehicle_no') %></td>  
-      <td><%= t('route') %></td>
-      <td><%= t('no_of_seats') %></td>
-      <td><%= t('available_seats') %></td>
-      <td><%= t('status') %></td>
-      <td></td>
-    </tr>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th><%= t('vehicle_no') %></th>  
+        <th><%= t('route') %></th>
+        <th><%= t('no_of_seats') %></th>
+        <th><%= t('available_seats') %></th>
+        <th><%= t('status') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
     <% @vehicle.each do |v| %>
-      <tr class="tr-<%= cycle('odd', 'even')%>">
-
+      <tr class="<%= cycle('odd', 'even')%>">
         <td class="col-1"><%= v.vehicle_no %></td>
         <td class="col-2"> <%= v.main_route.nil? ? t('deleted_route') : v.main_route.destination %></td>
         <td class="col-3"> <%= v.no_of_seats %></td>
         <td class="col-3"> <%= v.available_seats %></td>
         <td class="col-4"> <%= t("#{v.status.downcase}") %></td>
-
         <td class="col-5"><%= link_to "#{t('edit_text')}", edit_vehicle_path(v) %>
           <%= link_to "#{t('delete_text')}", v, :confirm => "#{t('delete_confirm_msg')}", :method => :delete %></td>
       </tr>
     <% end %>
-
+    </tbody>
   </table>
 
 </div>
+<style>
+    a {
+      font-size: 11px;
+      text-decoration: underline;
+      font-family: verdana;
+    }
+    td {
+      font-size: 12px;
+      font-family: verdana;
+    }
+</style>

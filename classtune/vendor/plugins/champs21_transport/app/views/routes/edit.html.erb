@@ -17,19 +17,19 @@
       <% end %>
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('destination') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= r.text_field :destination %></div>
+          <div class="label-container" style=""><label for="vehicle_no"><%= t('destination') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= r.text_field :destination %></div>
       </div>
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('cost') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= r.text_field :cost, :class=>'precision_text',:value=>precision_label(@route.cost) %></div>
+          <div class="label-container" style=""><label for="vehicle_no"><%= t('cost') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= r.text_field :cost, :class=>'precision_text',:value=>precision_label(@route.cost) %></div>
       </div>
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%=t('main_route')%><span class="necessary-field">*</span> </label>
-        <% route = @route.main_route_id.blank? ? "" : @route.main_route_id %>
-        <div class="text-input-bg"><%= r.select  :main_route_id,[["#{t('new_main_route')}",""]]+@main_routes.map{|r| [r.destination, r.id]},{:prompt => "#{t('select_main_route')}",:selected=>route}%></div>
+          <div class="label-container" style=""><label for="vehicle_no"><%=t('main_route')%><span class="necessary-field">*</span> </label></div>
+          <% route = @route.main_route_id.blank? ? "" : @route.main_route_id %>
+          <div class="input-container" style="padding-top: 7px;"><%= r.select  :main_route_id,[["#{t('new_main_route')}",""]]+@main_routes.map{|r| [r.destination, r.id]},{:prompt => "#{t('select_main_route')}",:selected=>route}%></div>
       </div>
 
 
@@ -37,3 +37,8 @@
     <% end %>
   </div>
 </div>
+<style>
+    .text-input-bg select, .label-field-pair input {
+          width: 94% !important;
+    }
+</style>

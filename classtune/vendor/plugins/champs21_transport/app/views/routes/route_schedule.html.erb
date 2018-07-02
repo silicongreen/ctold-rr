@@ -21,21 +21,40 @@
     <% unless flash[:warn_notice].nil? %>
     <div id="errorExplanation" class="errorExplanation"> <%= flash[:warn_notice] %> </div>
   <% end %>
-  <table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
-    <tr class="tr-head"><td><%= t('weekday') %></td>  <td><%= t('home_pickup_time') %></td>  <td><%= t('school_pickup_time') %></td>  <td></td> </tr>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('weekday') %></th>  
+          <th><%= t('home_pickup_time') %></th>  
+          <th><%= t('school_pickup_time') %></th>  
+          <th></th> 
+        </tr>
+    </thead>
+    <tbody>
     <% @routes_schedule.each do |r| %>
-    <tr class="tr-<%= cycle('odd', 'even')%>">
+      <tr class="<%= cycle('odd', 'even')%>">
      
-      <td class="col-1"><%= WeekdaySet.weekday_name(r.weekday_id).upcase %></td>
-      <td class="col-2"><%= r.home_pickup_time.strftime("%I:%M %p") unless r.home_pickup_time.nil? %></td>
-      <td class="col-3"><%= r.school_pickup_time.strftime("%I:%M %p") unless r.school_pickup_time.nil? %></td>
-      <td class="col-4"><%= link_to "#{t('edit_text')}",:action => "edit_routes_schedule", :id=>@route.id, :schedule_id=>r.id %>
-          &nbsp;&nbsp;
+        <td class="col-1"><%= WeekdaySet.weekday_name(r.weekday_id).upcase %></td>
+        <td class="col-2"><%= r.home_pickup_time.strftime("%I:%M %p") unless r.home_pickup_time.nil? %></td>
+        <td class="col-3"><%= r.school_pickup_time.strftime("%I:%M %p") unless r.school_pickup_time.nil? %></td>
+        <td class="col-4"><%= link_to "#{t('edit_text')}",:action => "edit_routes_schedule", :id=>@route.id, :schedule_id=>r.id %>
+            &nbsp;&nbsp;
           <%= link_to "#{t('delete_text')}", { :action => 'destroy_schedule', :id =>r.id}, :confirm => "#{t('delete_confirm_msg')}" %>
          
         </td>
-    </tr>
+      </tr>
     <% end %>
-    
+    </tbody>
   </table>
 </div>
+<style>
+    a {
+      font-size: 11px;
+      text-decoration: underline;
+      font-family: verdana;
+    }
+    td {
+      font-size: 12px;
+      font-family: verdana;
+    }
+</style>

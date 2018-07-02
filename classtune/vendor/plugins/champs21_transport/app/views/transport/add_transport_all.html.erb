@@ -11,11 +11,9 @@
   </ul>
 </div>
 </div>
-<div style="background: white;float:left; width:100%; clear:both; padding:5px 0px;">
+<div style="background: white;float:left; width:100%; clear:both; padding:5px 10px;">
   <% @user_data.each_with_index do |r,i| %>
-
-        <p style="float:left; margin-left:8px; width:15%;"><%= i+1 %>. <%= r.first_name %></p>
-
+    <p class="vehicle_no" style="float:left; margin-left:8px; width:15%;"><%= r.first_name %></p>
   <% end %>
 </div>
 <div id="page-yield">
@@ -33,8 +31,8 @@
       
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('route') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= select :route, :main_route,
+        <div class="label-container" style=""><label for="vehicle_no"><%= t('route') %><span class="necessary-field">*</span> </label></div>
+        <div class="input-container"><%= select :route, :main_route,
             @routes.map{|r| [r.destination,r.id]},
             {:prompt => "#{t('select_main_route')}"},
             {:onChange => "#{remote_function(:url => {:action => "update_vehicle"},
@@ -46,10 +44,10 @@
         </div>
         <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader",:style =>"display: none;" ) %>
       </div>
-
+      <div style="clear: both;"></div>
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('destination') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg" id="update_destination"><%= select :transport , :route_id,
+        <div class="label-container" style=""><label for="vehicle_no"><%= t('destination') %><span class="necessary-field">*</span> </label></div>
+        <div class="input-container" id="update_destination"><%= select :transport , :route_id,
             @destination.map{|d| [d.destination,d.id]},
             {:prompt => "#{t('select_destination')}"},
             {:onChange => "#{remote_function(:url => {:action => ""},
@@ -59,9 +57,10 @@
             )}"}
         %></div>
       </div>
+      <div style="clear: both;"></div>
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('vehicle') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg" id="update_vehicle">
+        <div class="label-container" style=""><label for="vehicle_no"><%= t('vehicle') %><span class="necessary-field">*</span> </label></div>
+        <div class="input-container" id="update_vehicle">
           <%= select :transport , :vehicle_id,
             @vehicles.map{|v| [v.vehicle_no,v.id]},
             {:prompt => "#{t('select_vehicle')}"},
@@ -73,10 +72,12 @@
         %>
         </div>
       </div>
+      <div style="clear: both;"></div>
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('fare') %></label>
-        <div class="text-input-bg" id="fare"><%= t.text_field :bus_fare, :class=>'precision_text' %></div>
+          <div class="label-container" style=""><label for="vehicle_no"><%= t('fare') %></label></div>
+        <div class="input-container" id="fare"><%= t.text_field :bus_fare, :class=>'precision_text' %></div>
       </div>
+      <div style="clear: both;"></div>
       <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}"  %>
       <div class="label-field-pair" id="seat_description">
 
@@ -84,3 +85,15 @@
     <% end %>
   </div>
 </div>
+<style>
+    .input-container select, .label-field-pair input {
+        width: 93%;
+    }
+    .vehicle_no {
+       border: 1px solid #ccc;
+       padding: 7px 0px;
+       text-align: center;
+       border-radius: 6px;
+       background: #f5f5f5;
+    }
+</style>

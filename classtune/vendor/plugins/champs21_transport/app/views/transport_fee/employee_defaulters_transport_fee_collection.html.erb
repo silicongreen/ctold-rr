@@ -11,22 +11,25 @@
 </div>
 </div>
 <div id="page-yield">
-  <div class="label-field-pair"><label><%= t('select_fee_collection_date') %></label>
+  <div class="box">
+    <div class="label-field-pair">
+        <div class="label-container"><label><%= t('select_fee_collection_date') %></label></div>
 
-    <div class="text-input-bg">
-      <div id="fees_collection_dates">
-        <%= select("id",:id,@transport_fee_collection.map { |n| [n.name, n.id] },
-          {:prompt => "#{t('select_details_for')}"},
-          {:onChange => "#{remote_function(:url => {:action => "employee_defaulters_transport_fee_collection_details"}, :with => "'collection_id='+value",:before => "Element.show('loader')",:success => "Element.hide('loader')")}"}) %>
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader",
-            :style =>"display: none;" ) %>
-      </div>
+        <div class="input-container">
+          <div id="fees_collection_dates">
+            <%= select("id",:id,@transport_fee_collection.map { |n| [n.name, n.id] },
+              {:prompt => "#{t('select_details_for')}"},
+              {:onChange => "#{remote_function(:url => {:action => "employee_defaulters_transport_fee_collection_details"}, :with => "'collection_id='+value",:before => "Element.show('loader')",:success => "Element.hide('loader')")}"}) %>
+              <%= image_tag("loader.gif",
+                :align => "absmiddle",
+                :border => 0,
+                :id => "loader",
+                :style =>"display: none;" ) %>
+          </div>
+        </div>
     </div>
-  </div>
-
+    <div style="clear: both;"></div>
+  </div>  
   <div id="student">
     <div id="flash-msg"></div>
     <div id="fee_submission"></div>

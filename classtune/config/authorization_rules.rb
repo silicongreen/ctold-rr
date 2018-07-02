@@ -41,7 +41,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,
@@ -402,7 +401,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,
@@ -550,7 +548,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,
@@ -712,8 +709,6 @@ authorization do
       :previous_years_marks_overview,
       :previous_years_marks_overview_pdf,
       :remove,:reports,:previous_report,:get_previous_exam,
-      :graduation_lists,
-      :get_graduation_students,
       :search_ajax,
       :subject_wise_report,
       :graph_for_previous_years_marks_overview,
@@ -805,7 +800,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,
@@ -837,7 +831,6 @@ authorization do
       :update_leave_history,
       :month_report,
       :subject_report,
-      :download_attachment,
       :subject_report_pdf
     ] 
   end
@@ -956,7 +949,6 @@ authorization do
       :month,
       :student_report,
       :leaves,
-      :download_attachment,
       :leave_history,
       :update_leave_history,
       :month_report,
@@ -972,8 +964,6 @@ authorization do
       :add,
       :add_comment,
       :all,
-      :list_students,
-      :list_employees,
       :all_draft,
       :published_news,
       :delete,
@@ -1093,13 +1083,13 @@ authorization do
   role :student_attendance_view do
     has_permission_on [:attendance], :to => [:index,:report,:student_report]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
-    has_permission_on [:student_attendance], :to => [:index, :student,:download_attachment]
+    has_permission_on [:student_attendance], :to => [:index, :student]
   end
 
   role :student_attendance_register do
     has_permission_on [:attendance], :to => [:index,:register,:register_attendance]
     has_permission_on [:attendances], :to => [:index, :list_subject, :show, :new, :create, :edit,:update, :destroy,:subject_wise_register,:daily_register]
-    has_permission_on [:student_attendance], :to => [:index,:download_attachment]
+    has_permission_on [:student_attendance], :to => [:index]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
   end
 
@@ -1115,7 +1105,6 @@ authorization do
       :index,
       :show,
       :transfer,
-      :save_pdf,
       :graduation,
       :subject_transfer,
       :get_previous_batch_subjects,
@@ -1168,7 +1157,7 @@ authorization do
   role :general_settings do
     has_permission_on [:configuration], :to => [:index,:settings,:permissions]
     has_permission_on [:single_access_tokens], :to => [:index,:new,:create,:destroy]
-    has_permission_on [:student], :to => [:add_additional_details,:add_student_session,:edit_student_session,:delete_student_session, :change_field_priority, :delete_additional_details, :edit_additional_details, :categories,:category_delete,:category_edit,:category_update ]
+    has_permission_on [:student], :to => [:add_additional_details, :change_field_priority, :delete_additional_details, :edit_additional_details, :categories,:category_delete,:category_edit,:category_update ]
   end
 
   role :finance_control do
@@ -1279,6 +1268,7 @@ authorization do
       :delete_asset,
       :fee_collection_view,
       :fee_collection_dates_batch,
+      :sent_notification,
       :fee_collection_assign_discount,
       :assign_fee_discount_to_collection,
       :remove_fee_discount_from_collection,
@@ -1553,7 +1543,6 @@ authorization do
       :add_bank_details,
       :edit_bank_details,
       :add_additional_details,
-      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_bank_details,
@@ -1744,12 +1733,12 @@ authorization do
     includes :reports_view
     includes :timetable_track
     has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
-      :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,:teacher_homework_pdf,:teacher_classwork_pdf,
+      :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,
       :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan
       ]
     has_permission_on [:importdata],  :to => [:import_batches,:import_employee_data,:import_grade]
     has_permission_on [:meetings], :to => [:index,:outbox,:inbox,:new, :create, :edit, :update, :show, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
-    has_permission_on [:user],  :to => [:edit_privilege,:index,:make_siblings,:search_users]
+    has_permission_on [:user],  :to => [:edit_privilege,:index,:make_siblings]
     has_permission_on [:weekday], :to => [:index, :week, :create]
     has_permission_on [:class_timing_sets], :to => [
       :index,
@@ -1833,7 +1822,6 @@ authorization do
       :to => [
       :index,
       :rollcall,
-      :get_att_log,
       :subjects,
       :get_subject_student,
       :save_attendance_subject,
@@ -1866,7 +1854,7 @@ authorization do
     has_permission_on [:sms_settings],  :to => [:index, :update_general_sms_settings]
     has_permission_on [:class_timings],  :to => [:index, :edit, :destroy, :show, :new, :create, :update]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]
-    has_permission_on [:student_attendance], :to => [:index, :student, :month, :student_report,:download_attachment]
+    has_permission_on [:student_attendance], :to => [:index, :student, :month, :student_report]
     has_permission_on [:configuration], :to => [:index,:settings,:permissions, :add_weekly_holidays, :delete]
     has_permission_on [:single_access_tokens], :to => [:index,:new,:create,:destroy]
     has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group]
@@ -1925,7 +1913,6 @@ authorization do
       :index,
       :show,
       :transfer,
-      :save_pdf,
       :graduation,
       :subject_transfer,
       :get_previous_batch_subjects,
@@ -2058,7 +2045,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,
@@ -2328,6 +2314,7 @@ authorization do
       :delete_asset,
       :fee_collection_view,
       :fee_collection_dates_batch,
+      :sent_notification,
       :fee_collection_assign_discount,
       :assign_fee_discount_to_collection,
       :remove_fee_discount_from_collection,
@@ -2551,8 +2538,6 @@ authorization do
       :add,
       :add_comment,
       :all,
-      :list_students,
-      :list_employees,
       :all_draft,
       :published_news,
       :delete,
@@ -2578,7 +2563,6 @@ authorization do
     has_permission_on [:student],
       :to => [
       :academic_pdf,
-      :remove_photo,
       :insert_into_new_parent_student_table,
       :profile,
       :admission1,
@@ -2632,8 +2616,6 @@ authorization do
       :remove,
       :reports,
       :previous_report,:get_previous_exam,:save_roll_no,
-      :graduation_lists,
-      :get_graduation_students,
       :search_ajax,
       :student_annual_overview,
       :subject_wise_report,
@@ -2648,7 +2630,6 @@ authorization do
       :category_delete,
       :categories,
       :add_additional_details,
-      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_additional_details,
@@ -2774,7 +2755,6 @@ authorization do
     has_permission_on [:employee],
       :to => [
       :index,
-      :remove_photo,
       :add_category,
       :references,
       :edit_references,
@@ -2886,7 +2866,6 @@ authorization do
       :admission3_1,
       :admission3_2,
       :add_additional_details,
-      :add_student_session,:edit_student_session,:delete_student_session,
       :change_field_priority,
       :edit_additional_details,
       :delete_additional_details,
@@ -3202,7 +3181,7 @@ authorization do
     has_permission_on [:timetable], :to => [:student_view, :update_student_tt,:student_timetable_pdf]
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
-      :subject_report_pdf,:month_report_data,:download_attachment, :new_calendar,:year_report,:graph_code, :month, :student_report]
+      :subject_report_pdf,:month_report_data, :new_calendar,:year_report,:graph_code, :month, :student_report]
     has_permission_on [:finance], :to => [:student_fees_structure,:refund_student_view,:refund_student_view_pdf]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
@@ -3525,7 +3504,6 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
-      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,

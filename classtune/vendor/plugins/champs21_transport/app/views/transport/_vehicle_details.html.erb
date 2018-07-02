@@ -1,91 +1,75 @@
 <% unless @vehicles.blank? %>
-  <div class="info">
-    <div class="field_pair">
-      <div class="label1"><%= "#{t('total')} #{t('vehicles')}" %></div>
-      <div class="label2"><%=": #{@vehicles.total_entries}" %></div>
-    </div>
-  </div>
   <div class="submit-button">
     <%= link_to "#{t('export_as_csv')}" ,{:action=>'vehicle_report_csv',:sort_order=>@sort_order} %>
   </div>
   <div class="extender"></div>
   <div id="page-yield">
     <div class="extender"></div>
-    <table id="report_table" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head sub-heading">
-        <td><%= t('no_text') %></td>
+    <div>
+        <h4><%= "#{t('total')} #{t('vehicles')}" %> <%=": #{@vehicles.total_entries}" %></h4>
+    </div>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+          <tr>
+            <th><%= t('no_text') %></th>
 
-        <% if @sort_order=="vehicle_no DESC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('vehicle_no')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no ASC"} %>
-          </td>
-        <% elsif @sort_order=="vehicle_no ASC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('vehicle_no')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no DESC"} %>
-          </td>
-        <% else %>
-          <td class="batch_order">
-            <%= link_to_remote  "#{t('vehicle_no')}", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no DESC"} %>
-          </td>
-        <% end %>
+            <% if @sort_order=="vehicle_no DESC" %>
+              <th><%= link_to_remote  "#{t('vehicle_no')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no ASC"} %></th>
+            <% elsif @sort_order=="vehicle_no ASC" %>
+              <th><%= link_to_remote  "#{t('vehicle_no')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no DESC"} %></th>
+            <% else %>
+              <th><%= link_to_remote  "#{t('vehicle_no')}", :url=>{:action=>"vehicle_report",:sort_order=>"vehicle_no DESC"} %></th>
+            <% end %>
 
-        <td><%= t('route') %></td>
+            <th><%= t('route') %></th>
 
-        <% if @sort_order=="no_of_seats DESC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('no_of_seats')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats ASC"} %>
-          </td>
-        <% elsif @sort_order=="no_of_seats ASC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('no_of_seats')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats DESC"} %>
-          </td>
-        <% else %>
-          <td class="batch_order">
-            <%= link_to_remote  "#{t('no_of_seats')}", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats DESC"} %>
-          </td>
-        <% end %>
-        <% if @sort_order=="available_seats DESC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('available_seats')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats ASC"} %>
-          </td>
-        <% elsif @sort_order=="available_seats ASC" %>
-          <td class="batch_order_select">
-            <%= link_to_remote  "#{t('available_seats')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats DESC"} %>
-          </td>
-        <% else %>
-          <td class="batch_order">
-            <%= link_to_remote  "#{t('available_seats')}", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats DESC"} %>
-          </td>
-        <% end %>
-      </tr>
-      <%j=0 %>
-      <% @vehicles.each_with_index do |r,@i| %>
-        <% if params[:page].present? %>
-          <% if params[:page].to_i >= 1 %>
-            <% @i = @i  + (params[:page].to_i - 1) * @vehicles.per_page.to_i %>
-          <% end %> <%else %> <% @i = @i %>
-        <% end %>
-        <% j+=1 %>
-        <tr class="tr-<%= cycle('odd', 'even') %>">
-          <td class="col-5"> <%=@i+1 %></td>
-          <% if @sort_order=="vehicle_no ASC" or @sort_order=="vehicle_no DESC" %>
-            <td class="col-4 batch_order_select"><%=link_to "#{r.vehicle_no}",{:action=>'single_vehicle_details',:id=>r.id}%></td>
-          <% else %>
-            <td class="col-4"><%=link_to "#{r.vehicle_no}",{:action=>'single_vehicle_details',:id=>r.id}%></td>
+            <% if @sort_order=="no_of_seats DESC" %>
+              <th><%= link_to_remote  "#{t('no_of_seats')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats ASC"} %></th>
+            <% elsif @sort_order=="no_of_seats ASC" %>
+              <th><%= link_to_remote  "#{t('no_of_seats')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats DESC"} %></th>
+            <% else %>
+              <th><%= link_to_remote  "#{t('no_of_seats')}", :url=>{:action=>"vehicle_report",:sort_order=>"no_of_seats DESC"} %></th>
+            <% end %>
+            <% if @sort_order=="available_seats DESC" %>
+              <th><%= link_to_remote  "#{t('available_seats')} &#8595;", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats ASC"} %></th>
+            <% elsif @sort_order=="available_seats ASC" %>
+              <th><%= link_to_remote  "#{t('available_seats')} &#8593;", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats DESC"} %></th>
+            <% else %>
+              <th><%= link_to_remote  "#{t('available_seats')}", :url=>{:action=>"vehicle_report",:sort_order=>"available_seats DESC"} %></th>
+            <% end %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <%j=0 %>
+          <% @vehicles.each_with_index do |r,@i| %>
+            <% if params[:page].present? %>
+              <% if params[:page].to_i >= 1 %>
+                <% @i = @i  + (params[:page].to_i - 1) * @vehicles.per_page.to_i %>
+              <% end %> <%else %> <% @i = @i %>
+            <% end %>
+            <% j+=1 %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-5"> <%=@i+1 %></td>
+              <% if @sort_order=="vehicle_no ASC" or @sort_order=="vehicle_no DESC" %>
+                <td class="col-4 batch_order_select"><%=link_to "#{r.vehicle_no}",{:action=>'single_vehicle_details',:id=>r.id}%></td>
+              <% else %>
+                <td class="col-4"><%=link_to "#{r.vehicle_no}",{:action=>'single_vehicle_details',:id=>r.id}%></td>
+              <% end %>
+              <td class="col-2"><%= r.main_route.nil? ? t('deleted_route') : r.main_route.destination %></td>
+              <% if @sort_order=="no_of_seats ASC" or @sort_order=="no_of_seats DESC" %>
+                <td class="col-4 batch_order_select"><%= r.no_of_seats %></td>
+              <% else %>
+                <td class="col-4"><%= r.no_of_seats %></td>
+              <% end %>
+              <% if @sort_order=="available_seats ASC" or @sort_order=="available_seats DESC" %>
+                <td class="col-4 batch_order_select"><%= r.available_seats %></td>
+              <% else %>
+                <td class="col-4"><%= r.available_seats %></td>
+              <% end %>
+            </tr>
           <% end %>
-          <td class="col-2"><%= r.main_route.nil? ? t('deleted_route') : r.main_route.destination %></td>
-          <% if @sort_order=="no_of_seats ASC" or @sort_order=="no_of_seats DESC" %>
-            <td class="col-4 batch_order_select"><%= r.no_of_seats %></td>
-          <% else %>
-            <td class="col-4"><%= r.no_of_seats %></td>
-          <% end %>
-          <% if @sort_order=="available_seats ASC" or @sort_order=="available_seats DESC" %>
-            <td class="col-4 batch_order_select"><%= r.available_seats %></td>
-          <% else %>
-            <td class="col-4"><%= r.available_seats %></td>
-          <% end %>
-        </tr>
-      <% end %>
+        </tbody>
     </table>
     <% unless @vehicles.per_page.to_i > @vehicles.total_entries.to_i %>
       <div class="pagination_list">
@@ -99,3 +83,14 @@
     <p class="flash-msg"> <%= t('no_record_found') %></p>
   <% end %>
 </div>
+<style>
+    a {
+      font-size: 11px;
+      text-decoration: underline;
+      font-family: verdana;
+    }
+    td {
+      font-size: 12px;
+      font-family: verdana;
+    }
+</style>

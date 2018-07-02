@@ -88,8 +88,12 @@ table#listing td.col-7 {
     width: 30px;
 }
 .label-field-pair {
-    margin:5px 0;
-    width:450px;
+    width: 680px !important;
+}
+.box{
+    margin: 0 auto;
+    width: 680px;
+
 }
 .label-field-pair label {
     color:#444444;

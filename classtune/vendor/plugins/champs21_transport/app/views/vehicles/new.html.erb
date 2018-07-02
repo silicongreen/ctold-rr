@@ -19,64 +19,58 @@
       <%= error_messages_for :vehicle %>
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('vehicle_no') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= v.text_field :vehicle_no %></div>
+          <div class="label-container"><label for="vehicle_no"><%= t('vehicle_no') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= v.text_field :vehicle_no %></div>
       </div>
+      <div style="clear: both; height: 10px;"></div>
+          
+      <div class="label-field-pair">
+          <div class="label-container"><label for="vehicle_no"><%= t('route') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= v.select :main_route_id, @routes.map{|r| [r.destination,r.id]}, {:prompt => "#{t('select_main_route')}"} %></div>
+      </div>
+      <div style="clear: both;"></div>
 
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('route') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= v.select :main_route_id, @routes.map{|r| [r.destination,r.id]}, {:prompt => "#{t('select_main_route')}"} %></div>
+          <div class="label-container"><label for="vehicle_no"><%= t('no_of_seats') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container"><%= v.text_field :no_of_seats %></div>
       </div>
-
-      <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('no_of_seats') %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg"><%= v.text_field :no_of_seats %></div>
-      </div>
+      <div style="clear: both;"></div>
+      
       <% @employees = Employee.all %>
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= "Driver" %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
-
-        <%= select_tag   "vehicle[driver]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
-  
-        </div>
+          <div class="label-container"><label for="vehicle_no"><%= "Driver" %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container" style="margin-left:10px; margin-top:5px;"><%= select_tag   "vehicle[driver]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %></div>
       </div>
+      <div style="clear: both;"></div>
+      
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= "Bus Mother" %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
-
-        <%= select_tag   "vehicle[bus_mother]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
-  
-        </div>
+          <div class="label-container"><label for="vehicle_no"><%= "Bus Mother" %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container" style="margin-left:10px; margin-top:5px;"><%= select_tag   "vehicle[bus_mother]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %></div>
       </div>
+      <div style="clear: both;"></div>
+      
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= "Aya" %> </label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
-
-        <%= select_tag   "vehicle[aya]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
-  
-        </div>
+          <div class="label-container"><label for="vehicle_no"><%= "Aya" %> </label></div>
+          <div class="input-container" style="margin-left:10px; margin-top:5px;"><%= select_tag   "vehicle[aya]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %></div>
       </div>
+          
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= "Support Staff" %></label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
-
-        <%= select_tag   "vehicle[support_staff]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %>
-  
-        </div>
+          <div class="label-container"><label for="vehicle_no"><%= "Support Staff" %></label></div>
+          <div class="input-container" style="margin-left:10px; margin-top:5px;"><%= select_tag   "vehicle[support_staff]", options_for_select([[t('select_employee'),""]]+@employees.map{|em| [em.full_name,em.id]}),{:class => 'js-example-basic-single'} %></div>
       </div>
-
-
+      <div style="clear: both;"></div>
+      
       <div class="label-checkbox-pair">
-        <label class="status" for="status"><%= t('status') %></label>
-        <div id="radio-buttons">
-          <%= v.radio_button  "status", "Active", :checked => "checked" %>
-          <label class="label_for_status" for="add_grade_status_true"><%= t('active') %></label>
+          <div class="label-container"><label class="status" for="status"><%= t('status') %></label></div>
+          <div id="radio-buttons">
+            <%= v.radio_button  "status", "Active", :checked => "checked" %>
+            <label class="label_for_status" for="add_grade_status_true"><%= t('active') %></label>
 
-          <%= v.radio_button  "status", "Inactive" %>
-          <label class="label_for_status" for="add_grade_status_false"><%= t('inactive') %></label>
-        </div>
+            <%= v.radio_button  "status", "Inactive" %>
+            <label class="label_for_status" for="add_grade_status_false"><%= t('inactive') %></label>
+          </div>
       </div>
+      <div style="clear: both;"></div>
 
       <%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button", :disable_with => "► #{t('please_wait')}"  %>
     <% end %>
@@ -101,4 +95,20 @@
      
     }
     
+</style>
+<style>
+    .input-container input {
+        width: 94% !important;
+    }
+    .select2-container--default .select2-selection--single {
+        height: 38px !important;
+        padding-top: 4px;
+        border-radius: 2px !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        top: 69% !important;
+    }
+    .status {
+        width: 167px;
+    }
 </style>

@@ -214,6 +214,7 @@ class TransportController < ApplicationController
       @route = @transport.route
     end
   end
+  
   def vehicle_report
     @sort_order=params[:sort_order]
     if @sort_order.nil?
@@ -227,6 +228,7 @@ class TransportController < ApplicationController
       end
     end
   end
+  
   def vehicle_report_csv
     sort_order=params[:sort_order]
     if sort_order.nil?

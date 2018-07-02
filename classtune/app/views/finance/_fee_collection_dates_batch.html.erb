@@ -17,6 +17,8 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<div id="flash_box"></div>
+<% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %>
 <% unless @finance_fee_collections.blank? %>
 <div id="fee-collections-list">
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
@@ -39,11 +41,13 @@
       <td class="col-1">
          <div class="options">
         <% if f.check_fee_category(@batch.id) %>
+            <span class="small_warning"><%= link_to_remote t('sent_notification'), :url => {:action => 'sent_notification', :id => f.id,:batch_id=>@batch.id} %></span>
             <span class="small"><%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount', :id => f.id,:batch_id=>@batch.id} %></span>
             <span class="small"><%= link_to_remote t('delete_text'), :url => {:action => 'fee_collection_delete', :id => f.id,:batch_id=>@batch.id },:confirm=>"#{t('delete_confirm_msg')}" %></span>
             <span class="small"><%= link_to_remote t('edit_text'), :url => {:action => 'fee_collection_edit', :id => f.id,:batch_id=>@batch.id} %></span>
           <%else%>
             <% unless f.all_fees_paid(@batch.id) %>
+            <span class="small_warning"><%= link_to_remote t('sent_notification'), :url => {:action => 'sent_notification', :id => f.id,:batch_id=>@batch.id} %></span>
             <span class="small"><%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount', :id => f.id,:batch_id=>@batch.id} %></span>
             <% end %>
         <% end %>

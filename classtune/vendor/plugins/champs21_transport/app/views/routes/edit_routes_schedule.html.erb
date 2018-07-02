@@ -20,21 +20,27 @@
       <% end %>
 
       <div class="label-field-pair">
-        <label for="home_pickup_time"> <%= t('home_pickup_time') %><span class="necessary-field">*</span> </label>
-          <div class="time-select-field"><%= time_select :route_schedule, :home_pickup_time, {:minute_step => 15} %></div>
+          <div class="label-container" style=""><label for="home_pickup_time"> <%= t('home_pickup_time') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container" style="padding-top: 10px;"><%= time_select :route_schedule, :home_pickup_time, {:minute_step => 15} %></div>
       </div>
       <div class="label-field-pair">
-        <label for="school_pickup_time"> <%= t('school_pickup_time') %><span class="necessary-field">*</span> </label>
-          <div class="time-select-field"><%= time_select :route_schedule, :school_pickup_time, {:minute_step => 15} %></div>
+          <div class="label-container"><label for="school_pickup_time"> <%= t('school_pickup_time') %><span class="necessary-field">*</span> </label></div>
+          <div class="input-container" style="padding-top: 10px;"><%= time_select :route_schedule, :school_pickup_time, {:minute_step => 15} %></div>
       </div>
       
       <div class="label-field-pair">
-        <label for="vehicle_no"><%= t('weekday') %>   : </label>
-        <label ><%= WeekdaySet.weekday_name(@route_schedule.weekday_id).upcase %></div>
+          <div class="label-container" style="float: left;"><label for="vehicle_no"><%= t('weekday') %>   : </label></div>
+          <div class="input-container weekday-set" style=" float: left; padding: 12px;"><label ><%= WeekdaySet.weekday_name(@route_schedule.weekday_id).titlecase %></label></div>
       </div>
-
+      <div style="clear: both;"></div>
      
       <%= submit_tag "", :value => "► #{t('update')}", :class => "submit_button" %>
     <% end %>
   </div>
 </div>
+<style>
+    .label-field-pair select {
+        width: 100px !important;
+        display: inline-block !important;
+    }
+</style>

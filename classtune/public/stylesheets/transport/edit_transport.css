@@ -1,6 +1,6 @@
 #vehicle_form {
-    margin-left: 258px !important;
-    float: left;
+    width: 550px;
+    margin: auto;
 }
 
 .necessary-field {

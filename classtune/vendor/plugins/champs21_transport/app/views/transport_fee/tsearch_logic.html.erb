@@ -2,41 +2,44 @@
   <% if @students_result.nil? or @students_result.empty? %>
     <div id="no_result" class="themed_text"><%= t('no_users') %></div>
   <%else%>
-    <table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
-      <tr class="tr-head">
-        <td>
-       <%= t('sl_no') %>
-      </td>
-      <td>
-        <%= t('name') %>
-      </td>
-      <td><%= t('batch') %></td>
-      <td><%= t('adm_no') %></td>
-      </tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('sl_no') %></th>
+          <th><%= t('name') %></th>
+          <th><%= t('batch') %></th>
+          <th><%= t('adm_no') %></th>
+        </tr>
+      </thead>
+      <tbody>
       <% @students_result.each_with_index do |t,i| %>
-        <tr class="tr-<%= cycle('odd', 'even')%>">
+        <tr class="<%= cycle('odd', 'even')%>">
           <td class="col-1"><%= i+1 %></td>
           <td class="col-2"><%= link_to t.full_name, :controller => "transport_fee", :action => "fees_student_dates", :id => t.id%></td>
           <td class="col-2"><%= "#{t.batch.full_name}" %></td>
           <td class="col-2"><%= t.admission_no %></td>
         </tr>
       <% end %>
+      </tbody>
     </table>
   <%end%>
 <% else %>
   <% if @employee_result.nil? or @employee_result.empty?  %>
     <div id="no_result" class="themed_text"><%= t('no_users') %></div>
   <%else%>
-    <table align="center" width="100%" cellpadding="1" cellspacing="1" id="listing">
-      <tr class="tr-head">
-        <td><%= t('sl_no') %></td>
-        <td><%= t('name') %></td>
-        <td><%= t('department') %></td>
-        <td><%= t('employee_no') %></td>
-      </tr>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th><%= t('sl_no') %></th>
+          <th><%= t('name') %></th>
+          <th><%= t('department') %></th>
+          <th><%= t('employee_no') %></th>
+        </tr>
+      </thead>
+      <tbody>
       <% @employee_result.each_with_index do |t,i| %>
         <% unless t.user.nil? %>
-          <tr class="tr-<%= cycle('odd', 'even')%>">
+          <tr class="<%= cycle('odd', 'even')%>">
             <td class="col-1"><%= i+1 %></td>
             <td class="col-2"><%= link_to t.full_name, :controller => "transport_fee", :action => "fees_employee_dates", :id => t.id%></td>
             <td class="col-2"><%= t.employee_department.name %></td>
@@ -44,7 +47,19 @@
           </tr>
         <% end %>
       <% end %>
+      </tbody>
     </table>
   <%end%>
 
 <% end %>
+<style>
+    a {
+      font-size: 11px;
+      text-decoration: underline;
+      font-family: verdana;
+    }
+    td {
+      font-size: 12px;
+      font-family: verdana;
+    }
+</style>

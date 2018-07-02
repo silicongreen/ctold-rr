@@ -106,9 +106,17 @@
       <div class="label-field-pair">
         <div class="label-container"><label for="reason"></label></div>
         <div class="input-container">
-          <div class="each_batch" style="border-bottom: 0;">
+          <div class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
             <div class="checkbox_inline"><%= check_box_tag "sent_remainder", 1, true, :class=>'batches_box' %></div> 
-            <div class="checkbox_label"><label>Sent Reminder</label></div>
+            <div class="checkbox_label" style="width: 120px;"><label>Sent Reminder</label></div>
+            
+            <div class="checkbox_inline"><%= check_box_tag "include_transport", 1, true, :class=>'batches_box' %></div> 
+            <div class="checkbox_label" style="width: 120px;"><label>Include Transport Fee</label></div>
+            
+          </div>
+          <div id="include_employee_div" class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
+            <div class="checkbox_inline"><%= check_box_tag "include_employee", 1, false, :class=>'batches_box' %></div> 
+            <div class="checkbox_label" style="width: 280px;"><label style="width: 100%;">Include Transport Fee For Employee</label></div>
           </div>
         </div>
       </div>
@@ -182,6 +190,21 @@
      var name = monthNames[d.getMonth()] + yr;
      j("#finance_fee_collection_name").val(name);
   }
+  
+  j(document).ready(function(){
+      j(document).on("click", "#include_transport", function(){
+          if ( j("#include_transport").prop("checked") )
+          {
+              j("#include_employee_div").show();
+              j("#include_employee").attr("checked",true);
+          }
+          else
+          {
+              j("#include_employee_div").hide();
+              j("#include_employee").removeAttr("checked");
+          }
+      });
+  });
 </script>
 
 <style>

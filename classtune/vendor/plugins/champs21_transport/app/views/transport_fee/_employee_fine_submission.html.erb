@@ -1,11 +1,11 @@
 <% if @transport_fee_collection.due_date < Date.today %>
   <% form_remote_for :fine, :url => {:action => 'update_employee_fine_ajax2' },:html=>{:id=>"fine_form"} do |form| %>
     <div class="fine_info">
-      <div class="label-field-pair1">
-        <label><%= t('due_date_exceeded_collect_fine') %></label>
-        <div class="text-input-bg1"><%= form.text_field :fee, :value=>'', :class=>'precision_text' %></div>
+      <div class="label-field-pair">
+          <div class="label-container"><label><%= t('due_date_exceeded_collect_fine') %></label></div>
+          <div class="input-container"><%= form.text_field :fee, :value=>'', :class=>'precision_text' %></div>
 
-        <%=   submit_tag "#{t('add_fine')}",:class=>'submit_button2' %>
+          <%= submit_tag "#{t('add_fine')}",:class=>'submit_button2' %>
       </div>
     </div>
     <div class="extender"></div>

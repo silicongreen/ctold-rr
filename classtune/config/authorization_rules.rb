@@ -41,6 +41,7 @@ authorization do
       :comment_tabulation_pdf,
       :add_comments_connect_exam,
       :continues,
+      :merit_list,
       :split_pdf_and_save,
       :split_pdf_and_save_group,
       :exam_connect_comment_entry,

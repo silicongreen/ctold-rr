@@ -3169,8 +3169,8 @@ en: # locale
   meetings_details_text: "Meeting Details"
   create_meeting: "New Meeting Request"
   meeting_schedule: "Meeting Schedule"
-  alternet_meeting_schedule: "Alternet Time 1"
-  alternet_meeting_schedule2: "Alternet Time 2"
+  alternet_meeting_schedule: "Alternat Time 1"
+  alternet_meeting_schedule2: "Alternat Time 2"
   submit_meeting_request: "Ask for a Meeting"
   
   you_are_not_allowed_to_download_that_file: "You are not allowed to download that file"

@@ -38,8 +38,16 @@ class DelayedFeeCollectionNotificationJob
       @students.each do |s|
 
         unless s.has_paid_fees
-          recipient_ids << s.user.id if s.user
-          recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
+          guardians = s.student_guardian
+          unless guardians.blank?
+            guardians.each do |guardian|
+              unless guardian.user_id.nil?
+                recipient_ids << guardian.user_id
+              end
+            end
+          end
+#          recipient_ids << s.user.id if s.user
+#          recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
         end
       end
       recipient_ids = recipient_ids.compact

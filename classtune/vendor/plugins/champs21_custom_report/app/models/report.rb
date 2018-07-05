@@ -112,7 +112,7 @@ class Report < ActiveRecord::Base
           all_std = search_results.map(&:id)
           all_guardians = GuardianStudents.find_all_by_student_id(all_std)
           unless all_guardians.blank?
-            all_gur_id = all_guardians.map(&:id)
+            all_gur_id = all_guardians.map(&:guardian_id)
             all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
             unless all_gurdians_obj.blank?
               all_gurdians_obj.each do |gur_info|
@@ -248,7 +248,7 @@ class Report < ActiveRecord::Base
           all_std = search_results.map(&:id)
           all_guardians = GuardianStudents.find_all_by_student_id(all_std)
           unless all_guardians.blank?
-            all_gur_id = all_guardians.map(&:id)
+            all_gur_id = all_guardians.map(&:guardian_id)
             all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
             unless all_gurdians_obj.blank?
               all_gurdians_obj.each do |gur_info|

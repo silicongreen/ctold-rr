@@ -88,7 +88,7 @@ class Report < ActiveRecord::Base
       
       cols = []
       self.report_columns.each do |rc|
-        if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
+        if rc.method == "parent_first_name" || rc.method == "parent_last_name" || rc.method == "parent_relation"
           std = 1
         else
           cols << t(rc.title)
@@ -125,7 +125,7 @@ class Report < ActiveRecord::Base
       search_results.uniq.each do |obj|
         cols = []
         self.report_columns.each do |col|
-          if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+          if col.method == "parent_first_name" || col.method == "parent_last_name" || col.method == "parent_relation"
            
           else
             cols << "#{obj.send(col.method)}"
@@ -274,12 +274,13 @@ class Report < ActiveRecord::Base
         cols = []
         cols << sl
         self.report_columns.each do |col|
-          if t(col.title) == "First Name"
-            cols <<  "#{obj.send("full_name")}"
-          elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
+          
+          if col.method == "first_name"
+            cols << "#{obj.send("full_name")}"
+          elsif col.method == "last_name"
          
-          elsif t(col.title) == "Middle Name"
-          elsif (t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation") && p_data == 0
+          elsif col.method == "middle_name"
+          elsif (col.method == "parent_first_name" || col.method == "parent_last_name" || col.method == "parent_relation") && p_data == 0
             p_data = 1
             unless all_guardians.blank?
               all_guardians.each do |gur|
@@ -324,7 +325,7 @@ class Report < ActiveRecord::Base
               cols << "" 
             end
             
-          elsif t(col.title) == "Parent mobile phone" && p_data2 == 0
+          elsif col.method == "parent_mobile_phone" && p_data2 == 0
                 
             p_data2 = 1
             unless all_guardians.blank?
@@ -369,7 +370,7 @@ class Report < ActiveRecord::Base
               cols << "" 
               cols << "" 
             end
-          elsif t(col.title) == "Parent email" && p_data3 == 0
+          elsif col.method == "parent_email" && p_data3 == 0
                 
             p_data3 = 1
             unless all_guardians.blank?
@@ -414,7 +415,7 @@ class Report < ActiveRecord::Base
               cols << "" 
               cols << "" 
             end
-          elsif t(col.title) != "Parent first name" && t(col.title) != "Parent last name" && t(col.title) != "Parent relation" && t(col.title) != "Parent mobile phone" && t(col.title) != "Parent email"
+          elsif col.method != "parent_first_name" && col.method != "parent_last_name" && col.method != "parent_email" && col.method != "parent_mobile_phone" && col.method != "parent_relation"
             cols << "#{obj.send(col.method)}"
           end
         end

@@ -51,7 +51,7 @@
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf sl_no"><%= i+1 %></td>
             <% @report_columns.each do |col| %>
-              <% if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation" || t(col.title) == "Parent mobile phone" %>
+              <% if col.method == "parent_first_name" || col.method == "parent_last_name" || col.method == "parent_relation" || col.method == "parent_mobile_phone" %>
             
              <% else %>
               <td class="col-pdf name"><%=  obj.send(col.method) %></td>

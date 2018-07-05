@@ -138,8 +138,8 @@ class Report < ActiveRecord::Base
           unless all_guardians.blank?
             all_guardians.each do |gur|
               if gur.student_id == obj.id
-                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                  gurdian = all_gurdians_info[gur.guardian_id]
+                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                  gurdian = all_gurdians_info[gur.guardian_id.to_s]
                 end
                 unless gurdian.blank?
                   if gurdian.relation.index("Father") || gurdian.relation.index("father")
@@ -162,8 +162,8 @@ class Report < ActiveRecord::Base
             
             all_guardians.each do |gur|
               if gur.student_id == obj.id
-                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                  gurdian = all_gurdians_info[gur.guardian_id]
+                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                  gurdian = all_gurdians_info[gur.guardian_id.to_s]
                 end
                 unless gurdian.blank?
                   if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
@@ -218,19 +218,22 @@ class Report < ActiveRecord::Base
 
         elsif t(rc.title) == "Admission no"
           cols << "Student ID"
-
+          std = 1
         elsif (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
           p_data = 1
           cols << "Father's Name"
           cols << "Mother's Name"
+          std = 1
             
         elsif t(rc.title) == "Parent mobile phone" && p_data2 == 0
           cols << "Father's Mobile"
           cols << "Mother's Mobile"
+          std = 1
           p_data2 = 1
         elsif t(rc.title) == "Parent email" && p_data3 == 0
           cols << "Father's Email"
           cols << "Mother's Email"
+          std = 1
           p_data3 = 1
         elsif t(rc.title) != "Parent first name" && t(rc.title) != "Parent last name" && t(rc.title) != "Parent relation" && t(rc.title) != "Parent mobile phone" && t(rc.title) != "Parent email"    
           cols << t(rc.title)
@@ -238,26 +241,31 @@ class Report < ActiveRecord::Base
       end
      
       csv << cols
-      
-      search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
+      if std == 1
+        search_results = model_object.report_search(self.search_param).all(:include=>[{:batch=>[:course]}])
+      else
+        search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
+      end
       sl = 0
       all_guardians = []
       all_gurdians_info = {}
       unless search_results.blank?
         if std == 1 
-          all_std = search_results.map(&:id)
+          all_std = search_results.uniq.map(&:id)
           all_guardians = GuardianStudents.find_all_by_student_id(all_std)
           unless all_guardians.blank?
             all_gur_id = all_guardians.map(&:guardian_id)
             all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
             unless all_gurdians_obj.blank?
               all_gurdians_obj.each do |gur_info|
-                all_gurdians_info[gur_info.id] = gur_info
+                all_gurdians_info[gur_info.id.to_s] = gur_info
               end
             end
           end
         end
       end
+  
+      
       search_results.uniq.each do |obj|
         p_data = 0
         p_data2 = 0
@@ -276,8 +284,8 @@ class Report < ActiveRecord::Base
             unless all_guardians.blank?
               all_guardians.each do |gur|
                 if gur.student_id == obj.id
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
@@ -295,8 +303,8 @@ class Report < ActiveRecord::Base
 
               all_guardians.each do |gur|
                 if gur.student_id == obj.id
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
@@ -322,8 +330,8 @@ class Report < ActiveRecord::Base
             unless all_guardians.blank?
               all_guardians.each do |gur|
                 if gur.student_id == obj.id
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
@@ -341,8 +349,8 @@ class Report < ActiveRecord::Base
 
               all_guardians.each do |gur|
                 if gur.student_id == obj.id            
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
@@ -367,8 +375,8 @@ class Report < ActiveRecord::Base
             unless all_guardians.blank?
               all_guardians.each do |gur|
                 if gur.student_id == obj.id            
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
@@ -386,8 +394,8 @@ class Report < ActiveRecord::Base
 
               all_guardians.each do |gur|
                 if gur.student_id == obj.id            
-                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
-                    gurdian = all_gurdians_info[gur.guardian_id]
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id.to_s].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id.to_s]
                   end
                   unless gurdian.blank?
                     if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
@@ -411,9 +419,10 @@ class Report < ActiveRecord::Base
           end
         end
         
-        
+       
         csv << cols
       end
+      
     end
     csv
   end

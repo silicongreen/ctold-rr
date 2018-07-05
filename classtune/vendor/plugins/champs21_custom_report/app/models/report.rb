@@ -89,7 +89,7 @@ class Report < ActiveRecord::Base
       cols = []
       self.report_columns.each do |rc|
         if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
-            std = 1
+          std = 1
         else
           cols << t(rc.title)
         end  
@@ -105,6 +105,23 @@ class Report < ActiveRecord::Base
       csv << cols
       
       search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
+      all_guardians = []
+      all_gurdians_info = {}
+      unless search_results.blank?
+        if std == 1 
+          all_std = search_results.map(&:id)
+          all_guardians = GuardianStudents.find_all_by_student_id(all_std)
+          unless all_guardians.blank?
+            all_gur_id = all_guardians.map(&:id)
+            all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
+            unless all_gurdians_obj.blank?
+              all_gurdians_obj.each do |gur_info|
+                all_gurdians_info[gur_info.id] = gur_info
+              end
+            end
+          end
+        end
+      end
       search_results.uniq.each do |obj|
         cols = []
         self.report_columns.each do |col|
@@ -117,18 +134,22 @@ class Report < ActiveRecord::Base
         if std == 1
           count_guardian = 0
           father = 0
-          guardians = GuardianStudents.find_all_by_student_id(obj.id)
-          unless guardians.blank?
-            guardians.each do |gur|
-              gurdian = Guardian.find_by_id(gur.guardian_id)
-              unless gurdian.blank?
-                if gurdian.relation.index("Father") || gurdian.relation.index("father")
-                  cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
-                  cols << gurdian.mobile_phone
-                  cols << gurdian.email
-                  count_guardian = count_guardian+1
-                  father = 1
-                  break
+          #          guardians = GuardianStudents.find_all_by_student_id(obj.id)
+          unless all_guardians.blank?
+            all_guardians.each do |gur|
+              if gur.student_id == obj.id
+                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                  gurdian = all_gurdians_info[gur.guardian_id]
+                end
+                unless gurdian.blank?
+                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                    cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                    cols << gurdian.mobile_phone
+                    cols << gurdian.email
+                    count_guardian = count_guardian+1
+                    father = 1
+                    break
+                  end
                 end
               end
             end
@@ -139,15 +160,19 @@ class Report < ActiveRecord::Base
               cols << ""
             end
             
-            guardians.each do |gur|
-              gurdian = Guardian.find_by_id(gur.guardian_id)
-              unless gurdian.blank?
-                if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                  cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
-                  cols << gurdian.mobile_phone
-                  cols << gurdian.email
-                  count_guardian = count_guardian+1
-                  break
+            all_guardians.each do |gur|
+              if gur.student_id == obj.id
+                if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                  gurdian = all_gurdians_info[gur.guardian_id]
+                end
+                unless gurdian.blank?
+                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                    cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                    cols << gurdian.mobile_phone
+                    cols << gurdian.email
+                    count_guardian = count_guardian+1
+                    break
+                  end
                 end
               end
             end
@@ -186,27 +211,27 @@ class Report < ActiveRecord::Base
       cols << "SL"
       self.report_columns.each do |rc|
         if t(rc.title) == "First Name"
-            cols << "Full Name"
+          cols << "Full Name"
         elsif t(rc.title) == "Last Name" || t(rc.title) == "Surname" 
          
         elsif t(rc.title) == "Middle Name"
 
         elsif t(rc.title) == "Admission no"
-            cols << "Student ID"
+          cols << "Student ID"
 
         elsif (t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation") && p_data == 0
-            p_data = 1
-            cols << "Father's Name"
-            cols << "Mother's Name"
+          p_data = 1
+          cols << "Father's Name"
+          cols << "Mother's Name"
             
         elsif t(rc.title) == "Parent mobile phone" && p_data2 == 0
-            cols << "Father's Mobile"
-            cols << "Mother's Mobile"
-            p_data2 = 1
+          cols << "Father's Mobile"
+          cols << "Mother's Mobile"
+          p_data2 = 1
         elsif t(rc.title) == "Parent email" && p_data3 == 0
-            cols << "Father's Email"
-            cols << "Mother's Email"
-            p_data3 = 1
+          cols << "Father's Email"
+          cols << "Mother's Email"
+          p_data3 = 1
         elsif t(rc.title) != "Parent first name" && t(rc.title) != "Parent last name" && t(rc.title) != "Parent relation" && t(rc.title) != "Parent mobile phone" && t(rc.title) != "Parent email"    
           cols << t(rc.title)
         end  
@@ -216,6 +241,23 @@ class Report < ActiveRecord::Base
       
       search_results = model_object.report_search(self.search_param).all(:include=>self.include_param)
       sl = 0
+      all_guardians = []
+      all_gurdians_info = {}
+      unless search_results.blank?
+        if std == 1 
+          all_std = search_results.map(&:id)
+          all_guardians = GuardianStudents.find_all_by_student_id(all_std)
+          unless all_guardians.blank?
+            all_gur_id = all_guardians.map(&:id)
+            all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
+            unless all_gurdians_obj.blank?
+              all_gurdians_obj.each do |gur_info|
+                all_gurdians_info[gur_info.id] = gur_info
+              end
+            end
+          end
+        end
+      end
       search_results.uniq.each do |obj|
         p_data = 0
         p_data2 = 0
@@ -223,18 +265,20 @@ class Report < ActiveRecord::Base
         sl = sl+1
         cols = []
         cols << sl
-        guardians = GuardianStudents.find_all_by_student_id(obj.id)
         self.report_columns.each do |col|
           if t(col.title) == "First Name"
-              cols <<  "#{obj.send("full_name")}"
+            cols <<  "#{obj.send("full_name")}"
           elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
          
           elsif t(col.title) == "Middle Name"
           elsif (t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation") && p_data == 0
-                p_data = 1
-                unless guardians.blank?
-                  guardians.each do |gur|
-                  gurdian = Guardian.find_by_id(gur.guardian_id)
+            p_data = 1
+            unless all_guardians.blank?
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
                       cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
@@ -242,37 +286,45 @@ class Report < ActiveRecord::Base
                       break
                     end
                   end
-                  end 
-                  if p_data == 1
-                    cols << "" 
-                    p_data = 2
-                  end
-
-                    guardians.each do |gur|
-                    gurdian = Guardian.find_by_id(gur.guardian_id)
-                    unless gurdian.blank?
-                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                        cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
-                        p_data = 3
-                        break
-                      end
-                    end
-                  end 
-                  if p_data == 2
-                    cols << "" 
-                    p_data = 3
-                  end
-                else
-                  cols << "" 
-                  cols << "" 
                 end
+              end 
+              if p_data == 1
+                cols << "" 
+                p_data = 2
+              end
+
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                      cols << gurdian.first_name.to_s+" "+gurdian.last_name.to_s
+                      p_data = 3
+                      break
+                    end
+                  end
+                end
+              end 
+              if p_data == 2
+                cols << "" 
+                p_data = 3
+              end
+            else
+              cols << "" 
+              cols << "" 
+            end
             
           elsif t(col.title) == "Parent mobile phone" && p_data2 == 0
                 
-                p_data2 = 1
-                unless guardians.blank?
-                  guardians.each do |gur|
-                  gurdian = Guardian.find_by_id(gur.guardian_id)
+            p_data2 = 1
+            unless all_guardians.blank?
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
                       cols << gurdian.mobile_phone
@@ -280,36 +332,44 @@ class Report < ActiveRecord::Base
                       break
                     end
                   end
-                  end 
-                  if p_data2 == 1
-                    cols << "" 
-                    p_data2 = 2
-                  end
-
-                    guardians.each do |gur|
-                    gurdian = Guardian.find_by_id(gur.guardian_id)
-                    unless gurdian.blank?
-                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                        cols << gurdian.mobile_phone
-                        p_data2 = 3
-                        break
-                      end
-                    end
-                  end 
-                  if p_data2 == 2
-                    cols << "" 
-                    p_data2 = 3
-                  end
-                else
-                  cols << "" 
-                  cols << "" 
                 end
+              end 
+              if p_data2 == 1
+                cols << "" 
+                p_data2 = 2
+              end
+
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id            
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                      cols << gurdian.mobile_phone
+                      p_data2 = 3
+                      break
+                    end
+                  end
+                end
+              end 
+              if p_data2 == 2
+                cols << "" 
+                p_data2 = 3
+              end
+            else
+              cols << "" 
+              cols << "" 
+            end
           elsif t(col.title) == "Parent email" && p_data3 == 0
                 
-                p_data3 = 1
-                unless guardians.blank?
-                  guardians.each do |gur|
-                  gurdian = Guardian.find_by_id(gur.guardian_id)
+            p_data3 = 1
+            unless all_guardians.blank?
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id            
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
                   unless gurdian.blank?
                     if gurdian.relation.index("Father") || gurdian.relation.index("father")
                       cols << gurdian.email
@@ -317,30 +377,35 @@ class Report < ActiveRecord::Base
                       break
                     end
                   end
-                  end 
-                  if p_data3 == 1
-                    cols << "" 
-                    p_data3 = 2
-                  end
-
-                    guardians.each do |gur|
-                    gurdian = Guardian.find_by_id(gur.guardian_id)
-                    unless gurdian.blank?
-                      if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                        cols << gurdian.email
-                        p_data3 = 3
-                        break
-                      end
-                    end
-                  end 
-                  if p_data3 == 2
-                    cols << "" 
-                    p_data3 = 3
-                  end
-                else
-                  cols << "" 
-                  cols << "" 
                 end
+              end 
+              if p_data3 == 1
+                cols << "" 
+                p_data3 = 2
+              end
+
+              all_guardians.each do |gur|
+                if gur.student_id == obj.id            
+                  if !all_gurdians_info.blank? && !all_gurdians_info[gur.guardian_id].blank?
+                    gurdian = all_gurdians_info[gur.guardian_id]
+                  end
+                  unless gurdian.blank?
+                    if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                      cols << gurdian.email
+                      p_data3 = 3
+                      break
+                    end
+                  end
+                end
+              end 
+              if p_data3 == 2
+                cols << "" 
+                p_data3 = 3
+              end
+            else
+              cols << "" 
+              cols << "" 
+            end
           elsif t(col.title) != "Parent first name" && t(col.title) != "Parent last name" && t(col.title) != "Parent relation" && t(col.title) != "Parent mobile phone" && t(col.title) != "Parent email"
             cols << "#{obj.send(col.method)}"
           end
@@ -360,7 +425,7 @@ class Report < ActiveRecord::Base
       cols = []
       self.report_columns.each do |rc|
         if t(rc.title) == "Parent first name" || t(rc.title) == "Parent last name" || t(rc.title) == "Parent relation"
-            std = 1
+          std = 1
         elsif t(rc.title) == "First Name"
           cols << "Full Name"
         elsif t(rc.title) == "Last Name" || t(rc.title) == "Surname" 
@@ -385,7 +450,7 @@ class Report < ActiveRecord::Base
           if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
            
           elsif t(col.title) == "First Name"
-              cols <<  "#{obj.send("full_name")}"
+            cols <<  "#{obj.send("full_name")}"
           elsif t(col.title) == "Middle Name"
               
           elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
@@ -441,7 +506,7 @@ class Report < ActiveRecord::Base
             if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
             elsif t(col.title) == "First Name"
-                cols <<  ""
+              cols <<  ""
             elsif t(col.title) == "Middle Name"
 
             elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
@@ -452,101 +517,101 @@ class Report < ActiveRecord::Base
           end
           
           count_guardian = 0
-            father = 0
-            guardians = GuardianStudents.find_all_by_student_id(obj.id)
-            unless guardians.blank?
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
-                    cols << gurdian.mobile_phone
-                    count_guardian = count_guardian+1
-                    father = 1
-                    break
-                  end
+          father = 0
+          guardians = GuardianStudents.find_all_by_student_id(obj.id)
+          unless guardians.blank?
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                  cols << gurdian.mobile_phone
+                  count_guardian = count_guardian+1
+                  father = 1
+                  break
                 end
               end
+            end
 
-              if father == 0
-                cols << ""
-              end
-
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                    cols << gurdian.mobile_phone
-                    count_guardian = count_guardian+1
-                    break
-                  end
-                end
-              end
-
-              if count_guardian == 0 || (count_guardian == 1 && father = 1)
-                cols << ""
-              end
-
-            else
-              cols << ""
+            if father == 0
               cols << ""
             end
-            csv << cols
+
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                  cols << gurdian.mobile_phone
+                  count_guardian = count_guardian+1
+                  break
+                end
+              end
+            end
+
+            if count_guardian == 0 || (count_guardian == 1 && father = 1)
+              cols << ""
+            end
+
+          else
+            cols << ""
+            cols << ""
+          end
+          csv << cols
             
-            cols = []
-            self.report_columns.each do |col|
-                if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
+          cols = []
+          self.report_columns.each do |col|
+            if t(col.title) == "Parent first name" || t(col.title) == "Parent last name" || t(col.title) == "Parent relation"
 
-                elsif t(col.title) == "First Name"
-                    cols <<  ""
-                elsif t(col.title) == "Middle Name"
+            elsif t(col.title) == "First Name"
+              cols <<  ""
+            elsif t(col.title) == "Middle Name"
 
-                elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
-
-                else
-                  cols << ""
-                end
-              end
-          
-            count_guardian = 0
-            father = 0
-            guardians = GuardianStudents.find_all_by_student_id(obj.id)
-            unless guardians.blank?
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Father") || gurdian.relation.index("father")
-                    cols << gurdian.email
-                    count_guardian = count_guardian+1
-                    father = 1
-                    break
-                  end
-                end
-              end
-
-              if father == 0
-                cols << ""
-              end
-
-              guardians.each do |gur|
-                gurdian = Guardian.find_by_id(gur.guardian_id)
-                unless gurdian.blank?
-                  if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
-                    cols << gurdian.email
-                    count_guardian = count_guardian+1
-                    break
-                  end
-                end
-              end
-
-              if count_guardian == 0 || (count_guardian == 1 && father = 1)
-                cols << ""
-              end
+            elsif t(col.title) == "Last Name" || t(col.title) == "Surname" 
 
             else
               cols << ""
+            end
+          end
+          
+          count_guardian = 0
+          father = 0
+          guardians = GuardianStudents.find_all_by_student_id(obj.id)
+          unless guardians.blank?
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Father") || gurdian.relation.index("father")
+                  cols << gurdian.email
+                  count_guardian = count_guardian+1
+                  father = 1
+                  break
+                end
+              end
+            end
+
+            if father == 0
               cols << ""
-            end 
-            csv << cols
+            end
+
+            guardians.each do |gur|
+              gurdian = Guardian.find_by_id(gur.guardian_id)
+              unless gurdian.blank?
+                if gurdian.relation.index("Mother") || gurdian.relation.index("mother")
+                  cols << gurdian.email
+                  count_guardian = count_guardian+1
+                  break
+                end
+              end
+            end
+
+            if count_guardian == 0 || (count_guardian == 1 && father = 1)
+              cols << ""
+            end
+
+          else
+            cols << ""
+            cols << ""
+          end 
+          csv << cols
         end
         
         

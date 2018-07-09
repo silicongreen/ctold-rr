@@ -140,6 +140,13 @@
         <label for="employee_forwarder_status"><%= t('publisher') %></label>
         <div class="text-input-bg"><%= select :employee, :homework_publisher, [["No",0], ["Yes",1]] %></div>
       </div>
+      <% if MultiSchool.current_school.id == 340  %>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="employee_forwarder_status"><%= "Advisor" %></label>
+        <div class="text-input-bg"><%= select :employee, :is_advisor, [["No",0], ["Yes",1]] %></div>
+      </div>
+      <% end %>
       <hr class="label-underline"></hr>
       
       <div class="label-field-pair">

@@ -161,6 +161,20 @@
                         <div><%= @student.serial_no %></div>
                     </div>
                 </div>
+                
+                <% end %>
+                <% unless @student.advisor_id.nil? or @student.advisor_id.blank? %>
+                  <% emp_data = Employee.find_by_id(@student.advisor_id) %>
+                  <% unless emp_data.blank? %>
+                    <div class="row">
+                        <div class="row_label">
+                            <div><%= "Advisor" %></div>
+                        </div>
+                        <div class="row_data">
+                            <div><%= emp_data.full_name %></div>
+                        </div>
+                    </div>
+                  <% end %>
                 <% end %>
                 <% unless @student.sms_number.nil? or @student.sms_number.blank? %>
                   <div class="row">

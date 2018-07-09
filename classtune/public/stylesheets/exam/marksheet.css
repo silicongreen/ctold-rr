@@ -332,7 +332,7 @@ tr.sjws_odd{
 }
 .sjws_table_head td.rotate {
   /* Something you can count on */
-  height: 220px;
+  height: 260px;
   white-space: nowrap; 
   line-height: 20px;
   font-weight: 500;
@@ -343,12 +343,16 @@ tr.sjws_odd{
     transform: translate(5px, 100px) rotate(270deg);
     width: 50px;
 }
+.middle-align
+{
+    
+}
 .sjws_table_head td.rotate_homework div span
 {
     padding: 15px;
 }
 .sjws_table_head td.rotate div span {  
-    padding: 15px;
+    padding: 15px 0px;
 }
 .sjws_table_head td.rotate div span.rotate_box
 {

@@ -59,25 +59,34 @@
                   <tr class="sjws-table-header">
                       <td colspan="2" class="left-align">
                          
-                          <p><b>TERM: <%= @connect_exam_obj.name %></b></p>
-                          <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+                          <p><b>&nbsp;&nbsp;TERM: <%= @connect_exam_obj.name %></b></p>
+                          <p><b>&nbsp;&nbsp;Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
                           <% if !@employee.nil? %> 
-                            <p><b>Subject : <%= @subject.name %></b></p>
-                            <p><b>Teacher's Name : <%=  @employee.full_name %></b></p>              
+                            <p><b>&nbsp;&nbsp;Subject : <%= @subject.name %></b></p>
+                            <p><b>&nbsp;&nbsp;Teacher's Name : </b></p>
+                            <p><b>&nbsp;&nbsp;<%=  @employee.full_name %></b></p>
                           <% else %>
-                            <p><b>Subject : <%= @subject.name %></b></p>
+                            <p><b>&nbsp;&nbsp;Subject : <%= @subject.name %></b></p>
                           <% end %> 
-                          <p></p>
                       </td>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <% if rs['exam_category'].to_i!=4 %>
                         <td class="rotate"><center><div>
-                        <% if rs['exam_date'].to_s!="01/01/70" %>
-                          <span><%=  rs['exam_date'].to_s %><br /></span>
-                          <span><%=  rs['alternative_title'] %></span>
+                       
+                        <% alter_text = rs['alternative_title'].split("on") %>
+                        <% if alter_text.length > 1 %>
+                          <% date_string = alter_text[alter_text.length-1] %>
+                          <% alter_text.pop %>
+                          <% if date_string.to_i > 0 %>
+                            <span><%=  alter_text.join(" on ") %><br /></span>
+                            <span><%=  date_string %></span>
+                          <% else %>
+                            <span><%=  rs['alternative_title'] %></span>
+                          <% end %>
                         <% else %>
                           <span><%=  rs['alternative_title'] %></span>
-                        <% end %>  
+                        <% end %>
+                          
                         </div><br /></center></td>
                         <% colspan = colspan+1 %>  
                         <% end %>
@@ -86,7 +95,7 @@
 
                       <td class="rotate"><center><div><span>TOTAL NUM. OF H.W.</span></div></center></td>
                       <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
-                      <td class="rotate"><div><span>MARK - PERCENTANGE(%)</span></div></td>
+                      <td class="rotate width-little"><center><div><span>MARK - PERCENTANGE(%)</span></div></center></td>
                       <td class="rotate"><center><div><span>GRADE</span></div></center></td>
                   </tr>
 

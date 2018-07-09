@@ -105,23 +105,34 @@
       <% off_rank  = false %>
       <% @exams.each do |exam|  %>
           <% unless exam_score.blank? %>
+          
           <td> 
           
           <% exam_score.each do |es| %>
-              <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
-                <%= es.marks.present? ? es.marks.to_f: '0' %><hr/>
-                <% if es.marks.present? %>
-                  <% total = total+es.marks.to_f %>
-                <% end %>
-                <%= es.grading_level.present? ? es.grading_level : "N/A" %>
-                
-                <% if es.grading_level.blank? or es.grading_level.name == "F" %>
-                    <% off_rank = true %>
-                <% end %>
+              
+                <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
+                  <%  if exam.subject.no_exams %>
+                      <%= es.remarks %>
+                  <% else %>
+                    <%= es.marks.present? ? es.marks.to_f: '0' %><hr/>
+                    <% if es.marks.present? %>
+                      <% total = total+es.marks.to_f %>
+                    <% end %>
+                    <%= es.grading_level.present? ? es.grading_level : "N/A" %>
+
+                    <% if es.grading_level.blank? or es.grading_level.name == "F" %>
+                        <% off_rank = true %>
+                    <% end %>
+                    <% if MultiSchool.current_school.id == 7 %>
+                        <% off_rank = false %>
+                    <% end %>
+                  <% end %> 
+                <% end %> 
+                  
               <% end %>  
-          <% end %>  
-                
+             
           </td>
+          
           <% else %>
             <td class="height-hr"></td>
           <% end %>

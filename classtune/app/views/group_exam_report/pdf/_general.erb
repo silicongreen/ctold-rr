@@ -1,3 +1,17 @@
+
+<%
+if @ranked_student.blank?
+  @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id = ?",@exam_group.id],:joins=>[:exam,:student],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+  @tmp_students = {}
+  rank = 0
+  @ranked_student.each do |std_data|
+    rank = rank+1
+    @tmp_students[std_data.student_id.to_s] = rank
+  end
+end
+  
+%>
+
 </div>
 <div id="page-yield">
   
@@ -213,6 +227,20 @@
         <% exam_score.each do |es| %>
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf"> <%= es.exam.subject.name %></td>
+            <% if es.exam.subject.no_exams %>
+              <% if @exam_group.exam_type == 'Marks' %>
+                  <td class="col-pdf"><%= es.remarks %></td>
+                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf">N/A</td>
+              <% elsif @exam_group.exam_type == 'Grades' %>
+                  <td class="col-pdf"><%= es.remarks %></td>
+              <% else %>
+                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf"><%= es.remarks %></td>
+                  <td class="col-pdf">N/A</td>
+              <% end %>
+            <% else %>
             <% if @exam_group.exam_type == 'Marks' %>
               <td class="col-pdf"><%= es.marks || '-' %></td>
               <% total_marks_attained = total_marks_attained+(es.marks || 0) %>
@@ -229,6 +257,7 @@
               <td class="col-pdf"><%= es.grading_level || "-" %></td>
               <td class="col-pdf"><%= es.calculate_percentage.round(2) %></td>
             <% end %>
+            <% end %>  
           </tr>
         <% end %>
         <tr class="tr-blank"></tr>
@@ -246,7 +275,7 @@
 
       <% if @exam_group.exam_type == 'Marks' or @exam_group.exam_type == 'MarksAndGrades' %>
         <div class="custom_header">
-          <%= t('class_average_marks') %> : <%= "%.2f" %@exam_group.batch_average_marks('marks') unless total_max_marks == 0%> | <%= t('class_average') %> % : <%=  "%.2f" %(@exam_group.batch_average_marks('marks')*100/total_max_marks) unless total_max_marks == 0 %>
+          <% unless @tmp_students[@student.id.to_s].blank?  %>Position : <%= @tmp_students[@student.id.to_s] %> | <% end %><%= t('class_average_marks') %> : <%= "%.2f" %@exam_group.batch_average_marks('marks') unless total_max_marks == 0%> | <%= t('class_average') %> % : <%=  "%.2f" %(@exam_group.batch_average_marks('marks')*100/total_max_marks) unless total_max_marks == 0 %>
         </div>
       <% end %>
     <% end %>

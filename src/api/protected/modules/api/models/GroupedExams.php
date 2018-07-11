@@ -474,7 +474,7 @@ class GroupedExams extends CActiveRecord
                     {
                         $final_term_id = $value['examgroup']->id;
                     }
-                    $result_main =  $examsGroupObj->getExamGroupResultSubjectAllStudent($value['examgroup']->id,$value->weightage,$batch_student);    
+                    $result_main =  $examsGroupObj->getExamGroupResultSubjectAllStudent($value['examgroup']->id,$value->weightage,$batch_student,$value->priority);    
                     if($result_main)
                     {
                         $results['exams'][] = $result_main;

@@ -36,6 +36,13 @@
                 </tr>
             </thead>    
       </table>
+      <% exam_type = 1 %>
+      <% if @connect_exam_obj.result_type == 10 %>
+        <% exam_type = 2 %>
+      <% end %>
+      <% if @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 %>
+        <% exam_type = 3 %>
+      <% end %>
      
       <% unless @report_data.blank? %>
       <% c = 'even' %>
@@ -58,6 +65,11 @@
         <% i = 0 %>
       
         <% @report_data['report']['students'].each do |std| %>
+          <% students_data = Student.find_by_id(std['id'].to_i) %>
+        
+          <% if !@current_user.admin and (!@current_user.employee_record.is_advisor or students_data.advisor_id != @current_user.employee_record.id) %>
+            <% next %>
+          <% end %>
           <% i = i+1 %>
           <%  std_count = std_count+1; %>  
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -74,8 +86,14 @@
             <% grades = [] %>
             <% grade_count = {} %>
             <% @report_data['report']['subjects'].each do |sub| %>
-                  <% subject_full_mark = 0 %>
-                  <% subject_obtain_mark = 0 %>
+                  <% subject_full_mark1 = 0 %>
+                  <% subject_obtain_mark1 = 0 %>
+                  <% subject_full_mark2 = 0 %>
+                  <% subject_obtain_mark2 = 0 %>
+                  <% subject_full_mark3 = 0 %>
+                  <% subject_obtain_mark3 = 0 %>
+                  <% subject_full_mark4 = 0 %>
+                  <% subject_obtain_mark4 = 0 %>
                   
                   <% @report_data['report']['exams'].each do |rs| %>
                     <% @examobj = Exam.find_by_exam_group_id_and_subject_id(rs['exam_id'].to_i,sub['id'].to_i) %>
@@ -98,18 +116,75 @@
                     <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and check_exam == true %>
                       
                       <%
-                          
-                          subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                          subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      
+                          if exam_type == 1
+                           if rs['exam_category'].to_i == 1 
+                              subject_full_mark1 = subject_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark1 = subject_obtain_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            else
+                              subject_full_mark2 = subject_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark2 = subject_obtain_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            end
+                          else 
+                            if rs['priority'].to_i == 1 and rs['exam_category'].to_i == 1
+                              subject_full_mark1 = subject_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark1 = subject_obtain_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            elsif rs['priority'].to_i == 2 and rs['exam_category'].to_i != 1
+                              subject_full_mark2 = subject_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark2 = subject_obtain_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            elsif rs['priority'].to_i == 3 and rs['exam_category'].to_i == 1
+                              subject_full_mark3 = subject_full_mark3+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark3 = subject_obtain_mark3+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            elsif rs['priority'].to_i == 4 and rs['exam_category'].to_i != 1
+                              subject_full_mark4 = subject_full_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                              subject_obtain_mark4 = subject_obtain_mark4+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            end  
+                          end
                          
                         
                       %>
                     <% end %>
                    <% end %> 
-                       <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                      
+                      <%
+                        if exam_type == 1
+                          
+                          main_mark1 = (subject_obtain_mark1.to_f/subject_full_mark1.to_f)*40 
+                          main_mark2 = (subject_obtain_mark2.to_f/subject_full_mark2.to_f)*60 
+                          main_mark1 = main_mark1.round()
+                          main_mark2 = main_mark2.round()
+                          main_mark_sum = main_mark = main_mark1+main_mark2
+                     
+                        elsif exam_type == 3
+                          main_mark1 = (subject_obtain_mark1.to_f/subject_full_mark1.to_f)*100 
+                          main_mark2 = (subject_obtain_mark2.to_f/subject_full_mark2.to_f)*100 
+                          main_mark1 = main_mark1.round()
+                          main_mark2 = main_mark2.round()
+                          main_mark_sum = main_mark1+main_mark2 
+                          main_mark = (main_mark_sum/200)*100
+                        else
+                          main_mark1 = (subject_obtain_mark1.to_f/subject_full_mark1.to_f)*40 
+                          main_mark2 = (subject_obtain_mark2.to_f/subject_full_mark2.to_f)*60 
+                          main_mark1 = main_mark1.round()
+                          main_mark2 = main_mark2.round()
+                          main_mark1 = main_mark1+main_mark2
+                          
+                          main_mark3 = (subject_obtain_mark3.to_f/subject_full_mark3.to_f)*40 
+                          main_mark4 = (subject_obtain_mark4.to_f/subject_full_mark4.to_f)*60 
+                          main_mark3 = main_mark3.round()
+                          main_mark4 = main_mark4.round()
+                          main_mark2 = main_mark3+main_mark4
+                          
+                          main_mark_sum = main_mark1+main_mark2 
+                          main_mark = (main_mark_sum/200)*100
+                        
+                        end
+                        main_mark = main_mark.round()
+                     
+                      %> 
                     <td>
-                       <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                       <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                       <% total_mark = total_mark+main_mark_sum.to_f %>
+                       <%= main_mark_sum.to_i %><hr/>
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                        <% if !grade.blank? and !grade.name.blank? %>
                            <%

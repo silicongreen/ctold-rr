@@ -847,7 +847,7 @@ class ExamGroups extends CActiveRecord
         
     }
     
-    public function getExamGroupResultSubjectAllStudent($exam_group_id,$weightage,$students)
+    public function getExamGroupResultSubjectAllStudent($exam_group_id,$weightage,$students,$priority = 0)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 't.name,t.id,t.sba,t.exam_category,t.quarter'; 
@@ -915,6 +915,7 @@ class ExamGroups extends CActiveRecord
                 $result['quarter'] = $all_exams->quarter;
                 $result['exam_name'] = $all_exams->name;
                 $result['sba'] = $all_exams->sba;
+                $result['priority'] = $priority;
 
                 $result['exam_category'] = $all_exams->exam_category;
                 $result['exam_id'] = $all_exams->id;

@@ -276,7 +276,7 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
+    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
     k = 0
     data = []
     @exam_connect.each do |exam_connect|
@@ -292,7 +292,10 @@ class MarksController < ApplicationController
               @subjects << exam.subject_id
               data[k] = []
               data[k][0] = @template.link_to(exam_connect_batch.to_s, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
-              if @current_user.admin? or (!@batches2.blank? and @batches2.include?(exam_connect.batch_id))
+              sjws_exam_type_array = [4,6,9,10,11]
+              if MultiSchool.current_school.id == 340 and sjws_exam_type_array.include?(exam_connect.result_type.to_i) and (current_user.admin? or current_user.employee_record.is_advisor)
+                data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
+              elsif MultiSchool.current_school.id != 340 and (@current_user.admin? or (!@batches2.blank? and @batches2.include?(exam_connect.batch_id)))
                 data[k][1] = @template.link_to(exam_connect.name+"(Comment Entry)", '/exam/' + 'comment_tabulation/' +exam_connect.id.to_s+'?blank_page=1', :target => "_blank")
               else
                 data[k][1] = @template.link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")

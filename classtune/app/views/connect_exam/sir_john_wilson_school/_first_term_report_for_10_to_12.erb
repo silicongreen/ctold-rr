@@ -31,47 +31,28 @@
                   <% c = 'even'  %>
                   <tr class="table-header t_head">
                       <td class="" rowspan="2"><b><%= "Subject" %></b></td> 
-                      <td class="" colspan="4"><center>
-              <% if @connect_exam_obj.name.include? ("FIRST") %>
-                  <%=  "First Term"%>
-              <% elsif @connect_exam_obj.name.include? ("First") %>
-                  <%=  "First Term"%>
-              <% elsif @connect_exam_obj.name.include? ("first") %>
-                  <%=  "First Term"%>
-              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
-                  <%=  "Second Term"%>
-              <% elsif @connect_exam_obj.name.include? ("Second") %>
-                  <%=  "Second Term"%>
-              <% elsif @connect_exam_obj.name.include? ("second") %>
-                  <%=  "Second Term"%>
-              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
-                  <%=  "Final Term"%>
-              <% elsif @connect_exam_obj.name.include? ("Final") %>
-                  <%=  "Final Term"%>
-              <% elsif @connect_exam_obj.name.include? ("final") %>
-                  <%=  "Final Term"%>
-              <% end %></center></td>
-              <td class="" colspan="3"><center>
-                <% if @connect_exam_obj.name.include? ("FIRST") %>
-                  <%=  "First Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("First") %>
-                  <%=  "First Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("first") %>
-                  <%=  "First Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("SECOND") %>
-                  <%=  "Second Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("Second") %>
-                  <%=  "Second Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("second") %>
-                  <%=  "Second Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("FINAL") %>
-                  <%=  "Final Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("Final") %>
-                  <%=  "Final Mock Examination Report"%>
-              <% elsif @connect_exam_obj.name.include? ("final") %>
-                  <%=  "Final Mock Examination Report"%>
-              <% end %>
-              </center></td>
+                      <td class="" colspan="4">
+                        <center>
+                        <% if @connect_exam_obj.name.upcase.include? ("FIRST") %>
+                            <%=  "First Term"%>
+                        <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") %>
+                            <%=  "Second Term"%>
+                        <% elsif @connect_exam_obj.name.upcase.include? ("FINAL") %>
+                            <%=  "Final Term"%>
+                        <% end %>
+                        </center>
+                      </td>
+                      <td class="" colspan="3">
+                        <center>
+                        <% if @connect_exam_obj.name.upcase.include? ("FIRST") %>
+                            <%=  "First Mock Examination Report"%>
+                        <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") %>
+                            <%=  "Second Mock Examination Report"%>
+                        <% elsif @connect_exam_obj.name.upcase.include? ("FINAL") %>
+                            <%=  "Final Mock Examination Report"%>
+                        <% end %>
+                        </center>
+                      </td>
                   </tr>
                   <tr class="table-header t_head">
                       <td class="">Mark<br />(%)</td> 
@@ -98,7 +79,7 @@
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% total_exam_count = @report_data['report']['exams'].count %>
                             <% @report_data['report']['exams'].each do |report| %>                              
-                                <% if total_exam_count != exam_incremental %>
+                                <% if report['exam_category'].to_i != 1 %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
@@ -107,7 +88,7 @@
                                   <% end %> 
                                 <% end %> 
                           
-                                <% if total_exam_count == exam_incremental %>
+                                <% if report['exam_category'].to_i == 1 %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% total_mark_2 = total_mark_2.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>

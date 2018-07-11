@@ -72,7 +72,7 @@ module OnlinePayment
                @fine_amount = 0
             end
           end
-
+abort(@fine_amount.to_s)
           @fine_amount=0 if @financefee.is_paid
           @has_fine_discount = false if @financefee.is_paid
           OnlinePayment.return_url = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1" unless OnlinePayment.return_url.nil?
@@ -867,7 +867,7 @@ module OnlinePayment
               @fine_amount = 0
             end
           end
-
+          abort(@fine_amount.to_s)
           @fine_amount=0 if @financefee.is_paid
           @has_fine_discount = false if @financefee.is_paid
 

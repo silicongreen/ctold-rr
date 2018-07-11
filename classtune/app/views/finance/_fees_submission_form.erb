@@ -159,7 +159,7 @@
       <% unless @fine.nil? %>
         <tr class="<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
-          <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= Date.today %></span></td>
+          <td class="col-2"><span class="themed_text"><%= t('fine_on') %>2 <%= Date.today %></span></td>
           <td class="col-6"  style="text-align: right;">
             <%= precision_label(@fine.to_f) %>
           </td>
@@ -179,7 +179,7 @@
             <% if trans.fine_included != 0 and trans.fine_amount.to_i > 0 %>
               <tr class="<%= cycle("odd","even") %>">
                 <td class="col-1"><%= i+=1 %></td>
-                <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= trans.transaction_date %></span></td>
+                <td class="col-2"><span class="themed_text"><%= t('fine_on') %>3 <%= trans.transaction_date %></span></td>
                 <td class="col-6"  style="text-align: right;">
                   <%= precision_label(trans.fine_amount) %>
                 </td>
@@ -202,11 +202,10 @@
         <% end %>
       
         <%unless @financefee.is_paid%>
-              <%= debug @fine_rule.inspect %>
           <%if @fine_rule%>
             <tr class="<%= cycle("odd","even") %>">
               <td class="col-1"><%= i+=1 %></td>
-              <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
+              <td class="col-2"><span class="themed_text"><%= t('fine_on') %>1 <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
               <td class="col-6"  style="text-align: right;"><%= precision_label(@new_fine_amount) %></td>
             </tr>
           <%end%>

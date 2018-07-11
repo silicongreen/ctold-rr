@@ -53,7 +53,7 @@
       <thead><!-- class="thead-inverse" -->
         <tr>
           <th style="font-weight: normal; width: 8%;"><%= t('sl_no') %> </th>
-          <th style="font-weight: normal; width: 72%; text-align: left;"><%= t('particulars') %></th>
+          <th style="font-weight: normal; width: 72%; text-align: left;"><%= t('particulars') %>1</th>
           <th style="font-weight: normal; width: 20%; text-align: right;"><%= t('amount') %> (<%= currency %>  )</th>
         </tr>
       </thead>
@@ -166,7 +166,7 @@
         <% if @fine.to_f > 0.00 %>
         <tr class="<%= cycle("odd","even") %>">
           <td class="col-1"><%= i+=1 %></td>
-          <td class="col-2"><span class="themed_text"><%= t('fine_on') %>3 <%= Date.today %></span></td>
+          <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= Date.today %></span></td>
           <td class="col-6"  style="text-align: right;">
             <%= precision_label(@fine.to_f) %>
           </td>
@@ -189,7 +189,7 @@
               <%  if @fine_rule and @has_fine_discount %>
                 <tr class="<%= cycle("odd","even") %>">
                   <td class="col-1"><%= i+=1 %></td>
-                  <td class="col-2"><span class="themed_text"><%= t('fine_on') %>1 <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
+                  <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
                   <td class="col-6"  style="text-align: right;"><%= precision_label(@new_fine_amount) %></td>
                 </tr>
                 <% if @has_fine_discount %>    
@@ -240,7 +240,7 @@
         <%if @fine_rule%>
           <tr class="<%= cycle("odd","even") %>">
             <td class="col-1"><%= i+=1 %></td>
-            <td class="col-2"><span class="themed_text"><%= t('fine_on') %>2 <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
+            <td class="col-2"><span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span></td>
             <td class="col-6"  style="text-align: right;"><%= precision_label(@new_fine_amount) %></td>
           </tr>
         <%end%>

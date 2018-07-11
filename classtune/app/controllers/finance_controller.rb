@@ -5133,7 +5133,7 @@ class FinanceController < ApplicationController
   end
   
   def get_fine_discount(date,batch,student)
-    if @fine_amount > 0
+    if !@fine_amount.blank? and @fine_amount > 0
       fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
       unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
         @discounts_on_lates = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
@@ -5154,7 +5154,9 @@ class FinanceController < ApplicationController
           end
         end
       end
-    end
+    else
+      @fine_amount = 0
+    end  
   end
   
   def get_fine_discount_index(date,batch,student,ind)

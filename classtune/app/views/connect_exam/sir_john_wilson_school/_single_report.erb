@@ -17,10 +17,10 @@
       
       <% total_subject_main = @report_data['report']['subjects'].count %>    
       <table class="sjws_table_head std_name_and_class" width="100%" cellspacing="0">
-          <tr>
+          <tr class="table-header">
               <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
           </tr>
-          <tr>
+          <tr class="table-header">
               <td colspan="1"><b>Class : <%= @batch.course.course_name %></b></td>
               <td colspan="1"><b>Section : <%= @batch.course.section_name %></b></td> 
           </tr>
@@ -298,16 +298,23 @@
   }
   .p-gap-3 p
   {
-      margin-bottom: 70px;
-      font-size: 25px;
+      margin-bottom: 60px;
   }
   .p-gap-3 p:last-child
   {
-      margin-bottom: 70px;
+      margin-bottom: 60px;
   }
   .p-gap-3 p:first-child
   {
-      margin-top: 70px;
+      margin-top: 60px;
   }
   
 </style>
+<% if total_subject_main == 3 %>
+<style>
+table.align-center-table tr.table-header td
+{
+    padding: 30px 12px !important;
+}
+</style>
+<% end %>

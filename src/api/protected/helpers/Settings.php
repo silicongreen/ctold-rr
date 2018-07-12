@@ -31,7 +31,7 @@ class Settings {
     public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";
     public static $free_domain_string = array("free");
     public static $card_attendence_school = [2,3,246,319,346,312];
-    public static $card_attendence_school_employee_only = [319,312];
+    public static $card_attendence_school_employee_only = [319,312,3];
     
     public static $school_sms_extra_string = array(
         319 => " GH."

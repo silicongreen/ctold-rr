@@ -73,8 +73,7 @@
                           <% if full_mark.to_f > 0 %>  
                             <% if main_mark > 0 %>
                           
-                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% end %>">
-                                  
+                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% else %> p-gap-<%= total_subject_main %><% end %>">
                                 <% if main_mark >69 and main_mark < 101 %>
                                   <p><span class="tickbox_check"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
@@ -94,7 +93,7 @@
                                 <% end %>
                               </td>                            
                             <% else  %>                            
-                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% end %>">
+                              <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% else %> p-gap-<%= total_subject_main %><% end %>">
                                 <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                 <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                 <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
@@ -296,6 +295,19 @@
   sjws_table_head tr td.text_center
   {
       text-align: center !important;
+  }
+  .p-gap-3 p
+  {
+      margin-bottom: 70px;
+      font-size: 25px;
+  }
+  .p-gap-3 p:last-child
+  {
+      margin-bottom: 70px;
+  }
+  .p-gap-3 p:first-child
+  {
+      margin-top: 70px;
   }
   
 </style>

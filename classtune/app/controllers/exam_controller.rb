@@ -1470,6 +1470,9 @@ class ExamController < ApplicationController
     
     @exam_group = ExamGroup.find(params[:exam_group])
     @student = Student.find_by_id(params[:student])
+    if @student.blank?
+      @student = ArchivedStudent.find_by_former_id(params[:student])
+    end
     @for_save = params[:for_save]
     
     @batch = @exam_group.batch

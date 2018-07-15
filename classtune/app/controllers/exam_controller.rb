@@ -1472,6 +1472,9 @@ class ExamController < ApplicationController
     @student = Student.find_by_id(params[:student])
     if @student.blank?
       @student = ArchivedStudent.find_by_former_id(params[:student])
+      unless @student.blank?
+        @student.id = @student.former_id
+      end
     end
     @for_save = params[:for_save]
     

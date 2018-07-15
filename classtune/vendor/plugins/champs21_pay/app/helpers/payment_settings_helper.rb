@@ -57,10 +57,8 @@ module PaymentSettingsHelper
       payment_url = eval(payment_urls["authorize_net_url"].to_s)
       payment_url ||= eval("AuthorizeNet::SIM::Transaction::Gateway::TEST")
     elsif active_gateway == "ssl.commerce"
-    
-        payment_url = payment_urls["ssl_commerce_url"]
-        payment_url ||= "https://securepay.sslcommerz.com/gwprocess/testbox/v3/process.php"
-    
+      payment_url = payment_urls["ssl_commerce_url"]
+      payment_url ||= "https://securepay.sslcommerz.com/gwprocess/testbox/v3/process.php"
     end
     payment_url
   end

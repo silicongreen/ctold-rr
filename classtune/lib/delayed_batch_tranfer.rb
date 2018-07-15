@@ -48,8 +48,10 @@ class DelayedBatchTranfer
     saved_batch = PdfSave.find_by_batch_id_and_status(@from,true)
     if !@students.blank? and !saved_batch.blank?
       
-      batch_saved = PdfSave.find(saved_batch.id)
-      batch_saved.destroy
+      if @transfer_all == "Yes"
+        batch_saved = PdfSave.find(saved_batch.id)
+        batch_saved.destroy
+      end
       
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"
       @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)

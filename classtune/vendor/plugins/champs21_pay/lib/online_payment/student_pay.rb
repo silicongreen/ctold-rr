@@ -69,7 +69,7 @@ module OnlinePayment
             @new_fine_amount = @fine_amount
             get_fine_discount(@date, @batch, @student)
             if @fine_amount < 0
-               @fine_amount = 0
+              @fine_amount = 0
             end
           end
 
@@ -775,6 +775,7 @@ module OnlinePayment
         end
       end
     end
+  
   
     def get_fine_discount_index_all(date,batch,student,ind)
     

@@ -80,21 +80,6 @@ module OnlinePayment
           
           total_fees =@financefee.balance.to_f+@fine_amount
           
-          
-          unless params[:fine].nil?
-            unless @financefee.is_paid == true
-              total_fees += params[:fine].to_f
-            else
-              total_fees = params[:fine].to_f
-            end
-          end
-          unless params[:vat].nil?
-            unless @financefee.is_paid == true
-              total_fees += params[:vat].to_f
-            else
-              total_fees = params[:vat].to_f
-            end
-          end
           if @active_gateway == "Authorize.net"
             @sim_transaction = AuthorizeNet::SIM::Transaction.new(@merchant_id,@certificate, total_fees,{:hosted_payment_form => true,:x_description => "Fee-#{@student.admission_no}-#{@fee_collection.name}"})
             @sim_transaction.instance_variable_set("@custom_fields",{:x_description => "Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})"})

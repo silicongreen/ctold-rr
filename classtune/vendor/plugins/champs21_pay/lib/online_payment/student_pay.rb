@@ -52,7 +52,7 @@ module OnlinePayment
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           @total_discount = 0
-
+          
           calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
           
           bal=(@total_payable-@total_discount).to_f
@@ -72,13 +72,17 @@ module OnlinePayment
               @fine_amount = 0
             end
           end
-
+          
           @fine_amount=0 if @financefee.is_paid
           @has_fine_discount = false if @financefee.is_paid
           OnlinePayment.return_url = "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1" unless OnlinePayment.return_url.nil?
           total_fees = 0
+          if @fine_amount.blank?
+            @fine_amount = 0
+          end
+          total_fees =@financefee.balance.to_f+@fine_amount.to_f
           
-          total_fees =@financefee.balance.to_f+@fine_amount
+          
           
           if @active_gateway == "Authorize.net"
             @sim_transaction = AuthorizeNet::SIM::Transaction.new(@merchant_id,@certificate, total_fees,{:hosted_payment_form => true,:x_description => "Fee-#{@student.admission_no}-#{@fee_collection.name}"})

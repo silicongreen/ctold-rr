@@ -73,7 +73,7 @@
                         <% if rs['exam_category'].to_i!=4 %>
                         <td class="rotate"><center><div>
                        
-                        <% alter_text = rs['alternative_title'].split("on") %>
+                        <% alter_text = rs['alternative_title'].split(" on ") %>
                         <% if alter_text.length > 1 %>
                           <% date_string = alter_text[alter_text.length-1] %>
                           <% alter_text.pop %>

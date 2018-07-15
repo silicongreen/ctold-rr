@@ -216,8 +216,13 @@ module OnlinePayment
                     payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
                   end
 
-                  validation_url = payment_urls["ssl_commerce_requested_url"]
-                  validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                  if MultiSchool.current_school.id == 2
+                    validation_url = payment_urls["ssl_commerce_sandbox_requested_url"]
+                    validation_url ||= "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+                  else
+                    validation_url = payment_urls["ssl_commerce_requested_url"]
+                    validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                  end
                   val_id = params[:val_id]
                   requested_url=validation_url+"?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
                   uri = URI.parse(requested_url)

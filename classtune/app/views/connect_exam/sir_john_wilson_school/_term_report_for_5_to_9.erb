@@ -36,10 +36,16 @@
                       <td class=""><b><center><%= "Subject" %></b></center></td> 
                       <td class=""><center>Class<br />Assessment<br />Mark(40%)</center></td> 
                       <td class="">
+                        <% half_yearly = false %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                          <% if report['quarter'].to_i == 3 %>
+                            <% half_yearly = true %>
+                          <% end %>
+                        <% end %>  
                         <center>
-                        <% if @connect_exam_obj.name.upcase.include? ("FIRST") or @connect_exam_obj.name.upcase.include? ("HALF") %>
+                        <% if half_yearly %>
                             <%=  "Half Yearly <br /> Exam (60%)"%>
-                        <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") or @connect_exam_obj.name.upcase.include? ("FINAL") %>
+                        <% else %>
                             <%=  "Final Exam <br />(60%)"%>
                         <% end %>
                         </center>

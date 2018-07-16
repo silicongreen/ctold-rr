@@ -37,7 +37,7 @@
                       <td class=""><center>Class<br />Assessment<br />Mark(40%)</center></td> 
                       <td class="">
                         <center>
-                        <% if @connect_exam_obj.name.upcase.include? ("FIRST") %>
+                        <% if @connect_exam_obj.name.upcase.include? ("FIRST") or @connect_exam_obj.name.upcase.include? ("HALF") %>
                             <%=  "Half Yearly <br /> Exam (60%)"%>
                         <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") or @connect_exam_obj.name.upcase.include? ("FINAL") %>
                             <%=  "Final Exam <br />(60%)"%>

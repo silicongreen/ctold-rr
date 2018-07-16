@@ -1685,10 +1685,10 @@ td.checkbox_inline p
     padding:0px;
     font-size:16px;
 }
-tr.t-small td
+.sjws-final-term #pdf-table tr.t-small td
 {
     font-size:15px !important;
-    padding: 5px 2px 5px 2px;
+    padding: 2px 2px 2px 2px !important;
 }
 .sjws_table_head td.rotate {
   height: 250px;

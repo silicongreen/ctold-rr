@@ -378,15 +378,15 @@ class ApplicationController < ActionController::Base
   
   def check_free_school?
     free = false
-    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
-    if !school_subscription_info.nil?
-      date_to_check = Date.today
-      if date_to_check>school_subscription_info.end_date.to_date
-        free = true 
-      end
-    else
-      free = true
-    end  
+#    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+#    if !school_subscription_info.nil?
+#      date_to_check = Date.today
+#      if date_to_check>school_subscription_info.end_date.to_date
+#        free = true 
+#      end
+#    else
+#      free = true
+#    end  
     return free
   end 
   

@@ -126,7 +126,7 @@ class Schools extends CActiveRecord
 	}
         public function getschooltype($id)
         {
-            $school_type = 0;
+            $school_type = 1;
             $subsinfo = new Subscription();
             $s_subscription = $subsinfo->find_subscription($id);
             if($s_subscription)

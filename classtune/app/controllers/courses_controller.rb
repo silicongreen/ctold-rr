@@ -390,7 +390,7 @@ class CoursesController < ApplicationController
                           elect_group_exists = ElectiveGroup.find_by_name_and_batch_id(ElectiveGroup.find(subject.elective_group_id).name,batch_id)
                           if elect_group_exists.nil?
                             elect_group = ElectiveGroup.create(:name=>ElectiveGroup.find(subject.elective_group_id).name,
-                              :batch_id=>self.id,:is_deleted=>false)
+                              :batch_id=>batch_id,:is_deleted=>false)
                             Subject.create(:name=>subject.name,:code=>subject.code,:batch_id=>batch_id,:no_exams=>subject.no_exams,:no_exams_sjws=>subject.no_exams_sjws, :icon_number => subject.icon_number,
                               :max_weekly_classes=>subject.max_weekly_classes,:elective_group_id=>elect_group.id,:credit_hours=>subject.credit_hours,:is_deleted=>false)
                           else

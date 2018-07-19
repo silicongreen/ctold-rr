@@ -52,7 +52,7 @@
     
  
 
-  <h3>EXAM COMMENTS >> <%= @exam_subject.name %></h3>
+  <h3>EXAM >> <%= @exam_subject.name %></h3>
   <% unless @students.empty? %>
       <% form_for :exams do |f| %>
         <div class="zui-wrapper">
@@ -64,6 +64,9 @@
             <td><b><%= "Effort" %></b></td>
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
+              <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id) && params[:evaluation].blank? %>
+                <% next %>
+              <% end %>
               <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id) %>
                 <% subject_groups = get_subject_group(@exam_subject.id) %>
                 <td style="padding:0px; border:none;">
@@ -104,7 +107,7 @@
                   </tr>
                 </table>
                 </td>  
-              <% else %>
+              <% elsif params[:evaluation].blank? %>
               <td>
                   <b><%= exam.exam_group.name %></b>
                     
@@ -127,11 +130,13 @@
               </td>
               <% end %>
             <% end %>
-            <% end %>  
+            <% end %>
+            <% if params[:evaluation].blank? %>
             <td><b><%= "M. Obt." %><hr><%="T. Marks"%></b></td>
             <td><b><%= "%" %></b></td>
             <td><b><%= "Grade" %></b></td>
             <td><b><%= t('remarks') %></b></td>
+            <% end %>
             
             
           </tr>
@@ -160,9 +165,12 @@
               <% full_mark = 0 %>
               <% unless @exams.blank? %>
                 <% @exams.each do |exam| %>
+                  <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id) && params[:evaluation].blank? %>
+                    <% next %>
+                  <% end %>
                   <% @exam_score = exam.score_for(student) %>
               
-                  <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id) %>
+                  <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id)  %>
                         <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
                         <% exam_score_split = @exam_score.remarks.split("|") %>
                         <% end %>
@@ -226,7 +234,7 @@
                         </tr>
                     </table>
                 </td>
-                <% else %>
+                <% elsif params[:evaluation].blank? %>
                   <% if !@exam_score.marks.blank? %>
                     <% total_mark = total_mark.to_f+@exam_score.marks.to_f %>
                     <% score_now = @exam_score.marks  %>
@@ -247,7 +255,7 @@
                 <% end %>
                 <% end %>  
               <% end %>
-              
+              <% if params[:evaluation].blank? %>
               <td class="col-2 td-mark"><center><b><%=total_mark.to_i%><hr><%=  full_mark.to_i %></b></center></td>
               <td class="col-2 td-mark">
                 <%
@@ -276,7 +284,7 @@
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td> 
-           
+              <% end %>
               
             
             <tr>

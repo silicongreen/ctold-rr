@@ -8,7 +8,7 @@
                 <% full_mark = 0 %>
                 <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
                 <td class="col-pdf border-left-none" colspan="3">
-                  <h4>Extra Curricular Activities</h4>   
+                  <h4 class="no-warp">Extra Curricular Activities</h4>   
                 </td>
                 
                 <td class="col-pdf td-align-right" colspan="3">
@@ -25,8 +25,8 @@
             </tr>
             <tr  class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               <td class="col-pdf  margin-padding-0" colspan="4">
-                <h4>NAME : <%= @student.full_name %></h4>
-                <h4>Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
+                <h4 class="no-warp">NAME : <%= @student.full_name %></h4>
+                <h4 class="no-warp">Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
               </td>
               <td class="col-pdf text_center width-60"><b>Grade</b></td>
               <td class="col-pdf text_center width-60"><b>Effort</b></td>

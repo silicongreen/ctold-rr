@@ -284,7 +284,7 @@ class MarksController < ApplicationController
       @subjects = []
       @group_exams = GroupedExam.find_all_by_connect_exam_id(exam_connect.id,:select => "grouped_exams.exam_group_id")
       @exam_group_ids = @group_exams.map(&:exam_group_id)
-      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name",:joins=>[:subject],:conditions =>["subjects.is_deleted = ?", false])
+      exams = Exam.find_all_by_exam_group_id(@exam_group_ids,:select => "exams.id,exams.subject_id,subjects.name as subject_name,exam_groups.exam_category as exam_category",:joins=>[:subject,:exam_group],:conditions =>["subjects.is_deleted = ?", false])
       unless exams.blank?   
         exams.each do |exam|
           if !@subjects.include?(exam.subject_id) 
@@ -300,7 +300,13 @@ class MarksController < ApplicationController
               else
                 data[k][1] = @template.link_to(exam_connect.name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
               end  
-              data[k][2] = @template.link_to(exam.subject_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
+              if MultiSchool.current_school.id == 340 && exam_connect.result_type==12
+                data[k][2] = @template.link_to(exam.subject_name+" [Evaluation]", '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
+              elsif MultiSchool.current_school.id == 340 && has_subject_group(exam.subject_id)
+                data[k][2] = @template.link_to(exam.subject_name+" [CT]", '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")+" | "+@template.link_to(exam.subject_name+" [Evaluation]", '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s+"?evaluation=1", :target => "_blank")
+              else  
+                data[k][2] = @template.link_to(exam.subject_name, '/exam/' + 'connect_exam_subject_comments/' +exam_connect.id.to_s+"|"+exam.subject_id.to_s, :target => "_blank")
+              end
               if MultiSchool.current_school.id != 340
                 data[k][3] = @template.link_to("Marksheet", '/exam/' + 'marksheet/' +exam_connect.id.to_s+"?subject_id="+exam.subject_id.to_s, :target => "_blank")
               end 

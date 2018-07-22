@@ -1015,6 +1015,7 @@ class FreeuserController extends Controller
     {
         $gcm_id = Yii::app()->request->getPost('gcm_id');
         $device_id = Yii::app()->request->getPost('device_id');
+        $fcm = Yii::app()->request->getPost('fcm');
         if ($gcm_id)
         {
             $gcmobj = new Gcm();
@@ -1035,6 +1036,10 @@ class FreeuserController extends Controller
                 }
                 $gcmobj->gcm_id = $gcm_id;
                 $gcmobj->device_id = $device_id;
+                if($fcm)
+                {
+                    $gcmobj->fcm_converted = 1;
+                }
                 $gcmobj->save();
                 $cache_name = "YII-RESPONSE-GCM";
                 Yii::app()->cache->delete($cache_name);

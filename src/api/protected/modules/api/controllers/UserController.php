@@ -171,47 +171,41 @@ class UserController extends Controller {
     }
 
     public function actionError() {
-        if ($error = Yii::app()->errorHandler->error) {
-
-            if(isset(Yii::app()->user->id))
-            {
-                $error_log = new ErrorLogYii();
-                if (isset($error['code'])) {
-                    $error_log->ecode = $error['code'];
-                }
-                if (isset($error['type'])) {
-                    $error_log->etype = $error['type'];
-                }
-                if (isset($error['message'])) {
-                    $error_log->emsg = $error['message'];
-                }
-                if (isset($error['file'])) {
-                    $error_log->efile = $error['file'];
-                }
-                if (isset($error['line'])) {
-                    $error_log->eline = $error['line'];
-                }
-                if (isset($error['trace'])) {
-                    $error_log->etrace = $error['trace'];
-                }
-                $error_log->is_paid = 0;
-                if (isset(Yii::app()->user->id)) {
-                    $error_log->is_paid = 1;
-                    $error_log->paid_user_id = Yii::app()->user->id;
-                }
-                
-                if (isset(Yii::app()->user->free_id)) {
-                    $error_log->user_id = Yii::app()->user->free_id;
-                }
-                
-                if($error_log->is_paid == 1 && $error_log->ecode!=404)
-                {
-                    $error_log->save();
-                }
-
-                
+        if ($error = Yii::app()->errorHandler->error) { 
+            $error_log = new ErrorLogYii();
+            if (isset($error['code'])) {
+                $error_log->ecode = $error['code'];
             }
-            $response['status']['code'] = 400;
+            if (isset($error['type'])) {
+                $error_log->etype = $error['type'];
+            }
+            if (isset($error['message'])) {
+                $error_log->emsg = $error['message'];
+            }
+            if (isset($error['file'])) {
+                $error_log->efile = $error['file'];
+            }
+            if (isset($error['line'])) {
+                $error_log->eline = $error['line'];
+            }
+            if (isset($error['trace'])) {
+                $error_log->etrace = $error['trace'];
+            }
+            $error_log->is_paid = 0;
+            if (isset(Yii::app()->user->id)) {
+                $error_log->is_paid = 1;
+                $error_log->paid_user_id = Yii::app()->user->id;
+            }
+
+            if (isset(Yii::app()->user->free_id)) {
+                $error_log->user_id = Yii::app()->user->free_id;
+            }
+            if(strpos($error_log->emsg, "CWebUser.profileId") == false && strpos($error_log->emsg, "favicon.ico") == false )
+            {
+                $error_log->save();
+            }
+           
+            $response['status']['code'] = $error_log->ecode;
             $response['status']['msg'] = "System Error";
             echo CJSON::encode($response);
             Yii::app()->end();

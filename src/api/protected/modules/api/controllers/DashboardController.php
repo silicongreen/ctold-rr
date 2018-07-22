@@ -144,7 +144,11 @@ class DashboardController extends Controller
            
                 $employeeobj = new Employees();
                 $employees = $employeeobj->getEmployeeById($employee_id);
-                $response['data']['user_details'] = $employees['department']->name;
+                $response['data']['user_details'] = "";
+                if(isset($employees['department']) && isset($employees['department']->name))
+                {
+                    $response['data']['user_details'] = $employees['department']->name;
+                }
                 $response['data']['attandence'] = 6;
             }  
             

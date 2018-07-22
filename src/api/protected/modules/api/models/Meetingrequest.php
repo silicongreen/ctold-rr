@@ -236,7 +236,7 @@ class Meetingrequest extends CActiveRecord
                 $i = 0;
                 foreach($obj_metting as $value)
                 {
-                    if((isset($value['students']) && isset($value['students']->id)) || isset($value['employee']))
+                    if((isset($value['students']) && isset($value['students']->id) && $type2 == 1) || (isset($value['employee']) && $type2 != 1))
                     {
                         if($type2==1)
                         {                           

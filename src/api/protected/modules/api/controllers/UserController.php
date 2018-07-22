@@ -64,7 +64,7 @@ class UserController extends Controller {
             $gcm_added = $gcmobj->getGcmDeviceId($device_id);
             if($gcm_added)
             {
-                $gcmData = $gcmobj->findByPk($gcm_added->id);
+                $gcmData = $gcmobj->findByPk($gcm_added);
                 $gcmData->gcm_id = $fcm_id;
                 $gcmData->fcm_converted = 1;
                 $gcmData->save();

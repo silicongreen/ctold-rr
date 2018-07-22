@@ -122,11 +122,11 @@ class FeeDiscount < ActiveRecord::Base
         tot_disc_amt= 100 #part_amt*discount.to_f/(is_amount?? part_amt : 100)
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
-        if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
-          errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
-        elsif tot_disc_amt.to_f <= 0.0
-          errors.add_to_base(t('discount_cannot_be_zero'))
-        end
+        #if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
+        #  errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
+        #elsif tot_disc_amt.to_f <= 0.0
+        #  errors.add_to_base(t('discount_cannot_be_zero'))
+        #end
       elsif is_late  
         discounts=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("sum(discount) as damt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and id<>#{ds_id} and is_onetime=#{is_onetime} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and is_deleted=#{false}")
         

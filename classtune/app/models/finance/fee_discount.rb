@@ -48,7 +48,8 @@ class FeeDiscount < ActiveRecord::Base
         discounts=finance_fee_category.fee_discounts.all(:group=>["receiver_type,receiver_id"],:select=>("sum(#{part_amt}*fee_discounts.discount/IF(is_amount=1,#{part_amt},100)) as damt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and is_late=#{false} and is_onetime=#{is_onetime} and id<>#{ds_id} and finance_fee_particular_category_id = 0 and is_deleted=#{false}")
         if receiver_type=='StudentCategory'
           students=batch.students.all(:conditions=>"student_category_id='#{receiver_id}'").collect(&:id)
-          discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
+          #discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
+          discount_amt= 0.0#discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
           disc_amt=nil
         elsif receiver_type=='Student'
           disc_amt=nil

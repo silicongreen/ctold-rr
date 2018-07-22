@@ -55,12 +55,13 @@ class UserController extends Controller {
     }
     public function actionGcmToFcm()
     {
-       $gcm_id = Yii::app()->request->getPost('gcm_id');
+      
+       $device_id = Yii::app()->request->getPost('device_id');
        $fcm_id = Yii::app()->request->getPost('fcm_id');
-       if($gcm_id && $fcm_id)
+       if($device_id && $fcm_id)
        {
             $gcmobj = new Gcm();
-            $gcm_added = $gcmobj->getGcm($gcm_id);
+            $gcm_added = $gcmobj->getGcmDeviceId($device_id);
             if($gcm_added)
             {
                 $gcmData = $gcmobj->findByPk($gcm_added->id);

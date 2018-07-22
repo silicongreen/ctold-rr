@@ -65,6 +65,7 @@ class UserController extends Controller {
             {
                 $gcmData = $gcmobj->findByPk($gcm_added->id);
                 $gcmData->gcm_id = $fcm_id;
+                $gcmData->fcm_converted = 1;
                 $gcmData->save();
             }
             $response['data']['id'] = $fcm_id;

@@ -77,6 +77,7 @@ class FeeDiscount < ActiveRecord::Base
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
+          abort("1" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       elsif finance_fee_particular_category_id > 0 and !is_late
@@ -117,12 +118,14 @@ class FeeDiscount < ActiveRecord::Base
         tot_amt=part_amt-discount_amt
 
         # part_amt=fee_particular.amount.to_f if fee_particular.present?
-        tot_disc_amt=part_amt*discount.to_f/(is_amount?? part_amt : 100)
+        #tot_disc_amt=part_amt*discount.to_f/(is_amount?? part_amt : 100)
+        tot_disc_amt= 100 #part_amt*discount.to_f/(is_amount?? part_amt : 100)
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
+          abort("2" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       elsif is_late  
@@ -140,11 +143,13 @@ class FeeDiscount < ActiveRecord::Base
           discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='StudentCategory' and s.receiver_id==receiver.student_category_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
         end
         
+        #tot_disc_amt = discount_amt + discount.to_f
         tot_disc_amt = discount_amt + discount.to_f
         # part_amt=fee_particular.amount.to_f if fee_particular.present?
         if tot_disc_amt.to_f > 100.0
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
+          aabort("3" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       end

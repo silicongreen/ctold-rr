@@ -35,7 +35,8 @@ class UserController extends Controller {
                     'forgotpassword',
                     'resetpassword',
                     'checkversion',
-                    'paymentmail'
+                    'paymentmail',
+                    'gcmtofcm'
                 ),
                 'users' => array('*'),
             ),
@@ -52,6 +53,28 @@ class UserController extends Controller {
             ),
         );
     }
+    public function actionGcmToFcm()
+    {
+       $gcm_id = Yii::app()->request->getPost('gcm_id');
+       $fcm_id = Yii::app()->request->getPost('fcm_id');
+       if($gcm_id && $fcm_id)
+       {
+            $gcmobj = new Gcm();
+            $gcm_added = $gcmobj->getGcm($gcm_id);
+            if($gcm_added)
+            {
+                $gcmData = $gcmobj->findByPk($gcm_added->id);
+                $gcmData->gcm_id = $fcm_id;
+                $gcmData->save();
+            }
+            $response['data']['id'] = $fcm_id;
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESFULLY_SAVED";
+       }
+       echo CJSON::encode($response);
+       Yii::app()->end();
+       
+    } 
     public function actionCheckVersion() {
         $response['data']['version'] = Settings::$version_update;
         $response['status']['code'] = 200;
@@ -200,6 +223,7 @@ class UserController extends Controller {
             if (isset(Yii::app()->user->free_id)) {
                 $error_log->user_id = Yii::app()->user->free_id;
             }
+
             if(strpos($error_log->emsg, "CWebUser.profileId") == false && strpos($error_log->emsg, "favicon.ico") == false )
             {
                 $error_log->save();

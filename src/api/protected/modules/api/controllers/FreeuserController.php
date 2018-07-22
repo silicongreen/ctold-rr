@@ -1008,6 +1008,8 @@ class FreeuserController extends Controller
             Yii::app()->end();
         }
     }
+    
+           
 
     public function actionAddGcm()
     {

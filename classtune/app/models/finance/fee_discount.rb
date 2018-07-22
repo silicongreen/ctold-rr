@@ -75,6 +75,7 @@ class FeeDiscount < ActiveRecord::Base
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
+          abort("1" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
           abort("1" + tot_disc_amt.to_s)
@@ -123,6 +124,7 @@ class FeeDiscount < ActiveRecord::Base
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
+          abort("2" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
           abort("2" + tot_disc_amt.to_s)
@@ -147,6 +149,7 @@ class FeeDiscount < ActiveRecord::Base
         tot_disc_amt = discount_amt + discount.to_f
         # part_amt=fee_particular.amount.to_f if fee_particular.present?
         if tot_disc_amt.to_f > 100.0
+          abort("3" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
           aabort("3" + tot_disc_amt.to_s)

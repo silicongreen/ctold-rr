@@ -75,10 +75,8 @@ class FeeDiscount < ActiveRecord::Base
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
-          abort("1" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
-          abort("1" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       elsif finance_fee_particular_category_id > 0 and !is_late
@@ -98,7 +96,8 @@ class FeeDiscount < ActiveRecord::Base
         
         if receiver_type=='StudentCategory'
           students=batch.students.all(:conditions=>"student_category_id='#{receiver_id}'").collect(&:id)
-          discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
+          #discount_amt= discounts.select{|s| (s.receiver_type==receiver_type.to_s and s.receiver_id==receiver_id) or (s.receiver_type=='Student' and students.include? s.receiver_id) or (s.receiver_type=='Batch' and s.receiver_id==batch_id)}.map{|s| s.damt.to_f}.sum
+          discount_amt= 0
           disc_amt=nil
         elsif receiver_type=='Student'
           disc_amt=nil
@@ -124,10 +123,8 @@ class FeeDiscount < ActiveRecord::Base
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
         
         if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
-          abort("2" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
-          abort("2" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       elsif is_late  
@@ -149,10 +146,8 @@ class FeeDiscount < ActiveRecord::Base
         tot_disc_amt = discount_amt + discount.to_f
         # part_amt=fee_particular.amount.to_f if fee_particular.present?
         if tot_disc_amt.to_f > 100.0
-          abort("3" + tot_disc_amt.to_s + " " + tot_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
         elsif tot_disc_amt.to_f <= 0.0
-          aabort("3" + tot_disc_amt.to_s)
           errors.add_to_base(t('discount_cannot_be_zero'))
         end
       end

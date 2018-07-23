@@ -1019,7 +1019,7 @@ class FreeuserController extends Controller
         if ($gcm_id)
         {
             $gcmobj = new Gcm();
-
+            $gcmobjnew = new Gcm();
 
             $gcm_added = $gcmobj->getGcm($gcm_id);
 
@@ -1028,30 +1028,21 @@ class FreeuserController extends Controller
                 $fcm_changed = false;
                 if ($device_id)
                 {
-                    $gcm_device = $gcmobj->getGcmDeviceId($device_id);
+                    $gcm_device = $gcmobjnew->getGcmDeviceId($device_id);
                     if ($gcm_device)
                     {
-                        $pobj = $gcmobj->findByPk($gcm_device);
-                        $pobj->gcm_id = $gcm_id;
-                        $pobj->device_id = $device_id;
-                        if($fcm)
-                        {
-                            $pobj->fcm_converted = 1;
-                        }
-                        $pobj->save();
-                        $fcm_changed = true;
+                      $gcmobj = $gcmobjnew->findByPk($gcm_device);
                     }
                 }
-                if($fcm_changed === false)
+               
+                $gcmobj->gcm_id = $gcm_id;
+                $gcmobj->device_id = $device_id;
+                if($fcm)
                 {
-                    $gcmobj->gcm_id = $gcm_id;
-                    $gcmobj->device_id = $device_id;
-                    if($fcm)
-                    {
-                        $gcmobj->fcm_converted = 1;
-                    }
-                    $gcmobj->save();
+                    $gcmobj->fcm_converted = 1;
                 }
+                $gcmobj->save();
+              
                 $cache_name = "YII-RESPONSE-GCM";
                 Yii::app()->cache->delete($cache_name);
             }

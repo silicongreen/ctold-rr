@@ -1429,7 +1429,7 @@ class FinanceController < ApplicationController
     @feeparticulars = FinanceFeeParticular.find( params[:id])
     render :update do |page|
       #params[:finance_fee_particular][:student_category_id]="" if params[:finance_fee_particular][:student_category_id].nil?
-#      if @feeparticulars.collection_exist
+      if @feeparticulars.collection_exist
         if @feeparticulars.update_attributes(params[:finance_fee_particular])
           @finance_fee_category = FinanceFeeCategory.find(@feeparticulars.finance_fee_category_id)
           @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["is_deleted = '#{false}' and finance_fee_category_id = '#{@finance_fee_category.id}' and batch_id='#{@feeparticulars.batch_id}'"])
@@ -1441,10 +1441,10 @@ class FinanceController < ApplicationController
           page.replace_html 'form-errors', :partial => 'class_timings/errors', :object => @feeparticulars
           page.visual_effect(:highlight, 'form-errors')
         end
-#      else
-#        page.replace_html 'form-errors', :partial => 'class_timings/errors', :object => @feeparticulars
-#        page.visual_effect(:highlight, 'form-errors')
-#      end
+      else
+        page.replace_html 'form-errors', :partial => 'class_timings/errors', :object => @feeparticulars
+        page.visual_effect(:highlight, 'form-errors')
+      end
     end
     #    respond_to do |format|
     #      format.js { render :action => 'master_category_particulars' }

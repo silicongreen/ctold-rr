@@ -67,9 +67,8 @@
         <td class="col-3">
           <%if fees.collection_exist %>
             <span class="small"><%= link_to_remote  '&#10008;',:confirm=>"#{t('delete_msg')}", :url => { :action => 'master_category_particulars_delete',:id => fees.id} %></span>
-            
+            <span class="small"> <%= link_to_remote "&#9998;", :url => { :action => 'master_category_particulars_edit',:id => fees.id} %></span>
           <%end%>
-          <span class="small"> <%= link_to_remote "&#9998;", :url => { :action => 'master_category_particulars_edit',:id => fees.id} %></span>
         </td>
       </tr>
     <% end %>

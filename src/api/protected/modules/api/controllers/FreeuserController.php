@@ -1025,22 +1025,33 @@ class FreeuserController extends Controller
 
             if (!$gcm_added)
             {
+                $fcm_changed = false;
                 if ($device_id)
                 {
                     $gcm_device = $gcmobj->getGcmDeviceId($device_id);
                     if ($gcm_device)
                     {
                         $pobj = $gcmobj->findByPk($gcm_device);
-                        $pobj->delete();
+                        $pobj->gcm_id = $gcm_id;
+                        $pobj->device_id = $device_id;
+                        if($fcm)
+                        {
+                            $pobj->fcm_converted = 1;
+                        }
+                        $pobj->save();
+                        $fcm_changed = true;
                     }
                 }
-                $gcmobj->gcm_id = $gcm_id;
-                $gcmobj->device_id = $device_id;
-                if($fcm)
+                if($fcm_changed === false)
                 {
-                    $gcmobj->fcm_converted = 1;
+                    $gcmobj->gcm_id = $gcm_id;
+                    $gcmobj->device_id = $device_id;
+                    if($fcm)
+                    {
+                        $gcmobj->fcm_converted = 1;
+                    }
+                    $gcmobj->save();
                 }
-                $gcmobj->save();
                 $cache_name = "YII-RESPONSE-GCM";
                 Yii::app()->cache->delete($cache_name);
             }

@@ -316,7 +316,7 @@
                 <div class="label-field-pair" style="width: 99%;">
                   <div class="label-container" style="padding-top: 10px;"><%= t('amount') %> </div>
                   <div class="input-container">
-                    <%= form.text_field :fees_paid, :value=> precision_label(balance+@fine_amount.to_f), :class=>'precision_text', :readonly => true %>
+                    <%= form.text_field :fees_paid, :value=> precision_label(balance+@fine_amount.to_f), :class=>'precision_text' %>
                     <%=  hidden_field_tag :total_fees, total_fees1 %>
                   </div>
                 </div>

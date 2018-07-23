@@ -113,13 +113,21 @@ if (count($user_ids) > 0 && count($user_ids) == count($notification_ids))
         }
 
         $all_gcm_user = array();
-        $sql = "SELECT tds_gcm_ids.gcm_id as gcmid FROM tds_user_gcm LEFT JOIN tds_gcm_ids on tds_gcm_ids.id = tds_user_gcm.gcm_id where tds_user_gcm.user_id = '" . $user_id . "'";
+        $all_fcm_user = array();
+        $sql = "SELECT tds_gcm_ids.gcm_id as gcmid,tds_gcm_ids.fcm_converted as fcm_converted FROM tds_user_gcm LEFT JOIN tds_gcm_ids on tds_gcm_ids.id = tds_user_gcm.gcm_id where tds_user_gcm.user_id = '" . $user_id . "'";
         $res2 = $conn_source->query($sql);
         if ($res2->num_rows > 0)
         {
             while ($gcm_ids = $res2->fetch_object())
             {
-                $all_gcm_user[] = $gcm_ids->gcmid;
+                if($gcm_ids->fcm_converted == 0)
+                {
+                    $all_gcm_user[] = $gcm_ids->gcmid;
+                }
+                else
+                {
+                    $all_fcm_user[] = $gcm_ids->gcmid;
+                }    
             }
         }
         if(count($notification) > 0 && $user->email_alert == 1)
@@ -127,10 +135,54 @@ if (count($user_ids) > 0 && count($user_ids) == count($notification_ids))
             send_smtp_mail($user->email, $user->first_name." ".$user->last_name, $notification->subject, $notification->body);
         }    
         
+        if ($user_type && $total_unread && count($all_fcm_user) > 0 && count($notification) > 0)
+        {
+            // API access key from Google API's Console
+            define('API_ACCESS_KEY', 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw');
+            
+            $messege = $notification->body;
+            $registrationIds = array($_GET['id']);
+            // prep the bundle
+            $msg = array
+                (
+                'message' => $messege,
+                "key" => "paid",
+                'total_unread' => $total_unread,
+                "user_type" => $user_type,
+                "subject" => $notification->subject,
+                "rtype" => $notification->rtype,
+                "rid" => $notification->rid,
+                "batch_id" => $notification->batch_id,
+                "student_id" => $notification->student_id
+            );
+            $fields = array
+                (
+                'registration_ids' => $all_fcm_user,
+                'data' => $msg
+            );
+
+            $headers = array
+                (
+                'Authorization: key=' . API_ACCESS_KEY,
+                'Content-Type: application/json'
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+            $result = curl_exec($ch);
+            curl_close($ch);
+        }
+        
         if ($user_type && $total_unread && count($all_gcm_user) > 0 && count($notification) > 0)
         {
             // API access key from Google API's Console
             define('API_ACCESS_KEY', 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk');
+            
             $messege = $notification->body;
             $registrationIds = array($_GET['id']);
             // prep the bundle

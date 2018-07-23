@@ -2,7 +2,7 @@
   <% if !@batch_name.blank? && !@class_name.blank? %>
   j.ajax({
     type: "POST",
-    url: "/intelligence/get_lessonplan_report",
+    url: "/intelligence/get_classwork_report",
     data: $('new_student').serialize()
   })
   .done(function( msg ) {
@@ -24,7 +24,7 @@
 <%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onchange => "#{remote_function(
-          :url => {:controller => "intelligence", :action => 'get_lessonplan_report' },
+          :url => {:controller => "intelligence", :action => 'get_classwork_report' },
           :with => "$('new_student').serialize()",
           :before => "Element.show('loader')",
           :success => "Element.hide('loader')"  )}"} %>  
@@ -32,7 +32,7 @@
 <%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onchange => "#{remote_function(
-          :url => {:controller => "intelligence",:action => 'get_lessonplan_report' },
+          :url => {:controller => "intelligence",:action => 'get_classwork_report' },
           :with => "$('new_student').serialize()",
           :before => "Element.show('loader')",
           :success => "Element.hide('loader')"  )}"} %>  

@@ -293,22 +293,20 @@
                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
                       <% date_two = date_one+15.days %>
-                      <td colspan="2" class="col-8"><b>Payable amount with fine of 200 Tk+VAT( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b>  ) </td>
+                      <td colspan="2" class="col-8"><b>Payable amount with fine of 200 Tk( if payment date is from <b><%= date_one.to_date.strftime("%d-%m-%Y").to_s %></b> to <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b>  ) </td>
                       <%
-                        fine_vat = (200*7.5)/100
-                        fine_vat = fine_vat.ceil
-                        total_fine = 200+fine_vat.to_i
+                       
+                        total_fine = 200
                         balance1 = balance+total_fine
                       %>
 
                       <td class="col-pdf"><%= "#{precision_label(balance1.round())}" %></td>
                   </tr>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td colspan="2" class="col-8"><b>Payable amount with fine of 400 Tk+VAT( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s%></b> ) </td>
+                      <td colspan="2" class="col-8"><b>Payable amount with fine of 400 Tk( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s%></b> ) </td>
                       <%
-                        fine_vat = (400*7.5)/100
-                        fine_vat = fine_vat.ceil
-                        total_fine = 400+fine_vat.to_i
+                       
+                        total_fine = 400
                         balance2 = balance+total_fine
                       %>
 

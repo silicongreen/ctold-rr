@@ -50,7 +50,7 @@
                 <% checked = params[:fee_collection][:category_ids].include?(s.id.to_s) if params[:fee_collection][:category_ids].present? %>
               <% end %>
                 <div class="checkbox_inline"><%= check_box_tag "fee_collection[students][]", s.id, checked, :class=>'students_box' %></div> 
-                <div class="checkbox_label"><label id="std_<%= s.id %>" class="std_name"><%= s.full_name %></label></div>
+                <div class="checkbox_label"><label id="std_<%= s.id %>" class="std_name"><%= s.admission_no + " " + s.full_name %></label></div>
             </div>
 
           <% end %>

@@ -335,7 +335,7 @@ class TallyExportsController < ApplicationController
     # Add row_1
     new_book.worksheet(0).insert_row(0, row_1)
     
-    vtype = 'Journal'
+    vtype = 'Journal-CT'
     ind = 1
     
     unless params[:batches].nil? or params[:batches].empty?
@@ -379,17 +379,19 @@ class TallyExportsController < ApplicationController
             by = student.admission_no.gsub("SJW","")
             by = by.gsub("FC","")
             by = by.gsub("MC","")
+            by = by.gsub("-","")
             
             student_admission_no = student.admission_no.gsub("SJW","")
             student_admission_no = student_admission_no.gsub("FC","")
             student_admission_no = student_admission_no.gsub("MC","")
+            student_admission_no = student_admission_no.gsub("-","")
             
             @financefee = student.finance_fee_by_date @date
             
             @due_date = @fee_collection.start_date
             #transaction_date = @due_date.to_date.strftime("%m/%d/%Y")
             if auto_generate_voucher
-              voucher_no = (0...8).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
+              voucher_no = (0...4).map { (65 + rand(26)).chr }.join.to_s + @financefee.id.to_s
             else
               voucher_no = @due_date.strftime "%M%Y" + "-" 
             end
@@ -406,29 +408,32 @@ class TallyExportsController < ApplicationController
                   @fee_particulars.each do |fee_p|
                     s_initial = ""
                     vn = ""
-                    description = fee_p.name.capitalize + " payment for " + student.full_name
-                    fee_name = fee_p.name.capitalize;
-                    a_fee_name = fee_name.split(" ")
-                    if a_fee_name.length == 2
-                      s_initial = a_fee_name[0].capitalize[0, 1] + a_fee_name[1].capitalize[0, 1]
-                    elsif a_fee_name.length == 1
-                      s_initial = a_fee_name[0].capitalize[0, 2]
-                    else  
-                      s_initial = a_fee_name[0].capitalize[0, 3]
+                    description = fee_p.name + " payment for " + student.full_name
+                    fee_name = fee_p.name;
+                    unless fee_name.capitalize.include? "due"
+                      a_fee_name = fee_name.split(" ")
+                      if a_fee_name.length == 2
+                        s_initial = a_fee_name[0].capitalize[0, 1] + a_fee_name[1].capitalize[0, 1]
+                      elsif a_fee_name.length == 1
+                        s_initial = a_fee_name[0].capitalize[0, 2]
+                      else  
+                        s_initial = a_fee_name[0].capitalize[0, 3]
+                      end
+                      #vn = student_admission_no + "-" + voucher_no + s_initial
+                      vn = student_admission_no + "-" + s_initial
+                      to = fee_p.name
+                      total_amount = fee_p.amount
+                      amount_paid += total_amount
+
+                      row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
+                      dt_due = @due_date.strftime "%M%Y";
+                      bill = student_admission_no + "-" + s_initial + "-" + dt_due;
+
+                      #new_book.row(ind).set_format(0, date)
+                      row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, fee_name, fee_name, total_amount, "", description, bill]
+                      new_book.worksheet(0).insert_row(ind, row_new)
+                      ind += 1
                     end
-                    vn = student_admission_no + "-" + voucher_no + s_initial
-                    to = fee_p.name
-                    total_amount = fee_p.amount
-                    amount_paid += total_amount
-                    
-                    row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
-                    dt_due = @due_date.strftime "%M%Y";
-                    bill = student_admission_no + "-" + s_initial + "-" + dt_due;
-                    
-                    #new_book.row(ind).set_format(0, date)
-                    row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, "", fee_name, total_amount, fee_name, description, bill]
-                    new_book.worksheet(0).insert_row(ind, row_new)
-                    ind += 1
                   end
               end
             end
@@ -440,9 +445,10 @@ class TallyExportsController < ApplicationController
             if @total_discount > 0
               if particulars.include?("discount")
                 s_initial = "DIS"
-                vn = student_admission_no + "-" + voucher_no + s_initial
+                #vn = student_admission_no + "-" + voucher_no + s_initial
+                vn = student_admission_no + "-" + s_initial
                 description = "Discount for " + student.full_name
-                vtype = 'Journal'
+                vtype = 'Journal-CT'
                 dl = "Discount"
                 total_amount = @total_discount
                 dt_due = @due_date.strftime "%M%Y";
@@ -465,8 +471,9 @@ class TallyExportsController < ApplicationController
 
                 description = "Fine for " + student.full_name
                 s_initial = "FI"
-                vn = student_admission_no + "-" + voucher_no + s_initial
-                vtype = 'Journal'
+                #vn = student_admission_no + "-" + voucher_no + s_initial
+                vn = student_admission_no + "-" + s_initial
+                vtype = 'Journal-CT'
                 to = "Late Fine"
                 total_amount = fine_amount
                 dt_due = @due_date.strftime "%M%Y";
@@ -480,8 +487,9 @@ class TallyExportsController < ApplicationController
                 if fine_discount > 0
                   description = "Fine Discount for " + student.full_name
                   s_initial = "FID"
-                  vn = student_admission_no + "-" + voucher_no + s_initial
-                  vtype = 'Journal'
+                  #vn = student_admission_no + "-" + voucher_no + s_initial
+                  vn = student_admission_no + "-" + s_initial
+                  vtype = 'Journal-CT'
                   to = "Fine"
                   total_amount = fine_amount
                   row_new = [transaction_date, vn, vtype, to, total_amount, "Fine", student_admission_no, total_amount, "",description, bill]

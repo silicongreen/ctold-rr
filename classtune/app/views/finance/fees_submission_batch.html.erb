@@ -83,7 +83,28 @@
   </div>
   <div class="extender"></div>
 </div>
-
+<script type="text/javascript">
+  function reloadFeeSubmission(batch_id,date_id,student_id,submission_date)
+  {
+      var year = submission_date.getFullYear();
+      var month = submission_date.getMonth() + 1;
+      var day = submission_date.getDate();
+      if (month < 10) {
+          month = "0" + month;
+      }
+      if (day < 10) {
+          day = "0" + day;
+      }
+      var dt = year + '-' + month + '-' + day;
+      new Ajax.Request('/finance/load_fees_submission_batch', 
+            {
+              asynchronous:true, 
+              evalScripts:true, 
+              parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id+'&submission_date='+dt
+            }
+      )
+  }
+</script>
 <script type="text/javascript">
    document.observe("dom:loaded", function() {
     j('#hide2').hide();

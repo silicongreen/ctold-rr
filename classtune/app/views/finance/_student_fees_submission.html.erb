@@ -284,6 +284,14 @@
         </tr>
       <% end %>
       <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
+      <% if balance.to_f < 0 %>  
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+        <td class="col-8" colspan="2" style="text-align: right; font-weight: bold;"><%= t('advance_payment') %> :</td>
+        <td class="col-6" style="text-align: right;">
+          <%= precision_label( (balance+@fine_amount.to_f) * -1 ) %>
+        </td>
+      </tr>  
+      <% else %>  
       <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
         <td class="col-8" colspan="2" style="text-align: right; font-weight: bold;"><%= t('amount_to_pay') %> :</td>
         <td class="col-6" style="text-align: right;">
@@ -294,8 +302,9 @@
           <% end %>
         </td>
       </tr>
+      <% end %>
       
-      <% unless @financefee.balance == 0 %>
+      <% unless @financefee.balance <= 0 %>
         <tr>
           <td colspan="3" style="background: #f9f9f9; ">
             <div class="payment_details" style="width: 100%;">
@@ -327,7 +336,12 @@
                 </div>
                 <div class="label-field-pair" style="width: 99%;">
                   <div class="label-container">Transaction Date</div>
-                  <div class="input-container calendar-input"><%= calendar_date_select_tag 'fees[transaction_date]',I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+                  <%
+                    if @submission_date.nil? or @submission_date.blank?
+                      @submission_date = Date.today
+                    end
+                  %>
+                  <div class="input-container calendar-input"><%= calendar_date_select_tag 'fees[transaction_date]',I18n.l(@submission_date,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force",:onchange => "reloadFeeSubmission('#{@batch.id}', '#{@date.id}', '#{@student.id}',new Date($F(this)));" %></div>
                 </div>
               </div>      
               <div style="clear: both; height: 1px;"></div>  
@@ -341,7 +355,7 @@
         <td colspan="3" style="background: #fff;">
           <div class="pay_fees">
             <div id="payment_mode"></div>
-            <%unless @financefee.balance == 0 %>
+            <%unless @financefee.balance <= 0 %>
               <div class="pay_fees_buttons">
                 <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button',:onClick => "return validate_payment_mode()" %>
                 <%= image_tag("loader.gif",

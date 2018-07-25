@@ -1649,6 +1649,7 @@ en: # locale
   label: "Label"
   leave_field_blank: "Leave the field blank if this will be overridden by another category"
   amount_to_pay: "Amount to pay"
+  advance_payment: "Advanced Payment"
   print_receipt: "Print receipt"
   solve_this_liability: "Solve this Liability?"
   liability: "Liability"

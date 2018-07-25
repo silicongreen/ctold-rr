@@ -2391,20 +2391,36 @@ class FinanceController < ApplicationController
         @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+        
         @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
         @total_discount = 0
         
         calculate_discount(@date, @batch, @student, @fee.is_paid)
 
         bal=(@total_payable-@total_discount).to_f
-        days=(Date.today-@date.due_date.to_date).to_i
+        unless params[:submission_date].nil? or params[:submission_date].empty? or params[:submission_date].blank?
+          require 'date'
+          @submission_date = Date.parse(params[:submission_date])
+          days=(Date.parse(params[:submission_date])-@date.due_date.to_date).to_i
+        else
+          @submission_date = Date.today
+          if @financefee.is_paid
+            @paid_fees = @financefee.finance_transactions
+            days=(@paid_fees.first.transaction_date-@date.due_date.to_date).to_i
+          else
+            days=(Date.today-@date.due_date.to_date).to_i
+          end
+        end
+        
         auto_fine=@date.fine
         
         @has_fine_discount = false
-        if days > 0 and auto_fine and @fee.is_paid == false
+        if days > 0 and auto_fine #and @financefee.is_paid == false
           @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
           @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+          
           calculate_extra_fine(@date, @batch, @student, @fine_rule)
+          
           @new_fine_amount = @fine_amount
           get_fine_discount(@date, @batch, @student)
           if @fine_amount < 0
@@ -2451,8 +2467,9 @@ class FinanceController < ApplicationController
     
     calculate_discount(@date, @batch, @student, @financefee.is_paid)
     
+    require 'date'
     bal=(@total_payable-@total_discount).to_f
-    days=(Date.today-@date.due_date.to_date).to_i
+    days=(Date.parse(params[:fees][:transaction_date])-@date.due_date.to_date).to_i
     auto_fine=@date.fine
     
     @has_fine_discount = false
@@ -2487,7 +2504,7 @@ class FinanceController < ApplicationController
     
     unless params[:fees][:fees_paid].to_f <= 0
       unless params[:fees][:payment_mode].blank?
-        unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+        #unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
           transaction = FinanceTransaction.new
           (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
           transaction.category = FinanceTransactionCategory.find_by_name("Fee")
@@ -2610,10 +2627,10 @@ class FinanceController < ApplicationController
               end
             end 
           end
-        else
-          @paid_fees = @financefee.finance_transactions
-          @financefee.errors.add_to_base("#{t('flash19')}")
-        end
+        #else
+        #  @paid_fees = @financefee.finance_transactions
+        #  @financefee.errors.add_to_base("#{t('flash19')}")
+        #end
       else
         @paid_fees = @financefee.finance_transactions
         @financefee.errors.add_to_base("#{t('select_one_payment_mode')}")
@@ -5091,11 +5108,14 @@ class FinanceController < ApplicationController
     if MultiSchool.current_school.id == 340
       #GET THE NEXT ALL months 
       extra_fine = 0
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
+      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
       unless other_months.nil? or other_months.empty?
         other_months.each do |other_month|
-          fine_amount = fine_rule.fine_amount if fine_rule
-          extra_fine = extra_fine + fine_amount
+          fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
+          unless fee_for_batch.nil? or fee_for_batch.empty?
+            fine_amount = fine_rule.fine_amount if fine_rule
+            extra_fine = extra_fine + fine_amount
+          end
         end
       end
       @fine_amount = @fine_amount + extra_fine

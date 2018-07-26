@@ -689,9 +689,9 @@ module OnlinePayment
     end
     
     def calculate_extra_fine(date,batch,student,fine_rule)
+      abort("hehre")
       if MultiSchool.current_school.id == 340
         #GET THE NEXT ALL months 
-        abort(batch.id.to_s)
         extra_fine = 0
         other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
         unless other_months.nil? or other_months.empty?

@@ -52,7 +52,28 @@
 </div>
 
 <div id="modal-box" style="display:none;"></div>
-
+<script type="text/javascript">
+  function reloadFeeSubmission(date_id,student_id,submission_date)
+  {
+      var year = submission_date.getFullYear();
+      var month = submission_date.getMonth() + 1;
+      var day = submission_date.getDate();
+      if (month < 10) {
+          month = "0" + month;
+      }
+      if (day < 10) {
+          day = "0" + day;
+      }
+      var dt = year + '-' + month + '-' + day;
+      new Ajax.Request('/finance/fees_submission_student', 
+            {
+              asynchronous:true, 
+              evalScripts:true, 
+              parameters:'date='+date_id+'&id='+student_id+'&submission_date='+dt
+            }
+      )
+  } 
+</script>
 <script type="text/javascript">
   <% unless params[:id2].blank? %>
     $jq = jQuery.noConflict();

@@ -2533,6 +2533,45 @@ class FinanceController < ApplicationController
           transaction.transaction_date = params[:fees][:transaction_date]
           transaction.payment_note = params[:fees][:payment_note]
           if transaction.save
+#            if @financefee.balance!=0
+#              advance_due = 0
+#              is_advance = false
+#              if Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+#                advance_due = Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f - Champs21Precision.set_and_modify_precision(total_fees).to_f
+#                is_advance = true
+#              else
+#                advance_due = Champs21Precision.set_and_modify_precision(total_fees).to_f - Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f
+#              end
+#              finance_advance_due = FinanceAdvanceDue.find_by_student_id(@student.id)
+#              unless finance_advance_due.nil?
+#                if finance_advance_due.is_advance
+#                  if is_advance
+#                    advance_due = finance_advance_due.amount + advance_due
+#                  else
+#                    advance_due = finance_advance_due.amount - advance_due
+#                    if advance_due < 0
+#                      advance_due = advance_due * -1
+#                    else
+#                      is_advance = true
+#                    end
+#                  end
+#                else
+#                  if is_advance
+#                    advance_due = finance_advance_due.amount - advance_due
+#                    if advance_due < 0
+#                      advance_due = advance_due * -1
+#                    else
+#                      is_advance = false
+#                    end
+#                  else
+#                    advance_due = finance_advance_due.amount + advance_due
+#                  end
+#                end
+#              end
+#              finance_advance_due_student = FinanceAdvanceDue.new
+#              finance_advance_due_student.student_id = @student.id
+#              finance_advance_due_student.is_advance = @student.id
+#            end
             is_paid =@financefee.balance==0 ? true : false
             @financefee.update_attributes( :is_paid=>is_paid)
 
@@ -3047,7 +3086,22 @@ class FinanceController < ApplicationController
         calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
         
         bal=(@total_payable-@total_discount).to_f
-        days=(Date.today-@date.due_date.to_date).to_i
+        
+        #days=(Date.today-@date.due_date.to_date).to_i
+        unless params[:submission_date].nil? or params[:submission_date].empty? or params[:submission_date].blank?
+          require 'date'
+          @submission_date = Date.parse(params[:submission_date])
+          days=(Date.parse(params[:submission_date])-@date.due_date.to_date).to_i
+        else
+          @submission_date = Date.today
+          if @financefee.is_paid
+            @paid_fees = @financefee.finance_transactions
+            days=(@paid_fees.first.transaction_date-@date.due_date.to_date).to_i
+          else
+            days=(Date.today-@date.due_date.to_date).to_i
+          end
+        end 
+        
         auto_fine=@date.fine
         @has_fine_discount = false
         if days > 0 and auto_fine and @financefee.is_paid == false

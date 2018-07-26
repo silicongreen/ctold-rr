@@ -687,7 +687,7 @@ module OnlinePayment
       end
       return total_discount
     end
-  
+    
     def calculate_extra_fine(date,batch,student,fine_rule)
       if MultiSchool.current_school.id == 340
         #GET THE NEXT ALL months 

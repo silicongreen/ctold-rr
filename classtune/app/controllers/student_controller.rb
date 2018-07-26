@@ -1834,9 +1834,9 @@ class StudentController < ApplicationController
       if params[:query].length>= 3
         @students = Student.active.find(:all,
           :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
-                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) ",
+                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
             "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
-            "#{params[:query]}", "#{params[:query]}" ],
+            "#{params[:query]}", "%#{params[:query]}%", "%#{params[:query]}%" ],
           :order => "batch_id asc,first_name asc",:include =>  [{:batch=>:course}]) unless params[:query] == ''
       else
         @students = Student.active.find(:all,
@@ -1849,9 +1849,9 @@ class StudentController < ApplicationController
       if params[:query].length>= 3
         @archived_students = ArchivedStudent.find(:all,
           :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
-                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) ",
+                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ",
             "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
-            "#{params[:query]}", "#{params[:query]}" ],
+            "#{params[:query]}", "%#{params[:query]}%", "%#{params[:query]}%" ],
           :order => "batch_id asc,first_name asc",:include =>  [{:batch=>:course}]) unless params[:query] == ''
       else
         @archived_students = ArchivedStudent.find(:all,

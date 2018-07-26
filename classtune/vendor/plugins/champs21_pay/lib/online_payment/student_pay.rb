@@ -689,7 +689,6 @@ module OnlinePayment
     end
     
     def calculate_extra_fine(date,batch,student,fine_rule)
-      abort("hehre")
       if MultiSchool.current_school.id == 340
         #GET THE NEXT ALL months 
         extra_fine = 0

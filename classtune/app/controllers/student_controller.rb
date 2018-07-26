@@ -1832,11 +1832,12 @@ class StudentController < ApplicationController
   def search_ajax    
     if params[:option] == "active" or params[:option]=="sibling"
       if params[:query].length>= 3
+        params[:query].gsub! '+', ' '
         @students = Student.active.find(:all,
           :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
-                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) ",
+                            OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
             "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
-            "#{params[:query]}", "#{params[:query]}" ],
+            "#{params[:query]}", "%#{params[:query]}%", "%#{params[:query]}%" ],
           :order => "batch_id asc,first_name asc",:include =>  [{:batch=>:course}]) unless params[:query] == ''
       else
         @students = Student.active.find(:all,

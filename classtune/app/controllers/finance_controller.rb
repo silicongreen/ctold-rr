@@ -3046,6 +3046,7 @@ class FinanceController < ApplicationController
   def search_logic                 #student search (fees submission)
     query = params[:query]
     if query.length>= 3
+      params[:query].gsub! '+', ' '
       @students_result = Student.find(:all,
         :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
                             OR admission_no = ? OR (concat(first_name, \" \", last_name) LIKE ? ) ",

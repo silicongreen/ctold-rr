@@ -65,7 +65,6 @@ module OnlinePayment
           if days > 0 and auto_fine and @financefee.is_paid == false
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-            abort(@fine_amount.to_s)
             calculate_extra_fine(@date, @batch, @student, @fine_rule)
             @new_fine_amount = @fine_amount
             get_fine_discount(@date, @batch, @student)
@@ -692,6 +691,7 @@ module OnlinePayment
     def calculate_extra_fine(date,batch,student,fine_rule)
       if MultiSchool.current_school.id == 340
         #GET THE NEXT ALL months 
+        abort(batch.id.to_s)
         extra_fine = 0
         other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
         unless other_months.nil? or other_months.empty?

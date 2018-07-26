@@ -316,7 +316,7 @@
                         :id => "loader1",
                         :style =>"display: none;" ) %></div>
                       <div class="input-container">
-                          <%= select :fees, :payment_mode, [["#{t('cash')}", "#{t('cash')}"],["#{t('online_payment')}", "#{t('online_payment')}"],["#{t('cheque')}", "#{t('cheque')}"],["#{t('dd')}","#{t('dd')}"],["#{t('others')}", "#{t('others')}"]], {} ,{:onChange => "#{remote_function(:url => {:action => "select_payment_mode"},
+                          <%= select :fees, :payment_mode, [["#{t('pbl_std')}", "#{t('pbl_std')}"],["#{t('cash')}", "#{t('cash')}"],["#{t('online_payment')}", "#{t('online_payment')}"],["#{t('cheque')}", "#{t('cheque')}"],["#{t('dd')}","#{t('dd')}"],["#{t('others')}", "#{t('others')}"]], {} ,{:onChange => "#{remote_function(:url => {:action => "select_payment_mode"},
                               :with => "'payment_mode='+value",:before => "$('loader1').show();",
                               :success => "$('loader1').hide();")}"}  %>
                       </div>

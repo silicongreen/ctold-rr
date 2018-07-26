@@ -2250,6 +2250,7 @@ en: # locale
   please_select_new_manager : "Please select new Manager"
   payment_mode : "Payment mode"
   cash : "Cash"
+  pbl_std : "PBL-STD A/C - 877"
   cheque : "Cheque"
   dd : "DD"
   free_school_id: "Free School Id"

@@ -3326,7 +3326,7 @@ class FinanceController < ApplicationController
 
       unless params[:fees][:fees_paid].to_f  <= 0
         unless params[:fees][:payment_mode].blank?
-          unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+          #unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
             transaction = FinanceTransaction.new
             (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
             transaction.category = FinanceTransactionCategory.find_by_name("Fee")
@@ -3454,10 +3454,10 @@ class FinanceController < ApplicationController
             @financefee.update_attributes(:is_paid=>is_paid)
             flash[:warning] = "#{t('flash14')}"
             flash[:notice]=nil
-          else
-            flash[:warning]=nil
-            flash[:notice] = "#{t('flash19')}"
-          end
+          #else
+          #  flash[:warning]=nil
+          #  flash[:notice] = "#{t('flash19')}"
+          #end
         else
           flash[:warning]=nil
           flash[:notice] = "#{t('select_one_payment_mode')}"

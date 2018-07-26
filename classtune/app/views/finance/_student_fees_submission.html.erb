@@ -17,6 +17,11 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<% 
+  if @financefee.balance <= 0
+    @financefee.is_paid = true
+  end
+%>
 <div class="fee_structure">
     <h2><%= @fee_category.name %> (<%= @fee_collection.name %>)</h2>
     <hr style="border-top: 1px solid #ccc;" />

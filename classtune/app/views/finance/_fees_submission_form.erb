@@ -16,6 +16,11 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% 
+  if @financefee.balance <= 0
+    @financefee.is_paid = true
+  end
+%>
 <% unless flash[:notice].nil? %>
   <div id="errorExplanation" class="errorExplanation"><p><%= t('there_were_pblm') %></p><ul><li><%= flash[:notice] %></li></ul></div>
 <% end %>

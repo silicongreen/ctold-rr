@@ -2572,7 +2572,7 @@ class FinanceController < ApplicationController
 #              finance_advance_due_student.student_id = @student.id
 #              finance_advance_due_student.is_advance = @student.id
 #            end
-            is_paid =@financefee.balance==0 ? true : false
+            is_paid =@financefee.balance<=0 ? true : false
             @financefee.update_attributes( :is_paid=>is_paid)
 
             @paid_fees = @financefee.finance_transactions
@@ -3356,7 +3356,7 @@ class FinanceController < ApplicationController
             transaction.transaction_date = params[:fees][:transaction_date]
             transaction.save
             if transaction.save
-              is_paid =@financefee.balance==0 ? true : false
+              is_paid =@financefee.balance<=0 ? true : false
               @financefee.update_attributes( :is_paid=>is_paid)
 
               @paid_fees = @financefee.finance_transactions

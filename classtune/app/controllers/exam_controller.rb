@@ -1372,10 +1372,10 @@ class ExamController < ApplicationController
   end
   
   def student_wise_generated_report_all  
-    @exam_group = ExamGroup.active.find(params[:exam_group])
+    @exam_group = ExamGroup.find(params[:exam_group])
     
     
-    if @exam_group.is_current == false
+    if @exam_group.is_deleted == true
       student_list = []
       allExam = @exam_group.exams
       allExam.each do |exams|

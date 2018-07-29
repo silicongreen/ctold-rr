@@ -370,7 +370,8 @@ class TallyExportsController < ApplicationController
         
         @dates   = @batch.finance_fee_collections
 
-        @fees_data = @fees.select{|f| !f.is_paid}
+        #@fees_data = @fees.select{|f| !f.is_paid}
+        @fees_data = @fees #.select{|f| !f.is_paid}
         unless @fees_data.nil?
           
           @fees_data.each do |fee|
@@ -478,7 +479,7 @@ class TallyExportsController < ApplicationController
                 total_amount = fine_amount
                 dt_due = @due_date.strftime "%M%Y";
                 bill = student_admission_no + "-FI-" + dt_due;
-                row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, "",to,total_amount,to, description, bill]
+                row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, to,to,total_amount,"", description, bill]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
 

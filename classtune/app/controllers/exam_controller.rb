@@ -1290,8 +1290,8 @@ class ExamController < ApplicationController
   end
   
   def student_wise_tabulation  
-    @exam_group = ExamGroup.active.find(params[:exam_group])
-    if @exam_group.is_current == false
+    @exam_group = ExamGroup.find(params[:exam_group])
+    if @exam_group.is_deleted.to_i == 1
       student_list = []
       allExam = @exam_group.exams
       allExam.each do |exams|

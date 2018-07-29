@@ -1375,7 +1375,7 @@ class ExamController < ApplicationController
     @exam_group = ExamGroup.find(params[:exam_group])
     
     
-    if @exam_group.is_deleted == true
+    if @exam_group.is_deleted.to_i == 1
       student_list = []
       allExam = @exam_group.exams
       allExam.each do |exams|

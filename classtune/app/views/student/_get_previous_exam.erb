@@ -71,6 +71,10 @@
         <td class="col-1"><%= p.exam_group.exam_date %></td>
         <td class="col-1">
             <%= link_to "Show", {:controller => "exam", :action => "student_wise_generated_report", :student=>p.student_id,:exam_group=>p.exam_group_id},:target => '_blank' %>
+            <% if @current_user.admin? %>
+              <%= link_to "All Result", {:controller => "exam", :action => "student_wise_generated_report_all", :exam_group=>p.exam_group_id},:target => '_blank' %>
+              <%= link_to "Tabulation", {:controller => "exam", :action => "student_wise_tabulation",:exam_group=>p.exam_group_id},:target => '_blank' %>
+            <% end %>
         </td>
       </tr>
       <% end %>

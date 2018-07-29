@@ -33,10 +33,7 @@
     end
   end
 %>
- <% unless params[:front_page].blank? %>
-<%=  render  :partial=>"finance/fee_receipt/south/front_page_pdf" %>
-<div class="page-break-continues"></div>
-<% end %>
+
 <% @jloop = 0 %>
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>

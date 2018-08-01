@@ -4,7 +4,9 @@
     <center>
       <div id="pdf-header-south" class="general-header">
         <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
-        <h4 align="center">Date : <%= Time.now.strftime("%d %b %Y") %></h4>
+        <% unless @date.blank?  %>
+        <h4 align="center">Date : <%= @date.to_date.strftime("%d %b %Y") %></h4>
+        <% end %>
       </div>
       <h2 align="center">Class Work Report</h2>
       <% unless @report_data.blank? %>

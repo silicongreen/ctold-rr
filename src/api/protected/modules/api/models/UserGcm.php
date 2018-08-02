@@ -92,7 +92,14 @@ class UserGcm extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}        
+	} 
+        public function deleteUserGcmByGcmId($gcm_id)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.id';
+            $criteria->compare('gcm_id', $gcm_id);
+            $this->deleteAll($criteria);
+        }        
         public function getUserGcm($gcm_id,$user_id)
         {
             $criteria = new CDbCriteria;

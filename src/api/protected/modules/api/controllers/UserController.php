@@ -676,12 +676,13 @@ class UserController extends Controller {
                         $gcm_id = $gcmobj->getGcm($gcm_id);
                         if ($gcm_id) {
                             $user_gcm = new UserGcm();
-                            $usergcm = $user_gcm->getUserGcm($gcm_id, Yii::app()->user->id);
-                            if (!$usergcm) {
-                                $user_gcm->user_id = Yii::app()->user->id;
-                                $user_gcm->gcm_id = $gcm_id;
-                                $user_gcm->save();
-                            }
+                            $user_gcm->deleteUserGcmByGcmId($gcm_id);
+//                            $usergcm = $user_gcm->getUserGcm($gcm_id, Yii::app()->user->id);
+//                            if (!$usergcm) {
+                            $user_gcm->user_id = Yii::app()->user->id;
+                            $user_gcm->gcm_id = $gcm_id;
+                            $user_gcm->save();
+//                            }
                         }
                     }
 

@@ -184,6 +184,9 @@ end
           <% end %>
           
       <% end %>
+      <% if total == 0 and MultiSchool.current_school.id != 7 %>
+         <% off_rank = true %>
+      <% end %>      
       <% if total != last_mark && off_rank == false %>
           <% rank = rank+1 %>
           <% last_mark = total %>

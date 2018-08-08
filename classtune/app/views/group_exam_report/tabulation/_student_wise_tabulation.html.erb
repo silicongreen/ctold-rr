@@ -29,9 +29,9 @@ if !@main_student.blank?
          end  
         end  
       end
-      if this_exam_score == 0
-        off_rank = true
-      end  
+      #if this_exam_score == 0
+        #off_rank = true
+      #end  
     end 
     if total == 0
       off_rank = true
@@ -190,9 +190,7 @@ end
           <% else %>
             <td class="height-hr"></td>
           <% end %>
-          <% if this_exam_score == 0 and MultiSchool.current_school.id != 7 %>
-             <% off_rank = true %>
-          <% end %>  
+           
           
       <% end %>
       <% if total == 0 and MultiSchool.current_school.id != 7 %>

@@ -10,13 +10,16 @@ if !@main_student.blank?
       exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
     end
     total = 0
+    
     @exams.each do |exam|
       if exam.subject.no_exams or MultiSchool.current_school.id == 7
         next
-      end  
+      end 
+      this_exam_score = 0
       unless exam_score.blank?
         exam_score.each do |es|
          if es.exam.subject.id.to_i == exam.subject.id.to_i
+           this_exam_score = this_exam_score+1
            if es.grading_level.blank? or es.grading_level.name == "F"
              off_rank = true
            else
@@ -25,6 +28,9 @@ if !@main_student.blank?
            total = total+1
          end  
         end  
+      end
+      if this_exam_score == 0
+        off_rank = true
       end  
     end 
     if total == 0
@@ -150,6 +156,7 @@ end
       <% total = 0 %>
       <% off_rank  = false %>
       <% @exams.each do |exam|  %>
+          <% this_exam_score = 0 %>
           <% unless exam_score.blank? %>
           
           <td> 
@@ -157,6 +164,7 @@ end
           <% exam_score.each do |es| %>
               
                 <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
+                  <%  this_exam_score = this_exam_score+1%>
                   <%  if exam.subject.no_exams %>
                       <%= es.remarks %>
                   <% else %>
@@ -182,6 +190,9 @@ end
           <% else %>
             <td class="height-hr"></td>
           <% end %>
+          <% if this_exam_score == 0 and MultiSchool.current_school.id != 7 %>
+             <% off_rank = true %>
+          <% end %>  
           
       <% end %>
       <% if total == 0 and MultiSchool.current_school.id != 7 %>

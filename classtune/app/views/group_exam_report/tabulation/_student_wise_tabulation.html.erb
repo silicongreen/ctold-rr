@@ -1,3 +1,37 @@
+<%
+@main_student = @students
+@students = []
+if !@main_student.blank?
+  @main_student.each do |student|
+    @student = student
+    exam_score = []
+    @exams.each do |exam| 
+      exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
+    end
+    @exams.each do |exam|
+      unless exam_score.blank?
+        exam_score.each do |es|
+         if es.exam.subject.id.to_i == exam.subject.id.to_i
+           if es.grading_level.blank? or es.grading_level.name == "F"
+             
+           else
+             @students << student
+           end   
+         end  
+        end  
+      end  
+    end  
+  end  
+end
+@main_student.each do |student|
+  unless @students.include?(student)
+    @students << student
+  end
+end  
+%>
+
+
+
 <div id="page-yield" class="available_sections1">
   <div class="page1"> </div>
   <div class="section1 row" >

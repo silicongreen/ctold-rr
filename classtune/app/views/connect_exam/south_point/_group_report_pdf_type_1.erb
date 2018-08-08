@@ -435,11 +435,11 @@
                           <% else %>
                             <td class="col-pdf"><b>N/A</b></td>
                           <% end %>
-                          <% unless @report_data['report']['comments'][subjects['id'].to_s].blank? %>  
+                          <% if !@report_data['report']['comments'].blank? && !@report_data['report']['comments'][subjects['id'].to_s].blank? %>  
                              <% class_performance = class_performance+@report_data['report']['comments'][subjects['id'].to_s].to_i %>
                           <% end %>
                             
-                          <% unless @report_data['report']['comments2'][subjects['id'].to_s].blank? %>  
+                          <% if !@report_data['report']['comments2'].blank? && !@report_data['report']['comments2'][subjects['id'].to_s].blank? %>  
                              <% class_performance2 = class_performance2+@report_data['report']['comments2'][subjects['id'].to_s].to_i %>
                           <% end %>
 

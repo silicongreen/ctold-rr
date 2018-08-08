@@ -4,23 +4,30 @@
 if !@main_student.blank?
   @main_student.each do |student|
     @student = student
+    off_rank = false
     exam_score = []
     @exams.each do |exam| 
       exam_score.push exam.exam_scores.find_by_student_id(@student.id) unless exam.exam_scores.find_by_student_id(@student.id).nil?  
     end
     @exams.each do |exam|
+      if exam.subject.no_exams or MultiSchool.current_school.id == 7
+        next
+      end  
       unless exam_score.blank?
         exam_score.each do |es|
          if es.exam.subject.id.to_i == exam.subject.id.to_i
            if es.grading_level.blank? or es.grading_level.name == "F"
-             
+             off_rank = true
            else
-             @students << student
+            
            end   
          end  
         end  
       end  
-    end  
+    end 
+    if off_rank == false
+      @students << student
+    end
   end  
 end
 @main_student.each do |student|

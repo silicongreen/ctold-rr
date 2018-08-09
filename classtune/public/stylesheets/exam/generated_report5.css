@@ -326,3 +326,66 @@ table#listing{
     margin-top:20px;
 }
 
+table tr.odd table.std_info_table tr td
+{
+    border:none !important;
+    text-align: left !important;
+    padding: 5px 0px !important;
+    font-weight:bold;
+    font-size: 18px !important;
+}
+table tr td.align-left
+{
+    text-align: left !important;
+}
+table tr.odd td, table tr.even td
+{
+    font-size: 18px !important;
+    padding: 8px !important;
+}
+h2
+{
+    font-size: 26px !important;
+}
+
+table.std_info_table
+{
+    border:1px solid black;
+    margin-bottom:15px !important;
+}
+table.std_info_table tr td
+{
+    border:none !important;
+    text-align: left !important;
+    padding: 15px !important;
+    font-weight:bold;
+    font-size: 22px !important;
+}
+table tr td.align-right
+{
+    text-align: right !important;
+}
+table tr td.align-left
+{
+    text-align: left !important;
+}
+table tr.odd td, table tr.even td
+{
+    font-size: 22px !important;
+    padding: 15px !important;
+}
+table.left-table
+{
+    float:left;
+    margin-top: 20px;
+   
+}
+table.odd-table
+{
+    margin-left: 4%;
+} 
+table.even-table
+{
+    clear:both;
+}
+

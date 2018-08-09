@@ -41,7 +41,10 @@
                         </b>
                     </td>
                   </tr>
-                  
+                  <tr class="page-break-grade">
+                          <td colspan="2"></td>
+                      </tr>
+                  <% iloop = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <tr class="even">
@@ -50,9 +53,9 @@
                           <td class="col-pdf no-warp align-left"></td>    
 
                       </tr> 
-                      
+                        
                         <% if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
-                          <% iloop = 0 %>
+                          
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                               <% subject_groups.each do |group_name| %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
@@ -78,9 +81,11 @@
                                            <% else %>
                                                <td class="col-pdf no-warp align-left"></td> 
                                            <% end %>
+                                           <% iloop+=1 %> 
                                        <% end %>    
                                       <% iloop+=1 %> 
                                     <% end %>
+                                    
                                 <% else %>
                                     <tr class="even">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
@@ -96,15 +101,18 @@
                                           <% end %>
                                        <% else %>
                                            <td class="col-pdf no-warp align-left"></td> 
-                                       <% end %>     
+                                       <% end %>
+                                       <% iloop+=1 %> 
                                     <% end %>
-                                    </tr>          
+                                    </tr> 
                                     <% iloop+=1 %> 
                                 <% end %>
                                    
                           <% end %>
                         <% end %>           
-                      
+                      <tr class="page-break-grade">
+                          <td colspan="2"></td>
+                      </tr>
                     <% end %>  
                   <% end %>    
                    <tr class="even">
@@ -141,4 +149,46 @@
 {
     font-size: 21px !important;
 }
+<% if !iloop.blank? && iloop<24 %>
+.page-break-grade td{
+      height: 20px;
+      border: 1px solid #fff;
+      border-top: 1px solid Black;
+      border-bottom: 1px solid Black;
+}
+<% end %>
+<% if !iloop.blank? && iloop>24 && iloop<33 %>
+.page-break-grade td{
+      height: 10px;
+      border: 1px solid #fff;
+      border-top: 1px solid Black;
+      border-bottom: 1px solid Black;
+}
+.sis table tr.odd td, .sis table tr.even td
+{
+    font-size: 19px !important;
+    padding: 5px 15px !important;
+}
+.sis table tr.odd table.std_info_table tr td
+{
+    font-size: 19px !important;
+}
+<% end %>
+<% if !iloop.blank? && iloop>33 %>
+.page-break-grade td{
+      height: 7px;
+      border: 1px solid #fff;
+      border-top: 1px solid Black;
+      border-bottom: 1px solid Black;
+}
+.sis table tr.odd td, .sis table tr.even td
+{
+    font-size: 17px !important;
+    padding: 3px 15px !important;
+}
+.sis table tr.odd table.std_info_table tr td
+{
+    font-size: 17px !important;
+}
+<% end %>
 </style>    

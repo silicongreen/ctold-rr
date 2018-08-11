@@ -4013,49 +4013,59 @@ class StudentController < ApplicationController
   end
   
   def calculate_extra_fine(date,batch,student,fine_rule)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fine_amount = fine_rule.fine_amount if fine_rule
-          extra_fine = extra_fine + fine_amount
+      if MultiSchool.current_school.id == 340
+        #GET THE NEXT ALL months 
+        extra_fine = 0
+        other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
+        unless other_months.nil? or other_months.empty?
+          other_months.each do |other_month|
+            fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
+            unless fee_for_batch.nil? or fee_for_batch.empty?
+              fine_amount = fine_rule.fine_amount if fine_rule
+              extra_fine = extra_fine + fine_amount
+            end
+          end
         end
+        
+        @fine_amount = @fine_amount + extra_fine
       end
-      @fine_amount = @fine_amount + extra_fine
     end
-  end
   
-  def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fine_amount = fine_rule.fine_amount if fine_rule
-          extra_fine = extra_fine + fine_amount
+    def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
+      if MultiSchool.current_school.id == 340
+        #GET THE NEXT ALL months 
+        extra_fine = 0
+        other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
+        unless other_months.nil? or other_months.empty?
+          other_months.each do |other_month|
+            fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
+            unless fee_for_batch.nil? or fee_for_batch.empty?
+              fine_amount = fine_rule.fine_amount if fine_rule
+              extra_fine = extra_fine + fine_amount
+            end
+          end
         end
+        @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine
       end
-      @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine
     end
-  end
   
-  def calculate_extra_fine_index(date,batch,student,fine_rule,ind)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fine_amount = fine_rule.fine_amount if fine_rule
-          extra_fine = extra_fine + fine_amount
+    def calculate_extra_fine_index(date,batch,student,fine_rule,ind)
+      if MultiSchool.current_school.id == 340
+        #GET THE NEXT ALL months 
+         extra_fine = 0
+        other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", date.due_date], :order => "due_date asc")
+        unless other_months.nil? or other_months.empty?
+          other_months.each do |other_month|
+            fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
+            unless fee_for_batch.nil? or fee_for_batch.empty?
+              fine_amount = fine_rule.fine_amount if fine_rule
+              extra_fine = extra_fine + fine_amount
+            end
+          end
         end
+        @fine_amount[ind] = @fine_amount[ind] + extra_fine
       end
-      @fine_amount[ind] = @fine_amount[ind] + extra_fine
     end
-  end
   
   def get_fine_discount(date,batch,student)
     if !@fine_amount.blank? and @fine_amount > 0

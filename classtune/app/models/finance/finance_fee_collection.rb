@@ -288,11 +288,14 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
         fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
         if MultiSchool.current_school.id == 340
           extra_fine = 0
-          other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", financefee.due_date], :order => "due_date asc")
+          other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", financefee.due_date], :order => "due_date asc")
           unless other_months.nil? or other_months.empty?
             other_months.each do |other_month|
-              fine_amount = fine_rule.fine_amount if fine_rule
-              extra_fine = extra_fine + fine_amount
+              fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", student.batch.id, financefee.id])
+              unless fee_for_batch.nil? or fee_for_batch.empty?
+                fine_amount = fine_rule.fine_amount if fine_rule
+                extra_fine = extra_fine + fine_amount
+              end
             end
           end
           fine_amount = fine_amount+extra_fine

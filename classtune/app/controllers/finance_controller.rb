@@ -37,15 +37,15 @@ class FinanceController < ApplicationController
       
       menu_links.each do |menu_link|
         if menu_link.link_type=="user_menu"
-            menu_id = menu_link.id
+          menu_id = menu_link.id
 
-            school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
+          school_menu_links = SchoolMenuLink.find(:all, :conditions => ["school_id = ? and menu_link_id = ?",MultiSchool.current_school.id, menu_id], :select => "menu_link_id")
 
-            if school_menu_links.nil? or school_menu_links.blank?
-               @finance_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => false}
-            else
-               @finance_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => true}
-            end
+          if school_menu_links.nil? or school_menu_links.blank?
+            @finance_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => false}
+          else
+            @finance_modules_tmp << {'name' => menu_link.name, "target_controller" => menu_link.target_controller, "target_action" => menu_link.target_action, 'visible' => true}
+          end
         end
       end
       @finance_modules_tmp
@@ -373,7 +373,7 @@ class FinanceController < ApplicationController
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")
       array << [start_date.beginning_of_month + count.months,
-                start_date.end_of_month + count.months,month_name]
+        start_date.end_of_month + count.months,month_name]
     end
   end
   
@@ -473,7 +473,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += discount_amount
         i = i+1
@@ -494,7 +494,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += fine_amount
         total_fees += fine_amount
@@ -517,7 +517,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += vat_amount
         total_fees += vat_amount
@@ -526,7 +526,7 @@ class FinanceController < ApplicationController
         
         
         if total_fees!=0
-            cols << total_fees.to_s
+          cols << total_fees.to_s
         else
           cols << "-"
         end
@@ -538,7 +538,7 @@ class FinanceController < ApplicationController
       i = 0
       @finance_fee_category.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
+          cols << "-"
         else
           cols << fee_total[i].to_s
         end
@@ -547,7 +547,7 @@ class FinanceController < ApplicationController
       
       @all_fees_extra_particulers.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
+          cols << "-"
         else
           cols << fee_total[i].to_s
         end
@@ -588,7 +588,7 @@ class FinanceController < ApplicationController
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")
       array << [start_date.beginning_of_month + count.months,
-                start_date.end_of_month + count.months,month_name]
+        start_date.end_of_month + count.months,month_name]
     end
     
     
@@ -650,7 +650,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += discount_amount
         i = i+1
@@ -671,7 +671,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += fine_amount
         total_fees += fine_amount
@@ -694,7 +694,7 @@ class FinanceController < ApplicationController
         end 
         
         if fee_total[i].blank?
-           fee_total[i] = 0
+          fee_total[i] = 0
         end
         fee_total[i] += vat_amount
         total_fees += vat_amount
@@ -703,7 +703,7 @@ class FinanceController < ApplicationController
         
         
         if total_fees!=0
-            cols << total_fees.to_s
+          cols << total_fees.to_s
         else
           cols << "-"
         end
@@ -715,7 +715,7 @@ class FinanceController < ApplicationController
       i = 0
       @finance_fee_category.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
+          cols << "-"
         else
           cols << fee_total[i].to_s
         end
@@ -724,7 +724,7 @@ class FinanceController < ApplicationController
       
       @all_fees_extra_particulers.each do |fees_particuler|
         if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
+          cols << "-"
         else
           cols << fee_total[i].to_s
         end
@@ -766,16 +766,16 @@ class FinanceController < ApplicationController
       month_name_count = start_date.beginning_of_month + count.months
       month_name = month_name_count.to_date.strftime("%b, %y")
       array << [start_date.beginning_of_month + count.months,
-                start_date.end_of_month + count.months,month_name]
+        start_date.end_of_month + count.months,month_name]
     end
     render :pdf => 'transaction_pdf_fees_month',
-        :margin => {:top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :orientation => 'Landscape',
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :orientation => 'Landscape',
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
    
   end
   
@@ -838,14 +838,14 @@ class FinanceController < ApplicationController
         @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
        
         render :pdf => 'transaction_pdf_fees',
-        :margin => {:top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :orientation => 'Landscape',
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-        end
+          :margin => {:top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :orientation => 'Landscape',
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
     end
   end
 
@@ -1364,26 +1364,26 @@ class FinanceController < ApplicationController
           @finance_fee_category=FinanceFeeCategory.find_or_create_by_name_and_description_and_is_deleted(params[:finance_fee_category][:name],params[:finance_fee_category][:description],false)
           if CategoryBatch.find_by_finance_fee_category_id_and_batch_id(@finance_fee_category.id,@batches.id).present?
             @error=true
-              @finance_fee_category.errors.add_to_base(t('name_already_taken'))
+            @finance_fee_category.errors.add_to_base(t('name_already_taken'))
           else
-          if @finance_fee_category.update_attributes(attributes)
-            @finance_fee_category.create_associates(finance_fee_category.id,@batches.id)
-            cat_batch=CategoryBatch.find_by_finance_fee_category_id_and_batch_id(finance_fee_category.id,@batches.id)
-            cat_batch.destroy if cat_batch
-            finance_fee_category.update_attributes(:is_deleted => true) unless finance_fee_category.category_batches.present?
-            @master_categories = @batches.finance_fee_categories.find(:all, :conditions =>["is_deleted = '#{false}' and is_master = 1 "])
+            if @finance_fee_category.update_attributes(attributes)
+              @finance_fee_category.create_associates(finance_fee_category.id,@batches.id)
+              cat_batch=CategoryBatch.find_by_finance_fee_category_id_and_batch_id(finance_fee_category.id,@batches.id)
+              cat_batch.destroy if cat_batch
+              finance_fee_category.update_attributes(:is_deleted => true) unless finance_fee_category.category_batches.present?
+              @master_categories = @batches.finance_fee_categories.find(:all, :conditions =>["is_deleted = '#{false}' and is_master = 1 "])
 
-            if @finance_fee_category.check_category_name_exists(@batches)
-              page.replace_html 'form-errors', :text => ''
-              page << "Modalbox.hide();"
-              page.replace_html 'categories', :partial => 'master_category_list'
-              page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg13')}</p>"
-              @error=false
-            else
-              @error=true
-              @finance_fee_category.errors.add_to_base(t('name_already_taken'))
+              if @finance_fee_category.check_category_name_exists(@batches)
+                page.replace_html 'form-errors', :text => ''
+                page << "Modalbox.hide();"
+                page.replace_html 'categories', :partial => 'master_category_list'
+                page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg13')}</p>"
+                @error=false
+              else
+                @error=true
+                @finance_fee_category.errors.add_to_base(t('name_already_taken'))
+              end
             end
-          end
           end
           if @error
             page.replace_html 'form-errors', :partial => 'class_timings/errors', :object => @finance_fee_category
@@ -2192,16 +2192,16 @@ class FinanceController < ApplicationController
       
       if is_late
         fee_discount_collection = FeeDiscountCollection.new(
-              :finance_fee_collection_id => @fee_collection_id,
-              :fee_discount_id           => @discount_id,
-              :batch_id                  => @batch_id,
-              :is_late                   => 1
-          )
-          if fee_discount_collection.save
-            render :update do |page|
-              page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
-            end
+          :finance_fee_collection_id => @fee_collection_id,
+          :fee_discount_id           => @discount_id,
+          :batch_id                  => @batch_id,
+          :is_late                   => 1
+        )
+        if fee_discount_collection.save
+          render :update do |page|
+            page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
           end
+        end
       else
         @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
         CollectionDiscount.create(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
@@ -2212,14 +2212,14 @@ class FinanceController < ApplicationController
           s = fe.student
 
           unless s.has_paid_fees
-              FinanceFee.update_student_fee(@fee_collection, s, fe)
+            FinanceFee.update_student_fee(@fee_collection, s, fe)
           end
         end
         fee_discount_collection = FeeDiscountCollection.new(
-            :finance_fee_collection_id => @fee_collection_id,
-            :fee_discount_id           => @discount_id,
-            :batch_id                  => @batch_id,
-            :is_late                   => 0
+          :finance_fee_collection_id => @fee_collection_id,
+          :fee_discount_id           => @discount_id,
+          :batch_id                  => @batch_id,
+          :is_late                   => 0
         )
         fee_discount_collection.save
         render :update do |page|
@@ -2261,7 +2261,7 @@ class FinanceController < ApplicationController
             s = fe.student
 
             unless s.has_paid_fees
-                FinanceFee.update_student_fee(@fee_collection, s, fe)
+              FinanceFee.update_student_fee(@fee_collection, s, fe)
             end
           end
         end
@@ -2424,7 +2424,7 @@ class FinanceController < ApplicationController
           @new_fine_amount = @fine_amount
           get_fine_discount(@date, @batch, @student)
           if @fine_amount < 0
-             @fine_amount = 0
+            @fine_amount = 0
           end
         end
         
@@ -2480,7 +2480,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
     
@@ -2505,167 +2505,167 @@ class FinanceController < ApplicationController
     unless params[:fees][:fees_paid].to_f <= 0
       unless params[:fees][:payment_mode].blank?
         #unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-          transaction = FinanceTransaction.new
-          (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
-          transaction.category = FinanceTransactionCategory.find_by_name("Fee")
-          transaction.payee = @student
-          transaction.amount = params[:fees][:fees_paid].to_f
-          transaction.fine_amount = params[:fine].to_f
-          transaction.fine_included = true  unless params[:fine].nil?
-          transaction.vat_amount = params[:vat].to_f
-          transaction.vat_included = true  unless params[:vat].nil?
-          total_fine_amount = 0
-          if params[:special_fine]
-            total_fine_amount +=params[:special_fine].to_f
-          end
-          if params[:fine]
-            total_fine_amount +=params[:fine].to_f
-          end
+        transaction = FinanceTransaction.new
+        (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
+        transaction.category = FinanceTransactionCategory.find_by_name("Fee")
+        transaction.payee = @student
+        transaction.amount = params[:fees][:fees_paid].to_f
+        transaction.fine_amount = params[:fine].to_f
+        transaction.fine_included = true  unless params[:fine].nil?
+        transaction.vat_amount = params[:vat].to_f
+        transaction.vat_included = true  unless params[:vat].nil?
+        total_fine_amount = 0
+        if params[:special_fine]
+          total_fine_amount +=params[:special_fine].to_f
+        end
+        if params[:fine]
+          total_fine_amount +=params[:fine].to_f
+        end
           
-          if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
-            transaction.fine_amount = total_fine_amount
-            transaction.fine_included = true
-            @fine_amount=0
-          end
-          transaction.finance = @financefee
-          transaction.transaction_date = Date.today
-          transaction.payment_mode = params[:fees][:payment_mode]
-          transaction.transaction_date = params[:fees][:transaction_date]
-          transaction.payment_note = params[:fees][:payment_note]
-          if transaction.save
-#            if @financefee.balance!=0
-#              advance_due = 0
-#              is_advance = false
-#              if Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-#                advance_due = Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f - Champs21Precision.set_and_modify_precision(total_fees).to_f
-#                is_advance = true
-#              else
-#                advance_due = Champs21Precision.set_and_modify_precision(total_fees).to_f - Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f
-#              end
-#              finance_advance_due = FinanceAdvanceDue.find_by_student_id(@student.id)
-#              unless finance_advance_due.nil?
-#                if finance_advance_due.is_advance
-#                  if is_advance
-#                    advance_due = finance_advance_due.amount + advance_due
-#                  else
-#                    advance_due = finance_advance_due.amount - advance_due
-#                    if advance_due < 0
-#                      advance_due = advance_due * -1
-#                    else
-#                      is_advance = true
-#                    end
-#                  end
-#                else
-#                  if is_advance
-#                    advance_due = finance_advance_due.amount - advance_due
-#                    if advance_due < 0
-#                      advance_due = advance_due * -1
-#                    else
-#                      is_advance = false
-#                    end
-#                  else
-#                    advance_due = finance_advance_due.amount + advance_due
-#                  end
-#                end
-#              end
-#              finance_advance_due_student = FinanceAdvanceDue.new
-#              finance_advance_due_student.student_id = @student.id
-#              finance_advance_due_student.is_advance = @student.id
-#            end
-            is_paid =@financefee.balance<=0 ? true : false
-            @financefee.update_attributes( :is_paid=>is_paid)
+        if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+          transaction.fine_amount = total_fine_amount
+          transaction.fine_included = true
+          @fine_amount=0
+        end
+        transaction.finance = @financefee
+        transaction.transaction_date = Date.today
+        transaction.payment_mode = params[:fees][:payment_mode]
+        transaction.transaction_date = params[:fees][:transaction_date]
+        transaction.payment_note = params[:fees][:payment_note]
+        if transaction.save
+          #            if @financefee.balance!=0
+          #              advance_due = 0
+          #              is_advance = false
+          #              if Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
+          #                advance_due = Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f - Champs21Precision.set_and_modify_precision(total_fees).to_f
+          #                is_advance = true
+          #              else
+          #                advance_due = Champs21Precision.set_and_modify_precision(total_fees).to_f - Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f
+          #              end
+          #              finance_advance_due = FinanceAdvanceDue.find_by_student_id(@student.id)
+          #              unless finance_advance_due.nil?
+          #                if finance_advance_due.is_advance
+          #                  if is_advance
+          #                    advance_due = finance_advance_due.amount + advance_due
+          #                  else
+          #                    advance_due = finance_advance_due.amount - advance_due
+          #                    if advance_due < 0
+          #                      advance_due = advance_due * -1
+          #                    else
+          #                      is_advance = true
+          #                    end
+          #                  end
+          #                else
+          #                  if is_advance
+          #                    advance_due = finance_advance_due.amount - advance_due
+          #                    if advance_due < 0
+          #                      advance_due = advance_due * -1
+          #                    else
+          #                      is_advance = false
+          #                    end
+          #                  else
+          #                    advance_due = finance_advance_due.amount + advance_due
+          #                  end
+          #                end
+          #              end
+          #              finance_advance_due_student = FinanceAdvanceDue.new
+          #              finance_advance_due_student.student_id = @student.id
+          #              finance_advance_due_student.is_advance = @student.id
+          #            end
+          is_paid =@financefee.balance<=0 ? true : false
+          @financefee.update_attributes( :is_paid=>is_paid)
 
-            @paid_fees = @financefee.finance_transactions
+          @paid_fees = @financefee.finance_transactions
             
-            proccess_particulars_category = []
-            loop_particular = 0
-            @fee_particulars.each do |fp|
-               finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-               unless proccess_particulars_category.include?(finance_fee_particular_category_id)
-                  proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
-                  f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                  amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
+          proccess_particulars_category = []
+          loop_particular = 0
+          @fee_particulars.each do |fp|
+            finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+            unless proccess_particulars_category.include?(finance_fee_particular_category_id)
+              proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
+              f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
 
-                  onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                  unless onetime_discounts.nil? or onetime_discounts.empty? 
-                    onetime_discounts.each do |od|
-                      amount_particular = amount_particular - @onetime_discounts_amount[od.id]
-                    end
+              onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+              unless onetime_discounts.nil? or onetime_discounts.empty? 
+                onetime_discounts.each do |od|
+                  amount_particular = amount_particular - @onetime_discounts_amount[od.id]
+                end
+              end
+              unless @discounts.blank?
+                discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless discounts.nil? or discounts.empty? 
+                  discounts.each do |od|
+                    amount_particular = amount_particular - @discounts_amount[od.id]
                   end
-                  unless @discounts.blank?
-                    discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                    unless discounts.nil? or discounts.empty? 
-                      discounts.each do |od|
-                        amount_particular = amount_particular - @discounts_amount[od.id]
-                      end
-                    end
-                  end
+                end
+              end
                   
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = finance_fee_particular_category_id
-                  finance_transaction_particular.particular_type = 'ParticularCategory'
-                  finance_transaction_particular.amount = amount_particular
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = finance_fee_particular_category_id
+              finance_transaction_particular.particular_type = 'ParticularCategory'
+              finance_transaction_particular.amount = amount_particular
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
                 
-                  loop_particular = loop_particular + 1
-               end
+              loop_particular = loop_particular + 1
             end
+          end
             
-            @onetime_discounts.each do |od|
+          @onetime_discounts.each do |od|
+            finance_transaction_particular = FinanceTransactionParticular.new
+            finance_transaction_particular.finance_transaction_id = transaction.id
+            finance_transaction_particular.particular_id = od.id
+            finance_transaction_particular.particular_type = 'OnetimeDiscount'
+            finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+            finance_transaction_particular.transaction_date = transaction.transaction_date
+            finance_transaction_particular.save
+          end
+          unless @discounts.blank?
+            @discounts.each do |od|
               finance_transaction_particular = FinanceTransactionParticular.new
               finance_transaction_particular.finance_transaction_id = transaction.id
               finance_transaction_particular.particular_id = od.id
-              finance_transaction_particular.particular_type = 'OnetimeDiscount'
-              finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+              finance_transaction_particular.particular_type = 'Discount'
+              finance_transaction_particular.amount = @discounts_amount[od.id]
               finance_transaction_particular.transaction_date = transaction.transaction_date
               finance_transaction_particular.save
             end
-            unless @discounts.blank?
-              @discounts.each do |od|
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = od.id
-                finance_transaction_particular.particular_type = 'Discount'
-                finance_transaction_particular.amount = @discounts_amount[od.id]
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-            end
-            
-            if transaction.vat_included?
-              finance_transaction_particular = FinanceTransactionParticular.new
-              finance_transaction_particular.finance_transaction_id = transaction.id
-              finance_transaction_particular.particular_id = 0
-              finance_transaction_particular.particular_type = 'Vat'
-              finance_transaction_particular.amount = transaction.vat_amount
-              finance_transaction_particular.transaction_date = transaction.transaction_date
-              finance_transaction_particular.save
-            end
-            
-            if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
-              finance_transaction_particular = FinanceTransactionParticular.new
-              finance_transaction_particular.finance_transaction_id = transaction.id
-              finance_transaction_particular.particular_id = 0
-              finance_transaction_particular.particular_type = 'Fine'
-              finance_transaction_particular.amount = total_fine_amount
-              finance_transaction_particular.transaction_date = transaction.transaction_date
-              finance_transaction_particular.save
-            end
-            
-            if @has_fine_discount
-              @discounts_on_lates.each do |od|
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = od.id
-                finance_transaction_particular.particular_type = 'Fine Discount'
-                finance_transaction_particular.amount = @discounts_late_amount[od.id]
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-            end 
           end
+            
+          if transaction.vat_included?
+            finance_transaction_particular = FinanceTransactionParticular.new
+            finance_transaction_particular.finance_transaction_id = transaction.id
+            finance_transaction_particular.particular_id = 0
+            finance_transaction_particular.particular_type = 'Vat'
+            finance_transaction_particular.amount = transaction.vat_amount
+            finance_transaction_particular.transaction_date = transaction.transaction_date
+            finance_transaction_particular.save
+          end
+            
+          if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+            finance_transaction_particular = FinanceTransactionParticular.new
+            finance_transaction_particular.finance_transaction_id = transaction.id
+            finance_transaction_particular.particular_id = 0
+            finance_transaction_particular.particular_type = 'Fine'
+            finance_transaction_particular.amount = total_fine_amount
+            finance_transaction_particular.transaction_date = transaction.transaction_date
+            finance_transaction_particular.save
+          end
+            
+          if @has_fine_discount
+            @discounts_on_lates.each do |od|
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = od.id
+              finance_transaction_particular.particular_type = 'Fine Discount'
+              finance_transaction_particular.amount = @discounts_late_amount[od.id]
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
+            end
+          end 
+        end
         #else
         #  @paid_fees = @financefee.finance_transactions
         #  @financefee.errors.add_to_base("#{t('flash19')}")
@@ -2712,66 +2712,71 @@ class FinanceController < ApplicationController
     @all_discounts = []
     
     @students.each do |student|
-      @student = student
-      @iloop = student.id
-      @all_financefee[student.id] = @student.finance_fee_by_date @date 
-      @all_paid_fees[student.id] = @all_financefee[student.id].finance_transactions
-      @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
-      @all_total_discount[student.id] = 0
-      @all_total_payable[student.id] = @all_fee_particulars[student.id].map{|s| s.amount}.sum.to_f
-      calculate_discount_index_all(@date, @student.batch, @student,@student.id, @all_financefee[@iloop].is_paid)
+      @finance_obj = student.finance_fee_by_date @date 
+      unless @finance_obj.blank?
+        @all_financefee[student.id] = @finance_obj;
+     
+        @student = student
+        @iloop = student.id
+      
+        @all_paid_fees[student.id] = @all_financefee[student.id].finance_transactions
+        @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+        @all_total_discount[student.id] = 0
+        @all_total_payable[student.id] = @all_fee_particulars[student.id].map{|s| s.amount}.sum.to_f
+        calculate_discount_index_all(@date, @student.batch, @student,@student.id, @all_financefee[@iloop].is_paid)
     
-      bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
-      days=(Date.today-@date.due_date.to_date).to_i
-      auto_fine=@date.fine
-      @all_has_fine_discount[@iloop] = false
-      if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
+        bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
+        days=(Date.today-@date.due_date.to_date).to_i
+        auto_fine=@date.fine
+        @all_has_fine_discount[@iloop] = false
+        if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
         
-        @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-        @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
-        calculate_extra_fine_index_all(@date, @all_financefee[@iloop].batch, @student, @all_fine_rule[@iloop],@iloop)
-        @all_new_fine_amount[@iloop] = @all_fine_amount[@iloop]
-        get_fine_discount_index_all(@date, @all_financefee[@iloop].batch, @student,@iloop)
-        if @all_fine_amount[@iloop] < 0
-           @all_fine_amount[@iloop] = 0
+          @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+          @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
+          calculate_extra_fine_index_all(@date, @all_financefee[@iloop].batch, @student, @all_fine_rule[@iloop],@iloop)
+          @all_new_fine_amount[@iloop] = @all_fine_amount[@iloop]
+          get_fine_discount_index_all(@date, @all_financefee[@iloop].batch, @student,@iloop)
+          if @all_fine_amount[@iloop] < 0
+            @all_fine_amount[@iloop] = 0
+          end
         end
-      end
 
-      @all_fine_amount[@iloop]=0 if @all_financefee[@iloop].is_paid
+        @all_fine_amount[@iloop]=0 if @all_financefee[@iloop].is_paid
+      end
       
     end
 
     if MultiSchool.current_school.id == 312
       render :pdf => 'student_fee_receipt_all_pdf',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :page_size => 'Legal',
-      :margin => {    :top=> 10,
-      :bottom => 0,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'Legal',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     elsif  MultiSchool.current_school.id == 3
       render :pdf => 'student_fee_receipt_all_pdf',
-      :orientation => 'Portrait', :zoom => 1.00,
-      :page_size => 'A4',
-      :margin => {    :top=> 10,
-      :bottom => 0,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        :orientation => 'Portrait', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     else 
       render :pdf => 'student_fee_receipt_all_pdf',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :page_size => 'A4',
-      :margin => {    :top=> 10,
-      :bottom => 0,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-     end
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
 
   end
 
@@ -2810,53 +2815,53 @@ class FinanceController < ApplicationController
         @new_fine_amount = @fine_amount
         get_fine_discount(@date, @batch, @student)
         if @fine_amount < 0
-           @fine_amount = 0
+          @fine_amount = 0
         end
       end
       
       @fine_amount=0 if @financefee.is_paid
       
-#    render :layout => false
+      #    render :layout => false
       if MultiSchool.current_school.id == 312
         render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'Legal',
-        :margin => {    :top=> 10,
-        :bottom => 0,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}    
+          :orientation => 'Landscape', :zoom => 1.00,
+          :page_size => 'Legal',
+          :margin => {    :top=> 10,
+          :bottom => 0,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}    
       elsif MultiSchool.current_school.id == 325
         render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'A5',
-        :margin => {    :top=> 10,
-        :bottom => 0,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          :orientation => 'Landscape', :zoom => 1.00,
+          :page_size => 'A5',
+          :margin => {    :top=> 10,
+          :bottom => 0,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       elsif  MultiSchool.current_school.id == 3
         render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :page_size => 'A4',
-        :margin => {:top=> 10,
-        :bottom => 0,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          :orientation => 'Portrait', :zoom => 1.00,
+          :page_size => 'A4',
+          :margin => {:top=> 10,
+          :bottom => 0,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       else
         render :pdf => 'student_fee_receipt_pdf',
-        :orientation => 'Landscape', :zoom => 1.00,
-        :page_size => 'A4',
-        :margin => {    :top=> 10,
-        :bottom => 0,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          :orientation => 'Landscape', :zoom => 1.00,
+          :page_size => 'A4',
+          :margin => {    :top=> 10,
+          :bottom => 0,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
     else
       @iloop = 0
@@ -2907,7 +2912,7 @@ class FinanceController < ApplicationController
           @new_fine_amount[@iloop] = @fine_amount[@iloop]
           get_fine_discount_index(@date[@iloop], @financefee[@iloop].batch, @student,@iloop)
           if @fine_amount[@iloop] < 0
-             @fine_amount[@iloop] = 0
+            @fine_amount[@iloop] = 0
           end
         end
 
@@ -2916,14 +2921,14 @@ class FinanceController < ApplicationController
       end
       
       render :pdf => 'student_fee_receipt_pdf',
-      :orientation => 'Landscape', :zoom => 1.00,
-      :page_size => 'A5',
-      :margin => {    :top=> 10,
-      :bottom => 0,
-      :left=> 10,
-      :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        :orientation => 'Landscape', :zoom => 1.00,
+        :page_size => 'A5',
+        :margin => {    :top=> 10,
+        :bottom => 0,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     end 
 
   end
@@ -2948,7 +2953,7 @@ class FinanceController < ApplicationController
       end
       
       unless params[:vat][:fine].to_f <= 0
-         @fine = (params[:vat][:fine])
+        @fine = (params[:vat][:fine])
       end
 
       @due_date = @fee_collection.due_date
@@ -2975,7 +2980,7 @@ class FinanceController < ApplicationController
         @new_fine_amount = @fine_amount
         get_fine_discount(@date, @batch, @student)
         if @fine_amount < 0
-           @fine_amount = 0
+          @fine_amount = 0
         end
       end
       
@@ -3008,7 +3013,7 @@ class FinanceController < ApplicationController
       end
       
       unless params[:fine][:vat].to_f < 0
-         @vat = (params[:fine][:vat])
+        @vat = (params[:fine][:vat])
       end
 
       @due_date = @fee_collection.due_date
@@ -3030,7 +3035,7 @@ class FinanceController < ApplicationController
         @new_fine_amount = @fine_amount
         get_fine_discount(@date, @batch, @student)
         if @fine_amount < 0
-           @fine_amount = 0
+          @fine_amount = 0
         end
       end
         
@@ -3112,7 +3117,7 @@ class FinanceController < ApplicationController
           @new_fine_amount = @fine_amount
           get_fine_discount(@date, @financefee.batch, @student)
           if @fine_amount < 0
-             @fine_amount = 0
+            @fine_amount = 0
           end
         end
         
@@ -3170,7 +3175,7 @@ class FinanceController < ApplicationController
             @new_fine_amount[@iloop] = @fine_amount[@iloop]
             get_fine_discount_index(@date[@iloop], @financefee[@iloop].batch, @student,@iloop)
             if @fine_amount[@iloop] < 0
-               @fine_amount[@iloop] = 0
+              @fine_amount[@iloop] = 0
             end
           end
 
@@ -3178,7 +3183,7 @@ class FinanceController < ApplicationController
           @iloop = @iloop+1
         end
         render :update do |page|
-            page.replace_html "fee_submission", :partial => "fees_submission_form_multi"
+          page.replace_html "fee_submission", :partial => "fees_submission_form_multi"
         end
       end  
     else
@@ -3222,7 +3227,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
     render :update do |page|
@@ -3264,7 +3269,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
     
@@ -3317,7 +3322,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
 
@@ -3328,133 +3333,133 @@ class FinanceController < ApplicationController
       unless params[:fees][:fees_paid].to_f  <= 0
         unless params[:fees][:payment_mode].blank?
           #unless Champs21Precision.set_and_modify_precision(params[:fees][:fees_paid]).to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-            transaction = FinanceTransaction.new
-            (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
-            transaction.category = FinanceTransactionCategory.find_by_name("Fee")
-            transaction.payee = @student
-            transaction.finance = @financefee
-            transaction.fine_included = true  unless params[:fine].nil?
-            transaction.amount = params[:fees][:fees_paid].to_f
-            transaction.fine_amount = params[:fine].to_f
-            transaction.vat_amount = params[:vat].to_f
-            transaction.vat_included = true  unless params[:vat].nil?
-            total_fine_amount = 0
-            if params[:special_fine]
-              total_fine_amount +=params[:special_fine].to_f
-            end
-            if params[:fine]
-              total_fine_amount +=params[:fine].to_f
-            end
+          transaction = FinanceTransaction.new
+          (@financefee.balance.to_f > params[:fees][:fees_paid].to_f ) ? transaction.title = "#{t('receipt_no')}. (#{t('partial')}) F#{@financefee.id}" :  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
+          transaction.category = FinanceTransactionCategory.find_by_name("Fee")
+          transaction.payee = @student
+          transaction.finance = @financefee
+          transaction.fine_included = true  unless params[:fine].nil?
+          transaction.amount = params[:fees][:fees_paid].to_f
+          transaction.fine_amount = params[:fine].to_f
+          transaction.vat_amount = params[:vat].to_f
+          transaction.vat_included = true  unless params[:vat].nil?
+          total_fine_amount = 0
+          if params[:special_fine]
+            total_fine_amount +=params[:special_fine].to_f
+          end
+          if params[:fine]
+            total_fine_amount +=params[:fine].to_f
+          end
             
-            if total_fine_amount and total_fees==params[:fees][:fees_paid].to_f
-              transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
-              transaction.fine_included = true
-              @fine_amount=0
-            end
-            transaction.transaction_date = Date.today
-            transaction.payment_mode = params[:fees][:payment_mode]
-            transaction.payment_note = params[:fees][:payment_note]
-            transaction.transaction_date = params[:fees][:transaction_date]
-            transaction.save
-            if transaction.save
-              is_paid =@financefee.balance<=0 ? true : false
-              @financefee.update_attributes( :is_paid=>is_paid)
+          if total_fine_amount and total_fees==params[:fees][:fees_paid].to_f
+            transaction.fine_amount = params[:fine].to_f+params[:special_fine].to_f
+            transaction.fine_included = true
+            @fine_amount=0
+          end
+          transaction.transaction_date = Date.today
+          transaction.payment_mode = params[:fees][:payment_mode]
+          transaction.payment_note = params[:fees][:payment_note]
+          transaction.transaction_date = params[:fees][:transaction_date]
+          transaction.save
+          if transaction.save
+            is_paid =@financefee.balance<=0 ? true : false
+            @financefee.update_attributes( :is_paid=>is_paid)
 
-              @paid_fees = @financefee.finance_transactions
+            @paid_fees = @financefee.finance_transactions
 
-              proccess_particulars_category = []
-              loop_particular = 0
-              @fee_particulars.each do |fp|
-                 finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-                 unless proccess_particulars_category.include?(finance_fee_particular_category_id)
-                    proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
-                    f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                    amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
+            proccess_particulars_category = []
+            loop_particular = 0
+            @fee_particulars.each do |fp|
+              finance_fee_particular_category_id = fp.finance_fee_particular_category_id
+              unless proccess_particulars_category.include?(finance_fee_particular_category_id)
+                proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
+                f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
 
-                    onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                    unless onetime_discounts.nil? or onetime_discounts.empty? 
-                      onetime_discounts.each do |od|
-                        amount_particular = amount_particular - @onetime_discounts_amount[od.id]
-                      end
+                onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                unless onetime_discounts.nil? or onetime_discounts.empty? 
+                  onetime_discounts.each do |od|
+                    amount_particular = amount_particular - @onetime_discounts_amount[od.id]
+                  end
+                end
+                unless @discounts.blank?
+                  discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
+                  unless discounts.nil? or discounts.empty? 
+                    discounts.each do |od|
+                      amount_particular = amount_particular - @discounts_amount[od.id]
                     end
-                    unless @discounts.blank?
-                      discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                      unless discounts.nil? or discounts.empty? 
-                        discounts.each do |od|
-                          amount_particular = amount_particular - @discounts_amount[od.id]
-                        end
-                      end
-                    end
+                  end
+                end
 
-                    finance_transaction_particular = FinanceTransactionParticular.new
-                    finance_transaction_particular.finance_transaction_id = transaction.id
-                    finance_transaction_particular.particular_id = finance_fee_particular_category_id
-                    finance_transaction_particular.particular_type = 'ParticularCategory'
-                    finance_transaction_particular.amount = amount_particular
-                    finance_transaction_particular.transaction_date = transaction.transaction_date
-                    finance_transaction_particular.save
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = finance_fee_particular_category_id
+                finance_transaction_particular.particular_type = 'ParticularCategory'
+                finance_transaction_particular.amount = amount_particular
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
 
-                    loop_particular = loop_particular + 1
-                 end
+                loop_particular = loop_particular + 1
               end
+            end
 
-              @onetime_discounts.each do |od|
+            @onetime_discounts.each do |od|
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = od.id
+              finance_transaction_particular.particular_type = 'OnetimeDiscount'
+              finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
+            end
+            unless @discounts.blank?
+              @discounts.each do |od|
                 finance_transaction_particular = FinanceTransactionParticular.new
                 finance_transaction_particular.finance_transaction_id = transaction.id
                 finance_transaction_particular.particular_id = od.id
-                finance_transaction_particular.particular_type = 'OnetimeDiscount'
-                finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+                finance_transaction_particular.particular_type = 'Discount'
+                finance_transaction_particular.amount = @discounts_amount[od.id]
                 finance_transaction_particular.transaction_date = transaction.transaction_date
                 finance_transaction_particular.save
               end
-              unless @discounts.blank?
-                @discounts.each do |od|
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = od.id
-                  finance_transaction_particular.particular_type = 'Discount'
-                  finance_transaction_particular.amount = @discounts_amount[od.id]
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
-              end
-
-              if transaction.vat_included?
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = 0
-                finance_transaction_particular.particular_type = 'Vat'
-                finance_transaction_particular.amount = transaction.vat_amount
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-
-              if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
-                finance_transaction_particular = FinanceTransactionParticular.new
-                finance_transaction_particular.finance_transaction_id = transaction.id
-                finance_transaction_particular.particular_id = 0
-                finance_transaction_particular.particular_type = 'Fine'
-                finance_transaction_particular.amount = total_fine_amount
-                finance_transaction_particular.transaction_date = transaction.transaction_date
-                finance_transaction_particular.save
-              end
-
-              if @has_fine_discount
-                @discounts_on_lates.each do |od|
-                  finance_transaction_particular = FinanceTransactionParticular.new
-                  finance_transaction_particular.finance_transaction_id = transaction.id
-                  finance_transaction_particular.particular_id = od.id
-                  finance_transaction_particular.particular_type = 'Fine Discount'
-                  finance_transaction_particular.amount = @discounts_late_amount[od.id]
-                  finance_transaction_particular.transaction_date = transaction.transaction_date
-                  finance_transaction_particular.save
-                end
-              end 
             end
-            is_paid = @financefee.balance==0 ? true : false
-            @financefee.update_attributes(:is_paid=>is_paid)
-            flash[:warning] = "#{t('flash14')}"
-            flash[:notice]=nil
+
+            if transaction.vat_included?
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = 0
+              finance_transaction_particular.particular_type = 'Vat'
+              finance_transaction_particular.amount = transaction.vat_amount
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
+            end
+
+            if total_fine_amount and Champs21Precision.set_and_modify_precision(total_fees)==params[:fees][:fees_paid]
+              finance_transaction_particular = FinanceTransactionParticular.new
+              finance_transaction_particular.finance_transaction_id = transaction.id
+              finance_transaction_particular.particular_id = 0
+              finance_transaction_particular.particular_type = 'Fine'
+              finance_transaction_particular.amount = total_fine_amount
+              finance_transaction_particular.transaction_date = transaction.transaction_date
+              finance_transaction_particular.save
+            end
+
+            if @has_fine_discount
+              @discounts_on_lates.each do |od|
+                finance_transaction_particular = FinanceTransactionParticular.new
+                finance_transaction_particular.finance_transaction_id = transaction.id
+                finance_transaction_particular.particular_id = od.id
+                finance_transaction_particular.particular_type = 'Fine Discount'
+                finance_transaction_particular.amount = @discounts_late_amount[od.id]
+                finance_transaction_particular.transaction_date = transaction.transaction_date
+                finance_transaction_particular.save
+              end
+            end 
+          end
+          is_paid = @financefee.balance==0 ? true : false
+          @financefee.update_attributes(:is_paid=>is_paid)
+          flash[:warning] = "#{t('flash14')}"
+          flash[:notice]=nil
           #else
           #  flash[:warning]=nil
           #  flash[:notice] = "#{t('flash19')}"
@@ -3591,7 +3596,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
 
@@ -4477,7 +4482,7 @@ class FinanceController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
   end
@@ -4672,7 +4677,7 @@ class FinanceController < ApplicationController
         @new_fine_amount = @fine_amount
         get_fine_discount(@date, @batch, @student)
         if @fine_amount < 0
-           @fine_amount = 0
+          @fine_amount = 0
         end
       end
       
@@ -5178,7 +5183,7 @@ class FinanceController < ApplicationController
   end
   
   def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
-   if MultiSchool.current_school.id == 340
+    if MultiSchool.current_school.id == 340
       #GET THE NEXT ALL months 
       extra_fine = 0
       other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ?", date.due_date], :order => "due_date asc")

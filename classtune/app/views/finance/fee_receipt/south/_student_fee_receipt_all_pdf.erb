@@ -18,6 +18,7 @@
 #under the License. -%>
 <%
     @students.each do |std|
+        unless @all_financefee[std.id].blank?
         @student = std
         @financefee = @all_financefee[std.id]
         @discounts = @all_discounts[std.id]
@@ -43,6 +44,7 @@
 
         <div class="page-break"></div>
         <% 
+        end   
     end  
 %>
 

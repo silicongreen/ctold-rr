@@ -1313,14 +1313,14 @@ class ExamController < ApplicationController
     end
     
     @assigned_employee=@batch.all_class_teacher
-    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
     elective_subjects = []
     elective_subjects_id = []
     student_electives.each do |elect|
       if !elective_subjects_id.include?(elect.subject_id)
         elective_subjects_id << elect.subject_id
-        subject = Subject.find_by_id(elect.subject_id, :conditions=>"is_deleted=0")
+        subject = Subject.find_by_id(elect.subject_id)
         unless subject.blank?
           elective_subjects.push subject
         end
@@ -1396,14 +1396,14 @@ class ExamController < ApplicationController
     @students.sort! { |a, b|  a.class_roll_no.to_i <=> b.class_roll_no.to_i }
     
     @assigned_employee=@batch.all_class_teacher
-    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
     student_electives = StudentsSubject.find_all_by_batch_id(@batch.id)
     elective_subjects = []
     elective_subjects_id = []
     student_electives.each do |elect|
       if !elective_subjects_id.include?(elect.subject_id)
         elective_subjects_id << elect.subject_id
-         subject = Subject.find_by_id(elect.subject_id, :conditions=>"is_deleted=0")
+         subject = Subject.find_by_id(elect.subject_id)
          unless subject.blank?
            elective_subjects.push subject
          end
@@ -1477,11 +1477,11 @@ class ExamController < ApplicationController
     
     @batch = @exam_group.batch
     @assigned_employee=@batch.all_class_teacher
-    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=0")
+    general_subjects = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL")
     student_electives = StudentsSubject.find_all_by_student_id(@student.id,:conditions=>"batch_id = #{@batch.id}")
     elective_subjects = []
     student_electives.each do |elect|
-      subject = Subject.find_by_id(elect.subject_id, :conditions=>"is_deleted=0")
+      subject = Subject.find_by_id(elect.subject_id)
       unless subject.blank?
         elective_subjects.push subject
       end

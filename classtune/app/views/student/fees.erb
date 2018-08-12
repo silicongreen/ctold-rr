@@ -18,6 +18,7 @@
     <div class="clearfix"></div>
 
     <div class="tabbed-header-wrapper">
+        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
         <ul class="header-tabs">
             <li class="active">
                 <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
@@ -29,6 +30,7 @@
                 <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
             </li>
         </ul>
+        <% end %>
     </div>
 
 </div>

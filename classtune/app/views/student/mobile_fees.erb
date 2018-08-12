@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <body>
-        <% if Multischool.current_school.id != 340 or !params[:show_fees].blank? %>
+        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
           <div class="alert alert-info" role="alert"><%= @student.full_name %>, Class : <%= @student.batch.course_name %></div>
           <% unless flash[:notice].nil? %> 
             <div class="alert alert-success" role="alert"><%= flash[:notice] %></div>

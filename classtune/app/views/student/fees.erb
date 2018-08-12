@@ -34,7 +34,7 @@
 </div>
 
 <div id="page-yield" class="bg-disable">
-    <% if Multischool.current_school.id != 340 or !params[:show_fees].blank? %>
+    <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
       <div class="fees_wrapper">
           <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
 

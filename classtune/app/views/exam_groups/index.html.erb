@@ -161,15 +161,10 @@
             </div>      
           </td>
           <td class="col-2" style="vertical-align: top; padding-top: 10px;">
-            <%  if exam_group.exam_category==1 %>
-                Class Test
-            <%  end %>
-            <%  if  exam_group.exam_category==2 %>
-                Project
-            <%  end %>
-            <%  if exam_group.exam_category==3 %> 
-                Term Exam
-            <%  end %>
+            <% exam_category = get_exam_result_type2() %>
+            <% unless exam_category[exam_group.exam_category.to_s].blank? %>
+               <%= exam_category[exam_group.exam_category.to_s] %> 
+            <% end %> 
           </td>
           <td class="col-2" style="vertical-align: top; padding-top: 10px;">
             <% exam_quarter = get_exam_result_quarter() %>

@@ -30,7 +30,8 @@ class ConfigurationController < ApplicationController
         'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry',\
         'TimeZone','FirstTimeLoginEnable','FeeReceiptNo','EnableSibling','PrecisionCount',\
         'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderWillForwardOnly', 'TeacherMeetingRequestNeedAdminApproval', \
-        'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine']
+        'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine',\
+        'FeesDefaultersAutoNotification','FeesDefaultersFirstLetter','FeesDefaultersSecondLetter','FeesDefaultersThirdLetter','FeesDefaultersAutoSuspendUser']
     @grading_types = Course::GRADINGTYPES
     @enabled_grading_types = Configuration.get_grading_types
     @time_zones = TimeZone.all
@@ -53,7 +54,8 @@ class ConfigurationController < ApplicationController
             'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
             'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry','TimeZone',\
             'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderWillForwardOnly',\
-            'TeacherMeetingRequestNeedAdminApproval', 'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine']
+            'TeacherMeetingRequestNeedAdminApproval', 'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine',\
+            'FeesDefaultersAutoNotification','FeesDefaultersFirstLetter','FeesDefaultersSecondLetter','FeesDefaultersThirdLetter','FeesDefaultersAutoSuspendUser']
         return
       end
       @current_user.clear_menu_cache

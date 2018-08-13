@@ -345,7 +345,50 @@
                   <% end %>
               </div>
           </div> 
+          
+          <% if MultiSchool.current_school.id == 340 %>
+            <div class="label-field-pair">
+                <label for="fees_defaulters_auto_notification"><%= t('fees_defaulters_auto_notification') %></label>
+                <div class="checkbox-input-bg">
+                    <% if @config[:fees_defaulters_auto_notification] == '1' %>
+                      <%= check_box :configuration, :fees_defaulters_auto_notification, :checked => true %>
+                    <% else %>
+                      <%= check_box :configuration, :fees_defaulters_auto_notification, :checked => false %>
+                    <% end %>
+                </div>
+            </div>
 
+            <div class="label-field-pair">
+                <label for="fees_defaulters_first_letter"><%= t('fees_defaulters_first_letter') %></label>
+                <div class="textarea-input-bg">
+                    <%= text_area :configuration, :fees_defaulters_first_letter, :value => @config[:fees_defaulters_first_letter] %>
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <label for="fees_defaulters_second_letter"><%= t('fees_defaulters_second_letter') %></label>
+                <div class="textarea-input-bg">
+                    <%= text_area :configuration, :fees_defaulters_second_letter, :value => @config[:fees_defaulters_second_letter] %>
+                </div>
+            </div>
+            <div class="label-field-pair">
+                <label for="fees_defaulters_third_letter"><%= t('fees_defaulters_third_letter') %></label>
+                <div class="textarea-input-bg">
+                    <%= text_area :configuration, :fees_defaulters_third_letter, :value => @config[:fees_defaulters_third_letter] %>
+                </div>
+            </div>
+          
+          
+          <div class="label-field-pair">
+              <label for="fees_defaulters_auto_suspend_user"><%= t('fees_defaulters_auto_suspend_user') %></label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:fees_defaulters_auto_suspend_user] == '1' %>
+                    <%= check_box :configuration, :fees_defaulters_auto_suspend_user, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :fees_defaulters_auto_suspend_user, :checked => false %>
+                  <% end %>
+              </div>
+          </div> 
+          <% end %>
           <% Champs21Plugin.deliver_registered_hook(:general_settings_checkbox).each do |mod| %>
             <br/>
             <%= render :partial=>mod.camelize.constantize.send("general_settings_checkbox") %>

@@ -206,7 +206,7 @@
             <td class="col-3">
               <%= "Show In Marks Entry" %>
             </td>
-            <td class="col-3">
+            <td class="col-3" style="display:none">
               <%= t('weightage') %>(%)
             </td>
           </tr>
@@ -241,16 +241,16 @@
               <% end %>
                 
               <% if is_already_grouped==true %>
-                <td class="col-3"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
+                <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',already_grouped.weightage,:class=>'total-box',:id=>"weightage#{i}"%></td>
                 <% total += already_grouped.weightage  if already_grouped.weightage.present? %>
               <% else %>
-                <td class="col-3"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}",:onchange=>"check_weightage(this,#{count})"%></td>
+                <td class="col-3" style="display:none"><%=text_field_tag 'weightage[]',"0",:class=>'total-box',:disabled=>true,:id=>"weightage#{i}"%></td>
               <% end %>
             </tr>
             <% i=i+1 %>
           <% end %>
           <tr class="tr-blank"></tr>
-          <tr class="tr-head">
+          <tr class="tr-head" style="display:none">
             <td class="col-4" colspan="2">
               <%= t('total_weghtage') %>
             </td>

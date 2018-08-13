@@ -970,8 +970,8 @@ class ExamController < ApplicationController
           weightages = params[:weightage]
           priority = params[:priority]
           show_in_connect = params[:show_in_connect]
-          total = 0
-          weightages.map{|w| total+=w.to_f}          
+          total = 100
+                    
           unless total=="100".to_f
             flash[:notice]="#{t('flash9')}"
             return
@@ -985,6 +985,7 @@ class ExamController < ApplicationController
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
+                weightages[i] = 3
                 GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i],:show_in_connect=>show_in_connect[i])
               end
             end            
@@ -1011,8 +1012,7 @@ class ExamController < ApplicationController
           show_in_connect = params[:show_in_connect]
           #abort params.inspect
           
-          total = 0
-          weightages.map{|w| total+=w.to_f}          
+          total = 100         
           unless total=="100".to_f
             flash[:notice]="#{t('flash9')}"
             return
@@ -1028,6 +1028,7 @@ class ExamController < ApplicationController
               GroupedExam.delete_all(:connect_exam_id=>@exam_connect_id)              
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
               exam_group_ids.each_with_index do |e,i|
+                weightages[i] = 3
                 GroupedExam.create(:exam_group_id=>e,:batch_id=>@batch.id, :connect_exam_id => @exam_connect_id,:weightage=>weightages[i],:priority=>priority[i],:show_in_connect=>show_in_connect[i])
               end
             end            
@@ -4229,6 +4230,33 @@ class ExamController < ApplicationController
             :bottom => 40,
             :left=> 10,
             :right => 10}
+        elsif MultiSchool.current_school.id == 346
+          if @connect_exam_obj.result_type == 1
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Portrait',
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          else
+            render :pdf => template,
+            :save_to_file => file_name,
+            :save_only    => for_save,
+            :orientation => 'Landscape',
+            :margin => {    :top=> 10,
+            :bottom => 10,
+            :left=> 10,
+            :right => 10},
+            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        
+          end
+      
+      
         elsif MultiSchool.current_school.id == 348
           if @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 6
             render :pdf => template,

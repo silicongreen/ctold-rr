@@ -82,12 +82,18 @@
       <div class="input-container"><%= f.check_box :no_exams %></div>
     </div>
     
-    <% if MultiSchool.current_school.id == 340  %>   
+    <% if MultiSchool.current_school.id == 340 or MultiSchool.current_school.id == 348  %>   
     <div class="label-field-pair">
       <div class="label-container"><label><%= "No Written" %></label></div>
       <div class="input-container"><%= f.check_box :no_exams_sjws %></div>
     </div>
     <% end %> 
+    <% if MultiSchool.current_school.id == 346  %>   
+    <div class="label-field-pair">
+      <div class="label-container"><label><%= "Grade Subject" %></label></div>
+      <div class="input-container"><%= f.check_box :grade_subject %></div>
+    </div>
+    <% end %>
 
     <%= submit_tag "", :value => "► #{t('save')}", :method => "post", :class => "submit_button" %>
 

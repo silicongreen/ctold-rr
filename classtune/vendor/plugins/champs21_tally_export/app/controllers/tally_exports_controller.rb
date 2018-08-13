@@ -545,10 +545,11 @@ class TallyExportsController < ApplicationController
       unless params[:particulars].nil?
         particulars = params[:particulars].split(",")
       end
-      transaction_date = Date.today.to_date.strftime("%e-%b-%Y")
+      
+      transaction_export_date = Date.today.to_date.strftime("%e-%b-%Y")
       unless params[:export_date].nil?
         #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
-        transaction_date = params[:export_date].to_date.strftime("%e-%b-%Y")
+        transaction_export_date = params[:export_date].to_date.strftime("%e-%b-%Y")
       end
       
       @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
@@ -603,27 +604,30 @@ class TallyExportsController < ApplicationController
               @paid_fees.each do |paid_fees|
                 description = paid_fees.title
                 transaction_date = paid_fees.transaction_date
+                trans_date = transaction_date.strftime("%e-%b-%Y")
                 
-                vtype = 'Receipt'
-                if paid_fees.payment_mode.nil? or paid_fees.payment_mode.blank? or paid_fees.payment_mode.empty?
-                  type = "PBL-STD A/C - 877"
-                else
-                  type = paid_fees.payment_mode
+                if transaction_export_date == trans_date
+                  vtype = 'Receipt'
+                  if paid_fees.payment_mode.nil? or paid_fees.payment_mode.blank? or paid_fees.payment_mode.empty?
+                    type = "PBL-STD A/C - 877"
+                  else
+                    type = paid_fees.payment_mode
+                  end
+
+                  #s_initial = "PBL-STD A/C - 877"
+                  #vn = student_admission_no + "-" + voucher_no + s_initial
+                  vn = student_admission_no + "-" + vtype
+                  #type = 'PBL-STD A/C - 877'
+
+                  amount = paid_fees.amount
+
+                  dt_due = @due_date.strftime "%M%Y";
+                  bill = student_admission_no + "-CASH-" + dt_due;
+
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
                 end
-
-                #s_initial = "PBL-STD A/C - 877"
-                #vn = student_admission_no + "-" + voucher_no + s_initial
-                vn = student_admission_no + "-" + vtype
-                #type = 'PBL-STD A/C - 877'
-                
-                amount = paid_fees.amount
-                
-                dt_due = @due_date.strftime "%M%Y";
-                bill = student_admission_no + "-CASH-" + dt_due;
-
-                row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
-                new_book.worksheet(0).insert_row(ind, row_new)
-                ind += 1
               end
             end
           end

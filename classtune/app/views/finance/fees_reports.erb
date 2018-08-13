@@ -17,6 +17,21 @@
 <div class="box">
 
   <div class="link-box">
+      <div class="link-heading"><%= link_to "Bill Generation Report", :action => "bill_generation_report" %></div>
+      <div class="link-descr"><%= "Bill Generation Report" %></div>
+  </div>
+    
+  <div class="link-box">
+      <div class="link-heading"><%= link_to "Particular Wise Report ", :action => "particular_wise_report" %></div>
+      <div class="link-descr"><%= "Bill Generation Report Particular Wise" %></div>
+  </div>
+    
+  <div class="link-box">
+      <div class="link-heading"><%= link_to "Bill Status Report ", :action => "bill_staus_report" %></div>
+      <div class="link-descr"><%= "Bill Generation Report Status" %></div>
+  </div>
+    
+  <div class="link-box">
       <div class="link-heading"><%= link_to "#{t('report')}", :action => "monthly_report_fees" %></div>
       <div class="link-descr"><%= t('show_transactions') %></div>
   </div>

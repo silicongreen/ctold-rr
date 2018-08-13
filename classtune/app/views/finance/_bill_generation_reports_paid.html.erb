@@ -1,0 +1,220 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+</div>
+<div id="page-yield">
+  <h2><%= "Bill Status Report (Paid)" %></h2>
+  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+    <thead><!-- class="thead-inverse" -->
+      <tr>
+        <th class="align-center">Student Name</th>
+        <% unless @particulars.blank? %>
+          <% @particulars.each do |particular| %>
+            <% particular['amount'] = 0.0 %>
+            <th><%= particular['name'] %></th>
+          <% end %>
+        <% end %>
+        <th>Total Fees</th>
+        <th>Total Paid</th>
+        <th>Remaining Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <% grand_total = 0.0 %>
+    <tbody>
+    <% particulars_with_amount = [] %>
+    <% unless @bill_generations.blank? %>
+    <% @bill_generations.each do |fee_data| %>
+      <tr>  
+        <% style = "" %>
+        <% txt = "-" %>
+        <% if fee_data['is_paid'] %>  
+        <% #style = "border-left: 10px solid #090;" %>  
+        <% style = "" %>  
+        <% txt = "[+]" %>  
+        <% end %>  
+        <td class="align-left" style="white-space: nowrap; <%= style %>">
+          <a href="/finance/fees_student_dates/<%= fee_data['id'] %>/<%= @date.id %>" target="_blank" >
+            <%= fee_data['name'] %>
+          </a>
+        </td>
+        <% total_fee = 0.0 %>
+        <% unless @particulars.blank? %>
+          <% @particulars.each_with_index do |particular, i| %>
+            <% total_fee += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+            <% particular['amount'] += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+            <td class="align-right"><%= precision_label fee_data[particular['name']] %></td>
+            <% particulars_with_amount[i] = particular %>
+          <% end %>
+        <% end %>
+        <% grand_total += total_fee  %>    
+        <td class="align-right"><%= precision_label total_fee %></td>
+        <td class="align-right"><%= precision_label fee_data['amount_paid'] %></td>
+        <% if total_fee - fee_data['amount_paid'] < 0 %>
+        <td class="align-right"><%= precision_label 0.0 %></td>
+        <% else %>
+        <td class="align-right"><%= precision_label total_fee - fee_data['amount_paid'] %></td>
+        <% end %>
+        <% if fee_data['is_paid'] %>  
+        <td class="align-center" style="font-size: 8px; font-weight: bold; font-family: verdana;"><a href="javascript:;" class="show_collection" id="collection_<%= fee_data['id'] %>"><%= txt %></a></td>
+        <% else %>
+        <td class="align-center" style="font-size: 14px; font-family: verdana;"><%= txt %></td>
+        <% end %>
+      </tr>
+      <% if fee_data['is_paid'] %> 
+      <tr id="std_<%= fee_data['id'] %>" style="display: none;">
+          <% colspan = @particulars.length + 5 %>
+          <td colspan="<%= colspan  %>">
+              <table class="table table-striped table-condensed table-info" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%; border: 1px solid #ccc; border-radius: 6px;">
+                  <thead><!-- class="thead-inverse" -->
+                    <tr>
+                      <th style="background: #000; color: #fff; border-right: 1px solid #ccc;" class="align-center">Sl</th>
+                      <th style="background: #000; color: #fff; border-right: 1px solid #ccc;" class="align-center">Payment Date</th>
+                      <th style="background: #000; color: #fff; border-right: 1px solid #ccc;" class="align-center">Payment Mode</th>
+                      <th style="background: #000; color: #fff; border-right: 1px solid #ccc;" class="align-center">Payment Notes</th>
+                      <th style="background: #000; color: #fff; " class="align-right">Amount Paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <% unless fee_data['paid_fees'].blank? %>
+                        <% fee_data['paid_fees'].each_with_index do |paid_fees, i| %>
+                          <tr>
+                            <td class="align-center"><%= i + 1 %></td>
+                            <td class="align-center"><%= paid_fees.transaction_date %></td>
+                            <td class="align-center"><%= paid_fees.payment_mode %></td>
+                            <td class="align-center"><%= paid_fees.payment_note %></td>
+                            <td class="align-right"><%= precision_label paid_fees.amount %></th>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                  </tbody>
+              </table>
+          </td>
+      </tr>
+      <% end %>
+    <% end %>
+    <% else %>
+      <tr class="tr-even">
+        <td style="white-space: nowrap; ">No Transaction Found</td>
+      </tr>  
+    <% end %>    
+    </tbody>
+  </table>
+
+</div>
+
+<style>
+    tr.tr-odd td, tr.tr-even td
+    {
+       text-align:right;
+    }
+    tr.inverse {
+    }
+    tr.inverse td {
+        font-weight: bold;
+    }
+    td.align-center
+    {
+       text-align:center !important;
+    }
+    .date span{
+        display: none;
+        color: #FFFFFF;
+        text-align: left;
+    }
+    .date{
+        position: relative;
+    }
+    td:hover .date span{
+        display: block;
+        position: absolute;
+        background-color: black;
+        border:1px solid #ccc;
+        min-height: 20px;
+        min-width: 100px;
+        left: 0px;
+        top: -60px;
+        color: #FFFFFF;
+        padding: 5px;
+        font-size: 13px;
+        text-align: center;
+    }
+    td
+    {
+      cursor: pointer;
+    }
+    .align-right
+    {
+        text-align:right !important;
+    }
+    .align-center
+    {
+        text-align:center !important;
+    }
+    .align-left
+    {
+        text-align:left !important;
+    }
+ 
+    
+</style>   
+
+<script>
+  j("td").each(function(e){
+    if(j(this).html() == "-")
+    {
+      j(this).addClass("align-center");
+    }  
+  });
+  j(document).ready(function(){
+      j(".show_collection").on('click', function(){
+          var id = this.id.replace("collection_","");
+          if ( j(this).text() == "[-]" )
+          {
+              j(this).text('[+]');
+              j("#std_" + id).slideUp();
+          }
+          else
+          {
+              j(this).text('[-]');
+              j("#std_" + id).slideDown('slow');
+          }
+      });
+  });
+</script>  

@@ -2436,7 +2436,7 @@ class FinanceController < ApplicationController
       i += 1
       
       @bill_generations = []
-      #Rails.cache.delete("particular_wise_bill_generation_#{@date.id}")
+      Rails.cache.delete("particular_wise_bill_generation_#{@date.id}")
       bill_generations_data = Rails.cache.fetch("particular_wise_bill_generation_#{@date.id}"){
         bill_generations_data = []
         @batches.each do |batch|
@@ -2607,7 +2607,7 @@ class FinanceController < ApplicationController
       i += 1
       
       @bill_generations = []
-      #Rails.cache.delete("particular_wise_bill_status_report_#{@date.id}")
+      Rails.cache.delete("particular_wise_bill_status_report_#{@date.id}")
       bill_generations_data = Rails.cache.fetch("particular_wise_bill_status_report_#{@date.id}"){
         bill_generations_data = []
         @batches.each do |batch|

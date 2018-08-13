@@ -57,6 +57,11 @@
     <% particulars_with_amount = [] %>
     <% unless @bill_generations.blank? %>
     <% @bill_generations.each do |fee_data| %>
+      <% unless @particulars.blank? %>
+        <% @particulars.each do |particular| %>
+            <% particular['amount'] = 0.0 %>
+        <% end %>
+      <% end %>  
       <tr>  
         <td class="align-left" style="white-space: nowrap;">
           <a href="/finance/bill_generation_report_batch/?batch_id=<%= fee_data['id'] %>&date=<%= @date.id %>" target="_blank" >

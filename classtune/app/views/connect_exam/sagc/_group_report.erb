@@ -1,4 +1,4 @@
-<% if @connect_exam_obj.result_type.to_i != 1 and @connect_exam_obj.result_type.to_i != 2  %> 
+<% if @connect_exam_obj.result_type.to_i != 1  %> 
 <%
       if @tabulation_data.nil?
         student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)

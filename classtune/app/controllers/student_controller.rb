@@ -51,7 +51,7 @@ class StudentController < ApplicationController
     request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
     response = http.request(request)
     @response_ssl = JSON::parse(response.body)
-    redirect_to @response_ssl.GatewayPageURL
+    redirect_to @response_ssl[:GatewayPageURL]
     render :text => "Success"
   end
   

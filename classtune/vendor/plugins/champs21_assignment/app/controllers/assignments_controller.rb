@@ -10,7 +10,7 @@ class AssignmentsController < ApplicationController
     batch_id = params[:batch_name]
     student_class_name = params[:student_class_name]
     student_section = params[:student_section]
-    @assignments = []
+    @assignments = {}
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
@@ -46,7 +46,7 @@ class AssignmentsController < ApplicationController
     
     batches_all_id = batches_all.map{|b| b.id}
     
-    @assignments = []
+    @assignments = {}
     unless batch_id.nil?
       batchdata = Batch.find_by_id(batch_id)
       unless batchdata.blank?
@@ -180,7 +180,7 @@ class AssignmentsController < ApplicationController
       end  
     end
    
-    @assignments = []
+    @assignments = {}
     is_publish = [1,3]
     unless subject_class.blank?
       @assignments = Assignment.paginate :select=>"assignments.*",:conditions=>["CONCAT(subjects.name,'-',courses.course_name) IN (?) and assignments.is_published IN (?) and (assignments.used_id = ? or assignments.used_id is NULL)",subject_class,is_publish,false],:joins=>[{:subject=>{:batch=>[:course]}}],:order=>"assignments.created_at desc", :page=>params[:page], :per_page => 10
@@ -198,7 +198,7 @@ class AssignmentsController < ApplicationController
         subject_class << "'"+subject.name+"-"+subject.batch.course.course_name+"'"
       end  
     end
-    @assignments = []
+    @assignments = {}
     is_publish = [1,3]
     conditions = "CONCAT(subjects.name,'-',courses.course_name) IN ("+subject_class.join(",")+") and assignments.is_published IN (#{is_publish.join(',')}) and (assignments.used_id = 0 or assignments.used_id is NULL)"
     unless  @publish_date.blank?
@@ -453,7 +453,7 @@ class AssignmentsController < ApplicationController
     unless @subject.nil?
       @assignments =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and (is_published=2 or is_published=3) ",:order=>"duedate desc", :page=>params[:page] , :per_page => 20   
     else
-      @assignments = []
+      @assignments = {}
     end
     render(:update) do |page|
       page.replace_html 'listing', :partial=>'subject_assignments_publisher'
@@ -493,7 +493,7 @@ class AssignmentsController < ApplicationController
     unless @subject.nil?
       @assignments =Assignment.paginate  :conditions=>"subject_id=#{@subject.id} and is_published=1 ",:order=>"duedate desc", :page=>params[:page] , :per_page => 20   
     else
-      @assignments = []
+      @assignments = {}
     end
     render(:update) do |page|
       page.replace_html 'listing', :partial=>'subject_assignments3'

@@ -232,7 +232,7 @@ class ReportController extends Controller
             $this_term = $cont_exam->findByPk($connect_exam_id);
 
             $previous_exam = 0;
-            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1)
+            if($first_term_id && $first_term_id!=$connect_exam_id)
             {
                 $previous_exam = $first_term_id;
             }
@@ -249,7 +249,7 @@ class ReportController extends Controller
             $adata = $attandence->getTotalPrsent($batch_id, $connect_exam_id,$exam_report['students']);
             
             $adata_first_term = array();
-            if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1)
+            if($first_term_id && $first_term_id!=$connect_exam_id)
             {
                 $adata_first_term = $attandence->getTotalPrsent($batch_id, $first_term_id, $exam_report['students']);
             }
@@ -418,7 +418,7 @@ class ReportController extends Controller
                 $this_term = $cont_exam->findByPk($connect_exam_id);
                 
                 $previous_exam = 0;
-                if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+                if($first_term_id && $first_term_id!=$connect_exam_id)
                 {
                     $previous_exam = $first_term_id;
                 }
@@ -442,7 +442,7 @@ class ReportController extends Controller
                 $adata = $attandence->getStudentTotalPrsent($batch_id, $student_id, $connect_exam_id);
                 
                 $adata_first_term = array();
-                if($first_term_id && $first_term_id!=$connect_exam_id && $this_term->result_type == 1 && $this_term->quarter_number == 0)
+                if($first_term_id && $first_term_id!=$connect_exam_id)
                 {
                     $adata_first_term = $attandence->getStudentTotalPrsent($batch_id, $student_id, $first_term_id);
                 }

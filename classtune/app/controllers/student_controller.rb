@@ -45,8 +45,8 @@ class StudentController < ApplicationController
     require 'uri'
     require "yaml"
     api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
-    http = Net::HTTP.new(api_uri.host, api_uri.port)
-    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+    http = Net::HTTPS.new(api_uri.host, api_uri.port)
+    request = Net::HTTPS::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
     request.set_form_data({"tran_id"=>params[:tran_id],"store_id"=>params[:store_id],"store_passwd"=>params[:store_passwd],"cart[0][product]"=>params[:product],"cart[0][amount]"=>params[:amount],"total_amount"=>params[:total_amount],"success_url"=>params[:success_url],"fail_url"=>params[:fail_url],"cancel_url"=>params[:cancel_url],"version"=>params[:version]})
     response = http.request(request)
     @response_ssl = JSON::parse(response.body)

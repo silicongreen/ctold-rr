@@ -66,8 +66,19 @@
         <% total_fee = 0.0 %>
         <% unless @particulars.blank? %>
           <% @particulars.each_with_index do |particular, i| %>
-            <% total_fee += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
-            <% particular['amount'] += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+            <% if particular['plusminus'] && particular['opt'].to_i == 1 %>
+              <% total_fee += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+              <% particular['amount'] += fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+            <% elsif particular['plusminus'] && particular['opt'].to_i == 2 %>
+              <% total_fee = total_fee - fee_data[particular['name']] unless fee_data[particular['name']].nil? %>
+              <% particular['amount'] = particular['amount'] - fee_data[particular['name']] unless fee_data[particular['name']].nil? %>  
+              <% if total_fee < 0 %>
+              <% total_fee = 0 %>
+              <% end %>
+              <% if particular['amount'] < 0 %>
+              <% particular['amount'] = 0 %>
+              <% end %>
+            <% end %>
             <td class="align-right"><%= precision_label fee_data[particular['name']] %></td>
             <% particulars_with_amount[i] = particular %>
           <% end %>

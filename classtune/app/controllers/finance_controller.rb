@@ -2410,6 +2410,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -2418,6 +2420,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -2425,6 +2429,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -2432,11 +2438,13 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       
       @bill_generations = []
-      #Rails.cache.delete("particular_wise_bill_generation_#{@date.id}")
+      Rails.cache.delete("particular_wise_bill_generation_#{@date.id}")
       bill_generations_data = Rails.cache.fetch("particular_wise_bill_generation_#{@date.id}"){
         bill_generations_data = []
         @batches.each do |batch|
@@ -2581,6 +2589,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -2589,6 +2599,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -2596,6 +2608,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -2603,11 +2617,13 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       
       @bill_generations = []
-      #Rails.cache.delete("particular_wise_bill_status_report_#{@date.id}")
+      Rails.cache.delete("particular_wise_bill_status_report_#{@date.id}")
       bill_generations_data = Rails.cache.fetch("particular_wise_bill_status_report_#{@date.id}"){
         bill_generations_data = []
         @batches.each do |batch|
@@ -2763,6 +2779,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -2771,6 +2789,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -2778,6 +2798,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -2785,6 +2807,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       
@@ -2895,6 +2919,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -2903,6 +2929,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -2910,6 +2938,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -2917,6 +2947,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       
@@ -3020,6 +3052,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -3028,6 +3062,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -3035,6 +3071,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -3042,6 +3080,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       
@@ -3149,6 +3189,8 @@ class FinanceController < ApplicationController
         tmp['id'] = j+1
         tmp['name'] = particular.name
         tmp['amount'] = 0.00
+        tmp['plusminus'] = true
+        tmp['opt'] = 1
         @particulars << tmp
         i += 1
       end
@@ -3157,6 +3199,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Total Payable"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = false
+      tmp['opt'] = 0
       @particulars << tmp
       i += 1
       
@@ -3164,6 +3208,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Discount"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 2
       @particulars << tmp
       i += 1
       
@@ -3171,6 +3217,8 @@ class FinanceController < ApplicationController
       tmp['id'] = i
       tmp['name'] = "Fine"
       tmp['amount'] = 0.00
+      tmp['plusminus'] = true
+      tmp['opt'] = 1
       @particulars << tmp
       i += 1
       

@@ -87,6 +87,19 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
      return true
    end
   end
+  
+  def all_fees_paid(batch) 
+   transaction = FinanceTransaction.find(:all,:joins=>"INNER JOIN fee_transactions on finance_transactions.id = fee_transactions.finance_transaction_id
+                                                       INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id
+                                                       INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finance_fees.fee_collection_id=#{id} and students.batch_id=#{batch}"])
+    
+    finanace_fees = FinanceFee.find_all_by_fee_collection_id_and_batch_id(id,batch)
+    if transaction.length == finanace_fees.length
+      return true
+    else
+      return false
+    end
+  end
 #    finance_fees = FinanceFee.find_all_by_fee_collection_id(self.id)
 #    flag = 1
 #    finance_fees.each do |f|
@@ -286,36 +299,6 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
       if days > 0 and auto_fine
         fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{created_at}'"],:order=>'fine_days ASC')
         fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
-        if MultiSchool.current_school.id == 340
-          extra_fine = 0
-          other_months = FinanceFeeCollection.find(:all, :conditions => ["due_date > ? and is_deleted=#{false}", financefee.due_date], :order => "due_date asc")
-          unless other_months.nil? or other_months.empty?
-            other_months.each do |other_month|
-              fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", student.batch.id, financefee.id])
-              unless fee_for_batch.nil? or fee_for_batch.empty?
-                fine_amount = fine_rule.fine_amount if fine_rule
-                extra_fine = extra_fine + fine_amount
-              end
-            end
-          end
-          fine_amount = fine_amount+extra_fine
-        end
-        
-        if !fine_amount.blank? and fine_amount > 0
-          fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(financefee.id, student.batch.id, true).map(&:fee_discount_id)
-          unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
-            discounts_on_lates = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{student.batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-            if discounts_on_lates.length > 0
-              discounts_on_lates.each do |d|   
-                if fine_amount > 0
-                  discount_amt = fine_amount * d.discount.to_f/ (d.is_amount?? fine_amount : 100)
-                  fine_amount = fine_amount - discount_amt
-                end
-              end
-            end
-          end
-        end
-        
       end
       fine_amount=0 if financefee.is_paid
       return fine_amount

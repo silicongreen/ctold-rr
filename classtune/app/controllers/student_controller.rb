@@ -40,6 +40,20 @@ class StudentController < ApplicationController
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')
   end
   
+  def generate_ssl_url
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })
+    request.set_form_data(params)
+    response = http.request(request)
+    @response_ssl = JSON::parse(response.body)
+    redirect_to @response_ssl.GatewayPageURL
+    render :text => "Success"
+  end
+  
   def remove_photo
     @student = Student.find(params[:id])
     @student.photo.destroy

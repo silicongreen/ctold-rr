@@ -3273,6 +3273,7 @@ authorization do
       :graph_for_academic_report,
       :show_previous_details,
       :fees,
+      :generate_ssl_url,
       :fee_details
     ]
     has_permission_on [:detention],

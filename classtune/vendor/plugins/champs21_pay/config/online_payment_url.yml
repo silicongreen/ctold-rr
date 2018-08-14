@@ -7,4 +7,4 @@ ssl_commerce_sandbox_requested_url: "https://sandbox.sslcommerz.com/validator/ap
 ssl_commerce_sandbox_url: "https://sandbox.sslcommerz.com/gwprocess/v3/process.php"
 
 ssl_commerce_requested_url: "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
-ssl_commerce_url: "https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php"
+ssl_commerce_url: "http://sjws.classtune.com/student/generate_ssl_url"

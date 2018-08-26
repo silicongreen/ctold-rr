@@ -423,7 +423,17 @@
                     
                   </tr>
                   <tr class="odd">
-                      <td class="align-left no-warp" colspan="4">Remarks : Excellent</td>
+                      <td class="align-left no-warp" colspan="4">Remarks :
+                      <% if failed1 == true %>
+                              Failed
+                      <% else %>
+                        <% if !grade.blank? and !grade.name.blank? %>
+                        <%= grade.description %>
+                        <% else %>
+                         
+                        <% end %>
+                      <% end %> 
+                      </td>
                   </tr>
               </table>
               <% grade_point_avg2 = (grade_point_avg2.to_f*100).round() %>
@@ -490,7 +500,17 @@
                     
                   </tr>
                   <tr class="odd">
-                      <td class="align-left no-warp" colspan="4">Remarks : Excellent</td>
+                      <td class="align-left no-warp" colspan="4">Remarks :
+                      <% if failed2 == true %>
+                              Failed
+                      <% else %>
+                        <% if !grade.blank? and !grade.name.blank? %>
+                        <%= grade.description %>
+                        <% else %>
+
+                        <% end %>
+                      <% end %>
+                      </td>
                   </tr>
               </table>
               <% grade_point_avg = (grade_point_avg.to_f*100).round() %>
@@ -567,7 +587,17 @@
                     
                   </tr>
                   <tr class="odd">
-                      <td class="align-left no-warp" colspan="4">Remarks : Excellent</td>
+                      <td class="align-left no-warp" colspan="4">Remarks : 
+                      <% if failed == true %>
+                              Failed
+                      <% else %>
+                        <% if !grade.blank? and !grade.name.blank? %>
+                        <%= grade.description %>
+                        <% else %>
+                         
+                        <% end %>
+                      <% end %> 
+                      </td>
                   </tr>
               </table>
               <table id="pdf-table" class="tbl-lign-left-2 top-margin-20 extra-padding" width="18%" cellspacing="0">

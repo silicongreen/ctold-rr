@@ -155,6 +155,14 @@ class Student < ActiveRecord::Base
     end
   end
   
+  def before_destroy
+    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    if !school_subscription_info.nil?
+      school_subscription_info.current_count = school_subscription_info.current_count-1
+      school_subscription_info.save;
+    end
+  end
+  
   def inc_student_count_subscription
     school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
     if !school_subscription_info.nil?
@@ -258,8 +266,15 @@ class Student < ActiveRecord::Base
       
       user_record.first_name = self.first_name
       user_record.last_name = self.last_name
-      school_id = MultiSchool.current_school.id
-      school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+      
+      @config = Configuration.find_by_config_key('SchoolCodeStd')
+      if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+        school_id_str = MultiSchool.current_school.code  
+      else
+        school_id = MultiSchool.current_school.id
+        school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+      end
+        
       user_record.username = school_id_str+"-"+self.admission_no.to_s
       user_record.password = self.pass.blank? ? "123456" : self.pass.to_s
       user_record.role = 'Student'
@@ -277,8 +292,13 @@ class Student < ActiveRecord::Base
       changes_to_be_checked = ['admission_no','first_name','last_name','email','immediate_contact_id']
       check_changes = self.changed & changes_to_be_checked
       unless check_changes.blank?
-        school_id = MultiSchool.current_school.id
-        school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        @config = Configuration.find_by_config_key('SchoolCodeStd')
+        if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+          school_id_str = MultiSchool.current_school.code  
+        else
+          school_id = MultiSchool.current_school.id
+          school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        end
         self.user.username = school_id_str+"-"+self.admission_no.to_s if check_changes.include?('admission_no')
         self.user.first_name = self.first_name if check_changes.include?('first_name')
         self.user.last_name = self.last_name if check_changes.include?('last_name')

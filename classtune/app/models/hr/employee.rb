@@ -171,8 +171,15 @@ class Employee < ActiveRecord::Base
       
       main_employee_number = self.employee_number.to_s
       
-      school_id = MultiSchool.current_school.id
-      school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+      
+      @config = Configuration.find_by_config_key('SchoolCodeEmp')
+      if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+        school_id_str = MultiSchool.current_school.code  
+      else
+        school_id = MultiSchool.current_school.id
+        school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+      end
+      
       if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
         if str_employee.index(school_id_str.to_s+"-")==nil
           str_employee = school_id_str+"-"+self.employee_number.to_s
@@ -199,8 +206,14 @@ class Employee < ActiveRecord::Base
         str_employee = self.employee_number.to_s
       
         
-        school_id = MultiSchool.current_school.id
-        school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        @config = Configuration.find_by_config_key('SchoolCodeEmp')
+        if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+          school_id_str = MultiSchool.current_school.code  
+        else
+          school_id = MultiSchool.current_school.id
+          school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        end
+        
         if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
           if str_employee.index(school_id_str.to_s+"-")==nil
             str_employee = school_id_str+"-"+self.employee_number.to_s

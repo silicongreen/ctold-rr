@@ -103,8 +103,13 @@ class Guardian < ActiveRecord::Base
       u_name=g_start+student.admission_no.to_s
       
       if u_name.index(MultiSchool.current_school.code.to_s+"-")==nil
-        school_id = MultiSchool.current_school.id
-        school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        @config = Configuration.find_by_config_key('SchoolCodeStd')
+        if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+          school_id_str = MultiSchool.current_school.code  
+        else
+          school_id = MultiSchool.current_school.id
+          school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+        end
         u_name = school_id_str+"-"+u_name
       end 
       
@@ -114,8 +119,13 @@ class Guardian < ActiveRecord::Base
           g_start = g_start.next
           u_name=g_start+student.admission_no.to_s
           if u_name.index(MultiSchool.current_school.code.to_s+"-")==nil
-            school_id = MultiSchool.current_school.id
-            school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+            @config = Configuration.find_by_config_key('SchoolCodeStd')
+            if !@config.blank? && !@config.config_value.blank? && @config.config_value.to_i == 1
+              school_id_str = MultiSchool.current_school.code  
+            else
+              school_id = MultiSchool.current_school.id
+              school_id_str = school_id.to_s.length < 2 ? "0" + school_id.to_s : "" + school_id.to_s
+            end
             u_name = school_id_str+"-"+u_name
           end
         end

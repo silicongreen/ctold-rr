@@ -167,6 +167,28 @@
                   <% end %>
               </div>
           </div>
+          
+          <div class="label-field-pair">
+              <label for="school_code_std">Use School Code For Student Admission?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:school_code_std] == '1' %>
+                    <%= check_box :configuration, :school_code_std, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :school_code_std, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
+              <label for="school_code_emp">Use School Code For Employee Admission?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:school_code_emp] == '1' %>
+                    <%= check_box :configuration, :school_code_emp, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :school_code_emp, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
 
           <% if Configuration.available_modules.include?('HR') %>
             <div class="label-field-pair">

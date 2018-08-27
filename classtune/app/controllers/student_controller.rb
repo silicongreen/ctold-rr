@@ -728,13 +728,16 @@ class StudentController < ApplicationController
           @exist = Student.find_by_admission_no(@student.admission_no)
           #abort(@student.inspect)
           if @exist.nil?
+            
             @status = @student.save
           else
+            
             @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
             @student.admission_no = @last_admitted_student.admission_no.next
             @status = @student.save
           end
         else
+          
           @status = @student.save
         end
         

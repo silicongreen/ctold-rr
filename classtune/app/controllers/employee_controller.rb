@@ -521,7 +521,7 @@ class EmployeeController < ApplicationController
       @pass_word_no_error = true
       
       unless params[:employee][:employee_number].to_i ==0
-        @employee.employee_number= "E" + params[:employee][:employee_number].to_s
+        @employee.employee_number= params[:employee][:employee_number].to_s
       end
       
       if params[:employee][:pass].to_s == blank?
@@ -546,14 +546,11 @@ class EmployeeController < ApplicationController
       unless @employee.employee_number.to_s.downcase == 'admin' or @employee.employee_number.to_s.downcase == 'champs21'
         
         str_employee = @employee.employee_number.to_s
-      
-        if str_employee.index(MultiSchool.current_school.code.to_s+"-")==nil
-          @employee.employee_number = MultiSchool.current_school.code.to_s+"-"+@employee.employee_number
-        end 
+       
         
         if @pass_word_no_error == true
           if @employee.save
-            username = @employee.employee_number        
+            username = @employee.user.username        
             champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
             api_endpoint = champs21_api_config['api_url']
             uri = URI(api_endpoint + "api/user/createuser")
@@ -768,7 +765,7 @@ class EmployeeController < ApplicationController
     @employee_additional_details = EmployeeAdditionalDetail.find_all_by_employee_id(@employee.id)
     @additional_fields = AdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
     if @additional_fields.empty?
-      redirect_to :action => "edit_privilege", :id => @employee.employee_number
+      redirect_to :action => "edit_privilege", :id => @employee.user.username
     end
     if request.post?
       @error=false
@@ -817,7 +814,7 @@ class EmployeeController < ApplicationController
         
         unless params[:edit_request].present?
           flash[:notice] = "#{t('flash25')}#{@employee.first_name}"
-          redirect_to :action => "edit_privilege", :id => @employee.employee_number
+          redirect_to :action => "edit_privilege", :id => @employee.user.username
         else
           flash[:notice] = "#{t('flash15')}#{' '}#{@employee.first_name} #{t('flash14')}"
           redirect_to :action => "profile", :id => @employee.id

@@ -693,6 +693,7 @@ class StudentController < ApplicationController
     end
     @user = current_user
     @student = Student.new(params[:student])
+    @student_limit = @student.get_student_limit();
     #@student.student_activation_code = nil
     @selected_value = Configuration.default_country 
     @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")

@@ -1166,9 +1166,15 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
         subscription.school_id = @school.id
         subscription.start_date = Time.now.to_date
         subscription.end_date = "2030-12-20"
-        subscription.no_of_student = false
-        subscription.current_count = false
-        subscription.is_unlimited = true
+        unless params[:number_of_student][:number_of_students].blank?
+          subscription.no_of_student = params[:number_of_student][:number_of_students].to_i
+          subscription.current_count = false
+          subscription.is_unlimited = false
+        else
+          subscription.no_of_student = false
+          subscription.current_count = false
+          subscription.is_unlimited = true
+        end  
         subscription.save
         
         

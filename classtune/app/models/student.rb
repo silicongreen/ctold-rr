@@ -174,6 +174,17 @@ class Student < ActiveRecord::Base
     end
     return false;
   end
+  
+  def get_student_limit()
+    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    
+    if !school_subscription_info.nil?
+      if  school_subscription_info.is_unlimited == false
+        return [school_subscription_info.current_count.to_i,school_subscription_info.no_of_student.to_i];
+      end
+    end
+    return false;
+  end
 
   def is_active_true
     unless self.is_active==1

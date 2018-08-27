@@ -29,6 +29,12 @@
     <%= label :"institution","institution_address" %>
     <%= text_field :"institution","institution_address", :value=>@institution_address %>
   </fieldset>
+  <% if @package_id.blank? %>
+  <fieldset>
+      <label>Number Of Student</label>
+      <%= text_field :"number_of_student","number_of_students" %>
+  </fieldset>
+  <% end %>
 
   <fieldset>
     <%= label :"institution","institution_phone_no" %>

@@ -48,6 +48,8 @@ class UserController < ApplicationController
       if !@user_info1.blank? && @user_info1.student
         @student_info1 = @user_info1.student_record
         @main_std_id = @student_info1.id
+        @std_obj_main = Student.find @main_std_id
+        @std_obj_main.update_attributes(:sibling_id => @main_std_id)
         @main_std_immediate_contact_id = @student_info1.immediate_contact_id
         @all_guardian = GuardianStudents.find_all_by_student_id(@main_std_id)
          

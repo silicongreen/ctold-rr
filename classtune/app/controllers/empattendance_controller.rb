@@ -443,7 +443,6 @@ class EmpattendanceController < ApplicationController
             cardAttendancesAllDate = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
             cardAttendancesAllDate
           }
-          abort(@cardAttendancesAllDate.inspect)
         end
       
         Rails.cache.delete("settings_data_#{MultiSchool.current_school.id}")
@@ -469,6 +468,9 @@ class EmpattendanceController < ApplicationController
             @cardAttendancesAllDate = @cardAttendancesAllDate.delete_if{ |s| s.user_id == employee.user_id}
           end
           
+          cardAttendancesAllDate.each do |c|
+            abort(c.min_time.inspect)
+          end
           
           populate_emp = true
           

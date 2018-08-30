@@ -549,9 +549,7 @@ class EmpattendanceController < ApplicationController
                 else  
                   lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
                 end
-                if lateAttendances.to_i > 0
-                  abort(lateAttendances.inspect)
-                end
+                
                 #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
                 total_late = lateAttendances
               end

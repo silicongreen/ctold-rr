@@ -136,6 +136,7 @@ class Syllabuses extends CActiveRecord {
         $criteria->select = 't.id, t.content,t.title, t.subject_id, t.updated_at';
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.exam_group_id', $term_id);
+        $criteria->order = "t.created_at DESC";
      
         
         $data = $this->with('subjectDetails')->findAll($criteria);

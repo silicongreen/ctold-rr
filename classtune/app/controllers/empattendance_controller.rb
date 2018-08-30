@@ -468,10 +468,6 @@ class EmpattendanceController < ApplicationController
             @cardAttendancesAllDate = @cardAttendancesAllDate.delete_if{ |s| s.user_id == employee.user_id}
           end
           
-          cardAttendancesAllDate.each do |c|
-            abort(c.min_time.inspect)
-          end
-          
           populate_emp = true
           
           if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank? 
@@ -548,11 +544,14 @@ class EmpattendanceController < ApplicationController
                 end  
               elsif @report_for.to_i == 2 or @report_for.to_i == 3
                 in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
-                #lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
-                lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time) and event_dates.include?(ca.date.to_s)}.size
-                #if lateAttendances.to_i > 0
-                  abort(cardAttendancesAllDate.inspect)
-                #end
+                if MultiSchool.current_school.id == 312 
+                  lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time) and event_dates.include?(ca.date.to_s)}.size
+                else  
+                  lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time)}.size
+                end
+                if lateAttendances.to_i > 0
+                  abort(lateAttendances.inspect)
+                end
                 #lateAttendances = CardAttendance.all(:select=>'user_id',:conditions=>"date BETWEEN '" + @report_date_from + "' and '" + @report_date_to + "' and type = 1 and user_id = " + employee.user_id.to_s + "", :group => "date", :having => "min( time ) > '" + in_ofc_time + "'")
                 total_late = lateAttendances
               end

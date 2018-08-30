@@ -43,8 +43,14 @@
       </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
-      <% stcount = @report_data['result']['ST'].size+1  %>
-      <% ctcount = @report_data['result']['CT'].size+1  %>
+      <% stcount = 0 %>
+      <% ctcount = 0 %>
+      <% unless @report_data['result']['ST'].blank?  %>
+        <% stcount = @report_data['result']['ST'].size+1  %>
+      <% end %>
+      <% unless @report_data['result']['CT'].blank?  %>
+        <% ctcount = @report_data['result']['CT'].size+1  %>
+      <% end %>
       
       <% max_mark_st = @report_data['result']['max_mark_st']  %>
       <% max_mark_ct = @report_data['result']['max_mark_ct']  %>
@@ -53,17 +59,21 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
+          <% unless stcount.blank? %>
           <td colspan="<%= stcount %>">
               <p>Surprise Test (S.T.)</p>
               <p>Best 3 out of 4 for full-unit, Best 2 out of 3 for half-unit</p>
               <p>10 marks each for full-unit, 5 marks each for half-unit</p>
           
           </td>
+          <% end %>
+          <% unless stcount.blank? %>
           <td colspan="<%= ctcount %>">
               <p>Class Test (C.T.)</p>
               <p>Best 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
               <p>20 marks each for full-unit, 10 marks each for half-unit</p>
           </td>
+          <% end %>
           <td>Total (<%=  total_marks %>)</td>
           <td>Grade</td>
         

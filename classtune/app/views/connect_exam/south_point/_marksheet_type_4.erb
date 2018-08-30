@@ -59,7 +59,7 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <% unless stcount.blank? %>
+          <% unless @report_data['result']['ST'].blank?  %>
           <td colspan="<%= stcount %>">
               <p>Surprise Test (S.T.)</p>
               <p>Best 3 out of 4 for full-unit, Best 2 out of 3 for half-unit</p>
@@ -70,8 +70,10 @@
           <% unless stcount.blank? %>
           <td colspan="<%= ctcount %>">
               <p>Class Test (C.T.)</p>
+              <% unless @report_data['result']['ST'].blank?  %>
               <p>Best 2 out of 3 for full-unit, Best 1 out of 2 for half-unit</p>
               <p>20 marks each for full-unit, 10 marks each for half-unit</p>
+              <% end %>
           </td>
           <% end %>
           <td>Total (<%=  total_marks %>)</td>

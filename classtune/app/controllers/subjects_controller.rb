@@ -124,6 +124,7 @@ class SubjectsController < ApplicationController
   def new
     @subject = Subject.new
     @batch = Batch.find params[:id] if request.xhr? and params[:id]
+    @subject_groups = SubjectGroup.find_all_by_batch_id(@batch.id, :conditions =>{:is_deleted=>false})
     @course_name = params[:course_name]  if request.xhr? and params[:course_name]
     
     @show_batch_subject = params[:show_batch_subject]  if request.xhr? and params[:show_batch_subject]
@@ -133,6 +134,7 @@ class SubjectsController < ApplicationController
       @batches = @course_new.find_batches_data(nil, params[:course_name]);
       @batch_id = @batches[0]
       @batch = Batch.find @batch_id
+      
     end
     
     @batch_only = false
@@ -268,12 +270,13 @@ class SubjectsController < ApplicationController
   def edit
     @subject = Subject.find params[:id]
     @batch = @subject.batch
+    @subject_groups = SubjectGroup.find_all_by_batch_id(@batch.id, :conditions =>{:is_deleted=>false})
     @elective_group = ElectiveGroup.find params[:id2] unless params[:id2].nil?
     
-    @show_batch_subject = 1
+    @show_batch_subject = "1"
     unless params[:show_batch_subject].nil?
       if params[:show_batch_subject].to_i == 0
-        @show_batch_subject = 0
+        @show_batch_subject = "0"
       end  
     end
     
@@ -757,6 +760,7 @@ class SubjectsController < ApplicationController
         @batch = Batch.find params[:batch_id]
         @subjects = @batch.normal_batch_subject
         @elective_groups = ElectiveGroup.find_all_by_batch_id(params[:batch_id], :conditions =>{:is_deleted=>false})
+        @subject_groups = SubjectGroup.find_all_by_batch_id(params[:batch_id], :conditions =>{:is_deleted=>false})
       end
     else
       @batch_only = false
@@ -787,6 +791,7 @@ class SubjectsController < ApplicationController
         
         @subjects = Subject.find(:all, :conditions => ["elective_group_id IS NULL AND is_deleted = false and batch_id IN (?)", @batches], :group => "name")
         @elective_groups = ElectiveGroup.find(:all, :conditions => ["is_deleted = false and batch_id IN (?)", @batches], :group => "name")
+        @subject_groups = SubjectGroup.find(:all, :conditions => ["is_deleted = false and batch_id IN (?)", @batches], :group => "name")
       end
     end
     respond_to do |format|

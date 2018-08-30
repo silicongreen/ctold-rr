@@ -1,0 +1,155 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<div class='header-icon batches-icon'></div>
+  <%  unless @from_action == "subjects"  %>   
+  <h1><%= t('batches_text') %></h1>
+  <% else %>
+  <h1><%= t('subjects_text') %></h1>
+  <% end %>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "Subject Groups" %></div>
+<div id="inner-tab-menu">
+  <ul>
+    <% if @show_batch_subject %>   
+    <li class='themed_bg themed-dark-hover-background'><%= link_to t('new_text'), new_batch_subject_group_path(@batch, :from_action => @from_action) %></li>
+    <% else %>
+      <% if @batch_only %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to t('new_text'), new_batch_subject_group_path(@batch, :from_action => @from_action, :show_batch_subject => "0", :batch_only => "1", :batch_name => @batch_name) %></li>
+      <% else %>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to t('new_text'), new_batch_subject_group_path(@batch, :from_action => @from_action, :show_batch_subject => "0") %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+</div>
+<div id="page-yield">
+
+  <div class="box">
+     
+    <div class="bread_crumb">
+      <% if @show_batch_subject %>
+      <%= link_to t('subject_text'), :controller => "subjects", :action=>"index", :show_batch_subject => "1" %> <div class = "bread-crumb-separator"> > </div>
+      <% else %>
+        <% if @batch_only %>
+          <%= link_to t('subject_text'), :controller => "subjects", :action=>"index", :show_batch_subject => "1" %> <div class = "bread-crumb-separator"> > </div>
+        <% else %>
+          <%= link_to t('subject_text'), :controller => "subjects", :action=>"index" %> <div class = "bread-crumb-separator"> > </div>
+        <% end %>
+      <% end %>
+      <%= t('subject_group') %>
+    </div> 
+  <% if @show_batch_subject %>  
+    <h4><%= @course.course_name + ", section: " + @course.section_name %></h4>
+  <% else %>
+    <% if @batch_only %>
+    <h4>Subject Group for: <%= @course.course_name %>, <%= @batch_name %> <%= t('batch_text') %> </h4>
+    <% else %>
+    <h4>Subject Group for: <%= @course.course_name %></h4>
+    <% end %>
+  <% end %>
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+
+    <ul id="category-list">
+
+      <% @subject_groups.each do |subjectgroup| %>
+        <% s_message = "" %>
+        <% if @show_batch_subject %>
+          <%
+            batch_id = subjectgroup.batch
+            batch_data = Batch.find batch_id
+            course = batch_data.course
+            @batches = course.find_batches_data(nil, course.course_name);
+          %>
+        <% end %>
+        
+        <% 
+          subject_group_name = subjectgroup.name
+          half_no_of_batches_active = ( @batches.length / 2 ).floor
+          subjectgroup_id_and_batch_ids = SubjectGroup.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", subject_group_name, @batches]).map{|e| [e.id, e.batch_id]}
+          subjectgroup_active_batch_ids = SubjectGroup.find(:all, :conditions => ["name like ? and batch_id IN (?) and is_deleted = 0", subject_group_name, @batches]).map{|b| b.batch_id}
+          active_batches_id = @batches - subjectgroup_active_batch_ids
+          
+          tmp_subjectgroup = SubjectGroup.new
+          if active_batches_id.length > 0
+             s_message = tmp_subjectgroup.get_message(subjectgroup_active_batch_ids, active_batches_id, half_no_of_batches_active )
+          end
+        %>
+        <% if @show_batch_subject %>
+        <% s_message = ""  %>
+        <% end %>
+        <li class="list<%=cycle('odd', 'even')%>">
+          <div class="category-name">
+            <%= subjectgroup.name %>   
+          </div>
+          <div class="category-edit">
+              <% if @show_batch_subject %>
+              <%= link_to t('edit_text'), :controller=>"subject_groups",:action => "edit", :id =>subjectgroup, :from_action => @from_action %> 
+              <% else %>
+                <% if @batch_only %>
+                <%= link_to t('edit_text'), :controller=>"subject_groups",:action => "edit", :id =>subjectgroup, :show_batch_subject => '0', :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name  %> 
+                <% else %>
+                <%= link_to t('edit_text'), :controller=>"subject_groups",:action => "edit", :id =>subjectgroup, :show_batch_subject => '0', :from_action => @from_action  %> 
+                <% end %>
+              <% end %>
+          </div>
+          <% has_delete_link = true %> 
+          <%
+            unless subjectgroup_id_and_batch_ids.nil? 
+              subjectgroup_id_and_batch_ids.each do |eid|
+                @subjects= Subject.find_all_by_subject_group_id_and_batch_id(eid[0], eid[1], :conditions => "is_deleted = '0'") 
+                unless @subjects.empty?
+                  has_delete_link = false
+                  break
+                end
+              end 
+            else  
+              has_delete_link = false
+            end
+          %>  
+          <% if has_delete_link %>
+            <div class="category-delete">
+              <% if @show_batch_subject %>
+              <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/subjectgroup/' + subjectgroup.id.to_s + '?from_action=' + @from_action,
+                :method => 'delete',
+                :confirm => t('delete_confirm_msg')) %> 
+              <% else %>
+                <% if @batch_only %>
+                <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/subjectgroup/' + subjectgroup.id.to_s + '?show_batch_subject=0&from_action=' + @from_action + '&batch_only=1&batch_name=' + @batch_name,
+                :method => 'delete',
+                :confirm => t('delete_confirm_msg')) %> 
+                <% else %>
+                <%= link_to(t('delete_text'), '/batches/' + @batch.id.to_s + '/subjectgroup/' + subjectgroup.id.to_s + '?show_batch_subject=0&from_action=' + @from_action,
+                :method => 'delete',
+                :confirm => t('delete_confirm_msg')) %> 
+                <% end %>
+              <% end %>  
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+
+    </ul>
+
+    <div class="extender"></div>
+  </div>
+</div>

@@ -21,11 +21,22 @@
   <% course = @batch.course  %>
   <h4>Subject for <%= course.course_name %>, Section: <%= course.section_name  %>  </h4>
   <div class="add_sub">
+    <%= link_to "#{t('subject_group')}", batch_subject_groups_path(@batch, :from_action => "subjects") unless defined? @subject_group  %>
+  </div>
+  <div class="add_sub">
     <%= link_to_remote "#{t('add_normal_subject')}", :url => { :action => 'new', :id => @batch, :show_batch_subject => "1" } unless defined? @elective_group %>
   </div>
 <%  end %>
+
 <% else %>
   <%  unless @batch.nil? %>
+  <div class="add_sub" style="padding: 10px;">
+    <% if @batch_only %>  
+      <%= link_to "#{t('subject_group')}", batch_subject_groups_path(@batch, :show_batch_subject => "0", :from_action => "subjects", :batch_only => "1", :batch_name => @batch_name) unless defined? @subject_group  %>
+    <% else %>
+      <%= link_to "#{t('subject_group')}", batch_subject_groups_path(@batch, :show_batch_subject => "0", :from_action => "subjects") unless defined? @subject_group  %>
+    <% end %>
+  </div>
   <% course = @batch.course  %>
   <h4>
     Subject for <%= course.course_name %>
@@ -34,6 +45,10 @@
     <% end %>
   </h4>
   <% end %>
+  
+  
+ 
+  
   <div class="add_sub" style="padding: 10px;">
     <% if @batch_only %>  
     <%= link_to_remote "#{t('add_normal_subject')}", :url => { :action => 'new', :course_name => @course_name, :show_batch_subject => "0", :batch_only => "1", :batch_name => @batch_name} unless defined? @elective_group %>
@@ -42,6 +57,7 @@
     <% end %>  
   </div>
 <% end %>
+
 <% unless @subjects.empty? %>
   <ul id="category-list">
     <% unless params[:subject].nil? %>
@@ -175,6 +191,8 @@
     <% end %>
   </ul>
 <% end %>
+  
+
 
 <div style="clear: both; height: 15px;"></div>
 <% if @show_batch_subject %>

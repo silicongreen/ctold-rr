@@ -4230,7 +4230,7 @@ class ExamController < ApplicationController
             :bottom => 40,
             :left=> 10,
             :right => 10}
-        elsif MultiSchool.current_school.id == 346
+        elsif MultiSchool.current_school.id == 352
           if @connect_exam_obj.result_type == 1
             render :pdf => template,
             :save_to_file => file_name,

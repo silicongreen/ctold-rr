@@ -62,6 +62,7 @@ multi_school_models:
 - Syllabus
 - FinanceTransaction
 - ElectiveGroup
+- SubjectGroup
 - FeeDiscount
 - FinanceFeeCollection
 - FeeCollectionParticular

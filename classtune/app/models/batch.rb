@@ -33,6 +33,7 @@ class Batch < ActiveRecord::Base
   has_many :exam_groups, :conditions => { :is_deleted => false }
   has_many :fee_category , :class_name => "FinanceFeeCategory"
   has_many :elective_groups
+  has_many :subject_groups
   has_many :finance_fee_collections
   has_many :finance_transactions, :through => :students
   has_many :batch_events
@@ -212,6 +213,10 @@ class Batch < ActiveRecord::Base
 
   def all_elective_subjects
     elective_groups.map(&:subjects).compact.flatten.select{|subject| subject.is_deleted == false}
+  end
+  
+  def all_group_subjects
+    subject_groups.map(&:subjects).compact.flatten.select{|subject| subject.is_deleted == false}
   end
 
   def has_own_weekday

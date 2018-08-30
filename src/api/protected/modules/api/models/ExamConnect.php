@@ -76,14 +76,14 @@ class ExamConnect extends CActiveRecord
     public function getConnectExamKgFirstTerm($batch_id)
     {
         $res_type = array(5);
-        if(Yii::app()->user->schoolId == 346)
+        if(Yii::app()->user->schoolId == 352)
         {
             $res_type = array(1,3,5);
         } 
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
-        if(Yii::app()->user->schoolId == 346)
+        if(Yii::app()->user->schoolId == 352)
         {
             $criteria->compare('t.quarter_number', 1);
         }
@@ -104,7 +104,7 @@ class ExamConnect extends CActiveRecord
     {
         $res_type = array(2);
         $quarter_number = 0;
-        if(Yii::app()->user->schoolId == 346)
+        if(Yii::app()->user->schoolId == 352)
         {
             $res_type = array(1,3,5);
             $quarter_number = 1;

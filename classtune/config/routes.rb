@@ -37,6 +37,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :batches,:only => [], :collection=>{:batches_ajax=>[:get]} do |batch|
     batch.resources :exam_groups
     batch.resources :elective_groups, :as => :electives, :member => {:new_elective_subject => [:get, :post], :create_elective_subject => [:get,:post], :edit_elective_subject => [:get, :post, :put], :update_elective_subject => [:get, :post, :put]}
+    batch.resources :subject_groups, :as => :subjectgroup
   end
   
   map.resources :single_access_tokens

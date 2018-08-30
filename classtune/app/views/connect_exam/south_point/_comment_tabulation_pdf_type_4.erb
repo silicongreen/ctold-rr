@@ -125,16 +125,26 @@
                             st_marks.sort! {|x,y| y <=> x }
                             ct_marks.sort! {|x,y| y <=> x }
 
-                            if ct_full_mark.to_i == 20 
+                            if ct_full_mark.to_i == 30
+                              all_marks_ct = 0
+                              iloop = 0
+                              ct_marks.each do |ct_mark|
+                                all_marks_ct = all_marks_ct.to_f +ct_mark.to_f
+                                iloop = iloop=1
+                              end  
+                              avg_mark_ct = all_marks_ct.to_f/iloop.to_f
+                            else  
+                              if ct_full_mark.to_i == 20 
                                   avg_mark_ct = (ct_marks[0].to_f+ct_marks[1].to_f)/2
-                            else 
-                                avg_mark_ct = ct_marks[0].to_f
-                            end 
+                              else 
+                                  avg_mark_ct = ct_marks[0].to_f
+                              end 
 
-                            if st_full_mark.to_i == 10 
-                                avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f+st_marks[2].to_f)/3
-                            else st_full_mark.to_i == 5  
-                                avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f)/2
+                              if st_full_mark.to_i == 10 
+                                  avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f+st_marks[2].to_f)/3
+                              else st_full_mark.to_i == 5  
+                                  avg_mark_st = (st_marks[0].to_f+st_marks[1].to_f)/2
+                              end
                             end
 
                             full_mark = ct_full_mark.to_i+st_full_mark.to_i

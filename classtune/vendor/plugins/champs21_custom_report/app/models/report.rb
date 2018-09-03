@@ -109,14 +109,14 @@ class Report < ActiveRecord::Base
       all_gurdians_info = {}
       unless search_results.blank?
         if std == 1 
-          all_std = search_results.map(&:id)
+          all_std = search_results.uniq.map(&:id)
           all_guardians = GuardianStudents.find_all_by_student_id(all_std)
           unless all_guardians.blank?
             all_gur_id = all_guardians.map(&:guardian_id)
             all_gurdians_obj =Guardian.find_all_by_id(all_gur_id)
             unless all_gurdians_obj.blank?
               all_gurdians_obj.each do |gur_info|
-                all_gurdians_info[gur_info.id] = gur_info
+                all_gurdians_info[gur_info.id.to_s] = gur_info
               end
             end
           end

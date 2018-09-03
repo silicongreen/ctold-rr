@@ -3038,7 +3038,10 @@ class StudentController < ApplicationController
     appropriate_elective_subject_id = 0
     
     b = @student.batch_id
-    
+    elective_type = 0
+    unless params[:elective_type].blank?
+      elective_type = params[:elective_type]
+    end
     
     @subject = Subject.find params[:id2]
     
@@ -3051,7 +3054,7 @@ class StudentController < ApplicationController
     
     if appropriate_elective_subject_id > 0
       @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
-      StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:batch_id=>b) if @assigned.nil?
+      StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
     end
     
     @student = Student.find(params[:id])
@@ -3075,13 +3078,17 @@ class StudentController < ApplicationController
     unless params[:from_action].nil?
       @from_action = params[:from_action]
     end
+    elective_type = 0
+    unless params[:elective_type].blank?
+      elective_type = params[:elective_type]
+    end
     
     if @show_batch_subject
       @batch = Batch.find(params[:id])
       @students = @batch.students.all(:order=>"first_name ASC")
       @students.each do |s|
         @assigned = StudentsSubject.find_by_student_id_and_subject_id(s.id,params[:id2])
-        StudentsSubject.create(:student_id=>s.id,:subject_id=>params[:id2],:batch_id=>@batch.id) if @assigned.nil?
+        StudentsSubject.create(:student_id=>s.id,:subject_id=>params[:id2],:elective_type=>elective_type,:batch_id=>@batch.id) if @assigned.nil?
       end
       @elective_subject = Subject.find(params[:id2])
     else
@@ -3129,7 +3136,7 @@ class StudentController < ApplicationController
           end
           if appropriate_elective_subject_id > 0
             @assigned = StudentsSubject.find_by_student_id_and_subject_id(s.id,appropriate_elective_subject_id)
-            StudentsSubject.create(:student_id=>s.id,:subject_id=>appropriate_elective_subject_id,:batch_id=>@tmp_batch.id) if @assigned.nil?
+            StudentsSubject.create(:student_id=>s.id,:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>@tmp_batch.id) if @assigned.nil?
           end
         end
       end

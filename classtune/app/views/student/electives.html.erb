@@ -89,15 +89,20 @@
   <%unless @students.empty?%>
   <ul id="category-list">
     <div class="linker">
+    <select id="elective_type"  style="margin:0px;">
+      <option value="0">N/A</option>
+      <option value="3">3rd</option>
+      <option value="4">4th</option>
+    </select> 
     <% if @show_batch_subject %>    
-      <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id,:from_action => @from_action}%>
+      <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id,:from_action => @from_action},:with =>"'elective_type='+$(elective_type).value" %>
       <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id,:from_action => @from_action} %></div>
     <% else %>
       <% if @batch_only %>
-        <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name}%>
+        <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name},:with =>"'elective_type='+$(elective_type).value"%>
         <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action, :batch_only => "1", :batch_name => @batch_name} %></div>
       <% else %>
-        <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action}%>
+        <%= link_to_remote "#{t('assign_all')}",:url=>{:controller=>"student",:action=>"assign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action},:with =>"'elective_type='+$(elective_type).value"%>
         <%= link_to_remote "#{t('remove_all')}",:url=>{:controller=>"student",:action=>"unassign_all_students",:id=>@batch.id,:id2=>@elective_subject.id, :show_batch_subject => "0", :from_action => @from_action} %></div>
       <% end %>
     <% end %>
@@ -107,10 +112,20 @@
         <% stud_assigned = StudentsSubject.new() %>
         <% assigned = stud_assigned.student_assigned(s.id,@elective_subject.id) %>
         <div class="category-name"> <%= s.full_name %></div>
+        
         <% unless assigned.nil? %>
-          <div class="category-edit"><%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+          <div class="category-edit">
+          
+          <%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
         <% else %>
-          <div class="category-edit"><%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+          <div class="category-edit">
+             
+            <select id="elective_type_<%=s.id.to_s%>"  style="margin:0px;">
+              <option value="0">N/A</option>
+              <option value="3">3rd</option>
+              <option value="4">4th</option>
+            </select> 
+            <%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none';",:with =>"'elective_type='+$(elective_type_#{s.id}).value" %></div>
         <% end %>
       </li>
     <% end %>
@@ -164,9 +179,21 @@
                   <% end %>
                 <% else %>
                   <% if @batch_only %>
-                    <div class="category-edit"><%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id, :batch_only => "1", :batch_name => @batch_name}, :before=>"this.style.display='none'" %></div>
+                    <div class="category-edit">
+                        <select id="elective_type_<%=s.id%>"  style="margin:0px;">
+                          <option value="0">N/A</option>
+                          <option value="3">3rd</option>
+                          <option value="4">4th</option>
+                        </select>
+                        <%= link_to_remote "#{t('assign')}", :url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id, :batch_only => "1", :batch_name => @batch_name}, :before=>"this.style.display='none'",:with =>"'elective_type='+$(elective_type_#{s.id}).value" %></div>
                   <% else %>
-                    <div class="category-edit"><%= link_to_remote "#{t('assign')}",:url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+                    <div class="category-edit">
+                      <select id="elective_type_<%=s.id%>"  style="margin:0px;">
+                        <option value="0">N/A</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                      </select>
+                      <%= link_to_remote "#{t('assign')}",:url=>{:controller=>"student",:action=>"assign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'",:with =>"'elective_type='+$(elective_type_#{s.id}).value" %></div>
                   <% end %>
                 <% end %>
               </li>
@@ -209,5 +236,13 @@
     background: #eeeeee;
     height: 2px;
     border: none;
+  }
+  #category-list li div.category-name
+  {
+      width:350px;
+  }
+  #category-list li div.category-edit, #category-list li div.category-delete
+  {
+      width:100px;
   }
 </style>

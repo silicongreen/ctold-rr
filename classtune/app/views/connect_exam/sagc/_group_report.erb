@@ -1,4 +1,4 @@
-<% if @connect_exam_obj.result_type.to_i != 1  %> 
+<% if @connect_exam_obj.result_type.to_i == 2  %> 
 <%
       if @tabulation_data.nil?
         student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
@@ -10,6 +10,19 @@
 %>
 
 <%= render  :partial=>"/connect_exam/sagc/finding_data" %>
+<% end %>
+<% if @connect_exam_obj.result_type.to_i == 3 or  @connect_exam_obj.result_type.to_i == 4  %> 
+<%
+      if @tabulation_data.nil?
+        student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+        @tabulation_data = []
+        if student_response['status']['code'].to_i == 200
+          @tabulation_data = student_response['data']
+        end
+      end
+%>
+
+<%= render  :partial=>"/connect_exam/sagc/finding_data_2" %>
 <% end %>
 <%= render  :partial=>"/connect_exam/sagc/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>
 

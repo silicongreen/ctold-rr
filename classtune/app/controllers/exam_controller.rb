@@ -4230,8 +4230,8 @@ class ExamController < ApplicationController
             :bottom => 40,
             :left=> 10,
             :right => 10}
-        elsif MultiSchool.current_school.id == 352
-          if @connect_exam_obj.result_type == 1
+        elsif MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
+          if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,

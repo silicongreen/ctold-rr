@@ -3658,31 +3658,34 @@ class FinanceController < ApplicationController
     @students.each do |student|
       @student = student
       @iloop = student.id
-      @all_financefee[student.id] = @student.finance_fee_by_date @date 
-      @all_paid_fees[student.id] = @all_financefee[student.id].finance_transactions
-      @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
-      @all_total_discount[student.id] = 0
-      @all_total_payable[student.id] = @all_fee_particulars[student.id].map{|s| s.amount}.sum.to_f
-      calculate_discount_index_all(@date, @student.batch, @student,@student.id, @all_financefee[@iloop].is_paid)
-    
-      bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
-      days=(Date.today-@date.due_date.to_date).to_i
-      auto_fine=@date.fine
-      @all_has_fine_discount[@iloop] = false
-      if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
-        
-        @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-        @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
-        calculate_extra_fine_index_all(@date, @all_financefee[@iloop].batch, @student, @all_fine_rule[@iloop],@iloop)
-        @all_new_fine_amount[@iloop] = @all_fine_amount[@iloop]
-        get_fine_discount_index_all(@date, @all_financefee[@iloop].batch, @student,@iloop)
-        if @all_fine_amount[@iloop] < 0
-           @all_fine_amount[@iloop] = 0
-        end
-      end
-
-      @all_fine_amount[@iloop]=0 if @all_financefee[@iloop].is_paid
+      f_report = @student.finance_fee_by_date @date 
+      unless f_report.blank?
+        @all_financefee[student.id] = f_report 
       
+        @all_paid_fees[student.id] = @all_financefee[student.id].finance_transactions
+        @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
+        @all_total_discount[student.id] = 0
+        @all_total_payable[student.id] = @all_fee_particulars[student.id].map{|s| s.amount}.sum.to_f
+        calculate_discount_index_all(@date, @student.batch, @student,@student.id, @all_financefee[@iloop].is_paid)
+
+        bal=(@all_total_payable[@iloop]-@all_total_discount[@iloop]).to_f
+        days=(Date.today-@date.due_date.to_date).to_i
+        auto_fine=@date.fine
+        @all_has_fine_discount[@iloop] = false
+        if days > 0 and auto_fine and @all_financefee[@iloop].is_paid == false
+
+          @all_fine_rule[@iloop]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+          @all_fine_amount[@iloop]=@all_fine_rule[@iloop].is_amount ? @all_fine_rule[@iloop].fine_amount : (bal*@all_fine_rule[@iloop].fine_amount)/100 if @all_fine_rule[@iloop]
+          calculate_extra_fine_index_all(@date, @all_financefee[@iloop].batch, @student, @all_fine_rule[@iloop],@iloop)
+          @all_new_fine_amount[@iloop] = @all_fine_amount[@iloop]
+          get_fine_discount_index_all(@date, @all_financefee[@iloop].batch, @student,@iloop)
+          if @all_fine_amount[@iloop] < 0
+             @all_fine_amount[@iloop] = 0
+          end
+        end
+
+        @all_fine_amount[@iloop]=0 if @all_financefee[@iloop].is_paid
+      end
     end
 
     if MultiSchool.current_school.id == 312

@@ -53,9 +53,7 @@
             
             <% colspan = colspan+1 %>
           <% end %>  
-          
-          <td>Total</td>
-          <td>Grade</td>
+         
         
         </tr>
         
@@ -114,13 +112,13 @@
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
            <% end %>    
 
-           <td><%= sprintf( "%0.02f", main_mark) %> %</td>
+           
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
-            <td class="col-2"><b><%= grade.name %></b></td>
+            
           <% else %>
-            <td class="col-2"><b>N/A</b></td>
+            
           <% end %>
         </tr>
         <% end %>

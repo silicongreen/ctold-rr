@@ -543,7 +543,7 @@ class EmpattendanceController < ApplicationController
                   is_late = 'On Time'
                 end  
               elsif @report_for.to_i == 2 or @report_for.to_i == 3
-                in_ofc_time = @employee_setting.start_time.strftime("%H:%M:%S")
+                in_ofc_time = @employee_setting.start_time.strftime("%H:%M:59")
                 if MultiSchool.current_school.id == 312 
                   lateAttendances = cardAttendancesAllDate.select{|ca| Time.parse(ca.min_time) > Time.parse(in_ofc_time) and event_dates.include?(ca.date.to_s)}.size
                 else  

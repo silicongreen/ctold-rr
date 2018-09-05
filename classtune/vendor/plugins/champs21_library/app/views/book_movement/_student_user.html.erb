@@ -50,7 +50,7 @@
   <div class="pack"></div>
 <% end %>
 <% due_date =( Date.today + @issueable.time_period unless @issueable.nil?) %>
-<% due_date ||=  Date.today + 30 %>
+<% due_date ||=  Date.today + 7 %>
 <div class="label-field-pair">
   <label for="issue_date"><%= "#{t('issue_date')}"%></label>
   <div class="text-input-bg">

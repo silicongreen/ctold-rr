@@ -148,30 +148,5 @@
                   <% end %> 
                    
 
-              </table>
-                
-             
-                
-              <% grade_point_avg = (grade_point_avg.to_f*100).round() %>
-              <% grade_point_avg = grade_point_avg.to_f/100 %>
-              <table id="pdf-table" class="tbl-lign-left top-margin-20 letter-grade" width="100%" cellspacing="0">
-                <tr class="odd">
-                   <td class="col-pdf align-left" width="35%"><b>Letter Grade</b></td>
-                   <%
-                      grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
-                   %>
-                   <td class="col-pdf font-size-45" width="65%"><b>
-                           <% if failed == true %>
-                              F
-                           <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                            <%= grade.name %>
-                            <% else %>
-                            N/A
-                            <% end %>
-                           <% end %>
-                       
-                       </b></td>
-                </tr>
               </table>       
 <% end %>

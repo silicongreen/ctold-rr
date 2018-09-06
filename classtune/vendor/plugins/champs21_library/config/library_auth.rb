@@ -106,56 +106,8 @@ authorization do
 
   #employee - privileges
   role :employee do
-    has_permission_on [:book_movement],
-      :to => [
-      :user_search,
-      :update_user,
-      :reserve_book
-    ]
-    has_permission_on [:books],
-      :to => [
-      :index,
-      :book_call_numbers,
-      :filter_by,
-      :show,
-      :sort_by
-
-    ]
-    has_permission_on [:library],
-      :to => [
-      :index,
-      :search_book,
-      :search_result,
-      :detail_search,
-      :availabilty ,
-      :employee_library_details]
   end
   # student- privileges
   role :student do
-
-    has_permission_on [:book_movement],
-      :to => [
-
-      :user_search,
-      :update_user,
-      :reserve_book
-    ]
-    has_permission_on [:books],
-      :to => [
-      :index,
-      :show,
-      :sort_by
-
-    ]
-    has_permission_on [:library],
-      :to => [
-      :index,
-      :search_book,
-      :search_result,
-      :detail_search,
-      :availabilty ,
-      :student_library_details]
-    #end library------
-
   end
 end

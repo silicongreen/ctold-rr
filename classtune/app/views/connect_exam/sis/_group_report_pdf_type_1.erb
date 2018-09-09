@@ -44,7 +44,7 @@
                   <tr class="page-break-grade">
                           <td colspan="2"></td>
                       </tr>
-                  <% iloop = 0 %>
+                  <% mloop = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <tr class="even">
@@ -53,7 +53,7 @@
                           <td class="col-pdf no-warp align-left"></td>    
 
                       </tr> 
-                        
+                        <% iloop = 0 %>
                         <% if has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                           
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
@@ -75,15 +75,17 @@
                                                 <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                                 <% break %>
                                             <% else %>
-                                              <td class="col-pdf no-warp align-left"></td>
+                                              <td class="col-pdf no-warp align-left">-</td>
                                             <% end %>
                                             </tr>    
                                            <% else %>
-                                               <td class="col-pdf no-warp align-left"></td> 
+                                               <td class="col-pdf no-warp align-left">-</td> 
                                            <% end %>
                                            <% iloop+=1 %> 
+                                           <% mloop+=1 %>
                                        <% end %>    
                                       <% iloop+=1 %> 
+                                      <% mloop+=1 %>
                                     <% end %>
                                     
                                 <% else %>
@@ -97,15 +99,17 @@
                                               <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               <% break %>
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left"></td>
+                                            <td class="col-pdf no-warp align-left">-</td>
                                           <% end %>
                                        <% else %>
-                                           <td class="col-pdf no-warp align-left"></td> 
+                                           <td class="col-pdf no-warp align-left">-</td> 
                                        <% end %>
                                        <% iloop+=1 %> 
+                                       <% mloop+=1 %>
                                     <% end %>
                                     </tr> 
                                     <% iloop+=1 %> 
+                                    <% mloop+=1 %>
                                 <% end %>
                                    
                           <% end %>
@@ -149,7 +153,7 @@
 {
     font-size: 21px !important;
 }
-<% if !iloop.blank? && iloop<24 %>
+<% if !mloop.blank? && mloop<24 %>
 .page-break-grade td{
       height: 20px;
       border: 1px solid #fff;
@@ -157,7 +161,7 @@
       border-bottom: 1px solid Black;
 }
 <% end %>
-<% if !iloop.blank? && iloop>24 && iloop<33 %>
+<% if !mloop.blank? && mloop>24 && mloop<33 %>
 .page-break-grade td{
       height: 10px;
       border: 1px solid #fff;
@@ -174,7 +178,7 @@
     font-size: 19px !important;
 }
 <% end %>
-<% if !iloop.blank? && iloop>33 %>
+<% if !mloop.blank? && mloop>33 %>
 .page-break-grade td{
       height: 7px;
       border: 1px solid #fff;

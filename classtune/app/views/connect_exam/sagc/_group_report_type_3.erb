@@ -1,0 +1,154 @@
+
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+             <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+                  <% c = 'even'  %>
+                  <% total_mark_of_allexam = 0 %>
+                 
+                  <tr class="even header-shade">
+                      <td class="col-pdf">
+                          <b>Sl.</b>
+                      </td>
+                      <td class="col-pdf no-warp  align-left-baf"><b><%= "Subjects" %></b></td>
+                     
+
+                      <td class="col-pdf">
+                          <b>Full Marks</b>
+                      </td>
+                      <td class="col-pdf"><b>Letter Grade</b></td>
+                      
+                  </tr>
+
+                  <% total_grade = 0 %>
+                  <% total_subject = 0 %>
+                  <% grade_point_avg = 0 %>
+                  <% failed = false %>
+                  
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i == 1 %>
+                        <% next %>
+                      <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <% total_subject = total_subject+1 %>
+                          <td class="col-pdf"><%= total_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>   
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% else %>
+                                AB
+                              <% end %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %> 
+                            <% end %>
+                          <% end %>
+
+
+                          <% 
+                            
+                            total_mark = total_mark.round()
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                              main_mark = 0
+                            end 
+                          %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= full_mark.to_i %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% if grade.credit_points.to_i == 0 %>
+                                <% failed = true %>
+                              <% end %>
+                              <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">N/A</td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
+                      
+                  <% if total_grade > 0 && total_subject > 0 %>
+                      <% grade_point_avg = total_grade.to_f/total_subject.to_f %>
+                  <% end %>  
+                      
+                    
+                  <tr class="page-break-grade">
+                          <td colspan="100"></td>
+                      </tr> 
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% total_subject = 0 %>
+                    
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i == 0 %>
+                        <% next %>
+                      <% end %>
+                      
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <% cw_marks = 0 %>
+                          <% cw_full_marks = 0 %>
+                          <% cw_full_marks_total = 0 %>
+                          <% total_subject = total_subject+1 %>
+                          <td class="col-pdf"><%= total_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'].upcase %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>
+                                  
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                    <% else %>
+                                      AB
+                                    <% end %>
+                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                      <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                    <% end %>  
+                            <% end %>
+                          <% end %>
+
+
+                          <% 
+                           
+                            total_mark = total_mark.round()
+                            if total_mark.to_f>0 and full_mark.to_f>0
+                              main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            else
+                              main_mark = 0
+                            end 
+                          %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <td class="col-pdf"><%= full_mark.to_i %></td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                            <% else %>
+                              <td class="col-pdf">N/A</td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">N/A</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %> 
+                   
+
+              </table>
+                
+                
+<% end %>

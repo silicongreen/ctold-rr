@@ -642,36 +642,34 @@ class TallyExportsController < ApplicationController
                   ind += 1
                   
                   @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-            
-                  if particulars.include?("particular")
-                    unless @fee_particulars.nil?
-                        @fee_particulars.each do |fee_p|
-                          description = fee_p.name + " payment for " + student.full_name
-                          fee_name = fee_p.name;
-                          unless fee_name.capitalize.include? "due"
-                            #s_initial = "PBL-STD A/C - 877"
-                            #vn = student_admission_no + "-" + voucher_no + s_initial
-                            vn = student_admission_no + "-" + vtype
-                            #type = 'PBL-STD A/C - 877'
+                  
+                  unless @fee_particulars.nil?
+                      @fee_particulars.each do |fee_p|
+                        description = fee_p.name + " payment for " + student.full_name
+                        fee_name = fee_p.name;
+                        unless fee_name.capitalize.include? "due"
+                          #s_initial = "PBL-STD A/C - 877"
+                          #vn = student_admission_no + "-" + voucher_no + s_initial
+                          vn = student_admission_no + "-" + vtype
+                          #type = 'PBL-STD A/C - 877'
 
-                            amount = fee_p.amount
+                          amount = fee_p.amount
 
-                            dt_due = @due_date.strftime "%M%Y";
-                            if fee_p.name.downcase.include? "tuition"
-                              bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
-                            elsif fee_p.name.downcase.include? "transport"
-                              bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
-                            elsif fee_p.name.downcase.include? "piano"
-                              bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
-                            end
-
-                            row_new = [transaction_date, vn, vtype, fee_name, amount, "", student_admission_no, amount, "",description, bill]
-                            new_book.worksheet(0).insert_row(ind, row_new)
-                            ind += 1
-
+                          dt_due = @due_date.strftime "%M%Y";
+                          if fee_p.name.downcase.include? "tuition"
+                            bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                          elsif fee_p.name.downcase.include? "transport"
+                            bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                          elsif fee_p.name.downcase.include? "piano"
+                            bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
                           end
+
+                          row_new = [transaction_date, vn, vtype, fee_name, amount, "", student_admission_no, amount, "",description, bill]
+                          new_book.worksheet(0).insert_row(ind, row_new)
+                          ind += 1
+
                         end
-                    end
+                      end
                   end
 
                   @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f

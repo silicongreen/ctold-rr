@@ -428,8 +428,15 @@ class TallyExportsController < ApplicationController
 
                       row_1 = ["Voucher Date","Voucher Number","Voucher Type","Debit Ledger","Debit Amount","Cost Centre","Credit Ledger","Credit Amount","Cost Centre","Narration","bill wise details(refno)"]
                       dt_due = @due_date.strftime "%M%Y";
-                      bill = student_admission_no + "-" + s_initial + "-" + dt_due;
-
+                      #bill = student_admission_no + "-" + s_initial + "-" + dt_due;
+                      if fee_p.name.downcase.include? "tuition"
+                        bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                      elsif fee_p.name.downcase.include? "transport"
+                        bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                      elsif fee_p.name.downcase.include? "piano"
+                        bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                      end
+                    
                       #new_book.row(ind).set_format(0, date)
                       row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, fee_name, fee_name, total_amount, "", description, bill]
                       new_book.worksheet(0).insert_row(ind, row_new)
@@ -453,7 +460,8 @@ class TallyExportsController < ApplicationController
                 dl = "Discount"
                 total_amount = @total_discount
                 dt_due = @due_date.strftime "%M%Y";
-                bill = student_admission_no + "-TF-" + dt_due;
+                #bill = student_admission_no + "-TF-" + dt_due;
+                bill = "Discount";
                 row_new = [transaction_date, vn, vtype, dl, total_amount, dl, student_admission_no, total_amount, "", description, bill]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
@@ -478,7 +486,8 @@ class TallyExportsController < ApplicationController
                 to = "Late Fine"
                 total_amount = fine_amount
                 dt_due = @due_date.strftime "%M%Y";
-                bill = student_admission_no + "-FI-" + dt_due;
+                #bill = student_admission_no + "-FI-" + dt_due;
+                bill = "Late Fine";
                 row_new = [transaction_date, vn, vtype, student_admission_no, total_amount, to,to,total_amount,"", description, bill]
                 new_book.worksheet(0).insert_row(ind, row_new)
                 ind += 1
@@ -492,6 +501,9 @@ class TallyExportsController < ApplicationController
                   vn = student_admission_no + "-" + s_initial
                   vtype = 'Journal-CT'
                   to = "Fine"
+                  
+                  bill = "Late Fine Discount";
+                  
                   total_amount = fine_amount
                   row_new = [transaction_date, vn, vtype, to, total_amount, "Fine", student_admission_no, total_amount, "",description, bill]
                   new_book.worksheet(0).insert_row(ind, row_new)
@@ -644,9 +656,15 @@ class TallyExportsController < ApplicationController
                             amount = fee_p.amount
 
                             dt_due = @due_date.strftime "%M%Y";
-                            bill = student_admission_no + "-CASH-" + dt_due;
+                            if fee_p.name.downcase.include? "tuition"
+                              bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                            elsif fee_p.name.downcase.include? "transport"
+                              bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                            elsif fee_p.name.downcase.include? "piano"
+                              bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                            end
 
-                            row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
+                            row_new = [transaction_date, vn, vtype, fee_name, amount, "", student_admission_no, amount, "",description, bill]
                             new_book.worksheet(0).insert_row(ind, row_new)
                             ind += 1
 

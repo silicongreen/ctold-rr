@@ -664,7 +664,7 @@ class TallyExportsController < ApplicationController
                             bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
                           end
 
-                          row_new = [transaction_date, vn, vtype, type, amount, fee_name, student_admission_no, amount, "",description, bill]
+                          row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, fee_name,description, bill]
                           new_book.worksheet(0).insert_row(ind, row_new)
                           ind += 1
 
@@ -683,7 +683,7 @@ class TallyExportsController < ApplicationController
                       amount = @total_discount
                       bill = "Discount"
                       
-                      row_new = [transaction_date, vn, vtype, type, amount, "Discount", student_admission_no, amount, "",description, bill]
+                      row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Discount",description, bill]
                       new_book.worksheet(0).insert_row(ind, row_new)
                       ind += 1
                       
@@ -706,7 +706,7 @@ class TallyExportsController < ApplicationController
                       amount = fine_amount
                       bill = "Late Fine"
                       
-                      row_new = [transaction_date, vn, vtype, type, amount, "Late Fine", student_admission_no, amount, "",description, bill]
+                      row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine",description, bill]
                       new_book.worksheet(0).insert_row(ind, row_new)
                       ind += 1
                       
@@ -718,7 +718,7 @@ class TallyExportsController < ApplicationController
                         amount = fine_amount
                         bill = "Late Fine Discount"
 
-                        row_new = [transaction_date, vn, vtype, type, amount, "Late Fine Discount", student_admission_no, amount, "",description, bill]
+                        row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine Discount",description, bill]
                         new_book.worksheet(0).insert_row(ind, row_new)
                         ind += 1
                       end

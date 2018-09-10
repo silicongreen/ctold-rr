@@ -347,6 +347,7 @@ class TallyExportsController < ApplicationController
       transaction_date = Date.today.to_date.strftime("%e-%b-%Y")
       unless params[:export_date].nil?
         #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        trans_date = params[:export_date].to_date
         transaction_date = params[:export_date].to_date.strftime("%e-%b-%Y")
       end
       @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
@@ -430,11 +431,11 @@ class TallyExportsController < ApplicationController
                       dt_due = @due_date.strftime "%M%Y";
                       #bill = student_admission_no + "-" + s_initial + "-" + dt_due;
                       if fee_p.name.downcase.include? "tuition"
-                        bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                        bill = trans_date.strftime("%b") + "-" + trans_date.strftime("%y");
                       elsif fee_p.name.downcase.include? "transport"
-                        bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                        bill = "Transport-" + trans_date.strftime("%b") + "-" + trans_date.strftime("%y");
                       elsif fee_p.name.downcase.include? "piano"
-                        bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                        bill = "Piano-" + trans_date.strftime("%b") + "-" + trans_date.strftime("%y");
                       end
                     
                       #new_book.row(ind).set_format(0, date)

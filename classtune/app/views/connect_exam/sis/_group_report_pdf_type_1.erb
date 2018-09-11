@@ -46,6 +46,7 @@
                   <% mloop = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% mloop+=1 %>
                       <tr class="even">
                           
                           <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
@@ -61,13 +62,16 @@
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="even">
                                     <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
+                                    <% mloop+=1 %>
                                     <td class="col-pdf no-warp align-left"></td>
                                    </tr>
+                                   <% mloop+=1 %>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                       <% @report_data['report']['exams'].each do |report| %>
                                           <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                             <tr class="even">
                                             <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
+                                            <% mloop+=1 %>
                                             <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                             <% wordString_split = wordString.split("|") %>
                                             <% unless wordString_split[iloop.to_i].blank? %>
@@ -81,15 +85,15 @@
                                                <td class="col-pdf no-warp align-left">-</td> 
                                            <% end %>
                                            <% iloop+=1 %> 
-                                           <% mloop+=1 %>
+                                           
                                        <% end %>    
                                       <% iloop+=1 %> 
-                                      <% mloop+=1 %>
+                                      
                                     <% end %>
-                                    
                                 <% else %>
                                     <tr class="even">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
+                                    <% mloop+=1 %>
                                     <% @report_data['report']['exams'].each do |report| %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
@@ -104,11 +108,10 @@
                                            <td class="col-pdf no-warp align-left">-</td> 
                                        <% end %>
                                        <% iloop+=1 %> 
-                                       <% mloop+=1 %>
+                                       
                                     <% end %>
                                     </tr> 
-                                    <% iloop+=1 %> 
-                                    <% mloop+=1 %>
+                                    <% iloop+=1 %>
                                 <% end %>
                                    
                           <% end %>
@@ -145,12 +148,12 @@
 <style>
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 21px !important;
-    padding: 10px 15px !important;
+    font-size: 25px !important;
+    padding: 14px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 21px !important;
+    font-size: 25px !important;
 }
 <% if !mloop.blank? && mloop<24 %>
 .page-break-grade td{
@@ -160,7 +163,7 @@
       border-bottom: 1px solid Black;
 }
 <% end %>
-<% if !mloop.blank? && mloop>24 && mloop<33 %>
+<% if !mloop.blank? && mloop>=24 && mloop<35 %>
 .page-break-grade td{
       height: 10px;
       border: 1px solid #fff;
@@ -169,15 +172,15 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 19px !important;
-    padding: 5px 15px !important;
+    font-size: 23px !important;
+    padding: 6px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 19px !important;
+    font-size: 23px !important;
 }
 <% end %>
-<% if !mloop.blank? && mloop>33 %>
+<% if !mloop.blank? && mloop>35 %>
 .page-break-grade td{
       height: 7px;
       border: 1px solid #fff;
@@ -186,12 +189,12 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 17px !important;
-    padding: 3px 15px !important;
+    font-size: 20px !important;
+    padding: 8px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
-    font-size: 17px !important;
+    font-size: 20px !important;
 }
 <% end %>
 </style>    

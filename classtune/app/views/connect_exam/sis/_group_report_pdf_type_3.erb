@@ -85,7 +85,35 @@
 
                       </tr> 
                     <% end %>  
-                  <% end %>     
+                  <% end %> 
+                  <%  
+                    
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
+                     
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                          <td class="col-pdf left-td"><%= report['subject_name'] %></td>
+                          <td class="col-pdf"><%= report['subject_comment'] %></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
 
               </table>
               <table id="pdf-table"  width="48%" class="left-table odd-table" cellspacing="0" >
@@ -176,9 +204,13 @@
 
 <% end %>
 <style>
-    .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf
+    .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf, .sis-final #grouped_exam_report table.extra_padding tr.even td.col-pdf
     {
-       padding: 35px 10px !important;
+       padding: 28px 10px !important;
+    }
+    .sis-final #grouped_exam_report table.odd-table tr.odd td.col-pdf, .sis-final #grouped_exam_report table.odd-table tr.even td.col-pdf
+    {
+       padding: 28px 10px !important;
     }
     .left-td
     {
@@ -188,7 +220,7 @@
     .sis-final #grouped_exam_report table#pdf-table tr.even td,
     .sis-final .student_information table.std_info_table tr td
     {
-        font-size: 23px !important;
+        font-size: 25px !important;
     }
     .sis-final .general-header h2
     {

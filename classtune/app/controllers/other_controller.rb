@@ -19,6 +19,7 @@ class OtherController < ApplicationController
     if request.post?
       unless params[:admid_card][:student_ids].nil?
           @student_ids = params[:admid_card][:student_ids]
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
           @exam_name = params[:exam_name]
           @term_year = params[:term_year]
       end   
@@ -40,6 +41,7 @@ class OtherController < ApplicationController
     if request.post?
       unless params[:student_record][:student_ids].nil?
           @student_ids = params[:student_record][:student_ids]
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
           @section_name = params[:section_name]
           @year = params[:year]
       end   

@@ -14,9 +14,8 @@
     <body>
         <% i = 0 %>
         <% j = 0   %>
-        <% @student_ids.each do |std_id| %>
+        <% @students.each do |std_info| %>
         
-        <% std_info = Student.find(std_id) %>
         <% if i % 2 == 0 %>
           <% j += 1 %>
         <% end %>

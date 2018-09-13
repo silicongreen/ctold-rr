@@ -1,6 +1,6 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-            <% unless @report_data['report']['subjects'].blank? %>
+<% unless @report_data['report']['subjects'].blank? %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
                     <% total_subject = @report_data['report']['subjects'].count %>
@@ -169,8 +169,7 @@
                       
                     <% end %> 
                     </table>
-                  <% end %>
-       
+                  <% end %> 
 <% end %>
 <style>
     

@@ -1,4 +1,5 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
+
   <div id="page-yield"  class="available_sections1 sis sis-final">
       <div class="section1 row" >
           <center>
@@ -196,30 +197,30 @@
                   <% end %> 
                 
                 <div class='line'></div>
-                <table id="pdf-table" width="24%" class="left-table even-table grade_table" cellspacing="0">
+                <table id="pdf-table" width="24%" class="left-table even-table" cellspacing="0">
                       <% class_grade = "height-50" %>
                     <% if @connect_exam_obj.quarter_number == 5 %>
                       <% class_grade = "height-40" %>
                     <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>A</b></td>
-                      <td class="col-pdf no-warp align-left"><b>Excellent</b></td>
+                      <td class="col-pdf no-warp align-left <%= class_grade %>"><b>Excellent</b></td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>B+</b></td>
-                      <td class="col-pdf no-warp align-left"><b>Very Good</b></td>
+                      <td class="col-pdf no-warp align-left  <%= class_grade %>"><b>Very Good</b></td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>B</b></td>
-                      <td class="col-pdf no-warp align-left"><b>Good</b></td>
+                      <td class="col-pdf no-warp align-left  <%= class_grade %>"><b>Good</b></td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>NI</b></td>
-                      <td class="col-pdf no-warp align-left"><b>Needs Improvement</b></td>
+                      <td class="col-pdf no-warp align-left  <%= class_grade %>"><b>Needs Improvement</b></td>
                      </tr>
               
                 </table>
-                <table id="pdf-table" width="69%" class="left-table odd-table signature_table" cellspacing="0">
+                <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>Class Teacher</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
@@ -228,7 +229,32 @@
                       <td class="col-pdf no-warp align-left"><b>Teacher-in-charge</b></td>
                       <td class="col-pdf no-warp align-left width-60"><br/></td>
                      </tr>
-                     
+                     <% if @batch.course.course_name.upcase == "NURSERY" %>
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Principal</b></td>
+                      <td class="col-pdf no-warp align-left width-60"><br/></td>
+                     </tr>
+                     <% end %>
+                    
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Parent's Signature</b></td>
+                      <td class="col-pdf no-warp align-left width-60"><br/></td>
+                     </tr>
+                     <% if @connect_exam_obj.quarter_number == 5 %>
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Next term begins on </b></td>
+                      <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %b %Y") %></td>
+                     </tr>
+                     <% else %>
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Promoted to </b></td>
+                      <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.promoted_to %></td>
+                     </tr>
+                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="col-pdf no-warp align-left"><b>Next session begins on </b></td>
+                      <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %b %Y") %></td>
+                     </tr>
+                     <% end %>
                 </table>
 
               
@@ -241,31 +267,35 @@
   </div>
 
 <% end %>
+<% if @batch.course.course_name.upcase == "NURSERY" %>
 <style>
 .sis-final table tr.odd td, .sis-final table tr.even td
 {
     font-size: 22px !important;
-    padding: 12px 12px !important;
-    font-family: 'SolaimanLipi', Arial, sans-serif !important;
+    padding: 6px 12px !important;
 }
 .sis-final table.left-table-nursery tr.odd td, .sis-final table.left-table-nursery tr.even td
 {
     padding: 12px !important;
-    font-family: 'SolaimanLipi', Arial, sans-serif !important;
 }
 .sis-final table.left-table-nursery tr.subgroup td, .sis-final table.left-table-nursery tr.subgroup td
 {
-    padding: 13px 12px !important;
-    font-family: 'SolaimanLipi', Arial, sans-serif !important;
+    padding: 7px 12px !important;
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {
-    height: 89px !important;
-    font-family: 'SolaimanLipi', Arial, sans-serif !important;
-}
-.sis-final table.grade_table tr.odd td, .sis-final table.grade_table tr.even td
-{
-    padding: 15px 12px !important;
-    font-family: 'SolaimanLipi', Arial, sans-serif !important;
+    padding: 10px !important;
 }
 </style>
+<% else %>
+<style>
+.sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
+{
+    padding: 22px !important;
+}
+.sis-final table.left-table-nursery tr.odd td, .sis-final table.left-table-nursery tr.even td
+{
+    padding: 17px 12px !important;
+}
+</style>
+<% end %>

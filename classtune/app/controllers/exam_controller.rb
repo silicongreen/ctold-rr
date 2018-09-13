@@ -4258,7 +4258,7 @@ class ExamController < ApplicationController
       
       
         elsif MultiSchool.current_school.id == 348
-          if @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 6
+          if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9
             render :pdf => template,
             :save_to_file => file_name,
             :save_only    => for_save,

@@ -23,8 +23,7 @@
   <head>
     <% @direction = (rtl?) ? 'rtl/' : '' %>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link href="https://fonts.maateen.me/adorsho-lipi/font.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.rawgit.com/mirazmac/bengali-webfont-cdn/master/solaimanlipi/style.css">
+   
     <%= stylesheet_link_tag([@direction+'application', @direction+'_styles/ui.all'])%>
     <%= stylesheet_link_tag(*get_pdf_stylesheets) %>
     <%= stylesheet_link_tag  @direction+"_layouts/pdf" %>

@@ -17,7 +17,7 @@
               <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
           </tr>
           <tr>
-              <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
+              <td>SECTION </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
               <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
           </tr>
         </table>
@@ -69,20 +69,20 @@
                           end  
                         %>
 
-                          <% if full_mark.to_f > 0 %>
+                          <% if full_mark.to_f > 0 && main_mark > 0 %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
-                            <% total_subject = total_subject+1 %>
+                            
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
-
+                          <% total_subject = total_subject+1 %>
                       </tr> 
                     <% end %>  
                   <% end %> 
@@ -111,11 +111,13 @@
                           <td class="col-pdf left-td"><%= report['subject_name'] %></td>
                           <td class="col-pdf"><%= report['subject_comment'] %></td>
                         </tr>
+                        <% total_subject = total_subject+1 %>
                       <% end %>
                     <% end %>
                   <% end %>
 
               </table>
+              <% total_comments_grade = 8 %>
               <table id="pdf-table"  width="48%" class="left-table odd-table" cellspacing="0" >
                 <tr class="odd">
                     <td class="col-pdf"><b>COMMENTS</b></td>
@@ -149,7 +151,7 @@
                 </tr>
                 <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
+                      <% if subjects['no_exams_sjws'].to_i == 0  %>
                         <% next %>
                       <% end %>
                       <% wordString_main = "" %>
@@ -177,20 +179,27 @@
                            </tr>
                            <% end %>
                           <% iloop = iloop+1 %> 
+                           <% total_comments_grade = total_comments_grade+1 %>
                         <% end %> 
                       
                     <% end %>
                   <% end %>
               </table>
-              
-              <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
-                  <tr class="even">
-                      <td class="width-20 align-left">Class Teacher</td>
-                      <td class="width-30"></td>
-                      <td class="width-20 align-left">Teacher-in-charge</td>
-                      <td class="width-30"></td>
-                  </tr>
-                  
+              <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
+                <tr class="even">
+                    <td class="small-height"><b>Class Teacher</b></td>
+                </tr> 
+                <tr class="even">
+                   <td></td>
+                </tr> 
+              </table>
+              <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
+                <tr class="even">
+                    <td class="small-height"><b>Teacher-in-charge</b></td>
+                </tr> 
+                <tr class="even">
+                   <td></td>
+                </tr> 
               </table>
 
               
@@ -203,14 +212,22 @@
   </div>
 
 <% end %>
+<% 
+  padding = (1000-(total_subject.to_i*25))/(total_subject.to_f*2) 
+  padding = padding.round
+
+  padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
+  padding_comments = padding_comments.round
+  
+%>
 <style>
     .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf, .sis-final #grouped_exam_report table.extra_padding tr.even td.col-pdf
     {
-       padding: 28px 10px !important;
+       padding: <%= padding %>px 10px !important;
     }
     .sis-final #grouped_exam_report table.odd-table tr.odd td.col-pdf, .sis-final #grouped_exam_report table.odd-table tr.even td.col-pdf
     {
-       padding: 28px 10px !important;
+       padding: <%= padding_comments %>px 10px !important;
     }
     .left-td
     {
@@ -239,6 +256,10 @@
     .sis-final #grouped_exam_report table.signature tr td
     {
        height: 70px;
+    }
+    .sis-final #grouped_exam_report table.signature tr td.small-height
+    {
+       height: 30px;
     }
 
 </style>    

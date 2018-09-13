@@ -29,8 +29,9 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                       <td class="col-pdf"><b>MARKS</b></td>
+                      <td class="col-pdf"><b>MARKS</b></td>
                       <td class="col-pdf"><b>GRADES</b></td>
+                      
                   </tr>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
@@ -61,31 +62,35 @@
 
 
                           <% 
-                          
+                          show_marks = 0
                           if total_mark.to_f>0 and full_mark.to_f>0
                             main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            show_marks = total_mark.to_f/2
                           else
                             main_mark = 0
                           end  
+                          
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><b><%= main_mark.round() %></b></td>
+                            
+                            <td class="col-pdf"><b><%= show_marks.round() %></b></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
-                            <% total_subject = total_subject+1 %>
+                            
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                              <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
-
-                      </tr> 
+                          
+                      </tr>
+                      <% total_subject = total_subject+1 %>
                     <% end %>  
                   <% end %>  
                   <%  
@@ -107,7 +112,7 @@
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
                     <%  if @all_subjects.include?(report['id'].to_i) %>
-                     
+                         <% total_subject = total_subject+1 %>
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
@@ -119,42 +124,12 @@
                   <% end %>
 
               </table>
-              <table id="pdf-table"  width="48%" class="left-table odd-table" cellspacing="0" >
-                <tr class="odd">
-                    <td class="col-pdf"><b>COMMENTS</b></td>
-                    <td class="col-pdf"><b>GRADES</b></td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Excellent</td>
-                  <td class="col-pdf">A</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Very Good</td>
-                  <td class="col-pdf">B+</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Good</td>
-                  <td class="col-pdf">B</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Satisfactory</td>
-                  <td class="col-pdf">C</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Needs Improvement</td>
-                  <td class="col-pdf">NI</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Not Satisfactory</td>
-                  <td class="col-pdf">U</td>
-                </tr>
-                <tr class="even">
-                  <td class="col-pdf left-td">Regular/Irregular</td>
-                  <td class="col-pdf">R/IR</td>
-                </tr>
-                <tr class="page-break-grade">
-                  <td colspan="2"></td>
-                </tr>
+              <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+              <% if @grading_levels.blank? %>
+              <% @grading_levels = GradingLevel.default %>
+              <% end %>
+              <% total_comments_grade = 3 %>
+              <table id="pdf-table"  width="48%" class="left-table odd-table comments-table" cellspacing="0" >
                 <tr class="even">
                     <td colspan="2"><b>GENERAL PERFORMANCE</b></td>
                 </tr>
@@ -178,6 +153,7 @@
                         <% subject_groups.each do |group_name| %>
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                             <tr class="odd">
+                                
                                <td class="col-pdf align-left"><%= group_name.name %></td>
                                <td class="col-pdf"><%=  wordString[iloop] %></td>
                            </tr>
@@ -188,20 +164,108 @@
                            </tr>
                            <% end %>
                           <% iloop = iloop+1 %> 
+                          <% total_comments_grade = total_comments_grade+1 %>
                         <% end %> 
                       
                     <% end %>
                   <% end %>
-              </table>
-              
-              <table id="pdf-table"  width="100%" class="left-table even-table signature" cellspacing="0" >
+                <tr class="page-break-grade">
+                  <td colspan="2"></td>
+                </tr>
+                <tr class="odd">
+                    <td class="col-pdf"><b>COMMENTS</b></td>
+                    <td class="col-pdf"><b>GRADES</b></td>
+                </tr>
+                
                   <tr class="even">
-                      <td class="width-20 align-left">Class Teacher</td>
-                      <td class="width-30"></td>
-                      <td class="width-20 align-left">Teacher-in-charge</td>
-                      <td class="width-30"></td>
+                    <td class="col-pdf left-td">Excellent</td>
+                    <td class="col-pdf">A+</td>
                   </tr>
+                  <tr class="even">
+                    <td class="col-pdf left-td">Good</td>
+                    <td class="col-pdf">A</td>
+                  </tr>
+                  <tr class="even">
+                    <td class="col-pdf left-td">Satisfactory</td>
+                    <td class="col-pdf">B</td>
+                  </tr>
+                  <tr class="even">
+                    <td class="col-pdf left-td">Needs Improvement</td>
+                    <td class="col-pdf">C</td>
+                  </tr>
+                  <tr class="even">
+                    <td class="col-pdf left-td">Causing Concern</td>
+                    <td class="col-pdf">D</td>
+                  </tr>
+                  <% total_comments_grade = total_comments_grade+5 %>
                   
+                  <% if @grading_levels.blank? %>
+                    <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                    <% if @grading_levels.blank? %>
+                      <% @grading_levels = GradingLevel.default %>
+                    <% end %>
+                  <% end %>
+                  <%  unless @grading_levels.empty? %>
+                  <tr class="page-break-grade">
+                    <td colspan="2"></td>
+                  </tr>
+                  <tr class="even">
+                    <td colspan="2"><b>GRADING LEVEL</b></td>
+                  </tr>
+                  <tr class="even">
+                      <td>Marks</td>
+                      <td>Grade</td>  
+                  </tr> 
+                  <% total_comments_grade = total_comments_grade+3 %>
+                  <% prev_score = 0 %>
+                  <% @grading_levels.each_with_index do |grade,index| %>
+                    <% total_comments_grade = total_comments_grade+1 %>
+                     <tr class="odd">
+                    <td>
+                        <% if grade.max_score.nil? %> 
+                          <% if grade.min_score.to_i == 0 %>
+                            <&nbsp;<%= '%i%' % prev_score %>
+                          <% else %>
+                              <%= '%i%' % grade.min_score %> 
+                          <% end %>
+                        <% else %> 
+                          <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>
+                        <% end %>
+                        <%  prev_score = grade.min_score %>
+                    </td>
+                    <td><%= grade.name %></td>
+                      </tr> 
+                  <% end %> 
+                  
+                  <% end %>
+                
+               
+                
+              </table>
+              <% total_subject = total_subject+1 %>
+              <% 
+                padding = (1100-(total_subject.to_i*25))/(total_subject.to_f*2) 
+                padding = padding.round
+
+                padding_comments = (1100-4-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)
+                padding_comments = padding_comments.round
+              %>
+              
+              <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
+                <tr class="even">
+                    <td class="small-height"><b>Signature of Class Teacher</b></td>
+                </tr> 
+                <tr class="even">
+                   <td></td>
+                </tr> 
+              </table>
+              <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
+                <tr class="even">
+                    <td class="small-height"><b>Signature of Parent</b></td>
+                </tr> 
+                <tr class="even">
+                   <td></td>
+                </tr> 
               </table>
 
               
@@ -214,10 +278,17 @@
   </div>
 
 <% end %>
+
+
 <style>
+    
     .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf
     {
-       padding: 35px 10px !important;
+       padding: <%= padding %>px 10px !important;
+    }
+    .sis-final #grouped_exam_report table.comments-table tr td
+    {
+        padding: <%= padding_comments %>px 10px !important;
     }
     .left-td
     {
@@ -246,6 +317,12 @@
     .sis-final #grouped_exam_report table.signature tr td
     {
        height: 70px;
+    }
+    
+    
+    .sis-final #grouped_exam_report table.signature tr td.small-height
+    {
+       height: 30px;
     }
 
 </style>    

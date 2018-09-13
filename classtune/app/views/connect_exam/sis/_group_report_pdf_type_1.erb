@@ -19,7 +19,7 @@
                     <td class="col-pdf no-warp  align-left"><b><%= "DEVELOPMENT CHECKLIST" %></b></td>
                     <td class="col-pdf no-warp"><b><%= "GRADE" %></b></td>
                   </tr>
-                  <% if @batch.course.course_name.upcase == "JPG" %>
+                  <% if @batch.course.course_name.upcase == "JPG" or @batch.course.course_name.upcase == "JUNIOR PLAYGROUP" %>
                   
                     
                       <tr class="odd"><td class="col-pdf align-left"><b>NAME : </b><%= @student.full_name %></td><td class="col-pdf align-left" rowspan="3">

@@ -441,7 +441,7 @@ class MarksController < ApplicationController
               end
               k = k+1
             elsif school_id == 348
-              if exam_connect.result_type != 3 and exam_connect.result_type != 5 
+              if exam_connect.result_type == 1 or exam_connect.result_type == 2  or exam_connect.result_type == 7 
                 unless c_exam_array.include?(exam_connect.id.to_i)
                   data[k] = []
                   data[k][0] = exam_connect_batch.to_s
@@ -455,7 +455,7 @@ class MarksController < ApplicationController
                 if exam.no_exams_sis.to_i == 0
                   data[k] = []
                   data[k][0] = exam_connect_batch.to_s
-                  data[k][1] = exam_connect.name.to_s
+                  data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                   data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
                   data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}' target='_blank'>REPORT CARD</a>"
                   k = k+1

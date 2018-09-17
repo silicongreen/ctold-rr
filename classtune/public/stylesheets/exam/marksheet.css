@@ -116,10 +116,27 @@ tr.odd{
     border-bottom: 0;
 }
 
+
 .odd td{
     padding: 8px 8px 8px 8px;
     border: 1px solid #000000;
     border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+.even td:last-child{
+
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+}
+.odd td:last-child{
+
+    padding: 8px 8px 8px 8px;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
     border-top: 0px solid #fff;
     border-bottom: 0;
 }

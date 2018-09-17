@@ -135,7 +135,7 @@
                  
                 <% @discount_without_vat = 0 %>
                 <% @vat_discount = 0 %>
-                <% unless @total_discount == 0 %>
+                <% if @total_discount != 0 && !@discounts.blank? %>
                  
 
                   <% @discounts.each do |d| %>

@@ -140,8 +140,8 @@
                   <% @onetime_discounts.each do |d| %>
                     <tr class="<%= cycle("odd","even") %>">
                       <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
-                      <td class="col-2"><%= discount_text %></td>
-                      <td class="col-6">
+                      <td class="name-td"  colspan="2"><%= discount_text %></td>
+                      <td class="mark-td">
                         <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
                           <%= precision_label(@onetime_discounts_amount[d.id]) %>
                         <% else %>

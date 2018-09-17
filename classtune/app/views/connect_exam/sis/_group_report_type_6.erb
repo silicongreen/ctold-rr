@@ -50,14 +50,14 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
                             
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
                           <% total_subject = total_subject+1 %>
                       </tr> 

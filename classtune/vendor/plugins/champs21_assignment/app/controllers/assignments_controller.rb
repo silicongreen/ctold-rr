@@ -222,11 +222,23 @@ class AssignmentsController < ApplicationController
   
   def index
     @current_user = current_user
-    if    @current_user.employee?
-      @subjects = current_user.employee_record.subjects.active
+    if @current_user.employee?
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
       @subjects.reject! {|s| !s.batch.is_active}
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.sort_by{|s| s.batch.course.code.to_i}
-    elsif    @current_user.student?
+    elsif @current_user.student?
       student=current_user.student_record
       
       @batch = student.batch      
@@ -430,16 +442,47 @@ class AssignmentsController < ApplicationController
       publish_condition = " and is_published='#{@is_published}'";
     end
     
-    if !@subject.nil? and !@due_date.blank? 
-      @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
-      @assignments = Assignment.paginate :conditions=>"subject_id=#{@subject.id} and DATE(duedate) = '#{@due_date}' #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
-    elsif @subject.nil? and !@due_date.blank?
-      @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
-      @assignments = Assignment.paginate :conditions=>"DATE(duedate) = '#{@due_date}' #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
-    elsif !@subject.nil? and @due_date.blank?
-      @assignments = Assignment.paginate :conditions=>"subject_id=#{@subject.id} #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
+    if current_user.employee_record.all_access.to_i == 1
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
+      @subjects.reject! {|s| !s.batch.is_active}
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
+      sub_id = @subjects.map(&:id)
+      
+      if !@subject.nil? and !@due_date.blank? 
+        @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
+        @assignments = Assignment.paginate :conditions=>["subject_id=#{@subject.id} and subject_id in (?) and DATE(duedate) = '#{@due_date}' #{publish_condition}",sub_id],:order=>"duedate desc", :page=>params[:page]
+      elsif @subject.nil? and !@due_date.blank?
+        @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
+        @assignments = Assignment.paginate :conditions=>["DATE(duedate) = '#{@due_date}' and subject_id in (?) #{publish_condition}",sub_id],:order=>"duedate desc", :page=>params[:page]
+      elsif !@subject.nil? and @due_date.blank?
+        @assignments = Assignment.paginate :conditions=>["subject_id=#{@subject.id} and subject_id in (?) #{publish_condition}",sub_id],:order=>"duedate desc", :page=>params[:page]
+      else
+        @assignments = Assignment.paginate :conditions=>["subject_id in (?) #{publish_condition} ",sub_id],:order=>"duedate desc", :page=>params[:page]
+      end
     else
-      @assignments = Assignment.paginate :conditions=>"employee_id=#{employee_id} #{publish_condition} ",:order=>"duedate desc", :page=>params[:page]
+      if !@subject.nil? and !@due_date.blank? 
+        @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
+        @assignments = Assignment.paginate :conditions=>"subject_id=#{@subject.id} and DATE(duedate) = '#{@due_date}' #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
+      elsif @subject.nil? and !@due_date.blank?
+        @due_date = @due_date.to_datetime.strftime("%Y-%m-%d")
+        @assignments = Assignment.paginate :conditions=>"DATE(duedate) = '#{@due_date}' #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
+      elsif !@subject.nil? and @due_date.blank?
+        @assignments = Assignment.paginate :conditions=>"subject_id=#{@subject.id} #{publish_condition} and employee_id=#{employee_id}",:order=>"duedate desc", :page=>params[:page]
+      else
+        @assignments = Assignment.paginate :conditions=>"employee_id=#{employee_id} #{publish_condition} ",:order=>"duedate desc", :page=>params[:page]
+      end
     end
     
     render(:update) do |page|
@@ -503,10 +546,20 @@ class AssignmentsController < ApplicationController
   def new
            
     if current_user.employee?
-      @subjects = current_user.employee_record.subjects
-      
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
       @subjects.reject! {|s| !s.batch.is_active}
-      
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.sort_by{|s| s.batch.course.code.to_i}
       
       @assignment= Assignment.new

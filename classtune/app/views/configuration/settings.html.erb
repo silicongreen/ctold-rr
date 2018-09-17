@@ -189,6 +189,29 @@
                   <% end %>
               </div>
           </div>
+          
+          <div class="label-field-pair">
+              <label for="all_notification_admin">Admin get all notification?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:all_notification_admin] == '1' %>
+                    <%= check_box :configuration, :all_notification_admin, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :all_notification_admin, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
+              <label for="employee_all_access">Employee All Access?</label>
+              <div class="checkbox-input-bg">
+                  <% if @config[:employee_all_access] == '1' %>
+                    <%= check_box :configuration, :employee_all_access, :checked => true %>
+                  <% else %>
+                    <%= check_box :configuration, :employee_all_access, :checked => false %>
+                  <% end %>
+              </div>
+          </div>
+          
 
           <% if Configuration.available_modules.include?('HR') %>
             <div class="label-field-pair">

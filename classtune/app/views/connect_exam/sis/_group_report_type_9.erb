@@ -167,7 +167,7 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
-                            <td class="col-pdf"><b>N/A</b></td>
+                            <td class="col-pdf"><b>-</b></td>
                           <% end %> 
                           <% else %>
                             <% if @batch.course.course_name == "IV" %>

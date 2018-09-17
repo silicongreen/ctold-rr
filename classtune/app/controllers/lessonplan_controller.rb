@@ -45,8 +45,21 @@ class LessonplanController < ApplicationController
     @current_user = current_user
     @error = false
     if @current_user.employee?
-      @subjects = current_user.employee_record.subjects.active
-      @subjects = @subjects.uniq
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
+      @subjects.reject! {|s| !s.batch.is_active}
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
     end
     
     if request.post? and @lessonplan.save      

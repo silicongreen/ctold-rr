@@ -71,6 +71,14 @@
         <label for="employee_name"><%= "Punch Card Number (If Any)" %></label>
         <div class="text-input-bg"><%= a.text_field :punch_card_number %></div>
       </div>
+      <% @config = Configuration.find_by_config_key('EmployeeAllAccess') %>
+      <% if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) %>
+      <div class="label-field-pair">
+        <label for="emp_all_access">All Access</label>
+        <div class="text-input-bg"><%= select :employee, :all_access, [["No","0"], ["Yes","1"]] %></div>
+      </div>
+      
+      <% end %>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
         <label for="employee_joining_date"><%= t('joining_date') %></label>

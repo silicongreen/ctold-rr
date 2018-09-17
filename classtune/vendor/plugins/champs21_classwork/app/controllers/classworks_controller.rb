@@ -10,8 +10,21 @@ class ClassworksController < ApplicationController
     
     @current_user = current_user
     if    @current_user.employee?
-      @subjects = current_user.employee_record.subjects.active
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.reject! {|s| !s.batch.is_active}
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
     elsif    @current_user.student?
       student=current_user.student_record
       
@@ -126,11 +139,36 @@ class ClassworksController < ApplicationController
       publish_condition = " and is_published='#{@is_published}'";
     end
     
-  
-    if !@subject.nil?
-      @classworks = Classwork.paginate :conditions=>"subject_id=#{@subject.id} #{publish_condition} and employee_id=#{employee_id}",:order=>"created_at desc", :page=>params[:page]
+    if current_user.employee_record.all_access.to_i == 1
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
+      @subjects.reject! {|s| !s.batch.is_active}
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
+      sub_id = @subjects.map(&:id)
+      
+      if !@subject.nil?
+        @classworks = Classwork.paginate :conditions=>["subject_id=#{@subject.id} and subject_id in (?) #{publish_condition} and employee_id=#{employee_id}",sub_id],:order=>"created_at desc", :page=>params[:page]
+      else
+        @classworks = Classwork.paginate :conditions=>["employee_id=#{employee_id} and subject_id in (?) #{publish_condition} ",sub_id],:order=>"created_at desc", :page=>params[:page]
+      end
+      
     else
-      @classworks = Classwork.paginate :conditions=>"employee_id=#{employee_id} #{publish_condition} ",:order=>"created_at desc", :page=>params[:page]
+      if !@subject.nil?
+        @classworks = Classwork.paginate :conditions=>"subject_id=#{@subject.id} #{publish_condition} and employee_id=#{employee_id}",:order=>"created_at desc", :page=>params[:page]
+      else
+        @classworks = Classwork.paginate :conditions=>"employee_id=#{employee_id} #{publish_condition} ",:order=>"created_at desc", :page=>params[:page]
+      end
     end
     
     render(:update) do |page|
@@ -174,9 +212,22 @@ class ClassworksController < ApplicationController
   
   def new
     if current_user.employee?
-      @subjects = current_user.employee_record.subjects
-      
+      emp_record = current_user.employee_record 
+      @subjects = emp_record.subjects.active
       @subjects.reject! {|s| !s.batch.is_active}
+      if emp_record.all_access.to_i == 1
+        batches = @current_user.employee_record.batches
+        batches += @current_user.employee_record.subjects.collect{|b| b.batch}
+        batches = batches.uniq unless batches.empty?
+        unless batches.blank?
+          batches.each do |batch|
+            @subjects += batch.subjects
+          end
+        end
+      end
+      @subjects = @subjects.uniq unless @subjects.empty?
+      @subjects.sort_by{|s| s.batch.course.code.to_i}
+      
       @classwork= Classwork.new
       unless params[:id].nil?
         subject = Subject.find_by_id(params[:id])

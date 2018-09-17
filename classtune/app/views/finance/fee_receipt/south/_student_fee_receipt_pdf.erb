@@ -92,7 +92,7 @@
                 </tr>
                 <% subject_discount = 0 %>
                 <% laboratory_discount = 0 %>
-                <% unless @total_discount == 0 %>
+                <% if @total_discount != 0 && !@discounts.blank? %>
                   <% @discounts.each do |d| %>
                     <% unless d.name.index("Tuition").blank?  %>
                     

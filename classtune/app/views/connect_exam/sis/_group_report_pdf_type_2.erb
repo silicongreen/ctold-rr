@@ -21,11 +21,12 @@
         </table>
       </div>
       
-      <% subjectt_left = 0 %>
-      <% subjectt_right = 0 %>
+      
       <div class ="current_batch" style="margin-left:0px;">
           <div id="grouped_exam_report">
                   <% unless @report_data['report']['subjects'].blank? %>
+                    <% subjectt_left = 0 %>
+                    <% subjectt_right = 0 %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
                     <% total_subject = @report_data['report']['subjects'].count %>

@@ -122,9 +122,9 @@
         <center>
             <div id="pdf-header-south" class="general-header">
                 <% if @batch.course.course_name.upcase.index("PLAYGROUP").nil? and @batch.course.course_name.upcase.index("NURSERY").nil? and @batch.course.course_name.upcase.index("PG").nil? and  @batch.course.course_name.upcase.index("KG").nil? %>
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '40%' %></h4>
+                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/summer.jpg")),:width=> '25%' %></h4>
                 <% else %>
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '40%' %></h4>
+                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/348/tinytots.png")),:width=> '25%' %></h4>
                 <% end %>  
                 <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
             </div>

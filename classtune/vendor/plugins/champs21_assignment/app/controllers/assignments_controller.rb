@@ -238,6 +238,10 @@ class AssignmentsController < ApplicationController
       end
       @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.sort_by{|s| s.batch.course.code.to_i}
+      if current_user.employee_record.all_access.to_i == 1
+        sub_id = @subjects.map(&:id)
+        @assignments = Assignment.paginate :conditions=>["subject_id in (?)",sub_id],:order=>"duedate desc", :page=>params[:page]
+      end
     elsif @current_user.student?
       student=current_user.student_record
       

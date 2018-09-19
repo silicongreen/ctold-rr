@@ -430,10 +430,31 @@
         padding: 0;
         width: 15%;
     }
+    .select2-container
+    {
+      margin-left:10px;
+      width: 200px !important;
+    }
+    .select2-container--open .select2-dropdown--above
+            {
+               margin-left: -10px;
+            }
+            .select2-container--open .select2-dropdown--below
+            {
+                margin-left: -10px;
+            }
           </style>
 
 <% content_for :head do %>
   <%= javascript_include_tag "custom/assignment" %>
 <% end %>
 <%= stylesheet_link_tag 'pagination_and_table' %>
-<%= stylesheet_link_tag 'tadded-header' %>          
+<%= stylesheet_link_tag 'tadded-header' %> 
+          
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq('#assignment_subject').select2();
+  });
+  
+</script>

@@ -95,3 +95,26 @@
   <%= load_redactor_script %>
 </div>
 <%= stylesheet_link_tag 'tadded-header' %>
+
+<style>
+  .select2-container
+  {
+      margin-left:10px;
+      width: 220px !important;
+  }
+  .select2-container--open .select2-dropdown--above
+  {
+      margin-left: -10px;
+  }
+  .select2-container--open .select2-dropdown--below
+  {
+      margin-left: -10px;
+  }
+</style>
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+    jq('#classwork_subject_id').select2();
+  });
+  
+</script>

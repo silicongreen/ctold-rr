@@ -14,7 +14,7 @@ batch_class_section = []
         <option value="" />Select Shift</option>
         <% batch_names.each do |batch| %>
             
-            <option value="<%= batch.gsub(" ", "_") %>" /><%= batch %></option>
+            <option value="<%= batch.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>" /><%= batch %></option>
           
         <% end %>
       </select>
@@ -26,11 +26,11 @@ batch_class_section = []
               <% class_names << batch.course.course_name %>
             <% end %>
         <% end %>
-        <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_") %>_class" />
+        <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_class" />
         <option value="" />Select Class</option>
           <% class_names.each do |class_name| %>
               
-              <option value="<%= batch_names[0].gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>" /><%= class_name %></option>
+              <option value="<%= batch_names[0].gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_<%= class_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>" /><%= class_name %></option>
           <% end %>
         </select>
         <% class_names.each do |class_name| %>
@@ -40,7 +40,7 @@ batch_class_section = []
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>
-          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_<%= class_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_names[0]+" "+class_name+" "+section %>
@@ -64,11 +64,11 @@ batch_class_section = []
                  <% end %>
                <% end %>
            <% end %>
-          <select name="class_id"  class="class_id" style="display:none;" class="" id="<%= batch_name.gsub(" ", "_") %>_class" />
+          <select name="class_id"  class="class_id" style="display:none;" class="" id="<%= batch_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_class" />
             <option value="" />Select Class</option>
             <% class_names.each do |class_name| %>
                 
-                <option value="<%= batch_name.gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>" /><%= class_name %></option>
+                <option value="<%= batch_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_<%= class_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>" /><%= class_name %></option>
             <% end %>
           </select>
       
@@ -79,7 +79,7 @@ batch_class_section = []
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>
-          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_<%= class_name.gsub(" ", "_").gsub("(", "_").gsub(")", "_") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_name+" "+class_name+" "+section %>

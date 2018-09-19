@@ -112,6 +112,8 @@
                 <%= link_to_remote(t('edit_text'),
                 :url => { :controller=>"subjects",:action => 'edit', :id =>subject,:id2=>@elective_group, :from_action => "subjects"},
                 :method => 'get' ) %> 
+              &nbsp;&nbsp;
+              <%= link_to "Grading",:controller=>"subjects",:action => 'grading_level', :subject_id => subject.id  %> 
               <% else %>
                 <% if @batch_only %>
                 <%= link_to_remote(t('edit_text'),
@@ -287,7 +289,8 @@
                 <% if @show_batch_subject %>
                 <%= link_to_remote( t('edit_text'),
                 :url => { :controller=>"subjects",:action => 'edit', :id =>subject,:id2=>@elective_group, :from_action => "subjects"},
-                :method => 'get' ) %> 
+                :method => 'get' ) %> &nbsp;&nbsp;
+                <%= link_to "Grading",:controller=>"subjects",:action => 'grading_level', :subject_id => subject.id  %> 
                 <% else %>
                   <% if @batch_only %>
                    <%= link_to_remote( t('edit_text'),

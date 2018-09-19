@@ -45,6 +45,81 @@ class SubjectsController < ApplicationController
         }
     end
   end
+  
+  def grading_level
+    @subject_id = params[:subject_id]
+    @subject = Subject.find_by_id(@subject_id)
+    unless @subject.blank?
+      @batch = @subject.batch
+      @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject_id,:conditions => ["subject_grading_levels.is_deleted = 0"])
+    end   
+    
+  end
+  def new_grading_level
+    @subject_grading_level = SubjectGradingLevel.new
+    @subject = Subject.find params[:subject_id]
+    @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject.id,:conditions => ["subject_grading_levels.is_deleted = 0"])
+    respond_to do |format|
+      format.js { render :action => 'new_subject_grading_level' }
+    end
+  end
+  def create_grading_level
+    @subject = Subject.find params[:subject_id]
+    @subject_grading_level = SubjectGradingLevel.new(params[:subject_grading_level])
+    @subject_grading_level.subject_id = @subject.id
+    if params[:subject_grading_level][:type_data] == "percentage"
+      @subject_grading_level.max_score = nil
+    end
+    if @subject_grading_level.save
+      @error = false
+      @batch = @subject.batch
+      @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject.id,:conditions => ["subject_grading_levels.is_deleted = 0"])
+      flash[:notice] = "Subject Grading Level Created Succesfully"
+    else
+      @error = true
+    end 
+    respond_to do |format|
+      format.js { render :action => 'create_subject_grading_level' }
+    end
+    
+  end
+  
+  def edit_grading_level
+    @subject_grading_level = SubjectGradingLevel.find params[:id]
+    @subject = @subject_grading_level.subject
+    @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject.id,:conditions => ["subject_grading_levels.is_deleted = 0"])
+    respond_to do |format|
+      format.js { render :action => 'edit_subject_grading_level' }
+    end
+  end
+  def update_grading_level
+    @subject = Subject.find params[:subject_id]
+    @subject_grading_level = SubjectGradingLevel.find params[:id]
+    if params[:subject_grading_level][:type_data] == "percentage"
+      params[:subject_grading_level][:max_score] = nil
+    end
+    @subject_grading_level.update_attributes(params[:subject_grading_level])
+    @error = false
+    @batch = @subject.batch
+    @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject.id,:conditions => ["subject_grading_levels.is_deleted = 0"])
+    flash[:notice] = "Subject Grading Level Saved Succesfully"
+     
+    respond_to do |format|
+      format.js { render :action => 'update_subject_grading_level' }
+    end
+    
+  end
+  def delete_grading_level
+    @subject_grading_level = SubjectGradingLevel.find params[:id]
+    @subject = @subject_grading_level.subject
+    @subject_grading_levels = SubjectGradingLevel.find_all_by_subject_id(@subject.id)
+    @subject_grading_level.destroy
+    flash[:notice] = "Subject Grading Level Deleted Succesfully"
+  end
+  
+  
+  
+  
   def subgroups
     @subject_id = params[:subject_id]
     @subject = Subject.find_by_id(@subject_id)

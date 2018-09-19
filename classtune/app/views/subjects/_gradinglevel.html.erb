@@ -1,0 +1,39 @@
+
+  <h4>Grading Level for <%= @batch.full_name %>, Subject: <%= @subject.name  %>  </h4>    
+  <div class="add_sub"  style="margin-left:0px; width:100%">
+      <%= link_to_remote "Add Grading Level", :url => { :action => 'new_grading_level', :subject_id => @subject.id} %>
+  </div> 
+  <% unless @subject_grading_levels.blank? %>
+  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+    <tr class="tr-head">
+      <td><%= t('name') %></td>
+      <td><%= t('number') %></td>
+      <td><%= t('grade_point') %></td>
+      <td>Description</td>
+      <td></td> 
+    </tr>
+    <% @subject_grading_levels.each do |grade| %>
+      <tr id="grading-level-<%= grade.id %>" class="tr-<%= cycle('odd', 'even') %>">
+        <td class="col-2"><%= grade.name %></td>
+        <td class="col-2">
+          <% if grade.max_score.nil? %>  
+          <%= '%i%' % grade.min_score %>
+          <% else %>  
+          <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+          <% end %>  
+        </td>
+        <td class="col-2"><% unless grade.credit_points.nil? %><%= '%.2f' % grade.credit_points %><% end %></td>
+        <td class="col-2"><%= grade.description.present? ? grade.description : "-" %></td>
+        <td class="col-1"><small>
+             <%= link_to_remote(t('edit_text'),
+              :url => { :controller=>"subjects",:action => 'edit_grading_level', :id =>grade.id},
+              :method => 'get' ) %> &nbsp;&nbsp;&nbsp;
+             <%= link_to_remote(t('delete_text'),
+              :url => { :controller=>"subjects",:action => 'delete_grading_level', :id =>grade.id},
+              :method => 'delete',
+              :confirm => t('delete_confirm_msg'),
+              :update => "grading-level-#{grade.id}") %></small></td>
+      </tr>
+    <% end %>
+  </table>
+  <% end %>

@@ -120,7 +120,7 @@
            <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
            <td class="name"><%= sprintf( "%0.02f", main_mark) %></td>
 
-           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+           <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
             <td class="col-2"><b><%= grade.name %></b></td>
           <% else %>

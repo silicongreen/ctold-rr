@@ -394,7 +394,23 @@ class Subjects extends CActiveRecord
         return $subject_array;
     }
     
-    
+    public function getAllSubByBatchId($batch_ids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition("t.batch_id",$batch_ids);
+        $criteria->compare('t.is_deleted', 0);
+        $sub = $this->findAll($criteria);
+        $sub_ids = array();
+        if($sub)
+        {
+            foreach($sub as $value)
+            {
+                $sub_ids[] = $value->id;
+            }
+        }
+        return $sub_ids;
+        
+    }
     
     public function getTotalMarkPercent($id)
     {

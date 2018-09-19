@@ -56,6 +56,7 @@ authorization do
       :download_attachment,
       :edit,
       :index,
+      :show,
       :new,
       :subject_classworks,
       :subjects_students_list,
@@ -65,11 +66,7 @@ authorization do
       :to=>[
       :download_attachment,
       :evaluate_classwork,
-      :show]
-      has_permission_on :classworks, :to=>:show, :join_by=> :or do
-       if_attribute :employee_id => is {user.employee_record.id if user.employee and user.employee_record}
-     end
-   
+      :show]  
   end
   
   role :admin do

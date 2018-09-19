@@ -476,7 +476,8 @@ class Assignments extends CActiveRecord
         
         public function getAssignmentTotalTeacher($employee_id,$is_published,$subject_id=NULL,$duedate=NULL)
         {
-            
+            $emp = new Employees();
+            $emp_details = $emp->findByPk($employee_id);
             $criteria = new CDbCriteria();
             $criteria->select = 'count(t.id) as total';
             $criteria->compare('t.is_published', $is_published);
@@ -488,8 +489,22 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('DATE(t.duedate)', $duedate);
             }
-            
-            if(!Yii::app()->user->isAdmin)
+            if( $emp_details->all_access == 1 && !Yii::app()->user->isAdmin)
+            {
+                $batch_tutor = new BatchTutors();
+                $all_batchs = $batch_tutor->get_batch_id();
+                
+                if($all_batchs)
+                {
+                    $criteria->addInCondition('t.subject_id', $all_batchs);
+                }
+                else 
+                {
+                    $criteria->compare('t.employee_id', $employee_id);
+                }
+                        
+            }
+            else if(!Yii::app()->user->isAdmin)
             {
                 $criteria->compare('t.employee_id', $employee_id);
             }
@@ -514,6 +529,8 @@ class Assignments extends CActiveRecord
         public function getAssignmentTeacher($employee_id,$page=1,$page_size=10,$is_published,$id=0,$subject_id=NULL,$duedate=NULL)
         {
             
+            $emp = new Employees();
+            $emp_details = $emp->findByPk($employee_id);
             
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
@@ -522,8 +539,22 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('t.is_published', $is_published);
             }
-            
-            if(!Yii::app()->user->isAdmin)
+            if( $emp_details->all_access == 1 && !Yii::app()->user->isAdmin )
+            {
+                
+                $batch_tutor = new BatchTutors();
+                $all_batchs = $batch_tutor->get_batch_id();
+                if($all_batchs)
+                {
+                   $criteria->addInCondition('t.subject_id', $all_batchs);
+                }
+                else 
+                {
+                    $criteria->compare('t.employee_id', $employee_id);
+                }
+                        
+            }
+            else if(!Yii::app()->user->isAdmin)
             {
                 $criteria->compare('t.employee_id', $employee_id);
             }
@@ -580,6 +611,7 @@ class Assignments extends CActiveRecord
             );
             
             $data = $this->findAll($criteria);
+             
             $response_array = array();
             if($data != NULL)
             foreach($data as $value)

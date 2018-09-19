@@ -86,7 +86,7 @@
     </div>
 
 
-    <% if @classwork.employee.present? and (@current_user.employee_record == @classwork.employee || @current_user.admin?)%>
+    <% if @classwork.employee.present? and (@current_user.employee_record == @classwork.employee || @current_user.admin? || @current_user.employee_record.all_access.to_i == 1)%>
       <div id="employee-options" >
         <div id="action_buttons">
           <div>

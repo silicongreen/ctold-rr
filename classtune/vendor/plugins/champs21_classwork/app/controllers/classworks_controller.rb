@@ -156,11 +156,10 @@ class ClassworksController < ApplicationController
       @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.sort_by{|s| s.batch.course.code.to_i}
       sub_id = @subjects.map(&:id)
-      
       if !@subject.nil?
-        @classworks = Classwork.paginate :conditions=>["subject_id=#{@subject.id} and subject_id in (?) #{publish_condition} and employee_id=#{employee_id}",sub_id],:order=>"created_at desc", :page=>params[:page]
+        @classworks = Classwork.paginate :conditions=>["subject_id=#{@subject.id} and subject_id in (?) #{publish_condition}",sub_id],:order=>"created_at desc", :page=>params[:page]
       else
-        @classworks = Classwork.paginate :conditions=>["employee_id=#{employee_id} and subject_id in (?) #{publish_condition} ",sub_id],:order=>"created_at desc", :page=>params[:page]
+        @classworks = Classwork.paginate :conditions=>["subject_id in (?) #{publish_condition} ",sub_id],:order=>"created_at desc", :page=>params[:page]
       end
       
     else

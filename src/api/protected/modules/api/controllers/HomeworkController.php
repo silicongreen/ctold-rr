@@ -1060,6 +1060,7 @@ class HomeworkController extends Controller
             {
                 $is_published = 0;
             }
+            
             $homework_data = $homework->getAssignmentTeacher($employee_id, $page_number, $page_size, $is_published, 0, $subject_id, $duedate);
             if ($homework_data)
             {

@@ -20,8 +20,7 @@
               <%
                   session = ""
                   shift = ""
-                  batch = @batch
-                  batch_explode = batch.split("(")
+                  batch_explode = @batch.name.split("(")
                   unless batch_explode[1].blank?
                     session = batch_explode[1].gsub(")","")
                   end

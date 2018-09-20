@@ -12,12 +12,14 @@
       <div class="student_information">
         <table class="std_info_table" width="100%" cellspacing="0">
           <tr>
-              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
-              <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
+              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;<%= @student.full_name %></td>
+              <td>ROLL </td><td colspan="3" class="font-dark">:&nbsp;<%= @student.class_roll_no %></td>
+              
           </tr>
           <tr>
-              <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
-              <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+              <td>CLASS </td><td colspan="1" class="font-dark">:&nbsp;<%= @batch.course.course_name %></td>
+              <td>SECTION</td><td colspan="2" class="font-dark">:&nbsp;<%= @batch.course.section_name %></td>
+              <td>DATE </td><td colspan="2" class="font-dark">:&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
           </tr>
         </table>
       </div>

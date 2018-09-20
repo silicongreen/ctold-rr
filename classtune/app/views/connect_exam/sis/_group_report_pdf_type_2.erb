@@ -4,19 +4,34 @@
           <center>
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center" class="height-50">&nbsp;</h4>
-                <h2 align="center"><%= @batch.course.course_name %>: <%= @connect_exam_obj.name %></h2>
+                <h2 align="center"><%= @connect_exam_obj.name %></h2>
             </div>
           </center>
       </div>
       <div class="student_information">
         <table class="std_info_table" width="100%" cellspacing="0">
           <tr>
-              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
-              <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
+              <td colspan="5">NAME&nbsp;&nbsp;:&nbsp;&nbsp;<%= @student.full_name %></td>
+              <td colspan="1" class="right-td">DATE&nbsp;&nbsp;:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+              
           </tr>
           <tr>
-              <td>DATE OF BIRTH </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
-              <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+              <td colspan="3">CLASS&nbsp;&nbsp;:&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+              <%
+                  session = ""
+                  shift = ""
+                  batch_explode = @batch.split("(")
+                  unless batch_explode[1].blank?
+                    session = batch_explode[1].gsub(")","")
+                  end
+                  unless batch_explode[0].blank?
+                    shift_explode = batch_explode[0].split(" ")
+                    shift = shift_explode[0]
+                  end
+                  
+              %>
+              <td colspan="2" class="center-td">SESSION&nbsp;&nbsp;:&nbsp;&nbsp;<%= session %></td>
+              <td colspan="1" class="right-td">SHIFT&nbsp;&nbsp;:&nbsp;&nbsp;<%= shift %></td>
           </tr>
         </table>
       </div>

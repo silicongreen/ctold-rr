@@ -13,12 +13,27 @@
       <div class="student_information">
         <table class="std_info_table" width="100%" cellspacing="0">
           <tr>
-              <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
-              <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
+              <td colspan="5">NAME&nbsp;&nbsp;:&nbsp;&nbsp;<%= @student.full_name %></td>
+              <td colspan="1" class="right-td">CLASS&nbsp;&nbsp;:&nbsp;&nbsp;<%= @batch.course.course_name %></td>
+              
           </tr>
           <tr>
-              <td>SECTION </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
-              <td>DATE </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+              <td colspan="3">SECTION&nbsp;&nbsp;:&nbsp;&nbsp;<%= @batch.course.section_name %></td>
+              <%
+                  session = ""
+                  shift = ""
+                  batch_explode = @batch.split("(")
+                  unless batch_explode[1].blank?
+                    session = batch_explode[1].gsub(")","")
+                  end
+                  unless batch_explode[0].blank?
+                    shift_explode = batch_explode[0].split(" ")
+                    shift = shift_explode[0]
+                  end
+                  
+              %>
+              <td colspan="2" class="center-td">SESSION&nbsp;&nbsp;:&nbsp;&nbsp;<%= session %></td>
+              <td colspan="1" class="right-td">DATE&nbsp;&nbsp;:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
           </tr>
         </table>
       </div>

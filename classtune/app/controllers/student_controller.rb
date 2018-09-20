@@ -279,7 +279,7 @@ class StudentController < ApplicationController
     end 
     
     batches = batches_all.map{|b| b.course_id}
-    @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = 0", batches], :group => "course_name", :select => "course_name,no_call", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
     
     #    @courses = []
     #    unless batch_name.blank?

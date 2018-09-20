@@ -206,7 +206,7 @@ class EmployeesSubjects extends CActiveRecord
                             'joinType' => "INNER JOIN",
                             'with' => array(
                                 "courseDetails" => array(
-                                    "select" => "courseDetails.id,courseDetails.course_name,courseDetails.section_name",
+                                    "select" => "courseDetails.id,courseDetails.course_name,courseDetails.section_name,courseDetails.no_call",
                                     'joinType' => "INNER JOIN",
                                 )
                             )
@@ -228,6 +228,7 @@ class EmployeesSubjects extends CActiveRecord
             {
                
                     $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
+                    $subject[$i]['no_call'] = $value['subject']['Subjectbatch']['courseDetails']->no_call;
                     $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
                     $i++; 
            

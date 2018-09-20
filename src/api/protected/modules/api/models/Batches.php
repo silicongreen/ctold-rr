@@ -55,7 +55,7 @@ class Batches extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'courseDetails' => array(self::BELONGS_TO, 'Courses', 'course_id',
-                        'select' => 'courseDetails.id, courseDetails.course_name, courseDetails.code, courseDetails.section_name',
+                        'select' => 'courseDetails.id, courseDetails.course_name, courseDetails.code, courseDetails.section_name, courseDetails.no_call',
                         'joinType' => 'INNER JOIN',
                     ),
 //                    'eventBatchCourse' => array(self::BELONGS_TO, 'Courses', 'course_id',

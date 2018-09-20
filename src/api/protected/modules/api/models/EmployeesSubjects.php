@@ -228,7 +228,7 @@ class EmployeesSubjects extends CActiveRecord
             {
                
                     $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
-                    $subject[$i]['no_call'] = (int)$value['subject']['Subjectbatch']['courseDetails']->id;
+                    $subject[$i]['no_call'] = (int)$value['subject']['Subjectbatch']['courseDetails']->no_call;
                     $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
                     $i++; 
            

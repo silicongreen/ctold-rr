@@ -217,6 +217,64 @@
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                           <option value="4" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
                                                       </select>
+                                                    <% elsif @exam_connect.result_type > 2 && @exam_connect.result_type < 7 %>
+                                                      <% @batch = @exam_subject.batch %>
+                                                      <% if @exam_connect.result_type == 3 %>
+                                                          <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                            <option value="NA" >Select</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Excellent</option>
+                                                            <option value="B+" <% if exam_group_remarks.to_s == 'B+' %> selected="selected" <% end %> >Very Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Good</option>
+                                                            <option value="NI" <% if exam_group_remarks.to_s == 'NI' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="R/IR" <% if exam_group_remarks.to_s == 'R/IR' %> selected="selected" <% end %>  >Regular/Irregular</option>
+                                                          </select>
+                                                      <% elsif @exam_connect.result_type == 5 or @exam_connect.result_type == 6 %>
+                                                        <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                            <option value="NA" >Select</option>
+                                                            <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Satisfactory</option>
+                                                            <option value="C" <% if exam_group_remarks.to_s == 'C' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="D" <% if exam_group_remarks.to_s == 'D' %> selected="selected" <% end %>  >Causing Concern</option>
+                                                          </select>
+                                                        
+                                                      
+                                                      <% elsif @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "STD-I" or @batch.course.course_name == "STD-II" %>
+                                                          <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                            <option value="NA" >Select</option>
+                                                            <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Very Good</option>
+                                                            <option value="B+" <% if exam_group_remarks.to_s == 'B+' %> selected="selected" <% end %>  >Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Satisfactory</option>
+                                                            <option value="NI" <% if exam_group_remarks.to_s == 'NI' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="R/IR" <% if exam_group_remarks.to_s == 'R/IR' %> selected="selected" <% end %>  >Regular/Irregular</option>
+                                                          </select>
+                                                      <% elsif @batch.course.course_name == "III" or @batch.course.course_name == "IV" or @batch.course.course_name == "STD-III" or @batch.course.course_name == "STD-IV" %>
+                                                          <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                            <option value="NA" >Select</option>
+                                                            <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Very Good</option>
+                                                            <option value="B+" <% if exam_group_remarks.to_s == 'B+' %> selected="selected" <% end %>  >Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Satisfactory</option>
+                                                            <option value="NI" <% if exam_group_remarks.to_s == 'NI' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="U" <% if exam_group_remarks.to_s == 'U' %> selected="selected" <% end %>  >Needs Not Satisfactory</option>
+                                                            <option value="R/IR" <% if exam_group_remarks.to_s == 'R/IR' %> selected="selected" <% end %>  >Regular/Irregular</option>
+                                                          </select>
+                                                      <% elsif @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-V" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
+                                                          <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                            <option value="NA" >Select</option>
+                                                            <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Very Good</option>
+                                                            <option value="B+" <% if exam_group_remarks.to_s == 'B+' %> selected="selected" <% end %>  >Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Fair</option>
+                                                            <option value="C" <% if exam_group_remarks.to_s == 'C' %> selected="selected" <% end %>  >Satisfactory</option>
+                                                            <option value="D" <% if exam_group_remarks.to_s == 'D' %> selected="selected" <% end %>  >Unsatisfactory</option>
+                                                            <option value="NI" <% if exam_group_remarks.to_s == 'NI' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="R/IR" <% if exam_group_remarks.to_s == 'R/IR' %> selected="selected" <% end %>  >Regular/Irregular</option>
+                                                          </select>
+                                                        
+                                                      <% end %>
+                                                 
                                                     <% else %>
 
                                                       <%= text_field_tag "exam_score[#{exam.id}][#{student.id}]][remarks][]", exam_group_remarks, :size => '10' %>

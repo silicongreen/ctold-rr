@@ -71,8 +71,6 @@
                                   <table width="100%" style="height: 63px;">
                                       <tr>
                                           <td colspan="100" style="text-align:center; border:1px solid black;"><b><%= exam.exam_group.name %></b>
-
-
                                           </td></tr><tr>
                                           <% subject_groups.each do |group_name| %>
 
@@ -202,7 +200,7 @@
                                                         <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                                       <% end %>
                                                     <% end %>
-                                                    <% if @exam_connect.result_type == 4 %>
+                                                    <% if @exam_connect.result_type == 8 %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>
                                                           <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
@@ -210,7 +208,7 @@
                                                           <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Good</option>
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                       </select>
-                                                    <% elsif @exam_connect.result_type == 6 %>
+                                                    <% elsif @exam_connect.result_type == 9 %>
                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>
                                                           <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>

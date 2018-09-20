@@ -14,7 +14,7 @@ batch_class_section = []
         <option value="" />Select Shift</option>
         <% batch_names.each do |batch| %>
             
-            <option value="<%= batch.gsub(" ", "_") %>" /><%= batch %></option>
+            <option value="<%= batch.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= batch %></option>
           
         <% end %>
       </select>
@@ -26,11 +26,11 @@ batch_class_section = []
               <% class_names << batch.course.course_name %>
             <% end %>
         <% end %>
-        <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_") %>_class" />
+        <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_class" />
         <option value="" />Select Class</option>
           <% class_names.each do |class_name| %>
               
-              <option value="<%= batch_names[0].gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>" /><%= class_name %></option>
+              <option value="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= class_name %></option>
           <% end %>
         </select>
         <% class_names.each do |class_name| %>
@@ -40,7 +40,7 @@ batch_class_section = []
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>
-          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_names[0]+" "+class_name+" "+section %>
@@ -64,11 +64,11 @@ batch_class_section = []
                  <% end %>
                <% end %>
            <% end %>
-          <select name="class_id"  class="class_id" style="display:none;" class="" id="<%= batch_name.gsub(" ", "_") %>_class" />
+          <select name="class_id"  class="class_id" style="display:none;" class="" id="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_class" />
             <option value="" />Select Class</option>
             <% class_names.each do |class_name| %>
                 
-                <option value="<%= batch_name.gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>" /><%= class_name %></option>
+                <option value="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= class_name %></option>
             <% end %>
           </select>
       
@@ -79,7 +79,7 @@ batch_class_section = []
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>
-          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_") %>_<%= class_name.gsub(" ", "_") %>_section" />
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>
                 <% b_c_s = batch_name+" "+class_name+" "+section %>
@@ -107,7 +107,11 @@ batch_class_section = []
       if(jj("#batch_id").val())
       {
         batch_id_current = jj("#batch_id").val();
-        oDataTable.column( 1 ).search("").column( 0 ).search( jj("#batch_id").val().replace(/\_/g, ' '),false,false).draw();
+        var search_value = jj("#batch_id").val().replace(/\_/g, ' ');
+        search_value = search_value.replace(/\aaa/g, '(');
+        search_value = search_value.replace(/\bbb/g, '(');
+        
+        oDataTable.column( 1 ).search("").column( 0 ).search( search_value,false,false).draw();
         jj(".class_id").val("");
         jj(".class_id").hide();
         jj(".section_id").val("");
@@ -132,7 +136,11 @@ batch_class_section = []
       if(jj(this).val())
       {
         class_id_current = jj(this).val();
-        oDataTable.column( 1 ).search("").column( 0 ).search( jj(this).val().replace(/\_/g, ' '),false,false).draw();
+        var search_value = jj(this).val().replace(/\_/g, ' ');
+        search_value = search_value.replace(/\aaa/g, '(');
+        search_value = search_value.replace(/\bbb/g, '(');
+        
+        oDataTable.column( 1 ).search("").column( 0 ).search( search_value,false,false).draw();
         jj(".section_id").val("");
         jj(".section_id").hide();
         
@@ -141,7 +149,10 @@ batch_class_section = []
       else
       {
         class_id_current = batch_id_current
-        oDataTable.column( 1 ).search("").column( 0 ).search(batch_id_current.replace(/\_/g, ' '),false,false).draw(); 
+        var search_value = batch_id_current.replace(/\_/g, ' ');
+        search_value = search_value.replace(/\aaa/g, '(');
+        search_value = search_value.replace(/\bbb/g, '(');
+        oDataTable.column( 1 ).search("").column( 0 ).search(search_value,false,false).draw(); 
         jj(".section_id").val("");
         jj(".section_id").hide();
       }   

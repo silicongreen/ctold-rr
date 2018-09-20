@@ -108,8 +108,8 @@ batch_class_section = []
       {
         batch_id_current = jj("#batch_id").val();
         var search_value = jj("#batch_id").val().replace(/\_/g, ' ');
-        var search_value2 = search_value.replace(/\aaa/g, '(');
-        var search_value3 = search_value2.replace(/\bbb/g, ')');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
         alert(search_value3);
         
         oDataTable.column( 1 ).search("").column( 0 ).search( search_value3,false,false).draw();
@@ -138,8 +138,8 @@ batch_class_section = []
       {
         class_id_current = jj(this).val();
         var search_value = jj(this).val().replace(/\_/g, ' ');
-        var search_value2 = search_value.replace(/\aaa/g, '(');
-        var search_value3 = search_value2.replace(/\bbb/g, ')');;
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
         alert(search_value3);
         oDataTable.column( 1 ).search("").column( 0 ).search( search_value,false,false).draw();
         jj(".section_id").val("");
@@ -151,8 +151,8 @@ batch_class_section = []
       {
         class_id_current = batch_id_current
         var search_value = batch_id_current.replace(/\_/g, ' ');
-        var search_value2 = search_value.replace(/\aaa/g, '(');
-        var search_value3 = search_value2.replace(/\bbb/g, ')');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
         alert(search_value3);
         oDataTable.column( 1 ).search("").column( 0 ).search(search_value,false,false).draw(); 
         jj(".section_id").val("");

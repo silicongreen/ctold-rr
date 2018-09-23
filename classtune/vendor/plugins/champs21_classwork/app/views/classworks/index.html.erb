@@ -201,59 +201,126 @@
             <div id="syllabus" class="news_label_field"></div>
             <br />
             <div id="listing"></div>
+            <script type="text/javascript">
+                var jj = jQuery.noConflict();
+                jj("#student_batch_name").on("change", function (event) {
+                    jj("#listing").html("");
+                    jj("#syllabus").html("");
+                    jj.get("classworks/get_classwork_filter", {batch_name: jj("#student_batch_name").val()})
+                            .done(function (data) {
+
+                            });
+                });
+
+                jj(document).off("change", "#student_class_name").on("change", "#student_class_name", function (event) {
+                    jj("#listing").html("");
+                    jj("#syllabus").html("");
+                    jj.get("classworks/get_classwork_filter", {batch_name: jj("#student_batch_name").val(), student_class_name: jj("#student_class_name").val()})
+                            .done(function (data) {
+                            });
+                });
+
+                jj(document).off("change", "#student_section").on("change", "#student_section", function (event) {
+                    jj("#listing").html("");
+                    jj.get("classworks/get_classwork_filter", {batch_name: jj("#student_batch_name").val(), student_class_name: jj("#student_class_name").val(), student_section: jj("#student_section").val()})
+                            .done(function (data) {
+                            });
+                });
+
+
+                jj(document).off("change", "#classwork_subject").on("change", "#classwork_subject", function (event) {
+                    if (jj("#classwork_subject").val() == "")
+                    {
+                        jj("#listing").html("");
+                        jj.get("classworks/get_classwork_filter", {batch_name: jj("#student_batch_name").val(), student_class_name: jj("#student_class_name").val(), student_section: jj("#student_section").val()})
+                                .done(function (data) {
+                                });
+                    }
+                });
+              </script> 
           <% end %>
 
         </div>
   </div>        
 </div>
+<%= stylesheet_link_tag 'list_table' %>
+<style type="text/css">
+          .calendar_date_select_popup_icon{
+            margin: 9px 1px 0;
+          }
+          .attachment {
+            background: url("/images/classwork/paperclip.png") no-repeat left;
+            padding-left: 11px;
+            height: 35px;
+          }
+          .clear-date {
+            color: #db3434;
+            cursor: pointer;
+            float: right;
+            font-size: 12px;
+            margin-right: 45px;
+            margin-top: 9px;
+            width: 0;
+          }
+          div h2.routine
+          {
 
-          <style type="text/css">
-            .calendar_date_select_popup_icon{
-              margin: 9px 1px 0;
-            }
-            .attachment {
-              background: url("/images/classwork/paperclip.png") no-repeat left;
-              padding-left: 11px;
-              height: 35px;
-            }
-            .clear-date {
-              color: #db3434;
-              cursor: pointer;
-              float: right;
-              font-size: 12px;
-              margin-right: 45px;
-              margin-top: 9px;
-              width: 0;
-            }
-            div h2.routine
-            {
-             
-              width: 60%;
-            }
-            .pagination
-            {
-              margin-bottom:30px;
-            }
-            .select2-container
-            {
-              margin-left:10px;
-              width: 200px !important;
-            }
-            .select2-container--open .select2-dropdown--above
-            {
-               margin-left: -10px;
-            }
-            .select2-container--open .select2-dropdown--below
-            {
-                margin-left: -10px;
-            }
-          </style>
+            width: 60%;
+          }
+          .pagination
+          {
+            margin-bottom:30px;
+          }
+          .select2-container
+          {
+            margin-left:10px;
+            width: 200px !important;
+          }
+          .select2-container--open .select2-dropdown--above
+          {
+             margin-left: -10px;
+          }
+          .select2-container--open .select2-dropdown--below
+          {
+              margin-left: -10px;
+          }
+          .CSSTableGenerator table thead tr th{
+        text-align: center;
+        padding: 10px;
+        }
+        .CSSTableGenerator td a
+        {
+          color: inherit;
+          padding : 0;
+          background-color: inherit;
+          float: none;  
+          display: block;
+
+        }
+        .CSSTableGenerator td a:hover
+        {
+          color: inherit;
+          padding : 0;
+          background-color: inherit;
+          float: none;
+          display: block;
+
+        }
+        .CSSTableGenerator table tr td 
+        {
+          text-align: center;
+          font-weight: bold;
+          overflow: hidden;
+          padding: 5px !important;
+        }
+  </style>
 
 <% content_for :head do %>
   <%= javascript_include_tag "custom/classwork" %>
 <% end %>
 <%= stylesheet_link_tag 'pagination_and_table' %>
-<%= stylesheet_link_tag 'tadded-header' %>          
+
+<%= stylesheet_link_tag 'tadded-header' %>        
 <script>
   var jq = jQuery.noConflict();
   jq(document).ready(function() {

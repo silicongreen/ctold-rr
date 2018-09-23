@@ -737,6 +737,36 @@ class AssignmentsController < ApplicationController
               :batch_id => batch_ids,
               :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
           )
+          @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+          if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+            all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+            available_user_ids = all_admin.map(&:id)
+            batch = @assignment.subject.batch
+            unless batch.blank?
+              batch_tutor = batch.employees
+              unless batch_tutor.blank?
+                batch_tutor.each do |employee|
+                  if employee.all_access.to_i == 1
+                    available_user_ids << employee.user_id
+                  end
+                end
+              end
+            end
+            unless available_user_ids.blank?
+                Delayed::Job.enqueue(
+                  DelayedReminderJob.new( :sender_id  => current_user.id,
+                    :recipient_ids => available_user_ids,
+                    :subject=>"#{t('new_homework_added')} #{t('added_for')} #{@subject.name}",
+                    :rtype=>4,
+                    :rid=>@assignment.id,
+                    :student_id => 0,
+                    :batch_id => 0,
+                    :body=>"#{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+                )
+              end
+            
+          end  
+          
         elsif @assignment.save and @assignment.is_published == 2
           batch = @assignment.subject.batch
           unless batch.blank?
@@ -936,6 +966,35 @@ class AssignmentsController < ApplicationController
             :batch_id => batch_ids,
             :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
         )
+        @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+        if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+          all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+          available_user_ids = all_admin.map(&:id)
+          batch = @assignment.subject.batch
+          unless batch.blank?
+            batch_tutor = batch.employees
+            unless batch_tutor.blank?
+              batch_tutor.each do |employee|
+                if employee.all_access.to_i == 1
+                  available_user_ids << employee.user_id
+                end
+              end
+            end
+          end
+          unless available_user_ids.blank?
+              Delayed::Job.enqueue(
+                DelayedReminderJob.new( :sender_id  => current_user.id,
+                  :recipient_ids => available_user_ids,
+                  :subject=>"#{t('new_homework_added')} #{t('added_for')} #{@subject.name}",
+                  :rtype=>4,
+                  :rid=>@assignment.id,
+                  :student_id => 0,
+                  :batch_id => 0,
+                  :body=>"#{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+              )
+            end
+
+        end 
       
         
       end

@@ -74,6 +74,7 @@ authorization do
       :to=>[
       :classwork_student_list,
       :subject_classworks3,
+      :get_classwork_filter,
       :create,
       :destroy,
       :published_classwork,

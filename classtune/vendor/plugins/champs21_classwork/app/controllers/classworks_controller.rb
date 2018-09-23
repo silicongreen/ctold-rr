@@ -4,7 +4,32 @@ class ClassworksController < ApplicationController
   filter_access_to :all,:except=>[:show]
   filter_access_to :show,:attribute_check=>true
   before_filter :default_time_zone_present_time
-  
+  def get_classwork_filter
+    batch_id = params[:batch_name]
+    student_class_name = params[:student_class_name]
+    student_section = params[:student_section]
+    @classworks = []
+    unless batch_id.nil?
+      batchdata = Batch.find_by_id(batch_id)
+      unless batchdata.blank?
+        batch_name = batchdata.name
+        if student_class_name.blank?
+          @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]     
+        elsif student_section.blank?
+          @classworks =Classwork.paginate  :conditions=>"batches.name = '#{batch_name}' and courses.course_name = '#{student_class_name}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[{:batch=>[:course]}]}] 
+        else
+          batch = Batch.find_by_course_id_and_name(student_section, batch_name)
+          unless batch.blank?
+            @classworks =Classwork.paginate  :conditions=>"batches.id = '#{batch.id}'  and is_published=1 ",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+          end
+        end  
+      end
+    end
+    respond_to do |format|
+      format.js { render :action => 'get_classwork_filter' }
+    end
+   
+  end
   def index
    
     
@@ -379,6 +404,34 @@ class ClassworksController < ApplicationController
               :batch_id => batch_ids,
               :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
           )
+          @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+          if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+            all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+            available_user_ids = all_admin.map(&:id)
+            batch = @classwork.subject.batch
+            unless batch.blank?
+              batch_tutor = batch.employees
+              unless batch_tutor.blank?
+                batch_tutor.each do |employee|
+                  if employee.all_access.to_i == 1
+                    available_user_ids << employee.user_id
+                  end
+                end
+              end
+            end
+            unless available_user_ids.blank?
+                Delayed::Job.enqueue(
+                  DelayedReminderJob.new( :sender_id  => current_user.id,
+                    :recipient_ids => available_user_ids,
+                    :subject=>"#{t('classwork_added_for')} #{t('added_for')} #{@subject.name}",
+                    :rtype=>31,
+                    :rid=>@classwork.id,
+                    :student_id => 0,
+                    :batch_id => 0,
+                    :body=>"#{t('classwork_added_for')} '#{@classwork.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_classwork')}")
+                )
+              end
+          end 
         end
         flash[:notice] = "#{t('new_classwork_sucessfuly_created')}"
         redirect_to :action=>:index
@@ -503,6 +556,34 @@ class ClassworksController < ApplicationController
               :batch_id => batch_ids,
               :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
           )
+        @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+        if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+          all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+          available_user_ids = all_admin.map(&:id)
+          batch = @classwork.subject.batch
+          unless batch.blank?
+            batch_tutor = batch.employees
+            unless batch_tutor.blank?
+              batch_tutor.each do |employee|
+                if employee.all_access.to_i == 1
+                  available_user_ids << employee.user_id
+                end
+              end
+            end
+          end
+          unless available_user_ids.blank?
+              Delayed::Job.enqueue(
+                DelayedReminderJob.new( :sender_id  => current_user.id,
+                  :recipient_ids => available_user_ids,
+                  :subject=>"#{t('classwork_added_for')} #{t('added_for')} #{@subject.name}",
+                  :rtype=>31,
+                  :rid=>@classwork.id,
+                  :student_id => 0,
+                  :batch_id => 0,
+                  :body=>"#{t('classwork_added_for')} '#{@classwork.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_classwork')}")
+              )
+          end
+        end
       end
       flash[:notice] = "Homerok successfully published"
       redirect_to classworks_path

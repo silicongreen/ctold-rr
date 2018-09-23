@@ -145,6 +145,7 @@
       margin-left: -10px;
   }
 </style>
+<% if @current_user.employee?  %>
 <script>
   var jq = jQuery.noConflict();
   jq(document).ready(function() {
@@ -152,3 +153,4 @@
   });
   
 </script>
+<% end %>

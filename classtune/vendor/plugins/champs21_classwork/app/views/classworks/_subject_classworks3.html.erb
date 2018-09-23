@@ -1,28 +1,44 @@
-
+<% unless @subject.nil? %>
 <div style="float: right;height: 50px;">
   <%= link_to t('create_new_classwork'), {:controller => "classworks", :action => "new",:subject_id=>@subject.id },:target=>"blank", :class => 'submit_button' %>
   
 </div>
 <div style="clear: both;"></div>
-<% unless @subject.nil? %>
-  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+<div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
+  <table id="listing table-design" align="center" width="100%" cellpadding="1" cellspacing="1">
     <% unless @classworks.empty? %>
-    <tr class="tr-head">
-      <td>
-        <%= "#{t('sl_no')}."%>
-      </td>
-      <td>
-       <%= "#{t('title')}"%>
-      </td>
-    </tr>
+    <thead>
+      <tr >
+        <th>
+           <%= "#{t('course')}"%>
+        </th>
+        <th>
+          <%= "#{t('subject')}"%>
+        </th>
+        <th>
+         <%= "#{t('title')}"%>
+        </th>
+        <th>
+          <%= "#{t('teacher_name')}"%>
+        </th>
+      </tr>
+    </thead>
     <tr class="tr-blank"></tr>
       <% @classworks.each_with_index do |classwork,i| %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
-          <td class="col-1">
-            <%= i+1 %>
+          <td class="col-2">
+            <%=  link_to classwork.subject.batch.full_name , classwork %>
+          </td>
+          <td class="col-2">
+              <%=  link_to classwork.subject.name , classwork %>
           </td>
           <td class="col-2">
             <%=  link_to classwork.title, classwork%>
+          </td>
+          <td class="col-2">
+            <% unless classwork.employee.blank?  %>
+              <%=  classwork.employee.full_name %>
+            <% end %>
           </td>
         </tr>
       <% end %>
@@ -32,5 +48,15 @@
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @classworks %>
+
+</div>
+<% posted_params = params %>
+  <% posted_params.delete(:page) %>
+  <% posted_params.delete(:authenticity_token) %>
+  <%= will_paginate @classworks, :previous_label=>"<", :next_label=>">", :renderer => 'RemoteLinkRenderer', :params => params ,:remote => { :loading =>  "$('loader_paginate').show();",:complete =>"$('loader').hide();"  } %>
+  <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader_paginate",
+            :style =>"display: none;" ) %>
 <% end %>

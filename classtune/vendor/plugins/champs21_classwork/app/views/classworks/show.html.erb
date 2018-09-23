@@ -121,6 +121,7 @@
 </div>
 </div>
   </div>
+<%= stylesheet_link_tag 'list_table' %>
 <%= stylesheet_link_tag 'tadded-header' %>
 <style type="text/css">
   #action_buttons {
@@ -151,4 +152,35 @@
   font-weight: normal;
   margin: 0;
 }
+ .CSSTableGenerator table thead tr th{
+      text-align: center;
+      padding: 10px;
+  }
+  .CSSTableGenerator td a
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;  
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator td a:hover
+  {
+      color: inherit;
+      padding : 0;
+      background-color: inherit;
+      float: none;
+      display: block;
+      margin: -20px;
+
+  }
+  .CSSTableGenerator table tr td 
+  {
+      text-align: center;
+      font-weight: bold;
+      overflow: hidden;
+      padding: 3px !important;
+  }
 </style>

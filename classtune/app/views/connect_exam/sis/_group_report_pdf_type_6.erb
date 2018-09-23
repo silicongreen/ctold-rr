@@ -75,7 +75,7 @@
 
                           <% if full_mark.to_f > 0 %>
                             <td class="col-pdf"><b><%= main_mark.round() %></b></td>
-                            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>

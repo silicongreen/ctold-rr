@@ -305,7 +305,7 @@
                               <td>
                                   <% total_mark = total_mark+main_mark.to_f %>
                                   <%= sprintf( "%0.02f", main_mark) %><hr/>
-                                  <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                  <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%
                                     if grades.include?(grade.name.to_s)

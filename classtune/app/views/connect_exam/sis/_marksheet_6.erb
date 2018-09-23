@@ -117,8 +117,8 @@
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
            <% end %>    
            <% half_mark = (total_mark.to_f/2.00) %>
-           <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
-           <td class="name"><%= sprintf( "%0.02f", main_mark) %></td>
+           <td class="name"><%= total_mark.round() %></td>
+           <td class="name"><%= main_mark.round() %></td>
 
            <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, @subject.id.to_i) %>
            <% if !grade.blank? and !grade.name.blank? %>

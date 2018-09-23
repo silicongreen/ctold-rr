@@ -304,7 +304,7 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+main_mark.to_f %>
-                                  <%= sprintf( "%0.02f", main_mark) %><hr/>
+                                  <%= main_mark.round() %><hr/>
                                   <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, sub['id'].to_i) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%

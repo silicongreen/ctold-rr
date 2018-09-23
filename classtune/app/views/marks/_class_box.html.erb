@@ -23,9 +23,8 @@ batch_class_section = []
         <% class_names = [] %>
          <% @batches.each do |batch| %>
             <% unless class_names.include?(batch.course.course_name) %>
-              <% if batch.course.is_deleted.to_i == 0 %>
+              
                 <% class_names << batch.course.course_name %>
-              <% end %>
             <% end %>
         <% end %>
         <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_class" />
@@ -38,7 +37,7 @@ batch_class_section = []
         <% class_names.each do |class_name| %>
           <% section_names = [] %>
             <% @batches.each do |batch| %>
-               <% if batch.course.course_name == class_name && batch.course.is_deleted.to_i == 0 %>
+               <% if batch.course.course_name == class_name %>
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>

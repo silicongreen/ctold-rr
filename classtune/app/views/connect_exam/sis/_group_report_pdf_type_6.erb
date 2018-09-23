@@ -123,9 +123,9 @@
                   <% end %>
 
               </table>
-              <table id="pdf-table"  width="48%" class="left-table odd-table" cellspacing="0" >
+              <table id="pdf-table"  width="48%" class="left-table odd-table big_padding" cellspacing="0" >
                 
-                <tr class="even">
+                <tr class="odd">
                     <td colspan="2"><b>GENERAL PERFORMANCE</b></td>
                 </tr>
                 <% unless @report_data['report']['subjects'].blank? %> 
@@ -152,7 +152,7 @@
                                <td class="col-pdf"><%=  wordString[iloop] %></td>
                            </tr>
                            <% else %>
-                           <tr class="even">
+                           <tr class="odd">
                                <td class="col-pdf align-left"><%= group_name.name %></td>
                                <td class="col-pdf"></td>
                            </tr>
@@ -188,6 +188,10 @@
 
 <% end %>
 <style>
+    .sis-final #grouped_exam_report table.big_padding tr.odd td
+    {
+       padding: 55px 10px !important;
+    }
     .sis-final #grouped_exam_report table.extra_padding tr.odd td.col-pdf
     {
        padding: 35px 10px !important;

@@ -58,10 +58,12 @@ batch_class_section = []
        
         <% batch_names.each do |batch_name| %>
           <% class_names = [] %>
+          <% class_ids = [] %>
             <% @batches.each do |batch| %>
                <% unless class_names.include?(batch.course.course_name) %>
                  <% if batch_name == batch.name %>
                   <% class_names << batch.course.course_name %>
+                  <% class_ids << batch.course.id %>
                  <% end %>
                <% end %>
            <% end %>
@@ -73,13 +75,15 @@ batch_class_section = []
             <% end %>
           </select>
       
+          <% iloop = 0 %>
           <% class_names.each do |class_name| %>
           <% section_names = [] %>
             <% @batches.each do |batch| %>
-               <% if batch.course.course_name == class_name %>
+               <% if batch.course.course_name == class_name && batch.course.id == class_ids[iloop].to_i %>
                  <% section_names << batch.course.section_name %>
                <% end %>
            <% end %>
+           <% iloop = iloop+1 %>
           <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_section" />
             <option value="" />Select Section</option>
             <% section_names.each do |section| %>

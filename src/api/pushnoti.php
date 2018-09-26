@@ -2,8 +2,8 @@
 
 require 'phpmailer/PHPMailerAutoload.php';
 $servername = "localhost";
-$username = "champs21_champ";
-$password = "1_84T~vADp2$";
+$username = "champs21_school";
+$password = "u[QXL=OF%D,F";
 $dbname_source = "champs21_school";
 
 // Create connection

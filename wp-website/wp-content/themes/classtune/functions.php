@@ -393,7 +393,7 @@ add_filter( 'wp_get_attachment_image_attributes', 'twentysixteen_post_thumbnail_
 if ( ! function_exists( 'check_login_paid' ) ) :
 function check_login_paid($user_name,$password) 
 {
-	$mydb = new wpdb('champs21_champ','1_84T~vADp2$','champs21_school','localhost');
+	$mydb = new wpdb('champs21_school','u[QXL=OF%D,F','champs21_school','localhost');
         $users = $mydb->get_row($mydb->prepare("select * from users where (username=%s AND is_approved=1) AND (is_deleted=0 OR parent=1)",$user_name));
         
        

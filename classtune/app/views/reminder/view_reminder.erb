@@ -66,7 +66,7 @@
           <% if @new_reminder.rtype==31 %>
                 <% classwork_details = Classwork.find_by_id(@new_reminder.rid) %>
                 <% unless classwork_details.blank? %>
-                      <%= link_to "View Homework", :controller=>"classworks", :action=>"show",:id=>@new_reminder.rid %>
+                      <%= link_to "View Classwork", :controller=>"classworks", :action=>"show",:id=>@new_reminder.rid %>
                 <% end %>
           <% end %>
           <% if @new_reminder.rtype==3 %>

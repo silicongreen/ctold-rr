@@ -756,12 +756,12 @@ class AssignmentsController < ApplicationController
                 Delayed::Job.enqueue(
                   DelayedReminderJob.new( :sender_id  => current_user.id,
                     :recipient_ids => available_user_ids,
-                    :subject=>"#{t('new_homework_added')} #{t('added_for')} #{@subject.name}",
+                    :subject=>"New homework added for #{@subject.name}",
                     :rtype=>4,
                     :rid=>@assignment.id,
                     :student_id => 0,
                     :batch_id => 0,
-                    :body=>"#{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+                    :body=>"New homework '#{@assignment.title}' added for #{@subject.name}( Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_homework')}")
                 )
               end
             
@@ -985,12 +985,12 @@ class AssignmentsController < ApplicationController
               Delayed::Job.enqueue(
                 DelayedReminderJob.new( :sender_id  => current_user.id,
                   :recipient_ids => available_user_ids,
-                  :subject=>"#{t('new_homework_added')} #{t('added_for')} #{@subject.name}",
+                  :subject=>"New homework added for #{@subject.name}",
                   :rtype=>4,
                   :rid=>@assignment.id,
                   :student_id => 0,
                   :batch_id => 0,
-                  :body=>"#{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
+                  :body=>"New homework '#{@assignment.title}' for #{@subject.name}(Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_homework')}")
               )
             end
 

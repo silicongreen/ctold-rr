@@ -423,12 +423,12 @@ class ClassworksController < ApplicationController
                 Delayed::Job.enqueue(
                   DelayedReminderJob.new( :sender_id  => current_user.id,
                     :recipient_ids => available_user_ids,
-                    :subject=>"#{t('classwork_added_for')} #{t('added_for')} #{@subject.name}",
+                    :subject=>"New classwork added for #{@subject.name}",
                     :rtype=>31,
                     :rid=>@classwork.id,
                     :student_id => 0,
                     :batch_id => 0,
-                    :body=>"#{t('classwork_added_for')} '#{@classwork.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_classwork')}")
+                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_classwork')}")
                 )
               end
           end 
@@ -574,14 +574,14 @@ class ClassworksController < ApplicationController
           unless available_user_ids.blank?
               Delayed::Job.enqueue(
                 DelayedReminderJob.new( :sender_id  => current_user.id,
-                  :recipient_ids => available_user_ids,
-                  :subject=>"#{t('classwork_added_for')} #{t('added_for')} #{@subject.name}",
-                  :rtype=>31,
-                  :rid=>@classwork.id,
-                  :student_id => 0,
-                  :batch_id => 0,
-                  :body=>"#{t('classwork_added_for')} '#{@classwork.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_classwork')}")
-              )
+                    :recipient_ids => available_user_ids,
+                    :subject=>"New classwork added for #{@subject.name}",
+                    :rtype=>31,
+                    :rid=>@classwork.id,
+                    :student_id => 0,
+                    :batch_id => 0,
+                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_classwork')}")
+                )
           end
         end
       end

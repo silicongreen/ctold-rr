@@ -58,7 +58,7 @@
     <div class="subcontent-header themed_text">
         <%=  link_to @assignment.subject.name.to_s+' - '+@assignment.title, @assignment%>
     </div>                           
-    <div class="subcontent-info"><%= emp_name %> </div>              
+    <div class="subcontent-info"><%= @assignment.subject.batch.full_name %> | <%= emp_name %> </div>              
   </div>
   <div class="timetable_right"  style="float:left;height: 70px;width: 35%;padding: 10px 0;border-left:1px dotted #cccccc">                            
     <div class="subcontent-date" style="color:#000;"><b>Published Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> <%="<small>#{@assignment.created_at.strftime("%A, %d %B, %Y")}</small>"%></div>  

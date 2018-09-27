@@ -293,13 +293,11 @@
                       <% height = 40 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
-                      <% hght = hght - 20 %> 
                       <div style="clear: both; height: <%= hght %>px;"> </div>
                     <% else %>
                       <% height = 142 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
-                      <% hght = hght - 20 %> 
                       <div style="clear: both; height: <%= hght %>px;"></div>
                     <% end %>
                   <% end %>
@@ -317,14 +315,12 @@
                 <% height = 0 %>
 		<% pg_height = 31 - num.to_i %>
                 <% hght = height + ( pg_height * 20 ) %>
-                <% hght = hght - 20 %> 
               <% else %>
                 <% height = 77 %>
 		<% pg_height = 31 - num.to_i %>
                 <% hght = height + ( pg_height * 20 ) %> 
-                <% hght = hght - 20 %> 
               <% end %>  
-              <!--div style="clear: both; height: <%= hght %>px;"></div-->  
+              <div style="clear: both; height: <%= hght %>px;"></div>  
               <div class="PageClass">
                 <%= "------------------------------------------" %><br />
                 <font size='3'><%= "Principal's Signature" %></font>

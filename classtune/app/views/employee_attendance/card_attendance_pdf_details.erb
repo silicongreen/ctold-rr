@@ -293,11 +293,13 @@
                       <% height = 40 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
+                      <% hght = hght - 20 %> 
                       <div style="clear: both; height: <%= hght %>px;"> </div>
                     <% else %>
                       <% height = 142 %>
                       <% pg_height = 31 - num_date.to_i %>
                       <% hght = height + ( pg_height * 20 ) %>
+                      <% hght = hght - 20 %> 
                       <div style="clear: both; height: <%= hght %>px;"></div>
                     <% end %>
                   <% end %>

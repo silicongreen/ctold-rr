@@ -1,10 +1,11 @@
 resulttype:
- numbers: "323,2,325,340,342,312,348,3,352"
+ numbers: "323,2,325,340,342,312,348,3,352,346"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal"
  type_342: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall,Test,Final"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_3: "Term Exam"
+ type_346: "Term(N-KG),AR(N-KG),Term(class 1-class 5),AR(class 1-class 5),Term(class 6-class 7),AR(class 6-class 7),Term(class 8-class 10),AR(class 8-class 10)"
  type_352: "Term(N-KG),AR(N-KG),Term(class 1-class 5),AR(class 1-class 5),Term(class 6-class 7),AR(class 6-class 7),Term(class 8-class 10),AR(class 8-class 10)"
  type_312: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_348: "QUARTER(PG),QUARTER(NURSERY),QUARTER(KGI-KGII),QUARTER(I-VII),QUARTER(VIII),QUARTER(IX),TERM(PG-N),TERM(KGI-KGII),TERM(I-IV)"

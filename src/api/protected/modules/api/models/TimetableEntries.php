@@ -444,17 +444,21 @@ class TimetableEntries extends CActiveRecord {
         
         $criteria = new CDbCriteria;
         $criteria->together = true;
-        $criteria->select = 'count(t.id) as total';
+        $criteria->select = 't.id';
         $criteria->compare('t.school_id', Yii::app()->user->schoolId);
         $criteria->compare('t.weekday_id', $cur_day_key);
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
         $criteria->compare('t.employee_id', $employee_id);
-        $criteria->with=array('timeTableDetails');
-        $data = $this->find($criteria);
+        $criteria->with=array('classTimingDetails',
+                              'batchDetails', 
+                              'timeTableDetails');
+        $data = $this->findAll($criteria);
+        $data = $this->checkDataOkAndReturn($data);
+        
         if($data)
         {
-            return $data->total;
+            return count($data);
         }
         else
         {

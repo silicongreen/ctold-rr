@@ -320,11 +320,13 @@
 		<% pg_height = 31 - num.to_i %>
                 <% hght = height + ( pg_height * 20 ) %> 
               <% end %>  
+              <% if MultiSchool.current_school.id != 3 %>  
               <div style="clear: both; height: <%= hght %>px;"></div>  
               <div class="PageClass">
                 <%= "------------------------------------------" %><br />
                 <font size='3'><%= "-Principal's Signature-" %></font> 
               </div>  
+              <% end %>
             <% end %>
         </div>
     </div>

@@ -4,8 +4,11 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                       <td class="col-pdf"><b>MARKS</b></td>
+                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                        <td class="col-pdf"><b>MARKS</b></td>
+                      <% end %>
                       <td class="col-pdf"><b>GRADES</b></td>
+                      
                   </tr>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
@@ -36,16 +39,21 @@
 
 
                           <% 
-                          
+                          show_marks = 0
                           if total_mark.to_f>0 and full_mark.to_f>0
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            show_marks = total_mark.to_f/2
+                            total_mark = show_marks.round()*2
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100
                           else
                             main_mark = 0
-                          end  
+                          end 
+                          
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><b><%= main_mark.round() %></b></td>
+                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                              <td class="col-pdf"><b><%= show_marks.round() %></b></td>
+                            <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
@@ -54,13 +62,16 @@
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
-                            <% total_subject = total_subject+1 %>
+                            
                           <% else  %>
-                            <td class="col-pdf">-</td>
+                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                              <td class="col-pdf">-</td>
+                            <% end %>
                             <td class="col-pdf">-</td>
                           <% end %>      
-
-                      </tr> 
+                          
+                      </tr>
+                      <% total_subject = total_subject+1 %>
                     <% end %>  
                   <% end %>  
                   <%  
@@ -86,7 +97,9 @@
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
-                          <td class="col-pdf">-</td>
+                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                            <td class="col-pdf">-</td>
+                          <% end %>
                           <td class="col-pdf"><b><%= report['subject_comment'] %></td>
                         </tr>
                       <% end %>

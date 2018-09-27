@@ -78,7 +78,7 @@
                           <% 
                           
                           if total_mark.to_f>0 and full_mark.to_f>0
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            main_mark = (total_mark.round().to_f/full_mark.to_f)*100 
                           else
                             main_mark = 0
                           end  

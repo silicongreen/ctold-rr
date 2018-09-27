@@ -170,7 +170,7 @@
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                           end
                         
-                          grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
+                          grade = GradingLevel.percentage_to_grade(total_mark.round(), @batch.id)
 
                           if has_mark == true
                           %>

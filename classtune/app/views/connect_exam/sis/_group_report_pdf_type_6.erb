@@ -66,8 +66,9 @@
                           
                           show_marks = 0
                           if total_mark.to_f>0 and full_mark.to_f>0
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
                             show_marks = total_mark.to_f/2
+                            total_mark = show_marks.round()*2
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100
                           else
                             main_mark = 0
                           end  

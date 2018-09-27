@@ -1,6 +1,6 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-            <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">
+           <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -37,13 +37,13 @@
                           <% 
                           
                           if total_mark.to_f>0 and full_mark.to_f>0
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                            main_mark = (total_mark.round().to_f/full_mark.to_f)*100 
                           else
                             main_mark = 0
                           end  
                         %>
 
-                          <% if full_mark.to_f > 0 %>
+                          <% if full_mark.to_f > 0 && main_mark > 0 %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
@@ -52,11 +52,11 @@
                             <% end %>
 
                             <% total_parcent= total_parcent+main_mark %>
-                            <% total_subject = total_subject+1 %>
+                            
                           <% else  %>
                             <td class="col-pdf">-</td>
                           <% end %>      
-
+                          <% total_subject = total_subject+1 %>
                       </tr> 
                     <% end %>  
                   <% end %> 
@@ -85,6 +85,7 @@
                           <td class="col-pdf left-td"><%= report['subject_name'] %></td>
                           <td class="col-pdf"><%= report['subject_comment'] %></td>
                         </tr>
+                        <% total_subject = total_subject+1 %>
                       <% end %>
                     <% end %>
                   <% end %>

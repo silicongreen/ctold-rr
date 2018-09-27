@@ -46,8 +46,8 @@
       <% colspan = 0 %>
       <table id="pdf-table" width="98%" cellspacing="0">
         <tr class="table-header">
-          <td class="name">Roll NO.</td>
-          <td class="name">Name</td>
+          <td>Roll NO.</td>
+          <td>Name</td>
           <% total_full_mark = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
@@ -93,7 +93,7 @@
           <% full_mark = 0 %>
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-            <td class="name"><%= std['class_roll_no'] %></td>
+            <td><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
@@ -117,8 +117,8 @@
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
            <% end %>    
            <% half_mark = (total_mark.to_f/2.00) %>
-           <td class="name"><%= total_mark.round() %></td>
-           <td class="name"><%= half_mark.round() %></td>
+           <td><%= total_mark.round() %></td>
+           <td><%= half_mark.round() %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

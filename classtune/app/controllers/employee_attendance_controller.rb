@@ -563,7 +563,7 @@ class EmployeeAttendanceController < ApplicationController
       else
         orientation = "Landscape"
         top = 5
-        bottom = 18
+        bottom = 12
         @date_today = @local_tzone_time.to_date
         @employee_attendance = []
         unless params[:report_date_from].nil? or params[:report_date_from].empty? or params[:report_date_from].blank?

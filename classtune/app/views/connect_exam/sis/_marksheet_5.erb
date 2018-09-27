@@ -73,13 +73,13 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>14 && extender ==0 %>
+          <% if std_count>18 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
-          <% elsif std_count>18 && extender ==1 %>
+          <% elsif std_count>22 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
@@ -116,7 +116,7 @@
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
            <% end %>    
            <% half_mark = (total_mark.to_f/2.00) %>
-           <td class="name"><%= sprintf( "%0.02f", total_mark) %></td>
+           <td class="name"><%= total_mark.round() %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

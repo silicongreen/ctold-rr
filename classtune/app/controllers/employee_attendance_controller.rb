@@ -562,7 +562,7 @@ class EmployeeAttendanceController < ApplicationController
         end
       else
         orientation = "Landscape"
-        top = 5
+        top = 2
         bottom = 22
         @date_today = @local_tzone_time.to_date
         @employee_attendance = []

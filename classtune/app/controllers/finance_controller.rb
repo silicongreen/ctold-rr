@@ -5943,7 +5943,7 @@ class FinanceController < ApplicationController
       if @all_onetime_discounts[ind].length > 0
         @all_onetime_discounts_amount[ind] = []
           @all_onetime_discounts[ind].each do |d|
-            @all_onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
             @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
         end
       end

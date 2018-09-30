@@ -290,11 +290,8 @@
           </td>
         </tr>
       <% end %>
-      <% if MultiSchool.current_school.id == 312 %>  
-        <%balance=total_fees.to_f%>
-      <% else %>
-        <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
-      <% end %>
+      
+      <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
       <% if balance.to_f < 0 %>  
       <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
         <td class="col-8" colspan="2" style="text-align: right; font-weight: bold;"><%= t('advance_payment') %> :</td>

@@ -5871,7 +5871,7 @@ class FinanceController < ApplicationController
     
     if MultiSchool.current_school.id == 312
       @discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-      unless @discounts.nil?
+      unless @discounts.nil? or  @discounts.empty?
         @discounts_amount = []
         @discounts.each do |d|
           @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)

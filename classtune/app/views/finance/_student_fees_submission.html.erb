@@ -52,7 +52,7 @@
 </div>
 
 
-<%= @total_discounts %>
+<%= @total_discount %>
 <% total_fees =0 %>
 <% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
   <% unless @fee_particulars.nil? %>

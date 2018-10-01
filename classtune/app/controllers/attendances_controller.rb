@@ -371,7 +371,7 @@ end
       @weekday_id = @date_to_use.strftime("%w")
       unless @current_timetable.blank?
         @subjects = []
-        if @current_user.employee? and @allow_access ==true and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
+        if @current_user.employee? and !@current_user.privileges.map{|m| m.name}.include?("StudentAttendanceRegister")
           @employee = @current_user.employee_record
           @employee_subjects = @employee.subjects
           subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}

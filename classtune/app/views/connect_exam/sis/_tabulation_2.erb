@@ -297,10 +297,13 @@
                             <% end %> 
 
                             <% main_mark = 0 %>
+                            <% subject_mark_half = 0 %>
                             <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
-                            <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                              <% subject_mark_half = (subject_obtain_mark.to_f/2.00) %>
+                              <% subject_obtain_mark = subject_obtain_mark.round()*2 %>
+                              <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                             <% end %> 
-                            <% subject_mark_half = (subject_obtain_mark.to_f/2.00) %>
+                            
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_mark_half.to_f %>
@@ -336,16 +339,20 @@
                                   end 
                                   end 
                               %>
-                                <%=  sub['subject_comment'][std['id']] %>
+                                -<hr/><%=  sub['subject_comment'][std['id']] %>
                               <% else %>
-                                &nbsp;
+                                -<hr/>-
                               <% end %> 
                           </td>     
 
                         <% end %>       
 
                         <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
+                            <% if total_mark > 0 %>
+                              <%= sprintf( "%0.02f", total_mark) %>    
+                            <% else %>
+                              -
+                            <% end %>    
                         </td>
                         <td>
                             <% i = 1 %>

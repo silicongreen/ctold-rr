@@ -23,8 +23,8 @@
               </tr>
               <tr>
                   <td class="align-left">ROLL </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.class_roll_no %></td>
-                  <td class="align-left">DATE OF BIRTH </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></td>
-                  <td class="align-left">DATE </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %b %Y") %></td>
+                  <td class="align-left">DATE OF BIRTH </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d %B %Y") unless @student.date_of_birth.nil? %></td>
+                  <td class="align-left">DATE </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@connect_exam_obj.published_date,:format=>"%d %B %Y") %></td>
               </tr>
           </table>
       </div>
@@ -403,14 +403,14 @@
                   <% if @connect_exam_obj.quarter_number == 5 %>
                   <tr class="even">
                       <td class="width-30 align-left">The next term begins on</td>
-                      <td><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %b %Y") %></td>
+                      <td><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
                   </tr> 
                   <% else %>
                   <tr class="even">
                       <td class="width-20 align-left">Promoted to Class</td>
                       <td class="width-20"><%= @connect_exam_obj.promoted_to %></td>
                       <td class="width-30 align-left">The next session begins on</td>
-                      <td class="width-30"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %b %Y") %></td>
+                      <td class="width-30"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
                   </tr>
                   <% end %>
                   

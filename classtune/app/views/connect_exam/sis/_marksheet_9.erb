@@ -113,10 +113,12 @@
             <% end %> 
              
            <% main_mark = 0 %>
+           <% half_mark = 0 %>
            <% if total_mark.to_i > 0 %>   
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-           <% end %>    
-           <% half_mark = (total_mark.to_f/2.00) %>
+            <% half_mark = (total_mark.round().to_f/2.00) %>  
+            <% total_mark = half_mark.round()*2 %>
+            <% main_mark = (total_mark.round().to_f/full_mark.to_f)*100 %>
+           <% end %> 
            <td><%= total_mark.round() %></td>
            <td><%= half_mark.round() %></td>
 

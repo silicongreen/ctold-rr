@@ -130,15 +130,15 @@ class LibraryController < ApplicationController
   end
   
   def movement_log_details
-    @log= BookMovement.find(:all,:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'due_date ASC')
+    @log= BookMovement.find(:all,:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.id as user_id_log,users.employee,books.status as book_status,books.book_number,books.title,users_issue.first_name as u_issue_first_name,users_issue.last_name as u_issue_last_name,emp_issue.id as emp_issue_id",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id LEFT OUTER JOIN `users` users_issue ON users_issue.id = `book_movements`.issue_by_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id LEFT OUTER JOIN `employees` emp_issue ON users_issue.id = emp_issue.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'due_date ASC')
   end
   
   def movement_log_details_csv
-    log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'users.first_name ASC,users.last_name ASC,due_date ASC')
+    log= BookMovement.all(:select=>"students.id as student_id,students.admission_no,employees.employee_number ,employees.id as employee_id,book_movements.*,users.first_name,users.last_name,users.student,users.employee,books.status as book_status,books.book_number,books.title as title,users_issue.first_name as u_issue_first_name,users_issue.last_name as u_issue_last_name",:joins=>"INNER JOIN `users` ON `users`.id = `book_movements`.user_id LEFT OUTER JOIN `users` users_issue ON users_issue.id = `book_movements`.issue_by_id INNER JOIN `books` ON `books`.id = `book_movements`.book_id LEFT OUTER JOIN `students` ON `users`.id = `students`.user_id LEFT OUTER JOIN `employees` ON `users`.id = `employees`.user_id",:conditions=>["book_movements.status !='Returned' and users.id = ?",params[:user_id]],:order=>'users.first_name ASC,users.last_name ASC,due_date ASC')
    
   
     csv_string=FasterCSV.generate do |csv|
-      cols=["#{t('no_text')}","#{t('book_number')}","#{t('book_title')}","#{t('borrowed_by') }","#{t('status') }","#{t('issue_date')}","#{t('due_date')}"]
+      cols=["#{t('no_text')}","#{t('book_number')}","#{t('book_title')}","#{t('borrowed_by') }","#{t('status') }","Issued By","#{t('issue_date')}","#{t('due_date')}"]
       csv << cols
       log.each_with_index do |s,i|
         col=[]
@@ -151,6 +151,7 @@ class LibraryController < ApplicationController
           col<< "#{s.first_name} #{s.last_name} - #{s.employee_number}"
         end
         col<< "#{s.status}"
+        col<< "#{s.u_issue_first_name} #{s.u_issue_last_name}"
         col<< "#{s.issue_date}"
         col<< "#{s.due_date}"
         col=col.flatten

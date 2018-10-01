@@ -55,6 +55,7 @@ class BookMovementController < ApplicationController
         if @book.book_movement_id.nil?
           unless @book.status=='Lost'
             @movement = BookMovement.new(params[:issue])
+            @movement.issue_by_id = @current_user.id
             @user_event= UserEvent.new
             if @movement.save
               @reserved = BookReservation.find_by_user_id_and_book_id(@movement.user_id, @movement.book_id)

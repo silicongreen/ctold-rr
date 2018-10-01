@@ -16,6 +16,7 @@
 #under the License.
 class BookMovement < ActiveRecord::Base
   belongs_to :user
+  belongs_to :issue_by, :class_name => 'User'
   belongs_to :book
   validates_presence_of :user_id, :book_id, :issue_date, :due_date
   has_one :event, :as=> :origin

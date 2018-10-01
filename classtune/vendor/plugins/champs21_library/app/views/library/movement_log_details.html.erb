@@ -54,6 +54,9 @@
             User Type
         </td>
         <td>
+            Issued By
+        </td>
+        <td>
             Status
         </td>
         <td>
@@ -98,6 +101,11 @@
             <% else %>
               <td class="col-2">Employee</td>
             <% end %>
+          
+          <td class="col-2 batch_order_select"><%=  link_to "#{r.u_issue_first_name} #{r.u_issue_last_name}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.emp_issue_id} unless r.emp_issue_id.blank? %></td>
+          
+              
+              
           <% if @sort_order=="status ASC" or @sort_order=="status DESC" %>
             <td class="col-4 batch_order_select"><% case r.book_status when 'Lost'%><%= "#{t('lost')}" %> <% when 'Binding' %> <%= "#{t('binding')}" %> <% else %><%= t("#{r.status.downcase}") %><% end %></td>
           <% else %>

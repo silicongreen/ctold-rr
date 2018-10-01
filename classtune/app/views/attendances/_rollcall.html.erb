@@ -13,6 +13,10 @@
       <% else %>
       <%= hidden_field_tag 'attandence_date',@date_today, :id=>'attandence_date' %>
       <% end %>
+      
+      <% unless @current_user.admin? %>
+        <% @batches.reject!{|c| c.course.no_call.to_i == 0} %>
+      <% end %>
       <div class="row" style="width:45%;">  
         <div class="row_label">
           <div>

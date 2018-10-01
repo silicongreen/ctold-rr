@@ -102,7 +102,7 @@
               <td class="col-2">Employee</td>
             <% end %>
           
-          <td class="col-2 batch_order_select"><%=  link_to "#{r.u_issue_first_name} #{r.u_issue_last_name}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.emp_issue_id} unless r.emp_issue_id.blank? %></td>
+          <td class="col-2"><%=  link_to "#{r.u_issue_first_name} #{r.u_issue_last_name}" ,{:controller=>'employee',:action=>'profile' ,:id=>r.emp_issue_id} unless r.emp_issue_id.blank? %></td>
           
               
               

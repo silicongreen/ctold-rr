@@ -388,7 +388,7 @@ end
                   @all_sub_elective = Subject.active.find_all_by_elective_group_id(@timetable_subject.elective_group_id)
                   unless @all_sub_elective.blank?
                     @all_sub_elective.each do |esub|
-                      if @employee_subjects.include?(esub) && !@subjects.include?(esub)
+                      if !@subjects.include?(esub)
                         @subjects << esub
                       end  
                     end

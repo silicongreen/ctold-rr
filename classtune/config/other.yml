@@ -17,7 +17,7 @@ resulttype2:
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
  type_323: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_342: "1_Class Test,2_Project,3_Term,5_Mock Test"
- type_342: "1_Class Test,2_Project,3_Term,4_Practical,5_Assessment,6_N/A"
+ type_348: "1_Class Test,2_Project,3_Term,4_Practical,5_Assessment,6_N/A"
  type_352: "1_ME/CW/SBA,2_AT,3_SB,4_OB,5_PR"
  type_2: "1_Class Test,2_Project,3_Term,4_Surprise Test,5_Mock Test" 
  default: "6_N/A,5_Practical,4_Surprise Test,3_Term,2_Project,1_Class Test"

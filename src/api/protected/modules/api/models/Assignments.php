@@ -625,6 +625,10 @@ class Assignments extends CActiveRecord
             foreach($data as $value)
             {
                 $marge = array();
+                if(isset($all_batchs) && $all_batchs)
+                {
+                    $marge['subject_ids_used'] = implode(",", $all_batchs);
+                }    
               
                 $marge['subjects'] = $value["subjectDetails"]->name;
                 $marge['batch'] = $value["subjectDetails"]['Subjectbatch']->name;

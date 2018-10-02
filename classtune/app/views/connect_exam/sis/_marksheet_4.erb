@@ -91,6 +91,8 @@
         
           <% total_mark = 0 %>
           <% full_mark = 0 %>
+          <% assessment_total_mark = 0 %>
+          <% assessment_full_mark = 0 %>
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td><%= std['class_roll_no'] %></td>
@@ -99,14 +101,22 @@
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                   <%= rs['students'][std['id']]['score'] %>
-                  <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                  <% if rs['exam_category'] != "5" %>
+                    <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                  <% else %>
+                    <% assessment_total_mark = assessment_total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+                  <% end %>
                   
                  
               <% else %>
                   -
               <% end %>
-              <% if !rs['maximum_marks'].blank? %>    
-                <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
+              <% if !rs['maximum_marks'].blank? %>  
+                <% if rs['exam_category'] != "5" %>
+                  <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
+                <% else %>
+                   <% assessment_full_mark = assessment_full_mark.to_f+rs['maximum_marks'].to_i %>
+                <% end %>
               <% end %>    
               </td>
               
@@ -118,7 +128,16 @@
             <% half_mark = (total_mark.round().to_f/2.00) %>  
             <% total_mark_2 = half_mark.round()*2 %>
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
-           <% end %>    
+           <% end %>
+           <%
+           if assessment_full_mark > 0
+              total_mark_with_assessment = half_mark+assessment_total_mark
+              half_mark = total_mark_with_assessment.to_f/2
+              full_mark = full_mark+assessment_full_mark
+              total_mark_2 = half_mark.round()*2
+              main_mark = (total_mark_2.to_f/full_mark.to_f)*100
+            end
+          %>
            <td><%= total_mark.round() %></td>
            <td><%= half_mark.round() %></td>
 

@@ -12,11 +12,12 @@ resulttype:
  type_340: "QUARTER (CLASS 5-12),TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM EXAM (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM EXAM (CLASS 10-12),HALL EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT (CLASS 5-9),TERM REPORT CARD(CLASS 10-12),ASSESMENT(KG 1-CLASS 4),REPORT CARD(KG 1-KG 2),REPORT CARD(CLASS 1-CLASS 4)"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6,Type 7,Type 8"
 resulttype2:
- numbers: "323,2,325,340,342,352"
+ numbers: "323,2,325,340,342,352,348"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment"
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
  type_323: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_342: "1_Class Test,2_Project,3_Term,5_Mock Test"
+ type_342: "1_Class Test,2_Project,3_Term,4_Practical,5_Assessment,6_N/A"
  type_352: "1_ME/CW/SBA,2_AT,3_SB,4_OB,5_PR"
  type_2: "1_Class Test,2_Project,3_Term,4_Surprise Test,5_Mock Test" 
  default: "6_N/A,5_Practical,4_Surprise Test,3_Term,2_Project,1_Class Test"

@@ -4,7 +4,7 @@
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
-                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
                         <td class="col-pdf"><b>MARKS</b></td>
                       <% end %>
                       <td class="col-pdf"><b>GRADES</b></td>
@@ -21,16 +21,33 @@
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
+                          <% assessment_total_mark = 0 %>
+                          <% assessment_full_mark = 0 %>
 
                           <td class="col-pdf left-td"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>      
-                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
-                                <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                            <% @report_data['report']['exams'].each do |report| %> 
+                              <% if report['exam_category'] != '5' %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
+                                  <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                <% end %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                  <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %> 
                               <% end %>
-                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                              <% end %>  
+                            <% end %>
+                          <% end %>
+                          
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>  
+                              <% if report['exam_category'] == '5' %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
+                                  <% assessment_total_mark = assessment_total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                <% end %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                  <% assessment_full_mark = assessment_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% end %> 
+                              <% end %>
                             <% end %>
                           <% end %>
 
@@ -40,18 +57,25 @@
 
                           <% 
                           show_marks = 0
+                          main_mark = 0
                           if total_mark.to_f>0 and full_mark.to_f>0
                             show_marks = total_mark.to_f/2
                             total_mark = show_marks.round()*2
                             main_mark = (total_mark.to_f/full_mark.to_f)*100
-                          else
-                            main_mark = 0
                           end 
+                        
+                          if assessment_full_mark > 0
+                            total_mark_with_assessment = show_marks+assessment_total_mark
+                            show_marks = total_mark_with_assessment.to_f/2
+                            full_mark = full_mark+assessment_full_mark
+                            total_mark = show_marks.round()*2
+                            main_mark = (total_mark.to_f/full_mark.to_f)*100
+                          end  
                           
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
                               <td class="col-pdf"><b><%= show_marks.round() %></b></td>
                             <% end %>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -64,7 +88,7 @@
                             <% total_parcent= total_parcent+main_mark %>
                             
                           <% else  %>
-                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                            <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
                               <td class="col-pdf">-</td>
                             <% end %>
                             <td class="col-pdf">-</td>
@@ -97,7 +121,7 @@
                         <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
-                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" %>
+                          <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
                             <td class="col-pdf">-</td>
                           <% end %>
                           <td class="col-pdf"><b><%= report['subject_comment'] %></td>

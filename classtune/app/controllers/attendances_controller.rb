@@ -392,7 +392,7 @@ end
                         all_elective_sub = esub.elective_group.subjects
                         unless all_elective_sub.blank?
                           all_elective_sub.each do |sube|
-                            if @employee_subjects.include?(sube)
+                            if @employee_subjects.include?(sube) && !@subjects.include?(sube)
                               @subjects << sube
                               break
                             end

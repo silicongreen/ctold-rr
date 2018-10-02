@@ -440,7 +440,17 @@ class TimetableController < ApplicationController
         @employee_subjects = @employee.subjects
         subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
         electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
-        elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+        elective_subjects = []
+          unless electives.blank?
+          electives.each do |esubject|
+            all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+            unless all_e_subject.blank?
+              all_e_subject.each do |subelective|
+                elective_subjects << subelective.id
+              end
+            end
+          end
+        end
         @employee_timetable_subjects = @employee_subjects.map {|sub| sub.elective_group_id.nil? ? sub : sub.elective_group.subjects.first}
         @entries=[]
         @entries += @current.timetable_entries.find(:all,:conditions=>{:subject_id=>subjects,:employee_id => @employee.id})
@@ -561,7 +571,17 @@ class TimetableController < ApplicationController
     @employee_subjects = @employee.subjects
     subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
     electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
-    elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+    elective_subjects = []
+      unless electives.blank?
+      electives.each do |esubject|
+        all_e_subject = Subject.active.find_all_by_elective_group_id(esubject.elective_group_id)
+        unless all_e_subject.blank?
+          all_e_subject.each do |subelective|
+            elective_subjects << subelective.id
+          end
+        end
+      end
+    end
     @employee_timetable_subjects = @employee_subjects.map {|sub| sub.elective_group_id.nil? ? sub : sub.elective_group.subjects.first}
     @entries=[]
     @entries += @current.timetable_entries.find(:all,:conditions=>{:subject_id=>subjects,:employee_id => @employee.id})

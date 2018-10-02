@@ -100,8 +100,7 @@ class BatchTutors extends CActiveRecord
             $batch_ids = array();
             $sub_ids = array();
             if($all_batch)
-            {
-               
+            { 
                 foreach($all_batch as $value)
                 {
                     

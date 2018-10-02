@@ -489,14 +489,14 @@ class Assignments extends CActiveRecord
             {
                 $criteria->compare('DATE(t.duedate)', $duedate);
             }
-            if( $emp_details->all_access == 1 && !Yii::app()->user->isAdmin)
+            if( $emp_details->all_access == 1 && !Yii::app()->user->isAdmin )
             {
+                
                 $batch_tutor = new BatchTutors();
                 $all_batchs = $batch_tutor->get_batch_id();
-                
                 if($all_batchs)
                 {
-                    $criteria->addInCondition('t.subject_id', $all_batchs);
+                   $criteria->addInCondition('t.subject_id', $all_batchs);
                 }
                 else 
                 {
@@ -504,6 +504,10 @@ class Assignments extends CActiveRecord
                 }
                         
             }
+            else if( !Yii::app()->user->isAdmin)
+            {
+               $criteria->compare('t.employee_id', $employee_id); 
+            }  
             else if(!Yii::app()->user->isAdmin)
             {
                 $criteria->compare('t.employee_id', $employee_id);
@@ -554,6 +558,10 @@ class Assignments extends CActiveRecord
                 }
                         
             }
+            else if( !Yii::app()->user->isAdmin)
+            {
+               $criteria->compare('t.employee_id', $employee_id); 
+            }    
             else if(!Yii::app()->user->isAdmin)
             {
                 $criteria->compare('t.employee_id', $employee_id);

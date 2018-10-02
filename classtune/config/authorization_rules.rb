@@ -1016,6 +1016,7 @@ authorization do
       :destroy,
       :employee_timetable,
       :update_employee_tt,
+      :teacher_timetable_pdf,
       :student_view,
       :update_student_tt,
       :weekdays,
@@ -1073,6 +1074,7 @@ authorization do
       :update_timetable_view,
       :employee_timetable,
       :update_employee_tt,
+      :teacher_timetable_pdf,
       :student_view,
       :update_student_tt,
       :timetable,
@@ -1742,7 +1744,7 @@ authorization do
 
   role :employee_timetable_access do
     includes :timetable_track
-    has_permission_on [:timetable], :to => [:employee_timetable,:update_employee_tt,:timetable_pdf,:student_timetable_pdf]
+    has_permission_on [:timetable], :to => [:employee_timetable,:update_employee_tt,:teacher_timetable_pdf,:timetable_pdf,:student_timetable_pdf]
     #    has_permission_on [:employee], :to => [:timetable,:timetable_pdf]
   end
 
@@ -2761,6 +2763,7 @@ authorization do
       :destroy,
       :employee_timetable,
       :update_employee_tt,
+      :teacher_timetable_pdf,
       :student_view,
       :update_student_tt,
       :weekdays,
@@ -3416,7 +3419,7 @@ authorization do
       :get_batches,
       ]  
     has_permission_on [:meetings], :to => [:index,:forwarded,:inbox,:outbox, :new, :create, :edit, :update,:update_forwarded, :show,:show_forwarded, :destroy, :get_classes, :get_classes_publisher, :get_batches, :get_section_data, :list_students_by_course]
-    has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt]
+    has_permission_on [:timetable],:to => [:employee_timetable,:update_employee_tt,:teacher_timetable_pdf]
     has_permission_on [:event], :to => [:event_details]
     has_permission_on [:detention],
       :to => [

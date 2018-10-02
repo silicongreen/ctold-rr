@@ -121,8 +121,16 @@
         <% end -%>
 
       </table>
+      
     </div>
   </div>
+  <%= link_to "TIMETABLE PDF", {:controller => "timetable", :action => "teacher_timetable_pdf",:time_table_id => @current.id,:id=>@employee.id},:target => '_blank', :class => "f2" %>
 <% else %>
   <div id="timetable-container"><%= t('no_entries_found') %></div>
 <% end %>
+  <style>
+    a.f2 {
+      color: red;
+      font-weight: bold;
+  }
+  </style>

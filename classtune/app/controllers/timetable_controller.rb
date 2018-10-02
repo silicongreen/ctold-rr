@@ -542,6 +542,48 @@ class TimetableController < ApplicationController
     end
   end
 
+  def teacher_timetable_pdf
+    @employee=Employee.find(params[:id])
+    if params[:timetable_id].nil?
+      @current=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    else
+      if params[:timetable_id]==""
+        render :update do |page|
+          page.replace_html "timetable_view", :text => ""
+        end
+        return
+      else
+        @current=Timetable.find(params[:timetable_id])
+      end
+    end
+    @electives=@employee.subjects.group_by(&:elective_group_id)
+    @timetable_entries = Hash.new { |l, k| l[k] = Hash.new(&l.default_proc) }
+    @employee_subjects = @employee.subjects
+    subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
+    electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
+    elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+    @employee_timetable_subjects = @employee_subjects.map {|sub| sub.elective_group_id.nil? ? sub : sub.elective_group.subjects.first}
+    @entries=[]
+    @entries += @current.timetable_entries.find(:all,:conditions=>{:subject_id=>subjects,:employee_id => @employee.id})
+    @entries += @current.timetable_entries.find(:all,:conditions=>{:subject_id=>elective_subjects})
+    @all_timetable_entries = @entries.select{|t| t.batch.is_active}.select{|s| s.class_timing.is_deleted==false}
+    @all_batches = @all_timetable_entries.collect(&:batch).uniq
+    @all_weekdays = @all_timetable_entries.collect(&:weekday_id).uniq.sort
+    @all_classtimings = @all_timetable_entries.collect(&:class_timing).uniq.sort!{|a,b| a.start_time <=> b.start_time}
+    @all_teachers = @all_timetable_entries.collect(&:employee).uniq
+    @all_timetable_entries.each_with_index do |tt , i|
+      @timetable_entries[tt.weekday_id][tt.class_timing_id][i] = tt
+    end
+    render :pdf => 'teacher_timetable_pdf',
+        :orientation => 'Landscape', :zoom => 1.00,
+        :margin => {:top=> 0,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   #    if request.xhr?
   def update_employee_tt
     @employee=Employee.find(params[:employee_id])

@@ -376,7 +376,7 @@ end
           @employee_subjects = @employee.subjects
           subjects = @employee_subjects.select{|sub| sub.elective_group_id.nil?}
           electives = @employee_subjects.select{|sub| sub.elective_group_id.present?}
-          elective_subjects=electives.map{|x| x.elective_group.subjects.first}
+          elective_subjects=electives.map{|x| x.elective_group.subjects}
           @entries=[]
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:weekday_id=>@weekday_id.to_i,:employee_id => @employee.id,:class_timing_id=>@class_timing_id})
           @entries += @current_timetable.timetable_entries.find(:all,:conditions=>{:batch_id=>@batch.id,:subject_id=>elective_subjects,:weekday_id=>@weekday_id.to_i,:class_timing_id=>@class_timing_id})

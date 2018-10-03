@@ -302,10 +302,10 @@
                     <% end %>
                   <% end %>
               </table>
-              
+              <% if @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
               <table id="pdf-table" width="48%" class="left-table even-table signature" cellspacing="0">
                 <tr class="even">
-                    <td class="small-height"><b>Class Teacher</b></td>
+                    <td class="small-height"><b>Signature of Class Teacher</b></td>
                 </tr> 
                 <tr class="even">
                    <td></td>
@@ -313,12 +313,26 @@
               </table>
               <table id="pdf-table" width="48%" class="left-table odd-table signature" cellspacing="0">
                 <tr class="even">
-                    <td class="small-height"><b>Teacher-in-charge</b></td>
+                    <td class="small-height"><b>Signature of Parent</b></td>
                 </tr> 
                 <tr class="even">
                    <td></td>
                 </tr> 
               </table>
+              <% else %>
+              <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
+                <tr class="even">
+                    <td class="small-height"><b>Class Teacher's Signature</b></td>
+                    <td class="small-height"><b>Teacher in charge's Signature</b></td>
+                    <td class="small-height"><b>Parent's Signature</b></td>
+                </tr> 
+                <tr class="even">
+                   <td></td>
+                   <td></td>
+                   <td></td>
+                </tr> 
+              </table>
+              <% end %>
 
               
 

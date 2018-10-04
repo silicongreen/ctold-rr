@@ -439,26 +439,99 @@ class TimetableEntries extends CActiveRecord {
     }
     public function getTotalClassTeacher($date,$employee_id)
     {
+        $school_id = Yii::app()->user->schoolId;
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.id, t.weekday_id,t.class_timing_id';
+        $criteria->compare('t.school_id', $school_id);
         $cur_day_name = Settings::getCurrentDay($date);
         $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
+       
+        $criteria->compare('t.weekday_id', $cur_day_key);
+        $criteria->compare('t.employee_id', $emplyee_id);
+        
+        $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
+        $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
+        $criteria->addCondition("subjectDetails.elective_group_id is null");
+        $criteria->order = 'classTimingDetails.start_time ASC';
+       
+        $criteria->with=array('classTimingDetails',
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data = $this->findAll($criteria);
+        
+        $data = $this->checkDataOkAndReturn($data);
+        
         
         $criteria = new CDbCriteria;
-        $criteria->together = true;
-        $criteria->select = 't.id';
-        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+        $criteria->select = 't.id, t.weekday_id,t.class_timing_id';
+        $criteria->compare('t.school_id', $school_id);
         $criteria->compare('t.weekday_id', $cur_day_key);
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
-        $criteria->compare('t.employee_id', $employee_id);
+        $criteria->addCondition("subjectDetails.elective_group_id is not null");
+        $criteria->order = 'classTimingDetails.start_time ASC';
+       
         $criteria->with=array('classTimingDetails',
-                              'batchDetails', 
-                              'timeTableDetails');
-        $data = $this->findAll($criteria);
-        $data = $this->checkDataOkAndReturn($data);
+                               'batchDetails'=>array("with"=>"courseDetails"), 
+                                'subjectDetails', 
+                                'employeeDetails', 
+                                'timeTableDetails');
+
+        $data2 = $this->findAll($criteria); 
+        $data2 = $this->checkDataOkAndReturn($data2);
         
-        if($data)
+        
+        
+        $emp_sub = new EmployeesSubjects();
+        
+        $employees_subject = $emp_sub->getEmployeeElective($emplyee_id);
+   
+        
+        
+        $all_routine = $data;
+        if($employees_subject)
         {
-            return count($data);
+            if (!empty($data2)) {
+
+                foreach($data2 as $row)
+                {
+                   
+                   $sub_obj = new Subjects();
+                   $e_subject = $sub_obj->getSubjectElectiveGroup($row['subjectDetails']->elective_group_id);
+                  
+                   if($e_subject)
+                   {
+                        foreach($e_subject as $esvalue)
+                        {
+                            
+                             if(in_array($esvalue->id, $employees_subject))
+                             {
+                                
+                                 $new_row['subjectDetails'] = $esvalue;
+                                 $new_row['employeeDetails'] = $row['employeeDetails'];
+                                 $new_row['timeTableDetails'] = $row['timeTableDetails'];
+                                 $new_row['classTimingDetails'] = $row['classTimingDetails'];
+                                 $new_row['batchDetails'] = $row['batchDetails'];
+                                 $new_row['batchDetails']['courseDetails'] = $row['batchDetails']['courseDetails'];
+                                 $new_row['weekday_id'] = $row->weekday_id;
+                                
+                                 $all_routine[] = $new_row;
+                                
+                                 
+                             }
+                        }
+                   }
+
+                }
+            }  
+        }
+        
+        if($all_routine)
+        {
+            return count($all_routine);
         }
         else
         {

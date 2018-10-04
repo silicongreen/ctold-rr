@@ -43,6 +43,7 @@
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
+      <% ass_full_mark = 0 %>
       <% colspan = 0 %>
       <table id="pdf-table" width="98%" cellspacing="0">
         <tr class="table-header">
@@ -50,14 +51,26 @@
           <td>Name</td>
           <% total_full_mark = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] != "5" %>
             <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
             <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
-            <% colspan = colspan+1 %>
+            <% end %>
           <% end %>  
-          
           <td>Total(<%= total_full_mark.to_i %>)</td>
-          <% half_total = (total_full_mark.to_f/2.00) %>
-          <td>AVG(<%= half_total.to_i %>)</td>
+          <% half_total1 = (total_full_mark.to_f/2.00) %>
+          <td>AVG(<%= half_total1.to_i %>)</td>
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] == "5" %>
+            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+            <% ass_full_mark = ass_full_mark+rs['maximum_marks'].to_i %>
+            <% end %>
+          <% end %>
+          <% total_full_mark = half_total1+ass_full_mark %>
+          <% if ass_full_mark > 0 %>
+            <td>Total(<%= total_full_mark.to_i %>)</td>
+            <% half_total = (total_full_mark.to_f/2.00) %>
+            <td>AVG(<%= half_total.to_i %>)</td>
+          <% end %>
           <td>Grade</td>
         
         </tr>
@@ -129,6 +142,8 @@
             <% total_mark_2 = half_mark.round()*2 %>
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %>
+           <td><%= total_mark.round() %></td>
+           <td><%= half_mark.round() %></td>
            <%
            if assessment_full_mark > 0
               total_mark_with_assessment = half_mark+assessment_total_mark
@@ -138,8 +153,10 @@
               main_mark = (total_mark_2.to_f/full_mark.to_f)*100
             end
           %>
+           <% if assessment_full_mark > 0 %>
            <td><%= total_mark.round() %></td>
            <td><%= half_mark.round() %></td>
+           <% end %>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

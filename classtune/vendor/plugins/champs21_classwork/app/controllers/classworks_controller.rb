@@ -423,12 +423,12 @@ class ClassworksController < ApplicationController
                 Delayed::Job.enqueue(
                   DelayedReminderJob.new( :sender_id  => current_user.id,
                     :recipient_ids => available_user_ids,
-                    :subject=>"New classwork added for #{@subject.name}",
+                    :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
                     :rtype=>31,
                     :rid=>@classwork.id,
                     :student_id => 0,
                     :batch_id => 0,
-                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_classwork')}")
+                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
                 )
               end
           end 
@@ -575,12 +575,12 @@ class ClassworksController < ApplicationController
               Delayed::Job.enqueue(
                 DelayedReminderJob.new( :sender_id  => current_user.id,
                     :recipient_ids => available_user_ids,
-                    :subject=>"New classwork added for #{@subject.name}",
+                    :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
                     :rtype=>31,
                     :rid=>@classwork.id,
                     :student_id => 0,
                     :batch_id => 0,
-                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}). <br/>#{t('view_reports_classwork')}")
+                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
                 )
           end
         end

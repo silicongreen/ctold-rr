@@ -531,7 +531,12 @@ class TimetableEntries extends CActiveRecord {
         
         if($all_routine)
         {
-            return count($all_routine);
+            $time_table = $this->formatTimeTable($all_routine, false, true);
+            usort($time_table, function($a, $b) {
+                            return $a['class_start_time'] - $b['class_start_time'];
+            });
+          
+            return count($time_table);
         }
         else
         {

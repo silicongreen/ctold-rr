@@ -512,7 +512,7 @@
                 <div class="top-right-main">
                     <%#*<div id='msg-count'>#{reminder_count}</div>%>
                   <%= link_to "<div class='top-right-link'><div id='message-link-img'><div id='msg-count'>#{reminder_count}</div></div></div>", :controller => "/reminder", :action => "index" %>
-                  <div class="nav-description">
+                  <div class="nav-description" style="max-height:750px; overflow:auto;">
                     <% all_new_reminders.each do |ur| %>
                       <p><%= link_to "#{ur.body} - Published : #{ur.created_at.strftime("%d-%m-%Y")}",  :controller=>"reminder", :action=>"view_reminder",:id2=>ur.id %></p>
                     <% end %>

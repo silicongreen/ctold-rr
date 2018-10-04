@@ -447,7 +447,7 @@ class TimetableEntries extends CActiveRecord {
         $cur_day_key = Settings::$ar_weekdays_key[$cur_day_name];
        
         $criteria->compare('t.weekday_id', $cur_day_key);
-        $criteria->compare('t.employee_id', $emplyee_id);
+        $criteria->compare('t.employee_id', $employee_id);
         
         $criteria->addCondition("timeTableDetails.start_date <= '" . $date . "' ");
         $criteria->addCondition("timeTableDetails.end_date >= '" . $date . "' ");
@@ -487,7 +487,7 @@ class TimetableEntries extends CActiveRecord {
         
         $emp_sub = new EmployeesSubjects();
         
-        $employees_subject = $emp_sub->getEmployeeElective($emplyee_id);
+        $employees_subject = $emp_sub->getEmployeeElective($employee_id);
    
         
         

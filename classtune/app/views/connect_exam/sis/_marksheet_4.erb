@@ -56,7 +56,7 @@
             <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
             <% end %>
           <% end %>  
-          <td>Total(<%= total_full_mark.to_i %>)</td>
+          
           <% half_total1 = (total_full_mark.to_f/2.00) %>
           <td>AVG(<%= half_total1.to_i %>)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
@@ -67,9 +67,8 @@
           <% end %>
           <% total_full_mark = half_total1+ass_full_mark %>
           <% if ass_full_mark > 0 %>
-            <td>Total(<%= total_full_mark.to_i %>)</td>
             <% half_total = (total_full_mark.to_f/2.00) %>
-            <td>AVG(<%= half_total.to_i %>)</td>
+            <td>Total AVG(<%= half_total.to_i %>)</td>
           <% end %>
           <td>Grade</td>
         
@@ -109,7 +108,7 @@
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['name'] %></td>
+            <td><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
@@ -142,7 +141,7 @@
             <% total_mark_2 = half_mark.round()*2 %>
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %>
-           <td><%= total_mark.round() %></td>
+           
            <td><%= half_mark.round() %></td>
            <%
            if assessment_full_mark > 0
@@ -154,7 +153,6 @@
             end
           %>
            <% if assessment_full_mark > 0 %>
-           <td><%= total_mark.round() %></td>
            <td><%= half_mark.round() %></td>
            <% end %>
 

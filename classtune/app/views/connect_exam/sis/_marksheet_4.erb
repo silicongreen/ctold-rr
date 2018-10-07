@@ -149,7 +149,7 @@
               half_mark = total_mark_with_assessment.to_f/2
               full_mark = full_mark+assessment_full_mark
               total_mark_2 = half_mark.round()*2
-              main_mark = (total_mark_2.to_f/full_mark.to_f)*100
+              main_mark = (half_mark.round.to_f/20)*100
             end
           %>
            <% if assessment_full_mark > 0 %>

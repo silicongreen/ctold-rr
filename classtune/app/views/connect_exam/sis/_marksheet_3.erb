@@ -94,7 +94,7 @@
               
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td><%= std['class_roll_no'] %></td>
-            <td class="name-std"><%= std['name'] %></td>
+            <td><%= std['name'] %></td>
             <% @report_data['result']['ALL'].each do |rs| %>
               <td>
               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>

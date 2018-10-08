@@ -125,6 +125,85 @@ class EmployeeController < ApplicationController
     render :partial => "employee_add_attendance"
   end
   
+  
+  def employee_create_attendance_all
+    error = false
+    error_all = true
+    @date_today = params[:attandence_date].to_date
+    params[:card_attendnace].each_pair do |user_id, details|
+      CardAttendance.delete_all(:user_id => user_id,:date => @date_today)
+      if !details[:present].blank? && details[:present].to_i == 1
+        @employee = Employee.find_by_user_id(user_id)
+        @c_att = CardAttendance.new
+        @c_att.time = "#{@date_today} #{details[:in_time]['minute_step5(4i)']}:#{details[:in_time]['minute_step5(5i)']}"
+        @c_att.date = @date_today
+        @c_att.type = 1
+        @c_att.type_data = 1
+        @c_att.profile_id = @employee.id
+        @c_att.user_id = @employee.user_id
+        @c_att.save 
+        
+        @c_att2 = CardAttendance.new
+        @c_att2.time = "#{@date_today} #{details[:out_time]['minute_step5(4i)']}:#{details[:out_time]['minute_step5(5i)']}"
+        @c_att2.date = @date_today
+        @c_att2.type = 1
+        @c_att2.type_data = 1
+        @c_att2.profile_id = @employee.id
+        @c_att2.user_id = @employee.user_id
+        
+        if @c_att2.save 
+
+          @attendance = EmployeeAttendance.find_by_attendance_date_and_employee_id(@c_att.date,@employee.id)
+          unless @attendance.blank?
+            unless @attendance.employee_leave_type_id.blank?
+              @reset_count = EmployeeLeave.find_by_employee_id(@attendance.employee_id, :conditions=> "employee_leave_type_id = '#{@attendance.employee_leave_type_id}'")
+              leaves_taken = @reset_count.leave_taken
+              total_employee_leave = @reset_count.leave_count
+              created_at = @attendance.created_at || @attendance.attendance_date.to_datetime
+              reset_date = @reset_count.reset_date
+              if created_at > reset_date
+                if @attendance.is_half_day
+                  leave = leaves_taken - (0.5)
+                else
+                  leave = leaves_taken - (1)
+                end
+                @reset_count.update_attributes(:leave_taken => leave)
+              else
+                if @attendance.is_half_day
+                  total_leave = total_employee_leave.to_f + (0.5)
+                else
+                  total_leave = total_employee_leave.to_f + (1)
+                end
+                @reset_count.update_attributes(:leave_count => total_leave)
+              end
+
+            end
+            @attendance.delete
+          end 
+          flash[:notice] = "#{t('employee_attendance_added')}"
+        else
+          flash[:notice] = "#{t('something_went_wrong')}"
+        end
+      end
+    end
+    if error == false
+      flash[:notice] = "#{t('employee_attendance_added')}"
+    elsif error_all = false
+      flash[:notice] = "Employee Attendance added with some error"
+    else
+      flash[:notice] = "#{t('something_went_wrong')}"
+    end 
+    department_id = params[:department_id]
+    @dept_id = department_id
+    @employees = Employee.find_all_by_employee_department_id(department_id,:order=>'first_name ASC')
+    employess_id = @employees.map(&:user_id)
+    @report_date = @date_today.strftime("%Y-%m-%d")
+    @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date = '" + @report_date + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+    render :update do |page|
+      page.replace_html 'employee_list', :partial => 'employee_view_all_list', :object => @employees
+    end
+  end
+  
   def employee_create_attendance
     @employee = Employee.find(params[:id])
     @c_att = CardAttendance.new
@@ -1357,7 +1436,18 @@ ORDER BY emp.first_name ASC"
 
   def employees_list
     department_id = params[:department_id]
+    @dept_id = department_id
     @employees = Employee.find_all_by_employee_department_id(department_id,:order=>'first_name ASC')
+    employess_id = @employees.map(&:user_id)
+    unless params[:new_date].blank?
+      @date_today = params[:new_date].to_date
+      @report_date = @date_today.strftime("%Y-%m-%d")
+    else
+      @date_today = @local_tzone_time.to_date
+      @report_date = @date_today.strftime("%Y-%m-%d")
+    end
+    @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date = '" + @report_date + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+    
 
     render :update do |page|
       page.replace_html 'employee_list', :partial => 'employee_view_all_list', :object => @employees

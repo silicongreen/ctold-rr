@@ -305,9 +305,14 @@
                             <% main_mark = 0 %>
                             <% subject_mark_half = 0 %>
                             <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
-                              <% subject_mark_half = (subject_obtain_mark.to_f/2.00) %>
-                              <% subject_obtain_mark = subject_mark_half.round()*2 %>
-                              <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
+                              <% if subject_full_mark > 20 %>
+                                <% subject_mark_half = (subject_obtain_mark.to_f/2.00) %>
+                                <% subject_obtain_mark = subject_mark_half.round()*2 %>
+                                <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %> 
+                              <% else %>
+                                <% subject_mark_half = subject_obtain_mark.round() %>
+                                <% main_mark = (subject_mark_half.to_f/subject_full_mark.to_f)*100 %> 
+                              <% end %>
                             <% end %> 
                             <%
                             if subject_full_mark_assessment > 0 && subject_obtain_mark_assessment > 0

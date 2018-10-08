@@ -1606,7 +1606,8 @@ authorization do
       :edit_employee_settings,
       :employee_settings,
       :employee_add_attendance,
-      :employee_create_attendance
+      :employee_create_attendance,
+      :employee_create_attendance_all
     ]
     has_permission_on [:employee_attendances],
       :to => [
@@ -2950,7 +2951,8 @@ authorization do
       :edit_employee_settings,
       :employee_settings,
       :employee_add_attendance,
-      :employee_create_attendance
+      :employee_create_attendance,
+      :employee_create_attendance_all
 
     ]
     has_permission_on [:calendar], :to => [:event_delete, :event_list,:edit_acacal,:addacacal,:cancel_acacal]

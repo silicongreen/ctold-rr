@@ -251,7 +251,7 @@
                                                             <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
                                                             <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
                                                           </select>
-                                                      <% elsif @batch.course.course_name == "III" or @batch.course.course_name == "IV" or @batch.course.course_name == "STD-III" or @batch.course.course_name == "STD-IV" %>
+                                                      <% elsif @batch.course.course_name == "III" or @batch.course.course_name == "V" or @batch.course.course_name == "STD-V" or  @batch.course.course_name == "IV" or @batch.course.course_name == "STD-III" or @batch.course.course_name == "STD-IV" %>
                                                           <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                             <option value="NA" >Select</option>
                                                             <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
@@ -263,7 +263,7 @@
                                                             <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
                                                             <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
                                                           </select>
-                                                      <% elsif @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-V" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
+                                                      <% elsif  @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
                                                           <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                             <option value="NA" >Select</option>
                                                             <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>

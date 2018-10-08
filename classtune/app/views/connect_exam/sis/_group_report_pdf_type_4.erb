@@ -96,7 +96,7 @@
                             show_marks = total_mark_with_assessment.to_f/2
                             full_mark = full_mark+assessment_full_mark
                             total_mark = show_marks.round()*2
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100
+                            main_mark = (show_marks.round().to_f/20.00)*100
                           end  
                           
                         %>
@@ -194,7 +194,7 @@
                     <td class="col-pdf">R/IR</td>
                   </tr>
                   <% total_comments_grade = total_comments_grade+6 %>
-                <% elsif @batch.course.course_name == "III" or @batch.course.course_name == "IV" or @batch.course.course_name == "STD-III" or @batch.course.course_name == "STD-IV" %>
+                <% elsif @batch.course.course_name == "III" or @batch.course.course_name == "V" or @batch.course.course_name == "IV" or @batch.course.course_name == "STD-III" or @batch.course.course_name == "STD-IV" or @batch.course.course_name == "STD-V" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>
                     <td class="col-pdf">A+</td>
@@ -224,7 +224,7 @@
                     <td class="col-pdf">R/IR</td>
                   </tr>
                   <% total_comments_grade = total_comments_grade+7 %>
-                <% elsif @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" or @batch.course.course_name == "STD-V" or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
+                <% elsif  @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "STD-VI" or @batch.course.course_name == "STD-VII" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>
                     <td class="col-pdf">A+</td>

@@ -56,8 +56,11 @@
             <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
             <% end %>
           <% end %>  
-          
-          <% half_total1 = (total_full_mark.to_f/2.00) %>
+          <% if total_full_mark > 20 %>
+            <% half_total1 = (total_full_mark.to_f/2.00) %>
+          <% else %>
+            <% half_total1 = total_full_mark.to_f %>
+          <% end %>  
           <td>AVG(<%= half_total1.to_i %>)</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == "5" %>

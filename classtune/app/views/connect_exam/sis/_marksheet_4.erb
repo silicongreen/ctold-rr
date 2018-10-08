@@ -124,7 +124,7 @@
                 <% end %> 
               </td>
               <% else %>
-              <td>
+            
                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                       
                       <% assessment_total_mark = assessment_total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
@@ -135,7 +135,7 @@
                     <% assessment_full_mark = assessment_full_mark+rs['maximum_marks'].to_i %> 
                   <% end %> 
                     
-              </td>
+            
               <% end %> 
               
               

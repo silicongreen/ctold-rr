@@ -317,7 +317,7 @@
                             <%
                             if subject_full_mark_assessment > 0 && subject_obtain_mark_assessment > 0
                                total_mark_with_assessment = subject_mark_half+subject_obtain_mark_assessment
-                               subject_mark_half = subject_mark_half.to_f/2
+                               subject_mark_half = total_mark_with_assessment.to_f/2
                                subject_full_mark = subject_full_mark+subject_full_mark_assessment
                                subject_obtain_mark = subject_mark_half.round()*2
                                main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100

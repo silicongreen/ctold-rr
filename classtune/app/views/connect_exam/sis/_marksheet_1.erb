@@ -120,8 +120,12 @@
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %>    
            
-           <td><%= total_mark.round() %></td>
-           <td><%= half_mark.round() %></td>
+           <% class_name = "" %>    
+           <% if main_mark.round().to_i < 50 %>   
+              <% class_name = "class='color-red'" %> 
+           <% end %>   
+           <td <%= class_name %>><%= total_mark.round() %></td>
+           <td <%= class_name %>><%= half_mark.round() %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

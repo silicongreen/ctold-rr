@@ -43,7 +43,7 @@
               end %>
 
               <b style="color:#000;"><%= @category %></b></div>  
-            <div class="subcontent-date"><b style="color:#000;">Post On : </b><%= time_ago_in_words(r.created_at) %> <%= t('ago') %></div>
+            <div class="subcontent-date"><b style="color:#000;">Post On : </b><%= I18n.l(r.created_at,:format=>"%A, %d %B, %Y") %></div>
           </div>
           <div class='timetable_last'>
             <%=  link_to "View", :controller => 'news', :action => 'view', :id => r.id%>

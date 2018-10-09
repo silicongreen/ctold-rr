@@ -304,7 +304,13 @@
                               <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>   
                             <% end %> 
                             <% if has_exam == true %>
-                              <td>
+                              <% 
+                              class_name = ""
+                              if main_mark.round().to_i < 50
+                                class_name = "class='color-red'"
+                              end  
+                              %>
+                              <td <%= class_name %>>
                                   <% total_mark = total_mark+subject_mark_half.to_f %>
                                   <%= sprintf( "%0.02f", subject_mark_half) %><hr/>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

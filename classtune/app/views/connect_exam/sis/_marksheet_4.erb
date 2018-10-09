@@ -157,8 +157,10 @@
                <% main_mark = (total_mark.round().to_f/full_mark.to_f)*100 %>       
             <% end %>         
            <% end %>
+         
+              
            
-           <td><%= half_mark.round() %></td>
+           
            <%
            if assessment_full_mark > 0
               total_mark_with_assessment = half_mark+assessment_total_mark.round()
@@ -166,11 +168,17 @@
               full_mark = full_mark+assessment_full_mark
               total_mark_2 = half_mark.round()*2
               main_mark = (half_mark.round.to_f/20)*100
+              
             end
           %>
+           <% class_name = "" %> 
+           <% if main_mark.round().to_i < 50 %>   
+              <% class_name = "class='color-red'" %> 
+           <% end %>
+           <td <%= class_name %>><%= half_mark.round() %></td>
            <% if assessment_full_mark > 0 %>
            <td><%= assessment_total_mark.round() %></td>
-           <td><%= half_mark.round() %></td>
+           <td <%= class_name %>><%= half_mark.round() %></td>
            <% end %>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

@@ -1,6 +1,6 @@
 <% form_for(@student, :url => {:action=> 'show'}, :html=> {:id=>'new_student'}) do |s| %>
   <div id="page-yield" style="margin-top:0px;">  
-      <% if @current_user.admin? %>
+      <% if @current_user.admin? or Multischool.current_school.id == 325 %>
       <div class="label-field-pair" style="float:left; clear:both; width:80%; margin-bottom:5px;">
        <label for="duedate">Select date</label>
        <div  class="text-input-bg">

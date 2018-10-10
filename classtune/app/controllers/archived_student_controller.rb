@@ -41,6 +41,14 @@ class ArchivedStudentController < ApplicationController
       format.js { render :action => 'edit_leaving_date' }
     end
   end
+  
+  def edit_leaving_reason
+    @archived_student = ArchivedStudent.find(params[:id])
+    respond_to do |format|
+      format.html { }
+      format.js { render :action => 'edit_leaving_reason' }
+    end
+  end
 
   def show
     @student = ArchivedStudent.find_by_admission_no(params[:id])

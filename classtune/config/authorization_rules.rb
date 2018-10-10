@@ -687,7 +687,7 @@ authorization do
       :fee_details,
       :destroy
     ]
-    has_permission_on [:archived_student], :to=>[:edit_leaving_date]
+    has_permission_on [:archived_student], :to=>[:edit_leaving_date,:edit_leaving_reason]
   end
 
   role :students_control do
@@ -788,7 +788,9 @@ authorization do
       :graph_for_generated_report,
       :graph_for_generated_report_all_subject,
       :graph_for_previous_years_marks_overview,
-      :edit_leaving_date
+      :edit_leaving_date,
+      :edit_leaving_reason
+      
     ]
     has_permission_on [:exam],
       :to =>[
@@ -2731,7 +2733,9 @@ authorization do
       :graph_for_generated_report3,
       :graph_for_generated_report_all_subject,
       :graph_for_previous_years_marks_overview,
-      :edit_leaving_date
+      :edit_leaving_date,
+      :edit_leaving_reason
+      
     ]
     has_permission_on [:subject],
       :to => [

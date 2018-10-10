@@ -1847,8 +1847,19 @@ class StudentController < ApplicationController
     @old_batches = @student.graduated_batches
   end
 
-  def search_ajax    
-    if params[:option] == "active" or params[:option]=="sibling"
+  def search_ajax  
+    if params[:option] == "guardian"
+      @gur_bool = true
+      if params[:query].length>= 3
+        params[:query].gsub! '+', ' '
+        @guardians = Guardian.find(:all,
+          :conditions => ["first_name LIKE ?  OR last_name LIKE ?
+                          OR (concat(first_name, \" \", last_name) LIKE ? )",
+            "#{params[:query]}%","#{params[:query]}%","%#{params[:query]}%"],
+          :order => "first_name asc") unless params[:query] == ''
+      end 
+      render :partial => "search_ajax"
+    elsif params[:option] == "active" or params[:option]=="sibling"
       if params[:query].length>= 3
         params[:query].gsub! '+', ' '
         @students = Student.active.find(:all,

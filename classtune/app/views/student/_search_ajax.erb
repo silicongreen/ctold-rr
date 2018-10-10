@@ -17,30 +17,67 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <table class="table" align="center" width="100%" cellpadding="1" cellspacing="1">
-  <% unless @archived_students.blank? %>
+  <% unless @gur_bool.blank? %>
+    <% unless @guardians.blank? %>
+      <thead>
+        <tr>
+          <th scope="col"><%= t('sl_no') %></th>
+          <th scope="col">Guardian Name</th>
+          <th scope="col">Students</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @guardians.each_with_index do |guardian, i| %>
+          <% students = guardian.guardian_student %>
+        <% unless students.blank? %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><%= guardian.first_name %> <%=  guardian.last_name %></td>
+          <td>
+            
+            <% students.each_with_index do |student, i| %>
+              <p><%= link_to student.full_name+" ("+student.batch.full_name+")", {:controller => 'student', :action => 'profile', :id => student.id} %></p>
+            <% end %>  
+              
+          </td>
+          
+        </tr>
+        <% end %>
+      <% end %>
+      </tbody>  
+    <% else %>
     <thead>
       <tr>
-        <th scope="col"><%= t('sl_no') %></th>
-        <th scope="col"><%= t('first_name') %></th>
-        <th scope="col"><%= t('batch') %></th>
-        <th scope="col"><%= t('adm_no') %></th>
+        <th scope="col"><%= t('no_students_found') %></th>
       </tr>
-    </thead>
-    <tbody>
-    <% @archived_students.each_with_index do |student, i| %>
-      <tr>
-        <td><%= i+1 %></td>
-        <td><%= link_to student.full_name, {:controller => 'archived_student', :action => 'profile', :id => student.id} %></td>
-        <td><%= student.batch.full_name %></td>
-        <td><%= student.admission_no %></td>
-      </tr>
+     </thead>  
     <% end %>
-    </tbody>  
-  <% else %>
-  <thead>
-    <tr>
-      <th scope="col"><%= t('no_students_found') %></th>
-    </tr>
-   </thead>  
-  <% end %>
+  <% else %>  
+    <% unless @archived_students.blank? %>
+      <thead>
+        <tr>
+          <th scope="col"><%= t('sl_no') %></th>
+          <th scope="col"><%= t('first_name') %></th>
+          <th scope="col"><%= t('batch') %></th>
+          <th scope="col"><%= t('adm_no') %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @archived_students.each_with_index do |student, i| %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><%= link_to student.full_name, {:controller => 'archived_student', :action => 'profile', :id => student.id} %></td>
+          <td><%= student.batch.full_name %></td>
+          <td><%= student.admission_no %></td>
+        </tr>
+      <% end %>
+      </tbody>  
+    <% else %>
+    <thead>
+      <tr>
+        <th scope="col"><%= t('no_students_found') %></th>
+      </tr>
+     </thead>  
+    <% end %>
+  <% end %> 
 </table>

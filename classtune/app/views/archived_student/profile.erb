@@ -105,7 +105,7 @@
       
 
       <% if permitted_to? :edit_leaving_reason,:archived_student %>
-        <tr class="even left"><td><%= t('reason_for_leaving') %></td><td class="right"><div id="leaving-reason"><%= @archived_student.status_description %></div>&nbsp;&nbsp;(<%= link_to_remote "#{t('change')}", :url=> {:controller => 'archived_student', :action => 'edit_leaving_reason', :id => @archived_student.id}, :method=>:get %>)</td></tr>
+        <tr class="even left"><td><%= t('reason_for_leaving') %></td><td class="right"><div id="leaving-reason"><%= @archived_student.status_description %></div>(<%= link_to_remote "#{t('change')}", :url=> {:controller => 'archived_student', :action => 'edit_leaving_reason', :id => @archived_student.id}, :method=>:get %>)</td></tr>
         <% else %>
           <tr class="even left"><td><%= t('reason_for_leaving') %></td><td class="right"><div id="leaving-reason"><%= @archived_student.status_description %></div></td></tr>
       <% end %>

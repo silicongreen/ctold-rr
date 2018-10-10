@@ -89,10 +89,10 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left">-</td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                           </tr> 
                                           <% break %>
@@ -114,13 +114,13 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left">-</td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                        <% else %>
-                                           <td class="col-pdf no-warp align-left">-</td> 
+                                           <td class="col-pdf no-warp">-</td> 
                                        <% end %>     
                                     <% end %>
                                     </tr>          
@@ -170,17 +170,17 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left">-</td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                           </tr> 
                                           <% break %>
                                         <% else %>
                                             <tr class="even">
                                               <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
-                                             <td class="col-pdf no-warp align-left">-</td> 
+                                             <td class="col-pdf no-warp">-</td> 
                                             </tr>
                                             <% break %>
                                          <% end %>
@@ -196,13 +196,13 @@
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left">-</td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                        <% else %>
-                                           <td class="col-pdf no-warp align-left">-</td> 
+                                           <td class="col-pdf no-warp">-</td> 
                                        <% end %>     
                                     <% end %>
                                     </tr>          

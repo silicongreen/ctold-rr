@@ -806,6 +806,8 @@ def show
     @date_to_use = @local_tzone_time.to_date
   elsif current_user.admin?
     @date_to_use = params[:attandence_date].to_date
+  elsif MultiSchool.current_school.id == 325 
+    @date_to_use = params[:attandence_date].to_date
   else
     @date_to_use = @local_tzone_time.to_date
   end  

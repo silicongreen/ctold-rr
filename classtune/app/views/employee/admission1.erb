@@ -81,6 +81,12 @@
       <% end %>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
+        <label for="emp_all_access">Enable Swap</label>
+        <div class="text-input-bg"><%= select :employee, :swap_class, [["Yes","1"],["No","0"]] %></div>
+      </div>
+      
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
         <label for="employee_joining_date"><%= t('joining_date') %></label>
         <div class="text-input-bg"><%= calendar_date_select_tag 'employee[joining_date]', I18n.l(Date.today,:format=>"%d %b %Y"),
             :year_range => 83.years.ago..0.years.from_now , :popup=>"force"%></div>

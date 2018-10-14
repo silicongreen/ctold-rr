@@ -144,6 +144,11 @@
                           <% end %>
                     </div>
                     <div class="form-group col-sm-6 even">
+                        <label for="admission_class"><%= "Admitted Class" %> </label>
+                        <%= select :student, :admission_class, options_for_select(Course.active.find(:all).map {|c| [c.course_name+" "+c.section_name, c.id]}, @student.admission_class.to_i),
+                        {:prompt => "Select Class"} %>
+                    </div>
+                    <div class="form-group col-sm-6">
                         <label for="class_roll_no"><%= t('roll_number') %> </label>
                         <%= s.text_field :class_roll_no, :class=>"form-control" %>
                     </div>
@@ -152,24 +157,24 @@
                         <%= s.text_field :card_number %>
                     </div>
 
-                    <div class="form-group col-sm-6">
+                    <div class="form-group col-sm-6 even">
                         <label for="student_email"><%= t('email_for_school_use') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
                         <%= s.text_field :email, :class=>"form-control" %>
                     </div>
-                    <div class="form-group col-sm-6 even">
+                    <div class="form-group col-sm-6">
                         <label for="student_email"><%= t('password') %><span class="necessary-field">*</span></label>
                         <%= s.password_field :pass, :autocomplete=>"new-password", :class=>"form-control" %>
                     </div>
-                    <div class="form-group col-sm-6">
+                    <div class="form-group col-sm-6 even">
                       <label for="student_phone2"><%= "Designated Number for SMS" %><span class="necessary-field">*</span></label>
                       <%= s.text_field :sms_number, :class=>"form-control" %>
                     </div>
                     <% if MultiSchool.current_school.id == 340  %>
-                    <div class="form-group col-sm-6 even">
+                    <div class="form-group col-sm-6">
                       <label for="student_phone2"><%= "Form Serial Number" %><span class="necessary-field">*</span></label>
                       <%= s.text_field :serial_no, :class=>"form-control" %>
                     </div>
-                    <div class="form-group col-sm-6" >
+                    <div class="form-group col-sm-6 even" >
                         <label for="advisor_id"><%= "Advisor" %></label>
                         <%= select :student, :advisor_id, options_for_select(Employee.find(:all,:order=>"first_name asc, last_name asc",:conditions=>["is_advisor = ?",true]).map {|c| [c.full_name, c.id]}), { :prompt => "Select Advisor" } %>
                     </div>

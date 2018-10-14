@@ -1,0 +1,14 @@
+if request.post?
+  if @archived_student.update_attributes(params[:archived_student])
+    page.replace_html 'form-errors', :text => ''
+    page.replace_html 'leaving-reason', :text => "#{@archived_student.status_description}"
+    page.replace_html 'flash-box', :text=>"<p class='flash-msg'>Leaving Reason Updated</p>"
+    page << "Modalbox.hide();"
+  else
+    page.replace_html 'form-errors', :partial => 'errors', :object => @archived_student
+    page.visual_effect(:highlight, 'form-errors')
+  end
+else
+  page.replace_html 'modal-box', :partial => 'edit_leaving_reason'
+  page << "Modalbox.show($('modal-box'), {title: 'Edit Leaving Reason', width: 500});"
+end

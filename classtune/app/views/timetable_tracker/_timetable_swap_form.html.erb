@@ -1,4 +1,19 @@
 <% form_remote_for :timetable, :url => {:action => 'timetable_swap',:timetable_entry_id=>params[:timetable_entry_id],:date=>params[:date],:timetable_swap_id=>params[:timetable_swap_id],:batch_id=>params[:batch_id]} ,:loaded=>"$('entry_#{params[:timetable_entry_id]}').show();Element.hide('loader_#{params[:timetable_entry_id]}'); $('link_#{params[:timetable_entry_id]}').hide();" do |form| %>
+  <% unless @preferred_employee.blank? %>
+    <div id=<%= "employee_list_#{params[:timetable_entry_id]}" %>>
+      <div class="label-field-pair1">
+        <% @employees=[] %>
+        <div class="text-input-bg1"><%= select :timetable, :employee_id,
+            @preferred_employee.map {|d| [d.full_name+"("+@preferred_employee_batch[d.id.to_s]+")", d.id]},
+            {:prompt => "#{t('select_employee')}"}%></div>
+      </div>
+    </div>
+    <div class="label-field-pair1">
+    <div class="text-input-bg1"><%= select :timetable, :subject_id,
+        options_for_select(@subjects.map {|s| [s.name, s.id]},@subject.id),
+        {:prompt => "#{t('select_subject')}"}%></div>
+    </div>
+  <% else %>
   <div class="label-field-pair1">
     <div class="text-input-bg1"><%= select :timetable, :department_id,
         @departments.map {|d| [d.name, d.id]},
@@ -29,6 +44,7 @@
       :id => "loader_#{params[:timetable_entry_id]}",
       :style =>"display: none;" ) %>
   </div>
+  <% end %>
   <div class="submit" style="margin-right:10px; clear:both; ">
     <%= submit_tag "► #{t('ok')}",:class=>'submit_button',:onclick=>"Element.show('loader_#{params[:timetable_entry_id]}')" %>
   </div>

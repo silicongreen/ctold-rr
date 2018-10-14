@@ -31,6 +31,65 @@ class TimetableTrackerController < ApplicationController
   end
 
   def timetable_swap_from
+    timetable_entry = TimetableEntry.find(params[:timetable_entry_id])
+    @subject = timetable_entry.subject
+    batch = timetable_entry.batch
+    class_timing = timetable_entry.class_timing
+    date_send = params[:date].to_date
+    
+    @att = EmployeeAttendance.find_all_by_attendance_date(date_send)
+    @emp_att_id = []
+    unless @att.blank?
+      @emp_att_id = @att.map(&:employee_id)
+    end
+    
+    @timetables = TimetableEntry.all(:include=>[:class_timing],:conditions=>["weekday_id = ?",timetable_entry.weekday_id])
+    @timetable_employee = []
+    @all_employee = Employee.find(:all,:conditions=>["swap_class= ?",1])
+    
+    unless @timetables.blank?
+      @timetables.each do |timetable|
+        if (
+            ( timetable.class_timing.start_time.strftime("%H%M") >= class_timing.start_time.strftime("%H%M") and 
+             timetable.class_timing.start_time.strftime("%H%M") < class_timing.end_time.strftime("%H%M")) or 
+            (timetable.class_timing.end_time.strftime("%H%M") > class_timing.start_time.strftime("%H%M") and 
+            timetable.class_timing.end_time.strftime("%H%M") <= class_timing.end_time.strftime("%H%M"))
+          )
+          
+          @all_employee.reject!{|e| e.id==timetable.employee_id}
+        end
+      end
+    end
+  
+    @preferred_employee = []
+    @preferred_employee_batch = {}
+    unless @all_employee.blank?
+      @all_employee.each do |employee|
+        if !employee.employees_subjects.blank? and !@emp_att_id.include?(employee.id)
+          employee.employees_subjects.each do |emsubject|
+            if @subject.batch.name == emsubject.subject.batch.name and @subject.batch.course.course_name == emsubject.subject.batch.course.course_name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
+              @preferred_employee << employee
+              @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
+            end
+          end
+        end
+        
+      end
+      @all_employee.each do |employee|
+        if !employee.employees_subjects.blank? and !@emp_att_id.include?(employee.id)
+         
+          employee.employees_subjects.each do |emsubject|
+            if @subject.batch.name == emsubject.subject.batch.name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
+              @preferred_employee << employee
+              @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
+            end
+          end
+        end
+        
+      end
+    end
+    
+    
     batch=Batch.find params[:batch_id]
     @subjects=batch.subjects.active.all(:conditions=>{:elective_group_id=>nil})
     @departments = EmployeeDepartment.all(:joins=>[{:employees=>:employees_subjects}],:order=>"name ASC").uniq

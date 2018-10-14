@@ -45,7 +45,7 @@ class TimetableTrackerController < ApplicationController
     
     @timetables = TimetableEntry.all(:include=>[:class_timing],:conditions=>["weekday_id = ?",timetable_entry.weekday_id])
     @timetable_employee = []
-    @all_employee = Employee.find(:all,:conditions=>["swap_class= ?",1])
+    @all_employee = EmployeesSubject.find(:all,:include=>[{:subject=>{:batch=>[:course]}},:employee],:conditions=>["employees.swap_class= ?",1])
     
     unless @timetables.blank?
       @timetables.each do |timetable|
@@ -56,7 +56,7 @@ class TimetableTrackerController < ApplicationController
             timetable.class_timing.end_time.strftime("%H%M") <= class_timing.end_time.strftime("%H%M"))
           )
           
-          @all_employee.reject!{|e| e.id==timetable.employee_id}
+          @all_employee.reject!{|e| e.employee.id==timetable.employee_id}
         end
       end
     end
@@ -64,28 +64,19 @@ class TimetableTrackerController < ApplicationController
     @preferred_employee = []
     @preferred_employee_batch = {}
     unless @all_employee.blank?
-      @all_employee.each do |employee|
-        if !employee.employees_subjects.blank? and !@emp_att_id.include?(employee.id)
-          employee.employees_subjects.each do |emsubject|
-            if @subject.batch.name == emsubject.subject.batch.name and @subject.batch.course.course_name == emsubject.subject.batch.course.course_name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
-              @preferred_employee << employee
-              @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
-            end
+      @all_employee.each do |emsubject|
+          employee = emsubject.employee
+          if @subject.batch.name == emsubject.subject.batch.name and @subject.batch.course.course_name == emsubject.subject.batch.course.course_name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
+            @preferred_employee << employee
+            @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
           end
-        end
-        
       end
-      @all_employee.each do |employee|
-        if !employee.employees_subjects.blank? and !@emp_att_id.include?(employee.id)
-         
-          employee.employees_subjects.each do |emsubject|
-            if @subject.batch.name == emsubject.subject.batch.name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
-              @preferred_employee << employee
-              @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
-            end
-          end
+      @all_employee.each do |emsubject|
+        employee = emsubject.employee
+        if @subject.batch.name == emsubject.subject.batch.name and (!@subject.name.upcase.index(emsubject.subject.name.upcase).blank? or !emsubject.subject.name.upcase.index(@subject.name.upcase).blank?) and !@preferred_employee.include?(employee)
+          @preferred_employee << employee
+          @preferred_employee_batch[employee.id.to_s] = emsubject.subject.batch.course.course_name
         end
-        
       end
     end
     

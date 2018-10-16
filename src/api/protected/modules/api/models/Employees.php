@@ -429,7 +429,7 @@ class Employees extends CActiveRecord {
             foreach($employees as $value)
             {
                 $users_mapping[$loop]['employee'] = $value; 
-                $iloop++;
+                $loop++;
             }
         }
         return $users_mapping;

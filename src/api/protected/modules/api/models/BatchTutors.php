@@ -95,7 +95,7 @@ class BatchTutors extends CActiveRecord
             $criteria=new CDbCriteria;
             $criteria->select = 't.employee_id';
             $criteria->compare('t.batch_id',$batch_id);
-            $criteria->group = "employee.id";
+            $criteria->group = "t.employee_id";
             $obj_tutor = $this->findAll($criteria); ;
             $obj_employee = array();
             if($obj_tutor)

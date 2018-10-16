@@ -2169,6 +2169,7 @@ class StudentController < ApplicationController
   def guardians
     @sms_module = Configuration.available_modules
     @parents = @student.student_guardian
+    @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", @student.sibling_id,@student.id])
   end
   
   def studentformlist
@@ -2441,7 +2442,16 @@ class StudentController < ApplicationController
     flash[:warn_notice]="<p>Request is Updated.</p>"
     redirect_to :action=>'studentformlist', :id => params[:id], :page => params[:page], :status_id => params[:status_id], :batch_id => params[:batch_id], :form_type => params[:form_type]
   end
-  
+  def del_only_this_guardian
+    guardianstudent = GuardianStudents.find_by_guardian_id_and_student_id(params[:id],params[:student_id])
+    if guardianstudent.destroy
+      flash[:notice] = "#{t('flash6')}"
+      redirect_to :controller => 'student', :action => 'guardians', :id => params[:student_id]
+    else
+      flash[:notice] = "Cant't Delete guardian. Please try agin or contact with administration"
+      redirect_to :controller => 'student', :action => 'profile', :id => params[:student_id]
+    end  
+  end
   def del_guardian
     @guardian = Guardian.find(params[:id])
     @student = Student.find(params[:student_id])

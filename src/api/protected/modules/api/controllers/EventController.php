@@ -556,7 +556,7 @@ class EventController extends Controller
 
                 $emsubject = new EmployeesSubjects();
 
-                $employess = $emsubject->getEmployee($stddata->batch_id);
+                $employess = $emsubject->getEmployee($stddata->batch_id,true);
                 if($employess && !Yii::app()->user->isTeacher)
                 {
                     $notification_ids = array();

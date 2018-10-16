@@ -128,27 +128,38 @@ class EmployeesSubjects extends CActiveRecord
         }
         
         
-        public function getEmployee($batch_id)
+        public function getEmployee($batch_id,$from_leave = false)
         {
-            $criteria = new CDbCriteria;
-            $criteria->select = 't.id';
-            $criteria->compare("subject.batch_id", $batch_id);
-           
-            $criteria->with = array(
-                'subject' => array(
-                    'select' => '',
-                    'joinType' => "INNER JOIN",
-                    
-                ),
-                'employee' => array(
-                    'select' => 'employee.id,employee.user_id,employee.first_name,employee.middle_name,employee.last_name',
-                    'joinType' => "INNER JOIN",
-                    
-                )
-            );
-            $criteria->group = "employee.id";
+            $configuration = new Configurations();
+            $section_manager = $configuration->getValue("LeaveSectionManager");
             
-            $obj_employee = $this->findAll($criteria);
+            if($section_manager == 1 && $from_leave == true)
+            {
+                $batch_tutor = new BatchTutors();
+                $obj_employee = $batch_tutor->get_employees($batch_id);
+            }
+            else
+            {    
+                $criteria = new CDbCriteria;
+                $criteria->select = 't.id';
+                $criteria->compare("subject.batch_id", $batch_id);
+
+                $criteria->with = array(
+                    'subject' => array(
+                        'select' => '',
+                        'joinType' => "INNER JOIN",
+
+                    ),
+                    'employee' => array(
+                        'select' => 'employee.id,employee.user_id,employee.first_name,employee.middle_name,employee.last_name',
+                        'joinType' => "INNER JOIN",
+
+                    )
+                );
+                $criteria->group = "employee.id";
+
+                $obj_employee = $this->findAll($criteria);
+            }
         
            
 

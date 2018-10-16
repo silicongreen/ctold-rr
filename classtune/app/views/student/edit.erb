@@ -115,7 +115,7 @@
                   </div>
                   <div class="form-group col-sm-6 even">
                         <label for="admission_class"><%= "Admitted Class" %> </label>
-                        <%= select :student, :admission_class, options_for_select(Course.active.find(:all).map {|c| [c.course_name+" "+c.section_name, c.id]}, @student.admission_class.to_i),
+                        <%= select :student, :admission_class, options_for_select(Course.active.find(:all, :group => "course_name").map {|c| [c.course_name+" "+c.section_name, c.id]}, @student.admission_class.to_i),
                         {:prompt => "Select Class"} %>
                     </div>
                   <div class="form-group col-sm-6">

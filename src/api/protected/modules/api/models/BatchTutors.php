@@ -94,7 +94,7 @@ class BatchTutors extends CActiveRecord
         public function get_employees($batch_id)
         {
             $criteria=new CDbCriteria;
-            $criteria->select = 't.id';
+            $criteria->select = 't.employee_id';
             $criteria->compare('t.batch_id',$batch_id);
             $criteria->compare('employee.meeting_forwarder',1);
             $criteria->with = array(

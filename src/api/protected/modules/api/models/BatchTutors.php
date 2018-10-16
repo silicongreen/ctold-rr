@@ -40,7 +40,6 @@ class BatchTutors extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                        'employee' => array(self::BELONGS_TO, 'Employees', 'employee_id')
                 );
 	}
 
@@ -96,16 +95,19 @@ class BatchTutors extends CActiveRecord
             $criteria=new CDbCriteria;
             $criteria->select = 't.employee_id';
             $criteria->compare('t.batch_id',$batch_id);
-            $criteria->compare('employee.meeting_forwarder',1);
-            $criteria->with = array(
-                    'employee' => array(
-                        'select' => 'employee.id,employee.user_id,employee.first_name,employee.middle_name,employee.last_name',
-                        'joinType' => "INNER JOIN",
-
-                    )
-            );
             $criteria->group = "employee.id";
-            $obj_employee = $this->findAll($criteria);     
+            $obj_tutor = $this->findAll($criteria); ;
+            $obj_employee = array();
+            if($obj_tutor)
+            {
+                $emp_id = array();
+                foreach($obj_tutor as $value)
+                {
+                   $emp_id[] = $value->employee_id; 
+                } 
+                $employess = new Employees();
+                $obj_employee = $employess->getUserByEmpIds($emp_id);
+            }
             return $obj_employee;
         }
         

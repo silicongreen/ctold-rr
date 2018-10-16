@@ -59,13 +59,47 @@
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>8 && extender ==1 %>
+              </tr> 
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td>
+                      <%=  sub['code'] %><hr/>
+                      Mock-1 | Avg<hr/>
+                      Mock-2 | Grd<hr/>
+                      Ttl | Gp
+                  </td>
+                <% end %> 
+
+                <td>Total</td>
+                <td>Grade Count</td>
+
+              </tr>
+          <% elsif std_count>7 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
-              </tr> 
+              </tr>
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td>
+                      <%=  sub['code'] %><hr/>
+                      Mock-1 | Avg<hr/>
+                      Mock-2 | Grd<hr/>
+                      Ttl | Gp
+                  </td>
+                <% end %> 
+
+                <td>Total</td>
+                <td>Grade Count</td>
+
+              </tr>
           <% end %>    
         
           

@@ -61,13 +61,47 @@
               <% extender = 1 %>
               <tr class="page-break5">
                   <td colspan="100">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>15 && extender ==1 %>
+              </tr> 
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td><%=  sub['code'] %><hr/>Grade</td>
+                <% end %> 
+                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                  <td><%=  sub['code'] %></td>
+                <% end %> 
+
+                <td>Total</td>
+                <td>Position Section</td>
+                <td>Grade Count</td>
+                <%#*<td>Remark</td>%>
+
+              </tr>
+          <% elsif std_count>14 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break6">
                   <td colspan="100">&nbsp;</td>
               </tr> 
+              <tr class="table-header">
+                <td class="col-pdf">Sl.</td>
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Students Name</td>
+                <% @report_data['report']['subjects'].each do |sub| %>
+                  <td><%=  sub['code'] %><hr/>Grade</td>
+                <% end %> 
+                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
+                  <td><%=  sub['code'] %></td>
+                <% end %> 
+
+                <td>Total</td>
+                <td>Position Section</td>
+                <td>Grade Count</td>
+                <%#*<td>Remark</td>%>
+
+              </tr>
           <% end %>    
         
           

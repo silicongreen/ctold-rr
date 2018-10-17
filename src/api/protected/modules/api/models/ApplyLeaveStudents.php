@@ -229,7 +229,7 @@ class ApplyLeaveStudents extends CActiveRecord
                 $empData = $empObj->findByPk($profile_id);
                 if(!isset($empData->meeting_forwarder) || $empData->meeting_forwarder == 0)
                 {
-                    return array();
+                    $batches = array(1284);
                 } 
                 else 
                 {

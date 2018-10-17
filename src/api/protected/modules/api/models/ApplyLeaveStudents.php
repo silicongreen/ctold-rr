@@ -233,9 +233,8 @@ class ApplyLeaveStudents extends CActiveRecord
                 } 
                 else 
                 {
-                    $batch_tutor = new BatchTutors();
-                    $batches = $batch_tutor->get_batch_id(false);
-                    $batches = array(1284);
+                    $esubject = new EmployeesSubjects();
+                    $batches = $esubject->getBatchId($profile_id);;
                 }
             }
             else

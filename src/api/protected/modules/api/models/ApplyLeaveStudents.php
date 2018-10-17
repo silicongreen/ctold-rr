@@ -115,7 +115,7 @@ class ApplyLeaveStudents extends CActiveRecord
             }
             $criteria = new CDbCriteria;
             $criteria->select = "t.id";
-            $criteria->addCondition("(student_id = ".$student_id." AND (approved IS NULL OR approved=1)) AND ((date(start_date)  BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date)  BETWEEN '".$start_date."' AND '".$end_date."' ))");
+            $criteria->addCondition("(student_id = ".$student_id." AND (approved IS NULL OR approved=1 OR approving_teacher is null)) AND ((date(start_date)  BETWEEN '".$start_date."' AND '".$end_date."' ) OR (date(end_date)  BETWEEN '".$start_date."' AND '".$end_date."' ))");
             $criteria->limit = 1;
             $data = $this->find($criteria);
             if($data)

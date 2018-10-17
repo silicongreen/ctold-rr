@@ -223,42 +223,18 @@ class ApplyLeaveStudents extends CActiveRecord
             $configuration = new Configurations();
             $section_manager = $configuration->getValue("LeaveSectionManager");
             
-            if($section_manager == 1)
+            if($section_manager == 1 && $section_manager != 1)
             {
                 $empObj = Employees();
                 $empData = $empObj->findByPk($profile_id);
                 if(!isset($empData->meeting_forwarder) || $empData->meeting_forwarder == 0)
                 {
-                    $return_array[0]['student_id'] = 71;
-                    $return_array[0]['student_name'] = "Test Data";
-                    $return_array[0]['batch'] = $empData->id;
-                    $return_array[0]['approved'] = 0;
-                    $return_array[0]['attachment_file_name'] = ""; 
-                    
-                    $return_array[0]['reason'] = "Test";
-                    $return_array[0]['leave_id'] = 10;
-                    $return_array[0]['leave_start_date'] = "2015-02-16";
-                    $return_array[0]['leave_end_date'] = "2015-02-16";
-                    $return_array[0]['created_at'] = "2015-02-16";
-                    return $return_array;
+                    return array();
                 } 
                 else 
                 {
                     $batch_tutor = new BatchTutors();
                     $batches = $batch_tutor->get_batch_id(false);
-                    $return_array[0]['student_id'] = 71;
-                    $return_array[0]['student_name'] = "Test Data";
-                    $return_array[0]['batch'] = implode(",",$batches);
-                    $return_array[0]['approved'] = 0;
-                    $return_array[0]['attachment_file_name'] = ""; 
-                    
-                    $return_array[0]['reason'] = "Test";
-                    $return_array[0]['leave_id'] = 10;
-                    $return_array[0]['leave_start_date'] = "2015-02-16";
-                    $return_array[0]['leave_end_date'] = "2015-02-16";
-                    $return_array[0]['created_at'] = "2015-02-16";
-                    return $return_array;
-                    
                 }
             }
             else

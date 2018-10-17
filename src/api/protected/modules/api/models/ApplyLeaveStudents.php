@@ -220,8 +220,28 @@ class ApplyLeaveStudents extends CActiveRecord
         }
         public function getStudentLeave($profile_id) 
         {
-            $esubject = new EmployeesSubjects();
-            $batches = $esubject->getBatchId($profile_id);
+            $configuration = new Configurations();
+            $section_manager = $configuration->getValue("LeaveSectionManager");
+            
+            if($section_manager == 1)
+            {
+                $empObj = Employees();
+                $empData = $empObj->findByPk($profile_id);
+                if(!isset($empData->meeting_forwarder) || $empData->meeting_forwarder == 0)
+                {
+                    return array();
+                } 
+                else 
+                {
+                    $batch_tutor = new BatchTutors();
+                    $batches = $batch_tutor->get_batch_id(false);
+                }
+            }
+            else
+            {    
+                $esubject = new EmployeesSubjects();
+                $batches = $esubject->getBatchId($profile_id);
+            }
             $today = date("Y-m-d",  strtotime("-1 Month")); 
             $criteria = new CDbCriteria;
             $criteria->select = "t.id,t.student_id,t.approved,t.attachment_file_name,t.leave_subject,t.reason,t.start_date,t.end_date,t.created_at";

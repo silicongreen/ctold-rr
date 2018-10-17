@@ -111,7 +111,7 @@ class BatchTutors extends CActiveRecord
             return $obj_employee;
         }
         
-        public function get_batch_id()
+        public function get_batch_id($subject_id = true)
         {
             $criteria=new CDbCriteria;
             $criteria->compare('employee_id',Yii::app()->user->profileId);
@@ -126,11 +126,20 @@ class BatchTutors extends CActiveRecord
                     
                     $batch_ids[] = $value->batch_id;
                 }
-                $sub = new Subjects();
-                $sub_ids = $sub->getAllSubByBatchId($batch_ids);
+                if($subject_id)
+                {
+                    $sub = new Subjects();
+                    $sub_ids = $sub->getAllSubByBatchId($batch_ids);
+                }
             }
             
-            
-            return $sub_ids;
+            if($subject_id)
+            {
+                return $sub_ids;
+            }
+            else 
+            {
+                return $batch_ids;
+            }
         }        
 }

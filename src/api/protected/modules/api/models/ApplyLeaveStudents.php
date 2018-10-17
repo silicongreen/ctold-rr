@@ -222,21 +222,13 @@ class ApplyLeaveStudents extends CActiveRecord
         {
             $configuration = new Configurations();
             $section_manager = $configuration->getValue("LeaveSectionManager");
-            $batches = array();
+            
             if($section_manager == 1)
             {
-                $empObj = Employees();
-                $empData = $empObj->findByPk($profile_id);
-                if(!isset($empData->meeting_forwarder) || $empData->meeting_forwarder == 0)
-                {
-                    $esubject = new EmployeesSubjects();
-                    $batches = $esubject->getBatchId($profile_id);
-                } 
-                else 
-                {
-                    $esubject = new EmployeesSubjects();
-                    $batches = $esubject->getBatchId($profile_id);
-                }
+                
+                $batch_tutor = new BatchTutors();
+                $batches = $batch_tutor->get_batch_id(false);
+                
             }
             else
             {    

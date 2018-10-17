@@ -231,7 +231,7 @@ class ApplyLeaveStudents extends CActiveRecord
                 {
                     $return_array[0]['student_id'] = 71;
                     $return_array[0]['student_name'] = "Test Data";
-                    $return_array[0]['batch'] = implode(",",$batches);
+                    $return_array[0]['batch'] = $empData->id;
                     $return_array[0]['approved'] = 0;
                     $return_array[0]['attachment_file_name'] = ""; 
                     

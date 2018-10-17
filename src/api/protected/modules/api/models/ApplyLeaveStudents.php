@@ -225,10 +225,17 @@ class ApplyLeaveStudents extends CActiveRecord
             
             if($section_manager == 1)
             {
-                
-                $batch_tutor = new BatchTutors();
-                $batches = $batch_tutor->get_batch_id(false);
-                
+                $empObj = new Employees();
+                $empData = $empObj->findByPk($profile_id);
+                if(!isset($empData->meeting_forwarder) || $empData->meeting_forwarder == 0)
+                {
+                    return array();
+                } 
+                else 
+                {
+                    $batch_tutor = new BatchTutors();
+                    $batches = $batch_tutor->get_batch_id(false);
+                }
             }
             else
             {    

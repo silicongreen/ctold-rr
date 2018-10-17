@@ -222,7 +222,7 @@ class ApplyLeaveStudents extends CActiveRecord
         {
             $configuration = new Configurations();
             $section_manager = $configuration->getValue("LeaveSectionManager");
-            
+            $batches = array();
             if($section_manager == 1)
             {
                 $empObj = Employees();

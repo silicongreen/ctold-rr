@@ -267,6 +267,7 @@ class ApplyLeaveStudents extends CActiveRecord
                                 )
                            )
                  );
+            $criteria->order = 't.created_at DESC'; 
             
             $data = $this->findAll($criteria);
             $return_array = array();

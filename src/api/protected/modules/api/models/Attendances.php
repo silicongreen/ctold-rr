@@ -1442,19 +1442,19 @@ class Attendances extends CActiveRecord {
                 $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
                 $attendence[$i]['viewed_by_teacher'] = $leave_today['viewed_by_teacher'][$key];
             }
-            if(isset($leave_today['unapproved']) && in_array($value->id, $leave_today['unapproved']))
-            {
-                $key = array_search($value->id, $leave_today['unapproved']);
-                $attendence[$i]['status'] = 4;
-                if($leave_today['reason'][$key])
-                {
-                    $attendence[$i]['reason'] = $leave_today['reason'][$key];
-                }
-                $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
-                $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
-                $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
-                $attendence[$i]['viewed_by_teacher'] = $leave_today['viewed_by_teacher'][$key];
-            }
+//            if(isset($leave_today['unapproved']) && in_array($value->id, $leave_today['unapproved']))
+//            {
+//                $key = array_search($value->id, $leave_today['unapproved']);
+//                $attendence[$i]['status'] = 4;
+//                if($leave_today['reason'][$key])
+//                {
+//                    $attendence[$i]['reason'] = $leave_today['reason'][$key];
+//                }
+//                $attendence[$i]['leave_id'] = $leave_today['leave_id'][$key];
+//                $attendence[$i]['leave_start_date'] = $leave_today['start_date'][$key];
+//                $attendence[$i]['leave_end_date'] = $leave_today['end_date'][$key];
+//                $attendence[$i]['viewed_by_teacher'] = $leave_today['viewed_by_teacher'][$key];
+//            }
             
             $i++;
             

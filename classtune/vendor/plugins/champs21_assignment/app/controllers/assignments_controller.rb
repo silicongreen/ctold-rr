@@ -595,11 +595,10 @@ class AssignmentsController < ApplicationController
           @assigned_students = []
           assigned_students.each do |assigned_student|
             s = Student.find_by_id(assigned_student.student_id)
-            if s.nil?
-              s=ArchivedStudent.find_by_former_id assigned_student.student_id
+            unless s.nil?
+              @students << s
+              @assigned_students << s
             end
-            @students << s
-            @assigned_students << s
           end
           @students.reject!{|e| e.batch_id!=@subject.batch_id}
         end

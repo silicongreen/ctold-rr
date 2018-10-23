@@ -160,6 +160,8 @@ class CalenderController extends Controller
                 $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId,$batch_id);
 
 
+                $class_open = new ClassOpens();
+                $class_opens = $class_open->get_class_open($start_date, $end_date,$batch_id);
 
 
                 $holiday_count = 0;
@@ -203,7 +205,7 @@ class CalenderController extends Controller
                         {
                             continue;
                         }
-                        if (in_array($hdt->format("w"), $weekend_array))
+                        if (in_array($hdt->format("w"), $weekend_array) && !in_array($hdt->format("Y-m-d"), $class_opens))
                         {
                             continue;
                         }
@@ -227,7 +229,7 @@ class CalenderController extends Controller
                         $leave_count++;
                     }
                     
-                    if ( $end_holiday->format("Y-m-d")>=$start_date  && $end_holiday->format("Y-m-d")<=$end_date && !in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("Y-m-d"), $leave_array_date)  && !in_array($end_holiday->format("w"), $weekend_array))
+                    if ( $end_holiday->format("Y-m-d")>=$start_date  && $end_holiday->format("Y-m-d")<=$end_date && !in_array($end_holiday->format("Y-m-d"), $holiday_array_for_count) && !in_array($end_holiday->format("Y-m-d"), $leave_array_date)  && (!in_array($end_holiday->format("w"), $weekend_array) || in_array($end_holiday->format("Y-m-d"), $class_opens) ) )
                     {
                         $merge['title'] = $value['title'];
                         $merge['start_date'] = $end_holiday->format("Y-m-d");
@@ -280,13 +282,13 @@ class CalenderController extends Controller
                         {
                             continue;
                         }
-                        if (in_array($dt->format("w"), $weekend_array))
+                        if (in_array($dt->format("w"), $weekend_array) && !in_array($dt->format("Y-m-d"), $class_opens))
                         {
                             continue;
                         }
                         $i++;
                     }
-                    if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && !in_array($end->format("w"), $weekend_array))
+                    if (!in_array($end->format("Y-m-d"), $holiday_array_for_count) && (!in_array($end->format("w"), $weekend_array) || in_array($end->format("Y-m-d"), $class_opens)))
                     {
                         $i++;
                     }
@@ -324,7 +326,7 @@ class CalenderController extends Controller
                         {
                             $msg[$dt->format("Y-m-d")] = $text . " is Holiday";
                         }
-                        elseif (in_array($dt->format("w"), $weekend_array))
+                        elseif (in_array($dt->format("w"), $weekend_array) && !in_array($dt->format("Y-m-d"), $class_opens))
                         {
                             $msg[$dt->format("Y-m-d")] = $text . " is Weekend";
                         }
@@ -394,7 +396,7 @@ class CalenderController extends Controller
                     {
                         $msg[$end->format("Y-m-d")] = $text . " is Holiday";
                     }
-                    elseif (in_array($end->format("w"), $weekend_array))
+                    elseif (in_array($end->format("w"), $weekend_array) && !in_array($end->format("Y-m-d"), $class_opens))
                     {
                         $msg[$end->format("Y-m-d")] = $text . " is Weekend";
                     }
@@ -1335,11 +1337,16 @@ class CalenderController extends Controller
             if(!$batch_id)
             {
                 $batch_id = FALSE;
+                $batch_id2 = 0;
             }
+            else
+            {
+                $batch_id2 = $batch_id;
+            }    
             $attendence = new Attendances();
             $bacthes = $attendence->getStudentTodayAttendenceFull($date,$batch_name,$class_name,$batch_id);
             
-            $day_type = $attendence->check_date($date);
+            $day_type = $attendence->check_date($date,$batch_id2);
             
             
             $total = count($bacthes);
@@ -1416,6 +1423,7 @@ class CalenderController extends Controller
             }
             $attendence = new Attendances();
             $bacthes = $attendence->getBatchStudentTodayAttendenceFull($date);
+            $day_type = $attendence->check_date($date);
             $total = count($bacthes);
             $student = array("present" => array(), "absent" => array(), "late" => array(), "leave" => array());
             $present = 0;
@@ -1455,7 +1463,7 @@ class CalenderController extends Controller
                 }
             }
             $current_date = date("Y-m-d");
-
+            $response['data']['day_type'] = $day_type;
             $response['data']['total'] = $total;
             $response['data']['current_date'] = $current_date;
             $response['data']['student'] = $student;
@@ -1490,6 +1498,7 @@ class CalenderController extends Controller
             }
             $attendence = new Attendances();
             $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id, $date);
+            $day_type = $attendence->check_date($date,$batch_id);
             $total = count($bacthes);
             $student = array("present" => array(), "absent" => array(), "late" => array(), "leave" => array());
             $present = 0;
@@ -1530,6 +1539,7 @@ class CalenderController extends Controller
             }
             $current_date = date("Y-m-d");
 
+            $response['data']['day_type'] = $day_type;
             $response['data']['total'] = $total;
             $response['data']['current_date'] = $current_date;
             $response['data']['student'] = $student;

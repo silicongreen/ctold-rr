@@ -1847,6 +1847,9 @@ authorization do
       :upcoming_exams ]
     has_permission_on [:attendances],
       :to => [
+      :class_open,
+      :add_class_open,
+      :remove_class_open,
       :index,
       :rollcall,
       :get_att_log,

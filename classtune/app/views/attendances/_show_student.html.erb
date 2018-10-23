@@ -42,7 +42,7 @@
           :before => "Element.show('loader5')",
           :success => "Element.hide('loader5')",
           :url=>{:controller=>"attendances", :action=>"show_report_student"},
-          :with => "'batch_id=#{params[:batch_id]}&student_id=#{student.id}&start_date='+$('start_date').value+'&end_date='+$('end_date').value" %>
+          :with => "'batch_id=#{student.batch_id}&student_id=#{student.id}&start_date='+$('start_date').value+'&end_date='+$('end_date').value" %>
                 
                 
                 

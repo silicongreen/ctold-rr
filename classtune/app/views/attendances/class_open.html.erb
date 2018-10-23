@@ -16,15 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<%# @javascript_for_page = ['attendance','date'] %>
-<%  content_for :head do%>
-  <% if @config.config_value == 'Daily' %>
-    <%= javascript_include_tag 'attendance', 'date' %>
-  <% else %>
-    <%= javascript_include_tag 'subject_leave', 'date' %>
-  <% end %>
 
-<%  end %>
 <div id="page-yield" class="bg-disable">
 
     <div class="header-wrapper">
@@ -34,10 +26,9 @@
             </div>
             <div class="header-title-text-wrapper">
                 <div class="header-title-main-text f2">
-                    <%= t('attendance_register') %>
+                    Class Open
                 </div>
                 <div class="header-title-sub-text">
-<%#= Time.now.strftime("%d/%m/%Y") %>
                     <%= @local_tzone_time.to_time %>
                 </div>
             </div>
@@ -47,69 +38,54 @@
         <div class="tabbed-header-wrapper">
             <ul class="header-tabs">
                 <li class="active">
-                    <%= link_to "Roll Call",
-                      {:controller=>"attendances", :action=>"index"},
-                      {:class => 'f2'}
-                  %>
-                </li>
-
-                <li>
-                    <%= link_to_remote "Class Report",
-                      :before => "Element.show('loader2');",
-                      :success => "Element.hide('loader2');",
-                      :update => 'report-roll-call',
-                      :url=>{:controller=>"attendances", :action=>"class_report"},
-                      :html => {:class => 'f2',:id=>"class_report"}
-                  %>
-<%#= link_to "", {:controller => 'student_attendance', :action => ''}, {:class => 'f2'} %>
-                </li>
-                <li>
-                    <%= link_to_remote "Student Report",
-                      :before => "Element.show('loader2');",
-                      :success => "Element.hide('loader2');",
-                      :update => 'report-roll-call',
-                      :url=>{:controller=>"attendances", :action=>"student_report"},
-                      :html => {:class => 'f2',:id=>"std_report"}
-                  %>
-                </li>
-                <li>
-                    <%= link_to_remote "Roll Call Subject",
-                      :before => "Element.show('loader2');",
-                      :success => "Element.hide('loader2');",
-                      :update => 'report-roll-call',
-                      :url=>{:controller=>"attendances", :action=>"rollcall"},
-                      :html => {:class => 'f2',:id=>"subject_roll_call"}
-                  %>
-                </li>
-                <li>
-                    <%= link_to_remote "Subject Report",
-                      :before => "Element.show('loader2');",
-                      :success => "Element.hide('loader2');",
-                      :update => 'report-roll-call',
-                      :url=>{:controller=>"attendances", :action=>"subject_report"},
-                      :html => {:class => 'f2',:id=>"subject_report"}
-                  %>
-                </li>
-                <li>
                     <%= link_to "Makeup Class List",
                       {:controller=>"attendances", :action=>"class_open"},
                       {:class => 'f2'}
                     %>
                 </li>
+                <li>
+                  <%= link_to "Add Makeup Class",
+                      {:controller=>"attendances", :action=>"add_class_open"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+                <li>
+                    <%= link_to "Roll Call",
+                      {:controller=>"attendances", :action=>"index"},
+                      {:class => 'f2'}
+                    %>
+                </li>
+                
             </ul>
         </div>
     </div>
+    <div id="page-yield" style="margin-top: 0px;">
+        <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+        <table id="listing" align="center" width="80%">
+          <tr class="tr-head">
+            <td>
+              Details
+            </td>
+            <td>
+              Open Date
+            </td>
+            <td>
+              Action
+            </td>
+            
+          </tr>
+          <% @class_opens.each do |class_open| %>
+            <tr class="tr-<%= cycle('odd', 'even') %>">
+              <td class="col-2"><%= class_open.details %></td>
+              <td class="col-2"><%= class_open.date %></td>
+              <td class="col-3"><%= link_to "#{t('delete_text')}",{:action => 'remove_class_open', :id =>class_open.id,:page=>params[:page]}, :confirm => "#{t('delete_confirm_msg')}" %></td>
+            </tr>
+          <% end %>
+        </table>
+        <%= will_paginate @class_opens %>
 
-    <div class="loader-image">
-        <%= image_tag("loader2.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader2",
-          :style =>"display: none;" ) %>
-    </div>
-
-    <div id="report-roll-call">
-        <%= render :partial => "roll_register" %>
+        <%= stylesheet_link_tag 'tadded-header' %>
+        <%= stylesheet_link_tag 'pagination_and_table' %>
     </div>
 
 </div>
@@ -124,6 +100,18 @@
     div.button-link-report:hover
     {
         background: #383838;
+    }
+    table {
+      border-collapse: inherit; 
+      border-spacing: 1px;
+    } 
+    table#listing
+    {
+      padding: 10px 10px 10px;
+    }
+    .pagination
+    {
+       margin-right: 10%;
     }
 </style>  
 

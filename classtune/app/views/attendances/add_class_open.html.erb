@@ -1,0 +1,242 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<!--<div id="content-header">
+  <%#= show_header_icon %>
+  <h1><%#= t('add') + ' ' + t('news_text') %></h1>
+  <div class='header-sep'>|</div>
+  <div class='sub-header'><%#= t('publish_t') + ' ' + t('school_news') %></div>
+
+</div>-->
+<div class="header-wrapper">
+        <div class="header-title" style="width:68%;">
+            <div class="header-icon"  style="width:12%;">
+                <%= image_tag '/images/icons/attendance-header.png', :html => {:alt => 'Attendance'} %>
+            </div>
+            <div class="header-title-text-wrapper">
+                <div class="header-title-main-text f2">
+                    Makeup Class
+                </div>
+                <div class="header-title-sub-text">
+                    <%= @local_tzone_time.to_time %>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li>
+                    <%= link_to "Makeup Class",
+                      {:controller=>"attendances", :action=>"class_open"},
+                      {:class => 'f2'}
+                    %>
+                </li>
+                <li class="active">
+                  <%= link_to "Add Makeup Class",
+                      {:controller=>"attendances", :action=>"add_class_open"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+                <li>
+                    <%= link_to "Roll Call",
+                      {:controller=>"attendances", :action=>"index"},
+                      {:class => 'f2'}
+                    %>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+
+<div id="page-yield" class="ch_news_wrapper" style="margin-top: 0px;">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <% form_for :class_open , :html => { :multipart => true } do |f| %>
+
+    <%= error_messages_for :class_open %>
+
+    <div id="add_news_form">
+      <div class="news_label_field">
+          <label for="details"><%= "Details" %></label>
+          <div class="textarea-input-bg">
+              <textarea cols="70" id="class_open_details" name="class_open[details]" rows="6"></textarea>
+          </div>
+      </div>
+      <div class="news_label_field">
+        <label for="date"><label><%= "Date" %></label>
+        <div class="text-input-bg"><%= calendar_date_select_tag 'class_open[date]', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+      </div>
+      <div class="news_label_field" >
+          <label>Common</label>
+
+          <select name="class_open[is_common]" style="margin:0px;" onchange="hide_show_hidden(this.value)">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+            <option value="3">Employees</option>
+          </select>
+
+      </div>
+      
+      
+      
+      <div class="news_label_field hidden_field_class_department" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <% @batches.each do |batch| %>
+            <div style="float:left; width:33%;">
+                <%= check_box_tag "select_options[batch_id][]",batch.id %>&nbsp;&nbsp;<%= batch.full_name %> 
+            </div>    
+          <% end %>
+      </div>
+   
+      <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;display:none;margin: 10px 0px;" >
+          <label >Select Employee Department</label>
+          <% @employee_department.each do |department| %>
+            <div style="float:left; width:25%;">
+                <%= check_box_tag "select_options[department][]",department.id %>&nbsp;&nbsp;<%= department.name %> 
+            </div>    
+          <% end %>
+      </div>
+      <div class="news_label_field hidden_field_class_department hidden_field_class_department_employee" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Department</label>
+          <div class="text-input-bg">
+
+              <%= select :employee, :department_id,
+        @employee_department.map {|b| [b.name, b.id]},
+        {:prompt => "Select A Department"},
+        {:onChange => "#{remote_function(:url => {:controller=>"news",:action => "list_employees"},
+        :with => "'department_id='+ value",
+        :before => "Element.show('loader2')",
+        :success => "Element.hide('loader2')"
+        )}"} %>
+             
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader2",
+            :style =>"display: none;" ) %>
+          </div>
+      </div>
+      <div class="news_label_field hidden_field_class_department hidden_field_class_department_student" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <label >Select Class</label>
+          <div class="text-input-bg">
+
+              <%= select :batch, :batch_id,
+        @batches.map {|b| [b.full_name, b.id]},
+        {:prompt => "#{t('select_a_batch')}"},
+        {:onChange => "#{remote_function(:url => {:controller=>"news",:action => "list_students"},
+        :with => "'batch_id='+ value",
+        :before => "Element.show('loader')",
+        :success => "Element.hide('loader')"
+        )}"} %>
+             
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+          </div>
+      </div>
+      <div id="student-list"  style="float: left;clear: both;width: 100%;margin: 10px 0px;">
+      </div>
+    </div>
+    <div class="news_label_field" style="margin-left:45px;" >
+      <%= submit_tag "", :value => "► Save", :class => "user_button", :disable_with => "► #{t('please_wait')}" %>
+    </div>
+
+  <% end %>
+  <%= load_redactor_script %>
+</div>
+<%= stylesheet_link_tag 'tadded-header' %>
+<script>
+  function hide_show_hidden(value)
+  {
+
+    
+    if(value==1)
+    {
+      j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_student").hide();
+      j(".hidden_field_class_department_employee").hide();
+      j("#student-list").html("");
+    }
+    else if(value==2)
+    {
+ 
+      j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_employee").hide();
+      j(".hidden_field_class_department_student").show();
+      j("#student-list").html("");
+    }
+    else if(value==3)
+    {
+      j(".hidden_field_class_department").hide();
+      j(".hidden_field_class_department_student").hide();
+      j(".hidden_field_class_department_employee").show();
+      j("#student-list").html("");
+    }
+    else
+    {
+      j(".hidden_field_class_department").show();
+      j(".hidden_field_class_department_employee").hide();
+      j(".hidden_field_class_department_student").hide();
+      j("#student-list").html("");
+    }  
+  }
+</script> 
+<style>
+   #employee_department_id
+   {
+     margin:0px;
+   }
+   #batch_batch_id
+   {
+     margin:0px;
+   }
+   .name_listodd{
+    background:#E4EBFE;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.name_listeven{
+    background:#DAE6FF;
+    height:30px;
+    width:400px;
+    border-top:1px solid #C2CEEF;
+}
+.att_list_names {
+    display:inline;
+    font-weight: 600;
+    font-size: 13px;
+}
+label {display:inline;}
+
+#list {
+    width:400px;
+}
+#list li {
+    padding:6px 0 0 50px;
+    list-style-type:none;
+}
+#list li label input {
+    margin-right:10px;
+}
+</style>    

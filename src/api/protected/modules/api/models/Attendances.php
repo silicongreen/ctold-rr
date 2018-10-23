@@ -199,7 +199,7 @@ class Attendances extends CActiveRecord {
         $data = $this->find($criteria);
         return $data;
     }
-    public function check_date($value)
+    public function check_date($value,$batch_id = 0)
     {
         $day_type = "1";
         $holiday = new Events();
@@ -212,8 +212,10 @@ class Attendances extends CActiveRecord {
         $attendance = new Attendances();
         $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
 
+        $class_open = new ClassOpens();
+        $class_opens = $class_open->get_class_open($value, $value, $batch_id);
         $check_weekend_value = new DateTime($value);
-        if (in_array($check_weekend_value->format("w"), $weekend_array))
+        if (in_array($check_weekend_value->format("w"), $weekend_array) && !in_array($check_weekend_value->format("Y-m-d"), $class_opens))
         {
             $day_type="Weekend";
         }
@@ -711,7 +713,10 @@ class Attendances extends CActiveRecord {
             $holiday_array[] = $end_holiday->format("Y-m-d");
         }
         $attendance = new Attendances();
-        $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId);
+        $weekend_array = $attendance->getWeekend(Yii::app()->user->schoolId,$batch_id);
+        
+        $class_open = new ClassOpens();
+        $class_opens = $class_open->get_class_open($start_date, $end_date,$batch_id);
         
         
         $i = 0;
@@ -721,7 +726,7 @@ class Attendances extends CActiveRecord {
             {
                 continue;
             }
-            if (in_array($dt->format("w"), $weekend_array))
+            if (in_array($dt->format("w"), $weekend_array) && !in_array($dt->format("Y-m-d"), $class_opens))
             {
                 continue;
             }

@@ -132,6 +132,8 @@ multi_school_models:
 - FinanceTransactionParticular
 - StudentSession
 - PdfSave
+- ClassOpen
+- ClassOpenUser
 
 general_models:
 - PrivilegeTag

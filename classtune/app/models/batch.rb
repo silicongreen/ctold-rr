@@ -258,6 +258,40 @@ class Batch < ActiveRecord::Base
     end
     return event_holidays #array of holiday event dates
   end
+  def get_class_open(start_date,end_date,batch_id=0,department_id = 0,user_id = 0,date_format = false)
+    
+    @common_open_days = ClassOpen.common
+    class_open_ids = []
+    unless batch_id == 0
+      @batch_open_days = ClassOpenUser.find_all_by_batch_id(batch_id)
+      class_open_ids = @batch_open_days.map(&:class_open_id)
+    end
+   
+    unless department_id == 0
+      @department_open_days = ClassOpenUser.find_all_by_department_id(department_id)
+      class_open_ids = @department_open_days.map(&:class_open_id)
+    end
+    unless user_id == 0
+      @employee_open_days = ClassOpenUser.find_all_by_user_id(user_id)
+      class_open_ids2 = @employee_open_days.map(&:class_open_id)
+      class_open_ids = class_open_ids+class_open_ids2
+    end
+    @other_open_days = []
+    unless class_open_ids.blank?
+      @other_open_days  = ClassOpen.find_all_by_id(class_open_ids)
+    end 
+    all_open_days = @common_open_days + @other_open_days
+    all_open_days.reject!{|h| !(h.date>=start_date and h.date<=end_date)}
+    open_days = []
+    all_open_days.each do |open|
+      if date_format
+        open_days << open.date.to_date
+      else
+        open_days << open.date
+      end
+    end
+    return open_days
+  end
 
   def find_working_days(start_date,end_date)
     start = []
@@ -271,9 +305,9 @@ class Batch < ActiveRecord::Base
     all_days = start.max..stop.min
     weekdays = weekday_set.nil? ? WeekdaySet.first.weekday_ids : weekday_set.weekday_ids
     holidays = return_holidays(start.max,stop.min)
-
+    opendays = get_class_open(start.max,stop.min,self.id)
     non_holidays = all_days.to_a-holidays
-    range = non_holidays.select{|d| weekdays.include? d.wday}
+    range = non_holidays.select{|d| weekdays.include? d.wday or opendays.include? d.to_date}
     return range
   end
 
@@ -288,8 +322,9 @@ class Batch < ActiveRecord::Base
     all_days = start.max..stop.min
     weekdays = weekday_set.nil? ? WeekdaySet.first.weekday_ids : weekday_set.weekday_ids
     holidays = holiday_event_dates
+    opendays = get_class_open(start.max,stop.min,self.id)
     non_holidays = all_days.to_a-holidays
-    range = non_holidays.select{|d| weekdays.include? d.wday}
+    range = non_holidays.select{|d| weekdays.include? d.wday or opendays.include? d.to_date}
   end
 
   def academic_days
@@ -298,7 +333,8 @@ class Batch < ActiveRecord::Base
     weekdays = weekday_set.nil? ? WeekdaySet.first.weekday_ids : weekday_set.weekday_ids
     holidays = holiday_event_dates
     non_holidays = all_days.to_a-holidays
-    range = non_holidays.select{|d| weekdays.include? d.wday}
+    opendays = get_class_open(start_date,end_date_take,self.id)
+    range = non_holidays.select{|d| weekdays.include? d.wday or opendays.include? d.to_date}
   end
 
   def total_subject_hours(subject_id)

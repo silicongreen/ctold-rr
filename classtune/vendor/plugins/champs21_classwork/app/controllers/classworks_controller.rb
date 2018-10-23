@@ -585,7 +585,7 @@ class ClassworksController < ApplicationController
           end
         end
       end
-      flash[:notice] = "Homerok successfully published"
+      flash[:notice] = "Classwork successfully published"
       redirect_to classworks_path
     end
   end

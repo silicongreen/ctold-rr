@@ -359,7 +359,7 @@ class EmployeeAttendanceController < ApplicationController
           
           Rails.cache.delete("employees_data_for_monthly_#{MultiSchool.current_school.id}")
           @employees = Rails.cache.fetch("employees_data_for_monthly_#{MultiSchool.current_school.id}"){
-            empdata = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.id as dept_id, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+            empdata = Employee.find(:all, :select => "employees.id,employees.employee_department_id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.id as dept_id, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
             empdata
           }
           
@@ -399,7 +399,8 @@ class EmployeeAttendanceController < ApplicationController
               cardAttendanceAllDates = @cardAttendancesAllDates.select{ |s| s.user_id == employee.user_id}
               dtcard = cardAttendanceAllDates.map{ |c| c.date.strftime("%Y-%m-%d")}
               @cardAttendancesAllDates = @cardAttendancesAllDates.delete_if{ |s| s.user_id == employee.user_id}
-              
+              @batchObj = Batch.new
+              opendays = @batchObj.get_class_open(@report_date_from.to_date,@report_date_to.to_date,0,employee.employee_department_id,employee.user_id,true)
               if cardAttendance.nil? or cardAttendance.empty? or cardAttendance.blank?  
                   total_present = ' - '
                   total_absent = ' - '
@@ -420,9 +421,9 @@ class EmployeeAttendanceController < ApplicationController
                       end
 
                       if @report_date_to.to_date > Date.today
-                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                       else
-                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                       end
                       num_week_off_days = a_week_off_days.length
                     else
@@ -432,9 +433,9 @@ class EmployeeAttendanceController < ApplicationController
                         week_off_day << 6
                       end
                       if @report_date_to.to_date > Date.today
-                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                       else
-                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                        a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                       end
                       num_week_off_days = a_week_off_days.length
                     end
@@ -447,9 +448,9 @@ class EmployeeAttendanceController < ApplicationController
                   emp_weekdays = WeekdaySet.default_weekdays.to_a.map{|l| l[0]}.map(&:to_i)
                   week_off_day = num_weekdays - emp_weekdays
                   if @report_date_to.to_date > Date.today
-                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                   else
-                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                   end
                   num_week_off_days = a_week_off_days.length
                 end
@@ -612,11 +613,12 @@ class EmployeeAttendanceController < ApplicationController
           end
           conditions = "employees.employee_department_id NOT IN (" + exclude_dept_ids + ")"
           
-          Rails.cache.delete("employees_data_#{MultiSchool.current_school.id}")
-          @employees = Rails.cache.fetch("employees_data_#{MultiSchool.current_school.id}"){
-            employees = Employee.find(:all, :select => "employees.id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
-            employees
-          }
+        
+         
+           @employees = Employee.find(:all, :select => "employees.id,employees.employee_department_id, employees.user_id, concat(  employees.first_name,' ', employees.last_name )  as employee_info, employee_departments.name as dept_name, employee_positions.name as position_name", :conditions => conditions, :joins => [:employee_position, :employee_department], :order=>""  + order_str)
+          
+          
+          
           
           
           
@@ -651,6 +653,8 @@ class EmployeeAttendanceController < ApplicationController
             a_week_off_days = []
             
             @employees.each do |employee|
+              @batchObj = Batch.new
+              opendays = @batchObj.get_class_open(@report_date_from.to_date,@report_date_to.to_date,0,employee.employee_department_id,employee.user_id,true)
               e_attendance = @emp_attendance.select{ |s| s.employee_id == employee.id}
               eattend = e_attendance.map{ |c| c.attendance_date.strftime("%Y-%m-%d")}
               
@@ -679,9 +683,9 @@ class EmployeeAttendanceController < ApplicationController
                       week_off_day << 6
                     end
                     if @report_date_to.to_date > Date.today
-                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                     else
-                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                     end
                     num_week_off_days = a_week_off_days.length
                   else
@@ -692,9 +696,9 @@ class EmployeeAttendanceController < ApplicationController
                       week_off_day << 6
                     end
                     if @report_date_to.to_date > Date.today
-                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                     else
-                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                      a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                     end
                     num_week_off_days = a_week_off_days.length
                   end
@@ -706,9 +710,9 @@ class EmployeeAttendanceController < ApplicationController
                     week_off_day << 6
                   end
                   if @report_date_to.to_date > Date.today
-                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= Date.today && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                   else
-                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
+                    a_week_off_days = (@report_date_from.to_date..@report_date_to.to_date).to_a.select {|l| week_off_day.include?(l.wday) && l <= @report_date_to.to_date && !@event_dates.map{|c| c.to_date}.include?(l) && !opendays.include?(l)}.map{|l| l.to_date.strftime("%Y-%m-%d")}
                   end
                   num_week_off_days = a_week_off_days.length
                 end

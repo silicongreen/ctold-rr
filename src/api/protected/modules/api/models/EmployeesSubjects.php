@@ -138,11 +138,17 @@ class EmployeesSubjects extends CActiveRecord
                 $batch_tutor = new BatchTutors();
                 $obj_employee = $batch_tutor->get_employees($batch_id);
             }
+            else if($from_leave == true)
+            {
+                $employess = new Employees();
+                $obj_employee = $employess->getAllEmp();
+            }     
             else
             {    
                 $criteria = new CDbCriteria;
                 $criteria->select = 't.id';
                 $criteria->compare("subject.batch_id", $batch_id);
+                    
 
                 $criteria->with = array(
                     'subject' => array(

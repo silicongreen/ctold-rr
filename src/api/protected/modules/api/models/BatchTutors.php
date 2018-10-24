@@ -90,6 +90,7 @@ class BatchTutors extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+       
         public function get_employee_all_access($batch_id)
         {
             

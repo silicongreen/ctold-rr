@@ -432,7 +432,27 @@ class Employees extends CActiveRecord {
             }
         }
         return $users_mapping;
-    }        
+    } 
+     public function getAllEmp()
+    { 
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->addInCondition('id',$ids);
+        $criteria->compare('t.school_id',Yii::app()->user->schoolId);
+        $employees = $this->findAll($criteria); 
+        $users_mapping = array();
+        if($employees)
+        { 
+            $loop = 0;
+            foreach($employees as $value)
+            {
+                $users_mapping[$loop]['employee'] = $value; 
+                $loop++;
+            }
+        }
+        return $users_mapping;
+
+    }
     public function getUserByEmpIds($ids)
     { 
         $criteria = new CDbCriteria();

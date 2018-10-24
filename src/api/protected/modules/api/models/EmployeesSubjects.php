@@ -383,9 +383,19 @@ class EmployeesSubjects extends CActiveRecord
         
         public function getSubject($employee_id,$lesson_id = 0,$return_selcted_subject_array=false)
         {
+            $bachTutor = new BatchTutors();
+            $all_sub = $bachTutor->all_access_employee_sub();
             $criteria = new CDbCriteria;
             $criteria->select = 't.*';
-            $criteria->compare("t.employee_id", $employee_id);
+            if($all_sub)
+            {
+                $criteria->addCondition("(t.employee_id = $employee_id OR subject.id in (".implode(",",$all_sub)."))");
+            }
+            else
+            {    
+                $criteria->compare("t.employee_id", $employee_id);
+            }
+            
            
             $criteria->with = array(
                 'subject' => array(

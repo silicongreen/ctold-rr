@@ -139,7 +139,29 @@ class BatchTutors extends CActiveRecord
             }
             return $obj_employee;
         }
-        
+        public function all_access_employee_sub()
+        {
+            $employeObj = new Employees();
+            $emp_data = $employeObj->findByPk(Yii::app()->user->profileId);
+            $sub_ids = array();
+            if($emp_data && $emp_data->all_access == 1)
+            {
+                $criteria=new CDbCriteria;
+                $criteria->compare('employee_id',Yii::app()->user->profileId);
+                $all_batch = $this->findAll($criteria);
+                if($all_batch)
+                { 
+                    foreach($all_batch as $value)
+                    {
+                        $batch_ids[] = $value->batch_id;
+                    }
+                    $sub = new Subjects();
+                    $sub_ids = $sub->getAllSubByBatchId($batch_ids);
+                    
+                }
+            } 
+            return $sub_ids;
+        }        
         public function get_batch_id($subject_id = true)
         {
             $criteria=new CDbCriteria;

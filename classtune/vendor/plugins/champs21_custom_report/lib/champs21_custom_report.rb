@@ -28,7 +28,7 @@ module Champs21CustomReport
   def self.attach_object_stringify
     # stringify model objects, add definition to the 'to_s' method of models/classes
     Batch.class_eval{def to_s;"#{full_name}";end}
-    Course.class_eval{def to_s;"#{course_name}";end}
+    Course.class_eval{def to_s;"#{course_name} #{section_name}";end}
     StudentCategory.class_eval{def to_s;"#{name}";end}
     EmployeeDepartment.class_eval{def to_s;"#{name}";end}
     EmployeeGrade.class_eval{def to_s;"#{name}";end}

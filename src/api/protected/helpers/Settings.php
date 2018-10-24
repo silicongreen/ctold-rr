@@ -240,6 +240,44 @@ class Settings {
     
     public static $_ar_language = array( 'en' => 'ENG', 'bn' => 'BAN',);
     
+    public function addReminderHomeworkClasswork($subject_details,$obj,$for="Homework")
+    {
+        $batchObj = new Batches();
+        $batch_details = $batchObj->findByPk($subject_details->batch_id);
+        if($batch_details)
+        {
+            $courseObj = new Courses();
+            $course_details = $courseObj->findByPk($batch_details->course_id);
+        }
+        $title = $obj->title;
+        $batch_tutor = new BatchTutors();
+        $admin_user = $batch_tutor->get_employee_all_access($subject_details->batch_id);
+        $empObj = new Employees();
+        $emp_details = $empObj->findByPk(Yii::app()->user->profileId);
+        $notification_ids = array();
+        if($admin_user && isset($course_details) && isset($emp_details) && $course_details && $emp_details)
+        {
+            foreach ($admin_user as $value)
+            {
+                $reminder = new Reminders();
+                $reminder->sender = Yii::app()->user->id;
+                $reminder->subject = "New ".$for." '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name;
+                $reminder->body = "New ".$for."  '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name.". <br/> Please check the ".$for." For details";
+                $reminder->recipient = $value;
+                $reminder->school_id = Yii::app()->user->schoolId;
+                $reminder->rid = $obj->id;
+                $reminder->rtype = 4;
+                $reminder->batch_id = 0;
+                $reminder->student_id = 0;
+                $reminder->created_at = date("Y-m-d H:i:s");
+                $reminder->updated_at = date("Y-m-d H:i:s");
+                $reminder->save();
+                $notification_ids[] = $reminder->id;
+            }
+        }
+        return $notification_ids;
+    }        
+    
     public static function save_attt_to_log( $att_data, $attendance = 0, $is_subject=false )
     {
         if($is_subject == false)

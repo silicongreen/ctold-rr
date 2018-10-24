@@ -90,6 +90,35 @@ class BatchTutors extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function get_employee_all_access($batch_id)
+        {
+            
+            $configuration = new Configurations();
+            $all_noti = $configuration->getValue("AllNotificationAdmin");
+            $obj_employee = array();
+            if(isset($all_noti) && $all_noti == 1)
+            {
+                $criteria=new CDbCriteria;
+                $criteria->select = 't.employee_id';
+                $criteria->compare('t.batch_id',$batch_id);
+                $criteria->group = "t.employee_id";
+                $obj_tutor = $this->findAll($criteria); ;
+
+                if($obj_tutor)
+                {
+                    $emp_id = array();
+                    foreach($obj_tutor as $value)
+                    {
+                       $emp_id[] = $value->employee_id; 
+                    } 
+                    $employess = new Employees();
+                    $obj_employee = $employess->getUserByEmpIdsAllaccess($emp_id);
+                }
+                $userObj = new Users();
+                $obj_employee = $userObj->get_admin_user($obj_employee);
+            }
+            return $obj_employee;
+        }        
         public function get_employees($batch_id)
         {
             $criteria=new CDbCriteria;

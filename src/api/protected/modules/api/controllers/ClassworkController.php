@@ -534,6 +534,7 @@ class ClassworkController extends Controller
 
                     }
                 } 
+                $notification_ids = Settings::addReminderHomeworkClasswork($subject_details,$eclasswork,"Classwork");
                 foreach ($reminderrecipients as $value)
                 {
                     $reminder = new Reminders();
@@ -766,7 +767,8 @@ class ClassworkController extends Controller
                                 }    
 
                             }
-                        }    
+                        } 
+                        $notification_ids = Settings::addReminderHomeworkClasswork($subject_details,$classwork,"Classwork");
                         foreach ($reminderrecipients as $value)
                         {
                             $reminder = new Reminders();

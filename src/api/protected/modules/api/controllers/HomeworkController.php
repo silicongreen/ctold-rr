@@ -1171,6 +1171,7 @@ class HomeworkController extends Controller
                             }
                         }
                     }
+                    $notification_ids = Settings::addReminderHomeworkClasswork($subject_details,$ehomework,"Homework");
                     foreach ($reminderrecipients as $value)
                     {
                         $reminder = new Reminders();
@@ -1348,9 +1349,10 @@ class HomeworkController extends Controller
 
                         $subobj = new Subjects();
                         $subject_details = $subobj->findByPk($subject_id);
+                        
 
 
-
+                        
                         $stdobj = new Students();
                         
                         if($old_subject_id != $homework->subject_id)
@@ -1429,6 +1431,7 @@ class HomeworkController extends Controller
                                     }
                                 }
                             }
+                            $notification_ids = Settings::addReminderHomeworkClasswork($subject_details,$homework,"Homework");
                             foreach ($reminderrecipients as $value)
                             {
                                 $reminder = new Reminders();

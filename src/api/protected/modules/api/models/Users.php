@@ -216,7 +216,23 @@ class Users extends CActiveRecord {
             
         }
     }
-    
+    public function get_admin_user($user_map)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = "id";
+        $criteria->compare('t.school_id', Yii::app()->user->schoolId);
+        $criteria->compare('admin', 1);
+        $criteria->compare('is_deleted', 0);
+        $user = $this->findAll($criteria);
+        if($user)
+        {
+            foreach($user as $value)
+            {
+                $user_map[] = $value->id;
+            }    
+        }
+        return $user_map;
+    }        
      public function checkStudentExists($user_id,$school_id)
     {
         $criteria = new CDbCriteria;

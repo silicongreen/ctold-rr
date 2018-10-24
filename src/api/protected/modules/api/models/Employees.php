@@ -415,6 +415,24 @@ class Employees extends CActiveRecord {
         return $employees;
         
     }
+    public function getUserByEmpIdsAllaccess($ids)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.user_id';
+        $criteria->addInCondition('id',$ids);
+        $criteria->compare('t.all_access',1);
+        $employees = $this->findAll($criteria); 
+        $users_mapping = array();
+        if($employees)
+        { 
+            foreach($employees as $value)
+            {
+                $users_mapping[] = $value->user_id; 
+
+            }
+        }
+        return $users_mapping;
+    }        
     public function getUserByEmpIds($ids)
     { 
         $criteria = new CDbCriteria();

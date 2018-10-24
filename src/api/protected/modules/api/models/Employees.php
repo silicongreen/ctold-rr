@@ -437,7 +437,7 @@ class Employees extends CActiveRecord {
     { 
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
-        $criteria->addInCondition('id',$ids);
+       
         $criteria->compare('t.school_id',Yii::app()->user->schoolId);
         $employees = $this->findAll($criteria); 
         $users_mapping = array();

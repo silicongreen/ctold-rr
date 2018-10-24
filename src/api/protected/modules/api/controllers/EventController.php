@@ -332,6 +332,7 @@ class EventController extends Controller
                 {
                     $leave[$i]['leave_id'] = $value->id;
                     $leave[$i]['leave_type'] = $value['leavetype']->name;
+                    $leave[$i]['reason'] = $value->reason;
                     $leave[$i]['leave_start_date'] = $value->start_date;
                     $leave[$i]['leave_end_date'] = $value->end_date;
                     $leave[$i]['attachment_file_name'] = ""; 

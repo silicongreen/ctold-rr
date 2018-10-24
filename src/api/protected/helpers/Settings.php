@@ -240,7 +240,7 @@ class Settings {
     
     public static $_ar_language = array( 'en' => 'ENG', 'bn' => 'BAN',);
     
-    public function addReminderHomeworkClasswork($subject_details,$obj,$for="Homework")
+    public static function addReminderHomeworkClasswork($subject_details,$obj,$for="Homework")
     {
         $batchObj = new Batches();
         $batch_details = $batchObj->findByPk($subject_details->batch_id);

@@ -1,0 +1,1 @@
+page.replace_html 'listing', :partial => 'get_classwork_filter'

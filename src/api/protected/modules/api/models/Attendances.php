@@ -436,6 +436,11 @@ class Attendances extends CActiveRecord {
                 $return[$value->student_id] = $return[$value->student_id]-$value->total;
                 $absent[$value->student_id] = $value->total;
            }
+           else if(isset($return[$value->student_id]))
+           {
+                $return[$value->student_id] = $return[$value->student_id]-$value->total;
+                $absent[$value->student_id] = $value->total;
+           }
            else 
            {
                $return[$value->student_id] = $number_of_days-$value->total;
@@ -502,7 +507,7 @@ class Attendances extends CActiveRecord {
         );
        $data = $this->findAll($criteria);
        
-       $present = $number_of_days-count($data);
+       $present = $number_of_days2-count($data);
        $absent = count($data);
        return array($number_of_days,$present,$number_of_days2,$absent);
         

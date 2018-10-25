@@ -87,7 +87,10 @@
 
                           <% 
                             highest_mark = 0
-                            if @exam_marks_max.blank?
+                            if @highest_mark_hash.blank? 
+                              @highest_mark_hash = {}
+                            end
+                            if @highest_mark_hash[subjects['id'].to_s].blank?
                               @conn = ActiveRecord::Base.connection
                               sql = "SELECT SUM( Scores.marks ) AS total_score
                               FROM exams
@@ -99,11 +102,15 @@
                               GROUP BY Scores.student_id
                               ORDER BY total_score DESC";
                               ip = 1
-                              @exam_marks_max = @conn.execute(sql).all_hashes
+                              exam_marks_max = @conn.execute(sql).all_hashes
+                              if !exam_marks_max.blank? and !exam_marks_max[0].blank? and !exam_marks_max[0]['total_score'].blank?
+                                @highest_mark_hash[subjects['id'].to_s] = exam_marks_max[0]['total_score']
+                              end
                             end
-                            if !@exam_marks_max.blank? and !@exam_marks_max[0].blank? and !@exam_marks_max[0]['total_score'].blank?
-                              highest_mark = @exam_marks_max[0]['total_score']
-                            end 
+                            
+                            unless @highest_mark_hash[subjects['id'].to_s].blank?
+                              highest_mark = @highest_mark_hash[subjects['id'].to_s]
+                            end
                             if total_mark.to_f>0 and full_mark.to_f>0
                               main_mark = (total_mark.to_f/full_mark.to_f)*100 
                             else

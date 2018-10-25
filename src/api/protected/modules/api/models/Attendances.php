@@ -722,7 +722,7 @@ class Attendances extends CActiveRecord {
         $class_opens = $class_open->get_class_open($start_date, $end_date,$batch_id);
         
         
-        $i = 0;
+        $i = 1;
         foreach ($date_period as $dt)
         {
             if (in_array($dt->format("Y-m-d"), $holiday_array))

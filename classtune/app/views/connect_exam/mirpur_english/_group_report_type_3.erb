@@ -83,7 +83,7 @@
 
                           <% 
                             highest_mark = 0
-                            unless @exam_marks_max.blank?
+                            if @exam_marks_max.blank?
                               @conn = ActiveRecord::Base.connection
                               sql = "SELECT SUM( Scores.marks ) AS total_score
                               FROM exams

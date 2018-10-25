@@ -418,13 +418,13 @@ class Attendances extends CActiveRecord {
             }
             else
             {
-                $return2[$value->id] = $number_of_days; 
+                $return2[$value->id] = $number_of_days2; 
             }    
           } 
           else 
           {
                
-               $return2[$value->id] = $number_of_days;
+               $return2[$value->id] = $number_of_days2;
           }
           $return[$value->id] = $number_of_days2;
           $absent[$value->id] = 0;
@@ -433,12 +433,8 @@ class Attendances extends CActiveRecord {
        
        foreach($data as $value)
        {
-           if(isset($return2[$value->student_id]))
-           {
-                $return[$value->student_id] = $return2[$value->student_id]-$value->total;
-                $absent[$value->student_id] = $value->total;
-           }
-           else if(isset($return[$value->student_id]))
+           
+           if(isset($return[$value->student_id]))
            {
                 $return[$value->student_id] = $return[$value->student_id]-$value->total;
                 $absent[$value->student_id] = $value->total;

@@ -65,9 +65,12 @@
       <li>
           <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
       </li>
+      <% if permitted_to? :graduation_lists,:student %>
       <li>
+          
         <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
       </li>
+      <% end %>
       <li>
           <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
       </li>

@@ -637,6 +637,7 @@ authorization do
       :get_section_data,
       :get_classes,
       :graduation_lists,
+      :get_graduation_students,
       :get_classes_publisher,
       :get_batches,
       :admission2,

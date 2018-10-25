@@ -52,7 +52,11 @@
 
 
         @report_data['report']['exams'] = @report_data['report']['all_result'][std['id']]['exams']
-
+        if !@report_data['total_new'].blank? and !@report_data['total_new'][std['id']].blank?
+          @report_data['total_new_std'] = @report_data['total_new'][std['id']]
+          @report_data['total'] = @report_data['total_new'][std['id']]
+        end 
+      
         if !@report_data['report']['exam_comments'].blank? and !@report_data['report']['exam_comments'][std['id']]['comments'].blank?
           @report_data['report']['comments'] = @report_data['report']['exam_comments'][std['id']]['comments']
         end
@@ -64,7 +68,7 @@
           @report_data['report']['no_exam_subject_resutl'] = @report_data['report']['no_exam_comments'][std['id']]['no_exam_subject_resutl']
         end 
 
-        if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank?
+        if !@report_data['present_all'].blank? and !@report_data['present_all'][std['id']].blank? and 
           @report_data['present'] = @report_data['present_all'][std['id']]
         end 
       
@@ -86,10 +90,7 @@
           @report_data['total_first_term'] = @report_data['first_term_total_new'][std['id']]
         end
       
-        if !@report_data['total_new'].blank? and !@report_data['total_new'][std['id']].blank?
-          @report_data['total_new_std'] = @report_data['total_new'][std['id']]
-          @report_data['total'] = @report_data['total_new'][std['id']]
-        end 
+        
 
         @exam_comment = {}
         @exam_comment_all.each do |ec|

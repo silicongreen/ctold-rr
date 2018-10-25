@@ -83,10 +83,12 @@
         end
         if !@report_data['first_term_total_new'].blank? and !@report_data['first_term_total_new'][std['id']].blank?
           @report_data['total_new_std_first_term'] = @report_data['first_term_total_new'][std['id']]
+          @report_data['total_first_term'] = @report_data['first_term_total_new'][std['id']]
         end
       
         if !@report_data['total_new'].blank? and !@report_data['total_new'][std['id']].blank?
           @report_data['total_new_std'] = @report_data['total_new'][std['id']]
+          @report_data['total'] = @report_data['total_new'][std['id']]
         end 
 
         @exam_comment = {}

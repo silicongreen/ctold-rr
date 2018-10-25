@@ -16,7 +16,11 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
+<%
+  if !@report_data.blank? && !@report_data['report'].blank? && !@report_data['total_new_std'].blank?
+    @report_data['total'] = @report_data['total_new_std']
+  end
+%>
 <%= render  :partial=>"connect_result_reformate" %>
 <% if MultiSchool.current_school.id == 283 %>
   <%= render  :partial=>"/connect_exam/academia/group_report" %>

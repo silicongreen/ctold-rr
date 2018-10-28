@@ -1,0 +1,74 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% @fee_particulars.each do |fee| %>
+  <%  if fee.name.downcase != 'vat' %>
+  <tr id="particular_<%= fee.id %>" class="particulars_tr">
+      <% paidAmount = 0 %>
+      <% unless @paid_fees.blank? %>
+         <% transaction_ids = @paid_fees.map(&:id) %> 
+         <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+         <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+         <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+         <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+      <% end %>
+      <% fee_amount = fee.amount - paidAmount %>
+      <% fee_amount = 0 if fee_amount < 0 %>
+      <td class="col-1" style=" text-align: center;">
+          <input type="hidden" name="fee_category_<%= fee.id %>" class="fee_category" id="fee_category_<%= fee.id %>" value="<%= fee.finance_fee_particular_category_id  %> " />
+          <% if fee_amount > 0 %>
+          <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+          <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          <% else %>
+          <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          <% end %>
+      </td>
+      <td class="col-6">
+        <%= fee.name %>
+        <% if fee.is_tmp and paidAmount == 0 %>
+          <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
+        <% end %>  
+      </td>
+      <td class="col-6" style="text-align: right;"><%= precision_label fee.amount %></td>
+      <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %></td>
+      <td class="col-6" style="text-align: right;">
+          <% if fee_amount > 0 %>
+          <span class="fee_amount_particular"  name="fee_amount_particular_<%= fee.id %>" id="fee_amount_particular_<%= fee.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label fee_amount %></span></span>
+          <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+          <% else %>
+          0.00&nbsp;&nbsp;&nbsp;
+          <% end %>
+      </td>
+  </tr>
+  <% total_fees += fee_amount %>
+  <% end %>
+<% end %>
+<% if total_fees > 0 %>  
+<tr>
+    <td class="col-1" style=" text-align: center;">&nbsp;</td>
+    <td colspan="4" id="add_extra_particular" class="col-2" style="font-size: 14px; font-weight: bold; cursor: pointer;"><i class="fa fa-plus-square-o" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;Add Extra Particulars</td>
+</tr>  
+<% end %>
+<tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+  <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_amount') %> </td>
+  <td class="col-6" style="text-align: right;">
+      <span id="fee_total_amount_label" style="color: #000;"><%= precision_label(total_fees) %></span>
+      <input type="hidden" name="fee_total_amount" id="fee_total_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+  </td>
+</tr>

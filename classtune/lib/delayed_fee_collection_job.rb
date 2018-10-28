@@ -38,7 +38,7 @@ class DelayedFeeCollectionJob
             @students = Student.find_all_by_batch_id(b)
             @fee_category= FinanceFeeCategory.find_by_id(@collection[:fee_category_id])
 
-            unless @fee_category.fee_particulars.all(:conditions=>"is_deleted=false and batch_id=#{b}").collect(&:receiver_type).include?"Batch"
+            unless @fee_category.fee_particulars.all(:conditions=>"is_tmp = 0 and is_deleted=false and batch_id=#{b}").collect(&:receiver_type).include?"Batch"
               cat_ids=@fee_category.fee_particulars.select{|s| s.receiver_type=="StudentCategory"  and (!s.is_deleted and s.batch_id==b.to_i)}.collect(&:receiver_id)
               student_ids=@fee_category.fee_particulars.select{|s| s.receiver_type=="Student" and (!s.is_deleted and s.batch_id==b.to_i)}.collect(&:receiver_id)
               @students = @students.select{|stu| (cat_ids.include?stu.student_category_id or student_ids.include?stu.id)}

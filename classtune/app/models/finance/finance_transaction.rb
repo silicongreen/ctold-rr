@@ -39,10 +39,13 @@ class FinanceTransaction < ActiveRecord::Base
   before_save :verify_precision
   after_create :add_user
   has_many :monthly_payslips
+  
+  attr_accessor :finance_balance
 
   def verify_precision
     self.amount = Champs21Precision.set_and_modify_precision self.amount
     self.fine_amount = Champs21Precision.set_and_modify_precision self.fine_amount
+    self.finance_balance = Champs21Precision.set_and_modify_precision self.finance_balance
     self.vat_amount = Champs21Precision.set_and_modify_precision self.vat_amount
   end
 
@@ -315,7 +318,15 @@ INNER JOIN finance_fees on finance_fees.id=fee_transactions.finance_fee_id",
     if finance_type=="FinanceFee"
       update_attributes(:batch_id=>"#{payee.batch_id}")
       FeeTransaction.create(:finance_fee_id=>finance.id,:finance_transaction_id=>id)
-      balance=finance.balance+fine_amount+vat_amount-(amount)
+      #if vat_as_particular
+      #  balance=finance.balance+fine_amount-(amount)
+      #else
+      #  balance=finance.balance+fine_amount+vat_amount-(amount)
+      #end
+      balance = finance_balance.to_f
+      if balance < 0
+        balance = 0
+      end
       finance.update_attributes(:balance=>balance)
     end
 

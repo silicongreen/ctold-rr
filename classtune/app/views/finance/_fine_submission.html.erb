@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<% if @due_date.to_date < Date.today %>
+<% #if @due_date.to_date < Date.today %>
 
   <% form_remote_for :fine, :url => {:action => 'update_fine_ajax' }, :before=>"$('add_fine').disable()",:complete=>"setTimeout(function(){$('add_fine').enable();},5000)" do |form| %>
     <div class="fine_info" style="width: 68%; padding-bottom: 10px;">
@@ -38,4 +38,4 @@
 
 
   <% end %>
-<% end %>
+<% #end %>

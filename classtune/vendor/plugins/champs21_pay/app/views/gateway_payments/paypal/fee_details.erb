@@ -95,7 +95,11 @@
 <br />
 
   <% unless @fee_particulars.nil? %>
-
+    <% if @student.has_dues %>
+    <div style="clear: both; height: 4px;"></div>
+    <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+    <div style="clear: both; height: 10px;"></div>
+    <% end %>
     <% total_fees = 0  %>
     <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
       <thead><!-- class="thead-inverse" -->
@@ -371,6 +375,11 @@
           
       <% end %>    
     </table>
+    <% if @student.has_dues %>
+    <div style="clear: both; height: 4px;"></div>
+    <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+    <div style="clear: both; height: 10px;"></div>
+    <% end %>
   <% end %>
 <% unless @paid_fees.empty? %>
     <div id="payments_details">

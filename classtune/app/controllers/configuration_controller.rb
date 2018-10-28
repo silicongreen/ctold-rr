@@ -28,7 +28,7 @@ class ConfigurationController < ApplicationController
     @config = Configuration.get_multiple_configs_as_hash ['InstitutionName', 'InstitutionAddress', 'InstitutionPhoneNo', \
         'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
         'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry',\
-        'TimeZone','FirstTimeLoginEnable','FeeReceiptNo','EnableSibling','PrecisionCount',\
+        'TimeZone','FirstTimeLoginEnable','FeeReceiptNo','EnableSibling','PrecisionCount','SessionStartMonth','SessionEndMonth',\
         'FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderWillForwardOnly', 'TeacherMeetingRequestNeedAdminApproval', \
         'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine',\
         'FeesDefaultersAutoNotification','FeesDefaultersFirstLetter','FeesDefaultersSecondLetter','FeesDefaultersThirdLetter','FeesDefaultersAutoSuspendUser','SchoolCodeStd','SchoolCodeEmp','AllNotificationAdmin','EmployeeAllAccess']
@@ -51,7 +51,7 @@ class ConfigurationController < ApplicationController
       
 	  unless @school_detail.save
         @config = Configuration.get_multiple_configs_as_hash ['InstitutionName', 'InstitutionAddress', 'InstitutionPhoneNo', \
-            'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement', \
+            'StudentAttendanceType', 'CurrencyType', 'ExamResultType', 'AdmissionNumberAutoIncrement','EmployeeNumberAutoIncrement','SessionStartMonth','SessionEndMonth', \
             'Locale','FinancialYearStartDate','FinancialYearEndDate','EnableNewsCommentModeration','RoutineViewTeacherShortCode','RountineViewPeriodNameNoTiming','DefaultCountry','TimeZone',\
             'FirstTimeLoginEnable','EnableSibling','FreeFeedForAdmin','FreeFeedForTeacher','FreeFeedForStudent','HomeworkWillForwardOnly','ReminderWillForwardOnly',\
             'TeacherMeetingRequestNeedAdminApproval', 'ParentMeetingRequestNeedApproval', 'FontFace','NoticeComment','ParentCanEdit','TeacherCanEdit','LeaveSectionManager','ViewSmallRoutine',\

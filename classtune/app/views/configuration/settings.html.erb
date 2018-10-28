@@ -74,6 +74,24 @@
                     :year_range => 15.years.ago..5.years.from_now, :readonly=>true, :popup=>"force" %>
               </div>
           </div>
+          
+          <div class="label-field-pair">
+              <label for="configuration_currency_type"><%= t('session_start_month') %></label>
+              <div class="text-input-bg">
+                  <%= select :configuration, :session_start_month,
+                    [["#{t('january')}",1], ["#{t('february')}",2], ["#{t('march')}",3], ["#{t('april')}",4], ["#{t('may')}",5], ["#{t('june')}",6], ["#{t('july')}",7], ["#{t('august')}",8], ["#{t('september')}",9], ["#{t('october')}",10], ["#{t('november')}",11], ["#{t('december')}",12]],
+                    {:prompt => "#{t('select_a_month')}", :selected => @config[:session_start_month].to_i} %>
+              </div>
+          </div>
+          
+          <div class="label-field-pair">
+              <label for="configuration_currency_type"><%= t('session_end_month') %></label>
+              <div class="text-input-bg">
+                  <%= select :configuration, :session_end_month,
+                    [["#{t('january')}",1], ["#{t('february')}",2], ["#{t('march')}",3], ["#{t('april')}",4], ["#{t('may')}",5], ["#{t('june')}",6], ["#{t('july')}",7], ["#{t('august')}",8], ["#{t('september')}",9], ["#{t('october')}",10], ["#{t('november')}",11], ["#{t('december')}",12]],
+                    {:prompt => "#{t('select_a_month')}", :selected => @config[:session_end_month].to_i} %>
+              </div>
+          </div>
 
           <div class="label-field-pair" style="display:none;">
               <label><%= t('start_receipt_no')%></label>

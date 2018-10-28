@@ -134,6 +134,15 @@ multi_school_models:
 - PdfSave
 - ClassOpen
 - ClassOpenUser
+- BoardExam
+- BoardExamGradingLevel
+- BoardExamGroup
+- BoardExamGroupSubject
+- BoardExamMark
+- BoardExamStudent
+- BoardExamStudentSubject
+- BoardExamSubject
+- BoardSession
 
 general_models:
 - PrivilegeTag

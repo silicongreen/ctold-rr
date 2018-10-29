@@ -262,11 +262,19 @@ class Settings {
                 $reminder = new Reminders();
                 $reminder->sender = Yii::app()->user->id;
                 $reminder->subject = "New ".$for." '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name;
-                $reminder->body = "New ".$for."  '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name.". <br/> Please check the ".$for." For details";
+                $reminder->body = "New ".$for."  '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name.". Please check the ".$for." For details";
                 $reminder->recipient = $value;
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->rid = $obj->id;
-                $reminder->rtype = 4;
+                
+                if($for == "Homework")
+                {
+                    $reminder->rtype = 4;
+                }
+                else
+                {
+                    $reminder->rtype = 31;
+                }    
                 $reminder->batch_id = 0;
                 $reminder->student_id = 0;
                 $reminder->created_at = date("Y-m-d H:i:s");

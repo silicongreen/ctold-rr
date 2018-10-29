@@ -43,7 +43,7 @@
     <div id="reminder-date"><%= t('sent_on') %>: <%= I18n.l(@new_reminder.created_at,:format=>"%A, %d %B, %Y") %></div>
     <div id="reminder-subject" class="themed_text"><%= t('subject_messages') %>: <%= @new_reminder.subject %></div>
     <div id="reminder-message">
-      <strong><%= t('message') %>:</strong><br /><br /><%=h @new_reminder.body %>
+      <strong><%= t('message') %>:</strong><br /><br /><%=h @new_reminder.body.gsub("<br/>", " ") %>
       <br />
       <br />
       <% unless @new_reminder.rid.nil? %>
@@ -61,6 +61,11 @@
                     <% else %>
                       <%= link_to "View Homework", :controller=>"assignments", :action=>"show",:id=>@new_reminder.rid %>
                     <% end %>
+                <% else %>
+                  <% classwork_details = Classwork.find_by_id(@new_reminder.rid) %>
+                  <% unless classwork_details.blank? %>
+                      <%= link_to "View Classwork", :controller=>"classworks", :action=>"show",:id=>@new_reminder.rid %>
+                  <% end %>
                 <% end %>
           <% end %>
           <% if @new_reminder.rtype==31 %>

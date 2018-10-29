@@ -1768,6 +1768,14 @@ authorization do
     includes :open
     includes :reports_view
     includes :timetable_track
+    has_permission_on [:board],
+    :to => 
+    [
+      :index,:add_session,:edit_session,:delete_session,
+      :add_group,:edit_group,:delete_group,
+      :exam_group_subject,:get_exam_group_subject,:new_group_subject,:create,
+      :edit_group_subject,:update,:delete_group_subject
+    ] 
     has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
       :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,
       :lessonplan,:teacher_lessonplan,:get_teacher_lessonplans,:get_lessonplan_report,:graph_for_lessonplan,:teacher_homework_pdf,:teacher_classwork_pdf

@@ -12,7 +12,9 @@
                   <tr class="table-header">
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf" colspan="<%= colspan %>"><center>CLASS TESTS</center></td>
+                      <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
                       <td class="col-pdf"></td>
+                      <% end %>
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -24,8 +26,9 @@
                           </td> 
                         <% end %>
                       <% end %>
-
+                      <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
                       <td class="col-pdf">Class Attendance</td>
+                      <% end %>
                   </tr>
 
                   <% total_parcent = 0 %>
@@ -102,6 +105,7 @@
 
                             <% end %>
                           <% end %>
+                            <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
                             <td class="col-pdf">
                             <% total_att = 0 %>
                              <% absent_att = 0 %>   
@@ -138,7 +142,7 @@
                              <% end %>
                             
                             </td>  
-
+                            <% end %>
                       </tr> 
                       <% end %>
                     <% end %>  

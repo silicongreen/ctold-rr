@@ -83,7 +83,7 @@
                            <% end %>
                         <% end %>
                       <% end %>
-                      <% if subjec_marks == 0 %>
+                      <% if subjec_marks == 0 and @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114 %>
                         <% next %>
                       <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">

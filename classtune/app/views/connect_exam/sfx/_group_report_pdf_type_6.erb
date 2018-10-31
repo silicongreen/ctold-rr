@@ -73,6 +73,19 @@
                       <% if @has_exam_student == false %>
                             
                       <% else %>
+                      <% subjec_marks = 0 %>
+                      <% unless @report_data['report']['exams'].blank? %>
+                        <% @report_data['report']['exams'].each do |report| %>
+                           <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                              <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i > -1 %>
+                                <% subjec_marks = subjec_marks+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                              <% end %>
+                           <% end %>
+                        <% end %>
+                      <% end %>
+                      <% if subjec_marks == 0 %>
+                        <% next %>
+                      <% end %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% weightage_mark = 0 %>
                           <% total_mark = 0 %>
@@ -80,28 +93,18 @@
                           <% exam_marks = 0 %>
                           <% grade_i = false %>
                           <% grade_w = false %>
+                          
 
                           <td class="col-pdf td-align-left"><b><%= subjects['name'] %></b></td>
                           <td class="col-pdf"><span class="no-warp">Full Marks</span> <hr/><span class="no-warp">Marks Obtained</span></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>
-                              <% @examobj = Exam.find_by_exam_group_id_and_subject_id(report['exam_id'].to_i,subjects['id'].to_i) %>
-                              <% unless @examobj.blank?  %>
-                                <% check_exam = false %>
-                                <% @exam_score_all = ExamScore.find_all_by_exam_id(@examobj.id.to_i) %>
-                                <% if @exam_score_all.blank? %>
-                                    <% check_exam = false %>
-                                <% else %>
-                                  <% @exam_score_all.each do |score| %>
-                                  <%
-                                    unless score.marks.blank?
-                                      check_exam = true
-                                      break
-                                    end
-                                  %>
-                                  <% end %>
-                                <% end %>
+                              <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>report['exam_id'].to_s,:subject_id=>subjects['id'].to_s} %>
+                              <%  check_exam = false %>
+                              <% if @check_exam_score==true %>
+                                <% check_exam = true %>
                               <% end %>
+                              
                               <td class="col-pdf">
                                      <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and check_exam == true  %>
                                        

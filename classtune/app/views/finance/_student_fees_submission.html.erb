@@ -127,8 +127,20 @@
                 <% end %>
               <% end %>
             <% else %>
-              <% if !@self_advance_fee and @fee_has_advance_particular %>
-                <%= debug @fee_collection_advances.inspect %>
+             <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+                  <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                  <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                  <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                  <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                  <% unless @paid_advance_fees.blank? %>
+                    <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% end %>
+                <% end %>
               <% end %>
             <% end %>
             <% if @self_advance_fee %>

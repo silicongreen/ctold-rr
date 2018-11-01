@@ -17,6 +17,14 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<style>
+    .text-input-bg select, .label-field-pair input, .label-field-pair textarea{
+        width: 93%;
+    }
+    .calendar_date_select_popup_icon {
+        right: -10px;
+    }
+</style>
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('finance_text') %></h1>
@@ -25,12 +33,14 @@
 
 </div>
 <div id="page-yield">
-  <div id="flash_box">
-  </div>
+  <div id="form-errors"></div>
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
+  <div id="error_box"></div>
+  <div class="errorExplanation" id="errorExplanation" style="display: none;"></div>
   <div class="box">
+    <% form_for @finance_fee_collection, :url => {:action => 'fee_collection_advance_create'},:html=>{:onsubmit=>"return validate();"} do |form| %>  
     <div class="label-field-pair">
         <div class="label-container"><label><%= t('fee_category') %><span class="necessary-field">*</span>:</label></div>
         <div class="input-container">
@@ -54,40 +64,400 @@
     <div id ="particular-box" style="margin-top: 0; margin-bottom: 0;"></div>
     <div id ="batchs" style="margin-top: 0; margin-bottom: 0;"></div>
     <div id ="students" style="margin-top: 0; margin-bottom: 0;"></div>
+    <div style="clear: both; height: 4px;"></div> 
     
     <% require 'date'  %>
     <% valid_month = Date.current.beginning_of_month + 9.days %>
     <% if Date.today > valid_month %>
       <% next_date = Date.today + 1.months %>
+      <% collection_month = next_date.beginning_of_month %>
       <% current_month = next_date.month %>
     <% else %>
       <% current_month = valid_month.month %>
+      <% collection_month = Date.current.beginning_of_month %>
     <% end %>
-    <%== sd;fls%>
-    <%= "aa" + current_month.to_s + "aa" %>
-    <%= Date.current.beginning_of_month + 9.days %>
-    <%= Date.today.month %>
-    <%= Date.today.year %>
-    <%= @config[:session_start_month] %>
-    <%= @config[:session_end_month] %>
+    <% mon = ["#{t('january')}", "#{t('february')}", "#{t('march')}", "#{t('april')}", "#{t('may')}", "#{t('june')}", "#{t('july')}", "#{t('august')}", "#{t('september')}", "#{t('october')}", "#{t('november')}", "#{t('december')}"] %>
+    <% start_month = [] %>
+    <% end_month = [] %>
+    <% i = 0 %>
+    <% j = 0 %>
+    <%  (current_month.to_i..12).step(1) do |m| %>
+      <% start_month[i] = [mon[m - 1].to_s + ", " + Date.today.year.to_s, (i + 1).to_s + "_" + mon[m - 1].to_s + ", " + Date.today.year.to_s] %>
+      <% i += 1 %>
+    <% end %>
+    <%  (current_month.to_i+1..12).step(1) do |m| %>
+      <% end_month[j] = [mon[m - 1].to_s + ", " + Date.today.year.to_s, (i + 1).to_s + "_" + mon[m - 1].to_s + ", " + Date.today.year.to_s] %>
+      <% j += 1 %>
+    <% end %>
+    <% next_year = Date.today + 1.years %>
+    <%  (1..@config[:session_end_month].to_i).step(1) do |m| %>
+      <% start_month[i] = [mon[m - 1].to_s + ", " + next_year.year.to_s, (i + 1).to_s + "_" + mon[m - 1].to_s + ", " + next_year.year.to_s] %>
+      <% end_month[j] = [mon[m - 1].to_s + ", " + next_year.year.to_s, (i + 1).to_s + "_" + mon[m - 1].to_s + ", " + next_year.year.to_s] %>
+      <% i += 1 %>
+      <% j += 1 %>
+    <% end %>
+    <input type="hidden" name="end_value" id="end_value" value="<%= i %>" />
     <div class="label-field-pair">
-        <label for="configuration_currency_type"><%= t('session_start_month') %></label>
-        <div class="text-input-bg">
-            <%= select :configuration, :session_start_month,
-              [["#{t('january')}",1], ["#{t('february')}",2], ["#{t('march')}",3], ["#{t('april')}",4], ["#{t('may')}",5], ["#{t('june')}",6], ["#{t('july')}",7], ["#{t('august')}",8], ["#{t('september')}",9], ["#{t('october')}",10], ["#{t('november')}",11], ["#{t('december')}",12]],
-              {:prompt => "#{t('select_a_month')}", :selected => @config[:session_start_month].to_i} %>
+        <div class="label-container"><label for="configuration_currency_type"><%= t('advance_start_month') %></label></div>
+        <div class="input-container">
+            <%= select :fee_collection_advance, :start_month, start_month,
+              {:prompt => "#{t('select_a_month')}", :selected => 0, :autocomplete => false} %>
         </div>
     </div>
 
     <div class="label-field-pair">
-        <label for="configuration_currency_type"><%= t('session_end_month') %></label>
-        <div class="text-input-bg">
-            <%= select :configuration, :session_end_month,
-              [["#{t('january')}",1], ["#{t('february')}",2], ["#{t('march')}",3], ["#{t('april')}",4], ["#{t('may')}",5], ["#{t('june')}",6], ["#{t('july')}",7], ["#{t('august')}",8], ["#{t('september')}",9], ["#{t('october')}",10], ["#{t('november')}",11], ["#{t('december')}",12]],
-              {:prompt => "#{t('select_a_month')}", :selected => @config[:session_end_month].to_i} %>
+        <div class="label-container"><label for="configuration_currency_type"><%= t('advance_end_month') %></label></div>
+        <div class="input-container">
+            <%= select :fee_collection_advance, :end_month, end_month,
+              {:prompt => "#{t('select_a_month')}", :selected => 0, :autocomplete => false} %>
         </div>
-    </div>>
+    </div>
 
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason">  <%= t('fee_collection_name') %>:</label></div>
+      <div class="input-container"><%= form.text_field :name, :value => collection_month.strftime("%b") + "' " + Date.today.strftime("%Y") + " - Advance" %></div>
+    </div>
+    <div style="clear: both; height: 10px;"></div>  
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason"><%= t('fine') %>:</label></div>
+      <div class="input-container">
+        <%= form.select(:fine_id, @fines.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
+          {:prompt => "#{t('select_fine')}" },
+          {:onchange => "#{remote_function(:url => {:action => "fine_list"},
+            :with => "'id='+value",
+            :before => "Element.show('loader1')",
+            :success => "Element.hide('loader1')")}", :autocomplete => "off"
+          })%>
+      </div>
+      <div class="loader_div">
+        <%= image_tag("loader.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader1",
+          :style =>"display: none; position : absolute; " ) %>
+      </div>
+    </div>
+
+    <div id ="fines" style="margin: 0;"></div>
+
+
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason">  <%= t('start_date') %>:</label></div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[start_date]', I18n.l(@finance_fee_collection.start_date || collection_month,:format=>"%d %b %Y"),:popup=>"force",:class=>'start_date',:onchange=>"executeOnChange();" %></div>
+    </div>
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason">  <%= t('end_date') %>:</label></div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[end_date]',I18n.l(@finance_fee_collection.end_date || collection_month,:format=>"%d %b %Y"), :popup=>"force",:class=>'end_date' %></div>
+    </div>
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason">  <%= t('due_date') %>:</label></div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[due_date]', I18n.l(@finance_fee_collection.due_date || collection_month,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
+    </div>
+    <div class="label-field-pair">
+      <div class="label-container"><label for="reason"></label></div>
+      <div class="input-container">
+        <div class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
+          <div class="checkbox_inline"><%= check_box_tag "sent_remainder", 1, true, :class=>'batches_box' %></div> 
+          <div class="checkbox_label" style="width: 120px;"><label>Sent Reminder</label></div>
+        </div>
+        <div id="include_employee_div" class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
+          <div class="checkbox_inline"><%= check_box_tag "regenerate", 1, true, :class=>'batches_box' %></div> 
+          <div class="checkbox_label" style="width: 120px;"><label>Force Regenerate Fee Collection If Student Fee collection already exists</label></div>
+        </div>
+      </div>
+    </div>
+      <div style="clear: both; height: 4px;"></div> 
+      <div id="submit-button">
+        <%=  form.submit "► Generate Advance Fee", :id => "submit_button" %>
+      </div>
+      <div style="clear: both; height: 4px;"></div> 
+    <% end %>    
     <div id="modal-box" style="display:none;"></div>
   </div>
 </div>
+<script>
+  function validate()
+  {
+    var error = 0;
+    var monthNames = ["Jan' ", "Feb' ", "Mar' ", "Apr'", "May' ", "June' ",
+                         "July' ", "Aug' ", "Sep' ", "Oct' ", "Nov' ", "Dec' "
+    ];
+    var FullmonthNames = ["January", "February", "March", "April", "May", "June",
+                         "July", "August", "September", "October", "November", "December"
+    ];
+    var DayFormonth = ["31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31"
+    ];
+    var string = '<h2>__ERROR_NUM__ errors prohibited this from being saved</h2><p>there were problems with the following fields:</p><ul>';
+    if ($$('#fee_collection_advance_finance_fee_category_id')[0].value.length==0)
+    {
+      error += 1;
+      string += '<li><%="#{t('select_fee_category')}"%></li>'
+    }
+    if ($$('#finance_fee_collection_name')[0].value.length==0)
+    {
+      error += 1;
+      string += '<li><%="#{t('fee_collection_name_cant_be_blank')}"%></li>'
+    }
+    
+    if ( j("#fee_collection_advance_particular").val() == "" )
+    {
+      error += 1;
+      string += '<li>You must select a particular</li>'
+    }
+    
+    var std_found = 0;
+    j(".students_box").each(function(){
+        if ( j(this).prop("checked") )
+        {
+            std_found++;
+        }
+    });
+    
+    if ( std_found == 0 )
+    {
+      error += 1;
+      string += '<li>You must select atleast one Student</li>'
+    }
+    
+    var d = new Date(j(".start_date").val());
+    var ed = new Date(j(".end_date").val());
+    var dd = new Date(j(".due_date").val());
+    var start_advance_year = j("#fee_collection_advance_start_month").val();
+      var e_month = start_advance_year.split("_");
+      var a_dt_object = e_month[1].split(",");
+      var s_mon_str = j.trim(a_dt_object[0]);
+      var s_yr = j.trim(a_dt_object[1]);
+      var s_mon = 0;
+      for(var i=0; i<FullmonthNames.length;i++)
+      {
+         if ( FullmonthNames[i] == s_mon_str )
+         {
+            s_mon = i+1;
+            break;
+         }
+      }
+      var s_mon_s = "01";
+      if ( parseInt(s_mon) < 10 )
+      {
+            s_mon_s = "0" + s_mon;
+      }
+      else
+      {
+          s_mon_s = s_mon;
+      }
+      var start_date = s_yr + "-" + s_mon_s + "-01";
+     
+      var start_advance_year = j("#fee_collection_advance_end_month").val();
+      var e_month = start_advance_year.split("_");
+      var a_dt_object = e_month[1].split(",");
+      var s_mon_str = j.trim(a_dt_object[0]);
+      var s_yr = j.trim(a_dt_object[1]);
+      var s_mon = 0;
+      var i_day = 1;
+      for(var i=0; i<FullmonthNames.length;i++)
+      {
+         if ( FullmonthNames[i] == s_mon_str )
+         {
+            i_day = DayFormonth[i];
+            s_mon = i+1;
+            break;
+         }
+     }
+     var s_mon_s = "01";
+     if ( parseInt(s_mon) < 10 )
+     {
+            s_mon_s = "0" + s_mon;
+     }
+     else
+     {
+          s_mon_s = s_mon;
+     }
+     var s_day_s = "01";
+     if ( parseInt(i_day) < 10 )
+     {
+            s_day_s = "0" + i_day;
+     }
+     else
+     {
+          s_day_s = i_day;
+     }
+     var end_date = s_yr + "-" + s_mon_s + "-" + s_day_s;
+     var d1 = new Date(start_date);
+     d1.setHours(0);
+     d1.setMinutes(0);
+     d1.setSeconds(0);
+     var d2 = new Date(end_date);
+     d2.setHours(0);
+     d2.setMinutes(0);
+     d2.setSeconds(0);
+     d.setHours(0);
+     d.setMinutes(0);
+     d.setSeconds(0);
+     ed.setHours(0);
+     ed.setMinutes(0);
+     ed.setSeconds(0);
+     dd.setHours(0);
+     dd.setMinutes(0);
+     dd.setSeconds(0);
+     if (!(d >= d1 && d <= d2))
+     {
+        error += 1;
+        string += '<li>Fee Collection Date should be between Advance Date Range</li>';
+     }
+    
+    if (d > ed)
+    {
+        error += 1;
+        string += '<li><%="#{t('start_date_cant_be_after_end_date')}"%>'+"</li>"
+    }
+    if (ed < dd)
+    {
+      error += 1;
+      string += '<li><%="#{t('end_date_cant_be_after_due_date')}"%>'+"</li>"
+    }
+    
+    
+    if (error==0)
+    {
+      var a_particular = j("#fee_collection_advance_particular").val().split("-");
+      if ( parseInt(a_particular[0]) == 0 )
+      {
+          if ( confirm("You select Advance for Total Fees, Please check your option before proceed") )
+          {
+              return true;
+          }
+          else
+          {
+              return false;
+          }
+      }
+      else
+      {
+        return true;
+      }
+    }
+    else
+    {
+      string = string.replace("__ERROR_NUM__",error, string); 
+      string += '</li>';
+      j("#errorExplanation").html(string);
+      j("#errorExplanation").show();
+      
+      setTimeout(function(){
+        j("#errorExplanation").hide();
+      }, 4000);
+      
+      return false;
+    }
+
+  }
+  
+  function executeOnChange()
+  {
+      var monthNames = ["Jan' ", "Feb' ", "Mar' ", "Apr'", "May' ", "June' ",
+                         "July' ", "Aug' ", "Sep' ", "Oct' ", "Nov' ", "Dec' "
+      ];
+    
+      var d = new Date(j(".start_date").val());
+      var yr = d.getFullYear();
+      
+      var name = monthNames[d.getMonth()] + yr;
+      j("#finance_fee_collection_name").val(name + " - Advance");
+  }
+</script>
+<script>
+  j(document).ready(function(){
+      var lastSel = j("#fee_collection_advance_start_month option:selected");
+      var lastSel_end = j("#fee_collection_advance_end_month option:selected");
+      
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("std_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+      
+      j(document).on("change","#fee_collection_advance_start_month",function(){
+          var start_month = this.value.split("_");
+          var val = parseInt(start_month[0]);
+          var endVal = parseInt(j("#end_value").val()) - 1;
+          if ( val > endVal  )
+          {
+            lastSel.prop("selected", true);
+            alert("Sorry you can't able to select this month, \n\nFor Advance you must select minimum 2 months");
+            return false;
+          }
+          lastSel = j("#fee_collection_advance_start_month option:selected");
+          var end_month_val = j("#fee_collection_advance_end_month").val();
+          var end_month = end_month_val.split("_");
+          var end_val = parseInt(end_month[0]);
+          var diff = end_val - val;
+          
+          if ( diff < 2 )
+          {
+              var v = val + 1;
+              var select_val = ""
+              j("#fee_collection_advance_end_month option").each(function(){
+                  var e_month = this.value.split("_");
+                  var v_end = parseInt(e_month[0]);
+                  if ( v_end == v )
+                  {
+                      select_val = this.value;
+                      return ;
+                  }
+              });
+              j("#fee_collection_advance_end_month").val(select_val);
+              lastSel_end = j("#fee_collection_advance_end_month option:selected");
+          }
+      });
+      
+      j(document).on("change","#fee_collection_advance_end_month",function(){
+          var end_month = this.value.split("_");
+          var val = parseInt(end_month[0]);
+          var start_month_val = j("#fee_collection_advance_start_month").val();
+          var start_month = start_month_val.split("_");
+          var startVal = parseInt(start_month[0]) + 1;
+          if ( startVal > val  )
+          {
+            lastSel_end.prop("selected", true);
+            alert("Sorry you can't able to select this month, \n\nFor Advance you must select minimum 2 months");
+            return false;
+          }
+          lastSel_end = j("#fee_collection_advance_end_month option:selected");
+      });
+  });
+</script>

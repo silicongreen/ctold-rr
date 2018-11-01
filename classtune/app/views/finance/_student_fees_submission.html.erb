@@ -23,13 +23,16 @@
   end
 %>
 <div class="fee_structure">
-    <h2><%= @fee_category.name %> (<%= @fee_collection.name %>)</h2>
+    <h2 style="display: none;"><%#= @fee_category.name %> (<%#= @fee_collection.name %>)</h2>
+    <h2>Fee: <%= @fee_collection.name %></h2>
     <hr style="border-top: 1px solid #ccc;" />
     <div class="extender"></div>
 </div>
-<br />
+<% unless @from_batch_fee %>
+<h2 style='text-align: center; background: #ECECEC; padding: 4px; border-radius: 4px;'><%= @student.full_name %></h2>
+<% end %>
 <%= error_messages_for "financefee" ,:header_message => nil%>
-<% unless @financefee.is_paid == true or (@total_payable-@total_discount==0)%>
+<% unless @financefee.is_paid == true or (@total_payable-@total_discount==0) or @self_advance_fee %>
   <% particularNames = @fee_particulars.map{|fee| fee.name.downcase} %>
   <% @vat_as_particular = false %>
   <% @vat_particular_id = 0 %>
@@ -83,7 +86,7 @@
 <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
 <div style="clear: both; height: 10px;"></div>
 <% end %>
-<% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
+<% form_remote_for :fees, :url => {:action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount, :from_batch => @from_batch_fee}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
   <% unless @fee_particulars.nil? %>
     <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
       <thead><!-- class="thead-inverse" -->
@@ -107,40 +110,107 @@
                <% paidAmount += paidFess.map(&:amount).sum.to_f %>
                <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
                <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+            
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+                  <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                  <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                  <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                  <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                  <% unless @paid_advance_fees.blank? %>
+                    <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% else %>
+              <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <%= debug @fee_collection_advances.inspect %>
+              <% end %>
             <% end %>
+            <% if @self_advance_fee %>
+            <% fee_amount = (fee.amount * @fee_collection_advances.no_of_month.to_i).to_f - paidAmount %>
+            <% else %>
             <% fee_amount = fee.amount - paidAmount %>
+            <% end %>
             <% fee_amount = 0 if fee_amount < 0 %>
             <td class="col-1" style=" text-align: center;">
                 <input type="hidden" name="fee_category_<%= fee.id %>" class="fee_category" id="fee_category_<%= fee.id %>" value="<%= fee.finance_fee_particular_category_id  %> " />
                 <% if fee_amount > 0 %>
+                <% if @self_advance_fee %>
+                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+                <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% else %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" data-fee_amount="<%= precision_label fee.amount %>">
+                <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-square-o" style="font-size: 16px; cursor: pointer; color: #999;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% else %>
                 <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
                 <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% end %>
+                <% end %>
                 <% else %>
                 <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
                 <% end %>
             </td>
             <td class="col-6">
               <%= fee.name %>
+              <% if @self_advance_fee %>
+                <br />(<small><%= @fee_collection_advances.no_of_month %> Month Advances</small>)
+                <br /><small>(<%= @fee_collection_advances.start_month %> to <%= @fee_collection_advances.end_month %>)
+              <% else %>
+                   <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+                    <br /><small>(Set for Advance Payment)</small>
+                    <br />(<small><%= @fee_collection_advances.no_of_month %> Month Advances</small>)
+                   <% end %>
+              <% end %>  
               <% if fee.is_tmp and paidAmount == 0 %>
                 <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
               <% end %>  
             </td>
-            <td class="col-6" style="text-align: right;"><%= precision_label fee.amount %></td>
+            <% if @self_advance_fee %>
+            <td class="col-6" style="text-align: right;">(<%= precision_label fee.amount %> <%= "x " + @fee_collection_advances.no_of_month.to_s  %>)</td>
+            <% else %>
+              <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+              <td class="col-6" style="text-align: right;">(<%= precision_label fee.amount %> <%= "x " + @fee_collection_advances.no_of_month.to_s  %>)</td>
+              <% else %>
+              <td class="col-6" style="text-align: right;"><%= precision_label fee.amount %></td>
+              <% end %>
+            <% end %>
             <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %></td>
             <td class="col-6" style="text-align: right;">
                 <% if fee_amount > 0 %>
+                <% if @self_advance_fee %>
+                <span style="color: #000;"> <span style="color: #000;"><%= precision_label fee_amount %></span></span>
+                <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <% else %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id ) %>
+                <span style="cursor: pointer; color: #999;"> <span style="color: #999;"><%= precision_label ( fee_amount.to_f * @fee_collection_advances.no_of_month.to_i) %></span></span>
+                <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <% else %>
                 <span class="fee_amount_particular"  name="fee_amount_particular_<%= fee.id %>" id="fee_amount_particular_<%= fee.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label fee_amount %></span></span>
                 <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+                <% end %>
+                <% end %>
                 <% else %>
                 0.00&nbsp;&nbsp;&nbsp;
                 <% end %>
             </td>
         </tr>
+        
+        <% if !(@fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id )) %>
+        <% total_fees += fee_amount %>
+        <% total_payable += fee.amount %>
+        <% elsif @self_advance_fee and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == fee.finance_fee_particular_category_id) %>
         <% total_fees += fee_amount %>
         <% total_payable += fee.amount %>
         <% end %>
+        <% end %>
       <% end %>
-      <% if total_fees > 0 %>  
+      <% if total_fees > 0 and !@self_advance_fee %>  
       <tr>
           <td class="col-1" style=" text-align: center;">&nbsp;</td>
           <td colspan="4" id="add_extra_particular" class="col-2" style="font-size: 14px; font-weight: bold; cursor: pointer;"><i class="fa fa-plus-square-o" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;Add Extra Particulars</td>
@@ -180,6 +250,22 @@
                <% discountPaid = true %>
                <% paidAmount += paidFess.map(&:amount).sum.to_f %>
                <% end %>
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id ) %>
+                  <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                  <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                  <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                  <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                  <% unless @paid_advance_fees.blank? %>
+                    <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                    <% unless paidFess.blank? %> 
+                    <% discountPaid = true %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
             <% end %>
             <% if discountPaid %>
             <tr class="<%= cycle("odd","even") %>">
@@ -207,10 +293,33 @@
                   <% transaction_ids = @paid_fees.map(&:id) %> 
                   <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
                   <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% if !@self_advance_fee and @fee_has_advance_particular %>
+                    <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id ) %>
+                      <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% unless paidFess.blank? %> 
+                        <% discountPaid = true %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
                 <% end %>
               <% end %>
               <% remaining_amount = amount_to_paid - paidAmount %>
               <% if discount_amount > remaining_amount  %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if discount_enable %>
+              <% if  (@fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id )) %>
+              <% if !@self_advance_fee %>
               <% discount_enable = false %>
               <% end %>
               <% end %>
@@ -260,6 +369,22 @@
                <% discountPaid = true %>
                <% paidAmount += paidFess.map(&:amount).sum.to_f %>
                <% end %>
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id ) %>
+                  <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                  <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                  <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                  <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                  <% unless @paid_advance_fees.blank? %>
+                    <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                    <% unless paidFess.blank? %> 
+                    <% discountPaid = true %>
+                    <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
             <% end %>
             <% if discountPaid %>
             <tr class="<%= cycle("odd","even") %>">
@@ -287,10 +412,33 @@
                   <% transaction_ids = @paid_fees.map(&:id) %> 
                   <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
                   <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% if !@self_advance_fee and @fee_has_advance_particular %>
+                    <% if @fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id ) %>
+                      <% advance_collection_id = @fee_collection_advances.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% unless paidFess.blank? %> 
+                        <% discountPaid = true %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
                 <% end %>
               <% end %>
               <% remaining_amount = amount_to_paid - paidAmount %>
               <% if discount_amount > remaining_amount  %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if discount_enable %>
+              <% if  (@fee_has_advance_particular and (@fee_collection_advances.particular_id == 0 or @fee_collection_advances.particular_id == d.finance_fee_particular_category_id )) %>
+              <% if !@self_advance_fee %>
               <% discount_enable = false %>
               <% end %>
               <% end %>
@@ -328,8 +476,8 @@
         <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
           <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_discount') %> </td>
           <td class="col-6" style="text-align: right;">
-              <span id="discount_total_amount_label" style="color: #000;"><%= precision_label(@total_discount) %></span>
-              <input type="hidden" name="discount_total_amount" id="discount_total_amount" value="<%= precision_label(@total_discount) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+              <span id="discount_total_amount_label" style="color: #000;"><%= precision_label(discount_total) %></span>
+              <input type="hidden" name="discount_total_amount" id="discount_total_amount" value="<%= precision_label(discount_total) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
           </td>
         </tr>
         <% end %>

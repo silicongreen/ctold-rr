@@ -93,7 +93,7 @@
            <tr class="table-header">
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="no-warp"><%= std['name'] %></td> 
-            <td class="col-pdf" colspan="13">N/A</td>
+            <td class="col-pdf" colspan="13">-</td>
             <% @comment_std = ExamConnectSubjectComment.find_by_student_id_and_exam_connect_id_and_subject_id(std['id'].to_i,@connect_exam_obj.id,@subject.id) %>
             
             <td class="col-pdf"><%= @comment_std.comments unless @comment_std.blank? %></td>
@@ -439,7 +439,7 @@
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>
             <% else %>
-                <td class="col-pdf"><b>N/A</b></td>
+                <td class="col-pdf"><b>-</b></td>
             <% end %>
             <td class="col-pdf"><%= obtained_mark3.round().to_s %></td>
             <td class="col-pdf"><%= obtained_mark4.round().to_s %></td>
@@ -450,7 +450,7 @@
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>
             <% else %>
-                <td class="col-pdf"><b>N/A</b></td>
+                <td class="col-pdf"><b>-</b></td>
             <% end %>
             <% main_mark_new = (main_mark.to_f/100)*full_mark_final_term %>
             <td class="col-pdf"><%= main_mark_new.round().to_s %></td>
@@ -458,7 +458,7 @@
             <% if !grade.blank? and !grade.name.blank? %>
                 <td class="col-pdf"><b><%= grade.name %></b></td>
             <% else %>
-                <td class="col-pdf"><b>N/A</b></td>
+                <td class="col-pdf"><b>-</b></td>
             <% end %>
         </tr>
           <% end %>

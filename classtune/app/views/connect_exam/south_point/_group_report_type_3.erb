@@ -44,7 +44,7 @@
                                         <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                         <% subject_marks = subject_marks.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                       <% else %>
-                                        N/A
+                                        -
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                      
@@ -83,14 +83,14 @@
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <td class="col-pdf"><%= grade.name %></td>  
                               <% else %>
-                                <td class="col-pdf">N/A</td>  
+                                <td class="col-pdf">-</td>  
                               <% end %>
                               <td class="col-pdf"><%= heighst_mark %></td> 
                           <% else %>
-                              <td class="col-pdf">N/A</td> 
-                              <td class="col-pdf">N/A</td> 
-                              <td class="col-pdf">N/A</td> 
-                              <td class="col-pdf">N/A</td> 
+                              <td class="col-pdf">-</td> 
+                              <td class="col-pdf">-</td> 
+                              <td class="col-pdf">-</td> 
+                              <td class="col-pdf">-</td> 
                           <% end %>    
                          
                                

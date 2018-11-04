@@ -87,14 +87,14 @@
                                         <% elsif check_exam == false %>
                                            -
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
-                                            N/A
+                                            -
                                         <% grade_i= true %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -2 %>
-                                            N/A
+                                            -
                                             <% grade_w = true %>
                                         <% end %>
                                       <% else %>
-                                        N/A
+                                        -
                                       <% end %>
                                       
                                        
@@ -137,7 +137,7 @@
                                     <% end %>
                                     <%= sprintf( "%0.02f", att_percentize) %> %
                                 <% else %> 
-                                    <%= "N/A" %>
+                                    <%= "-" %>
                                 <% end %> 
                                 
                              <% end %>

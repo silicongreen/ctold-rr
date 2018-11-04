@@ -123,7 +123,7 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-pdf"><%= grade.name %></td>  
                           <% else %>
-                            <td class="col-pdf">N/A</td>  
+                            <td class="col-pdf">-</td>  
                           <% end %> 
                           <td class="col-pdf">
                             <% if !@subject_highest_quarter[subjects['id'].to_i].blank? %>  

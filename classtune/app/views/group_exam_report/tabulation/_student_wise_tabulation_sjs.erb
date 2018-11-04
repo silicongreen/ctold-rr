@@ -112,7 +112,7 @@
                 <% if es.marks.present? %>
                   <% total = total+es.marks.to_f %>
                 <% end %>
-                <%= es.grading_level.present? ? es.grading_level : "N/A" %>
+                <%= es.grading_level.present? ? es.grading_level : "-" %>
                 
                 <% if es.grading_level.blank? or es.grading_level.name == "F" %>
                     <% off_rank = true %>
@@ -131,7 +131,7 @@
       <% if off_rank == false %>
         <td class="name-std"><%= rank %></td>
       <% else %>
-        <td class="name-std"><%= "N/A" %></td>
+        <td class="name-std"><%= "-" %></td>
       <% end %>
       <% end %>  
  

@@ -255,10 +255,10 @@
                         main_mark = (obtained_mark.to_f/full_mark.to_f)*100
 
 
-                        grade_name1 = "N/A"
-                        grade_name2 = "N/A"
-                        grade_name3 = "N/A"
-                        grade_name  = "N/A"
+                        grade_name1 = "-"
+                        grade_name2 = "-"
+                        grade_name3 = "-"
+                        grade_name  = "-"
 
                         grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                         if !grade.blank? and !grade.name.blank?

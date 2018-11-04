@@ -112,7 +112,7 @@
                                             <% end %>
                                         <% end %>
                                       <% else %>
-                                        N/A
+                                        -
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -183,7 +183,7 @@
                                 %>
                                 <% end %>
                               <% else %>
-                                <td class="col-pdf"><b>N/A</b></td>
+                                <td class="col-pdf"><b>-</b></td>
                               <% end %>
                             <% end %>
                               
@@ -191,7 +191,7 @@
                               <% total_credit_point = total_credit_point+grade.credit_points.to_f %>
                               <td class="col-pdf border-right-none"><b><%= grade.credit_points %></b></td>
                             <% else %>
-                              <td class="col-pdf border-right-none"><b>N/A</b></td>
+                              <td class="col-pdf border-right-none"><b>-</b></td>
                             <% end %>
                            
                             
@@ -201,10 +201,10 @@
                             <% total_mark_all_subject = total_mark_all_subject+total_mark %>
                             <% full_mark_all_subject = full_mark_all_subject+full_mark %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf border-right-none">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf border-right-none">-</td>
                           <% end %>      
 
                       </tr> 
@@ -234,7 +234,7 @@
               <%
               if letter_grade.blank?
                 final_grade = total_credit_point.to_f/total_subject
-                letter_grade = "N/A"
+                letter_grade = "-"
                 grade = GradingLevel.grade_point_to_grade(final_grade, @batch.id)
                 if !grade.blank? and !grade.name.blank?
                   letter_grade = grade.name
@@ -314,7 +314,7 @@
                            <% unless @ranked_positions[@student.id.to_i].blank? %>
                                <td class="col-pdf align-center" width="33%"><b> <%= @ranked_positions[@student.id.to_i] %></b></td>
                             <% else %>
-                               <td class="col-pdf align-center" width="33%"><b>N/A</b></td>
+                               <td class="col-pdf align-center" width="33%"><b>-</b></td>
                             <% end %> 
                            <td class="col-pdf no-border"  width="33%">
 

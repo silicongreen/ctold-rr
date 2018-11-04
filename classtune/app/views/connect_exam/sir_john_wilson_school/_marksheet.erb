@@ -181,7 +181,7 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-2"><center><b><%= grade.name %></b></center></td>
                       <% else %>
-                        <td class="col-2"><center><b>N/A</b></center></td>
+                        <td class="col-2"><center><b>-</b></center></td>
                       <% end %>
                       </tr>
                       <% if std.equal? @report_data['result']['al_students'].last %>

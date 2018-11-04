@@ -77,7 +77,7 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                   <% else %>
-                                    N/A
+                                    -
                                   <% end %>  
                               </td>
                               <td class="col-pdf no-warp">
@@ -85,7 +85,7 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% else %>
-                                    N/A
+                                    -
                                   <% end %>  
                               </td>
 
@@ -117,7 +117,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                             <% end %>
                             
                             <% full_marks_total = full_marks_total+full_mark.to_f %>  
@@ -125,10 +125,10 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
 
                       </tr> 

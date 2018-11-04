@@ -53,7 +53,7 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% else %>
-                                    N/A
+                                    -
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     [<%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>]
@@ -97,17 +97,17 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                             <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                             <% end %>
                             <% full_marks_total = full_marks_total+full_mark.to_f %>  
                             <% total_marks_student = total_marks_student+total_mark.to_f %> 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                           <% end %>      
 
                       </tr> 

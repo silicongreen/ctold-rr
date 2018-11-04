@@ -230,15 +230,15 @@ end
             <% if es.exam.subject.no_exams %>
               <% if @exam_group.exam_type == 'Marks' %>
                   <td class="col-pdf"><%= es.remarks %></td>
-                  <td class="col-pdf">N/A</td>
-                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf">-</td>
+                  <td class="col-pdf">-</td>
               <% elsif @exam_group.exam_type == 'Grades' %>
                   <td class="col-pdf"><%= es.remarks %></td>
               <% else %>
-                  <td class="col-pdf">N/A</td>
-                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf">-</td>
+                  <td class="col-pdf">-</td>
                   <td class="col-pdf"><%= es.remarks %></td>
-                  <td class="col-pdf">N/A</td>
+                  <td class="col-pdf">-</td>
               <% end %>
             <% else %>
             <% if @exam_group.exam_type == 'Marks' %>

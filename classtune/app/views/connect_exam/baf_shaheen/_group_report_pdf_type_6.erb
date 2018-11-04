@@ -145,7 +145,7 @@
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% else %>
-                                    N/A
+                                    -
                                   <% end %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                     <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -218,7 +218,7 @@
                             </td>
                             
                             <%
-                            subject_grade = "N/A"
+                            subject_grade = "-"
                             grade = GradingLevel.percentage_to_grade(accumulated, @batch.id)
                             if !grade.blank? and !grade.name.blank?
                               subject_grade = grade.name 
@@ -233,7 +233,7 @@
                               
                                 <td class="col-pdf border-right-none"><b><%= @subject_highest[subjects['id'].to_i].round() %></b></td>
                             <% else %>
-                                <td class="col-pdf border-right-none"><b>N/A</b></td>
+                                <td class="col-pdf border-right-none"><b>-</b></td>
                             <% end %>    
                             
                             
@@ -242,12 +242,12 @@
                             <% total_subject = total_subject+1 %>
                             <%  total_mark_all_subject = total_mark_all_subject+accumulated %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf border-right-none">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf border-right-none">-</td>
                           <% end %>      
 
                       </tr> 
@@ -434,34 +434,34 @@
                  <% if @promoted_to!="0" %>
                  <% promotion_status = "Promoted to STD- "+@promoted_to %>
                  <% else %>
-                 <% promotion_status = "N/A" %>
+                 <% promotion_status = "-" %>
                  <% end %>
-                 <% if !@student_position[@student.id.to_i].blank? and promotion_status != "N/A" %>
+                 <% if !@student_position[@student.id.to_i].blank? and promotion_status != "-" %>
                     <% merit_position = @student_position[@student.id.to_i] %>
                     <% unless @student_roll[@student_real_position[@student.id.to_i].to_i].blank? %>
                        <% new_roll = @student_roll[@student_real_position[@student.id.to_i].to_i] %>
                     <% else %>
-                       <% new_roll = "N/A" %>
+                       <% new_roll = "-" %>
                     <% end %>
 
                     <% unless @student_section[@student_real_position[@student.id.to_i].to_i].blank? %>
                        <% new_section = @student_section[@student_real_position[@student.id.to_i].to_i] %>
                     <% else %>
-                       <% new_section = "N/A" %>
+                       <% new_section = "-" %>
                     <% end %>
                 <% else %>
                 <%
-                  merit_position = "N/A"
-                  new_roll = "N/A"
-                  new_section = "N/A"
+                  merit_position = "-"
+                  new_roll = "-"
+                  new_section = "-"
                 %>
                 <% end %>
               <% else %>
                 <% result = "Failed" %>
                 <% promotion_status = "Not Promoted" %>
-                <% new_roll = "N/A" %>
-                <% merit_position = "N/A" %>
-                <% new_section = "N/A" %>
+                <% new_roll = "-" %>
+                <% merit_position = "-" %>
+                <% new_section = "-" %>
               <% end %>
               
               

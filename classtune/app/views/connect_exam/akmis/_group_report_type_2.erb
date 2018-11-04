@@ -73,7 +73,7 @@
                                                       <%= report['result'][report['exam_id']][subjects['id']]['full_mark'] %>
                                                       <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                                     <% else %>
-                                                      N/A
+                                                      -
                                                     <% end %>  
                                                 </td>
                                                 <td  width="50%" >
@@ -81,7 +81,7 @@
                                                       <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                                     <% else %>
-                                                      N/A
+                                                      -
                                                     <% end %>  
                                                 </td>
                                             </tr>
@@ -125,8 +125,8 @@
                                         <td class="col-2"><b><%= grade.name %></b></td>
                                         <td class="col-2"><b><%= grade.credit_points %></b></td>
                                       <% else %>
-                                        <td class="col-2"><b>N/A</b></td>
-                                        <td class="col-2"><b>N/A</b></td>
+                                        <td class="col-2"><b>-</b></td>
+                                        <td class="col-2"><b>-</b></td>
                                       <% end %>
 
 
@@ -134,10 +134,10 @@
                                       <% total_subject = total_subject+1 %>
                                   <% else  %>
                                      
-                                      <td class="col-2"><b>N/A</b></td>
-                                      <td class="col-2"><b>N/A</b></td>
-                                      <td class="col-2"><b>N/A</b></td>
-                                      <td class="col-2"><b>N/A</b></td>
+                                      <td class="col-2"><b>-</b></td>
+                                      <td class="col-2"><b>-</b></td>
+                                      <td class="col-2"><b>-</b></td>
+                                      <td class="col-2"><b>-</b></td>
                                   <% end %>      
 
                             </tr> 

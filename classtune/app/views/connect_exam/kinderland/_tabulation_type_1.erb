@@ -312,7 +312,7 @@
                                   %>
                                     <%= grade.name %>  
                                   <% else %>
-                                    N/A  
+                                    -  
                                   <% end %>
                               </td> 
                             <% end %>
@@ -357,7 +357,7 @@
                            <% unless @ranked_positions[std['id'].to_i].blank? %>
                               <td><%= @ranked_positions[std['id'].to_i] %></td>
                            <% else %>
-                              <td>N/A</td>
+                              <td>-</td>
                            <% end %>
                         <% end %>
                         

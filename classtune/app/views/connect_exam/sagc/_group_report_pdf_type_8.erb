@@ -391,8 +391,8 @@
                                   <td class="col-pdf" rowspan="2"><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
                                 <% end %>
                               <% end %>  
                             <% else %>
@@ -412,8 +412,8 @@
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf">N/A</td>
-                                <td class="col-pdf">N/A</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %> 
                            
@@ -535,8 +535,8 @@
                                   <td class="col-pdf" rowspan="2"><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
                                 <% end %>
                               <% end %>  
                             <% else %>
@@ -556,8 +556,8 @@
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf">N/A</td>
-                                <td class="col-pdf">N/A</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>  
 
@@ -582,7 +582,7 @@
                             grand_total = grand_total+total_marks_ag
                             
                             letter_grade_point = 0.0
-                            letter_grade_name = "N/A"
+                            letter_grade_name = "-"
                             if subjects['subject_group_id'].to_i > 0
                               main_mark  = (main_mark+main_mark2+main_mark3+main_mark4)/4.00
                             else
@@ -628,7 +628,7 @@
                                 <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point) %></td>
                               <% end %>
                           <% else  %>
-                            <td class="col-pdf" colspan="100">N/A</td>
+                            <td class="col-pdf" colspan="100">-</td>
                           <% end %>
                           
 
@@ -844,7 +844,7 @@
                               <td class="col-pdf"><%= total_marks_ag.to_i %></td>
                               <td class="col-pdf"><%=  highest_mark.round() %></td>
                           <% else  %>
-                            <td class="col-pdf" colspan="100">N/A</td>
+                            <td class="col-pdf" colspan="100">-</td>
                           <% end %>
                           
 
@@ -1032,8 +1032,8 @@
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
-                              <td class="col-pdf">N/A</td>
-                              <td class="col-pdf">N/A</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %>
                             
                             <% class_test_mark2 = 0 %>
@@ -1095,8 +1095,8 @@
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
-                              <td class="col-pdf">N/A</td>
-                              <td class="col-pdf">N/A</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %>
 
                           <% 
@@ -1120,7 +1120,7 @@
                             grand_total = grand_total+total_marks_ag
                             
                             letter_grade_point = 0.0
-                            letter_grade_name = "N/A"
+                            letter_grade_name = "-"
                             main_mark = (total_marks_ag.to_f/full_mark_all.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                             if !grade.blank? and !grade.name.blank?
@@ -1150,7 +1150,7 @@
                               <td class="col-pdf"><%=  letter_grade_name %></td>
                               <td class="col-pdf"><%= sprintf( "%0.02f", letter_grade_point)%></td>
                           <% else  %>
-                            <td class="col-pdf" colspan="100">N/A</td>
+                            <td class="col-pdf" colspan="100">-</td>
                           <% end %>
                           
 
@@ -1193,7 +1193,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                             <%= grade.name %>
                             <% else %>
-                              N/A
+                              -
                             <% end %>
                           <% end %> 
                       </td>
@@ -1202,7 +1202,7 @@
                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                           <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>
                   </tr>
@@ -1215,7 +1215,7 @@
                          <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                           <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>    
                   </tr>
@@ -1278,7 +1278,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                             <%= grade.name %>
                             <% else %>
-                              N/A
+                              -
                             <% end %>
                           <% end %>
                       </td>
@@ -1287,7 +1287,7 @@
                          <% if !@student_position_second_term_batch[@student.id.to_i].blank? %> 
                           <%= @student_position_second_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>    
                   </tr>
@@ -1300,7 +1300,7 @@
                          <% if !@student_position_second_term[@student.id.to_i].blank? %> 
                           <%= @student_position_second_term[@student.id.to_i] %> out of <%= @total_std %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>    
                   </tr>
@@ -1356,7 +1356,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                             <%= grade.name %>
                             <% else %>
-                             N/A
+                             -
                             <% end %>
                           <% end %>
                       </td>
@@ -1365,7 +1365,7 @@
                          <% if !@student_position_batch[@student.id.to_i].blank? %> 
                           <%= @student_position_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>
                   </tr>
@@ -1378,7 +1378,7 @@
                          <% if !@student_position[@student.id.to_i].blank? %> 
                           <%= @student_position[@student.id.to_i] %> out of <%= @total_std %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>    
                   </tr>

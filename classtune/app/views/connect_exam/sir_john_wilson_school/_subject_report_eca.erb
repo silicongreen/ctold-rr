@@ -46,7 +46,7 @@
                 unless emp.blank?
                   teacher_names << emp[0].full_name
                 else
-                  teacher_names << "N/A"
+                  teacher_names << "-"
                 end
               
             %>
@@ -103,7 +103,7 @@
                 <td colspan="1"  class="col-pdf text_center" ><b><%= grade.name %></b></td>
                 <td colspan="1"  class="col-pdf text_center" ><b><%= exam_effort %></b></td>
               <% else %>
-                <td class="col-2 col-pdf text_center" ><b>N/A</b></td>
+                <td class="col-2 col-pdf text_center" ><b>-</b></td>
                 <td colspan="1"  class="col-pdf text_center"><b><%= exam_effort %></b></td> 
               <% end %>                              		  
               </tr>

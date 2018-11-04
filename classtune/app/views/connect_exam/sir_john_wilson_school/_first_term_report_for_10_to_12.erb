@@ -121,7 +121,7 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                           <td class="col-pdf"><center><%= grade.name %></center></td>
                           <% else %>
-                          <td class="col-pdf"><center>N/A</center></td>
+                          <td class="col-pdf"><center>-</center></td>
                           <% end %>  
                           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
                           <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>  
@@ -143,7 +143,7 @@
                           <% if !grade2.blank? and !grade2.name.blank? %>
                           <td class="col-pdf"><center><%= grade2.name %></center></td>
                           <% else %>
-                          <td class="col-pdf"><center>N/A</center></td>
+                          <td class="col-pdf"><center>-</center></td>
                           <% end %>                          
                           <td class="col-pdf"><p class="term_remark"><i><%= exam_comment2 %></i></p></td>
                           

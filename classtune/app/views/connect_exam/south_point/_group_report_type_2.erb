@@ -208,7 +208,7 @@
                           <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><b><%= grade.name %></b></td>
                           <% else %>
-                              <td class="col-pdf"><b>N/A</b></td>
+                              <td class="col-pdf"><b>-</b></td>
                           <% end %>
                           <td class="col-pdf">
                             <% if !@subject_highest_mark_first_term[subjects['id'].to_i].blank? %>  

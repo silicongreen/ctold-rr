@@ -129,7 +129,7 @@
                           <% end %>
                                 <% total_grades = total_grades+1 %>
                           <% else %>
-                          <td class="col-pdf"><center>N/A</center></td>
+                          <td class="col-pdf"><center>-</center></td>
                           <% end %> 
                             
                           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>

@@ -109,14 +109,14 @@
                                           <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                           <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -1 %>
-                                            N/A
+                                            -
                                         <% grade_i= true %>
                                         <% elsif report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_i == -2 %>
-                                            N/A
+                                            -
                                             <% grade_w = true %>
                                         <% end %>
                                       <% else %>
-                                        N/A
+                                        -
                                       <% end %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                         <% exam_marks = exam_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -166,7 +166,7 @@
                               <% if !grade.blank? and !grade.name.blank? %>
                               <%= grade.name %>
                               <% else %>
-                              N/A
+                              -
                               <% end %>
                             <% end %>
                             </td>   
@@ -183,10 +183,10 @@
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
                           <% else  %>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
-                            <td class="col-pdf">N/A</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
+                            <td class="col-pdf">-</td>
                            
                           <% end %>      
 

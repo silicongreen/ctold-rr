@@ -277,8 +277,8 @@
                                   <td class="col-pdf" rowspan="2"><%= grade.name %></td>
                                   <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
-                                  <td class="col-pdf" rowspan="2">N/A</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
+                                  <td class="col-pdf" rowspan="2">-</td>
                                 <% end %>
                                <% end %>
                             <% else %>
@@ -299,12 +299,12 @@
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                               <% else %>
-                                <td class="col-pdf">N/A</td>
-                                <td class="col-pdf">N/A</td>
+                                <td class="col-pdf">-</td>
+                                <td class="col-pdf">-</td>
                               <% end %>
                             <% end %>
                           <% else  %>
-                            <td class="col-pdf" colspan="100">N/A</td>
+                            <td class="col-pdf" colspan="100">-</td>
                           <% end %>      
 
                       </tr> 
@@ -413,7 +413,7 @@
                               <% else %>
                               <% end %>
                             <% else  %>
-                              <td class="col-pdf" colspan="100">N/A</td>
+                              <td class="col-pdf" colspan="100">-</td>
                             <% end %>      
 
                         </tr> 
@@ -530,11 +530,11 @@
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
-                              <td class="col-pdf">N/A</td>
-                              <td class="col-pdf">N/A</td>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
                             <% end %>
                           <% else  %>
-                            <td class="col-pdf" colspan="100">N/A</td>
+                            <td class="col-pdf" colspan="100">-</td>
                           <% end %>      
 
                       </tr> 
@@ -574,7 +574,7 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                             <%= grade.name %>
                             <% else %>
-                              N/A
+                              -
                             <% end %>
                           <% end %>
                           </b>
@@ -584,7 +584,7 @@
                          <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                           <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                       </td>
                   </tr>
@@ -598,7 +598,7 @@
                          <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                           <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
                          <% else %>
-                          N/A
+                          -
                          <% end %> 
                         </b>  
                       </td>    

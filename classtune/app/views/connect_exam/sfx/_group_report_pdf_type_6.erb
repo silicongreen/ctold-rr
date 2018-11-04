@@ -43,9 +43,9 @@
                   <tr class="table-header">
                       <td class="col-pdf" colspan="2"></td>
                       <td class="col-pdf" colspan="<%= colspan %>"><center>CLASS TESTS</center></td>
-                      <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
+                     
                       <td class="col-pdf"></td>
-                      <% end %>
+                      
                   </tr>
                   <tr class="table-header">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -57,9 +57,9 @@
                           </td> 
                         <% end %>
                       <% end %>
-                      <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
+                     
                       <td class="col-pdf">Class Attendance</td>
-                      <% end %>
+                    
                   </tr>
 
                   <% total_parcent = 0 %>
@@ -138,7 +138,7 @@
 
                             <% end %>
                           <% end %>
-                            <% if @connect_exam_obj.id != 1113 and  @connect_exam_obj.id != 1114  %>
+                          
                             <td class="col-pdf">
                              <% total_att = 0 %>
                              <% absent_att = 0 %>   
@@ -167,6 +167,9 @@
                                       <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
 
                                     <% end %>
+                                    <% if att_percentize < 60 %>
+                                        <% att_percentize = 60 %>
+                                    <% end %> 
                                     <%= sprintf( "%0.02f", att_percentize) %> %
                                 <% else %> 
                                     <%= "N/A" %>
@@ -176,7 +179,7 @@
                             
                             
                             </td>  
-                            <% end %>
+                           
                       </tr> 
                       <% end %>
                     <% end %>  

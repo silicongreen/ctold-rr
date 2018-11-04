@@ -146,16 +146,16 @@ class MarksController < ApplicationController
     unless @exam_connect.blank?
       @exam_connect.each do |exam_connect|
         if data_type.to_i == 8
-          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'failed_grade/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'failed_grade/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
           k = k+1
         elsif data_type.to_i == 1 or data_type.to_i == 2
-          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'tabulation/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'tabulation/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
           k = k+1
         elsif data_type.to_i == 3
-          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'continues/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'continues/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
           k = k+1
         elsif data_type.to_i == 4
-          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'comment_tabulation_pdf/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'comment_tabulation_pdf/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
           k = k+1
         elsif data_type.to_i == 5
           data[k] = "<a href='javascript:void(0);' id='exams_id_"+exam_connect.id.to_s+"' onclick='get_exam_subject("+exam_connect.id.to_s+")' >"+exam_connect.name.to_s+"</a>"
@@ -168,7 +168,7 @@ class MarksController < ApplicationController
           
         else
           if exam_connect.result_type == 1 or exam_connect.result_type == 2
-            data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'class_performance_student/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+            data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'class_performance_student/' +exam_connect.id.to_s+"#view=FitH", :id=>"exams_id_"+exam_connect.id.to_s)
             k = k+1
           end
           

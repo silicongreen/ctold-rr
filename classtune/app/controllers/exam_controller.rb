@@ -2966,6 +2966,21 @@ class ExamController < ApplicationController
             :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
   end
   
+  def failed_grade
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    @connect_exam_result_type = @connect_exam_obj.result_type
+    render :pdf => 'failed_grade',
+      :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def tabulation
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)

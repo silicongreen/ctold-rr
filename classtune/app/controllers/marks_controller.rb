@@ -125,11 +125,15 @@ class MarksController < ApplicationController
     
   end
   
+  
+  
   def get_exams
     require 'json'
     batch_id = params[:batch_id]
     data_type = params[:data_type]
-    if data_type.to_i == 1
+    if data_type.to_i == 8
+      @exam_connect = ExamConnect.active.find(:all,:conditions=>"(result_type=1 or result_type=2 or result_type=4) and is_deleted=0 and school_id="+MultiSchool.current_school.id.to_s,:group=>"name")
+    elsif data_type.to_i == 1
       @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=3 or result_type=4) and is_deleted=0")
     elsif data_type.to_i == 2
       @exam_connect = ExamConnect.active.find(:all,:conditions=>"batch_id="+batch_id+" and (result_type=1 or result_type=2 or result_type=5  or result_type=6) and is_deleted=0")
@@ -141,7 +145,10 @@ class MarksController < ApplicationController
     data = []
     unless @exam_connect.blank?
       @exam_connect.each do |exam_connect|
-        if data_type.to_i == 1 or data_type.to_i == 2
+        if data_type.to_i == 8
+          data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'failed_grade/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
+          k = k+1
+        elsif data_type.to_i == 1 or data_type.to_i == 2
           data[k] = @template.link_to(exam_connect.name.to_s, '/exam/' + 'tabulation/' +exam_connect.id.to_s, :id=>"exams_id_"+exam_connect.id.to_s)
           k = k+1
         elsif data_type.to_i == 3

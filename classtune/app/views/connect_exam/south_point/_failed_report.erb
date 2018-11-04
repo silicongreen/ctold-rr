@@ -1,0 +1,101 @@
+<%
+  if @tabulation_data.blank?
+    student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true,true)
+    @tabulation_data = []
+    if student_response['status']['code'].to_i == 200
+      @tabulation_data = student_response['data']
+    end
+  end
+%>
+<%= render  :partial=>"/connect_exam/south_point/failed_grade" %>
+
+<div id="page-yield" class="available_sections1">
+  <div class="page1"> </div>
+  <div class="section1 row" >
+    <center>
+      <div id="pdf-header-south" class="general-header">
+        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+        <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
+      </div>
+      <h2 align="center">Failed List</h2>
+     
+      <% unless @failed_students.blank? %>
+      <% c = 'even' %>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+          <td class="col-pdf">Roll</td>
+          <td class="col-pdf">Name</td>
+          <td class="col-pdf">Section</td>
+          <td class="col-pdf">Class</td>
+          <td class="col-pdf">Number Of "U"</td>
+        
+        </tr>
+        
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% j = 0 %>
+      
+        <% @failed_students.each do |std| %>
+          <% std_info = Student.find_by_id(std['id'].to_i) %>
+          <% if std_info.blank? %>
+              <% next %>
+          <% end %>
+          
+          <%  std_count = std_count+1; %>
+          <% if std_count>60 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break5">
+                  <td colspan="100">&nbsp;</td>
+              </tr> 
+             <tr class="table-header">
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Name</td>
+                <td class="col-pdf">Section</td>
+                <td class="col-pdf">Class</td>
+                <td class="col-pdf">Number Of "U"</td>
+
+              </tr>
+          <% elsif std_count>65 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break6">
+                  <td colspan="100">&nbsp;</td>
+              </tr> 
+              <tr class="table-header">
+                <td class="col-pdf">Roll</td>
+                <td class="col-pdf">Name</td>
+                <td class="col-pdf">Section</td>
+                <td class="col-pdf">Class</td>
+                <td class="col-pdf">Number Of "U"</td>
+
+              </tr>
+          <% end %>    
+        
+              
+          
+          <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+            
+            <td class="name"><%= std['class_roll_no'] %></td>
+            <td class="name-std align-left"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
+            <td>
+                 <%= std_info.batch.course.section_name %>    
+            </td>
+            <td>
+                <%= std_info.batch.course.course_name %>
+            </td>    
+            <td>
+                <%=  @failed_grade[std['id'].to_i] %>
+            </td> 
+              
+           
+        </tr>
+        <% j = j+1 %>
+        <% end %>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>

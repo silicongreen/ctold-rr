@@ -32,6 +32,7 @@
         <a href="javascript:void(0)" onclick="result_type_change(5)"  id="type_5" >Marks Sheet</a>
         <a href="javascript:void(0)" onclick="result_type_change(6)"  id="type_6" >Subject wise Classroom Participation</a>
         <a href="javascript:void(0)" onclick="result_type_change(7)"  id="type_7" >Student wise Classroom Participation</a>
+        <a href="javascript:void(0)" onclick="result_type_change(8)"  id="type_8" >Failed List</a>
     </div>
     <input type="hidden" name="result_type" value="1" id="result_type" />
     <input type="hidden" name="batch_id" value="0" id="batch_id" />
@@ -58,26 +59,28 @@
     %>
     
     <div class="shift_batch_section">
-      <% if batches %>
-      <% 
-      number_of_batches = batches.count()
-      width_percentize = (100/number_of_batches)
-      
-      %>
-        <div class="shift all-exam-links">
-          <% batches.each do |batch| %>
-            <a style="width:<%= width_percentize-5 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>','<%= batch.id %>')" id="batch_name_<%= batch.id %>" ><%= batch.name %></a>
-          <% end %>  
-        </div>    
-      <% end %> 
-        <div class="class_section" >
-          <div class="class_only all-exam-links">
-              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+      <div class="shift_batch_section_hide">
+        <% if batches %>
+        <% 
+        number_of_batches = batches.count()
+        width_percentize = (100/number_of_batches)
+
+        %>
+          <div class="shift all-exam-links">
+            <% batches.each do |batch| %>
+              <a style="width:<%= width_percentize-5 %>%;" href="javascript:void(0)" onclick="get_class('<%= batch.name %>','<%= batch.id %>')" id="batch_name_<%= batch.id %>" ><%= batch.name %></a>
+            <% end %>  
+          </div>    
+        <% end %> 
+          <div class="class_section" >
+            <div class="class_only all-exam-links">
+                <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+            </div>
+            <div class="section_only all-exam-links">
+
+            </div>
           </div>
-          <div class="section_only all-exam-links">
-              
-          </div>
-        </div>
+      </div>    
     </div>
     
     <div class="result_div">
@@ -316,6 +319,14 @@ a:hover
      jj(".exam_types a").removeClass('active');
      jj("#type_"+type_number).addClass('active');
      jj(".result_div").html("");
+     if(type_number == 8)
+     {
+       jj(".shift_batch_section_hide").hide();
+     }
+     else
+     {
+       jj(".shift_batch_section_hide").show();
+     } 
      get_exams();
    }
    function get_class(batch_name,batch_id)
@@ -414,7 +425,7 @@ a:hover
       var batch_id = jj("#batch_id").val();
       var result_type = jj("#result_type").val();
       var html = "";
-      if(batch_id && result_type)
+      if((batch_id && result_type) || (result_type && result_type == 8))
       {
         jj(".result_div").html("<img src='/images/loader.gif' />");
         jj.get( "/marks/get_exams?batch_id="+batch_id+"&data_type="+result_type, function( data ) {
@@ -434,7 +445,7 @@ a:hover
    
    jj( document ).on( "click", "a", function(event) {
       
-      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("class_performance_student")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
+      if(jj(this).attr("href").indexOf("continues")!=-1 || jj(this).attr("href").indexOf("class_performance_student")!=-1 || jj(this).attr("href").indexOf("tabulation")!=-1 || jj(this).attr("href").indexOf("failed_grade")!=-1 || jj(this).attr("href").indexOf("marksheet")!=-1 || jj(this).attr("href").indexOf("comment_tabulation_pdf")!=-1)
       {
          jj("#pdf_file").hide();
          jj("#pdf_file").show();

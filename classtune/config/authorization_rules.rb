@@ -2085,6 +2085,7 @@ authorization do
       :index,
       :edit_exam_group,
       :update_exam_form,
+      :failed_grade,
       :publish,
       :marksheet,
       :effot_gradesheet,

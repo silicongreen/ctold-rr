@@ -306,6 +306,7 @@ class ReportController extends Controller
             $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
             $batch_id = Yii::app()->request->getPost('batch_id');
             $all_class_report = Yii::app()->request->getPost('all_class_report');
+            $failed_list = Yii::app()->request->getPost('failed_list');
             $response = array();
             $new_connect_exam_id = array();
             if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin || Yii::app()->user->isStudent || Yii::app()->user->isParent ))
@@ -320,7 +321,15 @@ class ReportController extends Controller
                     $courseObj = new Courses();
                     $courseData = $courseObj->findByPk($batchData->course_id);
                     
-                    $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name);
+                    if($failed_list)
+                    {
+                        $find_all_batches = $batchData->getBatchsByName();
+                    }
+                    else
+                    {
+                       $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name); 
+                    }    
+                    
                     $new_connect_exam_id = array(); 
                     if($find_all_batches)
                     {

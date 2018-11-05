@@ -16,7 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-  <% form_remote_for :vat, :url => {:action => 'update_vat_ajax' }, :before=>"$('add_vat').disable()",:complete=>"setTimeout(function(){$('add_vat').enable();},5000)" do |form| %>
+  <% form_remote_for :vat, :url => {:action => 'update_vat_ajax',:from_batch_fee => @from_batch_fee }, :before=>"$('add_vat').disable()",:complete=>"setTimeout(function(){$('add_vat').enable();},5000)" do |form| %>
     <div class="fine_info" style="width: 68%;">
       <div class="label-field-pair">
         <div class="label-container" style="width: 63%; text-align: right; padding-right: 2%;  padding-top: 6px;"><label style="width: 100%;"><%= "Vat Amount" %></label></div>

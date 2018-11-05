@@ -828,7 +828,7 @@ module OnlinePayment
   module StudentPayReceipt
 
     def self.included(base)
-      base.alias_method_chain :student_fee_receipt_pdf,:gateway
+      #base.alias_method_chain :student_fee_receipt_pdf,:gateway
     end
 
     def student_fee_receipt_pdf_with_gateway

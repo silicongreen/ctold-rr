@@ -195,7 +195,7 @@
                     type = 3;
                 }
                 
-                var win = window.open("/tally_exports/download_receipt?type=" + type + "&batches=" + batch_id + "&date_id=" + j('#fees_submission_date_id').val() + "&particulars=" + s_particulars + "&export_date=" + j('#export_date').val() + "&students=" + student_ids,"_blank"); 
+                var win = window.open("/tally_exports/download_receipt?type=" + type + "&batches=" + batch_id + "&date_id=" + j('#fees_submission_date_id').val() + "&particulars=" + s_particulars + "&from_date=" + j('#from_date').val() + "&to_date=" + j('#to_date').val() + "&students=" + student_ids,"_blank"); 
                 win.focus();
             }
       });

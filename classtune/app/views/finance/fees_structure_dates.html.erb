@@ -31,8 +31,9 @@
       <%= select  :fees_submission, :dates_id, @dates.map { |e| [e.full_name, e.id]},
         {:prompt => "#{t('select_fee_collection')}"},
         {:onChange => "#{remote_function( :url =>
-        {:action => "fees_structure_for_student"},
-        :with => "'date='+value+'&id='+#{@student.id}" ,
+        #{:action => "fees_structure_for_student"},
+        {:action => "load_fees_submission_batch"},
+        :with => "'date='+value+'&id='+#{@student.id}+'&batch_id='+#{@student.batch_id}+'&student_fees_struct='+1+'&student_fees='+1" ,
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')")}"
       } %>
@@ -46,6 +47,10 @@
         </div>
   </div>
   <div id= "fees_structure"></div>
+  
+  <div id= "student" style="padding-top: 5px;">
+
+  </div>
 
 </div>
 <div id="modal-box" style="display:none;"></div>

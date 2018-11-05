@@ -28,35 +28,61 @@
     <hr style="border-top: 1px solid #ccc;" />
     <div class="extender"></div>
 </div>
+<% unless @show_only_structure %>
+<style>
+    span.editable{
+      border-bottom: 1px dashed #990A10; 
+      cursor: pointer;
+    }
+    span.editable span{
+      color: #990A10; 
+      cursor: pointer;
+    }
+</style>
+<% else %>
+<style>
+    span.editable{
+        color: #000;
+    }
+    span.editable span{
+        color: #000;
+    }
+    span.editable i{
+        display: none;
+    }
+</style>
+<% end %>
 <% unless @from_batch_fee %>
 <h2 style='text-align: center; background: #ECECEC; padding: 4px; border-radius: 4px;'><%= @student.full_name %></h2>
 <% end %>
 <%= error_messages_for "financefee" ,:header_message => nil%>
-<% unless @financefee.is_paid == true or (@total_payable-@total_discount==0) or @self_advance_fee %>
-  <% particularNames = @fee_particulars.map{|fee| fee.name.downcase} %>
-  <% @vat_as_particular = false %>
-  <% @vat_particular_id = 0 %>
-  <% if particularNames.include?('vat')  %>
-    <% @fee_particulars.each do |fee| %>
-      <%  if fee.name.downcase == 'vat' %>
-        <% @vat = fee.amount.to_f %>
-        <% @vat_as_particular = true %>
-        <% @vat_particular_id = fee.id %>
+<% unless @show_only_structure %>
+  <% unless @financefee.is_paid == true or (@total_payable-@total_discount==0) or @self_advance_fee %>
+    <% particularNames = @fee_particulars.map{|fee| fee.name.downcase} %>
+    <% @vat_as_particular = false %>
+    <% @vat_particular_id = 0 %>
+    <% if particularNames.include?('vat')  %>
+      <% @fee_particulars.each do |fee| %>
+        <%  if fee.name.downcase == 'vat' %>
+          <% @vat = fee.amount.to_f %>
+          <% @vat_as_particular = true %>
+          <% @vat_particular_id = fee.id %>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-  <div style="width: 100%; text-align: right">
-      
-    <%= render :partial => "fine_submission" if (@fine.nil? or @fine.to_i==0) && (@new_fine_amount.nil? or @new_fine_amount.to_i==0) %>
-    <%= render :partial => "vat_submission" if (@vat.nil? or @vat.to_i==0) && (@paid_fees.blank?) %>
-    <% if @vat_as_particular %>  
-      <div id="vat_div"></div>
-    <% else %>  
-      <% unless @vat.nil? %>
+    <div style="width: 100%; text-align: right">
+
+      <%= render :partial => "fine_submission" if (@fine.nil? or @fine.to_i==0) && (@new_fine_amount.nil? or @new_fine_amount.to_i==0) %>
+      <%= render :partial => "vat_submission" if (@vat.nil? or @vat.to_i==0) && (@paid_fees.blank?) %>
+      <% if @vat_as_particular %>  
         <div id="vat_div"></div>
-      <% end %>
-    <% end %>  
-  </div>
+      <% else %>  
+        <% unless @vat.nil? %>
+          <div id="vat_div"></div>
+        <% end %>
+      <% end %>  
+    </div>
+  <% end %>
 <% end %>
 <div class="height-fixer"> </div>
 <% if @from_batch_fee %>
@@ -203,7 +229,7 @@
                 <span style="cursor: pointer; color: #999;"> <span style="color: #999;"><%= precision_label ( fee_amount.to_f * @fee_collection_advances.no_of_month.to_i) %></span></span>
                 <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                 <% else %>
-                <span class="fee_amount_particular"  name="fee_amount_particular_<%= fee.id %>" id="fee_amount_particular_<%= fee.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label fee_amount %></span></span>
+                <span class="fee_amount_particular editable"  name="fee_amount_particular_<%= fee.id %>" id="fee_amount_particular_<%= fee.id %>"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label fee_amount %></span></span>
                 <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                 <% end %>
                 <% end %>
@@ -346,7 +372,7 @@
               <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
               <td class="col-2" colspan="3"><%= discount_text %></td>
               <td class="col-6" style="text-align: right;">
-                  <span class="fee_amount_discount"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label discount_amount %></span></span>
+                  <span class="fee_amount_discount editable"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label discount_amount %></span></span>
                   <input type="hidden" name="fee_discount_amount_<%= d.id %>" id="fee_discount_amount_<%= d.id %>" value="<%= precision_label discount_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'discount')" onkeydown="checkKey(event,this, 'discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_discount" name="fee_discount_chk_<%= d.id %>" id="fee_discount_chk_<%= d.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                   <% discount_total += discount_amount %>
               </td>
@@ -465,7 +491,7 @@
               <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
               <td class="col-2" colspan="3"><%= discount_text %></td>
               <td class="col-6" style="text-align: right;">
-                  <span class="fee_amount_discount"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label discount_amount %></span></span>
+                  <span class="fee_amount_discount editable"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label discount_amount %></span></span>
                   <input type="hidden" name="fee_discount_amount_<%= d.id %>" id="fee_discount_amount_<%= d.id %>" value="<%= precision_label discount_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'discount')" onkeydown="checkKey(event,this, 'discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_discount" name="fee_discount_chk_<%= d.id %>" id="fee_discount_chk_<%= d.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                   <% discount_total += discount_amount %>
               </td>
@@ -560,7 +586,7 @@
                   <span class="only_enable_vat" name="fee_amount_vat" id="fee_amount_vat" style="color: #000;"><span style="color: #000;"><%= precision_label remaining_amount.to_f %></span></span>&nbsp;&nbsp;&nbsp;
                   <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label remaining_amount.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" />
                 <% else %>
-                  <span class="fee_amount_vat"  name="fee_amount_vat" id="fee_amount_vat" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @vat.to_f %></span></span>
+                  <span class="fee_amount_vat editable"  name="fee_amount_vat" id="fee_amount_vat"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @vat.to_f %></span></span>
                   <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label @vat.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'vat')" onkeydown="checkKey(event,this, 'vat')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_vat" name="fee_vat_chk" id="fee_vat_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                   <% if @vat_as_particular == false and paidAmount == 0 %>
                   <span name="assign_vat_to_user" id="assign_vat_to_user" class="assign_vat_to_user" style="font-size: 12px; display: none; cursor: pointer; border-bottom: 1px dashed #990A10;">
@@ -598,7 +624,7 @@
               </td>
               <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
               <td class="col-2" style="text-align: right;">
-                  <span class="fee_amount_vat"  name="fee_amount_vat" id="fee_amount_vat" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @vat.to_f %></span></span>
+                  <span class="fee_amount_vat editable"  name="fee_amount_vat" id="fee_amount_vat"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @vat.to_f %></span></span>
                   <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label @vat.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'vat')" onkeydown="checkKey(event,this, 'vat')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_vat" name="fee_vat_chk" id="fee_vat_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                   <% if @vat_as_particular == false and paidAmount == 0 %>
                   <span name="assign_vat_to_user" id="assign_vat_to_user" class="assign_vat_to_user" style="font-size: 12px; display: none; cursor: pointer; border-bottom: 1px dashed #990A10;">
@@ -681,7 +707,7 @@
           <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
           <td class="col-2"  style="text-align: right;"><%= precision_label 0 %></td>
           <td class="col-6"  style="text-align: right;">
-              <span class="fee_amount_fine"  name="fee_amount_fine" id="fee_amount_fine" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @fine.to_f %></span></span>
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @fine.to_f %></span></span>
               <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @fine.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
               <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine) %>" /><i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
               <% load_fine_amount_to_pay = true %>
@@ -742,7 +768,7 @@
           <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
           <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
           <td class="col-6"  style="text-align: right;">
-              <span class="fee_amount_fine"  name="fee_amount_fine" id="fee_amount_fine" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label remaining_amount %></span></span>
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label remaining_amount %></span></span>
               <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label remaining_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
               <% fine_amount_total += remaining_amount %>  
           </td>
@@ -759,7 +785,7 @@
           <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
           <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
           <td class="col-6"  style="text-align: right;">
-              <span class="fee_amount_fine"  name="fee_amount_fine" id="fee_amount_fine" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @new_fine_amount %></span></span>
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @new_fine_amount %></span></span>
               <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @new_fine_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
               <% fine_amount_total += @new_fine_amount %>  
           </td>
@@ -801,7 +827,7 @@
                 <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
                 <td class="col-2"><%= discount_text %></td>
                 <td class="col-6" style="text-align: right;">
-                    <span class="fee_fine_amount_discount"  name="fee_fine_amount_discount_<%= d.id %>" id="fee_fine_amount_discount_<%= d.id %>" style="border-bottom: 1px dashed #990A10; cursor: pointer;"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @discounts_late_amount[d.id] %></span></span>
+                    <span class="fee_fine_amount_discount editable"  name="fee_fine_amount_discount_<%= d.id %>" id="fee_fine_amount_discount_<%= d.id %>"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label @discounts_late_amount[d.id] %></span></span>
                     <input type="hidden" name="fee_fine_discount_amount_<%= d.id %>" id="fee_fine_discount_amount_<%= d.id %>" value="<%= precision_label @discounts_late_amount[d.id] %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine_discount')" onkeydown="checkKey(event,this, 'fine_discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine_discount" name="fee_fine_discount_chk_<%= d.id %>" id="fee_fine_discount_chk_<%= d.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
                     <% fine_discount += @discounts_late_amount[d.id] %>  
                 </td>
@@ -907,7 +933,7 @@
       </script>
 
        
-      <% if total_fees > 0 %>
+      <% if total_fees > 0 and @show_only_structure == false %>
         <tr>
           <td colspan="5" style="background: #f9f9f9; ">
             <div class="payment_details" style="width: 100%;">
@@ -961,7 +987,7 @@
         <td colspan="5" style="background: #fff;">
           <div class="pay_fees">
             <div id="payment_mode"></div>
-            <%  if total_fees > 0 %>
+            <%  if total_fees > 0 and @show_only_structure == false %>
               <div class="pay_fees_buttons">
                 <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button',:onClick => "return validate_payment_mode()" %>
                 <%= image_tag("loader.gif",
@@ -978,7 +1004,9 @@
               </div>
             <% else %>
               <div class="pay_fees_buttons">
+                <% if total_fees == 0  %>  
                 <h4 class="info" style="padding: 4px 10px; margin: 18px 10px 0 !important;  border-radius: 4px;"><%= t('fees_paid') %></h4>
+                <% end %>
                  <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
               </div>
@@ -1004,38 +1032,40 @@
   <div style="clear: both; height: 10px;"></div>
   <% end %>
 <% end %>
-<% unless @paid_fees.empty? %>
-  <div id="payments_details" style="padding-top: 10px;">
-    <div class="label-field-pair3" style="padding-bottom: 15px;">
-        <label style="font-size: 22px;"><%= t('payment_history') %> </label>
-    </div>
-    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-      <thead><!-- class="thead-inverse" -->
-        <tr>
-          <th><%= t('sl_no') %></th>
-          <th style="text-align: center;"><%= t('payment_date') %></th>
-          <th style="text-align: center;"><%= t('payment_mode') %></th>
-          <th><%= t('payment_notes') %></th>
-          <th style="text-align: right;"><%= t('amount') %> (<%= currency %>  )</th>
-          <th class="col-3" style="width:2%;"></th>
-      </tr>
-      <tbody>
-      <% @paid_fees.each_with_index do |f , i| %>
-        <tr class="<%= cycle("odd","even") %>">
-          <td class="col-1"><%= i +=1 %></td>
-          <td class="col-3" style="text-align: center;"><%= f.transaction_date %></td>
-          <td class="col-3" style="text-align: center;"><%= f.payment_mode %></td>
-          <td class="col-2"><%= f.payment_note %></td>
-          <td class="col-3" style="text-align: right;"> 
-            <%= precision_label(f.amount.to_f) %>
-          </td>
-         <td class="col-3" style="width:2%;"> <div class="cancel" ><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+<% if @show_only_structure == false %>  
+  <% unless @paid_fees.empty? %>
+    <div id="payments_details" style="padding-top: 10px;">
+      <div class="label-field-pair3" style="padding-bottom: 15px;">
+          <label style="font-size: 22px;"><%= t('payment_history') %> </label>
+      </div>
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+          <tr>
+            <th><%= t('sl_no') %></th>
+            <th style="text-align: center;"><%= t('payment_date') %></th>
+            <th style="text-align: center;"><%= t('payment_mode') %></th>
+            <th><%= t('payment_notes') %></th>
+            <th style="text-align: right;"><%= t('amount') %> (<%= currency %>  )</th>
+            <th class="col-3" style="width:2%;"></th>
         </tr>
-      <% end %>
-      </tbody>  
-    </table>
+        <tbody>
+        <% @paid_fees.each_with_index do |f , i| %>
+          <tr class="<%= cycle("odd","even") %>">
+            <td class="col-1"><%= i +=1 %></td>
+            <td class="col-3" style="text-align: center;"><%= f.transaction_date %></td>
+            <td class="col-3" style="text-align: center;"><%= f.payment_mode %></td>
+            <td class="col-2"><%= f.payment_note %></td>
+            <td class="col-3" style="text-align: right;"> 
+              <%= precision_label(f.amount.to_f) %>
+            </td>
+           <td class="col-3" style="width:2%;"> <div class="cancel" ><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+          </tr>
+        <% end %>
+        </tbody>  
+      </table>
 
-  </div>
+    </div>
+  <% end %>
 <% end %>
 <script type="text/javascript">
   $('submit_button').disable();

@@ -3907,6 +3907,13 @@ class FinanceController < ApplicationController
           @from_batch_fee = false
         end
       end
+      
+      @show_only_structure = false
+      unless params[:student_fees_struct].nil?
+        if params[:student_fees_struct].to_i == 1
+          @show_only_structure = true
+        end
+      end
 
       if params[:student]
         @student = Student.find(params[:student])
@@ -4031,6 +4038,7 @@ class FinanceController < ApplicationController
 
     @financefee = @student.finance_fee_by_date @date
 
+    @show_only_structure = false
     @from_batch_fee = false
     unless params[:from_batch].nil?
       if params[:from_batch]
@@ -4591,7 +4599,11 @@ class FinanceController < ApplicationController
   def student_fee_receipt_pdf
     @dates_array = params[:id2].split("|")
     @student = Student.find(params[:id])
-    @batch=Batch.find(params[:batch_id])
+    unless params[:batch_id].nil?
+      @batch=Batch.find(params[:batch_id])
+    else
+      @batch=Batch.find(@student.batch_id)
+    end
     @currency_type = currency
     if @dates_array.count == 1
       advance_fee_collection = false
@@ -4817,6 +4829,14 @@ class FinanceController < ApplicationController
   
   def update_vat_ajax
     if request.post?
+      @show_only_structure = false
+      @from_batch_fee = true
+      unless params[:from_batch_fee].nil?
+        @from_batch_fee = params[:from_batch_fee]
+      else
+        @from_batch_fee = false
+      end
+      
       advance_fee_collection = false
       @self_advance_fee = false
       @fee_has_advance_particular = false
@@ -4912,7 +4932,16 @@ class FinanceController < ApplicationController
   end
 
   def update_fine_ajax
-    if request.post?
+    if request.post?  
+      
+      @show_only_structure = false
+      @from_batch_fee = true
+      unless params[:from_batch_fee].nil?
+        @from_batch_fee = params[:from_batch_fee]
+      else
+        @from_batch_fee = false
+      end
+      
       advance_fee_collection = false
       @self_advance_fee = false
       @fee_has_advance_particular = false
@@ -5646,7 +5675,7 @@ class FinanceController < ApplicationController
     @fee_has_advance_particular = false
     
     @student = Student.find(params[:id])
-    @fee_collection = FinanceFeeCollection.find params[:date]
+    @date = @fee_collection = FinanceFeeCollection.find(params[:date])
     @finance_fee=@student.finance_fee_by_date(@fee_collection)
     
     if @finance_fee.advance_fee_id.to_i > 0
@@ -6636,6 +6665,7 @@ class FinanceController < ApplicationController
   end
   
   def delete_transaction_by_batch
+    @show_only_structure = false
     transaction_deletion
     @batch   = Batch.find(params[:batch_id])
     student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')

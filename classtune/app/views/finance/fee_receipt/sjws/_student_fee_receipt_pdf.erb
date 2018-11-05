@@ -259,7 +259,7 @@
               </table>
               </center>
               <% if balance.to_i > 0 %>
-              <h2 class='in-words'>Taka (in Words) : <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></h2>
+              <h2 class='in-words'>Taka (in Words) : <%#= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></h2>
               <% end %>
 
               <% end %>

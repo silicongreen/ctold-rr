@@ -559,10 +559,16 @@ class TallyExportsController < ApplicationController
         particulars = params[:particulars].split(",")
       end
       
-      transaction_export_date = Date.today.to_date.strftime("%e-%b-%Y")
-      unless params[:export_date].nil?
+      transaction_export_from_date = Date.today.to_date.strftime("%Y-%m-%d")
+      transaction_export_to_date = Date.today.to_date.strftime("%Y-%m-%d")
+      
+      unless params[:from_date].nil?
         #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
-        transaction_export_date = params[:export_date].to_date.strftime("%e-%b-%Y")
+        transaction_export_from_date = params[:from_date].to_date.strftime("%Y-%m-%d")
+      end
+      unless params[:to_date].nil?
+        #transaction_date = params[:export_date].to_date.strftime("%m/%d/%Y")
+        transaction_export_to_date = params[:to_date].to_date.strftime("%Y-%m-%d")
       end
       
       @date    = @fee_collection =  FinanceFeeCollection.find(params[:date_id])
@@ -599,7 +605,7 @@ class TallyExportsController < ApplicationController
         unless @fees_data.nil?
           
           @fees_data.each do |fee|
-            @paid_fees = fee.finance_transactions
+            @paid_fees = fee.finance_transactions.find(:all, :conditions => "transaction_date BETWEEN '#{transaction_export_from_date}' and '#{transaction_export_to_date}'")
             unless @paid_fees.blank?
               student ||= fee.student
               student ||= fee.student
@@ -619,110 +625,128 @@ class TallyExportsController < ApplicationController
                 transaction_date = paid_fees.transaction_date
                 trans_date = transaction_date.strftime("%e-%b-%Y")
                 
-                if transaction_export_date == trans_date
-                  vtype = 'Receipt'
-                  if paid_fees.payment_mode.nil? or paid_fees.payment_mode.blank? or paid_fees.payment_mode.empty?
-                    type = "PBL-STD A/C - 877"
-                  else
-                    type = paid_fees.payment_mode
-                  end
-                  
-                  #s_initial = "PBL-STD A/C - 877"
-                  #vn = student_admission_no + "-" + voucher_no + s_initial
-                  vn = student_admission_no + "-" + vtype
-                  #type = 'PBL-STD A/C - 877'
+                vtype = 'Receipt'
+                if paid_fees.payment_mode.nil? or paid_fees.payment_mode.blank? or paid_fees.payment_mode.empty?
+                  type = "PBL-STD A/C - 877"
+                else
+                  type = paid_fees.payment_mode
+                end
 
-                  amount = paid_fees.amount
+                #s_initial = "PBL-STD A/C - 877"
+                #vn = student_admission_no + "-" + voucher_no + s_initial
+                vn = student_admission_no + "-" + vtype
+                #type = 'PBL-STD A/C - 877'
 
-                  dt_due = @due_date.strftime "%M%Y";
-                  bill = student_admission_no + "-CASH-" + dt_due;
+                amount = paid_fees.amount
 
-                  #row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
-                  #new_book.worksheet(0).insert_row(ind, row_new)
-                  #ind += 1
-                  
-                  @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
-                  
-                  unless @fee_particulars.nil?
-                      @fee_particulars.each do |fee_p|
+                dt_due = @due_date.strftime "%M%Y";
+                bill = student_admission_no + "-CASH-" + dt_due;
+
+                #row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "",description, bill]
+                #new_book.worksheet(0).insert_row(ind, row_new)
+                #ind += 1
+
+                @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==@batch) }
+
+                unless @fee_particulars.nil?
+                    @fee_particulars.each do |fee_p|
+                      if fee_p.name.downcase != 'vat'
                         description = fee_p.name + " payment for " + student.full_name
                         fee_name = fee_p.name;
-                        unless fee_name.capitalize.include? "due"
-                          #s_initial = "PBL-STD A/C - 877"
-                          #vn = student_admission_no + "-" + voucher_no + s_initial
-                          vn = student_admission_no + "-" + vtype
-                          #type = 'PBL-STD A/C - 877'
-
-                          amount = fee_p.amount
-
-                          dt_due = @due_date.strftime "%M%Y";
-                          if fee_p.name.downcase.include? "tuition"
-                            bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
-                          elsif fee_p.name.downcase.include? "transport"
-                            bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
-                          elsif fee_p.name.downcase.include? "piano"
-                            bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                        paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id = " + paid_fees.id.to_s + " AND particular_id = #{fee_p.id}")
+                        paidAmount = 0
+                        unless paidFess.blank?
+                          paidAmount += paidFess.map(&:amount).sum.to_f
+                          paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id  = " + paid_fees.id.to_s + " AND particular_id = #{fee_p.id}")
+                          unless paidFess.blank?
+                            paidAmount += paidFess.map(&:amount).sum.to_f
                           end
+                          if paidAmount.to_i > 0
+                            unless fee_name.capitalize.include? "due"
+                              #s_initial = "PBL-STD A/C - 877"
+                              #vn = student_admission_no + "-" + voucher_no + s_initial
+                              vn = student_admission_no + "-" + vtype
+                              #type = 'PBL-STD A/C - 877'
 
-                          row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, fee_name,description, bill]
-                          new_book.worksheet(0).insert_row(ind, row_new)
-                          ind += 1
+                              amount = paidAmount
 
+                              dt_due = @due_date.strftime "%M%Y";
+                              if fee_p.name.downcase.include? "tuition"
+                                bill = transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                              elsif fee_p.name.downcase.include? "transport"
+                                bill = "Transport-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                              elsif fee_p.name.downcase.include? "piano"
+                                bill = "Piano-" + transaction_date.strftime("%b") + "-" + transaction_date.strftime("%y");
+                              end
+
+                              row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, fee_name,description, bill]
+                              new_book.worksheet(0).insert_row(ind, row_new)
+                              ind += 1
+
+                            end
+                          end
                         end
                       end
-                  end
-
-                  @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-                  @total_discount = 0
-
-                  calculate_discount(@date, @batch, student)
-                  if @total_discount > 0
-                    if particulars.include?("discount")
-                      vn = student_admission_no + "-" + vtype
-                      description = "Discount for " + student.full_name
-                      amount = @total_discount
-                      bill = "Discount"
-                      
-                      row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Discount",description, bill]
-                      new_book.worksheet(0).insert_row(ind, row_new)
-                      ind += 1
-                      
                     end
-                  end
+                end
+                
+                paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id = " + paid_fees.id.to_s + "")
+                paidAmount = 0
+                unless paidFess.blank?
+                  paidAmount += paidFess.map(&:amount).sum.to_f
+                  vn = student_admission_no + "-" + vtype
+                  description = "Discount for " + student.full_name
+                  amount = paidAmount
+                  bill = "Discount"
 
-                  bal=(@total_payable-@total_discount).to_f
-                  days=(transaction_date-@date.due_date.to_date).to_i
-                  auto_fine=@date.fine
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Discount",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
+                end
+                
+                paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'VAT' AND finance_transaction_id = " + paid_fees.id.to_s + "")
+                paidAmount = 0
+                unless paidFess.blank?
+                  paidAmount += paidFess.map(&:amount).sum.to_f
+                  
+                  vn = student_admission_no + "-" + vtype
+                  description = "Vat for " + student.full_name
+                  amount = paidAmount
+                  bill = "VAT"
 
-                  if days > 0 and auto_fine and particulars.include?("late")
-                      fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-                      fine_amount=fine_rule.is_amount ? fine_rule.fine_amount : (bal*fine_rule.fine_amount)/100 if fine_rule
-                      extra_fine = calculate_extra_fine(@date, fine_rule)
-                      fine_amount = fine_amount + extra_fine
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "VAT",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
+                end
+                
+                paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id = " + paid_fees.id.to_s + "")
+                paidAmount = 0
+                unless paidFess.blank?
+                  paidAmount += paidFess.map(&:amount).sum.to_f
+                  
+                  description = "Fine for " + student.full_name
+                  vn = student_admission_no + "-" + vtype
+                  amount = paidAmount
+                  bill = "Late Fine"
 
-                      description = "Fine for " + student.full_name
-                      vn = student_admission_no + "-" + vtype
-                      description = "Discount for " + student.full_name
-                      amount = fine_amount
-                      bill = "Late Fine"
-                      
-                      row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine",description, bill]
-                      new_book.worksheet(0).insert_row(ind, row_new)
-                      ind += 1
-                      
-                      fine_discount = 0
-                      fine_discount = get_fine_discount(@date, @batch, student, fine_amount)
-                      if fine_discount > 0
-                        description = "Fine Discount for " + student.full_name
-                        vn = student_admission_no + "-" + vtype
-                        amount = fine_amount
-                        bill = "Late Fine Discount"
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
+                end
+                
+                paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'FineAdjustment' and transaction_type = 'Discount' AND finance_transaction_id = " + paid_fees.id.to_s + "")
+                paidAmount = 0
+                unless paidFess.blank?
+                  paidAmount += paidFess.map(&:amount).sum.to_f
+                  
+                  description = "Fine Discount for " + student.full_name
+                  vn = student_admission_no + "-" + vtype
+                  amount = paidAmount
+                  bill = "Late Fine Discount"
 
-                        row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine Discount",description, bill]
-                        new_book.worksheet(0).insert_row(ind, row_new)
-                        ind += 1
-                      end
-                  end
+                  row_new = [transaction_date, vn, vtype, type, amount, "", student_admission_no, amount, "Late Fine Discount",description, bill]
+                  new_book.worksheet(0).insert_row(ind, row_new)
+                  ind += 1
                 end
               end
             end

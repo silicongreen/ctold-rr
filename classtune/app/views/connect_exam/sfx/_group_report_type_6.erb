@@ -135,6 +135,9 @@
                                       <% att_percentize = ((total_present.to_f)/total_att.to_f)*100  %>
 
                                     <% end %>
+                                    <% if att_percentize < 60 %>
+                                        <% att_percentize = 60 %>
+                                    <% end %>
                                     <%= sprintf( "%0.02f", att_percentize) %> %
                                 <% else %> 
                                     <%= "-" %>

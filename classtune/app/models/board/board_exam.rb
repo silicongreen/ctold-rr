@@ -18,7 +18,7 @@
 
 class BoardExam < ActiveRecord::Base
   validates_presence_of :board_exam_name_id,:board_exam_group_id,:board_session_id
-  validates_uniqueness_of :board_exam_name_id, :scope=>[:board_exam_group_id,:board_session_id],:message=>'This exam exits in database'
+  validates_uniqueness_of :board_exam_name_id, :scope=>[:board_exam_group_id,:board_session_id],:message=>'Already in database'
   belongs_to :board_exam_name
   belongs_to :board_exam_group
   belongs_to :board_session

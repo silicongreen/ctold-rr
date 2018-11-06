@@ -170,7 +170,7 @@ class CardattController extends Controller
             shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
         }
     }
-    private function insert_student($std,$ids_array,$entry_date_time_array,$school_id)
+    private function insert_student($std,$ids_array,$entry_date_time_array,$school_id,$date = "")
     {
         $ids_unique = array_unique($ids_array); 
         $user_mapping = $std->getUserByIdsStudent($ids_unique, $school_id);
@@ -182,8 +182,11 @@ class CardattController extends Controller
             {
                 $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
                 $timestamp = $entry_date_time_array[$key];
-
-                $date = date("Y-m-d", strtotime($timestamp));
+                if(!$date)
+                {
+                    $date = date("Y-m-d", strtotime($timestamp));
+                }
+                
                 $time = date("H:i:s",  strtotime($timestamp));
 
                 $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>2);
@@ -197,26 +200,32 @@ class CardattController extends Controller
             $command->execute();
         }
     } 
-    private function insert_employee($emp,$ids_array,$entry_date_time_array,$school_id)
+    private function insert_employee($emp,$ids_array,$entry_date_time_array,$school_id,$date="")
     {
         $ids_unique = array_unique($ids_array); 
         $user_mapping = $emp->getUserByIds($ids_unique, $school_id);
+        
         $insert_array = array();
         foreach($ids_array as $key=>$value)
         {
             $valid_id = $value;
             if($value && isset($user_mapping[$valid_id]))
             {
+                
                 $user_id_and_profile_id = explode("|||", $user_mapping[$valid_id]);
                 $timestamp = $entry_date_time_array[$key];
 
-                $date = date("Y-m-d", strtotime($timestamp));
+                if(!$date)
+                {
+                    $date = date("Y-m-d", strtotime($timestamp));
+                }
                 $time = date("H:i:s",  strtotime($timestamp));
 
                 $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>1);
 
             }
         } 
+    
         if($insert_array)
         {
             $builder=Yii::app()->db->schema->commandBuilder;
@@ -248,13 +257,14 @@ class CardattController extends Controller
             //date_default_timezone_set(Settings::$school_card_time_zone[$school_id]);
             $ids_array = explode(",", $ids);
             $entry_date_time_array = explode(",",$entry_date_time); 
+          
             if(count($ids_array) == count($entry_date_time_array))
             {
-
-                $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id);
+              
+                $this->insert_employee($emp,$ids_array,$entry_date_time_array,$school_id,$date);
                 if(!in_array($school_id,Settings::$card_attendence_school_employee_only))
                 {
-                    $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id);
+                    $this->insert_student($std,$ids_array,$entry_date_time_array,$school_id,$date);
                 }
 
             }
@@ -425,8 +435,8 @@ class CardattController extends Controller
             $response['success'] = false;
             $response['msg'] = "Invalid School";
          }  
-         $response['card_count'] = count($card_number_array);
-         $response['std_count'] = count($student_id_array);
+         $response['card_count'] = count($ids_array);
+         $response['std_count'] = count($entry_date_time_array);
            
          echo CJSON::encode($response);
          Yii::app()->end();

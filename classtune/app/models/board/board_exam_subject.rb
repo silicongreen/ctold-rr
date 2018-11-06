@@ -19,4 +19,5 @@
 class BoardExamSubject < ActiveRecord::Base
   validates_presence_of :name,:code
   belongs_to :board_exam
+  validates_uniqueness_of :code, :scope=>[:board_exam_id],:message=>'Already in database'
 end

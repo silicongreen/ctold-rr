@@ -1777,7 +1777,9 @@ authorization do
       :add_group,:edit_group,:delete_group,
       :exam_group_subject,:get_exam_group_subject,:new_group_subject,:create,
       :edit_group_subject,:update,:delete_group_subject,
-      :exam,:add_exam,:create_exam,:edit_exam,:delete_exam,:update_exam,:get_exam_filter
+      :exam,:add_exam,:create_exam,:edit_exam,:delete_exam,:update_exam,:get_exam_filter,
+      :exam_subjects,:import_subject,:new_subject,:create_subject,
+      :edit_subject,:update_subject,:delete_subject
     ] 
     has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
       :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,

@@ -17,7 +17,11 @@
 #limitations under the License.
 
 class BoardExamStudent < ActiveRecord::Base
-  validates_presence_of :student_id,:board_exam_id
+  validates_presence_of :student_id,:board_exam_id,:batch_id,:registration
   belongs_to :student
   belongs_to :board_exam
+  belongs_to :batch
+  belongs_to :board_grading_level
+  validates_uniqueness_of :student_id, :scope=>[:board_exam_id],:message=>'Already in database'
+  validates_uniqueness_of :registration, :scope=>[:board_exam_id],:message=>'Already in database'
 end

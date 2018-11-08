@@ -290,13 +290,7 @@ Modalbox.Methods = {
 	
 	_setFocus: function() { // Setting focus to be looped inside current MB
 		if(this.focusableElements.length > 0) {
-			var i = 0;
-			var firstEl = this.focusableElements.find(function findFirst(el){
-				i++;
-				return el.tabIndex == 1;
-			}) || this.focusableElements.first();
-			this.currFocused = (i == this.focusableElements.length - 1) ? (i-1) : 0;
-			firstEl.focus(); // Focus on first focusable element except close button
+			 // Focus on first focusable element except close button
 		} else
 			$("MB_close").focus(); // If no focusable elements exist focus on close button
 	},

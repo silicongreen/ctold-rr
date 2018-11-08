@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
   helper_method :get_attendence_data_all
   helper_method :get_subscrived_link
   helper_method :in_words
+  helper_method :get_student_all_type
   helper_method :send_sms
   helper_method :sms_enable?
   helper_method :save_group_exam_pdf
@@ -62,6 +63,13 @@ class ApplicationController < ActionController::Base
   include CustomInPlaceEditing
   
 
+  def get_student_all_type(id)
+    std = Student.find_by_id(id)
+    if std.blank?
+      std = ArchivedStudent.find_by_former_id(id)
+    end
+    return std
+  end
 
   def exam_marks_entry_allowed(exam_group)
     if exam_group.marks_entry.to_i == 1 and (exam_group.last_date_marks_entry.blank? or @local_tzone_time.to_date <= exam_group.last_date_marks_entry)

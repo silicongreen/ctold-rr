@@ -10,7 +10,7 @@
 
 #MB_window {
 	position:absolute;
-	top: 0;
+	top: 64px;
 	border: 0 solid;
 	text-align:left;
 	z-index:10000;
@@ -33,7 +33,7 @@
 }
 
 #MB_content {
-	padding: 6px .75em 15px;
+	padding: 15px 1.5em 25px;
 	overflow:auto;
 }
 
@@ -81,4 +81,49 @@
 .MB_alert {
 	margin: 10px 0;
 	text-align: center;
+}
+
+#MB_frame
+{
+    padding: 0px 0px;
+}
+#MB_frame, #MB_header, #MB_frame .label-field-pair select
+{
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+}
+#MB_close
+{
+     background: #49bb4b;
+     color:white;
+     font-size: 30px;
+}
+#MB_frame #MB_caption
+{
+    font-size: 15px;
+}
+
+#MB_frame .label-field-pair select
+{
+    background: #fff;
+}
+.submit_button {
+    padding: 6px 8px 6px 6px;
+    border: 1px solid #49bb4b;
+    background: #49bb4b none repeat scroll 0 0 !important;
+    cursor: pointer;
+    color: white;
+}
+.submit_button:hover
+{
+    background: greenyellow none repeat scroll 0 0 !important;
+    color: black;
+}
+#MB_frame #MB_header
+{
+    background: #49bb4b;
+}
+#MB_caption
+{
+    color: white;
 }

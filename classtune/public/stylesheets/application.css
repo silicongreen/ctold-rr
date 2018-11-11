@@ -2492,11 +2492,10 @@ table#listing1 td.col-8 {
     background: url("http://www.champs21.com/styles/layouts/tdsfront/image/home.png") no-repeat scroll 0 0 / 70% auto rgba(0, 0, 0, 0);
 }
 
-//////////////////////////////////////////CHAMPS MENU////////////////////////////////////////////////////////
+
 .chapms_menu
 {
     margin: 0 auto;
-    padding: 0 25px;
     width: 980px;
 }
 .chapms_menu .homework_box_icon {
@@ -3996,4 +3995,9 @@ a{
 .table-hover .table-danger:hover > td,
 .table-hover .table-danger:hover > th {
   background-color: #ebcccc;
+}
+
+.MB_window
+{
+    top: 64px !important;
 }

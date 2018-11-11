@@ -17,8 +17,8 @@
 #limitations under the License.
 
 class BoardExamMark < ActiveRecord::Base
-  validates_presence_of :student_id,:board_exam_id,:board_exam_subject_id,:board_grading_level_id,:subject_taken_as
-  belongs_to :student
+  validates_presence_of :board_exam_student_id,:board_exam_id,:board_exam_subject_id,:board_grading_level_id,:subject_taken_as
+  belongs_to :board_exam_student
   belongs_to :board_exam_subject
   belongs_to :board_exam
   belongs_to :board_grading_level

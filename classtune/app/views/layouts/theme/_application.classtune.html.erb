@@ -30,7 +30,7 @@
     <% unless current_school_detail.new_record? %>
       <link rel="shortcut icon" href="<%=current_school_detail.logo.url%>" type="<%=current_school_detail.logo.content_type%>" />
     <% end %>
-    
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
     <%= stylesheet_link_tag(*get_stylesheets) %>
     <link rel="stylesheet" href="/stylesheets/jquery-ui-1.9.2.custom.css">
     <link rel="stylesheet" href="/stylesheets/media_query.css">
@@ -926,3 +926,14 @@ favicon.badge(<%= reminder_count.to_i %>);
 
 
 </script>
+<style>
+  a
+{
+   color:black;
+   font-weight: bold;
+}
+a:hover
+{
+   text-decoration: underline;
+}
+</style>

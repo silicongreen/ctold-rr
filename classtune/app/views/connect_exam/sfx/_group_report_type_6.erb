@@ -140,7 +140,10 @@
                                     <% end %>
                                     <% if @connect_exam_obj.id == 1113 or @connect_exam_obj.id == 1114 %>
                                         <% if @student.id == 10305 or @student.id == 10309 or @student.id == 10383 or @student.id == 14636 %>
-                                          <% att_percentize = 80 %>
+                                          <% att_percentize = 82.64 %>
+                                        <% end %>
+                                        <% if @student.id == 10407 and subjects['name'].upcase == "PHYSICS" %>
+                                          <% att_percentize = 92.33 %>
                                         <% end %>
                                     <% end %>
                                     <%= sprintf( "%0.02f", att_percentize) %> %

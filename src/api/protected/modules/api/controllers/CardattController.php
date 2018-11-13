@@ -218,8 +218,16 @@ class CardattController extends Controller
                 if(!$date)
                 {
                     $date = date("Y-m-d", strtotime($timestamp));
+                    $time = date("H:i:s",  strtotime($timestamp));
                 }
-                $time = date("H:i:s",  strtotime($timestamp));
+                else
+                {
+                    $date_string = str_replace("-","/",$date);
+                    $date_split = explode(" ", $timestamp);
+                    $date_string_new = $date_string." ".$date_split[1]." ".$date_split[2];
+                    $time = date("H:i:s",  strtotime($date_string_new));
+                }    
+                
 
                 $insert_array[] = array("school_id"=>$school_id,"user_id"=>$user_id_and_profile_id[0],"profile_id"=>$user_id_and_profile_id[1],"date"=>$date,"time"=>$time,"type"=>1);
 

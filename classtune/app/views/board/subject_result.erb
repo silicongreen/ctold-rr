@@ -1,0 +1,165 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<div id="content-header">
+    <h1><%= link_to "Board Exam Subject",{:action => "exam_subjects",:id=>@board_exam.id} %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'>Subject Result</div>
+
+</div>
+
+
+
+<div id="page-yield">
+    <div id="flash-box">
+        <% unless flash[:notice].nil? %>
+          <p class="flash-msg"> <%= flash[:notice] %> </p>
+        <% end %>
+    </div>
+    <div class="box">  
+        <h4 align="center"><%= @board_exam.board_exam_name.name %> <%= @board_exam.board_exam_group.name %> <%= @board_exam.board_session.name %> > <%= @subject.name %></h4> 
+        <div style="clear: both; height: 10px;"></div>
+        <div id="students">
+            <% unless @students.empty? %>
+
+              <table id="example" class="table table-striped table-bordered" style="width:100%">
+                  <thead>
+                      <tr>
+                          <th><%= "Id" %></th>
+                          <th><%= "Name" %></th>
+                          <th><%= "Reg Id" %></th>
+                          <th><%= "Roll" %></th>
+                          <th><%= "Grade" %></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% @students.each do |student| %>
+                        <%
+                        std_info = get_student_all_type(student.student_id)
+                        if std_info.blank?
+                        next
+                          end
+
+                        unless @board_exam_marks.blank?
+                          grade = @board_exam_marks.select{|value| value.board_exam_student_id == student.id}
+                          end  
+                      %>
+                        <tr  class="tr-<%= cycle('odd', 'even') %>" id="student-<%= student.id %>">
+                            <td> <%= std_info.admission_no %></td>
+                            <td class="no-warp"> <%= std_info.full_name %></td>
+
+                            <td> <%= student.registration %></td>
+                            <td> <%= student.roll %></td>
+                            <td style="text-align:right">
+                                <%= (grade.blank?)?"":grade[0].board_grading_level.name %>
+                            </td>
+
+                        </tr>
+                      <% end %>
+                  </tbody>  
+                  <tfoot>
+                      <tr>
+                          <th><%= "Id" %></th>
+                          <th><%= "Name" %></th>
+                          <th><%= "Reg Id" %></th>
+                          <th><%= "Roll" %></th>
+                          <th><%= "Grade" %></th>
+                      </tr>
+                  </tfoot>
+              </table>
+
+            <% else %>
+              <p style="padding: 7px; text-align: center; background: #eef2fd;">No Student Found For This Subject</p>
+            <% end %></div> 
+    </div></div>
+<style>
+    #category-list .listodd,#category-list .listeven
+    {
+        padding:10px 10px 5px 10px;
+    }
+    .opt a
+    {
+        cursor: pointer;
+    }
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    .submit_button_margin
+    {
+        float:left;
+        margin-top: 15px;
+        padding: 5px;
+        cursor: pointer;
+    }
+    table#listing td.col-1
+    {
+        padding: 0px;
+        padding-left: 0px;
+    }
+    .no-sort::after { display: none!important; }
+
+    .no-sort { pointer-events: none!important; cursor: default!important; }
+    *, *::before, *::after
+    {
+        box-sizing: initial;
+    }
+    tbody tr td a
+    {
+        font-weight:normal !important;
+    }
+</style>  
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+      var table = jj('#example').DataTable({
+          "paging": false
+      });
+      jj('#example tfoot th').each(function () {
+          var title = jj(this).text();
+          if (title)
+              jj(this).html('<input type="text" />');
+      });
+
+      // Apply the search
+      table.columns().every(function (index) {
+          var that = this;
+          var column = table.column(index);
+
+          jj('input', this.footer()).on('keyup change', function () {
+
+
+              if (that.search() !== this.value) {
+                  if ((index == 4 || index == 2 || index == 3) && this.value != "")
+                  {
+                      that.search("^" + this.value + "$", true, false, true)
+                              .draw();
+                  } else
+                  {
+                      that.search(this.value)
+                              .draw();
+                  }
+              }
+          });
+      });
+  });
+</script>

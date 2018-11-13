@@ -1,0 +1,4 @@
+page.replace_html 'form-errors', :text => ''
+page.replace_html 'students', :partial => 'assign_students'
+page.replace_html 'flash-box', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+

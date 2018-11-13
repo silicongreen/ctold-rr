@@ -1,0 +1,3 @@
+page.replace_html 'flash-box', :text=>"<p class='flash-msg'>#{flash[:notice]}</p>" unless flash[:notice].nil?
+page.replace_html 'exams', :partial => 'exams'
+

@@ -1,0 +1,3 @@
+page.replace_html 'modal-box', :partial => 'new_student'
+page << "Modalbox.show($('modal-box'), {title: 'Add New Student', width: 500});"
+page << "autocom();"

@@ -1,0 +1,145 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+<div id="content-header">
+ <h1><%= link_to "Board Exam",{:action => "index"} %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'>Board Exams</div>
+
+</div>
+<div id="page-yield">
+  <div class="add_sub">
+    <%= link_to_remote "<i class='fa fa-pencil'></i> Add Exam", :url => { :action => 'add_exam'} %>
+  </div>
+  <div id="flash-box">
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
+  </div>
+  <div class="box">
+    <div class="row"> 
+      <div class="row_label"><div><%= t('name') %></div></div>
+      <div class="row_data"><div class="custom_drop_wrapper"><%= select "board_exam","name_id", options_for_select(@board_exam_names.map{|exam| [exam.name,exam.id]},""),{:prompt=> "Select Exam"} %></div></div>
+    </div>
+    <div class="row"> 
+      <div class="row_label"><div><%= "Session" %></div></div>
+      <div class="row_data"><div class="custom_drop_wrapper"><%= select "board_exam","session_id", @board_sessions.map{|session| [session.name,session.id]},{:prompt=> "Select Session"} %></div></div>
+    </div>
+    <div class="row"> 
+      <div class="row_label"><div><%= "Group" %></div></div>
+      <div class="row_data"><div class="custom_drop_wrapper"><%= select "board_exam","group_id", @board_exam_groups.map{|group| [group.name,group.id]},{:prompt=> "Select Group"} %></div></div>
+    </div>
+    
+    <div style="clear: both; height: 20px;"></div>
+    <div id="exams">
+      <%= render :partial => "exams" %>
+    </div>
+
+    <div id="modal-box" style="display:none;"></div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+    var jj = jQuery.noConflict();
+    jj(document).on("change","#board_exam_name_id", function (event) {
+        jj.get("get_exam_filter", {board_exam_name_id: jj("#board_exam_name_id").val(), board_exam_session_id: jj("#board_exam_session_id").val(), board_exam_group_id: jj("#board_exam_group_id").val()})
+                .done(function (data) {
+        });
+    });
+
+    jj(document).on("change", "#board_exam_session_id", function (event) {
+        jj.get("get_exam_filter", {board_exam_name_id: jj("#board_exam_name_id").val(), board_exam_session_id: jj("#board_exam_session_id").val(), board_exam_group_id: jj("#board_exam_group_id").val()})
+                .done(function (data) {
+        });
+    });
+
+    jj(document).on("change", "#board_exam_group_id", function (event) {
+        jj.get("get_exam_filter", {board_exam_name_id: jj("#board_exam_name_id").val(), board_exam_session_id: jj("#board_exam_session_id").val(), board_exam_group_id: jj("#board_exam_group_id").val()})
+                .done(function (data) {
+         });
+    });
+  </script>  
+  <style>
+    .label-field-pair label {
+    width: 80px;
+}
+    .text-input-bg img {
+  padding-top: 10px;
+  padding-left: 2px;
+}
+  .row {
+  background-color: #f8f8fa;
+  border: 1px solid #DFE1E2;
+  float: left;
+  width: 30%;
+  margin-right: 28px;
+  border-right: 1px solid #DFE1E2;
+}
+.row_label {
+  background-color: #ffffff;
+  border-right: 1px solid #DFE1E2;
+  float: left;
+  width: 48.2%;
+  padding: 0px 0px;
+}
+.row_label div {
+  color: #868A8B;
+  float: left;
+  padding: 8px 10px;
+  width: 80%;
+}
+.row_data {
+  float: left;
+  width: 48.6%;
+}
+.custom_drop_wrapper select::-ms-expand {
+    display: none;
+}
+.custom_drop_wrapper select {
+  background-color: transparent;
+  background-image: url("/images/icons/drop_down_normal.png");
+  background-position: 98% 0;
+  background-repeat: no-repeat;
+  background-size: 37px 36px;
+  border: medium none;
+  cursor: pointer;
+  display: block;
+  height: 35px;
+  width: 106%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* border-right: 1px solid black; */
+}
+.add_sub
+{
+   padding-bottom:10px;
+}
+a
+{
+   color:black;
+   font-weight: bold;
+}
+a:hover
+{
+   text-decoration: underline;
+   color: red;
+}
+
+</style> 

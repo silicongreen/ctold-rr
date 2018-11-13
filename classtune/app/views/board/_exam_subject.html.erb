@@ -1,0 +1,117 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div class="add_sub">
+  <%= link_to_remote "<i class='fa fa-pencil'></i> Add Subject", :url => { :action => 'new_subject', :id => @board_exam.id } %>
+</div>
+<div class="add_sub">
+  <%= link_to_remote("Import Subjects",
+  :url => { :controller=>"board",:action => 'import_subject', :id =>@board_exam.id},
+  :confirm => "Do you realy want to import all subject from board subject") %>
+</div>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<% unless @subjects.empty? %>
+<table  id="example" class="table table-striped table-bordered" style="width:100%">
+      <thead>
+          <tr>
+              <th><%= "Name" %></th>
+              <th><%= "Elective" %></th>
+              <th><%= "Code" %></th>
+              <th class="no-sort"><%= "" %></th>
+          </tr>
+      </thead>
+      <tbody>
+   
+    <% @subjects.each do |subject| %>
+      <%
+      unless @board_exam_marks.blank?
+        mark_subject =  @board_exam_marks.select{|val| val.board_exam_subject_id == subject.id }
+      end    
+    %>
+      <tr  class="tr-<%= cycle('odd', 'even') %>" id="student-<%= subject.id %>">
+          <td class="no-warp"> <%= subject.name %></td>
+          <td> <%= (subject.is_elective.to_i == 1)?"Yes":"No" %></td>
+          <td> <%= subject.code%></td>
+          <td style="text-align:center">
+            
+                <%= link_to_remote("<i class='fa fa-pencil'></i> "+t('edit_text'),
+                :url => { :controller=>"board",:action => 'edit_subject', :id =>subject},
+                :method => 'get' ) %> 
+                <% if mark_subject.blank? %>
+                &nbsp;<%= link_to_remote("<i class='fa fa-trash'></i> "+t('delete_text'),
+                    :url => { :controller=>"board",:action => 'delete_subject', :id =>subject},
+                    :method => 'delete',
+                    :confirm => t('delete_confirm_msg'),
+                    :update => "subject-#{subject.id}") %>
+                <% else %>
+                &nbsp;<%= link_to "<i class='fa fa-table'></i> Mareksheet",{:action => "subject_result",:id=>subject.id} %>
+                <% end %>
+              <% if subject.is_elective.to_i == 1 %>
+                  &nbsp;<%= link_to "<i class='fa fa-check'></i> Assign",{:action => "assign_students",:id=>subject.id} %>
+              <% end %>
+                  &nbsp;<%= link_to "<i class='fa fa-list-ol'></i> Marks",{:action => "marks_entry",:id=>subject.id} %>
+              
+          </td>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>  
+<% else %>
+  <p style="padding: 7px; text-align: center; background: #eef2fd;">No Subject Found For This Exam</p>
+<% end %>
+
+<style>
+    #category-list .listodd,#category-list .listeven
+    {
+      padding:10px 10px 5px 10px;
+    }
+    .opt a
+    {
+       cursor: pointer;
+    }
+        .no-sort::after { display: none!important; }
+
+.mdl-data-table td.no-sort { pointer-events: none!important; cursor: default!important; text-align: center; }
+.mdl-data-table td, .mdl-data-table th
+{
+   text-align: left;
+}
+  *, *::before, *::after
+    {
+       box-sizing: initial;
+    }
+    tbody tr td a
+    {
+      font-weight:normal !important;
+    }
+    
+</style> 
+<script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+    jj('#example').dataTable( {
+    "paging": false
+} );
+  });
+</script>
+
+

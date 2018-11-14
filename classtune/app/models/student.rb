@@ -89,7 +89,7 @@ class Student < ActiveRecord::Base
   #  after_create :create_default_menu_links
 
   has_attached_file :photo,
-    :styles => {:original=> "125x155#"},
+    :styles => {:original=> "125x"},
 	:url => "/uploads/:class/:attachment/:id/:style/:attachment_fullname?:timestamp",
     :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 

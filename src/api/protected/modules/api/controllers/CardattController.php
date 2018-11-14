@@ -232,6 +232,8 @@ class CardattController extends Controller
                         $main_date = $timestamp;
                     }    
                     $time = date("H:i:s",  strtotime($main_date));
+                   
+                    
                 }    
                 
 

@@ -29,6 +29,7 @@
           <tr>
               <th><%= "Id" %></th>
               <th><%= "Name" %></th>
+              <th><%= "Shift" %></th>
               <th><%= "Class" %></th>
               <th><%= "Version" %></th>
               <th><%= "Category" %></th>
@@ -49,11 +50,13 @@
             batch_full = student.batch.full_name
             batch_split = batch_full.split(" ")
             version = batch_split[1]
+            shift = batch_split[0]
             batch_full_name = student.batch.course_name+" "+student.batch.section_name
           %>
             <tr  class="tr-<%= cycle('odd', 'even') %>" id="student-<%= student.id %>">
                 <td> <%= std_info.admission_no %></td>
                 <td class="no-warp"> <%= std_info.full_name %></td>
+                <td> <%= shift %></td>
                 <td> <%= batch_full_name %></td>
                 <td> <%= version %></td>
                 <td> <%= std_info.student_category.name unless std_info.student_category.blank? %></td>
@@ -64,7 +67,7 @@
                 <td style="text-align:left;;">
                     <%= link_to_remote("<i class='fa fa-pencil'></i> "+t('edit_text'),
                       :url => { :controller=>"board",:action => 'edit_student', :id =>student},
-                      :method => 'get' ) %>&nbsp;&nbsp;
+                      :method => 'get' ) %><br/>
                     <%= link_to_remote("<i class='fa fa-trash'></i> "+t('delete_text'),
                       :url => { :controller=>"board",:action => 'delete_student', :id =>student},
                       :method => 'delete',
@@ -72,7 +75,7 @@
                       :update => "subject-#{student.id}") %><br/>
                     <%= link_to "<i class='fa fa-list-ol'></i> Marks", {:action => "student_marks_entry", :id=>@board_exam.id,:id2=>student.id} %>
                     <% if @board_exam.is_published.to_i == 1 %>
-                      &nbsp;&nbsp;<%= link_to "<i class='fa fa-graduation-cap'></i> Report", {:action => "exam_result", :id=>@board_exam.id,:id2=>student.id} %>
+                      <br/><%= link_to "<i class='fa fa-graduation-cap'></i> Report", {:action => "exam_result", :id=>@board_exam.id,:id2=>student.id} %>
                     <% end %>  
                 </td>
 
@@ -83,6 +86,7 @@
             <tr>
               <th><%= "Id" %></th>
               <th><%= "Name" %></th>
+              <th><%= "Shift" %></th>
               <th><%= "Class" %></th>
               <th><%= "Version" %></th>
               <th><%= "Category" %></th>

@@ -18,6 +18,13 @@ class BoardController < ApplicationController
       @students = BoardExamStudent.find_all_by_board_exam_id(@subject.board_exam_id,:include=>["batch"])
     end  
   end
+  def testimonial
+    @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
+    @board_exam_student = BoardExamStudent.find(params[:id2])
+    @std_info = get_student_all_type(@board_exam_student.student_id)
+    @std_guardians = @std_info.student_guardian
+    render :layout => false
+  end
   def subject_result
     @subject = BoardExamSubject.find_by_id(params[:id])
     @board_exam_marks = BoardExamMark.find_all_by_board_exam_subject_id(@subject.id)

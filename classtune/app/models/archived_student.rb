@@ -96,6 +96,15 @@ class ArchivedStudent < ActiveRecord::Base
     # SELECT * FROM `batches` INNER JOIN `batch_students` ON `batches`.id = `batch_students`.batch_id
     Batch.find(:all,:conditions=> ["batch_students.student_id = #{former_id.to_i}"], :joins =>'INNER JOIN batch_students ON batches.id = batch_students.batch_id' )
   end
+  def student_guardian
+    guardians = []
+    g_students= GuardianStudents.find_all_by_student_id(self.former_id,:order=>"relation ASC")
+    g_students.each do|bs|
+      gu = Guardian.find_by_id(bs.guardian_id)
+      guardians.push gu unless gu.nil?
+    end
+    return guardians
+  end
 
   def additional_detail(additional_field)
     StudentAdditionalDetail.find_by_additional_field_id_and_student_id(additional_field,self.former_id)

@@ -25,6 +25,7 @@
               <th><%= "Name" %></th>
               <th><%= "Session" %></th>
               <th><%= "Group" %></th>
+              <th><%= "Center" %></th>
               <th><%= "Subject" %></th>
               <th><%= "Student" %></th>
               <th><%= "Processed" %></th>
@@ -37,6 +38,7 @@
                 <td> <%= exam.board_exam_name.name %></td>
                 <td> <%= exam.board_session.name %></td>
                 <td> <%= exam.board_exam_group.name %></td>
+                <td> <%= exam.center %></td>
                 <td> <%= exam.number_of_students %></td>
                 <td> <%= exam.number_of_subjects %></td>
                 <td> <%= (exam.is_published == 1)?"Yes":"No" %></td>

@@ -223,7 +223,14 @@ class CardattController extends Controller
                 else
                 {
                     $date_split = explode(" ", $timestamp);
-                    $main_date = $date." ".$date_split[1]." ".$date_split[2];
+                    if(isset($date_split[2]))
+                    {
+                        $main_date = $date." ".$date_split[1]." ".$date_split[2];
+                    }
+                    else
+                    {
+                        $main_date = $timestamp;
+                    }    
                     $time = date("H:i:s",  strtotime($main_date));
                 }    
                 

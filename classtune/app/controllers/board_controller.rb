@@ -18,6 +18,11 @@ class BoardController < ApplicationController
       @students = BoardExamStudent.find_all_by_board_exam_id(@subject.board_exam_id,:include=>["batch"])
     end  
   end
+  def testimonial_confirm
+    respond_to do |format|
+      format.js { render :action => 'testimonial_confirm' }
+    end
+  end
   def testimonial
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
     @board_exam_student = BoardExamStudent.find(params[:id2])

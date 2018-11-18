@@ -1,0 +1,172 @@
+<html>
+    <head>
+        <title>Testimonial</title>
+    </head>
+    <body>
+        
+        <p class="left-font" id="left-position-0"><%= @std_info.admission_no %></p>
+        <p class="left-font" id="left-position-1"><%= @std_info.full_name %></p>
+        <p class="left-font" id="left-position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
+        <p class="left-font" id="left-position-3"><%= @board_exam.center %></p>
+        <p class="left-font" id="left-position-4"><%= @board_exam_student.roll %></p>
+        <p class="left-font" id="left-position-5"><%= @board_exam_student.avg_credit_points %></p>
+        <p class="left-font" id="left-position-6"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
+        <p class="left-font" id="left-position-7"><%= @board_exam_student.registration %></p>
+        <% unless params[:sign].blank? %>
+        <p class="left-font" id="left-position-8"><img src="/images/school_logo/352/principal.png" width="100"></p>
+        <% end %>
+        
+        <p id="position-0"><%= @std_info.admission_no %></p>
+        <p id="position-1"><%= @std_info.full_name %></p>
+        <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
+        <p id="position-3"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
+        <p id="position-4"><%= @board_exam.center %></p>
+        <p id="position-5"><%= @board_exam_student.roll %></p>
+        <p id="position-6"><%= @board_exam_student.avg_credit_points %></p>
+        <p id="position-7"><%= @board_exam.board_session.name %></p>
+        <p id="position-8"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
+        <p id="position-9"><%= @board_exam_student.registration %></p>
+        <% unless params[:sign].blank? %>
+        <p id="position-10"><img src="/images/school_logo/352/principal.png" width="100"></p>
+        <% end %>
+    </body>
+</html>
+<style>
+
+    @import url('https://fonts.googleapis.com/css?family=Cookie');
+
+    p
+    {
+        font-size: 22px;
+        font-style: italic;
+        font-family: 'Cookie', cursive;
+    }
+    
+    #left-position-0
+    {
+        position: fixed;
+        left: 55;
+        top: 174;
+    }
+    #left-position-1
+    {
+        position: fixed;
+        left: 60;
+        top: 248;
+    }
+    #left-position-2
+    {
+        position: fixed;
+        left: 115;
+        top: 290;
+    }
+    #left-position-3
+    {
+        position: fixed;
+        left: 70;
+        top: 340;
+    }
+    #left-position-4
+    {
+        position: fixed;
+        left: 143;
+        top: 340;
+    }
+    #left-position-5
+    {
+        position: fixed;
+        left: 90;
+        top: 428;
+    }
+    #left-position-6
+    {
+        position: fixed;
+        left: 115;
+        top: 475;
+    }
+    #left-position-7
+    {
+        position: fixed;
+        left: 115;
+        top: 522;
+    }
+    #left-position-8
+    {
+        position: fixed;
+        left: 185;
+        top: 610;
+    }
+    
+    #position-0
+    {
+        position: fixed;
+        left: 435;
+        top: 139;
+    }
+    #position-1
+    {
+        position: fixed;
+        left: 560;
+        top: 172;
+    }
+    #position-2
+    {
+        position: fixed;
+        left: 500;
+        top: 215;
+    }
+    #position-3
+    {
+        position: fixed;
+        left: 785;
+        top: 215;
+    }
+    #position-4
+    {
+        position: fixed;
+        left: 555;
+        top: 252;
+    }
+    #position-5
+    {
+        position: fixed;
+        left: 750;
+        top: 252;
+    }
+    #position-6
+    {
+        position: fixed;
+        left: 960;
+        top: 282;
+    }
+    #position-7
+    {
+        position: fixed;
+        left: 830;
+        top: 356;
+    }
+    #position-8
+    {
+        position: fixed;
+        left: 560;
+        top: 395;
+    }
+    #position-9
+    {
+        position: fixed;
+        left: 591;
+        top: 433;
+    }
+    #position-10
+    {
+        position: fixed;
+        left: 910;
+        top: 610;
+    }
+</style>
+<style type="text/css" media="print">
+  @page { size: landscape; }
+</style>
+<script>
+  window.print();
+</script>  

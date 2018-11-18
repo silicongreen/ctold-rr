@@ -1,0 +1,2 @@
+page.replace_html 'modal-box', :partial => 'testmonial_confirm'
+page << "Modalbox.show($('modal-box'), {title: 'Testmonial', width: 500});"

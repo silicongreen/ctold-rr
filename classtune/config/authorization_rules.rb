@@ -1784,7 +1784,7 @@ authorization do
       :edit_student,:update_student,:delete_student,:search_student,
       :assign_students,:unassign_student,:assign_to_subject,:assign_student,
       :marks_entry,:save_marks,:exam_process,:exam_result,:subject_result,:student_marks_entry,
-      :testimonial
+      :testimonial,:testimonial_confirm
     ] 
     has_permission_on [:intelligence], :to => [:subject_wise_report,:section_report,:get_exam,:graph_for_generated_report_section,:report_section,:report_overall_subject,:individual_report,:report_overall_individual,:report_overall,:report,:homework,:teacher_homework,:get_teacher_homeworks,:get_homework_report,:graph_for_homework,:index,:get_att_report,:graph_for_attandence,:comparisom,:get_att_report_class,:graph_for_attandence_class,:cricticalinfo,:get_att_report_crictal,
       :classwork,:teacher_classwork,:get_teacher_classworks,:get_classwork_report,:graph_for_classwork,

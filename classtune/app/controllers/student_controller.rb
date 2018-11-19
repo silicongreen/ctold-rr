@@ -1221,14 +1221,16 @@ class StudentController < ApplicationController
 
   def generate_tc_pdf
     @student = ArchivedStudent.find_by_former_id(params[:id])
+    @std_guardians = @student.student_guardian
     @father = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'father'")
     @mother = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'mother'")
     @immediate_contact = ArchivedGuardian.find_by_ward_id(@student.immediate_contact_id) \
-      unless @student.immediate_contact_id.nil? or @student.immediate_contact_id == ''
-    render :pdf=>'generate_tc_pdf'
-    #        respond_to do |format|
-    #            format.pdf { render :layout => false }
-    #        end
+    unless @student.immediate_contact_id.nil? or @student.immediate_contact_id == ''
+    if MultiSchool.current_school.code == "sagc"
+      render :template => "student/generate_tc", :layout => false  
+    else 
+      render :pdf=>'generate_tc_pdf'
+    end
   end
 
   def generate_all_tc_pdf

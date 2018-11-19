@@ -138,6 +138,12 @@ table#pdf-table{
     border-top: 1px solid #ADACAB;
     border-bottom: 1px solid #ADACAB;
 }
+.page-break9 td{
+    height: 70px;
+    border: 1px solid #fff;
+    border-top: 1px solid #ADACAB;
+    border-bottom: 1px solid #ADACAB;
+}
 
 
 

@@ -33,7 +33,7 @@
         <p id="position-8"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></p>
         <p id="position-9">Date....</p>
         <p id="position-10"><%= @student.batch.course.course_name %></p>
-        <p id="position-11"><%= @student.batch.course.section_name %></p>
+        <p id="position-11"></p>
         <p id="position-12">Group...</p>
         <p id="position-13">Paid..</p>
         <% unless params[:sign].blank? %>

@@ -46,11 +46,11 @@
           <td colspan="2" align="right">
             <p>&nbsp;</p>
             <p><b>TERM:
-              <% if @connect_exam_obj.upcase.name.include? ("FIRST") or @connect_exam_obj.upcase.name.include? ("1ST") %>
+              <% if @connect_exam_obj.name.upcase.include? ("FIRST") or @connect_exam_obj.name.upcase.include? ("1ST") %>
                   <%=  "FIRST TERM"%>
-              <% elsif @connect_exam_obj.upcase.name.include? ("SECOND") or @connect_exam_obj.upcase.name.include? ("2ND") or @connect_exam_obj.upcase.name.include? ("HALF") %>
+              <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") or @connect_exam_obj.name.upcase.include? ("2ND") or @connect_exam_obj.name.upcase.include? ("HALF") %>
                   <%=  "SECOND TERM"%>
-              <% elsif @connect_exam_obj.upcase.name.include? ("FINAL") %>
+              <% elsif @connect_exam_obj.name.upcase.include? ("FINAL") %>
                   <%=  "FINAL TERM"%>
               <% end %>
                 </b></p>

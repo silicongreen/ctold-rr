@@ -20,7 +20,7 @@
                       </td>
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
-                        <% if report['exam_category'] == '1' %>
+                        <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                           <td rowspan="2"><b><%= report['exam_name'] %></b></td>
                         
                         <% else %>

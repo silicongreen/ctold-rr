@@ -162,7 +162,7 @@
                             <% class_test_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if report['exam_category'] == '1' %>
+                              <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
@@ -176,7 +176,7 @@
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if report['exam_category'] != '1' %>
+                              <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
@@ -297,7 +297,7 @@
                             <% class_test_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if report['exam_category'] == '1' %>
+                              <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
@@ -311,7 +311,7 @@
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if report['exam_category'] != '1' %>
+                              <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>

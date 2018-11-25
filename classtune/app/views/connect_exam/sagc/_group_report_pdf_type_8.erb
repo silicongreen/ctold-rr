@@ -26,7 +26,7 @@
               <td class="align-right col-pdf" width="20%">Session </td>
               <td class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
               <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
-          </tr>
+          </tr>tbl-lign-left
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Category</td><td colspan="3" class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>
@@ -1529,7 +1529,7 @@
       .baf_shaheen table.tbl-lign-left tr.even td
       {
          font-weight: normal !important;
-         padding: 3px 2px !important;
+         padding: 10px !important;
       }
       
       .baf_shaheen table.tbl-lign-left-2 tr.even td, .baf_shaheen table.tbl-lign-left-2 tr.odd td

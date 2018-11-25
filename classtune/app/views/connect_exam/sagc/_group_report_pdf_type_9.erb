@@ -24,10 +24,13 @@
            
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Section </td><td class="align-left"><%= @batch.course.section_name %></td>
-              <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= @batch.name %></td>   
+              <% batch_split = @batch.split(" ") %>
+              <td class="align-right col-pdf" width="20%" >Shift </td><td class="align-left"><%= batch_split[0] %></td>   
           </tr>
           <tr class="odd">
-              <td class="align-right col-pdf" width="20%">Session </td><td colspan="3" class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+              <td class="align-right col-pdf" width="20%">Session </td>
+              <td class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+              <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
           </tr>
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Category</td><td colspan="3" class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
@@ -465,35 +468,37 @@
               </table>
               
               <div class='line'></div>
-              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
-                      <tr class="even">
+                      <tr class="even border-bottom-1-px">
                           <td class="col-pdf " width="20%">
-                              Class Teacher
+                               <br/><br/>
                           </td> 
                           <td class="col-pdf" width="30%">
                               <br/><br/>
                           </td>
                           <td class="col-pdf" width="20%">
-                              Parents/Guardian
+                              <br/><br/>
                           </td> 
                           <td class="col-pdf " width="30%">
                               <br/><br/>
                           </td>
                       </tr>
                       <tr class="even">
+                           
+                          <td class="col-pdf" width="30%">
+                              Class Teacher
+                          </td>
+                          <td class="col-pdf " width="30%">
+                              Parents/Guardian
+                          </td>
                           <td class="col-pdf " width="20%">
                               Vice-Principal
-                          </td> 
-                          <td class="col-pdf" width="30%">
-                              <br/><br/>
                           </td>
                           <td class="col-pdf" width="20%">
                               Principal
                           </td> 
-                          <td class="col-pdf " width="30%">
-                              <br/><br/>
-                          </td>
+                          
                       </tr>
 
               </table> 
@@ -545,6 +550,15 @@
   </script>
 <% end %>
   <style>
+      table.sign_table tr.even td.col-pdf
+      {
+         border:none !important;
+         text-align: center !important;
+      }
+      table.sign_table tr.border-bottom-1-px td.col-pdf
+      {
+         border-bottom:1px solid #ccc;
+      }
       div.baf_shaheen
       {
          border:none;

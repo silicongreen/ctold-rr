@@ -1000,38 +1000,40 @@
               
              
             
-              <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
+              <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
-                      <tr class="even">
-                          <td class="col-pdf " width="20%">
-                              Class Teacher
+                      <tr class="even border-bottom-1-px">
+                          <td class="col-pdf " width="25%">
+                               <br/><br/><br/>
                           </td> 
-                          <td class="col-pdf" width="30%">
-                              <br/><br/>
+                          <td class="col-pdf" width="25%">
+                              <br/><br/><br/>
                           </td>
-                          <td class="col-pdf" width="20%">
-                              Parents/Guardian
+                          <td class="col-pdf" width="25%">
+                              <br/><br/><br/>
                           </td> 
-                          <td class="col-pdf " width="30%">
-                              <br/><br/>
+                          <td class="col-pdf " width="25%">
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal.png")), :width=>"60%" %>
                           </td>
                       </tr>
                       <tr class="even">
-                          <td class="col-pdf " width="20%">
-                              Vice-Principal
-                          </td> 
-                          <td class="col-pdf" width="30%">
-                              <br/><br/>
+                           
+                          <td class="col-pdf" width="25%">
+                              Class Teacher
                           </td>
-                          <td class="col-pdf" width="20%">
+                          <td class="col-pdf " width="25%">
+                              Parents/Guardian
+                          </td>
+                          <td class="col-pdf " width="25%">
+                              Vice-Principal
+                          </td>
+                          <td class="col-pdf" width="25%">
                               Principal
                           </td> 
-                          <td class="col-pdf " width="30%">
-                              <br/><br/>
-                          </td>
+                          
                       </tr>
 
-              </table> 
+              </table>
               
           </div>
       </div>

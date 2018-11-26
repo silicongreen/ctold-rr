@@ -110,9 +110,10 @@ if !@main_student.blank?
                         <td><%= exam.subject.code %></td>
                         <% total_subject = total_subject+1 %>
                       <% end %>
-                      <td class="col-pdf">Full Mark</td>
-                      <td class="col-pdf">Percentage</td>
+                     
                       <td class="col-pdf">Total</td>
+                       <td class="col-pdf">Full Mark</td>
+                      <td class="col-pdf">Percentage</td>
                       <% if MultiSchool.current_school.id != 246 %>
                         <td class="col-pdf">Position</td>
                       <% end %>

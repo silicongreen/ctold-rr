@@ -1,4 +1,4 @@
-<% bottom_string = "<br/><br/><br/><br/><br/>" %>
+<% bottom_string = "<br/><br/><br/><br/>" %>
 <% bottom_string2 = "" %>
 <% unless params[:bottom].blank?  %>
   <% bottom = params[:bottom].to_i %>
@@ -12,38 +12,37 @@
   %>
 <% end %>
 
+<table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
+        <tr class="even border-bottom-1-px">
+            <td class="col-pdf " width="25%">
+                 <%= bottom_string %>
+            </td> 
+            <td class="col-pdf" width="25%">
+                <%= bottom_string %>
+            </td>
+            <td class="col-pdf" width="25%">
+                <%= bottom_string %>
+            </td> 
+            <td class="col-pdf " width="25%">
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %>
+            </td>
+        </tr>
+        <tr class="even">
 
-<div id="pdf-footer">		
-              		
-              <table id="listing table-design" class="margin-top-bottom-10" width="100%">		
-                  <thead>          		
- 		
-                      <tr>		
-                          <td class="">		
-                              <%= bottom_string %>		
-                              <%= "--------------------------------" %><br />		
-                              <font size='5'><b><%= "Class Teacher" %></b></font>		
-                          </td>		
-                          <td class="">		
-                               <%= bottom_string %>		
-                              <%= "--------------------------------" %><br />		
-                              <font size='5'><b><%= "Teacher In charge" %></b></font>		
-                          </td>		
-                          <td class="">		
-                               <%= bottom_string %>		
-                              <%= "--------------------------------" %><br />		
-                              <font size='5'><b><%= "Principal" %></b></font>		
-                          </td>		
- 		
-                          <td class=""><center>	
-                            <%= bottom_string2 %>
-                            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/signature.png")) %><br />		
-                            <%= "-------------------------------" %><br />		
-                            <font size='5'><b><%= "F. Principal" %></b></font>		
-                            </center>		
-                          </td>		
-                 </tr>		
- 		
-               </table>		
-         </div>
+            <td class="col-pdf" width="25%">
+                Class Teacher
+            </td>
+            <td class="col-pdf " width="25%">
+                Teacher In charge
+            </td>
+            <td class="col-pdf " width="25%">
+                Principal
+            </td>
+            <td class="col-pdf" width="25%">
+                F. Principal
+            </td> 
+
+        </tr>
+
+</table>

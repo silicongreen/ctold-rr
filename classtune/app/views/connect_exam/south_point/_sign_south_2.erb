@@ -1,4 +1,4 @@
-<% bottom_string = "<br/><br/><br/><br/><br/>" %>
+<% bottom_string = "<br/><br/><br/><br/>" %>
 <% bottom_string2 = "" %>
 <% unless params[:bottom].blank?  %>
   <% bottom = params[:bottom].to_i %>
@@ -13,26 +13,25 @@
 <% end %>
 
 
+<table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
-<div id="pdf-footer">		
-              		
-              <table id="listing table-design" class="margin-top-bottom-10" width="100%">		
-                  <thead>          		
- 		
-                      <tr>		
-                        		
-                          <td class="">		
-                               <%= bottom_string %>		
-                              <%= "----------------------------------------------------------------" %><br />		
-                              <font size='3'><b><%= "Class Teacher" %></b></font>		
-                          </td>		
-                          <td class="">		
-                               <%= bottom_string %>		
-                              <%= "----------------------------------------------------------------" %><br />		
-                              <font size='3'><b><%= "Principal" %></b></font>		
-                          </td>		
- 			
-                 </tr>		
- 		
-               </table>		
-         </div>
+        <tr class="even border-bottom-1-px">
+            <td class="col-pdf " width="50%">
+                 <%= bottom_string %>
+            </td> 
+            <td class="col-pdf" width="50%">
+                <%= bottom_string %>
+            </td>
+        </tr>
+        <tr class="even">
+
+            <td class="col-pdf" width="25%">
+                Class Teacher
+            </td>
+            <td class="col-pdf " width="25%">
+                Principal
+            </td>
+
+        </tr>
+
+</table>

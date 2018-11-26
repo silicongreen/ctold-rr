@@ -2101,12 +2101,12 @@ table.sign_table tr.even td.col-pdf
 }
 table.sign_table tr.border-bottom-1-px td.col-pdf
 {
-    border-bottom:1px solid #ccc !important;
+    border-bottom:1px dashed black !important;
 }
 table.sign_table
 {
     border-collapse: separate !important;
-    border-spacing: 10px !important;
+    border-spacing: 18px !important;
 
 }
 table.top-left-center tr.remarks-tr td

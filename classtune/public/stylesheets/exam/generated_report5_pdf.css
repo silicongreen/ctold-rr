@@ -2109,6 +2109,11 @@ table.sign_table
     border-spacing: 10px !important;
 
 }
+table.top-left-center tr.remarks-tr td
+{
+    padding: 10px !important;
+    hieght: 100px !important;
+}
 
 
 

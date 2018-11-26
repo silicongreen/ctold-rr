@@ -859,7 +859,8 @@ class TimetableController < ApplicationController
         flash[:notice] = t('updated_with_errors')
       end
     end
-    @batches = Batch.active :include=>[{:subjects=>:employees},:course]
+    @batches = Batch.active.paginate(:order=>"created_at DESC",:include=>[{:subjects=>:employees},:course], :page => params[:page], :per_page => 10)
+#    @batches = Batch.active :include=>[{:subjects=>:employees},:course]
     @subjects = @batches.collect(&:subjects).flatten
   end
 

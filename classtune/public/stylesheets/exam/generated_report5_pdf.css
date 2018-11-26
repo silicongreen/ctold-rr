@@ -2111,8 +2111,9 @@ table.sign_table
 }
 table.top-left-center tr.remarks-tr td
 {
-    padding: 10px !important;
+    padding: 15px !important;
     height: 100px !important;
+    vertical-align: top !important;
 }
 
 

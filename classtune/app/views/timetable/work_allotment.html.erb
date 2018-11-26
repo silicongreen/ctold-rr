@@ -44,10 +44,12 @@
           <%= batch.full_name %>
         </li>
         <% batch.subjects.each do |subj| %>
-          <% subj.employees.each do |e|  %>
-            <% ep=@employees.find_by_id(e.id) %>
-            <% if ep.present? %>
-              <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
+          <% if MultiSchool.current_school.id != 352 %>
+            <% subj.employees.each do |e|  %>
+              <% ep=@employees.find_by_id(e.id) %>
+              <% if ep.present? %>
+                <% ep.total_time = (ep.total_time.to_i - subj.max_weekly_classes.to_i) %>
+              <% end %>
             <% end %>
           <% end %>
           <li class="list<%=cycle('odd','even')%>">
@@ -62,19 +64,21 @@
     <% end %>
     <%= f.submit "► #{t('update')}",:class=>:submit_button ,:disable_with=> "► #{t('please_wait')}" %>
   <% end %>
-  <ul id="teacher_status" class="category-list">
-    <% @employees.each do |emp| %>
-      <li class="listodd" ><%= emp.full_name %><span id="emp_status_<%=emp.id%>">
-          <% if emp.total_time.to_i < 0 %>
-            <span class='deficit'><%= 0-emp.total_time.to_i %> deficit</span>
-          <% elsif emp.total_time.to_i==0 %>
-            <span class='ok'>OK</span>
-          <% else %>
-            <span class='remaining'><%= emp.total_time.to_i %> remaining</span>
-          <% end %>
-        </span></li>
-    <% end %>
-  </ul>
+  <% if MultiSchool.current_school.id != 352 %>
+    <ul id="teacher_status" class="category-list">
+      <% @employees.each do |emp| %>
+        <li class="listodd" ><%= emp.full_name %><span id="emp_status_<%=emp.id%>">
+            <% if emp.total_time.to_i < 0 %>
+              <span class='deficit'><%= 0-emp.total_time.to_i %> deficit</span>
+            <% elsif emp.total_time.to_i==0 %>
+              <span class='ok'>OK</span>
+            <% else %>
+              <span class='remaining'><%= emp.total_time.to_i %> remaining</span>
+            <% end %>
+          </span></li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>
 
 <script>

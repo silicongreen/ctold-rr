@@ -1,4 +1,6 @@
-<% if MultiSchool.current_school.id == 280 %>
+<% if MultiSchool.current_school.id == 7 %>
+    <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_kinderland" %>
+<% elsif MultiSchool.current_school.id == 280 %>
     <%= render  :partial=>"/group_exam_report/tabulation/student_wise_tabulation_sjs" %>
 <% else %>
 <% if @exam_group.exam_category == 5 %>

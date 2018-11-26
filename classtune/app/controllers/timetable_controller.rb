@@ -859,8 +859,11 @@ class TimetableController < ApplicationController
         flash[:notice] = t('updated_with_errors')
       end
     end
-    @batches = Batch.active.paginate(:order=>"batches.name ASC, courses.course_name ASC, courses.section_name ASC",:include=>[{:subjects=>:employees},:course], :page => params[:page], :per_page => 10)
-#    @batches = Batch.active :include=>[{:subjects=>:employees},:course]
+    if MultiSchool.current_school.id == 352
+      @batches = Batch.active.paginate(:order=>"batches.name ASC, courses.course_name ASC, courses.section_name ASC",:include=>[{:subjects=>:employees},:course], :page => params[:page], :per_page => 10)
+    else
+      @batches = Batch.active :include=>[{:subjects=>:employees},:course]
+    end  
     @subjects = @batches.collect(&:subjects).flatten
   end
 

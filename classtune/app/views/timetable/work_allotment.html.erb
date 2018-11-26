@@ -79,8 +79,10 @@
       <% end %>
     </ul>
   <% end %>
-    <%= will_paginate @batches %>
-<%= stylesheet_link_tag 'pagination_and_table' %>
+   <% if MultiSchool.current_school.id == 352 %>
+      <%= will_paginate @batches %>
+      <%= stylesheet_link_tag 'pagination_and_table' %>
+    <% end %>
 </div>
 
 <script>

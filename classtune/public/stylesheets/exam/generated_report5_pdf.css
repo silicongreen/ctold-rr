@@ -2093,7 +2093,10 @@ table.padding-margin-0
     margin-left: 0px !important;
     padding-left: 0px !important;
 }
-
+table.sign_table
+{
+    border:none !important;
+}
 table.sign_table tr.even td.col-pdf
 {
     border:none !important;

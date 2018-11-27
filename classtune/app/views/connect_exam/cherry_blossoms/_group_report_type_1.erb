@@ -242,7 +242,7 @@
                                   <% if full_mark.to_f > 0 %>
                                       <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
                                       <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
-                                      >
+                                      
                                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>

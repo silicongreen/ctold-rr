@@ -100,7 +100,7 @@
                                                      
                                 <% @report_data['report']['exams'].each do |report| %>
                                   <% if report['exam_category'] != '1' %>
-                                  <% w = 60/count%>
+                                  <% w = 30/count%>
                                   <td width='<%=  ("#{w}%")%>'>
                                     <table width='100%' border="0">
                                         <tr>
@@ -120,7 +120,7 @@
 
                               <td class="totalmark">Total Marks</td>
                               <!--th width="5%">Marks Obtained (%)</th-->
-                              <%#*<td class="totalmark">Highest Marks (%)</td>%>
+                         
                               <td class="totalmark">Letter Grade</td>
                               <!--th width="5%">GPA</th-->
                           </tr>
@@ -184,7 +184,7 @@
                                 </td>
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>
-                                    <% w = 60/count%>
+                                    <% w = 30/count%>
                                     <% if report['exam_category'] != '1' %>
                                     <td width='<%=  ("#{w}%")%>'>
 
@@ -242,7 +242,7 @@
                                   <% if full_mark.to_f > 0 %>
                                       <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
                                       <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
-                                      <%#*<td class="totalmark"><b><%= sprintf( "%0.02f", heighst_mark)   %> %</b></td>%>
+                                      >
                                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>

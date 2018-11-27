@@ -256,22 +256,53 @@
 
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
+                            
+                            <% subject_ct_full_mark = 0 %>
+                            <% subject_ct_obtain_mark = 0 %>
+                            <% subject_ct_marks = [] %>
+                            
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
+                            
+                            <% @report_data['report']['exams'].each do |rs| %>
+                              <% if report['exam_category'] == '1' %>
+                                <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+
+                                  <%
+
+                                  subject_ct_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  subject_ct_marks << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+
+
+                                %>
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                            
+                            <% unless subject_ct_full_mark.blank?  %>
+                                <% subject_full_mark = subject_full_mark+subject_ct_full_mark %>
+                                <% unless subject_ct_marks.blank?  %>
+                                  <% subject_ct_marks.sort! {|x,y| y <=> x } %>
+                                  <% subject_ct_obtain_mark = subject_ct_obtain_mark+subject_ct_marks[0] %>
+                                <% end %>
+                            <% end %>
 
                             <% @report_data['report']['exams'].each do |rs| %>
-                              <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
-                              <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+                              <% if report['exam_category'] != '1' %>
+                                <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 
-                                <%
+                                  <%
 
-                                subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
 
 
-                              %>
+                                %>
+                                <% end %>
                               <% end %>
                             <% end %> 
 

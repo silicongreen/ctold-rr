@@ -164,7 +164,7 @@
                                             <td width="50%" class="special_top special_left special_bottom">
                                                 <% if !ct_full_mark.blank? %>
                                                   <%= ct_full_mark %>
-                                                  <% full_mark = ct_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                                  <% full_mark = ct_full_mark %>
                                                 <% else %>
                                                   -
                                                 <% end %>  
@@ -172,7 +172,7 @@
                                             <td width="50%" class="special_top special_right special_bottom ">
                                                 <% if !ct_mark.blank? %>
                                                   <%= ct_mark %>
-                                                  <% total_mark = ct_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                                  <% total_mark = ct_mark.to_f %>
                                                 <% else %>
                                                   -
                                                 <% end %>  

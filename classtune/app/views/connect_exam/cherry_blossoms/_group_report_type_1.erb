@@ -145,11 +145,11 @@
                                           <% ct_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-
-                                          <% ct_mark_array << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                        <% else %>
+                                            <% ct_mark_array << report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% end %>
                                   <% end %>
                                 <% end %>
+                                
                                 <% unless ct_mark_array.blank? %>
                                   <% 
                                     ct_mark_array.sort! {|x,y| y <=> x }

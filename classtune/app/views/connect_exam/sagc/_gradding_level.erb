@@ -7,16 +7,16 @@
     <%  unless @grading_levels.empty? %>
       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
           <tr class="even header-shade">
-              <td>Letter Grade</td>
-              <td>Marks</td> 
-              <td>Grade Point</td> 
+              <td class="small">Letter Grade</td>
+              <td class="small">Marks</td> 
+              <td class="small">Grade Point</td> 
           </tr> 
           <% prev_score = 0 %>
           <% @grading_levels.each_with_index do |grade,index| %>
              <tr class="even">
             
-            <td><%= grade.name %></td>
-            <td class="no-warp">
+            <td class="small"><%= grade.name %></td>
+            <td class="no-warp small">
                 <% if grade.max_score.nil? %> 
                   <% if grade.min_score.to_i == 0 %>
                     <&nbsp;<%= '%i%' % prev_score %>
@@ -28,7 +28,7 @@
                 <% end %>
                 <%  prev_score = grade.min_score %>
             </td>
-            <td><%= grade.credit_points %></td>
+            <td class="small"><%= grade.credit_points %></td>
               </tr> 
           <% end %> 
 
@@ -37,7 +37,7 @@
     <% end %> 
 
 <style>
-  div.baf_shaheen div.grade_information table.grade_info_table tr.even td
+  div.baf_shaheen div.grade_information table#pdf-table tr.even td.small
   {
      font-weight: normal !important;
      padding: 2px 10px !important; 

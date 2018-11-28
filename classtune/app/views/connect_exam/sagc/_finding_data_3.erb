@@ -76,9 +76,14 @@
             ob_full_mark = 0
             pr_full_mark = 0
             monthly_full_mark = 0
+            
             sb2 = 0
             ob2 = 0
             pr2 = 0
+            sb_full_mark2 = 0
+            ob_full_mark2 = 0
+            pr_full_mark2 = 0
+            monthly_full_mark2 = 0
             
             tab['exams'].each do |rs|
               if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
@@ -91,6 +96,7 @@
                   if rs['quarter'] == '2'
                       monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                   end
                 else  
                   if rs['quarter'] == '1'
@@ -114,12 +120,15 @@
                       total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       if rs['exam_category'] == '3'
                         sb2 = sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        sb_full_mark2 = sb_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                       if rs['exam_category'] == '4'
                         ob2 = ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        ob_full_mark2 = ob_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                       if rs['exam_category'] == '5'
                         pr2 = pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        pr_full_mark2 = pr_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                   end
                 end
@@ -133,12 +142,13 @@
             avg_mark_sb1 = 0
             avg_mark_sb2 = 0
             sb_full_marks_shoud_be = full_mark_all-ob_full_mark-pr_full_mark-monthly_full_mark
+            sb_full_marks_shoud_be2 = full_mark_all-ob_full_mark2-pr_full_mark2-monthly_full_mark2
             
             if sb1 > 0
               avg_mark_sb1 = (sb1.to_f/sb_full_mark.to_f)*sb_full_marks_shoud_be
             end 
             if sb2 > 0
-              avg_mark_sb2 = (sb2.to_f/sb_full_mark.to_f)*sb_full_marks_shoud_be
+              avg_mark_sb2 = (sb2.to_f/sb_full_mark2.to_f)*sb_full_marks_shoud_be2
             end 
             
             total_mark2_80 = avg_mark_sb2+pr2+ob2

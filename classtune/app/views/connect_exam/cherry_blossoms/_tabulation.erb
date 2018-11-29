@@ -307,6 +307,10 @@
                             <% end %> 
 
                             <% main_mark = 0 %>
+                            <%
+                              subject_obtain_mark = subject_obtain_mark+subject_ct_obtain_mark
+                              subject_full_mark = subject_ct_full_mark+subject_full_mark
+                            %>
                             <% if subject_obtain_mark.to_i > 0 and subject_full_mark.to_i > 0 %>
                             <% main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100 %>  
                             <% end %> 

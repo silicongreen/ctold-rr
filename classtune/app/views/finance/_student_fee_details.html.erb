@@ -1,0 +1,1136 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('student_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('fee_status') %></div>
+
+<div id="inner-tab-menu">
+  <ul>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('fees_text')}", :controller => 'student', :action => 'fees', :id => @student.id %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('student_profile')}", :controller => 'student', :action => 'profile', :id => @student.id %></li>
+  </ul>
+</div>
+
+</div>
+<div id="page-yield">
+
+  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+
+  <div id="student_profile_heading">
+    <div id="profile_picture_display">
+        <% if @student.photo.file? %>
+          <% @profile_image = @student.photo.url %>
+
+        <% else %>
+          <% @profile_image = "master_student/profile/default_student.png" %>
+        <% end %>
+        <%= image_tag "#{@profile_image}" %>
+        <% if @student.photo.file? %>
+        <% if @current_user.admin? or permitted_to? :remove_photo, :student %>
+        <div class="image-delete-link" />
+           <%= link_to '<img src="/images/buttons/delete-new.png" />', {:controller => 'student', :action => 'remove_photo', :id => @student.id}, :confirm => "Do you realy want to remove this photo?" %>
+        </div>
+        <% end %>
+        <% end %>
+
+    </div>
+
+    <div id ="student_main_info">
+        <div id="student_name" class="f2"><%= @student.full_name %></div>
+        <div id="student_class"><%= @student.batch.course.course_name %></div>
+    </div>
+</div>
+
+<div id="personal_info_wrapper">
+    <div id="class_info">
+      <% if Batch.active.find(:all, :group => "name").length > 1  %>
+        <div class="infos">
+            <div><%= @student.batch.name %></div>
+            <div><%= t('batch_text') %></div>
+        </div>
+      <% end %>
+      <div class="infos">
+          <div><%= @student.admission_no %></div>
+          <div><%= t('adm_no') %></div>
+      </div>
+      <div class="infos last">
+          <% unless  @student.batch.course.section_name.empty? %>
+          <div><%= @student.batch.course.section_name %></div>
+          <div><%= t('profile_section_label') %></div>
+          <% else %>
+          <div> No Section</div>
+          <div></div>
+          <% end %>
+
+      </div>
+  </div>
+</div>
+  <div style="clear: both; height:10px;"></div>
+  <h2>Student Fee Information</h2>
+  <% total_fees =0 %>
+  <% total_payable =0 %>
+  <%
+    advance_fee_particular = []
+    unless @fee_collection_advances.nil?
+      advance_fee_particular = @fee_collection_advances.map(&:particular_id)
+    end
+  %>
+  <% form_remote_for :fees, :url => {:controller=> "finance", :action => 'update_ajax',:student => @student.id,:batch_id => @batch.id,:date => @date.id, :fine=>@fine, :vat=>@vat,:special_fine=>@fine_amount, :from_batch => @from_batch_fee, :from_admin => 0}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
+  <% unless @fee_particulars.nil? %>
+    <% if @student.has_dues %>
+    <div style="clear: both; height: 4px;"></div>
+    <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+    <div style="clear: both; height: 10px;"></div>
+    <% end %>
+    <% total_fees = 0  %>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead><!-- class="thead-inverse" -->
+        <tr>
+          <th style="font-weight: normal; width: 8%; text-align: center;"><%= t('sl_no') %> </th>
+          <th style="font-weight: normal; width: 50%; text-align: left;"><%= t('particulars') %></th>
+          <th style="font-weight: normal; width: 14%; text-align: right;"><%= t('amount') %></th>
+          <th style="font-weight: normal; width: 14%; text-align: right;"><%= "Paid" %></th>
+          <th style="font-weight: normal; width: 14%; text-align: right;"><%= "Remaining" %></th>
+        </tr>
+      </thead>
+      <% i = 0 %>
+      <tbody>
+      <% @fee_particulars.each do |fee| %>
+        <%  if fee.name.downcase != 'vat' %>
+        <tr id="particular_<%= fee.id %>" class="particulars_tr">
+            <% paidAmount = 0 %>
+            <% unless @paid_fees.blank? %>
+               <% transaction_ids = @paid_fees.map(&:id) %> 
+               <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+               <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+               <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+               <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+            
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+                  <% unless @fee_collection_advances.nil? %>
+                    <% @fee_collection_advances.each do |fee_collection_advance| %>
+                      <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% else %>
+             <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+                  <% unless @fee_collection_advances.nil? %>
+                    <% @fee_collection_advances.each do |fee_collection_advance| %>
+                      <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Advance' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% month = 1 %>
+            <% start_month = "" %>
+            <% end_month = "" %>
+            <% unless @fee_collection_advances.nil? %>
+              <% @fee_collection_advances.each do |fee_collection_advance| %>
+                <% if fee_collection_advance.particular_id == fee.finance_fee_particular_category_id %>
+                  <% month = fee_collection_advance.no_of_month.to_i %>
+                  <% start_month = fee_collection_advance.start_month %>
+                  <% end_month = fee_collection_advance.end_month %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if @self_advance_fee %>
+            <% fee_amount = (fee.amount * month.to_i).to_f - paidAmount %>
+            <% else %>
+            <% fee_amount = fee.amount - paidAmount %>
+            <% end %>
+            <% fee_amount = 0 if fee_amount < 0 %>
+            <td class="col-1" style=" text-align: center;">
+                <input type="hidden" name="fee_category_<%= fee.id %>" class="fee_category" id="fee_category_<%= fee.id %>" value="<%= fee.finance_fee_particular_category_id  %> " />
+                <% if fee_amount > 0 %>
+                <% if @self_advance_fee %>
+                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+                <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% else %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" data-fee_amount="<%= precision_label fee.amount %>">
+                <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-square-o" style="color: #598A3D; font-size: 16px; cursor: pointer; color: #999;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% else %>
+                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+                <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% end %>
+                <% end %>
+                <% else %>
+                <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                <% end %>
+            </td>
+            <td class="col-6">
+              <%= fee.name %>
+              <% if @self_advance_fee %>
+                <br />(<small><%= month %> Month Advances</small>)
+                <br /><small>(<%= start_month %> to <%= end_month %>)
+              <% else %>
+                   <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+                    <br /><small>(Set for Advance Payment)</small>
+                    <br />(<small><%= month %> Month Advances</small>)
+                   <% end %>
+              <% end %>  
+              <% if fee.is_tmp and paidAmount == 0 %>
+                <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
+              <% end %>  
+            </td>
+            <% if @self_advance_fee %>
+            <td class="col-6" style="text-align: right;">(<%= precision_label fee.amount %> <%= "x " + month.to_s  %>)</td>
+            <% else %>
+              <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+              <td class="col-6" style="text-align: right;">(<%= precision_label fee.amount %> <%= "x " + month.to_s  %>)</td>
+              <% else %>
+              <td class="col-6" style="text-align: right;"><%= precision_label fee.amount %></td>
+              <% end %>
+            <% end %>
+            <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %></td>
+            <td class="col-6" style="text-align: right;">
+                <% if fee_amount > 0 %>
+                <% if @self_advance_fee %>
+                <span style="color: #000;"> <span style="color: #000;"><%= precision_label fee_amount %></span></span>
+                <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                <% else %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
+                <span style="cursor: pointer; color: #999;"> <span style="color: #999;"><%= precision_label ( fee_amount.to_f * month.to_i) %></span></span>
+                <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                <% else %>
+                <span class="fee_amount_particular editable"  name="fee_amount_particular_<%= fee.id %>" id="fee_amount_particular_<%= fee.id %>" style="color: #000;"><i class="fa fa-pencil" style="font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label fee_amount %></span></span>
+                <input type="hidden" name="fee_particular_amount_<%= fee.id %>" id="fee_particular_amount_<%= fee.id %>" value="<%= precision_label fee_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'particular')" onkeydown="checkKey(event,this, 'particular')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_particular" name="fee_particular_chk_<%= fee.id %>" id="fee_particular_chk_<%= fee.id %>" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                <% end %>
+                <% end %>
+                <% else %>
+                0.00&nbsp;&nbsp;&nbsp;
+                <% end %>
+            </td>
+        </tr>
+        
+        <% if !(@fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) )) %>
+        <% total_fees += fee_amount %>
+        <% total_payable += fee.amount %>
+        <% elsif @self_advance_fee and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id)) %>
+        <% total_fees += fee_amount %>
+        <% total_payable += fee.amount %>
+        <% end %>
+        <% end %>
+      <% end %>
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+        <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_amount') %> </td>
+        <td class="col-6" style="text-align: right;">
+            <span id="fee_total_amount_label" style="color: #000;"><%= precision_label(total_fees) %></span>
+            <input type="hidden" name="fee_total_amount" id="fee_total_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+        </td>
+      </tr>   
+      <% unless @total_discount == 0 %>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-1" ></td>
+          <td class="col-1" colspan="4"><span class="themed_text"><%= t('discount') %></span></td>
+        </tr>
+        <% discount_total = 0 %>
+        <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
+          <% @onetime_discounts.each do |d| %>
+            <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
+              <% discount_amount = @onetime_discounts_amount[d.id] %>
+            <% else %>
+              <% discount_amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100) %>
+            <% end %>
+            <% paidAmount = 0 %>
+            <% discountPaid = false %>
+            <% unless @paid_fees.blank? %>
+               <% transaction_ids = @paid_fees.map(&:id) %> 
+               <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+               <% unless paidFess.blank? %> 
+               <% discountPaid = true %>
+               <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+               <% end %>
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) ) %>
+                  <% unless @fee_collection_advances.nil? %>
+                    <% @fee_collection_advances.each do |fee_collection_advance| %>
+                      <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                        <% unless paidFess.blank? %> 
+                        <% discountPaid = true %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if discountPaid %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1 sl_no" style=" text-align: center;">
+                <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+              <% total_payable -= paidAmount %>
+            </tr>  
+            <% else %>
+            <% discount_enable = true %>
+            <% unless @paid_fees.blank? %>
+              <% if d.finance_fee_particular_category_id == 0 %>
+                <% if discount_amount > total_fees  %>
+                <% discount_enable = false %>
+                <% end %>
+              <% else %>
+              <% finance_particular = @fee_particulars.select{|fp| fp.finance_fee_particular_category_id == d.finance_fee_particular_category_id} %>
+              <% amount_to_paid = finance_particular.map(&:amount).sum.to_f %>
+              <% paidAmount = 0 %>
+              <% finance_particular.each do |fee| %>
+                <%  if fee.name.downcase != 'vat' %>
+                  <% transaction_ids = @paid_fees.map(&:id) %> 
+                  <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                  <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% if !@self_advance_fee and @fee_has_advance_particular %>
+                    <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) ) %>
+                      <% unless @fee_collection_advances.nil? %>
+                        <% unless @fee_collection_advances.nil? %>
+                          <% @fee_collection_advances.each do |fee_collection_advance| %>
+                            <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                            <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                            <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                            <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                            <% unless @paid_advance_fees.blank? %>
+                              <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                              <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                              <% unless paidFess.blank? %> 
+                              <% discountPaid = true %>
+                              <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% remaining_amount = amount_to_paid - paidAmount %>
+              <% if discount_amount > remaining_amount  %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if discount_enable %>
+              <% if  (@fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) )) %>
+              <% if !@self_advance_fee %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if @adv_fee_discount && @actual_discount == 0 %>
+              <% discount_enable = false %>
+            <% end %>
+            <% if discount_enable %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1" style=" text-align: center;">
+                <input type="hidden" class="discount_category" name="discount_category_<%= d.id %>" id="discount_category_<%= d.id %>" value="<%= d.finance_fee_particular_category_id  %> " />  
+                <input type="checkbox" name="fee_discount_<%= d.id %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
+                <i name="fee_discount_fa_<%= d.id %>" id="fee_discount_fa_<%= d.id %>" class="fa fa-check-square-o fees_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right;">
+                  <span class="fee_amount_discount editable"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label discount_amount %></span></span>
+                  <input type="hidden" name="fee_discount_amount_<%= d.id %>" id="fee_discount_amount_<%= d.id %>" value="<%= precision_label discount_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'discount')" onkeydown="checkKey(event,this, 'discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_discount" name="fee_discount_chk_<%= d.id %>" id="fee_discount_chk_<%= d.id %>" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                  <% discount_total += discount_amount %>
+              </td>
+            </tr>
+            <% else %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1" style=" text-align: center;">
+                <i class="fa fa-close" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right; "><span style="color: #666; text-decoration: line-through;"><%= precision_label discount_amount %></span>&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <% end %>
+            <% end %>
+            <% #i += 1 %>
+          <% end %>
+        <% end %>  
+        <% unless @discounts.nil? or @discounts.empty? or @discounts.blank? %>  
+          <% @discounts.each do |d| %>
+            <% unless @discounts_amount[d.id].nil? or @discounts_amount[d.id].blank? %>  
+              <% discount_amount = @discounts_amount[d.id] %>
+            <% else %>
+              <% discount_amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100) %>
+            <% end %>
+            <% paidAmount = 0 %>
+            <% discountPaid = false %>
+            <% unless @paid_fees.blank? %>
+               <% transaction_ids = @paid_fees.map(&:id) %> 
+               <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+               <% unless paidFess.blank? %> 
+               <% discountPaid = true %>
+               <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+               <% end %>
+               <% if !@self_advance_fee and @fee_has_advance_particular %>
+                <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) ) %>
+                  <% unless @fee_collection_advances.nil? %>
+                    <% @fee_collection_advances.each do |fee_collection_advance| %>
+                      <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                      <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                      <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                      <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                      <% unless @paid_advance_fees.blank? %>
+                        <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                        <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                        <% unless paidFess.blank? %> 
+                        <% discountPaid = true %>
+                        <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if discountPaid %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1 sl_no" style=" text-align: center;">
+                <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+              <% total_payable -= paidAmount %>
+            </tr>  
+            <% else %>
+            <% discount_enable = true %>
+            <% unless @paid_fees.blank? %>
+              <% if d.finance_fee_particular_category_id == 0 %>
+                <% if discount_amount > total_fees  %>
+                <% discount_enable = false %>
+                <% end %>
+              <% else %>
+              <% finance_particular = @fee_particulars.select{|fp| fp.finance_fee_particular_category_id == d.finance_fee_particular_category_id} %>
+              <% amount_to_paid = finance_particular.map(&:amount).sum.to_f %>
+              <% paidAmount = 0 %>
+              <% finance_particular.each do |fee| %>
+                <%  if fee.name.downcase != 'vat' %>
+                  <% transaction_ids = @paid_fees.map(&:id) %> 
+                  <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                  <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                  <% if !@self_advance_fee and @fee_has_advance_particular %>
+                    <% if @fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) ) %>
+                      <% unless @fee_collection_advances.nil? %>
+                        <% @fee_collection_advances.each do |fee_collection_advance| %>
+                          <% advance_collection_id = fee_collection_advance.fee_collection_id %>
+                          <% @advance_collection = FinanceFeeCollection.find(advance_collection_id) %>
+                          <% @advance_fees = @student.finance_fee_by_date @advance_collection %>
+                          <% @paid_advance_fees = @advance_fees.finance_transactions %>
+                          <% unless @paid_advance_fees.blank? %>
+                            <% transaction_ids = @paid_advance_fees.map(&:id) %> 
+                            <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                            <% unless paidFess.blank? %> 
+                            <% discountPaid = true %>
+                            <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% remaining_amount = amount_to_paid - paidAmount %>
+              <% if discount_amount > remaining_amount  %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if discount_enable %>
+              <% if  (@fee_has_advance_particular and (advance_fee_particular.include?(0) or advance_fee_particular.include?(d.finance_fee_particular_category_id) )) %>
+              <% if !@self_advance_fee %>
+              <% discount_enable = false %>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% if @adv_fee_discount && @actual_discount == 0 %>
+              <% discount_enable = false %>
+            <% end %>
+            <% if discount_enable %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1" style=" text-align: center;">
+                <input type="hidden" class="discount_category" name="discount_category_<%= d.id %>" id="discount_category_<%= d.id %>" value="<%= d.finance_fee_particular_category_id  %> " />  
+                <input type="checkbox" name="fee_discount_<%= d.id %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
+                <i name="fee_discount_fa_<%= d.id %>" id="fee_discount_fa_<%= d.id %>" class="fa fa-check-square-o fees_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right;">
+                  <span class="fee_amount_discount editable"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label discount_amount %></span></span>
+                  <input type="hidden" name="fee_discount_amount_<%= d.id %>" id="fee_discount_amount_<%= d.id %>" value="<%= precision_label discount_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'discount')" onkeydown="checkKey(event,this, 'discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_discount" name="fee_discount_chk_<%= d.id %>" id="fee_discount_chk_<%= d.id %>" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                  <% discount_total += discount_amount %>
+              </td>
+            </tr>
+            <% else %>
+            <tr class="<%= cycle("odd","even") %>">
+              <td class="col-1" style=" text-align: center;">
+                <i class="fa fa-close" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+              <td class="col-2" colspan="3"><%= discount_text %></td>
+              <td class="col-6" style="text-align: right; "><span style="color: #666; text-decoration: line-through;"><%= precision_label discount_amount %></span>&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <% end %>
+            <% end %>
+            <% #i += 1 %>
+          <% end %>
+        <% end %>
+
+        <% if @paid_fees.blank? or discount_total > 0 %>    
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_discount') %> </td>
+          <td class="col-6" style="text-align: right;">
+              <span id="discount_total_amount_label" style="color: #000;"><%= precision_label(discount_total) %></span>
+              <input type="hidden" name="discount_total_amount" id="discount_total_amount" value="<%= precision_label(discount_total) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>
+        </tr>
+        <% end %>
+
+        <% unless @vat.nil? and @paid_fees.blank? %>
+        <% if @vat.to_f == 0.00 %>
+          <% vat_amount = 0 %>
+          <% @paid_fees.each do |trans| %>
+          <% if trans.vat_included %>
+              <% if trans.vat_amount.to_f > 0.00 %>
+                <%  vat_amount += trans.vat_amount.to_f %>
+              <% end %>
+          <% end %>
+          <% end %>
+          <% @vat = vat_amount %>
+        <% end %>
+        <% if @vat.to_f > 0.00 %>
+        <tr id="vat_as_particular_blank_space_1" class="tr-blank"></tr>
+        <tr id="vat_as_particular_blank_space_2" class="tr-blank"></tr>
+        <tr id="vat_as_particular_blank_space_3" class="tr-blank"></tr>
+        <tr id="vat_as_particular_blank_space_4" class="tr-blank"></tr>
+        <tr id="vat_as_particular" class="<%= cycle("odd","even") %>">
+          <% paidAmount = 0 %>
+          <% unless @paid_fees.blank? %>
+             <% transaction_ids = @paid_fees.map(&:id) %> 
+             <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'VAT' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
+             <% unless paidFess.blank? %> 
+             <% discountPaid = true %>
+             <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+             <% end %>
+          <% end %>  
+          <% remaining_amount = @vat.to_f - paidAmount  %>
+          <% if remaining_amount < 0 %>  
+            <% remaining_amount = 0 %>
+          <% end %>  
+          <% if remaining_amount == 0 %>  
+            <% if @vat.to_f < paidAmount %>
+              <% @vat = paidAmount %>
+            <% end %>
+            <td class="col-1 sl_no" style=" text-align: center;">
+              <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+            </td>
+            <td class="col-2"><%= "VAT" %></td>
+            <td class="col-2" style="text-align: right;"><%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;</td>
+            <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+            <td class="col-2" style="text-align: right;"><%= precision_label remaining_amount.to_f %>&nbsp;&nbsp;&nbsp;</td>
+          <% else %>  
+            <% if @vat_as_particular %>
+              <td class="col-1" style="text-align: center;">
+                  <input type="checkbox" name="fee_vat" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat.to_f %>">
+                  <i name="fee_vat" id="fee_vat" class="fa fa-check-square-o fee_vat_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <td class="col-2">
+                  <span class="themed_text"><%= "VAT" %></span>
+                  <% if @vat_as_particular and paidAmount == 0 %>
+                    <span id="rm_vat" style="float: right;">
+                        <%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>@vat_particular_id },:confirm => 'Are you sure, you want to remove this particular?'%>
+                    </span>
+                  <% else %>  
+                    <span id="rm_vat" style="float: right;"></span>
+                  <% end %> 
+              </td>
+              <td class="col-6" style="text-align: right;">
+                  <%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;
+              </td>
+              <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="col-2" style="text-align: right;">
+                <% if paidAmount > 0 %>  
+                  <span class="only_enable_vat" name="fee_amount_vat" id="fee_amount_vat" style="color: #000;"><span style="color: #000;"><%= precision_label remaining_amount.to_f %></span></span>&nbsp;&nbsp;&nbsp;
+                  <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label remaining_amount.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" />
+                <% else %>
+                  <span class="fee_amount_vat editable"  name="fee_amount_vat" id="fee_amount_vat" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label @vat.to_f %></span></span>
+                  <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label @vat.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'vat')" onkeydown="checkKey(event,this, 'vat')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_vat" name="fee_vat_chk" id="fee_vat_chk" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                  <% if @vat_as_particular == false and paidAmount == 0 %>
+                  <span name="assign_vat_to_user" id="assign_vat_to_user" class="assign_vat_to_user" style="font-size: 12px; display: none; cursor: pointer; border-bottom: 1px dashed #990A10;">
+                      <br />Assign to the Student
+                  </span>
+                  <% end %>
+                <% end %>
+              </td>
+            <% else %>
+              <% if paidAmount > 0 %>
+              <td class="col-1 sl_no" style=" text-align: center;">
+                <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <td class="col-2"><%= "VAT" %></td>
+              <td class="col-2" style="text-align: right;"><%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="col-2" style="text-align: right;"><%= precision_label 0.00 %>&nbsp;&nbsp;&nbsp;</td>
+              <% else %>
+              <td class="col-1" style="text-align: center;">
+                  <input type="checkbox" name="fee_vat" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat.to_f %>">
+                  <i name="fee_vat" id="fee_vat" class="fa fa-check-square-o fee_vat_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+              </td>
+              <td class="col-2">
+                  <span class="themed_text"><%= "VAT" %></span>
+                  <% if @vat_as_particular and paidAmount == 0 %>
+                    <span id="rm_vat" style="float: right;">
+                        <%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10; " aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>@vat_particular_id },:confirm => 'Are you sure, you want to remove this particular?'%>
+                    </span>
+                  <% else %>  
+                    <span id="rm_vat" style="float: right;"></span>
+                  <% end %> 
+              </td>
+              <td class="col-6" style="text-align: right;">
+                  <%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;
+              </td>
+              <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %>&nbsp;&nbsp;&nbsp;</td>
+              <td class="col-2" style="text-align: right;">
+                  <span class="fee_amount_vat editable"  name="fee_amount_vat" id="fee_amount_vat" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label @vat.to_f %></span></span>
+                  <input type="hidden" name="fee_vat_amount" id="fee_vat_amount" value="<%= precision_label @vat.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'vat')" onkeydown="checkKey(event,this, 'vat')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_vat" name="fee_vat_chk" id="fee_vat_chk" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+                  <% if @vat_as_particular == false and paidAmount == 0 %>
+                  <span name="assign_vat_to_user" id="assign_vat_to_user" class="assign_vat_to_user" style="font-size: 12px; display: none; cursor: pointer; border-bottom: 1px dashed #990A10;">
+                      <br />Assign to the Student
+                  </span>
+                  <% end %>
+              </td>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+        <% total_fees += remaining_amount %>
+        <% total_payable += @vat.to_f %>
+      <% end %>
+      <% end %>
+      <tr class="tr-blank"></tr>
+      <tr class="tr-blank"></tr>
+      <tr class="tr-blank"></tr>
+      <tr class="tr-blank"></tr>  
+      <% load_fine_amount_to_pay = false %>
+      <% total_fees = (total_fees-discount_total)%>
+      <% total_payable = (total_payable-discount_total)%>
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_fees') %> </td>
+          <td class="col-6"  style="text-align: right;">
+              <span id="total_amount_label" style="color: #000;"><%= precision_label(total_fees) %></span>
+              <input type="hidden" name="total_amount" id="total_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>
+      </tr>
+      <% end %>
+
+      <% fine_paid = false %>
+      <% unless @fine_rule%>
+        <% unless @paid_fees.blank? %>
+          <% paidAmount = 0 %>
+          <% unless @paid_fees.blank? %>
+            <% transaction_ids = @paid_fees.map(&:id) %> 
+            <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
+            <% unless paidFess.blank? %> 
+            <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+            <% end %>
+          <% end %>  
+          <% if paidAmount > 0 %>
+            <% fine_paid = true %>
+            <% @fine = paidAmount %>
+          <% end %>
+        <% end %>
+      <% end %>
+      
+      <% unless @fine.nil? %>
+        <% if @fine.to_f > 0.00 %>
+        <tr id="fine_blank_space_1" class="tr-blank"></tr>
+        <tr id="fine_blank_space_2" class="tr-blank"></tr>
+        <tr id="fine_blank_space_3" class="tr-blank"></tr>   
+        <tr id="fine_blank_space_4" class="tr-blank"></tr>   
+        <% if fine_paid %>
+        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+          <td class="col-1" style="text-align: center;">
+              <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          </td>
+          <td class="col-2"><span class="themed_text">
+            <%= t('fine_on') %> <%= @paid_fees.first.transaction_date %></span>
+          </td>
+          <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
+          <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label 0 %>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+        <% else %>
+        <% total_fees += @fine.to_f %>
+        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+          <td class="col-1" style="text-align: center;">
+              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @fine.to_f %>">
+              <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          </td>
+          <td class="col-2"><span class="themed_text">
+            <%= t('fine_on') %> <%= Date.today %></span>
+            <span id="rm_fine" style="float: right; cursor: pointer;">
+                <i class="fa fa-minus-circle remove_fine" style="font-size: 20px; color: #990A10; " aria-hidden="true"></i>
+            </span>
+          </td>
+          <td class="col-2"  style="text-align: right;"><%= precision_label @fine.to_f %></td>
+          <td class="col-2"  style="text-align: right;"><%= precision_label 0 %></td>
+          <td class="col-6"  style="text-align: right;">
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label @fine.to_f %></span></span>
+              <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @fine.to_f %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine) %>" /><i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <% load_fine_amount_to_pay = true %>
+          </td>
+        </tr>
+        <% end %>
+      <% end %>
+      <% end %>
+      <%total_fees1=total_fees%>
+      <% fine_amount_total = 0 %>  
+      <%if @fine_rule%>
+        <tr id="fine_blank_space_1" class="tr-blank"></tr>
+        <tr id="fine_blank_space_2" class="tr-blank"></tr>
+        <tr id="fine_blank_space_3" class="tr-blank"></tr>   
+        <tr id="fine_blank_space_4" class="tr-blank"></tr>
+        <% paidAmount = 0 %>
+        <% fine_discount = 0 %>
+        <% if @has_fine_discount %>    
+        <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
+          <% @discounts_on_lates.each do |d| %>
+            <% if @discounts_late_amount[d.id] > 0 %>
+              <% fine_discount += @discounts_late_amount[d.id] %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% end %>
+        <% new_fine = @new_fine_amount.to_f - fine_discount.to_f %>
+        <% unless @paid_fees.blank? %>
+           <% transaction_ids = @paid_fees.map(&:id) %> 
+           <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Fine' AND finance_transaction_id IN (" + transaction_ids.join(",") + ")") %>
+           <% unless paidFess.blank? %> 
+           <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+           <% end %>
+        <% end %>  
+        <% remaining_amount = new_fine.to_f - paidAmount.to_f  %>
+        <% if remaining_amount <= 0 %>
+        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+          <td class="col-1" style="text-align: center;">
+             <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          </td>
+          <td class="col-2">
+            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+          </td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label new_fine %></td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label 0.00 %>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+        <% else %>
+        <% if paidAmount > 0 %>
+        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+          <td class="col-1" style="text-align: center;">
+              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label remaining_amount %>">
+              <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          </td>
+          <td class="col-2">
+            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+          </td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
+          <td class="col-6"  style="text-align: right;">
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label remaining_amount %></span></span>
+              <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label remaining_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <% fine_amount_total += remaining_amount %>  
+          </td>
+        </tr>
+        <% else %>
+        <tr id="extra_fine" class="<%= cycle("odd","even") %>">
+          <td class="col-1" style="text-align: center;">
+              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @new_fine_amount %>">
+              <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+          </td>
+          <td class="col-2">
+            <span class="themed_text"><%= t('fine_on') %> <%= @date.due_date.to_date+@fine_rule.fine_days.days %><%= discount_text = @fine_rule.is_amount ? "" :  " (#{@fine_rule.fine_amount}&#x200E;%)" %></span>
+          </td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label @new_fine_amount %></td>
+          <td class="col-6"  style="text-align: right;"><%= precision_label paidAmount %></td>
+          <td class="col-6"  style="text-align: right;">
+              <span class="fee_amount_fine editable"  name="fee_amount_fine" id="fee_amount_fine" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label @new_fine_amount %></span></span>
+              <input type="hidden" name="fee_fine_amount" id="fee_fine_amount" value="<%= precision_label @new_fine_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine')" onkeydown="checkKey(event,this, 'fine')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine" name="fee_fine_chk" id="fee_fine_chk" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <% fine_amount_total += @new_fine_amount %>  
+          </td>
+        </tr>
+        <% end %>
+        <% end %>
+      <%end%>
+      <% fine_discount = 0 %>  
+      <% if @has_fine_discount %>    
+        <% unless @discounts_on_lates.nil? or @discounts_on_lates.empty? or @discounts_on_lates.blank? %>
+          <% @discounts_on_lates.each do |d| %>
+            <% if @discounts_late_amount[d.id] > 0 %>
+              <% paidAmount = 0 %>
+              <% unless @paid_fees.blank? %>
+                <% transaction_ids = @paid_fees.map(&:id) %> 
+                <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'FineAdjustment' and transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = '#{d.id}'") %>
+                <% unless paidFess.blank? %> 
+                <% paidAmount += paidFess.map(&:amount).sum.to_f %>
+                <% end %>
+             <% end %>  
+             <% remaining_amount = @discounts_late_amount[d.id].to_f - paidAmount.to_f  %>
+             <% if paidAmount > 0 %>
+             <tr class="<%= cycle("odd","even") %>">
+                <td class="col-1" style="text-align: center;">
+                    <i class="fa fa-check" style="font-size: 20px; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                </td>  
+                <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                <td class="col-2" colspan="2"><%= discount_text %></td>
+                <td class="col-6" style="text-align: right;"><%= precision_label paidAmount %></td>
+                <td class="col-6" style="text-align: right;"><%= precision_label 0.00 %>&nbsp;&nbsp;&nbsp;</td>
+              </tr>
+             <% else %>
+              <% if fine_amount_total > @discounts_late_amount[d.id] %>
+              <tr class="<%= cycle("odd","even") %>">
+                <td class="col-1" style="text-align: center;">
+                    <input type="checkbox" name="fee_fine_discount_<%= d.id %>" id="fee_fine_discount_<%= d.id %>" class="fee_fine_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label @discounts_late_amount[d.id] %>">
+                    <i name="fee_fine_discount_fa_<%= d.id %>" id="fee_fine_discount_fa_<%= d.id %>" class="fa fa-check-square-o fee_fine_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                </td>  
+                <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                <td class="col-2"><%= discount_text %></td>
+                <td class="col-6" style="text-align: right;">
+                    <span class="fee_fine_amount_discount editable"  name="fee_fine_amount_discount_<%= d.id %>" id="fee_fine_amount_discount_<%= d.id %>" style="color: #000;"><i class="fa fa-pencil" style="color: #598A3D; font-size: 12px; display: none;" aria-hidden="true"></i> <span style="color: #000;"><%= precision_label @discounts_late_amount[d.id] %></span></span>
+                    <input type="hidden" name="fee_fine_discount_amount_<%= d.id %>" id="fee_fine_discount_amount_<%= d.id %>" value="<%= precision_label @discounts_late_amount[d.id] %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'fine_discount')" onkeydown="checkKey(event,this, 'fine_discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_fine_discount" name="fee_fine_discount_chk_<%= d.id %>" id="fee_fine_discount_chk_<%= d.id %>" style="color: #598A3D; font-size: 20px;  display: none;" aria-hidden="true"></i>
+                    <% fine_discount += @discounts_late_amount[d.id] %>  
+                </td>
+              </tr>
+              <% else %>
+              <tr class="<%= cycle("odd","even") %>">
+                <td class="col-1" style="text-align: center;">
+                    <i class="fa fa-close" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
+                </td>  
+                <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                <td class="col-2" colspan="2"><%= discount_text %></td>
+                <td class="col-6" style="text-align: right;"><%= precision_label 0.00 %></td>
+                <td class="col-6" style="text-align: right; text-decoration: line-through;"><%= precision_label @discounts_late_amount[d.id] %>&nbsp;&nbsp;&nbsp;</td>
+              </tr>
+              <% end %>
+              <% end %>
+            <% end %>
+            <% i += 1 %>
+          <% end %>
+        <% end %> 
+        <% @fine_amount = fine_amount_total - fine_discount %>      
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%="Fine Amount" %> </td>
+          <td class="col-6"  style="text-align: right;">
+              <span id="fine_amount_to_pay_label" style="color: #000;"><%= precision_label(@fine_amount) %></span>&nbsp;&nbsp;&nbsp;
+              <% if load_fine_amount_to_pay == false %>
+              <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine_amount) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <% load_fine_amount_to_pay = true %>
+              <% end %>
+          </td> 
+        </tr>
+      <% else %>  
+        <% @fine_amount = fine_amount_total - fine_discount %>      
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1" style="display: none;">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%="Fine Amount" %> </td>
+          <td class="col-6" style="text-align: right;">
+              <span id="fine_amount_to_pay_label" style="color: #000;"><%= precision_label(@fine_amount) %></span>
+              <% if load_fine_amount_to_pay == false %>
+              <input type="hidden" name="fine_amount_to_pay" id="fine_amount_to_pay" value="<%= precision_label(@fine_amount) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+              <% end %>
+          </td> 
+        </tr>
+      <% end %>
+      <% total_fees += fine_amount_total.to_f %>  
+      <% unless @paid_fees.nil? %>
+        <% paid=0 %>
+        <% @paid_fees.each{|a| paid += a.amount.to_f} %>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= "Fees Information" %> </td>
+          <td class="col-6"  style="text-align: right;">
+              <span id="total_payable_label" style="color: #000;"><%= precision_label(total_payable) %></span>
+              <input type="hidden" name="total_payable" id="total_payable" value="<%= precision_label(total_payable) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>  
+          <td class="col-6"  style="text-align: right;">
+              <span id="payment_done_label" style="color: #000;"><%= precision_label(paid) %></span>
+              <input type="hidden" name="payment_done" id="payment_done" value="<%= precision_label(paid) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>  
+          <td class="col-6"  style="text-align: right;">
+              <span id="remaining_amount_label" style="color: #000;"><%= precision_label(total_fees) %></span>
+              <input type="hidden" name="remaining_amount" id="remaining_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>  
+        </tr>
+      <% end %>
+      
+      <%balance=@financefee.balance.to_f+@fine.to_f+@vat.to_f%>
+      <% if balance.to_f < 0 %>  
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('advance_payment') %> </td>
+        <td class="col-6"  style="text-align: right;">
+            <span id="advance_payment_label" style="color: #000;"><%= precision_label( (balance+@fine_amount.to_f) * -1 ) %></span>
+            <input type="hidden" name="advance_payment" id="advance_payment" value="<%= precision_label( (balance+@fine_amount.to_f) * -1 ) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+        </td>
+      </tr>  
+      <% else %>  
+      <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1" style="display: none;">
+        <% fee_to_pay = 0 %>  
+        <% unless precision_label(balance+@fine_amount.to_f).to_f == 0 %>
+          <% fee_to_pay = balance+@fine_amount.to_f %>
+        <% end %>
+        <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('amount_to_pay') %> </td>
+        <td class="col-6"  style="text-align: right;">
+            <span id="amount_to_pay_label" style="color: #000;"><%= precision_label(total_fees) %></span>
+            <input type="hidden" name="amount_to_pay" id="amount_to_pay" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+        </td>  
+      </tr>
+      <% end %>
+      
+      <script type="text/javascript">
+        j(document).ready(function(){
+            if ( j("#remaining_amount").length > 0 )
+            {
+                if ( parseFloat(j("#remaining_amount").val()) <= 0 )
+                {
+
+                    j(".fine_info").remove();
+                }
+            }
+        });
+      </script>
+      <% if total_fees > 0  %>
+            <tr>
+            <td colspan="5" style='text-align: right; padding-right: 10px;'>
+              <div class="input-container" style="display: none;">
+                  <%= select :fees, :payment_mode, [["#{t('cash')}", "#{t('cash')}"],["#{t('pbl_std')}", "#{t('pbl_std')}"],["#{t('online_payment')}", "#{t('online_payment')}"],["#{t('cheque')}", "#{t('cheque')}"],["#{t('dd')}","#{t('dd')}"],["#{t('others')}", "#{t('others')}"]], {} ,{:onChange => "#{remote_function(:url => {:action => "select_payment_mode"},
+                      :with => "'payment_mode='+value",:before => "$('loader1').show();",
+                      :success => "$('loader1').hide();")}"}  %>
+              </div>  
+              <div class="input-container" style="display: none;"><%= form.text_area :payment_note,:cols => 50, :rows => 1 %></div>  
+              <input type="hidden" name="current_balnce" id="current_balnce" value="<%= precision_label total_fees %>" />
+              <input type="hidden" name="fees[transaction_date]" id="fees[transaction_date]" value="<%= Date.today.strftime('%d %b %Y') %>" />
+              <input type="hidden" name="tot_fee_amount" id="tot_fee_amount" value="<%= precision_label total_fees %>" />
+              <div class="pay_fees"><div class="pay_fees_buttons">
+              <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button',:onClick => "return validate_payment_mode()" %>
+              <%= image_tag("loader.gif",
+                      :align => "absmiddle",
+                      :border => 0,
+                      :id => "loader_pay",
+                      :style =>"display: none;" ) %>
+              <%= link_to "► #{t('print_receipt')}",{:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>
+              </div></div>  
+            </td>
+          </tr>
+      <% end %>   
+    </table>
+    <% if @student.has_dues %>
+    <div style="clear: both; height: 4px;"></div>
+    <div style="width: 100%; text-align: center; color: #f00;">***Student has previous Dues***</div>
+    <div style="clear: both; height: 10px;"></div>
+    <% end %>
+  <% end %>
+  <% end %>
+  <% unless @paid_fees.empty? %>
+    <div id="payments_details">
+      <div class="label-field-pair3">
+        <label><%= t('payment_history') %> </label>
+      </div>
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <tr class="tr-head">
+          <td><%= t('sl_no') %></td>
+          <td><%= t('payment_date') %></td>
+          <td><%= t('payment_mode') %></td>
+          <td><%= t('payment_notes') %></td>
+          <td><%= t('amount') %> (<%= currency %>  )</td>
+        </tr>
+        <tr class="tr-blank"></tr>
+        <% @paid_fees.each_with_index do |f , i| %>
+          <tr class="tr-<%= cycle("odd","even") %>">
+            <td class="col-1"><%= i +=1 %></td>
+            <td class="col-3"><%= f.transaction_date %></td>
+            <td class="col-3"><%= f.payment_mode %></td>
+            <td class="col-2"><%= f.payment_note %></td>
+            <td class="col-3">
+              <%= precision_label(f.amount.to_f) %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+    </div>
+  <% else %>  
+    <div id="payments_details"></div>
+  <% end %>
+</div>
+
+<style>
+.name{
+    color: #999999;
+    float: left;
+    width: 220px;
+    font-weight: bold;
+    font-size: 13px;
+    height:2px;
+}
+
+.details{
+    margin-bottom: 45px;
+    padding-bottom: 15px;
+}
+.height-fixer{
+    float: left;
+    width: 100%;
+    min-height:15px;
+}
+.val {
+    width: 750px;
+    color: #bb0000;
+    font-weight: bold;
+    font-size: 13px;
+    float: right;
+}
+
+.val span{
+    margin-right:12px;
+    color: black;
+}
+.val-align{
+    float: right;
+    width: 730px;
+    word-wrap: break-word;
+}
+.pay_fees_buttons input {
+    float: right;
+}
+.pay_fees_buttons a {
+    float: right !important;
+    margin: 18px 10px 0 !important;
+}
+a.user_button {
+    padding: 7px 10px;
+    color: #fff;
+    background: #27292B;
+    border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+    text-decoration: none;
+    float: right;
+}
+.submit_button {
+    background: none repeat scroll 0 0 #27292B;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 18px 5px 0 5px;
+    padding: 7px 10px;
+    height: 34px;
+    float: right;
+    border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+}
+.success
+{
+    padding: 10px 50px;
+    background: #00FF00;
+    color: black;
+}
+</style>    
+<script>
+  function prev_double(){
+    $('fees_form').setAttribute("onsubmit", "return false")
+    $('submit_button').disable();
+  }
+
+  function set_back(){
+    $('fees_form').removeAttr("onsubmit");
+    setTimeout(function(){$('submit_button').enable();},15000);
+  }
+</script>

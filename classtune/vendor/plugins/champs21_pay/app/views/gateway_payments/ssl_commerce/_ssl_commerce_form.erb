@@ -13,7 +13,7 @@
   <%= hidden_field_tag :fail_url,@fail_url+extra_string %>
   <%= hidden_field_tag :cancel_url,@cancel_url+extra_string %>
   <%= hidden_field_tag :version,"2.00" %>
-  <% if @paid_fees.blank? %>
+  <% if @amount > 0 %>
     <%= f.submit '► Pay Fees',:class => "submit_button btn btn-success" %>
   <% end %>
 <% end %>

@@ -71,3 +71,4 @@ en:
   payment_canceled: "Payment Cancelled."
   store_id: "Store Id"
   store_password: "Store Password"
+  merchant_id: "Merchant Id"

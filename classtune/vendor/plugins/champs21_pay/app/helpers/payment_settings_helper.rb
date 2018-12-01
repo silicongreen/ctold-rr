@@ -28,6 +28,16 @@ module PaymentSettingsHelper
     @trans_id_ssl_commerce = trans_id_ssl_commerce
     render :partial => "gateway_payments/ssl_commerce/ssl_commerce_form"
   end
+  
+  def trustbank_pay_button(merchant_id,amount,full_name,email,payment_success_url,order_id)
+    @merchant_id = merchant_id
+    @amount = amount
+    @full_name = full_name
+    @email = email
+    @order_id = order_id
+    @payment_success_url = payment_success_url
+    render :partial => "gateway_payments/trustbank/trustbank_form"
+  end
 
   def authorize_net_pay_button(merchant_id,certificate,amount,item_name,return_url,paid_fees = Array.new,button_style = String.new)
     @merchant_id = merchant_id
@@ -64,6 +74,9 @@ module PaymentSettingsHelper
         payment_url = payment_urls["ssl_commerce_url"]
         payment_url ||= "https://securepay.sslcommerz.com/gwprocess/testbox/v3/process.php"
       end
+    elsif active_gateway == "trustbank"
+      payment_url = payment_urls["trustbank_url"]
+      payment_url ||= "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx"
     end
     payment_url
   end

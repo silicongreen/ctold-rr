@@ -11,9 +11,72 @@
     float: left;
     width: 100%;
 }
+#student_profile_heading{
+    background: url("/images/backgrounds/top_profile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    float: left;
+    margin: 0;
+    max-height: 120px;
+    padding: 0;
+    width: 100%;
+}
+#profile_picture_display{
+    float: left;
+    height: 120px;
+}
+#profile_picture_display img{
+    height: 100%;
+}
+#student_main_info{
+    float: left;
+    padding: 30px 0 0 20px;
+    width: 75%;
+}
+#student_name{
+    color: #FFF;
+    font-size: 35px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#student_class{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+#personal_info_wrapper {
+    float: left;
+    width: 100%;
+}
+#class_info{
+    border-bottom: 1px solid #DFE1E2;
+    border-top: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+#class_info .infos{
+    background-color: #f6f8f8;
+    border-right: 1px solid #DFE1E2;
+    float: left;
+    width: 33.3%;
+}
+#class_info .last {
+    border-right: 0 none;
+    float: right;
+    width: 33.1%;
+}
+#class_info .infos div:first-child{
+    color: #d71921;
+    font-size: 25px;
+    padding: 30px 0 0;
+    text-align: center;
+}
+#class_info .infos div:last-child{
+    color: #868a8b;
+    font-size: 18px;
+    padding: 5px 0 20px;
+    text-align: center;
+}
 #student_profile_heading1 {
     clear: both;
-    float: left;
     padding: 0 0 0 20px;
     width: 100%;
 }
@@ -262,7 +325,7 @@ table#listing{
     padding-top: .5px;
     padding-bottom: .5px;
     width: 100%;
-    background-color: #999;
+    background-color: #ccc;
     margin-top: 18px;
 }
 .check_box{
@@ -273,4 +336,88 @@ table#listing{
 .paid_text{
     float:left;
     margin-top:8px
+}
+.fee_details_box{
+    float: left; 
+    width: 30%; 
+    border: 1px solid #ccc; 
+    min-height: 300px; 
+    -webkit-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+    margin-bottom: 40px;
+}
+.fee_details_box .fee_name{
+    height: 50px; 
+    text-align: center; 
+    border-bottom: 1px solid #999; 
+    background: url('/images/gbackground.jpeg'); 
+    padding-top: 20px; 
+    font-size: 25px; 
+    color: #fff; 
+    font-weight: bold;
+}
+.fee_details_box .fee_bottom {
+    height: 25px;
+    text-align: center; 
+    border-bottom: 1px solid #999; 
+    background: url('/images/gbackground.jpeg'); 
+    padding: 15px 0; 
+    font-size: 18px; 
+    color: #fff; 
+    font-weight: bold;
+}
+.fee_details_box .fee_bottom div:first-child{
+    float: left; 
+    width: 49%; 
+    border-right: 2px solid #FFF; 
+    text-align: center;
+}
+.fee_details_box .fee_bottom div:last-child{
+    float: left; 
+    width: 49%;  
+    text-align: center;
+}
+.fee_details_box .fee_bottom div a.fee_link{
+    color: #fff;
+    font-size: 16px;
+}
+.fee_details_box .fee_bottom div a.fee_link:hover{
+    text-decoration: underline;
+    color: #ccc;
+}
+.fee_details table tr:first-child {
+    border-bottom: 1px solid #ccc;
+}
+.fee_details table tr:first-child td.fee_due {
+    border-bottom: 1px solid #ccc; 
+    text-align: left; 
+    padding: 10px; 
+    background: #EAEAEA;
+}
+
+.fee_details table tr:not(:first-child) td.fee_due:first-child {
+    border-bottom: 1px solid #ccc; 
+    border-right: 1px solid #ccc; 
+    padding: 10px 0; 
+    background: #F3F3F3; 
+    font-size: 12px; 
+    font-family: verdana;
+}
+.fee_details table tr:not(:first-child) td.fee_due:last-child {
+    border-bottom: 1px solid #ccc; 
+    padding: 10px 0; 
+    font-size: 14px; 
+    text-align: right; 
+    padding-right: 10px;
+}
+.fee_details table tr:last-child td.fee_due:last-child {
+    border-bottom: 1px solid #ccc; 
+    border-right: 1px solid #ccc; 
+    padding: 10px 0; 
+    font-size: 15px; 
+    font-weight: bold; 
+    text-align: center; 
+    background: #F3F3F3; 
+    padding-right: 10px;
 }

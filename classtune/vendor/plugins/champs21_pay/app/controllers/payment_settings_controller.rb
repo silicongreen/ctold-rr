@@ -28,6 +28,8 @@ class PaymentSettingsController < ApplicationController
       @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
     elsif @active_gateway == "ssl.commerce"
       @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
+    elsif @active_gateway == "trustbank"
+      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS
     end
     @enabled_fees = PaymentConfiguration.find_by_config_key("enabled_fees").try(:config_value)  
     @enabled_fees ||= Array.new
@@ -58,6 +60,8 @@ class PaymentSettingsController < ApplicationController
       @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
     elsif @active_gateway == "ssl.commerce"
       @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
+    elsif @active_gateway == "trustbank"
+      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS  
     end
     
 

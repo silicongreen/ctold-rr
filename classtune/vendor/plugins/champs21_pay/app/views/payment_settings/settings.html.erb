@@ -60,15 +60,21 @@
     </div>
 
 
-    <div class="label-field-pair-gateway">
+    <div class="label-field-pair-gateway" style="height: auto; padding-bottom: 10px;">
       <label for="student_grade"><%= t('gateway') %></label>
       <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader", :style =>"display: none;" ) %>
-      <div class="value">
+      <div class="value" style="max-width: 75%; width: 75%; float: left;">
         <% Champs21Pay::GATEWAYS.each do |gateway| %>
-          <%= radio_button("payment_settings","champs21_gateway",gateway,{:checked => @active_gateway == gateway,:onchange => "#{remote_function(:url => {:controller => "payment_settings",:action => "show_gateway_fields",:gateway => gateway},
-              :before => "Element.show('loader')",
-              :success => "Element.hide('loader')")}"}) %>
-          <%= image_tag("/images/gateway_images/#{gateway}.png") %>
+          <div style="width: 49%;float: left;">
+            <div style="float: left; width: 5%;">
+            <%= radio_button("payment_settings","champs21_gateway",gateway,{:checked => @active_gateway == gateway,:onchange => "#{remote_function(:url => {:controller => "payment_settings",:action => "show_gateway_fields",:gateway => gateway},
+                :before => "Element.show('loader')",
+                :success => "Element.hide('loader')")}"}) %>
+            </div>    
+            <div style="float: left; width: 90%;">
+            <%= image_tag "/images/gateway_images/#{gateway}.png", :class => "gateway_image" %>
+            </div>
+          </div>
         <% end %>
       </div>
     </div>
@@ -78,3 +84,9 @@
     </div>
   <% end %>
 </div>
+
+<style>
+    .gateway_image{
+      border: 1px solid #ccc;
+    }
+</style>

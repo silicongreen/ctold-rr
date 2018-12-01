@@ -26,6 +26,7 @@ class FinanceFee < ActiveRecord::Base
   belongs_to :batch
   has_many   :finance_transactions,:through=>:fee_transactions
   has_many   :fee_transactions
+  has_many   :fees_advances, :foreign_key => 'fee_id'
   has_one    :fee_refund
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
 
@@ -40,6 +41,7 @@ class FinanceFee < ActiveRecord::Base
   def former_student
     ArchivedStudent.find_by_former_id(self.student_id)
   end
+  
   def due_date
     finance_fee_collection.due_date.strftime "%a,%d %b %Y"
   end
@@ -127,11 +129,29 @@ class FinanceFee < ActiveRecord::Base
             total_discount = total_discount + discount_amt
           end
         end
+      else  
+        discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        discounts.each do |d|
+          discounts_amount = total_payable * d.discount.to_f/ (d.is_amount?? total_payable : 100)
+          total_discount = total_discount + discounts_amount
+        end  
       end
     end
     #abort(total_discount.inspect)
     balance=Champs21Precision.set_and_modify_precision(total_payable-total_discount)
-    FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id, :advance_fee_id => advance_id.to_i)
+    finance_fee = FinanceFee.new
+    finance_fee.student_id = student.id
+    finance_fee.fee_collection_id = date.id
+    finance_fee.balance = balance
+    finance_fee.batch_id = student.batch_id
+    finance_fee.has_advance_fee_id = true
+    finance_fee.save
+    
+    fee_advance = FeesAdvance.new
+    fee_advance.advance_fee_id = advance_id.to_i
+    fee_advance.fee_id = finance_fee.id
+    fee_advance.save
+    #FinanceFee.create(:student_id => student.id,:fee_collection_id => date.id,:balance=>balance,:batch_id=>student.batch_id, :advance_fee_id => advance_id.to_i)
   end
   
   def self.new_student_fee_with_tmp_particular(date,student)

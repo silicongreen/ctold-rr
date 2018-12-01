@@ -21,6 +21,9 @@ class FinanceFeeAdvance < ActiveRecord::Base
   belongs_to :finance_fee_collection ,:foreign_key => 'fee_collection_id'
   belongs_to :student
   belongs_to :batch
+  
+  has_many   :fees_advances, :foreign_key => 'advance_fee_id'
+  
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
   
 end

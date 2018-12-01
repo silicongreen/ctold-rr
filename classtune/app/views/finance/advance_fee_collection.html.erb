@@ -67,7 +67,7 @@
     <div style="clear: both; height: 4px;"></div> 
     
     <% require 'date'  %>
-    <% valid_month = Date.current.beginning_of_month + 9.days %>
+    <% valid_month = Date.current.beginning_of_month + 22.days %>
     <% if Date.today > valid_month %>
       <% next_date = Date.today + 1.months %>
       <% collection_month = next_date.beginning_of_month %>

@@ -1205,7 +1205,10 @@ authorization do
       :fee_collection_advance_create,
       :fee_collection_delete,
       :fee_collection_edit,
+      :fee_collection_edit_all,
       :fee_collection_update,
+      :fee_collection_update_all,
+      :fee_collection_summary_details,
       :fee_structure_create,
       :fee_structure_delete,
       :fee_structure_edit,
@@ -1342,6 +1345,7 @@ authorization do
       :add_particulars_create,
       :fee_collection_new,
       :advance_fee_collection,
+      :fee_collections,
       :fee_collection_dues,
       :fee_dues_create,
       :fee_collection_create,
@@ -1363,6 +1367,7 @@ authorization do
       :delete_fee_discount,
       :collection_details_view,
       :advance_collection_details_view,
+      :fee_collections_details_view,
       :master_category_edit,
       :particular_category_edit,
       :master_category_update,
@@ -2295,7 +2300,10 @@ authorization do
       :fee_collection_advance_create,
       :fee_collection_delete,
       :fee_collection_edit,
+      :fee_collection_edit_all,
       :fee_collection_update,
+      :fee_collection_update_all,
+      :fee_collection_summary_details,
       :fee_structure_create,
       :fee_structure_delete,
       :fee_structure_edit,
@@ -2382,6 +2390,7 @@ authorization do
       :advance_fee_collection_view,
       :fee_collection_dates_batch,
       :sent_notification,
+      :sent_notification_all,
       :fee_collection_assign_discount,
       :assign_fee_discount_to_collection,
       :remove_fee_discount_from_collection,
@@ -2445,10 +2454,12 @@ authorization do
       :delete_fee_discount,
       :fee_collection_new,
       :advance_fee_collection,
+      :fee_collections,
       :fee_collection_dues,
       :fee_dues_create,
       :collection_details_view,
       :advance_collection_details_view,
+      :fee_collections_details_view,
       :fee_collection_create,
       :fee_collection_advance_create,
       :categories_new,
@@ -3415,7 +3426,7 @@ authorization do
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
       :subject_report_pdf,:month_report_data,:download_attachment, :year_report,:graph_code,:new_calendar, :month, :student_report, :leaves, :leave_history,:individual_leave_applications,:own_leave_application,:cancel_application, :update_leave_history]
-    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:refund_student_view,:refund_student_view_pdf]
+    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:refund_student_view,:refund_student_view_pdf, :update_ajax]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
   end

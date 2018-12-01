@@ -446,7 +446,6 @@ class Student < ActiveRecord::Base
       end
       return false
     end
-
   end
 
   def check_fee_pay(date)

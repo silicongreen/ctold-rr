@@ -6,6 +6,70 @@
     padding: 0 0 0 2px;
     width: 100%;
 }
+#student_profile_heading{
+    background: url("/images/backgrounds/top_profile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    float: left;
+    margin: 0;
+    max-height: 120px;
+    padding: 0;
+    width: 100%;
+}
+#profile_picture_display{
+    float: left;
+    height: 120px;
+}
+#profile_picture_display img{
+    height: 100%;
+}
+#student_main_info{
+    float: left;
+    padding: 30px 0 0 20px;
+    width: 75%;
+}
+#student_name{
+    color: #FFF;
+    font-size: 35px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#student_class{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+#personal_info_wrapper {
+    float: left;
+    width: 100%;
+}
+#class_info{
+    border-bottom: 1px solid #DFE1E2;
+    border-top: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+#class_info .infos{
+    background-color: #f6f8f8;
+    border-right: 1px solid #DFE1E2;
+    float: left;
+    width: 33.3%;
+}
+#class_info .last {
+    border-right: 0 none;
+    float: right;
+    width: 33.1%;
+}
+#class_info .infos div:first-child{
+    color: #d71921;
+    font-size: 25px;
+    padding: 30px 0 0;
+    text-align: center;
+}
+#class_info .infos div:last-child{
+    color: #868a8b;
+    font-size: 18px;
+    padding: 5px 0 20px;
+    text-align: center;
+}
 #student_main_info1 span.name {
     color: #000000;
     float: left;

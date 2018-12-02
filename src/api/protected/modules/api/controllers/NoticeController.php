@@ -36,7 +36,7 @@ class NoticeController extends Controller {
     {
         $notification_id = Yii::app()->request->getPost('notification_id');
         $user_id = Yii::app()->request->getPost('user_id');
-        shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+       // shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
     }        
 
     public function actionGetSingleNotice() {

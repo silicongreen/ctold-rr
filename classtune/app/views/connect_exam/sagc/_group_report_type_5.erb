@@ -1,6 +1,15 @@
 
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-             <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+<%
+  if @student_list_first_term.blank?
+    @subject_highest_1st_term = @subject_highest_2nd_term
+    @student_position_first_term = @student_position_second_term
+    @student_position_first_term_batch = @student_position_second_term_batch
+  end
+
+
+%> 
+            <table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
                   <% c = 'even'  %>
                   <% total_mark_of_allexam = 0 %>
                  
@@ -335,5 +344,5 @@
                   <% end %>
                    
 
-              </table>     
+              </table> 
 <% end %>

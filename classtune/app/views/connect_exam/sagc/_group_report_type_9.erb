@@ -1,4 +1,12 @@
+<%
+  if @student_list_first_term.blank?
+    @subject_highest_1st_term = @subject_highest_2nd_term
+    @student_position_first_term = @student_position_second_term
+    @student_position_first_term_batch = @student_position_second_term_batch
+  end
 
+
+%>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
             <%
               has_sb = false
@@ -135,7 +143,7 @@
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if report['exam_category'] != '1' && report['exam_category'] != '2' %>
+                              <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
@@ -208,7 +216,7 @@
                   <% end %>  
                   <tr class="even">
                       <% colspan = colspan+3+extra_subject %>
-                      <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total GP</b></td>
+                      <td class="col-pdf align-left-baf" colspan="<%= colspan %>"><b>Total Marks & Total Gp</b></td>
                       <td class="col-pdf no-warp align-left-baf" colspan="3">&nbsp;&nbsp;&nbsp;<b><%= grand_total %></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr>    

@@ -35,7 +35,7 @@
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['exam_category'] == '1' && report['quarter'] == '1' %>
-                          <td rowspan="2"><%= report['exam_name'] %></td>
+                          <td rowspan="2"><b><%= report['exam_name'] %></b></td>
                         <% elsif report['quarter'] == '1' %>
                           <% colspan = colspan+1 %>
                         <% end %>  
@@ -50,7 +50,7 @@
                       <% colspan = 0 %>
                       <% @report_data['report']['exams'].each do |report| %>
                         <% if report['exam_category'] == '1' && report['quarter'] == '2' %>
-                          <td rowspan="2"><%= report['exam_name'] %></td>
+                          <td rowspan="2"><b><%= report['exam_name'] %></b></td>
                         <% elsif report['quarter'] == '2' %>
                           <% colspan = colspan+1 %>
                         <% end %>  
@@ -66,7 +66,7 @@
                       <% @report_data['report']['exams'].each do |report| %>
                           <% if report['quarter'] == '2' %>
                             <% if report['exam_category'] == '1' %>
-                                <td rowspan="2"><%= report['exam_name'] %></td>
+                                <td rowspan="2"><b><%= report['exam_name'] %></b></td>
                             <% end %>
                             <% if report['exam_category'] == '3' %>
                               <% has_sb = true %>
@@ -80,13 +80,13 @@
                           <% end %>
                       <% end %>
                       <% if has_ob == true %>
-                            <td rowspan="2">OB</td>
+                            <td rowspan="2"><b>OB</b></td>
                       <% end %> 
                       <% if has_sb == true %>
-                            <td rowspan="2">SB</td>
+                            <td rowspan="2"><b>SB</b></td>
                       <% end %> 
                       <% if has_pr == true %>
-                            <td rowspan="2">PR</td>
+                            <td rowspan="2"><b>PR</b></td>
                       <% end %> 
                       <% colspan = colspan+2 %>
                       <td class="col-pdf" rowspan="2"><b>Total</b></td>
@@ -98,24 +98,24 @@
                   <tr class="even header-shade">
                     
                       <% if has_ob == true %>
-                            <td>OB</td>
+                            <td><b>OB</b></td>
                       <% end %> 
                       <% if has_sb == true %>
-                            <td>SB</td>
+                            <td><b>SB</b></td>
                       <% end %> 
                       <% if has_pr == true %>
-                            <td>PR</td>
+                            <td><b>PR</b></td>
                       <% end %> 
                       <td rowspan="1"><b>Total</b></td>
                       <td rowspan="1"><b>Avg</b></td>
                       <% if has_ob == true %>
-                            <td>OB</td>
+                            <td><b>OB</b></td>
                       <% end %> 
                       <% if has_sb == true %>
-                            <td>SB</td>
+                            <td><b>SB</b></td>
                       <% end %> 
                       <% if has_pr == true %>
-                            <td>PR</td>
+                            <td><b>PR</b></td>
                       <% end %> 
                          
                       <td rowspan="1"><b>Total</b></td>
@@ -300,7 +300,7 @@
                                   <%  class_test_mark2 = class_test_mark2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                 <% else %>
-                                  <td class="col-pdf">AB</td>
+                                  <td class="col-pdf">-</td>
                                 <% end %>
                               <% end %>
                             <% end %>
@@ -626,7 +626,7 @@
                                   <%  class_test_mark2 = class_test_mark2+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
                                 <% else %>
-                                  <td class="col-pdf">AB</td>
+                                  <td class="col-pdf">-</td>
                                 <% end %>
                               <% end %>
                             <% end %>
@@ -753,5 +753,5 @@
                  
                    
 
-              </table>  
+              </table>
 <% end %>

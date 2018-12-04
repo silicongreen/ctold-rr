@@ -258,8 +258,10 @@
                   
                       <% @report_data['report']['exams'].each do |report| %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                          <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
-                          <% break %>
+                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'.to_i %>
+                            <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
+                            <% break %>
+                          <% end %>
                          <% end %>
                       <% end %> 
                       <% wordString = wordString_main.split("|") %>
@@ -270,11 +272,11 @@
                             <% if !wordString.blank? and !wordString[iloop].blank? %>
                            <tr class="odd">
                                <td class="col-pdf align-left"><%= group_name.name %></td>
-                               <td class="col-pdf"><%= wordString[iloop].to_s %><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf">2<%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf">3<%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf">4<%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf">5<%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 4 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
+                               <td class="col-pdf"><%  if wordString[iloop].to_i == 5 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
                            </tr>
                            <% else %>
                            <tr class="even">

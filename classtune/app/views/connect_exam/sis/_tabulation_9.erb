@@ -410,7 +410,7 @@ unless @ranked_student.blank?
                                 <td>
                                    
                                     <%= sprintf( "%0.02f", total_mark) %><hr/>
-                                    <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                                    <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>
                                       <%
                                       if grades.include?(grade.name.to_s)

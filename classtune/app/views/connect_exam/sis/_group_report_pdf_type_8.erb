@@ -228,7 +228,7 @@
                   
                       <% @report_data['report']['exams'].each do |report| %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'.to_i %>
+                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'].to_i %>
                             <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                             <% break %>
                           <% end %>

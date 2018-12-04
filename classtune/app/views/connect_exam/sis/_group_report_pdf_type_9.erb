@@ -324,7 +324,7 @@
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
                             <% else %> 
-                              <%= grade.min_score.to_s + "-" + grade.max_score.to_s %>
+                              <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
                             <% end %>
                           </td>
                           <td class="align-left"><%= grade.name %></td>
@@ -342,7 +342,7 @@
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
                             <% else %> 
-                              <%= grade.min_score.to_s + "-" + grade.max_score.to_s %>
+                              <%= grade.min_score.to_i.to_s + "-" + grade.max_score.to_i.to_s %>
                             <% end %>
                           </td>
                           <td class="align-left"><%= grade.name %></td>

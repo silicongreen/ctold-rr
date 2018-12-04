@@ -1,4 +1,4 @@
-<% if @connect_exam_obj.result_type.to_i == 6 && @connect_exam_obj.quarter_number == 6 %>
+<% if @connect_exam_obj.result_type.to_i == 9 && @connect_exam_obj.quarter_number == 6 %>
 <%
   if @tabulation_data.blank?
     student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)

@@ -210,13 +210,12 @@
                                 term_mark = final_term_mark_60+first_term_mark_60
                                 total_mark = total_mark.round()
                                 grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
-                                total_marks_obtain = total_marks_obtain+total_mark
+                                
                             %>
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
                           <td><%= sprintf( "%0.02f", term_mark) %></td>
                           <td><%= total_mark.round() %></td>
 
-                          <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-2"><b><%= grade.name %></b></td>
                           <% else %>

@@ -8,7 +8,7 @@ resulttype:
  type_346: "Term(N-KG),AR(N-KG),Term(class 1-class 5),AR(class 1-class 5),Term(class 6-class 7),AR(class 6-class 7),Term(class 8-class 10),AR(class 8-class 10),Term(class 11-class 12),AR(class 11-class 12)"
  type_352: "Term(N-KG),AR(N-KG),Term(class 1-class 5),AR(class 1-class 5),Term(class 6-class 7),AR(class 6-class 7),Term(class 8-class 10),AR(class 8-class 10),Term(class 11-class 12),AR(class 11-class 12)"
  type_312: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
- type_348: "QUARTER(PG),QUARTER(NURSERY),QUARTER(KGI-KGII),QUARTER(I-VII),QUARTER(VIII),QUARTER(IX),TERM(PG-N),TERM(KGI-KGII),TERM(I-IV)"
+ type_348: "QUARTER(PG),QUARTER(NURSERY),QUARTER(KGI-KGII),QUARTER(I-VII),QUARTER(VIII),QUARTER(IX),TERM(PG-N),TERM(KGI-KGII),TERM(I-VIII)"
  type_340: "QUARTER,TERM (SECOND HALF),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 5-9),TERM EXAM (CLASS 5-9),TERM (FIRST HALF) EFFORT/GRADE SHEET (CLASS 10-12),TERM EXAM (CLASS 10-12),HALL EXAM,FINAL SCORE SHEET,TERM REPORT CARD(CLASS 5-9),FINAL REPORT (CLASS 5-9),TERM REPORT CARD(CLASS 10-12),ASSESMENT(KG 1-CLASS 4),REPORT CARD(KG 1-KG 2),REPORT CARD(CLASS 1-CLASS 4)"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6,Type 7,Type 8"
 resulttype2:

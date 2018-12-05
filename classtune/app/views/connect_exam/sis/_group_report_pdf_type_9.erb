@@ -416,8 +416,13 @@
 
 <% end %>
 <% 
-  padding = (300-(total_subject.to_i*25))/(total_subject.to_f*2) 
-  padding = padding.round
+  subject_gap = total_subject.to_i*25;
+  if subject_gap > 400
+    padding = 0
+  else
+    padding = (400-(total_subject.to_i*25))/(total_subject.to_f*2) 
+    padding = padding.round
+  end
   
 %>
 

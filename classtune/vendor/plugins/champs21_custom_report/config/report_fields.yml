@@ -78,6 +78,9 @@
   - :mobile_phone
   - :email
   - :gender
+  - :father_name
+  - :mother_name
+  - :husband_name
   :student:
   - :admission_date
   - :class_roll_no

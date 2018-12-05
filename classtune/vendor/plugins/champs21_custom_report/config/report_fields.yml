@@ -23,6 +23,9 @@
     - :marital_status
     - :blood_group
     - :gender
+    - :father_name
+    - :mother_name
+    - :husband_name
     
   :student:
     :integer: []

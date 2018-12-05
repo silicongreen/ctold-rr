@@ -408,7 +408,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Scores.student_id',
@@ -479,7 +479,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Scores.student_id',
@@ -592,7 +592,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Score.remarks',
@@ -624,7 +624,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',
@@ -659,6 +659,8 @@ class ExamGroups extends CActiveRecord
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
                     $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['full_mark'] = $value->maximum_marks;
+                    $result[$student]['exams'][$count]['result'][$all_exams->id][$value['Subjects']->id]['converted_marks'] = $value->weightage;
+                  
                    
                 } 
                 $exam_ids[$student][$count] = $all_exams->id;
@@ -717,7 +719,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks',
@@ -752,7 +754,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',
@@ -792,6 +794,8 @@ class ExamGroups extends CActiveRecord
                        $result[$student]['exams'][$i]['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
                        $result[$student]['exams'][$i]['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
                        $result[$student]['exams'][$i]['result'][$all_exams->id][$value['Subjects']->id]['full_mark'] = $value->maximum_marks;
+                       $result[$student]['exams'][$i]['result'][$all_exams->id][$value['Subjects']->id]['converted_marks'] = $value->weightage;
+                       
                     }
                     $exam_ids[$student][$i] = $all_exams->id;
                     $i++;
@@ -859,7 +863,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks',
@@ -891,7 +895,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks',
+                    'select' => 'Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',
@@ -926,6 +930,8 @@ class ExamGroups extends CActiveRecord
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['grade'] = "N/A";
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['weightage_mark'] = 0;
                    $result['result'][$all_exams->id][$value['Subjects']->id][$student]['full_mark'] = $value->maximum_marks;
+                   $result['result'][$all_exams->id][$value['Subjects']->id][$student]['converted_marks'] = $value->weightage;
+                  
                 } 
             }
         }    
@@ -986,7 +992,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks,Exams.alternative_title',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Scores.remarks',
@@ -1018,7 +1024,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks,Exams.alternative_title',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.weightage',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',
@@ -1051,6 +1057,8 @@ class ExamGroups extends CActiveRecord
                $result['result'][$all_exams->id][$value['Subjects']->id]['grade'] = "N/A";
                $result['result'][$all_exams->id][$value['Subjects']->id]['weightage_mark'] = 0;
                $result['result'][$all_exams->id][$value['Subjects']->id]['full_mark'] = $value->maximum_marks;
+               $result['result'][$all_exams->id][$value['Subjects']->id]['converted_marks'] = $value->weightage;
+               
             }   
         }    
         
@@ -1069,6 +1077,7 @@ class ExamGroups extends CActiveRecord
                $result['result'][$examresult->id][$value['Subjects']->id]['grade'] = "N/A";
                $result['result'][$examresult->id][$value['Subjects']->id]['weightage_mark'] = 0;
                $result['result'][$examresult->id][$value['Subjects']->id]['full_mark'] = $value->maximum_marks;
+               $result['result'][$examresult->id][$value['Subjects']->id]['converted_marks'] = $value->weightage;
 
                if(isset($value['Scores'][0]->marks))
                {
@@ -1105,7 +1114,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.subject_id,Exams.maximum_marks',
+                    'select' => 'Exams.subject_id,Exams.maximum_marks,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Scores.student_id',

@@ -616,7 +616,7 @@ class Exams extends CActiveRecord
     public function getExamGroupResultMaxMarkContinues($exam_group_id, $result = array(), $max_mark = array())
     {
         $criteria = new CDbCriteria();
-        $criteria->select = 'Exams.maximum_marks';
+        $criteria->select = 'Exams.maximum_marks,Exams.weightage';
         $criteria->addInCondition('t.exam_group_id', $exam_group_id);
         $criteria->compare('Subjects.no_exams', false);
         $criteria->compare('Subjects.is_deleted', false);

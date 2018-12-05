@@ -118,7 +118,7 @@ class GroupedExams extends CActiveRecord
                 'examgroup' => array(
                     'select' => 'examgroup.id',
                     'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id',
+                            'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
                             'with' => array(
                                 'Subjects' => array(
                                     'select' => 'Subjects.id',
@@ -397,7 +397,7 @@ class GroupedExams extends CActiveRecord
                 'examgroup' => array(
                     'select' => 'examgroup.id,examgroup.quarter',
                     'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id',
+                            'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
                             'with' => array(
                                 'Subjects' => array(
                                     'select' => 'Subjects.id',
@@ -621,7 +621,7 @@ class GroupedExams extends CActiveRecord
                 'examgroup' => array(
                     'select' => 'examgroup.id,examgroup.quarter',
                     'with' => array('Exams' => array(
-                            'select' => 'Exams.maximum_marks,Exams.id',
+                            'select' => 'Exams.maximum_marks,Exams.id,Exams.weightage',
                             'with' => array(
                                 'Subjects' => array(
                                     'select' => 'Subjects.id',

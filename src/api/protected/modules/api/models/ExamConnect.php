@@ -171,7 +171,7 @@ class ExamConnect extends CActiveRecord
                         'joinType' => 'LEFT JOIN',
                         'with' => array(
                             'Exams' => array(
-                                'select' => 'Exams.id,Exams.maximum_marks,Exams.alternative_title,Exams.end_time',
+                                'select' => 'Exams.id,Exams.maximum_marks,Exams.alternative_title,Exams.end_time,Exams.weightage',
                                 'joinType' => 'LEFT JOIN',
                                 'with' => array(
                                     'Scores' => array(
@@ -227,6 +227,7 @@ class ExamConnect extends CActiveRecord
                         $result['CT'][$i]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['CT'][$i]['maximum_marks'] = $exam->maximum_marks;
+                        $result['CT'][$i]['converted_marks'] = $exam->weightage;
                         if($i == 0)
                         {
                             $max_mark_ct = $exam->maximum_marks;
@@ -270,6 +271,7 @@ class ExamConnect extends CActiveRecord
                         $result['ST'][$k]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['ST'][$k]['maximum_marks'] = $exam->maximum_marks;
+                        $result['ST'][$k]['converted_marks'] = $exam->weightage;
                         if($k == 0)
                         {
                             $max_mark_st = $exam->maximum_marks;
@@ -310,6 +312,7 @@ class ExamConnect extends CActiveRecord
                     $result['ALL'][$f]['quarter'] = $groupedexam['examgroup']->quarter;
                     $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;
                     $result['ALL'][$f]['maximum_marks'] = $exam->maximum_marks;
+                    $result['ALL'][$f]['converted_marks'] = $exam->weightage;
                     foreach($exam['Scores'] as $scores)
                     {
                         if(isset($scores['Students']) && $sub_data->batch_id == $scores['Students']->batch_id )

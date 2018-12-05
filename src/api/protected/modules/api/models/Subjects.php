@@ -517,6 +517,8 @@ class Subjects extends CActiveRecord
                   $all_report[$i]['subject_code'] =  $examvalue['Subjects']->code;
                   $all_report[$i]['subject_id'] =  $examvalue->subject_id;
                   $all_report[$i]['maximum_marks'] =  $examvalue->maximum_marks;
+                  $all_report[$i]['converted_marks'] =  $examvalue->weightage;
+                  
                   
                   if($examvalue['Scores'])
                   {
@@ -909,6 +911,7 @@ class Subjects extends CActiveRecord
         
         $result['category'] = $exam['Examgroup']->exam_category;
         $result['total_mark'] = $exam->maximum_marks;
+        $result['converted_marks'] = $exam->weightage;
 
         $result['your_grade'] = "-";
         $result['grade_point'] = "-"; 

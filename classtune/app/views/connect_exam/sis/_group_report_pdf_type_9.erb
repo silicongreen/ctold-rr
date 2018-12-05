@@ -416,7 +416,7 @@
 
 <% end %>
 <% 
-  padding = (1000-(total_subject.to_i*25))/(total_subject.to_f*2) 
+  padding = (500-(total_subject.to_i*25))/(total_subject.to_f*2) 
   padding = padding.round
   
 %>
@@ -424,7 +424,7 @@
 <style>
 .sis-final #grouped_exam_report table.exam-marks tr.odd td.col-pdf, .sis-final #grouped_exam_report table.exam-marks tr.even td.col-pdf
   {
-     padding: <%= padding %>px 10px !important;
+     padding: <%= padding %>px 5px !important;
   }
 .landscape table tr.odd td, .landscape table tr.even td
 {

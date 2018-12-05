@@ -91,6 +91,7 @@
       <td <%= styletextall %>><%= t('min') %></td>
       <td <%= styletextall %>><%= t('start_time') %></td>
       <td <%= styletextall %>><%= t('end_time') %></td>
+      <td <%= styletextall %>><%= "Converted Mark" %></td>
       <td><%= t('do_not_create') %></td>
       <td <%= styletextall %>>No Schedule</td>
     </tr>
@@ -158,6 +159,13 @@
               <%= exam_form.calendar_date_select :end_time,:value=>end_date,:popup=>"force" %>
             </div>
           </div></td>
+        <td class="col-1" <%= styletext %>>
+          <div class="label-field-pair2">
+            <div class="text-input-bg2">
+              <%= exam_form.text_field :converted_marks, :size => 4 %>
+            </div>
+          </div>
+        </td>
         <td class="col-1">
           <div class="label-field-pair2">
             <div class="text-input-bg2">

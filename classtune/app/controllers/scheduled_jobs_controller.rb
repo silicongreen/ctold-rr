@@ -31,6 +31,11 @@ class ScheduledJobsController < ApplicationController
          @jobs.push j if j.payload_object.class.name=="DelayedFeeCollectionJob"
           end
 
+        elsif params[:job_object]=="FeeCollectionRegeneration"
+        @all_jobs.each do|j|
+         @jobs.push j if j.payload_object.class.name=="DelayedFeeCollectionRegeneration"
+          end
+
         else
 
        
@@ -62,5 +67,6 @@ class ScheduledJobsController < ApplicationController
       end
     end
   end
+  #abort(@jobs.inspect)
 
 end

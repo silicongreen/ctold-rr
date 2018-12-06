@@ -17,7 +17,8 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<td colspan="6">
+<td id="collection_summary_details_<%= @finance_fee_collection.id %>" colspan="6">
+    <div id="fee_collection_queue" style="width: 70%; margin-left: 13%; text-align: center; font-family: verdana; background: #FDFDCB; font-weight: bold; border: 1px solid #ccc; border-radius: 4px; padding: 20px; font-size: 12px; display: none;"></div>
     <div style="width: 100%; padding: 20px;">
         <div style="width: 100%; float: left;">
             <div style="width: 50%; float: left;">
@@ -51,8 +52,8 @@
           </div>  
           <% end %>
           <div style="padding-bottom: 10px;">
-            <small><span style="color: #f00;">N.B:</span> If you regenerate the fee collection, please keep in mind change will made for the paid transaction (if any)</small>
-            <small> - if new particulars add to the fee collection then those particular will also add to the student and shows as pending due</small>
+            <small><span style="color: #f00;">N.B:</span> If you regenerate the fee collection, please keep in mind change will also made for the paid transaction (if any)</small><br />
+            <small> - if new particulars add to the fee collection then those particular will also add to the student and shows as pending due</small><br />
             <small> - if any particular delete from fee collection then those particular will also delete from the student fee collection and add as advance payment for that particular</small>
           </div>
         </div>

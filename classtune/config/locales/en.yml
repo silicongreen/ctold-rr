@@ -2366,6 +2366,7 @@ en: # locale
   in_queue : "In Queue"
   csv_report_is_in_queue : "CSV Report Generation is in Queue"
   collection_is_in_queue : "Fee collection is in Queue"
+  recollection_is_in_queue : "Regeneration of Fee collection is in Queue"
   create_fees_refund: "Create fees refund"
   refund: "Refund"
   amount_to_refund: "Amount to refund"

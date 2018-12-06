@@ -1,0 +1,3 @@
+page << "j('#collection_summary_details_#{@finance_fee_collection.id}').remove();"
+page << "j('#fee_collection_details_#{@finance_fee_collection.id}').hide();"
+page.replace_html 'link_plus_btn_' + @finance_fee_collection.id.to_s, :partial => 'link_plus_btn'

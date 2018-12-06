@@ -1,4 +1,3 @@
-page << "j('#plus_#{@finance_fee_collection.id}').removeClass('fa-plus-square-o');"
-page << "j('#plus_#{@finance_fee_collection.id}').addClass('fa-minus-square-o');"
 page << "j('#fee_collection_details_#{@finance_fee_collection.id}').show();"
+page.replace_html 'link_plus_btn_' + @finance_fee_collection.id.to_s, :partial => 'link_minus_btn'
 page.replace_html 'fee_collection_details_' + @finance_fee_collection.id.to_s, :partial => 'fee_collection_summary_details'

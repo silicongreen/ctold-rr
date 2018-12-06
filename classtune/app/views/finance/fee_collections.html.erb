@@ -56,8 +56,9 @@
                    <span class="small"><%= link_to_remote t('edit_text'), :url => {:action => 'fee_collection_edit_all', :id => f.id} %></span>
                </div>
             </td>
-            <td style='text-align: center;'>
-                <%= link_to_remote '<i id="plus_' + f.id.to_s + '" class="fa fa-plus-square-o" style="cursor: pointer;"></i>', :url => {:action => 'fee_collection_summary_details', :id => f.id } %>
+            <td id="link_plus_btn_<%= f.id %>" style='text-align: center;'>
+                <%= link_to_remote '<i id="plus_' + f.id.to_s + '" class="fa fa-plus-square-o" style="cursor: pointer;"></i>', :url => {:action => 'fee_collection_summary_details', :id => f.id }, :before => "j('#plus_#{f.id}').removeClass('fa-plus-square-o');j('#plus_#{f.id}').addClass('fa-circle-o-notch');j('#plus_#{f.id}').addClass('fa-spin');" %>
+            </div>
             </td>
          </tr><!-- style="display: none;" -->
          <tr id='fee_collection_details_<%= f.id %>'></tr>

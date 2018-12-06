@@ -48,14 +48,14 @@
                   <tr class="table-header">
                       <td>Roll NO.</td>
                       <td>Name</td>
-                      <td>Quarter</td>
+                      <td>Quarter (40)</td>
                       <% total_full_mark = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
-                          <td><%=  rs['name'] %></td>
+                          <td><%=  rs['name'] %> (60)</td>
                         <% end %>
                       <% end %> 
-                      <td>Total</td>
+                      <td>Total (100)</td>
                       <td>Grade</td>
 
                   </tr>

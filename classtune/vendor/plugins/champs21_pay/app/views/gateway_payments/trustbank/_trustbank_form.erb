@@ -1,0 +1,15 @@
+<% form_for :ssl_online_pay ,:url => get_payment_url,:method => :post do |f| %>
+  <%= hidden_field_tag :orderID,@order_id %>
+  <%= hidden_field_tag :MerchantID,@merchant_id %>
+  <%= hidden_field_tag :Amount,sprintf("%0.2f",@amount).to_f %>
+  <%= hidden_field_tag :FullName,@full_name %>
+  <%= hidden_field_tag :Email,@email %>
+  <% extra_string = "" %>
+  <% unless params[:mobile_view].blank? %>
+    <% extra_string = "&mobile_view=1" %>
+  <% end %>
+  <%= hidden_field_tag :PaymentSuccessUrl,@payment_success_url %>
+  <% if @amount > 0 %>
+    <%= f.submit '► Pay Fees',:class => "submit_button btn btn-success" %>
+  <% end %>
+<% end %>

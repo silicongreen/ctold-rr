@@ -113,7 +113,7 @@
                             if rs['quarter'] == '1'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 q1_mark = q1_mark.to_f+rs['students'][std['id']]['score'].to_f
-                                end
+                               end
                               if !rs['maximum_marks'].blank?
                                 q1_fullmark = q1_fullmark+rs['maximum_marks'].to_i
                               end
@@ -212,7 +212,7 @@
                                 grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
                                 
                             %>
-                          <td><%= sprintf( "%0.02f", quarter_mark) %></td>
+                          <td><%= sprintf( "%0.02f", quarter_mark) %>|<%= q1_mark %>|<%= q2_mark %></td>
                           <td><%= sprintf( "%0.02f", term_mark) %></td>
                           <td><%= total_mark.round() %></td>
 

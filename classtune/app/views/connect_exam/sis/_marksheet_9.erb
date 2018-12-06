@@ -125,7 +125,7 @@
                               
                                 end
                               if !rs['maximum_marks'].blank?
-                                q2_fullmark = q2_fullmark+q1_fullmark+rs['maximum_marks'].to_i
+                                q2_fullmark = q2_fullmark+rs['maximum_marks'].to_i
                               end
                             end
                             if rs['quarter'] == '3'
@@ -134,7 +134,7 @@
                                 
                                 end
                               if !rs['maximum_marks'].blank?
-                                q3_fullmark = q3_fullmark+q1_fullmark+rs['maximum_marks'].to_i
+                                q3_fullmark = q3_fullmark+rs['maximum_marks'].to_i
                               end
                             end
                             if rs['quarter'] == '4'
@@ -143,7 +143,7 @@
                                 
                                 end
                               if !rs['maximum_marks'].blank?
-                                q4_fullmark = q4_fullmark+q1_fullmark+rs['maximum_marks'].to_i
+                                q4_fullmark = q4_fullmark+rs['maximum_marks'].to_i
                               end
                             end
                             if rs['quarter'] == '5'
@@ -152,7 +152,7 @@
                                 
                                 end
                               if !rs['maximum_marks'].blank?
-                                first_term_fullmark = first_term_fullmark+q1_fullmark+rs['maximum_marks'].to_i
+                                first_term_fullmark = first_term_fullmark+rs['maximum_marks'].to_i
                               end
                             end
                             if rs['quarter'] == '6'
@@ -161,7 +161,7 @@
                                 
                                 end
                               if !rs['maximum_marks'].blank?
-                                final_term_fullmark = final_term_fullmark+q1_fullmark+rs['maximum_marks'].to_i
+                                final_term_fullmark = final_term_fullmark+rs['maximum_marks'].to_i
                               end
                             end
                           %>

@@ -276,8 +276,22 @@ unless @ranked_student.blank?
                               <td>&nbsp;<hr/>&nbsp;</td>
                             <% else %>
 
+                              <% q1_mark = 0 %>
+                              <% q2_mark = 0 %>
+                              <% q3_mark = 0 %>
+                              <% q4_mark = 0 %>
+                              <% first_term_mark = 0 %>
+                              <% final_term_mark = 0 %>
+                              <% q1_fullmark = 0 %>
+                              <% q2_fullmark = 0 %>
+                              <% q3_fullmark = 0 %>
+                              <% q4_fullmark = 0 %>
+                              <% first_term_fullmark = 0 %>
+                              <% final_term_fullmark = 0 %>
+
+                              <% subject_full_mark = 0 %>
+                              <% subject_obtain_mark = 0 %>
                               <% total_mark = 0 %>
-                              <% full_mark = 0 %>
                               <% has_mark = false %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -288,36 +302,145 @@ unless @ranked_student.blank?
                                 <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
 
                                 <% 
-                                exam_mark = 0
-                                exam_full_mark = 0
-                                exam_converted_mark = 0
-                                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?  and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                                  exam_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                  
-                                end
-                                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?  and !rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                                  exam_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                                end
-                                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank?  and !rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].blank?
-                                  exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
-                                end
-                                 
-                                if exam_mark > 0 && exam_full_mark > 0
-                                  if exam_converted_mark.to_i > 0
-                                    exam_mark = (exam_mark/exam_full_mark)*exam_converted_mark
-                                    exam_full_mark = exam_converted_mark
+                                if rs['quarter'] == '1'
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q1_mark = q1_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
+                                    end
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q1_fullmark = q1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   end
-                                end
-                                total_mark = total_mark+exam_mark
-                                full_mark = full_mark+exam_full_mark
+                                  end
+                                if rs['quarter'] == '2'
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q2_mark = q2_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
+                                    end
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q2_fullmark = q2_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                  end
+                                if rs['quarter'] == '3'
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q3_mark = q3_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
+                                    end
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q3_fullmark = q3_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                  end
+                                if rs['quarter'] == '4'
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q4_mark = q4_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                    if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
+                                    end
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    q4_fullmark = q4_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                  end
+                                  end
+                                if rs['quarter'] == '5'
+                                  exam_converted_mark = 0
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
+                                    end
+                                  term_full_mark = 0
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    term_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                    if exam_converted_mark > 0
+                                      first_term_fullmark = first_term_fullmark+exam_converted_mark.to_f
+                                      else
+                                      first_term_fullmark = first_term_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                                    end
+                                    end
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and term_full_mark >0
+                                    if exam_converted_mark > 0
+                                      first_term_mark = first_term_mark.to_f+(rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/term_full_mark)*exam_converted_mark
+                                      else
+                                      first_term_mark = first_term_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                      end
+                                    if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
+                                  end
+
+                                  end
+                                if rs['quarter'] == '6'
+                                  exam_converted_mark = 0
+                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                      exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
+                                      end
+                                    term_full_mark = 0
+                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                      term_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                                      if exam_converted_mark > 0
+                                        final_term_fullmark = final_term_fullmark+exam_converted_mark.to_f
+                                        else
+                                        final_term_fullmark = final_term_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                                      end
+                                    end
+                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and term_full_mark >0
+                                      if exam_converted_mark > 0
+                                        final_term_mark = final_term_mark.to_f+(rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/term_full_mark)*exam_converted_mark
+                                        else
+                                        final_term_mark = final_term_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                        end
+                                      if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
+                                        has_mark = true
+                                      end
+                                    end
+
+                                  end
                               %>
                               <% end %>
 
-                             
-                              
+                              <%
+                              if first_term_fullmark > 0
+                                q1_mark_20 = 0
+                                q2_mark_20 = 0
+                                first_term_mark_60 = 0 
+                                if q1_fullmark > 0 && q1_mark > 0
+                                  q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*20
+                                  end 
+                                if q2_fullmark > 0 && q2_mark > 0
+                                  q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
+                                  end 
+                                if first_term_fullmark > 0 && first_term_mark > 0
+                                  first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                                  end
+                                total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
+                                end 
+                              if final_term_fullmark > 0
+                                q3_mark_20 = 0
+                                q4_mark_20 = 0
+                                final_term_mark_60 = 0 
+                                if q3_fullmark > 0 && q3_mark > 0
+                                  q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
+                                  end 
+                                if q4_fullmark > 0 && q4_mark > 0
+                                  q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
+                                  end 
+                                if final_term_fullmark > 0 && final_term_mark > 0
+                                  final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                                  end
+                                total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                                end
+                              total_mark = total_mark.round()
+                              grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
+                              total_marks_obtain = total_marks_obtain+total_mark
+                            %>
+
+
                               <% if has_exam == true %>
                                 <td>
-                                   
+
                                     <%= sprintf( "%0.02f", total_mark) %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>

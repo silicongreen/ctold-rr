@@ -56,8 +56,6 @@
           <% end %>  
           
           <td>Total(<%= total_full_mark.to_i %>)</td>
-          <% half_total = (total_full_mark.to_f/2.00) %>
-          <td>AVG(<%= half_total.to_i %>)</td>
           <td>Grade</td>
         
         </tr>
@@ -120,8 +118,6 @@
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %> 
            <td><%= total_mark.round() %></td>
-           <td><%= half_mark.round() %></td>
-
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
             <td class="col-2"><b><%= grade.name %></b></td>

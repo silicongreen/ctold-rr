@@ -419,7 +419,7 @@
                       <% if not_promoted == "false" %>
                         <td class="width-20"><%= @connect_exam_obj.promoted_to %></td>
                       <% else %>
-                        <td class="width-20">N/A</td>
+                        <td class="width-20"></td>
                       <% end %>
                       <td class="width-30 align-left">The next session begins on</td>
                       <td class="width-30"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>

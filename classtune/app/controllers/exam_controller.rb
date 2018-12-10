@@ -4277,7 +4277,7 @@ class ExamController < ApplicationController
             :orientation => 'Landscape',
             :encoding =>    'utf8',
             :margin => {    :top=> 0,
-            :bottom => 15,
+            :bottom => 0,
             :left=> 10,
             :right => 10},
             :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},

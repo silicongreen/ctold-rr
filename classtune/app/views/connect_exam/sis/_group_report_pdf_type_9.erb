@@ -299,9 +299,8 @@
                   
                  
               </table>
-                
-              <div class="line"></div>
               <% 
+                not_promoted = "false"
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?
@@ -309,6 +308,14 @@
                     @report_data['total'] = all_comments_array[0]
                     if !all_comments_array[1].nil?
                       @report_data['present'] = all_comments_array[1]
+                      if !all_comments_array[2].nil?
+                        @student_position[@student.id.to_i] = all_comments_array[2]
+                        if !all_comments_array[3].nil?
+                         not_promoted = all_comments_array[3]
+                        end
+                      else
+                        @student_position[@student.id.to_i] = ""
+                      end
                     end
                   end
                 end
@@ -409,7 +416,11 @@
                   <% else %>
                   <tr class="even">
                       <td class="width-20 align-left">Promoted to Class</td>
-                      <td class="width-20"><%= @connect_exam_obj.promoted_to %></td>
+                      <% if not_promoted == "false" %>
+                        <td class="width-20"><%= @connect_exam_obj.promoted_to %></td>
+                      <% else %>
+                        <td class="width-20">N/A</td>
+                      <% end %>
                       <td class="width-30 align-left">The next session begins on</td>
                       <td class="width-30"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
                   </tr>
@@ -468,7 +479,7 @@
 <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
 table.height-exam tr td
 {
-    height: 32px !important;
+    height: 30px !important;
     
 }
 <% end %>

@@ -301,6 +301,7 @@
               </table>
               <% 
                 not_promoted = "false"
+                marks_from_string = ""
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?
@@ -312,6 +313,9 @@
                         @student_position[@student.id.to_i] = all_comments_array[2]
                         if !all_comments_array[3].nil?
                          not_promoted = all_comments_array[3]
+                         if !all_comments_array[4].nil?
+                          marks_from_string = all_comments_array[4]
+                         end
                         end
                       else
                         @student_position[@student.id.to_i] = ""
@@ -378,7 +382,7 @@
               <table id="pdf-table"  width="25%" class="left-table  odd-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Marks Obtained</td>
-                      <td><%= sprintf( "%0.02f", total_marks_obtain)%></td>
+                      <td><%= marks_from_string %></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left">Position In Class</td>

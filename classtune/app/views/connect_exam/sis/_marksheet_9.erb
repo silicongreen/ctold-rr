@@ -154,7 +154,7 @@
                               if !rs['maximum_marks'].blank?
                                 first_term_fullmark = first_term_fullmark+rs['maximum_marks'].to_i
                               end
-                              end
+                            end
                             if rs['quarter'] == '6'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 final_term_mark = final_term_mark.to_f+rs['students'][std['id']]['score'].to_f
@@ -163,7 +163,7 @@
                               if !rs['maximum_marks'].blank?
                                 final_term_fullmark = final_term_fullmark+rs['maximum_marks'].to_i
                               end
-                              end
+                            end
                           %>
 
 

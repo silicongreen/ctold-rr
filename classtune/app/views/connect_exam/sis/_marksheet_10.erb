@@ -49,6 +49,11 @@
                       <td>Roll NO.</td>
                       <td>Name</td>
                       <td>Quarter (40)</td>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
+                          <td><%=  rs['name'] %></td>
+                        <% end %>
+                      <% end %> 
                       <% total_full_mark = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if rs['quarter'] == '5' %>  
@@ -153,6 +158,7 @@
                               end
                             if rs['quarter'] == '5'
                               exam_converted_mark = 0.0
+                              term_mark = 0
                               if !rs['converted_marks'].blank?
                                 exam_converted_mark = rs['converted_marks'].to_f
                                 end
@@ -166,17 +172,23 @@
                                 end
                                 end
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? && term_full_mark > 0
+                                
                                 if exam_converted_mark > 0
+                                  term_mark = ((rs['students'][std['id']]['score'].to_f/term_full_mark.to_f)*exam_converted_mark.to_f)
                                   first_term_mark = first_term_mark.to_f+((rs['students'][std['id']]['score'].to_f/term_full_mark.to_f)*exam_converted_mark.to_f)
-                                  else  
+                                else  
+                                  term_mark = rs['students'][std['id']]['score'].to_f
                                   first_term_mark = first_term_mark.to_f+rs['students'][std['id']]['score'].to_f
                                 end
+                                %><td><%= sprintf( "%0.02f", term_mark) %></td><%
+                                
 
                               end
 
                               end
                             if rs['quarter'] == '6'
                               exam_converted_mark = 0
+                              term_mark = 0
                               if !rs['converted_marks'].blank?
                                 exam_converted_mark = rs['converted_marks'].to_f
                                 end
@@ -191,12 +203,15 @@
                                 end
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? && term_full_mark > 0
                                 if exam_converted_mark > 0
+                                  term_mark = ((rs['students'][std['id']]['score'].to_f/term_full_mark.to_f)*exam_converted_mark.to_f)
                                   final_term_mark = final_term_mark.to_f+((rs['students'][std['id']]['score'].to_f/term_full_mark.to_f)*exam_converted_mark.to_f)
                                   else  
                                   final_term_mark = final_term_mark.to_f+rs['students'][std['id']]['score'].to_f
+                                  term_mark = rs['students'][std['id']]['score'].to_f
                                 end
 
                               end
+                              %><td><%= sprintf( "%0.02f", term_mark) %></td><%
                               end
                           %>
 

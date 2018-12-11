@@ -63,14 +63,16 @@
                       <% end %> 
                       <% total_full_mark = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
-                        <%  if rs['quarter'] == '5' %>  
-                          <td><%=  "Avg (60)" %></td>
-                          <% break %>
-                        <% end %>
-                        <% if rs['quarter'] == '6' %> 
-                          <td><%=  "Avg (60)" %></td>
-                          <% break %>
-                        <% end %>
+                        <% if quarter %>
+                          <%  if rs['quarter'] == '5' %>  
+                            <td><%=  "Avg (60)" %></td>
+                            <% break %>
+                          <% end %>
+                          <% if rs['quarter'] == '6' %> 
+                            <td><%=  "Avg (60)" %></td>
+                            <% break %>
+                          <% end %>
+                        <% end %>  
                       <% end %> 
                       <td>Total (100)</td>
                       <td>Grade</td>
@@ -294,7 +296,9 @@
                               </td>    
                             <% end %>
                           <% end %>
-                          <td><%= sprintf( "%0.02f", term_mark) %></td>
+                          <% if quarter %>
+                            <td><%= sprintf( "%0.02f", term_mark) %></td>
+                          <% end %>
                           <td><%= total_mark.round() %></td>
 
                           <% if !grade.blank? and !grade.name.blank? %>

@@ -58,7 +58,7 @@
                       <% end %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
-                          <td><%=  rs['name'] %></td>
+                          <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
                         <% end %>
                       <% end %> 
                       <% total_full_mark = 0 %>

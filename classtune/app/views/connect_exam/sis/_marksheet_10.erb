@@ -48,7 +48,14 @@
                   <tr class="table-header">
                       <td>Roll NO.</td>
                       <td>Name</td>
-                      <td>Quarter (40)</td>
+                      <% quarter = false %>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if rs['quarter'] == '1' or rs['quarter'] == '2' or rs['quarter'] == '3' or rs['quarter'] == '4' %>
+                          <% quarter = true %>
+                          <td>Quarter (40)</td>
+                          <% break %>
+                        <% end %>
+                      <% end %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
                           <td><%=  rs['name'] %></td>
@@ -238,8 +245,12 @@
                               q2_mark_20 = q2_mark_20.round()
                             end 
                             if first_term_fullmark > 0 && first_term_mark > 0
-                              first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
-                              first_term_mark_60 = first_term_mark_60.round()
+                              if quarter
+                                first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                                first_term_mark_60 = first_term_mark_60.round()
+                              else
+                                first_term_mark_60 = first_term_mark_60.round()
+                              end  
                             end
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                           end 
@@ -256,8 +267,12 @@
                             end 
 
                             if final_term_fullmark > 0 && final_term_mark > 0
-                              final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
-                              final_term_mark_60 = final_term_mark_60.round()
+                              if quarter
+                                final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                                final_term_mark_60 = final_term_mark_60.round()
+                              else
+                                final_term_mark_60 = final_term_mark_60.round()
+                              end  
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                           end
@@ -267,8 +282,9 @@
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>
-                          
+                          <% if quarter %>
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
+                          <% end %>
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% if rs['quarter'] == '6' or rs['quarter'] == '5' %>
                               <td>

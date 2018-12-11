@@ -217,6 +217,15 @@
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
                                                           <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
                                                       </select>
+                                                    <% elsif @exam_connect.result_type == 10 %>
+                                                     <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                          <option value="0" >Select</option>
+                                                          <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>
+                                                          <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Good</option>
+                                                          <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Satisfactory</option>
+                                                          <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                          <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
+                                                      </select>
                                                     <% elsif @exam_connect.result_type > 2 && @exam_connect.result_type < 7 %>
                                                       <% @batch = @exam_subject.batch %>
                                                       <% if @exam_connect.result_type == 3 %>

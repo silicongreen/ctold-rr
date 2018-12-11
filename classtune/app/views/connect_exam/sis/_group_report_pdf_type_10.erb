@@ -67,6 +67,7 @@
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
+                        <% has_quarter = false %>
                         <% q1_mark = 0 %>
                         <% q2_mark = 0 %>
                         <% q3_mark = 0 %>
@@ -89,6 +90,7 @@
                             @report_data['report']['exams'].each do |report| 
                               
                               if report['quarter'] == '1'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q1_mark = q1_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -100,6 +102,7 @@
                                 end
                               end
                               if report['quarter'] == '2'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q2_mark = q2_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -111,6 +114,7 @@
                                 end
                               end
                               if report['quarter'] == '3'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q3_mark = q3_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -122,6 +126,7 @@
                                 end
                               end
                               if report['quarter'] == '4'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q4_mark = q4_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -133,8 +138,8 @@
                                 end
                               end
                               if report['quarter'] == '5'
-                                exam_converted_mark = 0
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['converted_marks'].blank?
+                                exam_converted_mark = 100
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['converted_marks'].blank? and has_quarter == true
                                   exam_converted_mark = report['result'][report['exam_id']][subjects['id']]['converted_marks'].to_f
                                 end
                                 term_full_mark = 0
@@ -160,8 +165,8 @@
                                 
                               end
                               if report['quarter'] == '6'
-                                exam_converted_mark = 0
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['converted_marks'].blank?
+                                exam_converted_mark = 100
+                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['converted_marks'].blank? and has_quarter == true
                                   exam_converted_mark = report['result'][report['exam_id']][subjects['id']]['converted_marks'].to_f
                                 end
                                 term_full_mark = 0

@@ -275,7 +275,7 @@ unless @ranked_student.blank?
                             <% if @has_exam_student == false %>
                               <td>&nbsp;<hr/>&nbsp;</td>
                             <% else %>
-
+                              <% has_quarter = false %>
                               <% q1_mark = 0 %>
                               <% q2_mark = 0 %>
                               <% q3_mark = 0 %>
@@ -303,6 +303,7 @@ unless @ranked_student.blank?
 
                                 <% 
                                 if rs['quarter'] == '1'
+                                  has_quarter = true
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q1_mark = q1_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s!="AB"
@@ -314,6 +315,7 @@ unless @ranked_student.blank?
                                   end
                                   end
                                 if rs['quarter'] == '2'
+                                  has_quarter = true
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q2_mark = q2_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
@@ -325,6 +327,7 @@ unless @ranked_student.blank?
                                   end
                                   end
                                 if rs['quarter'] == '3'
+                                  has_quarter = true
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q3_mark = q3_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
@@ -336,6 +339,7 @@ unless @ranked_student.blank?
                                   end
                                   end
                                 if rs['quarter'] == '4'
+                                  has_quarter = true
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q4_mark = q4_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                     if rs['result'][rs['exam_id']][sub['id']]['marks_obtained'].to_s!="AB"
@@ -347,8 +351,8 @@ unless @ranked_student.blank?
                                   end
                                   end
                                 if rs['quarter'] == '5'
-                                  exam_converted_mark = 0
-                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                  exam_converted_mark = 100
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and has_quarter == true
                                     exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
                                     end
                                   term_full_mark = 0
@@ -373,10 +377,10 @@ unless @ranked_student.blank?
 
                                   end
                                 if rs['quarter'] == '6'
-                                  exam_converted_mark = 0
-                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
+                                    exam_converted_mark = 100
+                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and has_quarter == true
                                       exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
-                                      end
+                                    end
                                     term_full_mark = 0
                                     if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                       term_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i

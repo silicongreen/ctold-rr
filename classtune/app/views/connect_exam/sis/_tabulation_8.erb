@@ -372,17 +372,20 @@ unless @ranked_student.blank?
 
                               <%
                               if first_term_fullmark > 0
-                                q1_mark_20 = 0
+                                q2_mark_20q1_mark_20 = 0
                                 q2_mark_20 = 0
                                 first_term_mark_60 = 0 
                                 if q1_fullmark > 0 && q1_mark > 0
                                   q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*20
+                                  q1_mark_20 = q1_mark_20.round()
                                   end 
                                 if q2_fullmark > 0 && q2_mark > 0
                                   q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
+                                  q2_mark_20 = q2_mark_20.round()
                                   end 
                                 if first_term_fullmark > 0 && first_term_mark > 0
                                   first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                                  first_term_mark_60 = first_term_mark_60.round()
                                   end
                                 total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                                 end 
@@ -392,12 +395,15 @@ unless @ranked_student.blank?
                                 final_term_mark_60 = 0 
                                 if q3_fullmark > 0 && q3_mark > 0
                                   q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
+                                  q3_mark_20 = q3_mark_20.round()
                                   end 
                                 if q4_fullmark > 0 && q4_mark > 0
                                   q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
+                                  q4_mark_20 = q4_mark_20.round()
                                   end 
                                 if final_term_fullmark > 0 && final_term_mark > 0
                                   final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                                  final_term_mark_60 = final_term_mark_60.round()
                                   end
                                   total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                                 end

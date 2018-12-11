@@ -113,105 +113,111 @@
                             if rs['quarter'] == '1'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 q1_mark = q1_mark.to_f+rs['students'][std['id']]['score'].to_f
-                               end
+                                end
                               if !rs['maximum_marks'].blank?
                                 q1_fullmark = q1_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
 
                             if rs['quarter'] == '2'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 q2_mark = q2_mark.to_f+rs['students'][std['id']]['score'].to_f
-                              
+
                                 end
                               if !rs['maximum_marks'].blank?
                                 q2_fullmark = q2_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
                             if rs['quarter'] == '3'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 q3_mark = q3_mark.to_f+rs['students'][std['id']]['score'].to_f
-                                
+
                                 end
                               if !rs['maximum_marks'].blank?
                                 q3_fullmark = q3_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
                             if rs['quarter'] == '4'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 q4_mark = q4_mark.to_f+rs['students'][std['id']]['score'].to_f
-                                
+
                                 end
                               if !rs['maximum_marks'].blank?
                                 q4_fullmark = q4_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
                             if rs['quarter'] == '5'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 first_term_mark = first_term_mark.to_f+rs['students'][std['id']]['score'].to_f
-                                
+
                                 end
                               if !rs['maximum_marks'].blank?
                                 first_term_fullmark = first_term_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
                             if rs['quarter'] == '6'
                               if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
                                 final_term_mark = final_term_mark.to_f+rs['students'][std['id']]['score'].to_f
-                                
+
                                 end
                               if !rs['maximum_marks'].blank?
                                 final_term_fullmark = final_term_fullmark+rs['maximum_marks'].to_i
                               end
-                            end
+                              end
                           %>
-                          
-                           
+
+
 
                           <% end %> 
                           <%
-                              quarter_mark = 0
-                              q1_mark_20 = 0
-                              q2_mark_20 = 0
-                              q3_mark_20 = 0
-                              q4_mark_20 = 0
-                              final_term_mark_60 = 0 
-                              first_term_mark_60 = 0 
-                              if first_term_fullmark > 0
-                                
-                                
-                                if q1_fullmark > 0 && q1_mark > 0
-                                  q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*20
-                                  end 
-                                if q2_fullmark > 0 && q2_mark > 0
-                                  q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
-                                  end 
-                                if first_term_fullmark > 0 && first_term_mark > 0
-                                  first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
-                                  end
-                                total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
-                                end 
-                              if final_term_fullmark > 0
-                                
-                                
-                                if q3_fullmark > 0 && q3_mark > 0
-                                  q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
-                                  end 
-                                if q4_fullmark > 0 && q4_mark > 0
-                                  q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
-                                end 
-                              
-                                if final_term_fullmark > 0 && final_term_mark > 0
-                                  final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
-                                  end
-                                  total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
-                                end
-                                quarter_mark = q1_mark_20+q2_mark_20+q3_mark_20+q4_mark_20
-                                term_mark = final_term_mark_60+first_term_mark_60
-                                total_mark = total_mark.round()
-                                grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
-                                
-                            %>
+                          quarter_mark = 0
+                          q1_mark_20 = 0
+                          q2_mark_20 = 0
+                          q3_mark_20 = 0
+                          q4_mark_20 = 0
+                          final_term_mark_60 = 0 
+                          first_term_mark_60 = 0 
+                          if first_term_fullmark > 0
+
+
+                            if q1_fullmark > 0 && q1_mark > 0
+                              q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*20
+                              q1_mark_20 = q1_mark_20.round()
+                              end 
+                            if q2_fullmark > 0 && q2_mark > 0
+                              q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
+                              q2_mark_20 = q2_mark_20.round()
+                              end 
+                            if first_term_fullmark > 0 && first_term_mark > 0
+                              first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                              first_term_mark_60 = first_term_mark_60.round()
+                              end
+                            total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
+                            end 
+                          if final_term_fullmark > 0
+
+
+                            if q3_fullmark > 0 && q3_mark > 0
+                              q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*20
+                              q3_mark_20 = q3_mark_20.round()
+                              end 
+                            if q4_fullmark > 0 && q4_mark > 0
+                              q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
+                              q4_mark_20 = q4_mark_20.round()
+                              end 
+
+                            if final_term_fullmark > 0 && final_term_mark > 0
+                              final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                              final_term_mark_60 = final_term_mark_60.round()
+                              end
+                            total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                            end
+                          quarter_mark = q1_mark_20+q2_mark_20+q3_mark_20+q4_mark_20
+                          term_mark = final_term_mark_60+first_term_mark_60
+                          total_mark = total_mark.round()
+                          grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
+
+                        %>
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
                           <td><%= sprintf( "%0.02f", term_mark) %></td>
                           <td><%= total_mark.round() %></td>

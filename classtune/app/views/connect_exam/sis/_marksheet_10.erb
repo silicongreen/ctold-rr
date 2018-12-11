@@ -64,11 +64,11 @@
                       <% total_full_mark = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <%  if rs['quarter'] == '5' %>  
-                          <td><%=  "First Term (60)" %></td>
+                          <td><%=  "Avg (60)" %></td>
                           <% break %>
                         <% end %>
                         <% if rs['quarter'] == '6' %> 
-                          <td><%=  "Final Term (60)" %></td>
+                          <td><%=  "Avg (60)" %></td>
                           <% break %>
                         <% end %>
                       <% end %> 
@@ -249,7 +249,7 @@
                                 first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
                                 first_term_mark_60 = first_term_mark_60.round()
                               else
-                                first_term_mark_60 = first_term_mark_60.round()
+                                first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*100
                               end  
                             end
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
@@ -271,7 +271,7 @@
                                 final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
                                 final_term_mark_60 = final_term_mark_60.round()
                               else
-                                final_term_mark_60 = final_term_mark_60.round()
+                                final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*100
                               end  
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60

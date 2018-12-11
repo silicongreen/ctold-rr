@@ -146,6 +146,7 @@ unless @ranked_student.blank?
             <% 
 
           %>
+            <% has_quarter = false %>
             <% unless @report_data.blank? %>
               <% c = 'even' %>
               <table id="pdf-table" width="100%" cellspacing="0">
@@ -275,7 +276,7 @@ unless @ranked_student.blank?
                             <% if @has_exam_student == false %>
                               <td>&nbsp;<hr/>&nbsp;</td>
                             <% else %>
-                              <% has_quarter = false %>
+                              
                               <% q1_mark = 0 %>
                               <% q2_mark = 0 %>
                               <% q3_mark = 0 %>
@@ -351,8 +352,8 @@ unless @ranked_student.blank?
                                   end
                                   end
                                 if rs['quarter'] == '5'
-                                  exam_converted_mark = 100
-                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and has_quarter == true
+                                  exam_converted_mark = 0
+                                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
                                     end
                                   term_full_mark = 0
@@ -377,8 +378,8 @@ unless @ranked_student.blank?
 
                                   end
                                 if rs['quarter'] == '6'
-                                    exam_converted_mark = 100
-                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true and has_quarter == true
+                                    exam_converted_mark = 0
+                                    if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                       exam_converted_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['converted_marks'].to_i
                                     end
                                     term_full_mark = 0
@@ -420,9 +421,13 @@ unless @ranked_student.blank?
                                   q2_mark_20 = q2_mark_20.round()
                                   end 
                                 if first_term_fullmark > 0 && first_term_mark > 0
-                                  first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
-                                  first_term_mark_60 = first_term_mark_60.round()
-                                  end
+                                  if has_quarter
+                                    first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                                    first_term_mark_60 = first_term_mark_60.round()
+                                  else
+                                    first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*100
+                                  end  
+                                end
                                 total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                                 end 
                               if final_term_fullmark > 0
@@ -438,11 +443,15 @@ unless @ranked_student.blank?
                                   q4_mark_20 = q4_mark_20.round()
                                   end 
                                 if final_term_fullmark > 0 && final_term_mark > 0
-                                  final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
-                                  final_term_mark_60 = final_term_mark_60.round()
+                                  if has_quarter
+                                    final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                                    final_term_mark_60 = final_term_mark_60.round()
+                                  else
+                                    final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*100
                                   end
-                                  total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                                 end
+                                  total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                              end
                               total_mark = total_mark.round()
                               grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
                               total_marks_obtain = total_marks_obtain+total_mark

@@ -180,7 +180,7 @@
                                   term_mark = rs['students'][std['id']]['score'].to_f
                                   first_term_mark = first_term_mark.to_f+rs['students'][std['id']]['score'].to_f
                                 end
-                                %><td><%= sprintf( "%0.02f", term_mark) %>|<%= sprintf( "%0.02f", first_term_mark) %></td><%
+                                
                                 
 
                               end
@@ -211,7 +211,7 @@
                                 end
 
                               end
-                              %><td><%= sprintf( "%0.02f", term_mark) %>|<%= sprintf( "%0.02f", first_term_mark) %></td><%
+                              
                               end
                           %>
 
@@ -267,7 +267,17 @@
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>
+                          
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
+                          <% @report_data['result']['ALL'].each do |rs| %>
+                            <% if rs['quarter'] == '6' or if rs['quarter'] == '5' %>
+                              <td>
+                              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+                                  <%= rs['students'][std['id']]['score'].to_f %>
+                              <% end %>
+                              </td>    
+                            <% end %>
+                          <% end %>
                           <td><%= sprintf( "%0.02f", term_mark) %></td>
                           <td><%= total_mark.round() %></td>
 

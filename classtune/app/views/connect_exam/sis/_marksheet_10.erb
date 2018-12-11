@@ -270,7 +270,7 @@
                           
                           <td><%= sprintf( "%0.02f", quarter_mark) %></td>
                           <% @report_data['result']['ALL'].each do |rs| %>
-                            <% if rs['quarter'] == '6' or if rs['quarter'] == '5' %>
+                            <% if rs['quarter'] == '6' or rs['quarter'] == '5' %>
                               <td>
                               <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
                                   <%= rs['students'][std['id']]['score'].to_f %>

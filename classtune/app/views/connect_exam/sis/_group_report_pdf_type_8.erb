@@ -281,6 +281,8 @@
               <% 
                 not_promoted = "false"
                 marks_from_string = ""
+                @report_data['total'] = ""
+                @report_data['present'] = ""
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?

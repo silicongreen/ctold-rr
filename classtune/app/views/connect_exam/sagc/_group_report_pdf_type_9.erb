@@ -145,13 +145,16 @@
                           <% end %>
                           <td class="col-pdf"><%= total_subject %></td>
                           
-                          
+                          <% class_test_full_mark = 0 %>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% end %> 
+                              <% if report['exam_category'] == '1' %>
+                                <% class_test_full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %>
                             <% end %>
                           <% end %>
 
@@ -173,18 +176,36 @@
                               <td class="col-pdf">50</td>
                             <% end %>
                             <% class_test_mark = 0 %>
+                            <% at_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
                               <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
-                                  <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %></td>
+                                  <% if report['exam_category'] == '1' %>
+                                    <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% else %>
+                                    <%  at_mark = at_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% end %>
+                                  
                                 <% else %>
-                                  <td class="col-pdf">-</td>
                                 <% end %>
                               <% end %>
                             <% end %>
                             <% end %>
+                            
+                              
+                                  
+                                  
+                            <% if class_test_full_mark > 0 %>
+                                  <% class_test_mark = (class_test_mark.to_f/class_test_full_mark.to_f)*20 %>  
+                            <% end %>  
+                                  
+                            <% if at_mark > 0 %>
+                                  <td class="col-pdf"><%= at_mark.to_f %></td>
+                            <% end %> 
+                            <% if class_test_mark > 0 %>
+                                  <td class="col-pdf"><%= class_test_mark.to_f %></td>
+                            <% end %> 
                                   
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -210,7 +231,7 @@
                             <td class="col-pdf no-warp">
                                <%= sprintf( "%0.02f", avg_mark)%>
                             </td>
-                            <% tota_mark_with_monthly = avg_mark+class_test_mark %>
+                            <% tota_mark_with_monthly = avg_mark+class_test_mark+class_test_mark+at_mark %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
                             </td>

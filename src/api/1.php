@@ -2,6 +2,7 @@
  //,{CL~Sk~&m(u
 
 echo phpinfo();
+exit;
 require 'phpmailer/PHPMailerAutoload.php';
 
 

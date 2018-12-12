@@ -1,7 +1,6 @@
 resulttype:
- numbers: "323,2,325,340,342,312,348,3,352,346"
+ numbers: "323,2,325,340,312,348,3,352,346"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal"
- type_342: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test"
  type_325: "Summer,Spring,Fall,Test,Final"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_3: "Term Exam"

@@ -71,6 +71,8 @@
             total_mark2 = 0
             full_mark2 = 0
             
+            monthly_full_mark1 = 0
+            monthly_full_mark2 = 0
             monthly_total_mark1 = 0
             monthly_total_mark2 = 0
             tab['exams'].each do |rs|
@@ -79,10 +81,12 @@
                   if rs['quarter'] == '1'
                       monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                   end  
                   if rs['quarter'] == '2'
                       monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                   end
                 else  
                   if rs['quarter'] == '1'
@@ -96,6 +100,17 @@
                 end
               end    
             end
+          
+            if monthly_total_mark1 > 0
+              monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
+              monthly_total_mark1 = monthly_total_mark1.round()
+            end 
+            if monthly_total_mark2 > 0
+              monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*20
+              monthly_total_mark2 = monthly_total_mark2.round()
+            end
+            
+            
             total_mark2_80 = total_mark2.to_f
             if full_mark2 > 100
               total_mark2_80 = total_mark2.to_f*0.75

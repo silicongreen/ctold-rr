@@ -198,13 +198,14 @@
                                   
                             <% if class_test_full_mark > 0 %>
                                   <% class_test_mark = (class_test_mark.to_f/class_test_full_mark.to_f)*20 %>  
+                                  <% class_test_mark = class_test_mark.round()  %>
                             <% end %>  
                                   
                             <% if at_mark > 0 %>
-                                  <td class="col-pdf"><%= at_mark.to_f %></td>
+                                  <td class="col-pdf"><%= at_mark.to_i %></td>
                             <% end %> 
                             <% if class_test_mark > 0 %>
-                                  <td class="col-pdf"><%= class_test_mark.to_f %></td>
+                                  <td class="col-pdf"><%= class_test_mark.to_i %></td>
                             <% end %> 
                                   
                             <% main_exam_mark = 0 %>

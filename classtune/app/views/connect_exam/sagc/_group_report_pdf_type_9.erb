@@ -214,8 +214,11 @@
                               <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['grade'] %>|<%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
-                                <% else %>
+                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
+                                    <% failed = true %>
+                                  <% end %>
+                                  <% else %>
                                   <td class="col-pdf">-</td>
                                 <% end %>
                               <% end %>

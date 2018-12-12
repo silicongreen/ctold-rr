@@ -212,10 +212,12 @@
                       <td class="col-pdf no-warp align-left"><b>B</b></td>
                       <td class="col-pdf no-warp align-left  <%= class_grade %>"><b>Good</b></td>
                      </tr>
+                     <% if @batch.course.course_name.upcase == "NURSERY" %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td class="col-pdf no-warp align-left"><b>NI</b></td>
                       <td class="col-pdf no-warp align-left  <%= class_grade %>"><b>Needs Improvement</b></td>
                      </tr>
+                     <% end %>
               
                 </table>
                 <table id="pdf-table" width="72%" class="left-table odd-table signature_table" cellspacing="0">

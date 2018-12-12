@@ -316,6 +316,9 @@
                     if !all_comments_array[1].nil?
                       @report_data['present'] = all_comments_array[1]
                       if !all_comments_array[2].nil?
+                        if @student_position.blank?
+                          @student_position = {}
+                        end
                         @student_position[@student.id.to_i] = all_comments_array[2]
                         if !all_comments_array[3].nil?
                          not_promoted = all_comments_array[3]
@@ -324,6 +327,9 @@
                          end
                         end
                       else
+                        if @student_position.blank?
+                          @student_position = {}
+                        end  
                         @student_position[@student.id.to_i] = ""
                       end
                     end

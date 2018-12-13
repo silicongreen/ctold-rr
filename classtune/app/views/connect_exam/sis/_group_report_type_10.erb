@@ -30,13 +30,14 @@
                     <td class="col-pdf height-18">Grade</td>
                   </tr>
                   <% end %>
-
+                  <% has_quarter = false %>
                   <% total_marks_obtain = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
                         <% next %>
                       <% end %>
+                        
                         <% q1_mark = 0 %>
                         <% q2_mark = 0 %>
                         <% q3_mark = 0 %>
@@ -59,6 +60,7 @@
                             @report_data['report']['exams'].each do |report| 
                               
                               if report['quarter'] == '1'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q1_mark = q1_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -70,6 +72,7 @@
                                 end
                               end
                               if report['quarter'] == '2'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q2_mark = q2_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -81,6 +84,7 @@
                                 end
                               end
                               if report['quarter'] == '3'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q3_mark = q3_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -92,6 +96,7 @@
                                 end
                               end
                               if report['quarter'] == '4'
+                                has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q4_mark = q4_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
                                   if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s!="AB"
@@ -171,8 +176,12 @@
                               q2_mark_20 = q2_mark_20.round()
                             end 
                             if first_term_fullmark > 0 && first_term_mark > 0
-                              first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
-                              first_term_mark_60 = first_term_mark_60.round()
+                              if has_quarter
+                                first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
+                                first_term_mark_60 = first_term_mark_60.round()
+                              else
+                                first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*100
+                              end
                             end
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                           end 
@@ -189,8 +198,12 @@
                               q4_mark_20 = q4_mark_20.round()
                             end 
                             if final_term_fullmark > 0 && final_term_mark > 0
-                              final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
-                              final_term_mark_60 = final_term_mark_60.round()
+                              if has_quarter
+                                final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
+                                final_term_mark_60 = final_term_mark_60.round()
+                              else
+                                final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*100
+                              end
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                           end
@@ -212,7 +225,7 @@
                             <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
                               <td class="col-pdf"><b>-</b></td>
                             <% end %>
-                            <td class="col-pdf"<b>AB</b></td>
+                            <td class="col-pdf"<b></b></td>
                           <% end %> 
                           
 

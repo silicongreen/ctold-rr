@@ -25,9 +25,9 @@
                     
                       <tr class="odd"><td class="col-pdf align-left"><b>NAME : </b><%= @student.full_name %></td><td class="col-pdf align-left" rowspan="3">
                             <b>
-                            <%= "A Excellent" %><br/>
-                            <%= "B+ Very Good" %><br/>
-                            <%= "B Good" %>
+                            <%= "A - Excellent" %><br/>
+                            <%= "B+ - Very Good" %><br/>
+                            <%= "B - Good" %>
                             </b>
                           </td></tr>
                       <tr class="odd"><td class="col-pdf align-left"><b>SHIFT : </b><%= @batch.name %></td></tr>
@@ -49,9 +49,9 @@
                       </td> 
                       <td class="col-pdf align-left">
                           <b>
-                          <%= "A Excellent" %><br/>
-                          <%= "B+ Very Good" %><br/>
-                          <%= "B Good" %>
+                           <%= "A - Excellent" %><br/>
+                           <%= "B+ - Very Good" %><br/>
+                           <%= "B - Good" %>
                           </b>
                       </td>
                      </tr>
@@ -76,8 +76,7 @@
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
-                                    <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
-                                    <td class="col-pdf no-warp align-left"></td>
+                                    <td class="col-pdf no-warp align-left"  colspan="2"><b><%= group_name.name %></b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% @report_data['report']['exams'].each do |report| %>

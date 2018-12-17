@@ -115,8 +115,15 @@
         
         <% unless assigned.nil? %>
           <div class="category-edit">
-          
+              
           <%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+          <% if assigned.elective_type > 0  %>
+             <% if assigned.elective_type == 3 %>
+              <b>&nbsp;&nbsp;(3rd)</b>
+             <% else %>
+              <b>&nbsp;&nbsp;(4th)</b>
+             <% end %>
+          <% end %>
         <% else %>
           <div class="category-edit">
              

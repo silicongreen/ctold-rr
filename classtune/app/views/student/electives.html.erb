@@ -116,14 +116,15 @@
         <% unless assigned.nil? %>
           <div class="category-edit">
               
-          <%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %></div>
+          <%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id}, :before=>"this.style.display='none'" %>
           <% if assigned.elective_type > 0  %>
              <% if assigned.elective_type == 3 %>
-              <b>&nbsp;&nbsp;(3rd)</b>
+              &nbsp;(3rd)
              <% else %>
-              <b>&nbsp;&nbsp;(4th)</b>
+             &nbsp;(4th)
              <% end %>
           <% end %>
+          </div>
         <% else %>
           <div class="category-edit">
              

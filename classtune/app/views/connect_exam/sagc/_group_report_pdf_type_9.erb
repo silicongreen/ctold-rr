@@ -125,6 +125,7 @@
                       <% if subjects['grade_subject'].to_i == 1 %>
                         <% next %>
                       <% end %>
+                      <% failed_subject = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -217,6 +218,7 @@
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                     <% failed = true %>
+                                    <% failed_subject = true %>
                                   <% end %>
                                   <% else %>
                                   <td class="col-pdf">-</td>
@@ -253,6 +255,11 @@
                               <% if !grade.blank? and !grade.name.blank? %>
                                 <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                   <% failed = true %>
+                                  <% failed_subject = true %>
+                                <% end %>
+                                <% if  failed_subject == true % %>
+                                  <% grade.credit_points = 0.0 %>
+                                  <% grade.name = "F" %>
                                 <% end %>
                                 <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
@@ -264,6 +271,7 @@
                                 <% end %>
                                 <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
+                                
                               <% else %>
                                 <td class="col-pdf">-</td>
                                 <td class="col-pdf">-</td>

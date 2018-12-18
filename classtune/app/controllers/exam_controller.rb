@@ -1335,7 +1335,7 @@ class ExamController < ApplicationController
       @exams.push exam unless exam.nil?
     end
     
-    @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id = ?",@exam_group.id],:joins=>[:exam,:student],:group =>"exam_scores.student_id",:order=>"total_score DESC")
+    @ranked_student = ExamScore.all(:select =>["SUM(exam_scores.marks)/SUM(exams.maximum_marks) as total_score,exam_scores.student_id"],:conditions=>["exams.exam_group_id = ?",@exam_group.id],:joins=>[:exam,:student],:group =>"exam_scores.student_id",:order=>"total_score DESC")
     @tmp_students = []
     unless @ranked_student.blank?
       @ranked_student.each do |ras|

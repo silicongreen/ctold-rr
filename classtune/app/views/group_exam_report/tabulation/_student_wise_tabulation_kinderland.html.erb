@@ -187,9 +187,9 @@ if !@main_student.blank?
                         <% off_rank  = false %>
                         <% @exams.each do |exam|  %>
                           <% this_exam_score = 0 %>
-                          <% exam_full_mark = exam_full_mark+exam.maximum_marks %>
+                          
                           <% unless exam_score.blank? %>
-
+                            <% exam_full_mark = exam_full_mark+exam.maximum_marks %>
                             <td> 
 
                                 <% exam_score.each do |es| %>

@@ -304,9 +304,9 @@ unless @ranked_student.blank?
                                 <% if rs['quarter'] == '1'
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q1_mark = q1_mark.to_f+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s!="AB"
-                                        has_mark = true
-                                      end
+                                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s!="AB"
+                                      has_mark = true
+                                    end
                                     end
                                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true
                                     q1_fullmark = q1_fullmark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
@@ -384,10 +384,13 @@ unless @ranked_student.blank?
                                   q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*20
                                   q2_mark_20 = q2_mark_20.round()
                                   end 
-                                if first_term_fullmark > 0 && first_term_mark > 0
+                                if first_term_fullmark > 0 && first_term_mark > 0 && q1_fullmark > 0 && q2_fullmark > 0
                                   first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*60
                                   first_term_mark_60 = first_term_mark_60.round()
-                                  end
+                                  else
+                                  first_term_mark_60 = first_term_mark.to_f
+                                  first_term_mark_60 = first_term_mark_60.round()
+                                  end  
                                 total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                                 end 
                               if final_term_fullmark > 0
@@ -402,21 +405,24 @@ unless @ranked_student.blank?
                                   q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*20
                                   q4_mark_20 = q4_mark_20.round()
                                   end 
-                                if final_term_fullmark > 0 && final_term_mark > 0
+                                if final_term_fullmark > 0 && final_term_mark > 0 && q3_fullmark > 0 && q4_fullmark > 0
                                   final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*60
                                   final_term_mark_60 = final_term_mark_60.round()
-                                  end
-                                  total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                                  else
+                                  final_term_mark_60 = final_term_mark.to_f
+                                  final_term_mark_60 = final_term_mark_60.round()
+                                  end  
+                                total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                                 end
-                                total_mark = total_mark.round()
-                                grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
-                                total_marks_obtain = total_marks_obtain+total_mark
+                              total_mark = total_mark.round()
+                              grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
+                              total_marks_obtain = total_marks_obtain+total_mark
                             %>
 
-                              
+
                               <% if has_exam == true %>
                                 <td>
-                                   
+
                                     <%= sprintf( "%0.02f", total_mark) %><hr/>
                                     <%  grade = GradingLevel.percentage_to_grade(total_mark, @batch.id) %>
                                     <% if !grade.blank? and !grade.name.blank? %>

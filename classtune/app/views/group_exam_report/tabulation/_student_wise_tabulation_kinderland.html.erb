@@ -186,15 +186,15 @@ if !@main_student.blank?
                         <% total = 0 %>
                         <% off_rank  = false %>
                         <% @exams.each do |exam|  %>
-                          <% this_exam_score = 0 %>
-                          
+                          <% this_exam_score = 0 %> 
                           <% unless exam_score.blank? %>
-                            <% exam_full_mark = exam_full_mark+exam.maximum_marks %>
+                            
                             <td> 
 
                                 <% exam_score.each do |es| %>
 
                                   <% if es.exam.subject.id.to_i == exam.subject.id.to_i %> 
+                                    <% exam_full_mark = exam_full_mark+exam.maximum_marks %>
                                     <%  this_exam_score = this_exam_score+1%>
                                     <%  if exam.subject.no_exams %>
                                       <%= es.remarks %>
@@ -284,6 +284,10 @@ if !@main_student.blank?
               font-size: 13px;
 
 
+          }
+          .name-std
+          {
+              white-space: nowrap !important;
           }
           .even td{
 

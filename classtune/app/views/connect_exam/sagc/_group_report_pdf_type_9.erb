@@ -38,7 +38,7 @@
           </tr>
           <tr class="odd">
               <td class="align-right col-pdf" width="20%">Session </td>
-              <td class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+              <td class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
               <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
           </tr>
           <tr class="even">
@@ -522,7 +522,7 @@
                               <br/><br/><br/>
                           </td>
                           <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/college_vp_signature.png")), :width=>"60%" %>
                           </td> 
                           <td class="col-pdf " width="25%">
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal.png")), :width=>"60%" %>

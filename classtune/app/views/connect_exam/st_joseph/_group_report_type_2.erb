@@ -124,9 +124,20 @@
                                          end
                                       end
                                     
-                                      if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam == 25
+                                      if !report['exam_name'].downcase.index('obj').nil?
                                         obj = obj+marks_obtain_single_exam
                                         count_obj = count_obj+1
+                                      end
+                                      if !report['exam_name'].downcase.index('sub').nil?
+                                        sub = sub+marks_obtain_single_exam
+                                        count_sub = count_sub+1
+                                      end
+                                      if !report['exam_name'].downcase.index('prac').nil?
+                                        prac = prac+marks_obtain_single_exam
+                                        count_prac = count_prac+1
+                                      end
+                                    
+                                      if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam == 25
                                         if marks_obtain_single_exam.to_i < 12
                                           fail_grade = true
                                           grade_name_single = "U"
@@ -134,8 +145,7 @@
                                       end
                                       
                                       if grade_name_single.to_s == "U" and !report['exam_name'].downcase.index('sub').nil? and total_marks_single_exam == 50
-                                        sub = sub+marks_obtain_single_exam
-                                        count_sub = count_sub+1
+                                        
                                         if marks_obtain_single_exam.to_i >= 22
                                           fail_grade = false
                                           grade_name_single = "D"
@@ -143,8 +153,7 @@
                                       end  
                                       
                                       if grade_name_single == "U" and !report['exam_name'].downcase.index('prac').nil? and total_marks_single_exam == 25
-                                        prac = prac+marks_obtain_single_exam
-                                        count_prac = count_prac+1
+                                        
                                         if marks_obtain_single_exam.to_i >= 11
                                           fail_grade = false
                                           grade_name_single = "D"

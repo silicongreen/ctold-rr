@@ -188,20 +188,21 @@
                                 end
                               
                                
-                                if sub_fullmark.to_i >= 22
-                                  fail_grade = false
-                                else
+                                if sub_fullmark.to_i < 22
                                   fail_grade = true
+                                else
+                                  fail_grade = false
                                 end
-                                if obj_fullmark.to_i >= 12 && fail_grade == false
-                                  fail_grade = false
-                                else
+                              
+                                if obj_fullmark.to_i < 12 && fail_grade == false
                                   fail_grade = true
+                                else
+                                  fail_grade = false
                                 end
-                                if prac_fullmark.to_i >= 11 && fail_grade == false
-                                  fail_grade = false
-                                else
+                                if prac_fullmark.to_i < 11 && fail_grade == false
                                   fail_grade = true
+                                else
+                                  fail_grade = false
                                 end
 
                                 

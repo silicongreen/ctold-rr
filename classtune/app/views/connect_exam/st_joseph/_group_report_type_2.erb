@@ -79,6 +79,14 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <% fail_grade = false %>
+                          
+                          <% sub = 0 %>
+                          <% obj = 0 %>
+                          <% prac = 0 %>
+                          
+                          <% count_sub = 0 %>
+                          <% count_obj = 0 %>
+                          <% count_prac = 0 %>
 
                           <td class="col-pdf no-warp"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
@@ -117,6 +125,8 @@
                                       end
                                     
                                       if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam == 25
+                                        obj = obj+marks_obtain_single_exam
+                                        count_obj = count_obj+1
                                         if marks_obtain_single_exam.to_i < 12
                                           fail_grade = true
                                           grade_name_single = "U"
@@ -124,7 +134,8 @@
                                       end
                                       
                                       if grade_name_single.to_s == "U" and !report['exam_name'].downcase.index('sub').nil? and total_marks_single_exam == 50
-                                        
+                                        sub = sub+marks_obtain_single_exam
+                                        count_sub = count_sub+1
                                         if marks_obtain_single_exam.to_i >= 22
                                           fail_grade = false
                                           grade_name_single = "D"
@@ -132,6 +143,8 @@
                                       end  
                                       
                                       if grade_name_single == "U" and !report['exam_name'].downcase.index('prac').nil? and total_marks_single_exam == 25
+                                        prac = prac+marks_obtain_single_exam
+                                        count_prac = count_prac+1
                                         if marks_obtain_single_exam.to_i >= 11
                                           fail_grade = false
                                           grade_name_single = "D"
@@ -156,6 +169,44 @@
                               <% end %>
 
                             <% end %>
+                            <%
+                                sub_fullmark = 0
+                                obj_fullmark = 0
+                                prac_fullmark = 0
+
+                                if count_sub > 0
+                                  sub_fullmark = sub.to_f/count_sub.to_f
+                                  sub_fullmark.round()
+                                end
+                                if count_obj > 0
+                                  obj_fullmark = obj.to_f/count_obj.to_f
+                                  obj_fullmark.round()
+                                end
+                                if count_prac > 0
+                                  prac_fullmark = prac.to_f/count_prac.to_f
+                                  prac_fullmark.round()
+                                end
+                              
+                               
+                                if sub_fullmark.to_i >= 22
+                                  fail_grade = false
+                                else
+                                  fail_grade = true
+                                end
+                                if obj_fullmark.to_i >= 12 && fail_grade == false
+                                  fail_grade = false
+                                else
+                                  fail_grade = true
+                                end
+                                if prac_fullmark.to_i >= 11 && fail_grade == false
+                                  fail_grade = false
+                                else
+                                  fail_grade = true
+                                end
+
+                                
+                          
+                            %>
                           <% end %>
 
 
@@ -163,6 +214,8 @@
 
 
                           <% 
+                         
+                          
                           heighst_mark = 0
                           if !@report_data['report']['max_mark'].blank? and !@report_data['report']['max_mark'][subjects['id']].blank?
                             heighst_mark = @report_data['report']['max_mark'][subjects['id']].to_f

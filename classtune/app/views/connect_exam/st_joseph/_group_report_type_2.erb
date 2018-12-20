@@ -188,20 +188,7 @@
                                 end
                               
                                
-                                if sub_fullmark.to_i < 22
-                                  fail_grade = true
-                                else
-                                  fail_grade = false
-                                end
-                              
-                                if obj_fullmark.to_i < 12 && fail_grade == false
-                                  fail_grade = true
-                                else
-                                  fail_grade = false
-                                end
-                                if prac_fullmark.to_i < 11 && fail_grade == false
-                                  fail_grade = true
-                                else
+                                if sub_fullmark >= 22 && obj_fullmark >= 12 && prac_fullmark >= 11
                                   fail_grade = false
                                 end
 
@@ -230,7 +217,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= total_mark.to_i %></td>
+                            <td class="col-pdf"><%= sub_fullmark %>|<%= total_mark.to_i %></td>
                             <td class="col-pdf"><%= heighst_mark.to_i %> </td>
                             
                             <% grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

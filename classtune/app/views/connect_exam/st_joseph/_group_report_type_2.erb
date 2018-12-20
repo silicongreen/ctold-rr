@@ -80,6 +80,8 @@
                           <% full_mark = 0 %>
                           <% fail_grade = false %>
                           
+                          <% sub_full_mark = 0 %>
+                          
                           <% sub = 0 %>
                           <% obj = 0 %>
                           <% prac = 0 %>
@@ -129,6 +131,7 @@
                                         count_obj = count_obj+1
                                       end
                                       if !report['exam_name'].downcase.index('sub').nil?
+                                        sub_full_mark = total_marks_single_exam
                                         sub = sub+marks_obtain_single_exam
                                         count_sub = count_sub+1
                                       end
@@ -197,7 +200,7 @@
                                 end
                               
                                
-                                if sub_fullmark >= 22 && obj_fullmark >= 12 && prac_fullmark >= 11
+                                if ((sub_fullmark >= 22 && sub_full_mark == 50) || (sub_fullmark >= 35 && sub_full_mark == 70) || count_sub == 0) && (obj_fullmark >= 12 || count_obj==0) && (prac_fullmark >= 11 || count_prac == 0)
                                   fail_grade = false
                                 end
 

@@ -159,7 +159,7 @@
            <% end %>
          
               
-           
+           <td><%= half_mark.round() %></td>
            
            <%
            if assessment_full_mark > 0
@@ -175,7 +175,7 @@
            <% if main_mark.round().to_i < 50 %>   
               <% class_name = "class='color-red'" %> 
            <% end %>
-           <td <%= class_name %>><%= half_mark.round() %></td>
+           
            <% if assessment_full_mark > 0 %>
            <td><%= assessment_total_mark.round() %></td>
            <td <%= class_name %>><%= half_mark.round() %></td>

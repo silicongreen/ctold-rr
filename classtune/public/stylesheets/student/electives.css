@@ -10,9 +10,9 @@
     background : #EEF2FD;
     border-bottom:1px solid #BECFFB;
     color : #444;
-    height : 1.5em; width : 30em;
+    height : 1.5em; width : 35em;
     list-style-type : none;
-    padding : 0.5em 0 0.5em;
+    padding : 0.5em 0 0 0.5em;
 }
 
 #category-list .listodd{
@@ -21,7 +21,7 @@
     color : #444;
     height : 1.5em; width : 35em;
     list-style-type : none;
-    padding : 0.5em 0 0.5em;
+    padding : 0.5em 0 0 0.5em;
 }
 
 #category-list li.heading {
@@ -30,7 +30,7 @@
     list-style-type : none;
     color : #444;
     height : 1.5em; width : 35em;
-    padding : 0.5em 0 0.5em;
+    padding : 0.5em 0 0 0.5em;
 }
 #category-list li div {
     float : left;

@@ -962,6 +962,7 @@
             }
         });
       </script>
+      <%  @student_has_due = false %>
       <% if @student_has_due == false %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>

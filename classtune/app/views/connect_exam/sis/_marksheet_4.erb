@@ -149,7 +149,7 @@
            <% if total_mark.to_i > 0 %>   
               
             <% if full_mark > 20 %>
-              <% half_mark = (total_mark.round().to_f/2.00) %>  
+              <% half_mark = (total_mark.to_f/2.00) %>  
               <% total_mark_2 = half_mark.round()*2 %>
               <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
             <% else %>

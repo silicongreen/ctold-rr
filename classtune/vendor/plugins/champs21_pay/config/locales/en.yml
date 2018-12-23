@@ -72,3 +72,4 @@ en:
   store_id: "Store Id"
   store_password: "Store Password"
   merchant_id: "Merchant Id"
+  is_test_sslcommerz: "Test SSL Commerz"

@@ -1,9 +1,55 @@
 <% unless @active_gateway.nil? %>
-  <% @gateway_fields.each do |field| %>
-    <div class="label-field-pair label-field-pair-gateway">
-      <label for=<%= "#{t(field)}" %>><%= t(field) %></label>
-      <div class="text-input-bg"><%= text_field_tag "payment_settings[#{field}]",PaymentConfiguration.config_value(field) %></div>
-    </div>
-  <% end %>
-  <%= submit_tag t('save'),:class => "submit-button" %>
+  <div style="border: 1px solid #ccc; float: left; border-radius: 6px; padding-bottom: 20px;">
+    <% @gateway_fields.each do |field| %>
+      <% unless field.index("is_").nil? %>
+      <div class="label-field-pair label-field-pair-gateway" style="border-bottom: 1px solid #ccc; ">
+          <% str = (PaymentConfiguration.config_value(field).to_i == 1) ? 'checked' : '' %>
+          <% is_enabled = PaymentConfiguration.config_value(field).to_i  %>
+          <input type="hidden" name="is_enabled" id="is_enabled" value="<%= is_enabled  %>" />
+          <input autocomplete="off" type="checkbox" name="payment_settings[<%= field %>]" id="<%= field %>" <%= str %> class="<%= field %>" style="width: 50px;"/><span><%= t(field) %></span>
+      </div>
+      <% else  %>
+      <div class="label-field-pair label-field-pair-gateway label-field-pair-gateway-new" style="border-bottom: none;">
+        <label for=<%= "#{t(field)}" %>><%= t(field) %></label>
+        <div class="text-input-bg"><%= text_field_tag "payment_settings[#{field}]",PaymentConfiguration.config_value(field) %></div>
+      </div>
+      <% end %>
+    <% end %>
+    <%= submit_tag t('save'),:class => "submit-button" %>
+  </div>
 <% end %>
+
+<script>
+  j(document).ready(function(){
+      j(".is_test_sslcommerz").click(function(){
+          if ( j(this).prop('checked') )
+          {
+              j(".label-field-pair-gateway-new input").prop('disabled', true);
+          }
+          else
+          {
+              j(".label-field-pair-gateway-new input").prop('disabled', false);
+          }
+      });
+      
+      if ( Number(j('#is_enabled').val()) == 1 )
+      {
+          j(".label-field-pair-gateway-new input").prop('disabled', true);
+      }
+  });
+</script>
+
+<style>
+.label-field-pair input {
+  padding: 10px;
+  border-radius: 4px;
+  background: #fDfDfD;
+}
+.label-field-pair-gateway-new label {
+    padding: 20px 30px;
+}
+.submit-button {
+    width: 100px;
+    border-radius: 4px;
+}
+</style>

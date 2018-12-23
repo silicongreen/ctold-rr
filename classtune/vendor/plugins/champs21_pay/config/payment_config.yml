@@ -1,0 +1,6 @@
+testsslcommer: true
+store_info_340:
+  store_id: class5c1f557071fd0
+  store_password: class5c1f557071fd0@ssl
+session_api_to_generate_transaction: https://sandbox.sslcommerz.com/gwprocess/v3/api.php
+validation_api: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php

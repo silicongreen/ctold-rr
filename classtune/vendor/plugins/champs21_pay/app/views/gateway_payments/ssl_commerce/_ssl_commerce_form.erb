@@ -1,4 +1,3 @@
-<%= get_payment_url %>
 <% form_for :ssl_online_pay ,:url => get_payment_url,:method => :post do |f| %>
   <%= hidden_field_tag :tran_id,@trans_id_ssl_commerce %>
   <%= hidden_field_tag :store_id,@store_id %>

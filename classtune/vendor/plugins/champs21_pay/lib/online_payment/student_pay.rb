@@ -24,10 +24,26 @@ module OnlinePayment
             @certificate = PaymentConfiguration.config_value("authorize_net_transaction_password")
             @certificate ||= String.new
           elsif @active_gateway == "ssl.commerce"
-            @store_id = PaymentConfiguration.config_value("store_id")
-            @store_id ||= String.new
-            @store_password = PaymentConfiguration.config_value("store_password")
-            @store_password ||= String.new
+            testssl = false
+            if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
+              if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
+                payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
+                unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+                  testssl = payment_configs["testsslcommer"]
+                end
+              end
+            end
+            if testssl
+              store_info = payment_configs["store_info_" + MultiSchool.current_school.id.to_s]
+              @store_id = store_info["store_id"]
+              @store_password = store_info["store_password"]
+              @store_password ||= String.new
+            else
+              @store_id = PaymentConfiguration.config_value("store_id")
+              @store_id ||= String.new
+              @store_password = PaymentConfiguration.config_value("store_password")
+              @store_password ||= String.new
+            end
           elsif @active_gateway == "trustbank"
             @merchant_id = PaymentConfiguration.config_value("merchant_id")
             @merchant_id ||= String.new
@@ -286,29 +302,55 @@ module OnlinePayment
                 gateway_status = true if params[:status] == "VALID"
               
                 if gateway_status == true
-                  payment_urls = Hash.new
-                  if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-                    payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-                  end
-
-                  if MultiSchool.current_school.id == 2
-                    validation_url = payment_urls["ssl_commerce_sandbox_requested_url"]
-                    validation_url ||= "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+                  testssl = false
+                  if PaymentConfiguration.config_value('is_test_sslcommerz').to_i == 1
+                    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
+                      payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
+                      unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+                        testssl = payment_configs["testsslcommer"]
+                      end
+                    end
+                    if testssl 
+                      validation_url = payment_configs["validation_api"]
+                    else
+                      payment_urls = Hash.new
+                      if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                        payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+                      end
+                      if MultiSchool.current_school.id == 2
+                        validation_url = payment_urls["ssl_commerce_sandbox_requested_url"]
+                        validation_url ||= "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+                      else
+                        validation_url = payment_urls["ssl_commerce_requested_url"]
+                        validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                      end
+                    end
                   else
-                    validation_url = payment_urls["ssl_commerce_requested_url"]
-                    validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                    payment_urls = Hash.new
+                    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+                    end
+                    if MultiSchool.current_school.id == 2
+                      validation_url = payment_urls["ssl_commerce_sandbox_requested_url"]
+                      validation_url ||= "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+                    else
+                      validation_url = payment_urls["ssl_commerce_requested_url"]
+                      validation_url ||= "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+                    end
                   end
+                  
+
+                  
                   val_id = params[:val_id]
                   requested_url=validation_url+"?val_id="+val_id+"&store_id="+@store_id+"&store_passwd="+@store_password  
                   uri = URI.parse(requested_url)
-
+                  
 
                   http = Net::HTTP.new(uri.host, uri.port)
                   http.use_ssl = true
 
                   request = Net::HTTP::Post.new(uri.request_uri)
                   response = http.request(request)
-                
                 
                   @ssl_data = JSON::parse(response.body)
                   unless @ssl_data['status'] == "VALID"
@@ -361,85 +403,81 @@ module OnlinePayment
                         proccess_particulars_category = []
                         loop_particular = 0
                         @fee_particulars.each do |fp|
-                          finance_fee_particular_category_id = fp.finance_fee_particular_category_id
-                          unless proccess_particulars_category.include?(finance_fee_particular_category_id)
-                            proccess_particulars_category[loop_particular] = finance_fee_particular_category_id
-                            f_particular = @fee_particulars.select{|fpp| fpp.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                            amount_particular = f_particular.map{|f_p| f_p.amount.to_f}.sum
-
-                            onetime_discounts = @onetime_discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                            unless onetime_discounts.nil? or onetime_discounts.empty? 
-                              onetime_discounts.each do |od|
-                                amount_particular = amount_particular - @onetime_discounts_amount[od.id]
-                              end
-                            end
-                            unless @discounts.blank?
-                              discounts = @discounts.select{ |od| od.finance_fee_particular_category_id == finance_fee_particular_category_id }
-                              unless discounts.nil? or discounts.empty? 
-                                discounts.each do |od|
-                                  amount_particular = amount_particular - @discounts_amount[od.id]
-                                end
-                              end
-                            end
-                  
-                            finance_transaction_particular = FinanceTransactionParticular.new
-                            finance_transaction_particular.finance_transaction_id = transaction.id
-                            finance_transaction_particular.particular_id = finance_fee_particular_category_id
-                            finance_transaction_particular.particular_type = 'ParticularCategory'
-                            finance_transaction_particular.amount = amount_particular
-                            finance_transaction_particular.transaction_date = transaction.transaction_date
-                            finance_transaction_particular.save
-                            loop_particular = loop_particular + 1
-                          end
-                        end
-            
-                        @onetime_discounts.each do |od|
+                          particular_amount = fp.amount.to_f
                           finance_transaction_particular = FinanceTransactionParticular.new
                           finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = od.id
-                          finance_transaction_particular.particular_type = 'OnetimeDiscount'
-                          finance_transaction_particular.amount = @onetime_discounts_amount[od.id]
+                          finance_transaction_particular.particular_id = fp.id
+                          finance_transaction_particular.particular_type = 'Particular'
+                          finance_transaction_particular.transaction_type = 'Fee Collection'
+                          finance_transaction_particular.amount = particular_amount
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
-                        unless @discounts.blank?
-                          @discounts.each do |od|
+            
+                        unless @onetime_discounts.blank?
+                          @onetime_discounts.each do |od|
+                            discount_amount = @onetime_discounts_amount[od.id].to_f
                             finance_transaction_particular = FinanceTransactionParticular.new
                             finance_transaction_particular.finance_transaction_id = transaction.id
                             finance_transaction_particular.particular_id = od.id
-                            finance_transaction_particular.particular_type = 'Discount'
-                            finance_transaction_particular.amount = @discounts_amount[od.id]
+                            finance_transaction_particular.particular_type = 'Adjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = discount_amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                        end
+                        
+                        
+                        unless @discounts.blank?
+                          @discounts.each do |od|
+                            discount_amount = @discounts_amount[od.id]
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = od.id
+                            finance_transaction_particular.particular_type = 'Adjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = discount_amount
                             finance_transaction_particular.transaction_date = transaction.transaction_date
                             finance_transaction_particular.save
                           end
                         end
             
                         if transaction.vat_included?
+                          vat_amount = transaction.vat_amount
                           finance_transaction_particular = FinanceTransactionParticular.new
                           finance_transaction_particular.finance_transaction_id = transaction.id
                           finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'Vat'
-                          finance_transaction_particular.amount = transaction.vat_amount
+                          finance_transaction_particular.particular_type = 'VAT'
+                          finance_transaction_particular.transaction_type = ''
+                          finance_transaction_particular.amount = vat_amount
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
             
                         if total_fine_amount
+                          fine_amount = total_fine_amount
                           finance_transaction_particular = FinanceTransactionParticular.new
                           finance_transaction_particular.finance_transaction_id = transaction.id
                           finance_transaction_particular.particular_id = 0
                           finance_transaction_particular.particular_type = 'Fine'
-                          finance_transaction_particular.amount = total_fine_amount
+                          finance_transaction_particular.transaction_type = ''
+                          finance_transaction_particular.amount = fine_amount
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
+                        
+                        
                         if @has_fine_discount
-                          @discounts_on_lates.each do |od|
+                          @discounts_on_lates.each do |fd|
+                            discount_amount = @discounts_late_amount[od.id]
+                            discount_amount = params["fee_fine_discount_amount_" + fd.id.to_s].to_f
                             finance_transaction_particular = FinanceTransactionParticular.new
                             finance_transaction_particular.finance_transaction_id = transaction.id
-                            finance_transaction_particular.particular_id = od.id
-                            finance_transaction_particular.particular_type = 'Fine Discount'
-                            finance_transaction_particular.amount = @discounts_late_amount[od.id]
+                            finance_transaction_particular.particular_id = fd.id
+                            finance_transaction_particular.particular_type = 'FineAdjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = discount_amount
                             finance_transaction_particular.transaction_date = transaction.transaction_date
                             finance_transaction_particular.save
                           end

@@ -36,7 +36,14 @@ class PaymentSettingsController < ApplicationController
 
     if request.post?
       payment_settings = params[:payment_settings]
+      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_sslcommerz')
+      configuration.update_attributes(:config_value => 0)
       payment_settings.each_pair do |key,value|
+        if key == 'is_test_sslcommerz' && value == 'on'
+          value = 1
+        elsif key == 'is_test_sslcommerz' && value != 'on'
+          value = 0
+        end
         configuration = PaymentConfiguration.find_or_initialize_by_config_key(key)
         if configuration.update_attributes(:config_value => value)
           flash[:notice] = "Payment setting has been saved successfully."

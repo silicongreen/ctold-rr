@@ -44,7 +44,20 @@ class StudentController < ApplicationController
     require 'net/http'
     require 'uri'
     require "yaml"
-    api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
+    
+    testssl = false
+    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config.yml")
+      payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config.yml"))
+      unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+        testssl = payment_configs["testsslcommer"]
+      end
+    end
+    if testssl
+      api_uri = URI(payment_configs["session_api_to_generate_transaction"])
+    else  
+      api_uri = URI("https://securepay.sslcommerz.com/gwprocess/v3/api_convenient_fee.php")
+    end
+    
     http = Net::HTTP.new(api_uri.host, api_uri.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded' })

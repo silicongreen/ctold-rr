@@ -38,7 +38,7 @@
 <% end %>
   
 <% unless flash[:success].nil? %>
-  <div id="success" class="success"><%= flash[:success] %></div>
+  <div id="success" class="success" style="margin-bottom: 20px;"><%= flash[:success] %></div>
 <% end %>
 
 <% unless flash[:warning].nil? %><p class="flash-msg"><%= flash[:warning] %></p><% end %>
@@ -962,7 +962,6 @@
             }
         });
       </script>
-      <%  @student_has_due = false %>
       <% if @student_has_due == false %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>

@@ -75,7 +75,7 @@
                 <tr class="table-header">
                     <td class="name-td left border-left-none"  colspan="1" ><%= "SL" %></td>
                     <td colspan="1" class="align-center" ><%= "PARTICULARS" %></td>
-                    <td class="mark-td border-right-none no-warp"> <%= "AMOUNT IN TK." %></td>
+                    <td class="mark-td border-right-none no-warp"> <%= "AMOUNT IN TK1." %></td>
                 </tr>
                 <% tr_count = tr_count+1 %>
                 <%k=0%>
@@ -259,7 +259,7 @@
               </table>
               </center>
               <% if balance.to_i > 0 %>
-              <h2 class='in-words'>Taka (in Words) : <%#= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></h2>
+              <h2 class='in-words'>Taka (in Words) : <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') %></h2>
               <% end %>
 
               <% end %>

@@ -15,7 +15,7 @@ module PaymentSettingsHelper
     render :partial => "gateway_payments/paypal/paypal_form"
   end
   
-  def ssl_commerce_pay_button(store_id,store_password,amount,item_name,return_url,cancel_url,fail_url,trans_id_ssl_commerce,paid_fees = Array.new,button_style = String.new)
+  def ssl_commerce_pay_button(store_id,store_password,amount,item_name,return_url,cancel_url, ret_url,fail_url,trans_id_ssl_commerce,paid_fees = Array.new,button_style = String.new)
     @store_id = store_id
     @store_password = store_password
     @amount = amount
@@ -26,6 +26,7 @@ module PaymentSettingsHelper
     @button_style = button_style
     @paid_fees = paid_fees
     @trans_id_ssl_commerce = trans_id_ssl_commerce
+    @ret_url = ret_url
     render :partial => "gateway_payments/ssl_commerce/ssl_commerce_form"
   end
   

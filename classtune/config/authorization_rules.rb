@@ -2745,6 +2745,7 @@ authorization do
       :list_dob_year,:dob_equal_to_update,:dob_less_than_update,:dob_greater_than_update,
       :advanced_search_pdf,
       :previous_data,
+      :generate_ssl_url,
       :previous_data_from_profile,
       :previous_subject,
       :previous_data_edit,

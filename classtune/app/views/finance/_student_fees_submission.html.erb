@@ -704,6 +704,9 @@
           </td>
       </tr>
       <% end %>
+      <% if  total_fees == 0 %>
+      <% @fine = 0.00 %>
+      <% end %>
       
       <% fine_paid = false %>
       <% unless @fine_rule%>
@@ -766,6 +769,12 @@
       <% end %>
       <% end %>
       <%total_fees1=total_fees%>
+      
+      <% if  total_fees == 0 %>
+      <% @new_fine_amount = 0.00 %>
+      <% end %>
+      
+    
       <% fine_amount_total = 0 %>  
       <%if @fine_rule%>
         <tr id="fine_blank_space_1" class="tr-blank"></tr>

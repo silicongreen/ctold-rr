@@ -1,3 +1,4 @@
+<%= get_payment_url %>
 <% form_for :ssl_online_pay ,:url => get_payment_url,:method => :post do |f| %>
   <%= hidden_field_tag :tran_id,@trans_id_ssl_commerce %>
   <%= hidden_field_tag :store_id,@store_id %>
@@ -11,6 +12,7 @@
   <%= hidden_field_tag :total_amount,sprintf("%0.2f",@amount_to_pay).to_f %>
   <%= hidden_field_tag :success_url,@return_url+extra_string %>
   <%= hidden_field_tag :fail_url,@fail_url+extra_string %>
+  <%= hidden_field_tag :ret_url,@ret_url+extra_string %>
   <%= hidden_field_tag :cancel_url,@cancel_url+extra_string %>
   <%= hidden_field_tag :version,"2.00" %>
   <% if @amount > 0 %>

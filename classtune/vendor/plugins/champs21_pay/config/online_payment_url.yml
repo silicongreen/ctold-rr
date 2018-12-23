@@ -7,7 +7,7 @@ ssl_commerce_sandbox_requested_url: "https://sandbox.sslcommerz.com/validator/ap
 ssl_commerce_sandbox_url: "https://sandbox.sslcommerz.com/gwprocess/v3/process.php"
 
 ssl_commerce_requested_url: "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
-ssl_commerce_url: "http://sjws.classtune.com/student/generate_ssl_url"
+ssl_commerce_url: "/student/generate_ssl_url"
 
 trustbank_requested_url: "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment_Verify.asmx?WSDL"
 trustbank_url: "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx"

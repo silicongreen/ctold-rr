@@ -63,7 +63,7 @@ module OnlinePayment
           @due_date = @fee_collection.due_date
           @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
           flash[:warning]=nil
-          flash[:notice]=nil
+          #flash[:notice]=nil
           @trans_id_ssl_commerce = "tran"+params[:id].to_s+params[:id2].to_s
           @paid_fees = @financefee.finance_transactions
 

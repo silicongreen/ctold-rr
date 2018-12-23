@@ -261,6 +261,7 @@
     function calculateTotalFees() 
     {
         var fee_amount = parseFloat(j("#fee_total_amount").val());
+        
         var discount_amount = 0;
         if ( j("#discount_total_amount").length > 0 )
         {
@@ -279,11 +280,11 @@
             amount += vat_amount; 
         }
         
-        if ( j("#fee_fine_amount").length > 0 )
+        /*if ( j("#fee_fine_amount").length > 0 )
         {
             var fine_amount = parseFloat(j("#fee_fine_amount").val());
             amount += fine_amount; 
-        }
+        }*/
         
         j("#total_amount").val(amount.toFixed(2));
         j("#total_amount_label").html(amount.toFixed(2));

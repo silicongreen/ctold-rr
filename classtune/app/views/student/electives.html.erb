@@ -111,7 +111,7 @@
       <li id="stud_<%=s.id%>" class="list<%=cycle('odd', 'even')%>">
         <% stud_assigned = StudentsSubject.new() %>
         <% assigned = stud_assigned.student_assigned(s.id,@elective_subject.id) %>
-        <div class="category-name"> <%= s.full_name %></div>
+        <div class="category-name"><%= s.class_roll_no.to_s+".&nbsp;" unless s.class_roll_no.blank? %> <%= s.full_name %> (<%= s.admission_no %>)</div>
         
         <% unless assigned.nil? %>
           <div class="category-edit">
@@ -178,7 +178,7 @@
                 %>  
                 <% stud_assigned = StudentsSubject.new() %>
                 <% assigned = stud_assigned.student_assigned(s.id,appropriate_elective_subject_id) %>
-                <div class="category-name"> <%= s.full_name %></div>
+                <div class="category-name"> <%= s.class_roll_no.to_s+".&nbsp;" unless s.class_roll_no.blank? %> <%= s.full_name %> (<%= s.admission_no %>)</div>
                 <% unless assigned.nil? %>
                   <% if @batch_only %>
                     <div class="category-edit"><%= link_to_remote "#{t('remove')}",:url=>{:controller=>"student",:action=>"unassign_students",:id=>s.id,:id2=>@elective_subject.id, :batch_only => "1", :batch_name => @batch_name}, :before=>"this.style.display='none'" %></div>
@@ -247,7 +247,7 @@
   }
   #category-list li div.category-name
   {
-      width:350px;
+      width:445px;
   }
   #category-list li div.category-edit, #category-list li div.category-delete
   {

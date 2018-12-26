@@ -204,10 +204,14 @@
                                   
                             <% if at_mark > 0 %>
                                   <td class="col-pdf"><%= at_mark.to_i %></td>
-                            <% end %> 
+                            <% else %>
+                                  <td class="col-pdf"><%= "0" %></td>
+                            <% end %>      
                             <% if class_test_mark > 0 %>
                                   <td class="col-pdf"><%= class_test_mark.to_i %></td>
-                            <% end %> 
+                            <% else %>
+                                  <td class="col-pdf"><%= "0" %></td>
+                            <% end %>      
                                   
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  

@@ -4823,20 +4823,23 @@ class ExamController < ApplicationController
           
           
           connect_exam = connect_exam+1
-          grand_total = 0
-          grand_grade_point = 0
+          
       
-          grand_total1 = 0
-          grand_grade_point1 = 0
-      
-          grand_total2 = 0
-          grand_grade_point2 = 0
-      
-          u_grade = 0
-          u_grade1 = 0
-          u_grade2 = 0
+         
           
           tab['students'].each do |std| 
+            grand_total = 0
+            grand_grade_point = 0
+
+            grand_total1 = 0
+            grand_grade_point1 = 0
+
+            grand_total2 = 0
+            grand_grade_point2 = 0
+            u_grade = 0
+            u_grade1 = 0
+            u_grade2 = 0
+            
             @student_tab = Student.find_by_id(std['id'].to_i)
             if connect_exam_id.to_i == @connect_exam_obj.id
               if @student_result[loop_std].blank?

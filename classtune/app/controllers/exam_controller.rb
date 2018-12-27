@@ -5221,9 +5221,9 @@ class ExamController < ApplicationController
               @total_std_batch = @total_std_batch+1
               @student_result[loop_std]['grand_total'] = grand_total
               
-              if exam_type == 3
+              if exam_type = 3
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-              elsif exam_type == 2
+              elsif exam_type = 2
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
               else
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f

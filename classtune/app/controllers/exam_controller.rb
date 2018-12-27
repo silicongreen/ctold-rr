@@ -5223,22 +5223,28 @@ class ExamController < ApplicationController
         
             if connect_exam_id.to_i == @connect_exam_obj.id
               @total_std_batch = @total_std_batch+1
-              @student_result[loop_std]['grand_total'] = grand_total
+              
               
               if exam_type == 3
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
+                @student_result[loop_std]['gpa'] = grand_grade_point
+                @student_result[loop_std]['grand_total'] = grand_total
               end
               if exam_type == 1
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
+                @student_result[loop_std]['gpa'] = grand_grade_point1
+                @student_result[loop_std]['grand_total'] = grand_total1
               end
               if exam_type == 2
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
+                @student_result[loop_std]['gpa'] = grand_grade_point2
+                @student_result[loop_std]['grand_total'] = grand_total2
               end
-              @student_result[loop_std]['gp'] = grand_grade_point
-              @student_result[loop_std]['gpa'] = grade_point_avg
+              
+              @student_result[loop_std]['gp'] = grade_point_avg
               
               gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
               if !gradeObj.blank? and !gradeObj.name.blank?

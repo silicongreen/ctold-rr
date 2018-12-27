@@ -2826,7 +2826,7 @@ class ExamController < ApplicationController
       tmp_row << std_result['roll'].to_s
       tmp_row << std_result['name'].to_s
       tmp_row << std_result['grand_total'].to_s
-      tmp_row << std_result['gpa'].to_s+"("+std_result['gp'].to_s+")"
+      tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
       if !@student_position_first_term.blank? && @student_position_first_term[std_result['id']].blank?
         tmp_row << std_result['lg']
       else

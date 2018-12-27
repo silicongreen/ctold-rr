@@ -4835,9 +4835,9 @@ class ExamController < ApplicationController
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
           
-          
+          exam_type = 1
           connect_exam = connect_exam+1
-          exam_type = 0
+          
       
          
           
@@ -4997,6 +4997,14 @@ class ExamController < ApplicationController
                   end    
                 end
           
+                if full_mark2 > 0
+                  exam_type = 2
+                end
+                
+                if full_mark1 > 0 && exam_type == 3
+                  exam_type = 3
+                end 
+                
                 if monthly_total_mark1 > 0
                   monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
                   monthly_total_mark1 = monthly_total_mark1.round()
@@ -5006,7 +5014,7 @@ class ExamController < ApplicationController
                   monthly_total_mark2 = monthly_total_mark2.round()
                 end
                 
-                if 
+                
             
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
@@ -5024,12 +5032,8 @@ class ExamController < ApplicationController
            
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
-                if full_mark2 > 0
-                  exam_type = 2
-                end  
-                if full_mark1 > 0 &&  exam_type == 2
-                   exam_type = 3
-                end 
+                
+            
            
             
                 if full_mark1 >=100
@@ -5221,14 +5225,18 @@ class ExamController < ApplicationController
               @total_std_batch = @total_std_batch+1
               @student_result[loop_std]['grand_total'] = grand_total
               
-              if exam_type = 3
+              if exam_type == 3
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
-              elsif exam_type = 2
-                grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
-              else
+                grade_point_avg = grade_point_avg.round(2)
+              end
+              if exam_type == 1
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
-              end  
-              grade_point_avg = grade_point_avg.round(2)
+                grade_point_avg = grade_point_avg.round(2)
+              end
+              if exam_type == 2
+                grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
+                grade_point_avg = grade_point_avg.round(2)
+              end
               @student_result[loop_std]['gp'] = grand_grade_point
               @student_result[loop_std]['gpa'] = grade_point_avg
               

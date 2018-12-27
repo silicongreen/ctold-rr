@@ -2821,6 +2821,9 @@ class ExamController < ApplicationController
     row_first = ["Program :"+@batch.course.course_name+" || "+"Section :"+@batch.course.section_name+" || Shift :"+batch_split[0]+" || Session:"+session+" || Version:"+batch_split[1]]
     new_book.worksheet(0).insert_row(1, row_first)
     
+    row_blank = [""]
+    new_book.worksheet(0).insert_row(2, row_blank)
+    
     row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
     @subject_result.each do |key,sub_result|
       row_first << ""
@@ -2832,7 +2835,7 @@ class ExamController < ApplicationController
       row_first << ""
       row_first << ""
     end
-    new_book.worksheet(0).insert_row(2, row_first)
+    new_book.worksheet(0).insert_row(3, row_first)
     
     row_first = ['','','','','','','','','','','']
     @subject_result.each do |sub_result|
@@ -2845,9 +2848,9 @@ class ExamController < ApplicationController
       row_first << "+CT"
       row_first << "LG"
     end
-    new_book.worksheet(0).insert_row(3, row_first)
+    new_book.worksheet(0).insert_row(4, row_first)
     
-    std_loop = 4
+    std_loop = 5
     @student_result.each do |std_result|
       tmp_row = []
       tmp_row << std_result['sl']
@@ -2905,8 +2908,12 @@ class ExamController < ApplicationController
       
     end
     
+    row_blank = [""]
+    new_book.worksheet(0).insert_row(std_loop, row_blank)
+    new_book.worksheet(0).insert_row(std_loop+1, row_blank)
+    
     row_last = ["TIPS :: M.C = Merit in Class || M.S = Merit in Section || +RT = Raw Total || +CT = Converted Total"]
-    new_book.worksheet(0).insert_row(std_loop, row_last)
+    new_book.worksheet(0).insert_row(std_loop+1, row_last)
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

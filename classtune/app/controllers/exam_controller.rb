@@ -4812,6 +4812,20 @@ class ExamController < ApplicationController
       @student_result = []
       @subject_result = {}
       loop_std = 0
+      if @std_subject_hash_type.nil?
+        batchobj = Batch.find_by_id(@batch.id) 
+        courseObj = Course.find_by_id(batchobj.course_id)
+        all_courses = Course.fin_all_by_course_name(courseObj.name)
+        all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+        std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id))
+        @std_subject_hash_type = []
+        unless std_subject.blank?
+          std_subject.each do |std_sub|
+            @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+          end
+        end
+      end
+      
       unless @tabulation_data.blank?
         connect_exam = 0
         batch_loop = 0
@@ -4823,7 +4837,7 @@ class ExamController < ApplicationController
           
           
           connect_exam = connect_exam+1
-          
+          exam_type = 0
       
          
           
@@ -4840,6 +4854,8 @@ class ExamController < ApplicationController
             u_grade1 = 0
             u_grade2 = 0
             
+            grand_total_main = 0
+            grade_poin_main = 0
             @student_tab = Student.find_by_id(std['id'].to_i)
             if connect_exam_id.to_i == @connect_exam_obj.id
               if @student_result[loop_std].blank?
@@ -4990,7 +5006,7 @@ class ExamController < ApplicationController
                   monthly_total_mark2 = monthly_total_mark2.round()
                 end
                 
-            
+                if 
             
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
@@ -5008,8 +5024,12 @@ class ExamController < ApplicationController
            
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
-                
-            
+                if full_mark2 > 0
+                  exam_type = 2
+                end  
+                if full_mark1 > 0 &&  exam_type == 2
+                   exam_type = 3
+                end 
            
             
                 if full_mark1 >=100
@@ -5046,9 +5066,8 @@ class ExamController < ApplicationController
                 main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
             
             
-                subject_full_marks_no_round = total_mark2_no_round.to_f+total_mark1_no_round.to_f
-                subject_full_marks = (total_mark2_no_round.to_f+total_mark1_no_round.to_f)/2.00
-                subject_full_marks = subject_full_marks.round()
+                
+                subject_full_marks = main_mark
                 if sub['grade_subject'].to_i != 1
                   if @student_subject_marks[sub['id'].to_i].blank?
                     @student_subject_marks[sub['id'].to_i] = {}
@@ -5057,9 +5076,9 @@ class ExamController < ApplicationController
                   @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
            
               
-                  grand_total1 = grand_total1+total_mark1_no_round
-                  grand_total2 = grand_total2+total_mark2_no_round
-                  grand_total = grand_total+subject_full_marks_no_round
+                  grand_total1 = grand_total1+total_mark1
+                  grand_total2 = grand_total2+total_mark2
+                  grand_total = grand_total+subject_full_marks
               
                   if fourth_subject.blank?
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -5121,7 +5140,6 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['pr'] = total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
-                  
                   
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? and !grade.name.blank? && sub['grade_subject'].to_i != 1
@@ -5203,7 +5221,13 @@ class ExamController < ApplicationController
               @total_std_batch = @total_std_batch+1
               @student_result[loop_std]['grand_total'] = grand_total
               
-              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+              if exam_type == 3
+                grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+              elsif exam_type == 2
+                grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
+              else
+                grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
+              end  
               grade_point_avg = grade_point_avg.round(2)
               @student_result[loop_std]['gp'] = grand_grade_point
               @student_result[loop_std]['gpa'] = grade_point_avg

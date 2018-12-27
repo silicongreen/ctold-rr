@@ -2805,7 +2805,29 @@ class ExamController < ApplicationController
       @student_position_first_term = @student_position_second_term
       @student_position_first_term_batch = @student_position_second_term_batch
     end
+    
+    row_first = [Configuration.get_config_value('InstitutionName')]
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    batch_split = @batch.name.split(" ")
+    session = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y")+"-"+@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1;
+    row_first = ["Program :"+@batch.course.course_name+" || "+"Section :"+@batch.course.section_name+" || Shift :"+batch_split[0]+" || Session:"+session+" || Version:"+batch_split[1]]
+    new_book.worksheet(0).insert_row(1, row_first)
+    
     row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
+    @subject_result.each do |key,sub_result|
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << @subject_result[key]['name']
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+    end
+    new_book.worksheet(0).insert_row(2, row_first)
+    
+    row_first = ['','','','','','','','','','','']
     @subject_result.each do |sub_result|
       row_first << "AT"
       row_first << "CW"
@@ -2816,9 +2838,9 @@ class ExamController < ApplicationController
       row_first << "+CT"
       row_first << "LG"
     end
-    new_book.worksheet(0).insert_row(0, row_first)
+    new_book.worksheet(0).insert_row(3, row_first)
     
-    std_loop = 1
+    std_loop = 4
     @student_result.each do |std_result|
       tmp_row = []
       tmp_row << std_result['sl']
@@ -2875,6 +2897,10 @@ class ExamController < ApplicationController
       std_loop = std_loop+1
       
     end
+    
+    row_last = ["TIPS :: M.C = Merit in Class || M.S = Merit in Section || +RT = Raw Total || +CT = Converted Total"]
+    new_book.worksheet(0).insert_row(std_loop, row_last)
+    
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"

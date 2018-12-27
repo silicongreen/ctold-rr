@@ -2810,7 +2810,14 @@ class ExamController < ApplicationController
     new_book.worksheet(0).insert_row(0, row_first)
     
     batch_split = @batch.name.split(" ")
-    session = @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y")+"-"+@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1;
+    if @connect_exam_obj.published_date.blank?
+      start_date = @connect_exam_obj.created_at.strftime("%Y")
+      end_date = @connect_exam_obj.created_at.strftime("%Y").to_i+1
+    else
+      start_date = @connect_exam_obj.published_date.strftime("%Y")
+      end_date = @connect_exam_obj.published_date.strftime("%Y").to_i+1
+    end  
+    session = start_date.to_s+"-"+end_date.to_s;
     row_first = ["Program :"+@batch.course.course_name+" || "+"Section :"+@batch.course.section_name+" || Shift :"+batch_split[0]+" || Session:"+session+" || Version:"+batch_split[1]]
     new_book.worksheet(0).insert_row(1, row_first)
     

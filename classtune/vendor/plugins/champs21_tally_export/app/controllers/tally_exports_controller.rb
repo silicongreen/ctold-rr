@@ -256,6 +256,21 @@ class TallyExportsController < ApplicationController
     end
   end
   
+  def get_batches_receipt
+    unless params[:id].nil? or params[:id].empty?
+      date_id = params[:id]
+      @date = FinanceFeeCollection.find(date_id)
+      @batches = @date.batches
+      @check_paid = "0"
+      unless params[:check_paid].nil? or params[:check_paid].empty?
+        @check_paid = params[:check_paid]
+      end
+    end
+    render :update do |page|
+      page.replace_html "batchs1", :partial => "fees_collection_batches_receipt"
+    end
+  end
+  
   def export_receipt
     @option = 'receipt'
     @date_today = Date.today

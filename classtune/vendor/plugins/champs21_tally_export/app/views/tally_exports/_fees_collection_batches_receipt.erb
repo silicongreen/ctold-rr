@@ -56,8 +56,12 @@
         <div style="clear: both; height: 30px;"  ></div>
       <% end %>
       <div class="label-field-pair">
-        <div class="label-container"><label><%= t('export_date') %> :</label> </div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'export_date', I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+        <div class="label-container"><label><%= t('from_date') %> :</label> </div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'from_date', I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+      </div>
+      <div class="label-field-pair">
+        <div class="label-container"><label><%= t('to_date') %> :</label> </div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'to_date', I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
       </div>
       <div style="clear: both; height: 10px;"  ></div>
       <div style="text-align: left; padding-top: 10px;">

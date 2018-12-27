@@ -33,6 +33,7 @@ authorization do
       :download_journal,
       :download_receipt,
       :get_batches,
+      :get_batches_receipt,
       :export_batches,
       :get_user_by_batches,
       :failed_syncs

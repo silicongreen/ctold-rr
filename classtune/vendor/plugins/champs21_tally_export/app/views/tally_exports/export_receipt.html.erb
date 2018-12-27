@@ -22,7 +22,7 @@
         <div class="input-container"> 
           <%= select :fees_submission, :date_id, @finance_fee_collections.map { |d| [d.full_name, d.id] },
             {:prompt => "#{t('select_fee_collection')}"},
-            {:onChange => "#{remote_function(:url => {:action => "get_batches"},
+            {:onChange => "#{remote_function(:url => {:action => "get_batches_receipt"},
             :with => "'id='+value+'&check_paid='+1",
             :before => "Element.show('loader')",
             :success => "Element.hide('loader')")}", :autocomplete => "off"
@@ -42,7 +42,7 @@
           <div class="input-container"> 
             <%= select :fees_submission_all, :date_id, @all_finance_fee_collections.map { |c| [c.full_name, c.id] },
               {:prompt => "#{t('select_fee_collection')}"},
-              {:onChange => "#{remote_function(:url => {:action => "get_batches"},
+              {:onChange => "#{remote_function(:url => {:action => "get_batches_receipt"},
               :with => "'id='+value",
               :before => "Element.show('loader1')",
               :success => "Element.hide('loader1')")}", :autocomplete => "off"
@@ -59,7 +59,7 @@
       </div>
   </div>
   <div id="batchs1">
-      <%= render :partial => "fees_collection_batches"  %>
+      <%= render :partial => "fees_collection_batches_receipt"  %>
   </div>  
   <div style="clear: both; height: 10px;"  ></div>
   <div id="student"> </div>

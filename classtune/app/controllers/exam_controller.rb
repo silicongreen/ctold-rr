@@ -4815,7 +4815,7 @@ class ExamController < ApplicationController
       if @std_subject_hash_type.nil?
         batchobj = Batch.find_by_id(@batch.id) 
         courseObj = Course.find_by_id(batchobj.course_id)
-        all_courses = Course.fin_all_by_course_name(courseObj.course_name)
+        all_courses = Course.find_all_by_course_name(courseObj.course_name)
         all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
         std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id))
         @std_subject_hash_type = []

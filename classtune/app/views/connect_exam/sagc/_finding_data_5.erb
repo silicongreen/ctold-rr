@@ -1,10 +1,10 @@
 
 <% if @total_std.blank? %>
   <% if @grading_levels.blank? %>
-  <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
-  <% if @grading_levels.blank? %>
-    <% @grading_levels = GradingLevel.default %>
-  <% end %>
+    <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+    <% if @grading_levels.blank? %>
+      <% @grading_levels = GradingLevel.default %>
+    <% end %>
   <% end %>
   <%
   @total_std_batch = 0

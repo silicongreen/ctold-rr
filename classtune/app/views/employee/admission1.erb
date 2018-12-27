@@ -230,6 +230,11 @@
         <label for="employee_nationality"><%= t('nationality') %></label>
         <div class="text-input-bg"><%= select :employee, :nationality_id, @nationalities.map {|c| [c.nationality.blank? ? c.name: c.nationality.nationality, c.id]}, :selected => @employee.nationality_id || @selected_value %></div>
       </div>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+          <label for="student_religion"><%= t('religion') %></label>
+          <div class="text-input-bg"><%= a.text_field :religion, :class=>"form-control" %></div>
+      </div>
       <br />
       
       <div id="admission1_form_vertical_block_right" style="display: none;">

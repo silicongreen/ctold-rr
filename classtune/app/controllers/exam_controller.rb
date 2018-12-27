@@ -114,10 +114,10 @@ class ExamController < ApplicationController
     student_electives.each do |elect|
       if !elective_subjects_id.include?(elect.subject_id)
         elective_subjects_id << elect.subject_id
-         subject = Subject.find_by_id(elect.subject_id, :conditions=>"is_deleted=0")
-         unless subject.blank?
-           elective_subjects.push subject
-         end
+        subject = Subject.find_by_id(elect.subject_id, :conditions=>"is_deleted=0")
+        unless subject.blank?
+          elective_subjects.push subject
+        end
       end     
     end
     
@@ -146,35 +146,35 @@ class ExamController < ApplicationController
         student_subject = []
         exam_new = []
         unless @subjects.blank? 
-           @subjects.each do |subjects|
-             if subjects['elective_group_id'].to_i!=0
-               @all_student_subject.each do |sub_std|
-                 if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
-                   student_subject << subjects.id
-                 end 
-               end 
-             else
-               student_subject << subjects.id 
-             end 
-           end
+          @subjects.each do |subjects|
+            if subjects['elective_group_id'].to_i!=0
+              @all_student_subject.each do |sub_std|
+                if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
+                  student_subject << subjects.id
+                end 
+              end 
+            else
+              student_subject << subjects.id 
+            end 
+          end
         end 
 
         unless @all_subject_exam.blank? 
-           @all_subject_exam.each do |exam|
-             if student_subject.include?(exam.subject_id) 
+          @all_subject_exam.each do |exam|
+            if student_subject.include?(exam.subject_id) 
               exam_new << exam
-             end 
-           end
+            end 
+          end
         end
         @exams = exam_new
 
         comments_student = []
         unless @exam_comments.blank? 
-           @exam_comments.each do |cmt|
-             if cmt.student_id = @student.id
+          @exam_comments.each do |cmt|
+            if cmt.student_id = @student.id
               comments_student << cmt
-             end 
-           end
+            end 
+          end
         end
         @exam_comment = comments_student
 
@@ -212,8 +212,8 @@ class ExamController < ApplicationController
           FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
         end
         render :pdf  => 'student_wise_generated_report',
-        :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
-        :save_only    => true
+          :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
+          :save_only    => true
       end
     end
   end
@@ -228,12 +228,12 @@ class ExamController < ApplicationController
    
     
     @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
-        get_continues(@id,@batch.id)
-        report_data = []
-        if @student_response['status']['code'].to_i == 200
-          report_data = @student_response['data']
-        end
-        report_data
+      get_continues(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
     }
 
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
@@ -334,9 +334,9 @@ class ExamController < ApplicationController
     @attandence_end_date = params[:exam_option][:attandence_end_date]
     @topic = params[:exam_option][:topic]
     name=@batch.exam_groups.collect(&:name)
-#    if name.include?@name
-#      @error=true
-#    end
+    #    if name.include?@name
+    #      @error=true
+    #    end
     @cce_exam_category_id = params[:exam_option][:cce_exam_category_id]
     @cce_exam_categories = CceExamCategory.all if @batch.cce_enabled?
     unless @name == '' or @error
@@ -758,24 +758,24 @@ class ExamController < ApplicationController
     end
     
     if request.post?
-        @exam_marks_error = false
-        unless params[:exam_marks].blank?
-         params[:exam_marks].each_pair do |exam_id, max_mark|
-           @exam = Exam.find_by_id(exam_id)
-           unless @exam.nil?
-              max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
-              if @exam.alternative_title != max_mark[:alternative_title]
-                 @exam.update_attribute(:alternative_title,max_mark[:alternative_title])
-              end   
+      @exam_marks_error = false
+      unless params[:exam_marks].blank?
+        params[:exam_marks].each_pair do |exam_id, max_mark|
+          @exam = Exam.find_by_id(exam_id)
+          unless @exam.nil?
+            max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
+            if @exam.alternative_title != max_mark[:alternative_title]
+              @exam.update_attribute(:alternative_title,max_mark[:alternative_title])
+            end   
              
-              if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
-                 @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
-              elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
-                 @exam_marks_error = true
-              end 
-           end
-         end
-       end 
+            if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
+              @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
+            elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
+              @exam_marks_error = true
+            end 
+          end
+        end
+      end 
      
       unless params[:exam_score].blank?
         params[:exam_score].each_pair do |exam_id, stdetails|
@@ -784,14 +784,14 @@ class ExamController < ApplicationController
             @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
             @exam_absent = ExamAbsent.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
             if details[:marks].nil?
-               details[:marks] = 0
+              details[:marks] = 0
             end
             if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
               if @exam_absent.nil?
                 ExamAbsent.create do |absent|
-                    absent.exam_id          = @exam.id
-                    absent.student_id       = student_id
-                    absent.remarks          = details[:marks]
+                  absent.exam_id          = @exam.id
+                  absent.student_id       = student_id
+                  absent.remarks          = details[:marks]
                 end 
               else
                 @exam_absent.update_attribute("remarks",details[:marks])
@@ -803,26 +803,26 @@ class ExamController < ApplicationController
                 if details[:marks].to_f <= @exam.maximum_marks.to_f
                   
                   
-                    unless details[:remarks].blank?
-                      if details[:remarks].kind_of?(Array)
-                        remarks_details = details[:remarks].join("|")
-                        ExamScore.create do |score|
-                          score.exam_id          = @exam.id
-                          score.student_id       = student_id
-                          score.user_id          = current_user.id
-                          score.marks            = details[:marks]
-                          score.remarks          = remarks_details
-                        end
-
-                      end
-                    else
+                  unless details[:remarks].blank?
+                    if details[:remarks].kind_of?(Array)
+                      remarks_details = details[:remarks].join("|")
                       ExamScore.create do |score|
                         score.exam_id          = @exam.id
                         score.student_id       = student_id
                         score.user_id          = current_user.id
                         score.marks            = details[:marks]
+                        score.remarks          = remarks_details
                       end
+
                     end
+                  else
+                    ExamScore.create do |score|
+                      score.exam_id          = @exam.id
+                      score.student_id       = student_id
+                      score.user_id          = current_user.id
+                      score.marks            = details[:marks]
+                    end
+                  end
                 
                   
                 else
@@ -831,24 +831,24 @@ class ExamController < ApplicationController
               end
             else
               if details[:marks].to_f <= @exam.maximum_marks.to_f
-                  unless details[:remarks].blank?
-                    if details[:remarks].kind_of?(Array)
-                      remarks_details = details[:remarks].join("|")
-                      details[:remarks] = remarks_details
+                unless details[:remarks].blank?
+                  if details[:remarks].kind_of?(Array)
+                    remarks_details = details[:remarks].join("|")
+                    details[:remarks] = remarks_details
+                  end
+                end 
+                if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
+                  @exam_score.destroy
+                else
+                  unless details[:marks].nil? 
+                    details[:user_id] = current_user.id
+                    if @exam_score.update_attributes(details)
+                    else
+                      flash[:warn_notice] = "#{t('flash4')}"
+                      @error = nil
                     end
-                  end 
-                  if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
-                    @exam_score.destroy
-                  else
-                    unless details[:marks].nil? 
-                      details[:user_id] = current_user.id
-                      if @exam_score.update_attributes(details)
-                      else
-                        flash[:warn_notice] = "#{t('flash4')}"
-                        @error = nil
-                      end
-                    end
-                  end  
+                  end
+                end  
               else
                 @error = true
               end
@@ -895,10 +895,10 @@ class ExamController < ApplicationController
         @group_exam.each do |group_exam|
           exam_group = ExamGroup.active.find(group_exam.exam_group_id)
           unless exam_group.blank?
-             exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
-             unless exam.blank?
-               @exams << exam
-             end
+            exam = Exam.find_by_exam_group_id_and_subject_id(exam_group.id,@exam_subject.id)
+            unless exam.blank?
+              @exams << exam
+            end
           end  
         end
       else
@@ -1076,7 +1076,7 @@ class ExamController < ApplicationController
 
       end
       unless available_user_ids.blank?
-      Delayed::Job.enqueue(
+        Delayed::Job.enqueue(
           DelayedReminderJob.new( :sender_id  => current_user.id,
             :recipient_ids => available_user_ids,
             :subject=>"#{t('result_published')}",
@@ -1404,10 +1404,10 @@ class ExamController < ApplicationController
     student_electives.each do |elect|
       if !elective_subjects_id.include?(elect.subject_id)
         elective_subjects_id << elect.subject_id
-         subject = Subject.find_by_id(elect.subject_id)
-         unless subject.blank?
-           elective_subjects.push subject
-         end
+        subject = Subject.find_by_id(elect.subject_id)
+        unless subject.blank?
+          elective_subjects.push subject
+        end
       end     
     end
     
@@ -1432,34 +1432,34 @@ class ExamController < ApplicationController
     
     
     @exam_comments = ExamGroupComment.find_all_by_exam_group_id(@exam_group.id)
-#    on_leaves = 0;
-#    leaves_other = 0;
-#    leaves_full = 0;
-#    unless @student_leaves.empty?
-#      @student_leaves.each do |r|
-#        if r.student_id == @student.id
-#          working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
-#
-#          if working_days_count==1
-#            if r.is_leave == true
-#              on_leaves = on_leaves+1;
-#            elsif r.forenoon==true && r.afternoon==false
-#              leaves_other = leaves_other+1;
-#            elsif r.forenoon==false && r.afternoon==true  
-#              leaves_other = leaves_other+1;
-#            else
-#              leaves_full = leaves_full+1;
-#            end 
-#          end
-#        end
-#      end
-#    end
-#    #    @late = leaves_other
-#    #    @absent = leaves_full
-#    #    @on_leave = on_leaves
-#    @present = @academic_days-on_leaves-leaves_full
-#    @absent = @academic_days-@present
-#    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+    #    on_leaves = 0;
+    #    leaves_other = 0;
+    #    leaves_full = 0;
+    #    unless @student_leaves.empty?
+    #      @student_leaves.each do |r|
+    #        if r.student_id == @student.id
+    #          working_days_count=@batch.find_working_days(r.month_date.to_date,r.month_date.to_date).select{|v| v<=r.month_date.to_date}.count
+    #
+    #          if working_days_count==1
+    #            if r.is_leave == true
+    #              on_leaves = on_leaves+1;
+    #            elsif r.forenoon==true && r.afternoon==false
+    #              leaves_other = leaves_other+1;
+    #            elsif r.forenoon==false && r.afternoon==true  
+    #              leaves_other = leaves_other+1;
+    #            else
+    #              leaves_full = leaves_full+1;
+    #            end 
+    #          end
+    #        end
+    #      end
+    #    end
+    #    #    @late = leaves_other
+    #    #    @absent = leaves_full
+    #    #    @on_leave = on_leaves
+    #    @present = @academic_days-on_leaves-leaves_full
+    #    @absent = @academic_days-@present
+    #    @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
    
     render :pdf => 'student_wise_generated_report_all'
   end
@@ -1539,7 +1539,7 @@ class ExamController < ApplicationController
     
     if @for_save.blank?
       render :pdf => 'student_wise_generated_report',
-      :footer => {:html => { :template=> 'layouts/footer_single.html'}}
+        :footer => {:html => { :template=> 'layouts/footer_single.html'}}
     else
       pdf_name = "group_exam_"+params[:exam_group].to_s+"_"+params[:student].to_s+".pdf"
       dirname = Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s)
@@ -1548,9 +1548,9 @@ class ExamController < ApplicationController
         FileUtils.chmod_R(0777, Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s))
       end
       render :pdf  => 'student_wise_generated_report',
-      :footer => {:html => { :template=> 'layouts/footer_single.html'}},
-      :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
-      :save_only    => true
+        :footer => {:html => { :template=> 'layouts/footer_single.html'}},
+        :save_to_file => Rails.root.join('public','result_pdf_archive',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"examgroup","0"+@exam_group.id.to_s,pdf_name),
+        :save_only    => true
     end
   end
 
@@ -1644,22 +1644,22 @@ class ExamController < ApplicationController
         "/exam/graph_for_generated_report?batch=#{@batch.id}&examgroup=#{@exam_group.id}&student=#{@student.id}")
       
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-       if !params[:comments].blank?   
-         @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
-         if @exam_comment.blank?
-           exam_comment_new = ExamGroupComment.new
-           exam_comment_new.exam_group_id = @exam_group.id
-           exam_comment_new.comments = params[:comments]
-           exam_comment_new.student_id = @student.id
-           exam_comment_new.employee_id = current_user.employee_record.id
-           exam_comment_new.created_at = now
-           exam_comment_new.updated_at = now
-           exam_comment_new.school_id = MultiSchool.current_school.id
-           exam_comment_new.save 
-         else
-           @exam_comment.update_attribute(:comments,params[:comments])
-         end     
-       end
+      if !params[:comments].blank?   
+        @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
+        if @exam_comment.blank?
+          exam_comment_new = ExamGroupComment.new
+          exam_comment_new.exam_group_id = @exam_group.id
+          exam_comment_new.comments = params[:comments]
+          exam_comment_new.student_id = @student.id
+          exam_comment_new.employee_id = current_user.employee_record.id
+          exam_comment_new.created_at = now
+          exam_comment_new.updated_at = now
+          exam_comment_new.school_id = MultiSchool.current_school.id
+          exam_comment_new.save 
+        else
+          @exam_comment.update_attribute(:comments,params[:comments])
+        end     
+      end
       
       @exam_comment = ExamGroupComment.find_by_exam_group_id_and_student_id(@exam_group.id,@student.id)
       
@@ -2394,10 +2394,10 @@ class ExamController < ApplicationController
     end
     
     if batch_name.length == 0
-        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
-          batches = Batch.find_by_course_id(course_id)
-          batches
-        }
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+        batches = Batch.find_by_course_id(course_id)
+        batches
+      }
     else
       @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
         batches = Batch.find_by_course_id_and_name(course_id, batch_name)
@@ -2758,13 +2758,13 @@ class ExamController < ApplicationController
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee = @batch.all_class_teacher
     @report_data = Rails.cache.fetch("continues_#{@id}_#{@batch.id}"){
-          get_continues(@id,@batch.id)
-          report_data = []
-          if @student_response['status']['code'].to_i == 200
-            report_data = @student_response['data']
-          end
-          report_data
-        }
+      get_continues(@id,@batch.id)
+      report_data = []
+      if @student_response['status']['code'].to_i == 200
+        report_data = @student_response['data']
+      end
+      report_data
+    }
     @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
     @tabulation_data = []
@@ -2772,15 +2772,111 @@ class ExamController < ApplicationController
       @tabulation_data = student_response['data']
     end
     render :pdf => 'merit_list',
-        :orientation => 'Portrait', :zoom => 1.00,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
    
   end
+  
+  def tabulation_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    new_book.create_worksheet :name => 'tabulation'
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+  
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    finding_data5()
+    if @student_list_first_term.blank?
+      @subject_highest_1st_term = @subject_highest_2nd_term
+      @student_position_first_term = @student_position_second_term
+      @student_position_first_term_batch = @student_position_second_term_batch
+    end
+    row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
+    @subject_result.each do |sub_result|
+      row_first << "AT"
+      row_first << "CW"
+      row_first << "OB"
+      row_first << "SB"
+      row_first << "PR"
+      row_first << "+RT"
+      row_first << "+CT"
+      row_first << "LG"
+    end
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    std_loop = 1
+    @student_result.each do |std_result|
+      tmp_row = []
+      tmp_row << std_result['sl']
+      tmp_row << std_result['sid'].to_s
+      tmp_row << std_result['roll'].to_s
+      tmp_row << std_result['name'].to_s
+      tmp_row << std_result['grand_total'].to_s
+      tmp_row << std_result['gpa'].to_s+"("+std_result['gp'].to_s+")"
+      tmp_row << std_result['lg']
+      if !@student_position_first_term.blank? && @student_position_first_term[std_result['id']].blank?
+        tmp_row <<  @student_position_first_term[std_result['id']]
+      else
+        tmp_row << ""
+      end  
+      
+      if !@student_position_first_term_batch.blank? && @student_position_first_term_batch[std_result['id']].blank?
+        tmp_row << @student_position_first_term_batch[std_result['id']]
+      else
+        tmp_row << ""
+      end
+      
+      tmp_row << ""
+      tmp_row << ""
+      unless std_result['subjects'].blank?
+        @subject_result.each do |key,sub_result|
+          unless std_result['subjects'][key].blank?
+            
+            tmp_row << std_result['subjects'][key]['result']['at'].to_s
+            tmp_row << std_result['subjects'][key]['result']['cw'].to_s
+            tmp_row << std_result['subjects'][key]['result']['ob'].to_s
+            tmp_row << std_result['subjects'][key]['result']['sb'].to_s
+            tmp_row << std_result['subjects'][key]['result']['pr'].to_s
+            tmp_row << std_result['subjects'][key]['result']['rt'].to_s
+            tmp_row << std_result['subjects'][key]['result']['ct'].to_s
+            tmp_row << std_result['subjects'][key]['result']['lg'].to_s
+          else
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            tmp_row << "-"
+            
+          end  
+        end
+      end
+      new_book.worksheet(0).insert_row(std_loop, tmp_row)
+      std_loop = std_loop+1
+      
+    end
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"
+  end
+  
+  
   
   def continues
     @id = params[:id]
@@ -2802,11 +2898,11 @@ class ExamController < ApplicationController
       redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/continues/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
     else
       @assigned_employee=@batch.all_class_teacher
-        get_continues(@id,@batch.id)
-        @report_data = []
-        if @student_response['status']['code'].to_i == 200
-          @report_data = @student_response['data']
-        end 
+      get_continues(@id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end 
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
       render_connect_exam("continues",false,file_name)  
     end
@@ -2863,11 +2959,11 @@ class ExamController < ApplicationController
     @batch = Batch.find(@connect_exam_obj.batch_id)
     @assigned_employee=@batch.all_class_teacher
     if  MultiSchool.current_school.id == 312
-        get_tabulation(@id,@batch.id)
-        @report_data = []
-        if @student_response['status']['code'].to_i == 200
-          @report_data = @student_response['data']
-        end 
+      get_tabulation(@id,@batch.id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end 
     else
       @report_data = Rails.cache.fetch("tabulation_#{@id}_#{@batch.id}"){
         get_tabulation(@id,@batch.id)
@@ -2957,13 +3053,13 @@ class ExamController < ApplicationController
 
     @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
     render :pdf => "class_performance_student",
-            :orientation => 'Portrait',
-            :margin => {:top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+      :orientation => 'Portrait',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
   end
   
   def failed_grade
@@ -3022,25 +3118,25 @@ class ExamController < ApplicationController
        
       @exam_comment = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
       if (MultiSchool.current_school.id == 280 && @connect_exam_obj.result_type==2) or 
-         (MultiSchool.current_school.id == 323 && @connect_exam_obj.result_type==6)
-       render :pdf => 'tabulation',
-        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
-        :page_size => 'Legal',
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+          (MultiSchool.current_school.id == 323 && @connect_exam_obj.result_type==6)
+        render :pdf => 'tabulation',
+          :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+          :page_size => 'Legal',
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
       else
-      render :pdf => 'tabulation',
-        :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        render :pdf => 'tabulation',
+          :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
       end
     end  
   end
@@ -3065,25 +3161,25 @@ class ExamController < ApplicationController
     champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_from = champs21_config['from']
     
-#    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}") && api_from != "local"
-#      FileUtils.chown 'champs21','champs21',file_name
-#      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
-#    else
-      @grades = @batch.grading_level_list
+    #    if File.file?(file_name) && Rails.cache.exist?("marksheet_#{@id}_#{@subject_id}") && api_from != "local"
+    #      FileUtils.chown 'champs21','champs21',file_name
+    #      redirect_to "/result_pdf/0"+MultiSchool.current_school.id.to_s+"/0"+@batch.id.to_s+"/marksheet/0"+@connect_exam_obj.id.to_s+"/"+pdf_name
+    #    else
+    @grades = @batch.grading_level_list
 
-      @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
-      if !@employee_sub.nil?
-        @employee = Employee.find(@employee_sub.employee_id)
-      end
+    @employee_sub = EmployeesSubject.find_by_subject_id(@subject_id)
+    if !@employee_sub.nil?
+      @employee = Employee.find(@employee_sub.employee_id)
+    end
       
-      get_subject_mark_sheet(@id,@subject_id)
-      @report_data = []
-      if @student_response['status']['code'].to_i == 200
-        @report_data = @student_response['data']
-      end
+    get_subject_mark_sheet(@id,@subject_id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
       
-      if MultiSchool.current_school.id == 340 && params[:evaluation].blank?
-        render :pdf => 'marksheet',
+    if MultiSchool.current_school.id == 340 && params[:evaluation].blank?
+      render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'A4',
         :margin => {    :top=> 10,
@@ -3092,8 +3188,8 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif MultiSchool.current_school.id == 323
-        render :pdf => 'marksheet',
+    elsif MultiSchool.current_school.id == 323
+      render :pdf => 'marksheet',
         :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'A4',
         :margin => {    :top=> 10,
@@ -3102,8 +3198,8 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      elsif MultiSchool.current_school.id == 348
-        render :pdf => 'marksheet',
+    elsif MultiSchool.current_school.id == 348
+      render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'A4',
         :margin => {    :top=> 10,
@@ -3112,7 +3208,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      else 
+    else 
       render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
         :page_size => 'Legal',
@@ -3122,7 +3218,7 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-      end
+    end
     
   end
   
@@ -3142,11 +3238,11 @@ class ExamController < ApplicationController
       @employee = Employee.find(@employee_sub.employee_id)
     end
     @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
-    get_subject_mark_sheet(@id,@subject_id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+      get_subject_mark_sheet(@id,@subject_id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
     }    
     render :pdf => 'effot_gradesheet',
       :orientation => 'Portrait', :zoom => 1.00,
@@ -3174,11 +3270,11 @@ class ExamController < ApplicationController
       @employee = Employee.find(@employee_sub.employee_id)
     end
     @report_data = Rails.cache.fetch("marksheet_#{@id}_#{@subject_id}"){
-    get_subject_mark_sheet(@id,@subject_id)
-    @report_data = []
-    if @student_response['status']['code'].to_i == 200
-      @report_data = @student_response['data']
-    end
+      get_subject_mark_sheet(@id,@subject_id)
+      @report_data = []
+      if @student_response['status']['code'].to_i == 200
+        @report_data = @student_response['data']
+      end
     }  
     
     if @tabulation_data.nil?
@@ -3251,14 +3347,14 @@ class ExamController < ApplicationController
         flash[:notice] = "#{t('flash5')}"
         redirect_to :action=>'grouped_exam_report_new' and return
       end
-#      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
+      #      @report_data = Rails.cache.fetch("student_exam_#{@connect_exam}_#{@batch.id}_#{@student.id}"){
       get_exam_report(@connect_exam,@student.id,@batch.id)
       @report_data = []
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-#      report_data
-#      }
+      #      report_data
+      #      }
       @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(@connect_exam_obj.id,@student.id)
       
     else
@@ -3276,8 +3372,8 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-#      report_data
-#      }
+      #      report_data
+      #      }
       if current_user.admin? or current_user.employee?  
       
         now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
@@ -3431,8 +3527,8 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-#      report_data
-#      }
+      #      report_data
+      #      }
     else
       @student = Student.find(params[:student])
       @batch = Batch.find_by_id(params[:batch_id])
@@ -3448,8 +3544,8 @@ class ExamController < ApplicationController
       if @student_response['status']['code'].to_i == 200
         @report_data = @student_response['data']
       end
-#      report_data
-#      }
+      #      report_data
+      #      }
       
     end
     
@@ -3672,7 +3768,7 @@ class ExamController < ApplicationController
         else
           @students.push [student.class_roll_no.to_i,student.first_name, student.id, student] unless student.nil? 
         end
-#        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
+        #        @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil?
       end
       
       @ordered_students = @students.sort
@@ -4233,153 +4329,153 @@ class ExamController < ApplicationController
   private
   
   def render_connect_exam(template,for_save=false,file_name="")
-        if MultiSchool.current_school.id == 246
-          render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Landscape',
-            :margin => {:top=> 35,
-            :bottom => 40,
-            :left=> 10,
-            :right => 10}
-        elsif MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
-          if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 9
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait',
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          else
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Landscape',
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-        
-          end
-      
-      
-        elsif MultiSchool.current_school.id == 348
-          if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 10
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Landscape',
-            :encoding =>    'utf8',
-            :margin => {    :top=> 0,
-            :bottom => 0,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          else
-           render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait',
-            :encoding =>    'utf8',
-            :margin => {    :top=> 10,
-            :bottom => 5,
-            :left=> 20,
-            :right => 20},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          end
-        elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
-          if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7)
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait',
-            :margin => {    :top=> 10,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          else  
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait'
-          end
-        elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
-          if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait',
-            :margin => { :top=> 30,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          else
-            
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Landscape',
-            :margin => {  :top=> 30,
-            :bottom => 10,
-            :left=> 10,
-            :right => 10},
-            :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-          end
-        elsif  MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 3
-            render :pdf => template,
-            :save_to_file => file_name,
-            :save_only    => for_save,
-            :orientation => 'Portrait',
-            :margin => {:top=> 35,
-            :bottom => 35,
-            :left=> 10,
-            :right => 10}
-        elsif  MultiSchool.current_school.id == 340  
-            if @connect_exam_obj.result_type == 14 or @connect_exam_obj.result_type == 13
-              render :pdf => template,
-              :save_to_file => file_name,
-              :save_only    => for_save,
-              :orientation => 'Landscape',
-              :page_size=>'A5',
-              :margin => {:top=> 5,
-              :bottom =>0,
-              :left=> 30,
-              :right => 10},
-              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
-            else
-              render :pdf => template,
-              :save_to_file => file_name,
-              :save_only    => for_save,
-              :orientation => 'Portrait',
-              :margin => {    :top=> 10,
-              :bottom => 10,
-              :left=> 10,
-              :right => 10},
-              :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-              :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
-            end
-        else 
-          render :pdf => template,
+    if MultiSchool.current_school.id == 246
+      render :pdf => template,
+        :save_to_file => file_name,
+        :save_only    => for_save,
+        :orientation => 'Landscape',
+        :margin => {:top=> 35,
+        :bottom => 40,
+        :left=> 10,
+        :right => 10}
+    elsif MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
+      if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 9
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else
+        render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,
           :orientation => 'Landscape',
-          :margin => {:top=> 25,
-            :bottom => 40,
-            :left=> 10,
-            :right => 10}
-        end
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        
+      end
+      
+      
+    elsif MultiSchool.current_school.id == 348
+      if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 10
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Landscape',
+          :encoding =>    'utf8',
+          :margin => {    :top=> 0,
+          :bottom => 0,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :encoding =>    'utf8',
+          :margin => {    :top=> 10,
+          :bottom => 5,
+          :left=> 20,
+          :right => 20},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
+    elsif MultiSchool.current_school.id == 319 or MultiSchool.current_school.id == 323 or MultiSchool.current_school.id == 325
+      if MultiSchool.current_school.id == 319  and (@connect_exam_obj.result_type == 2 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7)
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else  
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait'
+      end
+    elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
+      if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :margin => { :top=> 30,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      else
+            
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Landscape',
+          :margin => {  :top=> 30,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      end
+    elsif  MultiSchool.current_school.id == 342 or MultiSchool.current_school.id == 324 or MultiSchool.current_school.id == 3
+      render :pdf => template,
+        :save_to_file => file_name,
+        :save_only    => for_save,
+        :orientation => 'Portrait',
+        :margin => {:top=> 35,
+        :bottom => 35,
+        :left=> 10,
+        :right => 10}
+    elsif  MultiSchool.current_school.id == 340  
+      if @connect_exam_obj.result_type == 14 or @connect_exam_obj.result_type == 13
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Landscape',
+          :page_size=>'A5',
+          :margin => {:top=> 5,
+          :bottom =>0,
+          :left=> 30,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}} 
+      else
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          :margin => {    :top=> 10,
+          :bottom => 10,
+          :left=> 10,
+          :right => 10},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}  
+      end
+    else 
+      render :pdf => template,
+        :save_to_file => file_name,
+        :save_only    => for_save,
+        :orientation => 'Landscape',
+        :margin => {:top=> 25,
+        :bottom => 40,
+        :left=> 10,
+        :right => 10}
+    end
     
   end
   
@@ -4690,6 +4786,529 @@ class ExamController < ApplicationController
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 
+  end
+  
+  def finding_data5
+    if @total_std.blank?
+      if @grading_levels.blank?
+        @grading_levels = GradingLevel.for_batch(@batch.id)
+        if @grading_levels.blank?
+          @grading_levels = GradingLevel.default
+        end
+      end
+      @total_std_batch = 0
+      @total_std = 0
+      @student_list_first_term = []
+      @student_list_second_term = []
+      @student_list = []
+      @student_list_batch = []
+      @student_list_first_term_batch = []
+      @student_list_second_term_batch = []
+      @student_subject_marks = {}
+      @subject_highest = {}
+      @subject_highest_1st_term = {}
+      @subject_highest_2nd_term = {}
+      @student_avg_mark = {}
+      @student_result = []
+      @subject_result = {}
+      loop_std = 0
+      unless @tabulation_data.blank?
+        connect_exam = 0
+        batch_loop = 0
+        @tabulation_data['report'].each do |tab|
+          batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
+          batch_subject_id = batch_subject.map(&:id)
+          batch_loop = batch_loop+1
+          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          
+          
+          connect_exam = connect_exam+1
+          grand_total = 0
+          grand_grade_point = 0
+      
+          grand_total1 = 0
+          grand_grade_point1 = 0
+      
+          grand_total2 = 0
+          grand_grade_point2 = 0
+      
+          u_grade = 0
+          u_grade1 = 0
+          u_grade2 = 0
+          
+          tab['students'].each do |std| 
+            @student_tab = Student.find_by_id(std['id'].to_i)
+            if connect_exam_id.to_i == @connect_exam_obj.id
+              if @student_result[loop_std].blank?
+                @student_result[loop_std] = {}
+              end
+              @student_result[loop_std]['id'] = std['id']
+              @student_result[loop_std]['sl'] = loop_std+1
+              @student_result[loop_std]['sid'] = @student_tab.admission_no
+              @student_result[loop_std]['roll'] = @student_tab.class_roll_no
+              @student_result[loop_std]['name'] = @student_tab.full_name
+              @student_result[loop_std]['subjects'] = {}
+             
+            end
+            
+            @total_std = @total_std+1
+            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
+            std_subject_id = total_std_subject.map(&:subject_id)
+            total_subject = 0
+            tab['subjects'].each do |sub|
+              
+              if connect_exam_id.to_i == @connect_exam_obj.id
+                @student_result[loop_std]['subjects'][sub['id'].to_s] = {}
+                @student_result[loop_std]['subjects'][sub['id'].to_s]['name'] = sub['name']
+                @student_result[loop_std]['subjects'][sub['id'].to_s]['id'] = sub['id']
+                @student_result[loop_std]['subjects'][sub['id'].to_s]['result'] = {}
+              end
+              
+              fourth_subject = false;
+              if !@std_subject_hash_type.blank?
+                if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
+                  fourth_subject = true
+                end  
+              end 
+              
+              
+          
+              has_exam = false
+              tab['exams'].each do |rs|
+                if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                  has_exam = true
+                  break
+                end  
+              end 
+              if has_exam == false
+                next
+              end 
+        
+              if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+                if fourth_subject == false
+                  total_subject = total_subject+1
+                end
+                total_mark1 = 0
+                full_mark1 = 0
+                total_mark2 = 0
+                full_mark2 = 0
+            
+                at_total_mark1 = 0
+                at_total_mark2 = 0
+            
+                monthly_full_mark1 = 0
+                monthly_full_mark2 = 0
+                monthly_total_mark1 = 0
+                monthly_total_mark2 = 0
+                appeared = false
+                
+                full_sb1 = 0
+                full_sb2 = 0
+                total_sb1 = 0
+                total_sb2 = 0
+                
+                full_ob1 = 0
+                full_ob2 = 0
+                total_ob1 = 0
+                total_ob2 = 0
+                
+                full_pr1 = 0
+                full_pr2 = 0
+                total_pr1 = 0
+                total_pr2 = 0
+                
+                
+                tab['exams'].each do |rs|
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
+                    appeared = true
+                    if rs['exam_category'] == '1'
+                      if rs['quarter'] == '1'
+                        monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '2'
+                      if rs['quarter'] == '1'
+                        at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '3'  
+                      if rs['quarter'] == '1'
+                        full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '4'  
+                      if rs['quarter'] == '1'
+                        full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '5'  
+                      if rs['quarter'] == '1'
+                        full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    end
+                  end    
+                end
+          
+                if monthly_total_mark1 > 0
+                  monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
+                  monthly_total_mark1 = monthly_total_mark1.round()
+                end 
+                if monthly_total_mark2 > 0
+                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*20
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                end
+                
+            
+            
+                total_mark2 = total_ob2+total_sb2+total_pr2
+                total_mark2_80 = total_mark2.to_f
+                if full_mark2 > 100
+                  total_mark2_80 = total_mark2.to_f*0.75
+                end  
+            
+                total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
+            
+                total_mark1 = total_ob1+total_sb1+total_pr1
+                total_mark1_80 = total_mark1.to_f
+                if full_mark1 > 100
+                  total_mark1_80 = total_mark1.to_f*0.75
+                end
+           
+                total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+                
+                
+            
+           
+            
+                if full_mark1 >=100
+                  full_mark1 = 100
+                else
+                  full_mark1 = 50
+                end  
+          
+                if full_mark2 >=100
+                  full_mark2 = 100
+                else
+                  full_mark2 = 50
+                end  
+
+                total_mark2_no_round = total_mark2
+                full_mark2 = full_mark2
+                total_mark2 = total_mark2.round()
+
+                total_mark1_no_round = total_mark1
+                full_mark1 = full_mark1
+                total_mark1 = total_mark1.round()
+
+
+                if total_mark2.to_f>0 and full_mark2.to_f>0
+                  main_mark2 = (total_mark2.to_f/full_mark2.to_f)*100 
+                else
+                  main_mark2 = 0
+                end 
+                if total_mark1.to_f>0 and full_mark1.to_f>0
+                  main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100 
+                else
+                  main_mark1 = 0
+                end 
+                main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+            
+            
+                subject_full_marks_no_round = total_mark2_no_round.to_f+total_mark1_no_round.to_f
+                subject_full_marks = (total_mark2_no_round.to_f+total_mark1_no_round.to_f)/2.00
+                subject_full_marks = subject_full_marks.round()
+                if sub['grade_subject'].to_i != 1
+                  if @student_subject_marks[sub['id'].to_i].blank?
+                    @student_subject_marks[sub['id'].to_i] = {}
+                  end
+
+                  @student_subject_marks[sub['id'].to_i][std['id'].to_i] = subject_full_marks
+           
+              
+                  grand_total1 = grand_total1+total_mark1_no_round
+                  grand_total2 = grand_total2+total_mark2_no_round
+                  grand_total = grand_total+subject_full_marks_no_round
+              
+                  if fourth_subject.blank?
+                    grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
+                      if grade.credit_points.to_i == 0
+                        u_grade1 = u_grade1+1
+                      end
+                    end
+
+                    grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      grand_grade_point2 = grand_grade_point2+grade.credit_points.to_f
+                      if grade.credit_points.to_i == 0
+                        u_grade2 = u_grade2+1
+                      end
+                    end
+
+                    grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      grand_grade_point = grand_grade_point+grade.credit_points.to_f
+                      if grade.credit_points.to_i == 0
+                        u_grade = u_grade+1
+                      end
+                    end 
+                  else
+                    grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      new_grade_point = grade.credit_points.to_f-2
+                      if new_grade_point > 0
+                        grand_grade_point1 = grand_grade_point1+new_grade_point.to_f
+                      end
+                    end
+
+                    grade = GradingLevel.percentage_to_grade(main_mark2, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      new_grade_point = grade.credit_points.to_f-2
+                      if new_grade_point > 0
+                        grand_grade_point2 = grand_grade_point2+new_grade_point.to_f
+                      end
+                    end
+
+                    grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                    if !grade.blank? and !grade.name.blank?
+                      new_grade_point = grade.credit_points.to_f-2
+                      if new_grade_point > 0
+                        grand_grade_point = grand_grade_point+new_grade_point.to_f
+                      end
+                    end
+                  end  
+              
+                end
+                if connect_exam_id.to_i == @connect_exam_obj.id
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['at'] = at_total_mark1+at_total_mark2
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
+                  
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['ob'] = total_ob1+total_ob2
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['sb'] = total_sb1+total_sb2
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['pr'] = total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
+                  
+                  
+                  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                  if !grade.blank? and !grade.name.blank? && sub['grade_subject'].to_i != 1
+                    if grade.credit_points.to_i == 0
+                      if @subject_result[sub['id']].blank?
+                        @subject_result[sub['id']] = {}
+                        @subject_result[sub['id']]['id'] = sub['id']
+                        @subject_result[sub['id']]['name'] = sub['name']
+                      end
+                      if @subject_result[sub['id']]['failed'].blank?
+                        @subject_result[sub['id']]['failed'] = 1
+                      else
+                        @subject_result[sub['id']]['failed'] = @subject_result[sub['id']]['failed']+1
+                      end
+                      
+                      if appeared
+                        if @subject_result[sub['id']]['appeared'].blank?
+                          @subject_result[sub['id']]['appeared'] = 1
+                        else
+                          @subject_result[sub['id']]['appeared'] = @subject_result[sub['id']]['appeared']+1
+                        end
+                      else
+                        if @subject_result[sub['id']]['absent'].blank?
+                          @subject_result[sub['id']]['absent'] = 1
+                        else
+                          @subject_result[sub['id']]['absent'] = @subject_result[sub['id']]['absent']+1
+                        end
+                        
+                      end
+                      
+                      if fourth_subject.blank?
+                        if @student_result[loop_std]['subject_failed'].blank?
+                          @student_result[loop_std]['subject_failed'] = []
+                        end
+                        @student_result[loop_std]['subject_failed'] << sub['name']+"-"+main_mark.to_s
+                      end 
+                    else
+                      if @subject_result[sub['id']].blank?
+                        @subject_result[sub['id']] = {}
+                        @subject_result[sub['id']]['id'] = sub['id']
+                        @subject_result[sub['id']]['name'] = sub['name']
+                      end
+                      if @subject_result[sub['id']]['passed'].blank?
+                         @subject_result[sub['id']]['passed'] = 1
+                      else
+                        @subject_result[sub['id']]['passed'] = @subject_result[sub['id']]['passed']+1
+                      end
+                      
+                    end  
+                  end
+                end
+                
+                if @subject_highest_1st_term[sub['id'].to_i].blank?
+                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1
+                elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f
+                  @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
+                end
+          
+                if @subject_highest_2nd_term[sub['id'].to_i].blank?
+                  @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
+                elsif total_mark2.to_f > @subject_highest_2nd_term[sub['id'].to_i].to_f
+                  @subject_highest_2nd_term[sub['id'].to_i] = total_mark2.to_f
+                end
+            
+
+                if @subject_highest[sub['id'].to_i].blank?
+                  @subject_highest[sub['id'].to_i] = subject_full_marks
+                elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+                  @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
+                end
+
+              end  
+            end
+
+            @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+       
+        
+            if connect_exam_id.to_i == @connect_exam_obj.id
+              @total_std_batch = @total_std_batch+1
+              @student_result[loop_std]['grand_total'] = grand_total
+              
+              grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+              grade_point_avg = grade_point_avg.round(2)
+              @student_result[loop_std]['gp'] = grand_grade_point
+              @student_result[loop_std]['gpa'] = grade_point_avg
+              
+              gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
+              if !gradeObj.blank? and !gradeObj.name.blank?
+                @student_result[loop_std]['lg'] = gradeObj.name
+              end
+              loop_std = loop_std+1
+            end
+            
+            if u_grade == 0  
+              grand_total_new = grand_total
+              grand_grade_new = grand_grade_point
+              
+              if connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end  
+              @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+          
+            end
+        
+            if u_grade1 == 0  
+              grand_total_new = grand_total1
+              grand_grade_new = grand_grade_point1
+              if connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end  
+              @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+          
+            end 
+        
+            if u_grade2 == 0  
+              grand_total_new = grand_total2
+              grand_grade_new = grand_grade_point2
+              if connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end  
+              @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+          
+            end 
+
+          end
+        end
+      end
+
+      @student_position_first_term = {}
+      @student_position_second_term = {}
+      @student_position = {}
+   
+      @student_position_first_term_batch = {}
+      @student_position_second_term_batch = {}
+      @student_position_batch = {}
+   
+      unless @student_list.blank?
+        position = 0
+        @sorted_students = @student_list.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position[s[2].to_i] = position
+        end 
+      end
+    
+      unless @student_list_first_term.blank?
+        position = 0
+        @sorted_students = @student_list_first_term.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position_first_term[s[2].to_i] = position
+        end 
+      end
+    
+      unless @student_list_second_term.blank?
+        position = 0
+        @sorted_students = @student_list_second_term.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position_second_term[s[2].to_i] = position
+        end 
+      end
+    
+      unless @student_list_batch.blank?
+        position = 0
+        @sorted_students = @student_list_batch.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position_batch[s[2].to_i] = position
+        end 
+      end
+    
+      unless @student_list_first_term_batch.blank?
+        position = 0
+        @sorted_students = @student_list_first_term_batch.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position_first_term_batch[s[2].to_i] = position
+        end 
+      end
+    
+      unless @student_list_second_term_batch.blank?
+        position = 0
+        @sorted_students = @student_list_second_term_batch.sort
+        @sorted_students.each do|s|
+          position = position+1
+          @student_position_second_term_batch[s[2].to_i] = position
+        end 
+      end
+    end
   end
 
 end

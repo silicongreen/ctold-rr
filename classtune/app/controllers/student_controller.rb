@@ -1244,6 +1244,26 @@ class StudentController < ApplicationController
 
   def generate_tc_pdf
     @student = ArchivedStudent.find_by_former_id(params[:id])
+    
+    student_electives = StudentsSubject.find_all_by_student_id(params[:id],:conditions=>"batch_id = #{@student.batch_id}")
+    @group = ""
+    if student_electives
+      student_electives.each do |elect|
+       sub = Subject.find(elect.subject_id)
+       if !sub.name.upcase.index("PHYSICS").nil? or !sub.name.upcase.index("PHYSICS").nil? or !sub.name.upcase.index("PHYSICS").nil?
+         @group = "Science"
+         break
+       elsif !sub.name.upcase.index("ECONOMICS").nil? or !sub.name.upcase.index("HISTORY OF ISLAM").nil? or !sub.name.upcase.index("GEOGRAPHY").nil?
+         @group = "Business Studies"
+         break
+       else
+         @group = "Humanities"
+         break
+       end   
+      end
+     
+    end
+    
     @std_guardians = @student.student_guardian
     @father = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'father'")
     @mother = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'mother'")

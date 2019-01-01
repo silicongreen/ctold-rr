@@ -41,6 +41,9 @@
 <%#*:action => 'delete', :id => @archived_student.id %><%#</li>%>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('generate_tc')}",
         {:controller => "student", :action => "generate_tc_pdf", :id => @archived_student.former_id},:target => '_blank' %></li>
+    
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('generate_tc')} Sign",
+        {:controller => "student", :action => "generate_tc_pdf", :id => @archived_student.former_id, :sign => 1},:target => '_blank' %></li>
 
   </ul>
 </div>

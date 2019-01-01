@@ -13,11 +13,11 @@
         <p class="left-font" id="left-position-6"><%= @student.admission_class %></p>
         <p class="left-font" id="left-position-7"><%= @student.batch.course.course_name %></p>
         <p class="left-font" id="left-position-8"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></p>
-        <p class="left-font" id="left-position-9">Date....</p>
+        <p class="left-font" id="left-position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%d %b %Y") unless @student.date_of_leaving.nil? %></p>
         <p class="left-font" id="left-position-10"><%= @student.batch.course.course_name %></p>
-        <p class="left-font" id="left-position-11"><%= @student.batch.course.section_name %></p>
-        <p class="left-font" id="left-position-12">Group...</p>
-        <p class="left-font" id="left-position-13">Paid..</p>
+        <p class="left-font" id="left-position-11"></p>
+        <p class="left-font" id="left-position-12"></p>
+        <p class="left-font" id="left-position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>
         <p class="left-font" id="left-position-14"><img src="/images/school_logo/352/principal.png" width="70"></p>
         <% end %>
@@ -31,11 +31,11 @@
         <p id="position-6"><%= @student.admission_class %></p>
         <p id="position-7"><%= @student.batch.course.course_name %></p>
         <p id="position-8"><%= I18n.l(@student.date_of_birth,:format=>"%d %b %Y") unless @student.date_of_birth.nil? %></p>
-        <p id="position-9">Date....</p>
+        <p id="position-9"><%= I18n.l(@student.date_of_leaving,:format=>"%d %b %Y") unless @student.date_of_leaving.nil? %></p>
         <p id="position-10"><%= @student.batch.course.course_name %></p>
         <p id="position-11"></p>
-        <p id="position-12">Group...</p>
-        <p id="position-13">Paid..</p>
+        <p id="position-12"></p>
+        <p id="position-13"><%= I18n.l(@student.date_of_leaving,:format=>"%Y") unless @student.date_of_leaving.nil? %></p>
         <% unless params[:sign].blank? %>
         <p id="position-14"><img src="/images/school_logo/352/principal.png" width="100"></p>
         <% end %>
@@ -64,7 +64,7 @@
     {
         position: fixed;
         left: 55;
-        top: 162;
+        top: 159;
         font-weight: bold;
     }
     #left-position-1
@@ -113,19 +113,19 @@
     {
         position: fixed;
         left: 55;
-        top: 395;
+        top: 392;
     }
     #left-position-9
     {
         position: fixed;
         left: 63;
-        top: 425;
+        top: 422;
     }
     #left-position-10
     {
         position: fixed;
         left: 250;
-        top: 455;
+        top: 452;
     }
     
  
@@ -133,32 +133,32 @@
     {
         position: fixed;
         left: 70;
-        top: 480;
+        top: 478;
     }
     #left-position-12
     {
         position: fixed;
         left: 180;
-        top: 480;
+        top: 478;
     }
     #left-position-13
     {
         position: fixed;
         left: 10;
-        top: 538;
+        top: 536;
     }
     #left-position-14
     {
         position: fixed;
         left: 225;
-        top: 590;
+        top: 588;
     }
     
     #position-0
     {
         position: fixed;
-        left: 435;
-        top: 87;
+        left: 437;
+        top: 91;
     }
     #position-1
     {
@@ -205,7 +205,7 @@
     #position-8
     {
         position: fixed;
-        left: 625;
+        left: 630;
         top: 328;
     }
     #position-9

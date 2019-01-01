@@ -2859,18 +2859,18 @@ class ExamController < ApplicationController
       tmp_row << std_result['name'].to_s
       tmp_row << std_result['grand_total'].to_s
       tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
-      if @student_position_first_term.blank? || @student_position_first_term[std_result['id']].blank?
+      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id']].blank?
         tmp_row << std_result['lg']
       else
         tmp_row << "F"
       end   
-      if @student_position_first_term.blank? || @student_position_first_term[std_result['id']].blank?
+      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id']].blank?
         tmp_row <<  @student_position_first_term[std_result['id']]
       else
         tmp_row << ""
       end  
       
-      if @student_position_first_term_batch.blank? || @student_position_first_term_batch[std_result['id']].blank?
+      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id']].blank?
         tmp_row << @student_position_first_term_batch[std_result['id']]
       else
         tmp_row << ""
@@ -5188,7 +5188,7 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['pr'] = total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
-                  
+                  main_mark = total_mark1+total_mark2
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? and !grade.name.blank? && sub['grade_subject'].to_i != 1
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name

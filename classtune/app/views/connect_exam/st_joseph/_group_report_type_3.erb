@@ -135,7 +135,7 @@
                                       end
                                     
                                       if grade_name_single == "U" and !report['exam_name'].downcase.index('prac').nil? and total_marks_single_exam.to_i == 25
-                                        if marks_obtain_single_exam.to_i < 11
+                                        if marks_obtain_single_exam.to_i > 11
                                           fail_grade = false
                                           grade_name_single = "D"
                                         end

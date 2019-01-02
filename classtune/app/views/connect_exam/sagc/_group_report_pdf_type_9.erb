@@ -115,6 +115,7 @@
 
                   <% total_grade = 0 %>
                   <% total_subject = 0 %>
+                  <% total_subject_main = 0 %>
                   <% grand_total = 0 %>
                   <% grand_total_fraction = 0 %>
                   <% grade_point_avg = 0 %>
@@ -144,7 +145,8 @@
                           <% if fourth_subject.blank? %>
                             <% total_subject = total_subject+1 %>
                           <% end %>
-                          <td class="col-pdf"><%= total_subject %></td>
+                          <% total_subject_main = total_subject_main+1 %>
+                          <td class="col-pdf"><%= total_subject_main %></td>
                           
                           <% class_test_full_mark = 0 %>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>

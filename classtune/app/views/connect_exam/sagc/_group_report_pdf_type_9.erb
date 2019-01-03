@@ -221,7 +221,7 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? %>
                                     <% failed = true %>
                                     <% failed_subject = true %>
                                   <% end %>
@@ -274,7 +274,7 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><% if failed == true %>failed<% end %><%= grade.name %></td>
+                                <td class="col-pdf"><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                                 
                               <% else %>

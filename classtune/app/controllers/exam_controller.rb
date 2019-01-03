@@ -2865,13 +2865,13 @@ class ExamController < ApplicationController
         tmp_row << "F"
       end   
       if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
-        tmp_row <<  @student_position_first_term[std_result['id']]
+        tmp_row <<  @student_position_first_term[std_result['id'].to_i]
       else
         tmp_row << ""
       end  
       
       if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
-        tmp_row << @student_position_first_term_batch[std_result['id']]
+        tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
       else
         tmp_row << ""
       end

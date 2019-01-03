@@ -468,7 +468,16 @@ class MarksController < ApplicationController
                   k = k+1
                 end
               end
-              
+            elsif school_id == 352
+              unless c_exam_array.include?(exam_connect.id.to_i)
+                data[k] = []
+                data[k][0] = exam_connect_batch.to_s
+                data[k][1] = "<a href='/exam/tabulation_excell/#{exam_connect.id.to_s}' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
+                data[k][2] = "<a href='/exam/mert_list_sagc/#{exam_connect.id.to_s}' target='_blank'>Merit List</a>"
+                data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                c_exam_array << exam_connect.id.to_i
+                k = k+1
+              end
             else
               data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"

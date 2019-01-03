@@ -68,7 +68,7 @@
             if !@std_subject_hash_type.blank?
               if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
                 fourth_subject = true
-                @fourth_subject_name[std['id'].to_i] = sub['name']
+                
               end  
             end
             total_mark1 = 0
@@ -193,6 +193,10 @@
               grand_total2 = grand_total2+total_mark2_no_round
               grand_total = grand_total+subject_full_marks_no_round
               
+              if @fourth_subject_name[std['id'].to_i].blank?
+                @fourth_subject_name[std['id'].to_i] = {}
+              end
+              @fourth_subject_name[std['id'].to_i][sub['id'].to_i] = main_mark1
               if fourth_subject.blank?
                 grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                 if !grade.blank? and !grade.name.blank?

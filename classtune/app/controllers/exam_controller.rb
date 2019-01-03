@@ -2818,7 +2818,7 @@ class ExamController < ApplicationController
         @student_result[iloop]['position'] = position
         iloop = iloop+1
       end
-      @student_result = @student_result.sort_by { |hsh| hsh[:position] }
+      @student_result = @student_result.sort_by { |hsh| hsh.position }
     end
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,

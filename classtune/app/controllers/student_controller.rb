@@ -1250,10 +1250,10 @@ class StudentController < ApplicationController
     if student_electives
       student_electives.each do |elect|
        sub = Subject.find(elect.subject_id)
-       if !sub.name.upcase.index("PHYSICS").nil? or !sub.name.upcase.index("CHEMISTRY").nil? or !sub.name.upcase.index("BIOLOGY").nil?
+       if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
          @group = "Science"
          break
-       elsif !sub.name.upcase.index("ECONOMICS").nil? or !sub.name.upcase.index("HISTORY OF ISLAM").nil? or !sub.name.upcase.index("GEOGRAPHY").nil?
+       elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
          @group = "Business Studies"
          break
        else

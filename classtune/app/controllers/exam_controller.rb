@@ -5317,8 +5317,8 @@ class ExamController < ApplicationController
             end
             
             if u_grade == 0  
-              grand_total_new = grand_total
-              grand_grade_new = grand_grade_point
+              grand_total_new = 50000-grand_total
+              grand_grade_new = 50000-grand_grade_point
               
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
@@ -5328,8 +5328,8 @@ class ExamController < ApplicationController
             end
         
             if u_grade1 == 0  
-              grand_total_new = grand_total1
-              grand_grade_new = grand_grade_point1
+              grand_total_new = 50000-grand_total1
+              grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end  
@@ -5338,8 +5338,8 @@ class ExamController < ApplicationController
             end 
         
             if u_grade2 == 0  
-              grand_total_new = grand_total2
-              grand_grade_new = grand_grade_point2
+              grand_total_new = 50000-grand_total2
+              grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end  

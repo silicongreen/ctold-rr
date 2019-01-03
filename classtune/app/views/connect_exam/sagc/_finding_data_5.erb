@@ -49,12 +49,7 @@
         u_grade1 = 0
         u_grade2 = 0
         tab['subjects'].each do |sub|
-          fourth_subject = false
-          if !@std_subject_hash_type.blank?
-            if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
-              fourth_subject = true
-            end  
-          end   
+             
           
           has_exam = false
           tab['exams'].each do |rs|
@@ -68,6 +63,12 @@
           end 
         
           if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
+            fourth_subject = false
+            if !@std_subject_hash_type.blank?
+              if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
+                fourth_subject = true
+              end  
+            end
             total_mark1 = 0
             full_mark1 = 0
             total_mark2 = 0

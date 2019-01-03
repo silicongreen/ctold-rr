@@ -2806,17 +2806,18 @@ class ExamController < ApplicationController
     if !@student_result.blank?
       @student_result.each do |key,std_result|  
         position = 50000
-        if !@student_position_first_term.blank? && !@student_position_first_term[std_result[key]['id'].to_i].blank?
-          position = @student_position_first_term[std_result[key]['id'].to_i]
+        if !@student_position_first_term.blank? && !@student_position_first_term[@student_result[key]['id'].to_i].blank?
+          position = @student_position_first_term[@student_result[key]['id'].to_i]
         else
-          unless std_result[key]['subject_failed'].blank?
-            position = position+std_result[key]['subject_failed'].count
+          unless @student_result[key]['subject_failed'].blank?
+            position = position+@student_result[key]['subject_failed'].count
           end
         end  
-        std_result[key]['position'] = position
-        @std_resutl << std_result
+        @student_result[key]['position'] = position
+       
       end
-      @student_result = @std_resutl.sort_by { |hsh| hsh[:position] }
+      
+      @student_result = @student_result.sort_by { |hsh| hsh[:position] }
     end
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,

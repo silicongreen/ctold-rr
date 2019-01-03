@@ -1247,6 +1247,7 @@ class StudentController < ApplicationController
     
     student_electives = StudentsSubject.find_all_by_student_id(params[:id],:conditions=>"batch_id = #{@student.batch_id}")
     @group = ""
+    abort(student_electives.inspect)
     if student_electives
       student_electives.each do |elect|
        sub = Subject.find(elect.subject_id)

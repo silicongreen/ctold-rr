@@ -2802,20 +2802,20 @@ class ExamController < ApplicationController
       @student_position_first_term_batch = @student_position_second_term_batch
     end
     @std_resutl = []
-    iloop = 0
+  
     if !@student_result.blank?
-      @student_result.each do |std_result|
-        @std_resutl << std_result
+      @student_result.each do |key,std_result|
+        
         position = 50000
         if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
           position = @student_position_first_term[std_result['id'].to_i]
         else
           unless std_result['subject_failed'].blank?
-            position = position-std_result['subject_failed'].count
+            position = position+std_result['subject_failed'].count
           end
         end  
-        @std_resutl[iloop]['position'] = position
-        iloop = iloop+1
+        std_result[key]['position'] = position
+        @std_resutl << std_result
       end
       @student_result = @std_resutl.sort_by { |hsh| hsh[:position] }
     end

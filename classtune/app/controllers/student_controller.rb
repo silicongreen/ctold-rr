@@ -1253,8 +1253,7 @@ class StudentController < ApplicationController
        sub = Subject.find(elect.subject_id)
       
        if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
-         @group = "Science"
-         
+         @group = "Science" 
          break
        elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
          @group = "Business Studies"

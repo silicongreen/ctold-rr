@@ -467,7 +467,9 @@ class MarksController < ApplicationController
                   data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
                   k = k+1
                 end
-              end  
+              end
+            elsif school_id == 352
+              
             else
               data[k] = []
               data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"

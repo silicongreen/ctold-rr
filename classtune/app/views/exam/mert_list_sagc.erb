@@ -44,8 +44,8 @@
                   <% std_count = 0 %>
                   <% srl = 0 %>
                   <% @student_result.each do |std_result| %>
-                    <%  std_count = std_count+1; %>
-                    <%  srl = srl+1; %>
+                    <%  std_count = std_count+1 %>
+                    <%  srl = srl+1 %>
                     <% if std_count>80 %>
                       <% std_count = 0 %>
                       <tr class="page-break">
@@ -103,16 +103,16 @@
                         
                           %>
                           </td>
-                          <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
+                         
+                        <% end %> 
+                         <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
                             <td class="col-pdf" rowspan="2"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
-                        <% end %>  
                       </tr>
 
                 
                     <% end %>
 
-                  <% end %>
               </table>     
             <% end %>
         </center>

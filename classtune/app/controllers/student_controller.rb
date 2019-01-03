@@ -1251,14 +1251,15 @@ class StudentController < ApplicationController
     if student_electives
       student_electives.each do |elect|
        sub = Subject.find(elect.subject_id)
+      
        if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
          @group = "Science"
-         abort(@group)
+         
          break
        elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
          @group = "Business Studies"
          break
-       else
+       elsif  sub.code == "Acc" or sub.code == "BOM" or sub.code == "PMM"
          @group = "Humanities"
          break
        end   

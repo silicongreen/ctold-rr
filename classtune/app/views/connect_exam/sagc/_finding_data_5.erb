@@ -21,6 +21,7 @@
   @subject_highest_1st_term = {}
   @subject_highest_2nd_term = {}
   @student_avg_mark = {}
+  @fourth_subject_name = {}
   unless @tabulation_data.blank?
     connect_exam = 0
     batch_loop = 0
@@ -67,6 +68,7 @@
             if !@std_subject_hash_type.blank?
               if @std_subject_hash_type.include?(std['id'].to_s+"|||"+sub['id'].to_s+"|||4")
                 fourth_subject = true
+                @fourth_subject_name[std['id'].to_i] = sub['name']
               end  
             end
             total_mark1 = 0

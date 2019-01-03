@@ -454,6 +454,10 @@
                          <% else %>
                           -
                          <% end %> 
+                          
+                         <% if !@fourth_subject_name[@student.id.to_i].blank? %> 
+                          <%= @fourth_subject_name[@student.id.to_i] %>
+                         <% end %> 
                       </td>
                   </tr>
                   <tr class="odd">

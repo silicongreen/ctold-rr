@@ -274,7 +274,7 @@
                                    <% total_grade = total_grade.to_f+new_grade_point.to_f %>
                                   <% end %>  
                                 <% end %>
-                                <td class="col-pdf"><%= grade.name %></td>
+                                <td class="col-pdf"><% if failed == true %>failed<% end %><%= grade.name %></td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                                 
                               <% else %>

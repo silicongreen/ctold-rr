@@ -2804,14 +2804,13 @@ class ExamController < ApplicationController
     @std_resutl = []
   
     if !@student_result.blank?
-      @student_result.each do |key,std_result|
-        
+      @student_result.each do |key,std_result|  
         position = 50000
-        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
-          position = @student_position_first_term[std_result['id'].to_i]
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result[key]['id'].to_i].blank?
+          position = @student_position_first_term[std_result[key]['id'].to_i]
         else
-          unless std_result['subject_failed'].blank?
-            position = position+std_result['subject_failed'].count
+          unless std_result[key]['subject_failed'].blank?
+            position = position+std_result[key]['subject_failed'].count
           end
         end  
         std_result[key]['position'] = position

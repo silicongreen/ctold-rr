@@ -2802,21 +2802,22 @@ class ExamController < ApplicationController
       @student_position_first_term_batch = @student_position_second_term_batch
     end
     @std_resutl = []
-  
+   
+    iloop = 0
     if !@student_result.blank?
-      @student_result.each do |key,std_result|  
+      @student_result.each do |std_result|
+        
         position = 50000
-        if !@student_position_first_term.blank? && !@student_position_first_term[@student_result[key]['id'].to_i].blank?
-          position = @student_position_first_term[@student_result[key]['id'].to_i]
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+          position = @student_position_first_term[std_result['id'].to_i]
         else
-          unless @student_result[key]['subject_failed'].blank?
-            position = position+@student_result[key]['subject_failed'].count
+          unless std_result['subject_failed'].blank?
+            position = position+std_result['subject_failed'].count
           end
         end  
-        @student_result[key]['position'] = position
-       
+        @student_result[iloop]['position'] = position
+        iloop = iloop+1
       end
-      
       @student_result = @student_result.sort_by { |hsh| hsh[:position] }
     end
     render :pdf => 'merit_list_sagc',

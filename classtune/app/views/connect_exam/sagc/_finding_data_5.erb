@@ -196,10 +196,11 @@
               if @fourth_subject_name[std['id'].to_i].blank?
                 @fourth_subject_name[std['id'].to_i] = {}
               end
-              @fourth_subject_name[std['id'].to_i][sub['id'].to_i] = main_mark1
+              
               if fourth_subject.blank?
                 grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                 if !grade.blank? and !grade.name.blank?
+                  @fourth_subject_name[std['id'].to_i][sub['id'].to_i] = grade.name
                   grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                   if grade.credit_points.to_i == 0
                    u_grade1 = u_grade1+1

@@ -2782,6 +2782,53 @@ class ExamController < ApplicationController
    
   end
   
+  def mert_list_sagc
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+  
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    finding_data5()
+    if @student_list_first_term.blank?
+      @subject_highest_1st_term = @subject_highest_2nd_term
+      @student_position_first_term = @student_position_second_term
+      @student_position_first_term_batch = @student_position_second_term_batch
+    end
+    @std_resutl = []
+    iloop = 0
+    if !@student_result.blank?
+      @student_result.each do |std_result|
+        @std_resutl << std_result
+        position = 50000
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+          position = @student_position_first_term[std_result['id'].to_i]
+        else
+          unless std_result['subject_failed'].blank?
+            position = position-std_result['subject_failed'].count
+          end
+        end  
+        @std_resutl[iloop]['position'] = position
+        iloop = iloop+1
+      end
+      @student_result = @std_resutl.sort_by { |hsh| hsh[:position] }
+    end
+    render :pdf => 'merit_list_sagc',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def tabulation_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

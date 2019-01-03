@@ -468,7 +468,6 @@ class MarksController < ApplicationController
                   k = k+1
                 end
               end
-            elsif school_id == 352
               
             else
               data[k] = []

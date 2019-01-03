@@ -109,10 +109,17 @@
                   if rs['quarter'] == '1'
                       full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       total_mark1 = total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      
+                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
+                          u_grade1 = u_grade1+1
+                      end  
                   end  
                   if rs['quarter'] == '2'
                       full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       total_mark2 = total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
+                          u_grade2 = u_grade2+1
+                      end
                   end
                 end
               end    
@@ -193,14 +200,12 @@
               grand_total2 = grand_total2+total_mark2_no_round
               grand_total = grand_total+subject_full_marks_no_round
               
-              if @fourth_subject_name[std['id'].to_i].blank?
-                @fourth_subject_name[std['id'].to_i] = {}
-              end
+        
               
               if fourth_subject.blank?
                 grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                 if !grade.blank? and !grade.name.blank?
-                  @fourth_subject_name[std['id'].to_i][sub['id'].to_i] = grade.name
+                
                   grand_grade_point1 = grand_grade_point1+grade.credit_points.to_f
                   if grade.credit_points.to_i == 0
                    u_grade1 = u_grade1+1

@@ -275,9 +275,7 @@
                                   <% end %>  
                                 <% end %>
                                 <td class="col-pdf"><%= grade.name %>
-                                <% if !@fourth_subject_name.blank? && !@fourth_subject_name[@student.id.to_i].blank? && !@fourth_subject_name[@student.id.to_i][subjects['id'].to_i].blank? %>
-                                  <%= @fourth_subject_name[@student.id.to_i][subjects['id'].to_i] %>
-                                <% end %>    
+                                  
                                 </td>
                                 <td class="col-pdf"><%= grade.credit_points %></td>
                                 

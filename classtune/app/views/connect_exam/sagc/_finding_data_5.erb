@@ -17,6 +17,7 @@
   @student_list_second_term_batch = []
   @student_subject_marks = {}
   @subject_highest = {}
+  @failed_marks = {}
   @subject_highest_1st_term = {}
   @subject_highest_2nd_term = {}
   @student_avg_mark = {}
@@ -276,7 +277,7 @@
           end  
           @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
           
-        end
+        end  
         
         if u_grade1 == 0  
           grand_total_new = grand_total1
@@ -286,6 +287,8 @@
           end  
           @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
           
+        else
+          @failed_marks[std['id'].to_i] = u_grade1
         end 
         
         if u_grade2 == 0  
@@ -364,5 +367,6 @@
       end 
     end
   end
-
+abort(@failed_marks.inspect)
 %> 
+

@@ -76,8 +76,22 @@ module PaymentSettingsHelper
         payment_url ||= "https://securepay.sslcommerz.com/gwprocess/testbox/v3/process.php"
       end
     elsif active_gateway == "trustbank"
-      payment_url = payment_urls["trustbank_url"]
-      payment_url ||= "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx"
+      testtrustbank = false
+      if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+        if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+          payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+          unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+            testtrustbank = payment_configs["testtrustbank"]
+          end
+        end
+      end
+      if testtrustbank
+        payment_url = payment_configs["trustbank_api_url"]
+        payment_url ||= "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx"
+      else
+        payment_url = payment_urls["trustbank_url"]
+        payment_url ||= "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx"
+      end
     end
     payment_url
   end

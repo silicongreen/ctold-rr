@@ -6,10 +6,16 @@ module OnlinePayment
     end
 
     def fee_details_with_gateway
-      
       require 'net/http'
+      require 'soap/wsdlDriver'
       require 'uri'
       require "yaml"
+      require 'nokogiri'
+      
+      msg = ""
+      orderId = ""
+      ref_id = ""
+      merchant_id = ""
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
           @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
@@ -45,11 +51,27 @@ module OnlinePayment
               @store_password ||= String.new
             end
           elsif @active_gateway == "trustbank"
-            @merchant_id = PaymentConfiguration.config_value("merchant_id")
-            @merchant_id ||= String.new
+            testtrustbank = false
+            if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+              if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+                payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+                unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+                  testtrustbank = payment_configs["testtrustbank"]
+                end
+              end
+            end
+            if testtrustbank
+              merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+              @merchant_id = merchant_info["merchant_id"]
+              @merchant_id ||= String.new
+            else  
+              @merchant_id = PaymentConfiguration.config_value("merchant_id")
+              @merchant_id ||= String.new
+            end
           elsif @active_gateway.nil?
             fee_details_without_gateway and return
           end
+          
           current_school_name = Configuration.find_by_config_key('InstitutionName').try(:config_value)
           
           advance_fee_collection = false
@@ -288,7 +310,56 @@ module OnlinePayment
                 :card_issuer_country_code=>params[:card_issuer_country_code],
                 :val_id => params[:val_id]
               }
+            elsif @active_gateway == "trustbank"
+              result = Base64.decode64(params[:CheckoutXmlMsg])
+              xml_res = Nokogiri::XML(result)
+              status_post = 0
+              status_text_post = ""
+              amount_post = 0.00
+              service_charge_post = 0.00
+              trans_date = 0.00
+              payment_type = ""
+              pan = ""
+              ref_id = ""
+              unless xml_res.xpath("//Response/Status").empty?
+                status_post = xml_res.xpath("//Response/Status").text
+              end
+              unless xml_res.xpath("//Response/StatusText").empty?
+                status_text_post = xml_res.xpath("//Response/StatusText").text
+              end
+              unless xml_res.xpath("//Response/Amount").empty?
+                amount_post = xml_res.xpath("//Response/Amount").text
+              end
+              unless xml_res.xpath("//Response/ServiceCharge").empty?
+                service_charge_post = xml_res.xpath("//Response/ServiceCharge").text
+              end
+              unless xml_res.xpath("//Response/OrderID").empty?
+                orderId = xml_res.xpath("//Response/OrderID").text
+              end
+              unless xml_res.xpath("//Response/RefID").empty?
+                ref_id = xml_res.xpath("//Response/RefID").text
+              end
+              unless xml_res.xpath("//Response/PaymentDateTime").empty?
+                trans_date = xml_res.xpath("//Response/PaymentDateTime").text
+              end
+              unless xml_res.xpath("//Response/PaymentType").empty?
+                payment_type = xml_res.xpath("//Response/PaymentType").text
+              end
+              unless xml_res.xpath("//Response/PAN").empty?
+                pan = xml_res.xpath("//Response/PAN").text
+              end
 
+              gateway_response = {
+                :amount => amount_post,
+                :status_text => status_text_post,
+                :status => status_post,
+                :ref_id => ref_id,
+                :order_id=>orderId,
+                :tran_date=>trans_date,
+                :payment_type=>payment_type,
+                :service_charge=>service_charge_post,
+                :pan=>pan
+              }
 
             end
             payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response)
@@ -357,6 +428,83 @@ module OnlinePayment
                     gateway_status = false
                   end
                 end
+              elsif @active_gateway == "trustbank"
+                gateway_status = true if status_post.to_i == 1
+              
+                if gateway_status == true
+                  testtrustbank = false
+                  validation_url_found = false
+                  if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+                    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+                      payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+                      unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+                        testtrustbank = payment_configs["testtrustbank"]
+                      end
+                    end
+                  end
+                  if testtrustbank
+                    validation_url = payment_configs["validation_api"]
+                    validation_url ||= "https://ibanking.tblbd.com/TestCheckout/Checkout_Payment_Verify.asmx?WSDL"
+                    
+                    merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+                    merchant_id = merchant_info["merchant_id"]
+                    merchant_id ||= String.new
+                  else  
+                    payment_urls = Hash.new
+                    if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+                      payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+                      validation_url = payment_urls["trustbank_requested_url"]
+                      validation_url ||= "https://ibanking.tblbd.com/Checkout/Checkout_Payment_Verify.asmx?WSDL"
+                      
+                      merchant_id = PaymentConfiguration.config_value("merchant_id")
+                      merchant_id ||= String.new
+                    else
+                      validation_url ||= "https://ibanking.tblbd.com/Checkout/Checkout_Payment_Verify.asmx?WSDL"
+                      merchant_id ||= String.new
+                    end
+                  end
+                  
+                  wsdl_url = validation_url
+                  soapDriver = SOAP::WSDLDriverFactory.new(wsdl_url).create_rpc_driver()
+                  detail_result = soapDriver.Transaction_Verify_Details({:OrderID => orderId, :RefID => ref_id, :MerchantID => merchant_id});
+                  result = Base64.decode64(detail_result["Transaction_Verify_DetailsResult"])
+                  xml_res = Nokogiri::XML(result)
+                  
+                  status = 0
+                  status_text = 0
+                  amount = 0
+                  service_charge = 0
+                  unless xml_res.xpath("//Response/Status").empty?
+                    status = xml_res.xpath("//Response/Status").text
+                  end
+                  unless xml_res.xpath("//Response/StatusText").empty?
+                    status_text = xml_res.xpath("//Response/StatusText").text
+                  end
+                  unless xml_res.xpath("//Response/Amount").empty?
+                    amount = xml_res.xpath("//Response/Amount").text
+                  end
+                  unless xml_res.xpath("//Response/ServiceCharge").empty?
+                    service_charge = xml_res.xpath("//Response/ServiceCharge").text
+                  end
+                  
+                  if status.to_i != 1
+                    gateway_status = false
+                    if status.to_i == 8
+                      msg = "Payment unsuccessful!! Transaction is rejected"
+                    elsif status.to_i == 9
+                      msg = "Payment unsuccessful!! Transaction is cancelled"
+                    else
+                      msg = "Payment unsuccessful!! Invalid Transaction"
+                    end
+                  else
+                    if amount.to_f == amount_post.to_f && service_charge.to_f == service_charge_post.to_f
+                      gateway_status = true
+                    else
+                      msg = "Payment unsuccessful!! Invalid Transaction, Amount or service charge mismatch"
+                      gateway_status = false
+                    end
+                  end
+                end
               end
 
               amount_from_gateway = 0
@@ -366,7 +514,10 @@ module OnlinePayment
                 amount_from_gateway = params[:x_amount]
               elsif @active_gateway == "ssl.commerce"
                 amount_from_gateway=params[:amount]
+              elsif @active_gateway == "trustbank"
+                amount_from_gateway=amount
               end
+              
               trans_id=@financefee.fee_transactions.collect(&:finance_transaction_id).join(",")
            
               if gateway_status == true
@@ -534,7 +685,11 @@ module OnlinePayment
                   flash[:notice] = "#{t('flash_payed')}"
                 end
               else
-                flash[:notice] = "#{t('payment_failed')}"
+                if @active_gateway == "trustbank"
+                  flash[:notice] = msg
+                else
+                  flash[:notice] = "#{t('payment_failed')}"
+                end
               end 
             else
               flash[:notice] = "#{t('payment_failed')}"

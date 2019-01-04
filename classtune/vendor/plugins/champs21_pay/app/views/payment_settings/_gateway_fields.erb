@@ -32,6 +32,17 @@
           }
       });
       
+      j(".is_test_testtrustbank").click(function(){
+          if ( j(this).prop('checked') )
+          {
+              j(".label-field-pair-gateway-new input").prop('disabled', true);
+          }
+          else
+          {
+              j(".label-field-pair-gateway-new input").prop('disabled', false);
+          }
+      });
+      
       if ( Number(j('#is_enabled').val()) == 1 )
       {
           j(".label-field-pair-gateway-new input").prop('disabled', true);

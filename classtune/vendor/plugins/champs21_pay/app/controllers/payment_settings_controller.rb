@@ -44,6 +44,11 @@ class PaymentSettingsController < ApplicationController
         elsif key == 'is_test_sslcommerz' && value != 'on'
           value = 0
         end
+        if key == 'is_test_testtrustbank' && value == 'on'
+          value = 1
+        elsif key == 'is_test_testtrustbank' && value != 'on'
+          value = 0
+        end
         configuration = PaymentConfiguration.find_or_initialize_by_config_key(key)
         if configuration.update_attributes(:config_value => value)
           flash[:notice] = "Payment setting has been saved successfully."

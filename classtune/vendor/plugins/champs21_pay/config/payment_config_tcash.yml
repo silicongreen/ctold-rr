@@ -1,0 +1,5 @@
+testtrustbank: true
+merchant_info_352:
+  merchant_id: SAGC
+trustbank_api_url: https://ibanking.tblbd.com/TestCheckout/Checkout_Payment.aspx
+validation_api: https://ibanking.tblbd.com/TestCheckout/Checkout_Payment_Verify.asmx?WSDL

@@ -73,3 +73,4 @@ en:
   store_password: "Store Password"
   merchant_id: "Merchant Id"
   is_test_sslcommerz: "Test SSL Commerz"
+  is_test_testtrustbank: "Test Trustbank API"

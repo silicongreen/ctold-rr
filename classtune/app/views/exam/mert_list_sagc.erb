@@ -20,83 +20,81 @@
     <div class="page1"> </div>
     <div class="section1 row" >
         <center>
-
-            <h4 align="center"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %> - Merit List</h4>
-
+            <p>&nbsp;</p>
             <% if !@student_result.blank? %>
               <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                      <td class="col-pdf" rowspan="2">Srl</td>
-                      <td class="col-pdf" rowspan="2">StudentId</td>
-                      <td class="col-pdf" rowspan="2">Class Roll</td>
-                      <td class="col-pdf" rowspan="2">Student Name</td>
-                      <td class="col-pdf" rowspan="2">Academic Information</td>
-                      <td class="col-pdf" rowspan="2">Total Gp</td>
-                      <td class="col-pdf" rowspan="2">GPA</td>
-                      <td class="col-pdf" rowspan="2">Total Marks</td>
-                      <td class="col-pdf" rowspan="2">LG</td>
-                      <td class="col-pdf" colspan="2">Position</td>
+                      <td class="col-pdf no-warp" rowspan="2" >Srl</td>
+                      <td class="col-pdf no-warp" rowspan="2">StudentId</td>
+                      <td class="col-pdf no-warp" rowspan="2">Class Roll</td>
+                      <td class="col-pdf no-warp" rowspan="2">Student Name</td>
+                      <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
+                      <td class="col-pdf no-warp" rowspan="2">Total Gp</td>
+                      <td class="col-pdf no-warp" rowspan="2">GPA</td>
+                      <td class="col-pdf no-warp" rowspan="2">Total Marks</td>
+                      <td class="col-pdf no-warp" rowspan="2">LG</td>
+                      <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                   </tr> 
                   <tr class="table-header">
-                      <td class="col-pdf" colspan="1">Section</td>
-                      <td class="col-pdf" colspan="1">Class</td>
+                      <td class="col-pdf no-warp center-class" colspan="1">Section</td>
+                      <td class="col-pdf no-warp center-class" colspan="1">Class</td>
                   </tr>
                   <% std_count = 0 %>
                   <% srl = 0 %>
                   <% @student_result.each do |std_result| %>
                     <%  std_count = std_count+1 %>
                     <%  srl = srl+1 %>
-                    <% if std_count>80 %>
-                      <% std_count = 0 %>
+                    <% if std_count>44 %>
+                      <% std_count = -3 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr>
                       <tr class="table-header">
-                          <td class="col-pdf" rowspan="2">Srl</td>
-                          <td class="col-pdf" rowspan="2">StudentId</td>
-                          <td class="col-pdf" rowspan="2">Class Roll</td>
-                          <td class="col-pdf" rowspan="2">Student Name</td>
-                          <td class="col-pdf" rowspan="2">Academic Information</td>
-                          <td class="col-pdf" rowspan="2">Total Gp</td>
-                          <td class="col-pdf" rowspan="2">GPA</td>
-                          <td class="col-pdf" rowspan="2">Total Marks</td>
-                          <td class="col-pdf" rowspan="2">LG</td>
-                          <td class="col-pdf" colspan="2">Position</td>
+                          <td class="col-pdf no-warp" rowspan="2">Srl</td>
+                          <td class="col-pdf no-warp" rowspan="2">StudentId</td>
+                          <td class="col-pdf no-warp" rowspan="2">Class Roll</td>
+                          <td class="col-pdf no-warp" rowspan="2">Student Name</td>
+                          <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
+                          <td class="col-pdf no-warp" rowspan="2">Total Gp</td>
+                          <td class="col-pdf no-warp" rowspan="2">GPA</td>
+                          <td class="col-pdf no-warp" rowspan="2">Total Marks</td>
+                          <td class="col-pdf no-warp" rowspan="2">LG</td>
+                          <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                       </tr> 
                       <tr class="table-header">
-                          <td class="col-pdf" colspan="1">Section</td>
-                          <td class="col-pdf" colspan="1">Class</td>
+                          <td class="col-pdf no-warp center-class" colspan="1">Section</td>
+                          <td class="col-pdf no-warp center-class" colspan="1">Class</td>
                       </tr>
                     <% end %>    
                     
                       <tr class="table-header">
-                        <td class="col-pdf" rowspan="2"><%= srl %></td>
-                        <td class="col-pdf" rowspan="2"><%= std_result['sid'].to_s %></td> 
-                        <td class="col-pdf" rowspan="2"><%= std_result['roll'].to_s %></td> 
-                        <td class="col-pdf" rowspan="2"><%= std_result['name'].to_s %></td>
-                        <td class="col-pdf" rowspan="2"><%= @batch.full_name %></td>
-                        <td class="col-pdf" rowspan="2"><%= std_result['gpa'].to_s %></td>
-                        <td class="col-pdf" rowspan="2"><%= std_result['gp'].to_s %></td>
-                        <td class="col-pdf" rowspan="2"><%= std_result['grand_total'].to_s %></td>
+                        <td class="col-pdf no-warp"><%= srl %></td>
+                        <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
+                        <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
+                        <td class="col-pdf no-warp"><%= std_result['name'].to_s %></td>
+                        <td class="col-pdf no-warp"><%= @batch.full_name %></td>
+                        <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
+                        <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
+                        <td class="col-pdf no-warp"><%= std_result['grand_total'].to_s %></td>
                         <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf" rowspan="2"><%= std_result['lg'] %></td>
-                        <% else %> 
-                          <td class="col-pdf" rowspan="2"><%= "F" %></td>
+                          <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
+                        <% else %>
+                          <td class="col-pdf no-warp"><%= "F" %></td>
                         <% end %> 
                           
                         <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf" rowspan="2"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                          <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                         <% else %>
-                          <td class="col-pdf" rowspan="2" colspan="2">
+                          <td class="col-pdf" colspan="2">
                           <%
                           iloop = 0
                           unless std_result['subject_failed'].blank?
                             std_result['subject_failed'].each do |sub_failed|
-                              %><%= sub_failed %><%
-                              if iloop > 0
-                                %><%= "<br/>" %><%  std_count = std_count+1 %><%
-                              end  
+                              %><p class="no-warp"><%= sub_failed %></p><%
                               iloop = iloop+1
+                              if iloop > 1
+                                std_count = std_count+1
+                              end  
                             end 
                             
                           end  
@@ -106,7 +104,7 @@
                          
                         <% end %> 
                          <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf" rowspan="2"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                       </tr>
 
@@ -120,8 +118,27 @@
 </div>
 
 <style>
-    .baf_shaheen table#pdf-table tr.table-header td.name-left
+    .baf_shaheen table#pdf-table tr.table-header td
     {
         text-align: left !important;
+    }
+    .baf_shaheen table#pdf-table tr.table-header td.center-class
+    {
+        text-align: center !important;
+    }
+    .baf_shaheen table#pdf-table tr.table-header td p
+    {
+        padding:0 !important;
+        margin:0 !important;
+        margin-top:4px !important;
+        margin-bottom:4px !important;
+    }
+    .no-warp 
+    {
+        white-space: nowrap !important;
+    }
+    .baf_shaheen table#pdf-table tr.page-break
+    {
+        height: 100px !important;
     }
 </style>    

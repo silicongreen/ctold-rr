@@ -2822,12 +2822,12 @@ class ExamController < ApplicationController
     end
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 10,
-      :bottom => 10,
+      :margin => {    :top=> 30,
+      :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :header => {:html => { :template=> 'layouts/pdf_header_sagc.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   
   def tabulation_excell
@@ -5028,7 +5028,7 @@ class ExamController < ApplicationController
                 full_pr2 = 0
                 total_pr1 = 0
                 total_pr2 = 0
-                
+                subject_failed = false
                 
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
@@ -5060,6 +5060,7 @@ class ExamController < ApplicationController
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade1 = u_grade1+1
+                          subject_failed = true
                         end  
                       end  
                       if rs['quarter'] == '2'
@@ -5068,6 +5069,7 @@ class ExamController < ApplicationController
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade2 = u_grade2+1
+                          subject_failed = true
                         end 
                       end
                     elsif rs['exam_category'] == '4'  
@@ -5077,6 +5079,7 @@ class ExamController < ApplicationController
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade1 = u_grade1+1
+                          subject_failed = true
                         end 
                       end  
                       if rs['quarter'] == '2'
@@ -5085,6 +5088,7 @@ class ExamController < ApplicationController
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade2 = u_grade2+1
+                          subject_failed = true
                         end 
                       end
                     elsif rs['exam_category'] == '5'  
@@ -5094,6 +5098,7 @@ class ExamController < ApplicationController
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade1 = u_grade1+1
+                          subject_failed = true
                         end 
                       end  
                       if rs['quarter'] == '2'
@@ -5102,6 +5107,7 @@ class ExamController < ApplicationController
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank?
                           u_grade2 = u_grade2+1
+                          subject_failed = true
                         end 
                       end
                     end
@@ -5257,9 +5263,9 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
                   main_mark = total_mark1+total_mark2
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                  if !grade.blank? and !grade.name.blank? && sub['grade_subject'].to_i != 1
+                  if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name
-                    if grade.credit_points.to_i == 0
+                    if grade.credit_points.to_i == 0 or subject_failed == true
                       if @subject_result[sub['id']].blank?
                         @subject_result[sub['id']] = {}
                         @subject_result[sub['id']]['id'] = sub['id']

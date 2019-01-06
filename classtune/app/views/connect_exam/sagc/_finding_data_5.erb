@@ -118,7 +118,9 @@ if @total_std.blank?
              
             end
             
-            @total_std = @total_std+1
+            if std_group_name == group_name
+              @total_std = @total_std+1
+            end
             total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0

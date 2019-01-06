@@ -82,13 +82,10 @@ if @total_std.blank?
             std_group_name = ""
             if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
               std_group_name = "Science" 
-              break
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
               std_group_name = "Humanities" 
-              break
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
               std_group_name = "Business Studies" 
-              break
             end
             grand_total = 0
             grand_grade_point = 0
@@ -528,8 +525,10 @@ if @total_std.blank?
               
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end 
+              if std_group_name == group_name
+                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end
         
@@ -538,8 +537,10 @@ if @total_std.blank?
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end 
+              if std_group_name == group_name
+                @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end 
         
@@ -548,8 +549,10 @@ if @total_std.blank?
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
+              if std_group_name == group_name
+                @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end 
 

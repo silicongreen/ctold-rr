@@ -89,6 +89,9 @@ if @total_std.blank?
               std_group_name = "Business Studies" 
             end
           
+            if connect_exam_id.to_i == @connect_exam_obj.id
+              abort(std_group_name)
+            end
             @student_group_name[std['id'].to_i] = std_group_name
             
             grand_total = 0

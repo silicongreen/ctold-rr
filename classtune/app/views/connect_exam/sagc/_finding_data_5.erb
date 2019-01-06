@@ -22,6 +22,7 @@ if @total_std.blank?
       @student_result = []
       @subject_result = {}
       @std_grade = {}
+      @student_group_name = {}
       loop_std = 0
       
       batchobj = Batch.find_by_id(@batch.id) 
@@ -87,7 +88,9 @@ if @total_std.blank?
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
               std_group_name = "Business Studies" 
             end
-            abort(std_group_name)
+          
+            @student_group_name[std['id'].to_i] = std_group_name
+            
             grand_total = 0
             grand_grade_point = 0
 

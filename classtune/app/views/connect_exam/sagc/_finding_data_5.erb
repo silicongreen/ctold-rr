@@ -79,6 +79,17 @@ if @total_std.blank?
          
           
           tab['students'].each do |std| 
+            std_group_name = ""
+            if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+              std_group_name = "Science" 
+              break
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+              std_group_name = "Humanities" 
+              break
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
+              std_group_name = "Business Studies" 
+              break
+            end
             grand_total = 0
             grand_grade_point = 0
 

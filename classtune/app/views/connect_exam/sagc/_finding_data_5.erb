@@ -39,7 +39,7 @@ if @total_std.blank?
       end
       
       group_std = false
-      group_name = false
+      group_name = ""
       unless @tabulation_data.blank?
         
         connect_exam = 0
@@ -61,10 +61,11 @@ if @total_std.blank?
               end
             end
           end
-          unless group_name.blank?
+          if group_name != ""
             break 
           end
         end
+        connect_exam = 0
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)

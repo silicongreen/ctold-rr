@@ -7,9 +7,9 @@
     <%  unless @grading_levels.empty? %>
       <table id="pdf-table" class="grade_info_table" width="100%" cellspacing="0">
           <tr class="even header-shade">
-              <td class="small">Letter Grade</td>
-              <td class="small">Marks</td> 
-              <td class="small">Grade Point</td> 
+              <td class="small no-warp">Letter Grade</td>
+              <td class="small no-warp">Marks</td> 
+              <td class="small no-warp">Grade Point</td> 
           </tr> 
           <% prev_score = 0 %>
           <% @grading_levels.each_with_index do |grade,index| %>

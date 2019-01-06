@@ -2834,7 +2834,10 @@ class ExamController < ApplicationController
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
-    new_book.create_worksheet :name => 'tabulation'
+    sheet1 = new_book.create_worksheet :name => 'tabulation'
+    
+    
+    center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
   
@@ -2854,36 +2857,39 @@ class ExamController < ApplicationController
       @student_position_first_term_batch = @student_position_second_term_batch
     end
     
-    row_first = [Configuration.get_config_value('InstitutionName')]
-    new_book.worksheet(0).insert_row(0, row_first)
-    
-    batch_split = @batch.name.split(" ")
-    if @connect_exam_obj.published_date.blank?
-      start_date = @connect_exam_obj.created_at.strftime("%Y")
-      end_date = @connect_exam_obj.created_at.strftime("%Y").to_i+1
-    else
-      start_date = @connect_exam_obj.published_date.strftime("%Y")
-      end_date = @connect_exam_obj.published_date.strftime("%Y").to_i+1
-    end  
-    session = start_date.to_s+"-"+end_date.to_s;
-    row_first = ["Program :"+@batch.course.course_name+" || "+"Section :"+@batch.course.section_name+" || Shift :"+batch_split[0]+" || Session:"+session+" || Version:"+batch_split[1]]
-    new_book.worksheet(0).insert_row(1, row_first)
-    
-    row_blank = [""]
-    new_book.worksheet(0).insert_row(2, row_blank)
+ 
     
     row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
+    starting_row = 11
     @subject_result.each do |key,sub_result|
-      row_first << ""
-      row_first << ""
-      row_first << ""
+      end_row = starting_row+7
+      (starting_row..end_row).each do |i|
+          sheet1.row(i).default_format = center_align_format
+      end
       row_first << @subject_result[key]['name']
       row_first << ""
       row_first << ""
       row_first << ""
       row_first << ""
+      row_first << ""
+      row_first << ""
+      row_first << ""
+      new_book.worksheet(0).merge_cells(0,starting_row,0,end_row)
+      starting_row = starting_row+8
     end
-    new_book.worksheet(0).insert_row(3, row_first)
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    new_book.worksheet(0).merge_cells(0,0,1,0)
+    new_book.worksheet(0).merge_cells(0,1,1,1)
+    new_book.worksheet(0).merge_cells(0,2,1,2)
+    new_book.worksheet(0).merge_cells(0,3,1,3)
+    new_book.worksheet(0).merge_cells(0,4,1,4)
+    new_book.worksheet(0).merge_cells(0,5,1,5)
+    new_book.worksheet(0).merge_cells(0,6,1,6)
+    new_book.worksheet(0).merge_cells(0,7,1,7)
+    new_book.worksheet(0).merge_cells(0,8,1,8)
+    new_book.worksheet(0).merge_cells(0,9,1,9)
+    new_book.worksheet(0).merge_cells(0,10,1,10)
     
     row_first = ['','','','','','','','','','','']
     @subject_result.each do |sub_result|
@@ -2896,9 +2902,9 @@ class ExamController < ApplicationController
       row_first << "+CT"
       row_first << "LG"
     end
-    new_book.worksheet(0).insert_row(4, row_first)
+    new_book.worksheet(0).insert_row(1, row_first)
     
-    std_loop = 5
+    std_loop = 2
     @student_result.each do |std_result|
       tmp_row = []
       tmp_row << std_result['sl']
@@ -2952,16 +2958,11 @@ class ExamController < ApplicationController
         end
       end
       new_book.worksheet(0).insert_row(std_loop, tmp_row)
+      
+      
       std_loop = std_loop+1
       
     end
-    
-    row_blank = [""]
-    new_book.worksheet(0).insert_row(std_loop, row_blank)
-    new_book.worksheet(0).insert_row(std_loop+1, row_blank)
-    
-    row_last = ["TIPS :: M.C = Merit in Class || M.S = Merit in Section || +RT = Raw Total || +CT = Converted Total"]
-    new_book.worksheet(0).insert_row(std_loop+1, row_last)
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

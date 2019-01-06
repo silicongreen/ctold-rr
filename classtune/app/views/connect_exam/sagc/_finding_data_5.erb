@@ -46,6 +46,7 @@ if @total_std.blank?
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          connect_exam = connect_exam+1
           if connect_exam_id.to_i == @connect_exam_obj.id
             tab['students'].each do |std| 
               if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")

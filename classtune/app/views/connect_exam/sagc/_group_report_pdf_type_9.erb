@@ -476,7 +476,7 @@
                           <b>
                               <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                                 <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
-                              <% elsif !@student_group_name[[@student.id.to_i].blank? %>
+                              <% elsif !@student_group_name[@student.id.to_i].blank? %>
                                 
                                   <%= @student_group_name[@student.id.to_i] %>
                                   -

@@ -87,6 +87,7 @@ if @total_std.blank?
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
               std_group_name = "Business Studies" 
             end
+            abort(std_group_name)
             grand_total = 0
             grand_grade_point = 0
 

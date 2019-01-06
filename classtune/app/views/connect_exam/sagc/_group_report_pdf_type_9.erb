@@ -421,7 +421,7 @@
               <% grade_point_avg = grade_point_avg.to_f/100 %>
               <table id="pdf-table" class="tbl-lign-left-100 letter-grade" width="99.8%" cellspacing="0">
                   <tr class="odd">
-                      <td class="align-left no-warp" width="50%"><b>Grade Point Avg</b></td>
+                      <td class="align-left no-warp"><b>Grade Point Avg</b></td>
                       <td><b>
                               <% if failed == true %>
                                 0.00
@@ -451,7 +451,7 @@
                               <% end %>
                           </b>
                       </td>
-                      <td class="align-left no-warp" width="15%">Section</td>
+                      <td class="align-left no-warp">Section</td>
                       <td class="no-warp">
                           <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
                             <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
@@ -471,22 +471,7 @@
 
                       <td class="align-left no-warp">Total Marks With Fraction</td>
                       <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
-                      <td class="align-left no-warp" width="15%">Class/Group</td>
-                      <td class="no-warp">
-                          <b>
-                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
-                                <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
-                              <% else %>
-                                -
-                              <% end %> 
-                          </b>  
-                      </td>    
-                  </tr>
-                  <tr class="odd">
-
-                      <td class="align-left no-warp">Total Marks With Fraction</td>
-                      <td class="align-left no-warp"><b><%= sprintf( "%0.02f", grand_total_fraction)%></b></td>
-                      <td class="align-left no-warp" width="15%">Class/Group</td>
+                      <td class="align-left no-warp">Class/Group</td>
                       <td class="no-warp">
                           <b>
                               <% if !@student_position_first_term[@student.id.to_i].blank? %> 
@@ -503,6 +488,7 @@
                           &nbsp;
                       </td>
                   </tr>
+                  
 
               </table>
               

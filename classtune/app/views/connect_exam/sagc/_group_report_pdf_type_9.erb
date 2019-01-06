@@ -477,9 +477,7 @@
                               <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                                 <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
                               <% else %>
-                                <% if !@student_group_name[[@student.id.to_i].blank? %>
-                                  <%= @student_group_name[@student.id.to_i] %>
-                                <% end %>
+                               
                                 -
                               <% end %> 
                           </b>  
@@ -693,7 +691,7 @@
         clear:both;
         margin-top:40px;
         margin-bottom:20px;
-        border-bottom: none;
+        border-bottom: none !important;
         margin-left: 4% !important;
         width: 90% !important
     }

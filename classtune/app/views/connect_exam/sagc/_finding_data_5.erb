@@ -23,55 +23,29 @@ if @total_std.blank?
       @subject_result = {}
       @std_grade = {}
       loop_std = 0
-     
-      batchobj = Batch.find_by_id(@batch.id) 
-      courseObj = Course.find_by_id(batchobj.course_id)
-      all_courses = Course.find_all_by_course_name(courseObj.course_name)
-      all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
-      std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
-      @std_subject_hash_type = []
-      @std_subject_hash_code = []
-      unless std_subject.blank?
-        std_subject.each do |std_sub|
-          @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
-          @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
+      if @std_subject_hash_type.nil?
+        batchobj = Batch.find_by_id(@batch.id) 
+        courseObj = Course.find_by_id(batchobj.course_id)
+        all_courses = Course.find_all_by_course_name(courseObj.course_name)
+        all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+        std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id))
+        @std_subject_hash_type = []
+        unless std_subject.blank?
+          std_subject.each do |std_sub|
+            @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+          end
         end
       end
       
-      group_std = false
-      group_name = ""
       unless @tabulation_data.blank?
-        
         connect_exam = 0
         batch_loop = 0
-        @tabulation_data['report'].each do |tab|
-          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-          connect_exam = connect_exam+1
-          if connect_exam_id.to_i == @connect_exam_obj.id
-            tab['students'].each do |std| 
-              if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
-                group_name = "Science" 
-                break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-                group_name = "Humanities" 
-                break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
-                group_name = "Business Studies" 
-                break
-              end
-            end
-          end
-          if group_name != ""
-            break 
-          end
-        end
-        abort(group_name)
-        connect_exam = 0
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          
           exam_type = 1
           connect_exam = connect_exam+1
           
@@ -79,18 +53,6 @@ if @total_std.blank?
          
           
           tab['students'].each do |std| 
-            
-            std_group_name = ""
-            if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
-              std_group_name = "Science" 
-              break
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-              std_group_name = "Humanities" 
-              break
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
-              std_group_name = "Business Studies" 
-              break
-            end
             grand_total = 0
             grand_grade_point = 0
 
@@ -118,9 +80,8 @@ if @total_std.blank?
               @student_result[loop_std]['subjects'] = {}
              
             end
-            if std_group_name == group_name
-              @total_std = @total_std+1
-            end
+            
+            @total_std = @total_std+1
             total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
@@ -528,10 +489,8 @@ if @total_std.blank?
               
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end 
-              if std_group_name == group_name
-                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end
+              end  
+              @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
           
             end
         
@@ -540,10 +499,8 @@ if @total_std.blank?
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end 
-              if std_group_name == group_name
-                @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end
+              end  
+              @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
           
             end 
         
@@ -552,10 +509,8 @@ if @total_std.blank?
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end
-              if std_group_name == group_name
-                @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end
+              end  
+              @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
           
             end 
 

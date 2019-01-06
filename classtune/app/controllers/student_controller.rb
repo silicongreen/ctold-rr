@@ -1256,10 +1256,10 @@ class StudentController < ApplicationController
          @group = "Science" 
          break
        elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
-         @group = "Business Studies"
+         @group = "Humanities"
          break
        elsif  sub.code == "Acc" or sub.code == "BOM" or sub.code == "PMM"
-         @group = "Humanities"
+         @group = "Business Studies"
          break
        end   
       end

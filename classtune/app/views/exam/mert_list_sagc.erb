@@ -26,12 +26,12 @@
                   <tr class="table-header">
                       <td class="col-pdf no-warp" rowspan="2" >Srl</td>
                       <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                      <td class="col-pdf no-warp" rowspan="2">Class Roll</td>
+                      <td class="col-pdf no-warp" rowspan="2">Roll</td>
                       <td class="col-pdf no-warp" rowspan="2">Student Name</td>
                       <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                      <td class="col-pdf no-warp" rowspan="2">Total Gp</td>
+                      <td class="col-pdf no-warp" rowspan="2">GP</td>
                       <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                      <td class="col-pdf no-warp" rowspan="2">Total Marks</td>
+                      <td class="col-pdf no-warp" rowspan="2">Marks</td>
                       <td class="col-pdf no-warp" rowspan="2">LG</td>
                       <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                   </tr> 
@@ -44,20 +44,20 @@
                   <% @student_result.each do |std_result| %>
                     <%  std_count = std_count+1 %>
                     <%  srl = srl+1 %>
-                    <% if std_count>44 %>
-                      <% std_count = -3 %>
+                    <% if std_count>46 %>
+                      <% std_count = 0 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
                       </tr>
                       <tr class="table-header">
                           <td class="col-pdf no-warp" rowspan="2">Srl</td>
                           <td class="col-pdf no-warp" rowspan="2">StudentId</td>
-                          <td class="col-pdf no-warp" rowspan="2">Class Roll</td>
+                          <td class="col-pdf no-warp" rowspan="2">Roll</td>
                           <td class="col-pdf no-warp" rowspan="2">Student Name</td>
                           <td class="col-pdf no-warp" rowspan="2">Academic Information</td>
-                          <td class="col-pdf no-warp" rowspan="2">Total Gp</td>
+                          <td class="col-pdf no-warp" rowspan="2">GP</td>
                           <td class="col-pdf no-warp" rowspan="2">GPA</td>
-                          <td class="col-pdf no-warp" rowspan="2">Total Marks</td>
+                          <td class="col-pdf no-warp" rowspan="2">Marks</td>
                           <td class="col-pdf no-warp" rowspan="2">LG</td>
                           <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                       </tr> 
@@ -75,8 +75,8 @@
                         <td class="col-pdf no-warp"><%= @batch.full_name %></td>
                         <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= std_result['grand_total'].to_s %></td>
-                        <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
+                        <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>
+                        <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
                           <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
                         <% else %>
                           <td class="col-pdf no-warp"><%= "F" %></td>
@@ -85,16 +85,16 @@
                         <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
                           <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                         <% else %>
-                          <td class="col-pdf" colspan="2">
+                          <td class="col-pdf no-warp" colspan="2">
                           <%
                           iloop = 0
                           unless std_result['subject_failed'].blank?
                             std_result['subject_failed'].each do |sub_failed|
-                              %><p class="no-warp"><%= sub_failed %></p><%
                               iloop = iloop+1
                               if iloop > 1
-                                std_count = std_count+1
-                              end  
+                                %>, <%
+                              end 
+                              %><%= sub_failed %><%
                             end 
                             
                           end  
@@ -103,9 +103,13 @@
                           </td>
                          
                         <% end %> 
-                         <% if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                         <% if @batch.name == "Morning English" %>
+                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                           <% end %>
+                        <% elsif !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
+                          <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                        <% end %>
                       </tr>
 
                 
@@ -140,5 +144,9 @@
     .baf_shaheen table#pdf-table tr.page-break
     {
         height: 100px !important;
+    }
+    h4.line-height-10
+    {
+       line-height: 10px !important;
     }
 </style>    

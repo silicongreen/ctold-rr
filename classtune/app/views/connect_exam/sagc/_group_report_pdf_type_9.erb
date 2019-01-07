@@ -14,7 +14,7 @@
     %> 
       <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
-      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></h2>
+      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></h2>
 
 
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
@@ -308,9 +308,6 @@
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr>    
 
-                  <tr class="page-break-grade">
-                      <td colspan="100"></td>
-                  </tr> 
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
@@ -518,7 +515,7 @@
                   </tr>
               </table>
 
-              <div class='line'></div>
+              <div class='fine'></div>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
                   <tr class="even border-bottom-1-px">
@@ -690,13 +687,12 @@
     {
         background: #e8e9ed !important;
     }
-    .line
+    div.baf_shaheen div.fine
     {
         float:left;
         clear:both;
         margin-top:40px;
         margin-bottom:20px;
-        border-bottom: none;
         margin-left: 4% !important;
         width: 90% !important
     }
@@ -705,10 +701,9 @@
         font-size:45px !important;
     }
     .page-break-grade td{
-        height: 10px;
+        height: 0px;
         border: 1px solid #fff;
         border-top: 1px solid Black;
-        border-bottom: 1px solid Black;
     }
 
 

@@ -49,14 +49,14 @@ if @total_std.blank?
           connect_exam = connect_exam+1
           if connect_exam_id.to_i == @connect_exam_obj.id
             tab['students'].each do |std| 
-              if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
                 group_name = "Science" 
                 break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-                group_name = "Humanities" 
-                break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
                 group_name = "Business Studies" 
+                break
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+                group_name = "Humanities" 
                 break
               end
             end
@@ -81,12 +81,12 @@ if @total_std.blank?
           
           tab['students'].each do |std| 
             std_group_name = ""
-            if @std_subject_hash_code.include?(std['id'].to_s+"|||Phys") or @std_subject_hash_code.include?(std['id'].to_s+"|||Chem") or @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
               std_group_name = "Science" 
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+              std_group_name = "Business Studies" 
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
               std_group_name = "Humanities" 
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Acc") or @std_subject_hash_code.include?(std['id'].to_s+"|||BOM") or @std_subject_hash_code.include?(std['id'].to_s+"|||PMM")
-              std_group_name = "Business Studies" 
             end
           
          
@@ -120,7 +120,7 @@ if @total_std.blank?
              
             end
             
-            if std_group_name == group_name
+            if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
             total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
@@ -531,7 +531,7 @@ if @total_std.blank?
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end 
-              if std_group_name == group_name
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
           
@@ -543,7 +543,7 @@ if @total_std.blank?
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end 
-              if std_group_name == group_name
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
           
@@ -555,7 +555,7 @@ if @total_std.blank?
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-              if std_group_name == group_name
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
           

@@ -2822,12 +2822,12 @@ class ExamController < ApplicationController
     end
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 30,
+      :margin => {    :top=> 32,
       :bottom => 30,
       :left=> 10,
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_header_sagc.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def tabulation_excell
@@ -2913,16 +2913,25 @@ class ExamController < ApplicationController
       tmp_row << std_result['name'].to_s
       tmp_row << std_result['grand_total'].to_s
       tmp_row << std_result['gp'].to_s+"("+std_result['gpa'].to_s+")"
-      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+      if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << std_result['lg']
       else
         tmp_row << "F"
-      end   
-      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
-        tmp_row <<  @student_position_first_term[std_result['id'].to_i]
+      end 
+      
+      if @batch.name == "Morning English" 
+        if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
+          tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
+        else
+          tmp_row << ""
+        end  
       else
-        tmp_row << ""
-      end  
+        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+          tmp_row <<  @student_position_first_term[std_result['id'].to_i]
+        else
+          tmp_row << ""
+        end 
+      end
       
       if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
@@ -4905,21 +4914,45 @@ class ExamController < ApplicationController
       @student_result = []
       @subject_result = {}
       loop_std = 0
-      if @std_subject_hash_type.nil?
-        batchobj = Batch.find_by_id(@batch.id) 
-        courseObj = Course.find_by_id(batchobj.course_id)
-        all_courses = Course.find_all_by_course_name(courseObj.course_name)
-        all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
-        std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id))
-        @std_subject_hash_type = []
-        unless std_subject.blank?
-          std_subject.each do |std_sub|
-            @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
-          end
+      batchobj = Batch.find_by_id(@batch.id) 
+      courseObj = Course.find_by_id(batchobj.course_id)
+      all_courses = Course.find_all_by_course_name(courseObj.course_name)
+      all_batch = Batch.find_all_by_course_id(all_courses.map(&:id))
+      std_subject = StudentsSubject.find_all_by_batch_id(all_batch.map(&:id),:include=>[:subject])
+      @std_subject_hash_type = []
+      @std_subject_hash_code = []
+      unless std_subject.blank?
+        std_subject.each do |std_sub|
+          @std_subject_hash_type << std_sub.student_id.to_s+"|||"+std_sub.subject_id.to_s+"|||"+std_sub.elective_type.to_s
+          @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
         end
       end
       
       unless @tabulation_data.blank?
+        connect_exam = 0
+        batch_loop = 0
+        group_name = ""
+        @tabulation_data['report'].each do |tab|
+          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+          connect_exam = connect_exam+1
+          if connect_exam_id.to_i == @connect_exam_obj.id
+            tab['students'].each do |std| 
+              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+                group_name = "Science" 
+                break
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+                group_name = "Business Studies" 
+                break
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+                group_name = "Humanities" 
+                break
+              end
+            end
+          end
+          if group_name != ""
+            break 
+          end
+        end
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
@@ -4935,13 +4968,24 @@ class ExamController < ApplicationController
          
           
           tab['students'].each do |std| 
+            std_group_name = ""
+            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+              std_group_name = "Science" 
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+              std_group_name = "Business Studies" 
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+              std_group_name = "Humanities" 
+            end
             grand_total = 0
+            grand_total_with_fraction = 0
             grand_grade_point = 0
 
             grand_total1 = 0
+            grand_total1_with_fraction = 0
             grand_grade_point1 = 0
 
             grand_total2 = 0
+            grand_total2_with_fraction = 0
             grand_grade_point2 = 0
             u_grade = 0
             u_grade1 = 0
@@ -4963,7 +5007,9 @@ class ExamController < ApplicationController
              
             end
             
-            @total_std = @total_std+1
+            if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+              @total_std = @total_std+1
+            end
             total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
@@ -5186,7 +5232,7 @@ class ExamController < ApplicationController
                 end 
                 main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
             
-            
+                main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
                 
                 subject_full_marks = main_mark
                 if sub['grade_subject'].to_i != 1
@@ -5200,6 +5246,12 @@ class ExamController < ApplicationController
                   grand_total1 = grand_total1+total_mark1
                   grand_total2 = grand_total2+total_mark2
                   grand_total = grand_total+subject_full_marks
+                  
+                  grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
+                  grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
+                  grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
+                  
+                  
               
                   if fourth_subject.blank?
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
@@ -5296,7 +5348,7 @@ class ExamController < ApplicationController
                         if @student_result[loop_std]['subject_failed'].blank?
                           @student_result[loop_std]['subject_failed'] = []
                         end
-                        @student_result[loop_std]['subject_failed'] << sub['name']+"-"+main_mark.to_s
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.to_s
                       end 
                     else
                       if @subject_result[sub['id']].blank?
@@ -5348,18 +5400,21 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
+                @student_result[loop_std]['grand_total_with_fraction'] = grand_total_with_fraction
               end
               if exam_type == 1
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
+                @student_result[loop_std]['grand_total_with_fraction'] = grand_total1_with_fraction
               end
               if exam_type == 2
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 @student_result[loop_std]['gpa'] = grand_grade_point2
                 @student_result[loop_std]['grand_total'] = grand_total2
+                @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
               end
               
               @student_result[loop_std]['gp'] = grade_point_avg
@@ -5377,8 +5432,10 @@ class ExamController < ApplicationController
               
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end 
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end
         
@@ -5387,8 +5444,10 @@ class ExamController < ApplicationController
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end 
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end 
         
@@ -5397,8 +5456,10 @@ class ExamController < ApplicationController
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-              end  
-              @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
+              if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
+                @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+              end
           
             end 
 

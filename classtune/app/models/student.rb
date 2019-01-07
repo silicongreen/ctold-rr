@@ -67,7 +67,7 @@ class Student < ActiveRecord::Base
   validates_presence_of :section, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}
   validates_presence_of :class_name, :unless => Proc.new { |student| student.batch_name.nil? or student.batch_name.empty?}
  
-  validates_uniqueness_of :admission_no
+  validates_uniqueness_of :admission_no, :scope=> [:is_deleted],:if=> 'is_deleted == false'
   validates_presence_of :gender  
   validates_format_of     :email, :with => /^[A-Z0-9._%-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i,   :allow_blank=>true,
     :message => :must_be_a_valid_email_address

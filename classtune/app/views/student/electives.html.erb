@@ -166,7 +166,7 @@
           <% unless data['students'].nil? %>
             <% if data['students'].length > 0 %>
               <% data['students'].each do |s| %>
-              <li id="stud_<%=s.id%>" class="list<%=cycle('odd', 'even')%>" style="width: 86%">
+              <li id="stud_<%=s.id%>" class="list<%=cycle('odd', 'even')%>">
                 <% b = s.batch_id %>
                 <% @subjects_code = @elective_subject.code %>  
                 <% @tmp_subject_to_test = Subject.find_by_code_and_batch_id(@subjects_code,b,:conditions=>"elective_group_id IS NOT NULL AND is_deleted = false") %>  

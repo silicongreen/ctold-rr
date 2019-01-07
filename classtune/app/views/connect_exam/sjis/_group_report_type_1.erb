@@ -68,7 +68,7 @@
                       <% end %>
 
                       <td class="col-pdf">
-                          TOTAL
+                         G.TOTAL
                       </td>
                       <td class="col-pdf">GRADE</td>
                       <td class="col-pdf border-right-none">HIGHEST</td>
@@ -131,7 +131,7 @@
                               <% if group_count > 1 %>
                               <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
-                                    <td class="col-pdf"><%= total_term %></td>
+                                    <td class="col-pdf"><%= sprintf( "%0.02f", total_term)%></td>
                                     <%
                                         exam_no = 2
                                         total_term = 0
@@ -155,15 +155,21 @@
                                     <% end %>
                               <% else %> 
                               <% if converted_total_showded == 0 %>
+                                    <% converted_total_30 = 0 %>
+                                    <% if converted_total.to_i > 0 %>
                                     <% converted_total_30 = (converted_total.to_f/converted_full_mark.to_f)*30 %>
-                                    <% converted_total_30 = converted_total_30.round() %>
+                                    <% converted_total_30 = converted_total_30 %>
+                                    <% end %>
                                     <% full_mark = full_mark+30 %>
                                     <% total_mark = total_mark.to_f+converted_total_30.to_f %>
                                     <% total_term = total_term.to_f+converted_total_30.to_f %>
+                                    
                                     <% if exam_no == 1  %>
                                         <% total_term1 = total_term1.to_f+converted_total_30.to_f %>
+                                        
                                     <% else %>
                                         <% total_term2 = total_term2.to_f+converted_total_30.to_f %>
+                                        
                                     <% end %>
                                     <td class="col-pdf no-warp">
                                         <%= sprintf( "%0.02f", converted_total_30)%>
@@ -174,14 +180,16 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                     <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                   
                                     <% total_term = total_term.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <% total_term = total_term.round() %>
+                                    
                                     <% if exam_no == 1  %>
                                         <% total_term1 = total_term1.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                        <% total_term1 = total_term1.round() %>
+                                       
+                                        
                                     <% else %>
                                         <% total_term2 = total_term2.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                        <% total_term2 = total_term2.round() %>
+                                        
                                     <% end %>
                                     
                                   <% else %>
@@ -208,8 +216,8 @@
                             <% end %>    
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
-
-                                <td class="col-pdf"><%= total_term %></td>
+                                
+                                <td class="col-pdf"><%= sprintf( "%0.02f", total_term) %></td>
                             <% end %>  
                           <% end %>    
 
@@ -218,6 +226,8 @@
 
 
                           <% 
+                          total_term1 = total_term1.round()
+                          total_term2 = total_term2.round()
                           highest_mark = 0
                           if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
                             highest_mark = @subject_highest[subjects['id'].to_i].to_f
@@ -231,7 +241,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= sprintf( "%0.02f", total_mark)%></td>
+                            <td class="col-pdf"><%= total_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
@@ -243,7 +253,7 @@
 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
-                            <%  total_mark_all_subject = total_mark_all_subject+total_mark %>
+                            <% total_mark_all_subject = total_mark_all_subject+total_mark.round() %>
                           <% else  %>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>
@@ -316,9 +326,9 @@
                                 <td class="col-pdf group_exam" colspan="<%= colspan %>"></td>
                                 <% jloop = jloop+1 %>
                                 <% if jloop == 1 %>
-                                  <td class="col-pdf"><%= total_term1 %></td>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term1) %></td>
                                 <% else %>
-                                  <td class="col-pdf"><%= total_term2 %></td>
+                                  <td class="col-pdf"><%= sprintf( "%0.02f", total_term2) %></td>
                                 <% end %>
                             <% end %>
                           <% end %>  
@@ -326,7 +336,7 @@
                            <td class="col-pdf group_exam" colspan="<%= @top_exam_group_count[0]-1 %>"></td>   
                          <% end %>      
                                 
-                         <td class="col-pdf"><b><%= total_mark_all_subject %></b></td>
+                         <td class="col-pdf"><b><%= total_mark_all_subject.round() %></b></td>
                           
                          <td class="col-pdf"></td>
                          <td class="col-pdf border-right-none"></td>

@@ -255,7 +255,7 @@
                         %>
 
                           <% if full_mark.to_f > 0 %>
-                            <td class="col-pdf"><%= total_mark.round() %> | <%= total_term1.round() %></td>
+                            <td class="col-pdf"><%= total_mark.round() %></td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <td class="col-pdf"><%= grade.name %></td>
@@ -267,7 +267,7 @@
 
                             <% total_parcent= total_parcent+main_mark %>
                             <% total_subject = total_subject+1 %>
-                            <% total_mark_all_subject = total_mark_all_subject+total_mark %>
+                            <% total_mark_all_subject = total_mark_all_subject+total_mark.round() %>
                           <% else  %>
                             <td class="col-pdf">-</td>
                             <td class="col-pdf">-</td>

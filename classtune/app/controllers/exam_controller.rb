@@ -2781,7 +2781,29 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
    
   end
+  def subject_wise_pass_failed
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
   
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    finding_data5()
+    render :pdf => 'subject_wise_pass_failed',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 32,
+      :bottom => 30,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header_sagc.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
   def mert_list_sagc
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
@@ -4913,6 +4935,7 @@ class ExamController < ApplicationController
       @student_avg_mark = {}
       @student_result = []
       @subject_result = {}
+      @absent_in_all_subject = 0
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
@@ -4968,6 +4991,7 @@ class ExamController < ApplicationController
          
           
           tab['students'].each do |std| 
+            full_absent = true
             std_group_name = ""
             if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
               std_group_name = "Science" 
@@ -5079,6 +5103,7 @@ class ExamController < ApplicationController
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
                     appeared = true
+                    full_absent = false
                     if rs['exam_category'] == '1'
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5315,16 +5340,22 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['pr'] = total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
+                  if @subject_result[sub['id']].blank?
+                    @subject_result[sub['id']] = {}
+                    @subject_result[sub['id']]['id'] = sub['id']
+                    @subject_result[sub['id']]['name'] = sub['name']
+                    if @subject_result[sub['id']]['total'].blank?
+                      @subject_result[sub['id']]['total'] = 1
+                    else
+                      @subject_result[sub['id']]['total'] = @subject_result[sub['id']]['total']+1
+                    end
+                  end
                   main_mark = total_mark1+total_mark2
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name
                     if grade.credit_points.to_i == 0 or subject_failed == true
-                      if @subject_result[sub['id']].blank?
-                        @subject_result[sub['id']] = {}
-                        @subject_result[sub['id']]['id'] = sub['id']
-                        @subject_result[sub['id']]['name'] = sub['name']
-                      end
+                      
                       if @subject_result[sub['id']]['failed'].blank?
                         @subject_result[sub['id']]['failed'] = 1
                       else
@@ -5393,9 +5424,12 @@ class ExamController < ApplicationController
             @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
        
         
+            
             if connect_exam_id.to_i == @connect_exam_obj.id
               @total_std_batch = @total_std_batch+1
-              
+              if full_absent
+                @absent_in_all_subject = @absent_in_all_subject+1
+              end
               
               if exam_type == 3
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f

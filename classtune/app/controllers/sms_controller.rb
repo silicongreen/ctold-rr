@@ -144,6 +144,16 @@ class SmsController < ApplicationController
     end
   end
   
+  def panel
+    if current_user.admin?
+      @batches = Batch.active
+    elsif @current_user.employee?
+      @batches=@current_user.employee_record.batches
+      @batches+=@current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches=@batches.uniq unless @batches.empty?
+    end 
+  end
+  
   def list_students
     @students = []
     unless params[:batch_id].blank?

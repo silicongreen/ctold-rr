@@ -240,6 +240,8 @@
 
 
                           <% 
+                          total_term1 = total_term1.round()
+                          total_term2 = total_term2.round()
                           highest_mark = 0
                           if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
                             highest_mark = @subject_highest[subjects['id'].to_i].to_f

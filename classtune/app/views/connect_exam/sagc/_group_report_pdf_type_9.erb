@@ -152,7 +152,7 @@
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %><%= fourth_subject %><%= third_subject %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
-                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? and report['exam_category'] != '1' %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                               <% end %> 
                               <% if report['exam_category'] == '1' %>
@@ -163,10 +163,13 @@
 
 
                           <% 
+                          if full_mark > 0
+                            full_mark = full_mark+20
+                          end  
                           highest_mark = 0
                           if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
                             highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
-                            end
+                          end
 
                         %>
 

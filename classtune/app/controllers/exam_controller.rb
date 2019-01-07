@@ -5082,12 +5082,12 @@ class ExamController < ApplicationController
                     if rs['exam_category'] == '1'
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        
                         monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                       
                         monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                     elsif rs['exam_category'] == '2'
@@ -5161,10 +5161,12 @@ class ExamController < ApplicationController
                 end
           
                 if full_mark2 > 0
+                  full_mark2 = full_mark2+20
                   exam_type = 2
                 end
                 
                 if full_mark1 > 0 && exam_type == 3
+                  full_mark1 = full_mark1+20
                   exam_type = 3
                 end 
                 

@@ -38,6 +38,8 @@ class PaymentSettingsController < ApplicationController
       payment_settings = params[:payment_settings]
       configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_sslcommerz')
       configuration.update_attributes(:config_value => 0)
+      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_testtrustbank')
+      configuration.update_attributes(:config_value => 0)
       payment_settings.each_pair do |key,value|
         if key == 'is_test_sslcommerz' && value == 'on'
           value = 1

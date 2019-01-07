@@ -225,7 +225,7 @@
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
-                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
                                       <% failed = true %>
                                       <% failed_subject = true %>
                                     <% end %>

@@ -138,9 +138,17 @@ class Import < ActiveRecord::Base
                   primary_key = model_name.reflect_on_association(process_row.to_sym).options[:foreign_key] || :id
                   associated_id =  case assoc_reflection.macro
                   when :belongs_to
-                    associated_model.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                    if associated_column == "admission_no"
+                      associated_model.find(:first,:conditions  => {associated_column.to_sym => csv_row[index],:is_deleted => false}).try(primary_key)
+                    else
+                      associated_model.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                    end
                   else
-                    assoc_reflection.klass.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                    if associated_column == "admission_no"
+                      assoc_reflection.klass.find(:first,:conditions  => {associated_column.to_sym => csv_row[index],:is_deleted => false}).try(primary_key)
+                    else
+                      assoc_reflection.klass.find(:first,:conditions  => {associated_column.to_sym => csv_row[index]}).try(primary_key)
+                    end
                   end
                 end
               end

@@ -245,6 +245,10 @@ table#listing .tr-odd, table#listing .tr-even{
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
 }
+table#listing .tr-even td a, table#listing .tr-odd td a
+{
+   color:blue; 
+}
 table#listing .tr-read-odd, table#listing .tr-read-odd{
     background: #ffffff;
 }

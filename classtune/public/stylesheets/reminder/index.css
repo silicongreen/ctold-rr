@@ -157,7 +157,7 @@
 
 .unread_from_name a{
     text-decoration:none;
-    color:black;
+    color:blue;
 }
 
 .unread_subject{
@@ -172,7 +172,7 @@
 
 .unread_subject a{
     text-decoration:none;
-    color:black;
+    color:blue;
 }
 
 .unread_sent_date{
@@ -187,7 +187,7 @@
 
 .unread_sent_date a{
     text-decoration:none;
-    color:black;
+    color:blue;
 }
 
 .from_name{

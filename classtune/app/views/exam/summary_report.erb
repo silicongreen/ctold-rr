@@ -67,17 +67,25 @@
                   </tr> 
               </table>     
               <% end %>
-              <h4 align="center">Passed Student(s)</h4>
+              
+              <% if @grading_levels.blank? %>
+                <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+                <% if @grading_levels.blank? %>
+                  <% @grading_levels = GradingLevel.default %>
+                <% end %>
+              <% end %>
               <% if !@grade_count.blank? %>
-              <% @grade_count.keys.sort.each { |key| puts @grade_count[key] } %>
+              <h4 align="center">Passed Student(s)</h4>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% total_got = 0 %>
-                      <% @grade_count.each do |key,value| %>
+                      <% @grading_levels.each do |grade| %>
                       
-                      <% if key != "F" %>
-                        <tr class="table-header">
-                          <td class="col-pdf" >No. of Student(s) got <%= key.to_s %> </td><td><%= @grade_count[key] %> <% total_got = total_got+@grade_count[key].to_i %> </td>
-                        </tr>
+                      <% if grade.name != "F" %>
+                        <% unless @grade_count[grade.name].blank?  %>
+                          <tr class="table-header">
+                            <td class="col-pdf" >No. of Student(s) got <%= grade.name %> </td><td><%= @grade_count[grade.name] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                          </tr>
+                        <% end %>
                       <% end %>
                       <% end %>
                       <tr class="table-header border-top">

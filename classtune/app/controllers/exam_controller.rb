@@ -4999,7 +4999,7 @@ class ExamController < ApplicationController
       
          
           total_failed = 0
-          total_failed_appeared = 0
+          total_failed_appaered = 0
           tab['students'].each do |std|
             
             full_absent = true

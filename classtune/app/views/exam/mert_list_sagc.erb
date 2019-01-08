@@ -35,10 +35,12 @@
                       <td class="col-pdf no-warp" rowspan="2">LG</td>
                       <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                   </tr> 
-                  <tr class="table-header">
-                      <td class="col-pdf no-warp center-class" colspan="1">Section</td>
-                      <td class="col-pdf no-warp center-class" colspan="1">Class</td>
-                  </tr>
+                  <% if @class.blank? %>
+                    <tr class="table-header">
+                        <td class="col-pdf no-warp center-class" colspan="1">Section</td>
+                        <td class="col-pdf no-warp center-class" colspan="1">Class</td>
+                    </tr>
+                  <% end %>
                   <% std_count = 0 %>
                   <% srl = 0 %>
                   <% @student_result.each do |std_result| %>
@@ -60,16 +62,18 @@
                           <td class="col-pdf no-warp" rowspan="2">Marks</td>
                           <td class="col-pdf no-warp" rowspan="2">LG</td>
                           <td class="col-pdf no-warp center-class" colspan="2">Position</td>
-                      </tr> 
-                      <tr class="table-header">
-                          <% if @class.blank? %>
-                            <td class="col-pdf no-warp center-class" colspan="1">Section</td>
-                          <% end %>
-                          <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
                       </tr>
+                      <% if @class.blank? %>
+                        <tr class="table-header">
+
+                            <td class="col-pdf no-warp center-class" colspan="1">Section</td>
+
+                            <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
+                        </tr>
+                      <% end %>
                     <% end %>    
-                    
-                      <tr class="table-header">
+
+                    <tr class="table-header">
                         <td class="col-pdf no-warp"><%= srl %></td>
                         <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
@@ -78,46 +82,74 @@
                         <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
                         <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>
+
+                        <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                          <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
+                        <% else %>
+                          <td class="col-pdf no-warp"><%= "F" %></td>
+                        <% end %> 
+
                         <% if @class.blank? %>
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
-                          <% else %>
-                            <td class="col-pdf no-warp"><%= "F" %></td>
-                          <% end %> 
-                        <% end %>  
-                          
-                        <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
-                        <% else %>
-                          <td class="col-pdf no-warp" colspan="2">
-                          <%
-                          iloop = 0
-                          unless std_result['subject_failed'].blank?
-                            std_result['subject_failed'].each do |sub_failed|
-                              iloop = iloop+1
-                              if iloop > 1
-                                %>, <%
-                              end 
-                              %><%= sub_failed %><%
-                            end 
-                            
-                          end  
-                        
-                          %>
-                          </td>
-                         
-                        <% end %> 
-                         <% if @batch.name == "Morning English" %>
-                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
-                          <% end %>
-                        <% elsif !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
-                        <% end %>
-                      </tr>
 
-                
-                    <% end %>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+
+                          <% else %>
+                            <td class="col-pdf no-warp" colspan="2">
+                                <%
+                                iloop = 0
+                                unless std_result['subject_failed'].blank?
+                                  std_result['subject_failed'].each do |sub_failed|
+                                    iloop = iloop+1
+                                    if iloop > 1
+                                    %>, <%
+                                      end 
+                                  %><%= sub_failed %><%
+                                  end 
+
+                                  end  
+
+                              %>
+                            </td>
+
+                          <% end %> 
+                          <% if @batch.name == "Morning English" %>
+                            <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                              <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <% end %>
+                          <% elsif !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                          <% end %>
+                        <% else %>
+                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+
+                            <td class="col-pdf no-warp center-class" colspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+
+                          <% else %>
+                            <td class="col-pdf no-warp" colspan="2">
+                                <%
+                                iloop = 0
+                                unless std_result['subject_failed'].blank?
+                                  std_result['subject_failed'].each do |sub_failed|
+                                    iloop = iloop+1
+                                    if iloop > 1
+                                    %>, <%
+                                      end 
+                                  %><%= sub_failed %><%
+                                  end 
+
+                                  end  
+
+                              %>
+                            </td>
+
+                          <% end %>
+
+                        <% end %>  
+                    </tr>
+
+
+                  <% end %>
 
               </table>     
             <% end %>
@@ -151,6 +183,6 @@
     }
     h4.line-height-10
     {
-       line-height: 10px !important;
+        line-height: 10px !important;
     }
 </style>    

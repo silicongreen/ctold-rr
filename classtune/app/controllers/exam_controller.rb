@@ -5019,7 +5019,7 @@ class ExamController < ApplicationController
             grand_total_main = 0
             grade_poin_main = 0
             @student_tab = Student.find_by_id(std['id'].to_i)
-            if connect_exam_id.to_i == @connect_exam_obj.id
+            if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
               end
@@ -5040,7 +5040,7 @@ class ExamController < ApplicationController
             total_subject = 0
             tab['subjects'].each do |sub|
               
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_result[loop_std]['subjects'][sub['id'].to_s] = {}
                 @student_result[loop_std]['subjects'][sub['id'].to_s]['name'] = sub['name']
                 @student_result[loop_std]['subjects'][sub['id'].to_s]['id'] = sub['id']
@@ -5332,7 +5332,7 @@ class ExamController < ApplicationController
                   end  
               
                 end
-                if connect_exam_id.to_i == @connect_exam_obj.id
+                if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][sub['id']]['result']['at'] = at_total_mark1+at_total_mark2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
                   
@@ -5426,7 +5426,7 @@ class ExamController < ApplicationController
        
         
             
-            if connect_exam_id.to_i == @connect_exam_obj.id
+            if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
@@ -5467,7 +5467,7 @@ class ExamController < ApplicationController
               grand_total_new = 50000-grand_total
               grand_grade_new = 50000-grand_grade_point
               
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
@@ -5479,7 +5479,7 @@ class ExamController < ApplicationController
             if u_grade1 == 0  
               grand_total_new = 50000-grand_total1
               grand_grade_new = 50000-grand_grade_point1
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
@@ -5491,7 +5491,7 @@ class ExamController < ApplicationController
             if u_grade2 == 0  
               grand_total_new = 50000-grand_total2
               grand_grade_new = 50000-grand_grade_point2
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id

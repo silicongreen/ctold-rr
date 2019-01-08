@@ -62,8 +62,10 @@
                           <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                       </tr> 
                       <tr class="table-header">
-                          <td class="col-pdf no-warp center-class" colspan="1">Section</td>
-                          <td class="col-pdf no-warp center-class" colspan="1">Class</td>
+                          <% if @class.blank? %>
+                            <td class="col-pdf no-warp center-class" colspan="1">Section</td>
+                          <% end %>
+                          <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
                       </tr>
                     <% end %>    
                     
@@ -76,11 +78,13 @@
                         <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
                         <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>
-                        <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
-                        <% else %>
-                          <td class="col-pdf no-warp"><%= "F" %></td>
-                        <% end %> 
+                        <% if @class.blank? %>
+                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                            <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
+                          <% else %>
+                            <td class="col-pdf no-warp"><%= "F" %></td>
+                          <% end %> 
+                        <% end %>  
                           
                         <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
                           <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>

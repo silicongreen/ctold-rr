@@ -59,7 +59,11 @@
                         <td class="col-pdf no-warp center-class">Position</td>
                     </tr>
                     <tr class="table-header">
-                        <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
+                        <td class="col-pdf no-warp center-class" colspan="1">Class/Group
+                        <% unless @group_name_upper.blank? %>
+                            &nbsp;(<%= @group_name_upper %>)
+                        <% end %>    
+                        </td>
                     </tr>
                   <% end %>
 
@@ -108,7 +112,11 @@
                             <td class="col-pdf no-warp center-class">Position</td>
                         </tr>
                         <tr class="table-header">
-                            <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
+                            <td class="col-pdf no-warp center-class" colspan="1">Class/Group
+                            <% unless @group_name_upper.blank? %>
+                              &nbsp;(<%= @group_name_upper %>)
+                            <% end %>
+                            </td>
                         </tr>
                       <% end %>
                     <% end %>    

@@ -42,7 +42,7 @@
                   <% if @class.blank? %>
                     <tr class="table-header">
                         <td class="col-pdf no-warp center-class" colspan="1">Section</td>
-                        <td class="col-pdf no-warp center-class" colspan="1">Class</td>
+                        <td class="col-pdf no-warp center-class" colspan="1">Class/Group</td>
                     </tr>
                   <% end %>
                   <% std_count = 0 %>
@@ -131,10 +131,10 @@
                         <% else %>
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class" rowspan="2" colspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class" colspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" rowspan="2" colspan="2">
+                            <td class="col-pdf no-warp" colspan="2">
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?

@@ -102,7 +102,7 @@
                       <% total_got = 0 %>
                       <% @failed_partial_absent.each do |key,ft| %>
                           <tr class="table-header">
-                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@failed_partial_absent[key].to_i %> </td>
                           </tr>
                       <% end %>
                       <tr class="table-header border-top">
@@ -118,7 +118,7 @@
                       <% total_got = 0 %>
                       <% @failed_appeared_absent.each do |key,ft| %>
                           <tr class="table-header">
-                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@failed_partial_absent[key].to_i %> </td>
                           </tr>
                       <% end %>
                       <tr class="table-header border-top">

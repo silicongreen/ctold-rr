@@ -5477,13 +5477,6 @@ class ExamController < ApplicationController
               
               gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
               if !gradeObj.blank? and !gradeObj.name.blank?
-                
-                if @grade_count[gradeObj.name].blank?
-                  @grade_count[gradeObj.name] = 1
-                else
-                  @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
-                end  
-                
                 @student_result[loop_std]['lg'] = gradeObj.name
               end
               loop_std = loop_std+1
@@ -5495,7 +5488,6 @@ class ExamController < ApplicationController
               
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
@@ -5512,7 +5504,13 @@ class ExamController < ApplicationController
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
-                
+                if !gradeObj.blank? and !gradeObj.name.blank?
+                  if @grade_count[gradeObj.name].blank?
+                    @grade_count[gradeObj.name] = 1
+                  else
+                    @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                  end
+                end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]

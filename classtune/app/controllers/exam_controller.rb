@@ -2817,6 +2817,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
+    @class = params[:class]
     finding_data5()
     if @student_list_first_term.blank?
       @subject_highest_1st_term = @subject_highest_2nd_term

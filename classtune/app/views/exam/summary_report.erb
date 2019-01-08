@@ -20,8 +20,8 @@
     <div class="page1"> </div>
     <div class="section1 row" >
         <center>
-            <h4 align="center">Summary Report</h4>
-            <h4 align="center"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></h4>
+            <h3 align="center">Summary Report</h3>
+            <h3 align="center"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></h3>
             
             <table id="pdf-table" width="100%" cellspacing="0">
               <tr class="table-header">
@@ -37,7 +37,7 @@
               </tr>
             </table>
             
-              <h4 align="center">Summary</h4>
+              <h3 align="center">Summary</h3>
               <% if !@total_std_batch.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
@@ -52,7 +52,7 @@
                   </tr> 
               </table>     
               <% end %>
-              <h4 align="center">Passed/ Failed</h4>
+              <h3 align="center">Passed/ Failed</h3>
               <% if !@student_list_first_term.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
@@ -76,7 +76,7 @@
               <% end %>
               <% if !@grade_count.blank? %>
               
-              <h4 align="center">Passed Student(s)</h4>
+              <h3 align="center">Passed Student(s)</h3>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% total_got = 0 %>
                       <% @grading_levels.each do |grade| %>
@@ -97,7 +97,7 @@
               <% end %>
               <% if !@failed_partial_absent.blank? %>
               
-              <h4 align="center">Failed With Partial Absentee Student(s)</h4>
+              <h3 align="center">Failed With Partial Absentee Student(s)</h3>
               
               
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
@@ -118,7 +118,7 @@
               </table>     
               <% end %>
               <% if !@failed_appeared_absent.blank? %>
-              <h4 align="center">Failed List only Appeared in Exam</h4>
+              <h3 align="center">Failed List only Appeared in Exam</h3>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% total_got = 0 %>
                       <% (1..10).each do |key| %>

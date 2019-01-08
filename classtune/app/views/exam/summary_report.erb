@@ -69,11 +69,14 @@
               <% end %>
               <h4 align="center">Passed Student(s)</h4>
               <% if !@grade_count.blank? %>
+              <% @grade_count.keys.sort.each { |key| puts @grade_count[key] } %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% @grade_count.each do |key,value| %>
-                      <tr class="table-header">
-                        <td class="col-pdf" >No. of Student(s) got <%= key.to_s %> </td><td><%= @grade_count[key] %> </td>
-                      </tr>
+                      <% if key != "F" %>
+                        <tr class="table-header">
+                          <td class="col-pdf" >No. of Student(s) got <%= key.to_s %> </td><td><%= @grade_count[key] %> </td>
+                        </tr>
+                      <% end %>
                       <% end %>
                   </tr> 
               </table>     

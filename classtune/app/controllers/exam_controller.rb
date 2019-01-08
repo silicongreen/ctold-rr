@@ -5541,6 +5541,7 @@ class ExamController < ApplicationController
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
+          abort(key.to_s)
           @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
             position = position+1

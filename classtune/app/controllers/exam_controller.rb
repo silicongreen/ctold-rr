@@ -5541,7 +5541,7 @@ class ExamController < ApplicationController
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
-          abort(key.to_s)
+         
           @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
             position = position+1
@@ -5552,6 +5552,8 @@ class ExamController < ApplicationController
           end 
         end
       end
+      
+      abort(@section_all_position_batch.inspect)
       
       unless @student_list_first_term.blank?
         position = 0

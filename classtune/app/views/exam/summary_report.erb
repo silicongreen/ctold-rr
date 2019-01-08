@@ -75,6 +75,7 @@
                 <% end %>
               <% end %>
               <% if !@grade_count.blank? %>
+              
               <h4 align="center">Passed Student(s)</h4>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <% total_got = 0 %>
@@ -87,6 +88,38 @@
                           </tr>
                         <% end %>
                       <% end %>
+                      <% end %>
+                      <tr class="table-header border-top">
+                        <td class="col-pdf" ></td><td><%= total_got %> </td>
+                      </tr>
+                  </tr> 
+              </table>     
+              <% end %>
+              <% if !@failed_partial_absent.blank? %>
+              <% @failed_partial_absent.keys.sort.each { |key| puts @failed_partial_absent[key] } %>
+              <h4 align="center">Failed With Partial Absentee Student(s)</h4>
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <% total_got = 0 %>
+                      <% @failed_partial_absent.each do |key,ft| %>
+                          <tr class="table-header">
+                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                          </tr>
+                      <% end %>
+                      <tr class="table-header border-top">
+                        <td class="col-pdf" ></td><td><%= total_got %> </td>
+                      </tr>
+                  </tr> 
+              </table>     
+              <% end %>
+              <% if !@failed_appeared_absent.blank? %>
+              <% @failed_appeared_absent.keys.sort.each { |key| puts @failed_appeared_absent[key] } %>
+              <h4 align="center">Failed List only Appeared in Exam</h4>
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <% total_got = 0 %>
+                      <% @failed_appeared_absent.each do |key,ft| %>
+                          <tr class="table-header">
+                            <td class="col-pdf" >No. of Student(s) failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                          </tr>
                       <% end %>
                       <tr class="table-header border-top">
                         <td class="col-pdf" ></td><td><%= total_got %> </td>

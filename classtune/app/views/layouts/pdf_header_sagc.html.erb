@@ -3,7 +3,13 @@
     <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
     <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
     <h4 align="center"><%= @connect_exam_obj.name %> - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %> - Merit List</h4>
-    <h4 class="line-height-10" align="center"><%= @batch.course.course_name %> <%= @batch.course.section_name %></h4>
+    <h4 class="line-height-10" align="center">
+    <% if @class.blank? %>
+      <%= @batch.course.course_name %> <%= @batch.course.section_name %>
+    <% else %>
+      <%= @batch.course.course_name %>
+    <% end %>    
+    </h4>
 </div>
 <style>
   #pdf-header-south h4.line-height-10

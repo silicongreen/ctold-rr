@@ -1,0 +1,21 @@
+<div id="pdf-footer">
+
+      <table id="listing table-design"  width="100%"  style="margin-top:10px;">
+          <thead>          
+
+              <tr>
+                  <td class="">
+                      <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/college_vp_signature.png")), :width=>"20%" %><br />
+                      <%= "---------------------------------------------------------------" %><br />
+                      <font size='5'><%= "Vice-Principal" %></font>
+                  </td>
+
+                  <td class="">
+                       <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal.png")), :width=>"20%" %><br/>
+                      <%= "---------------------------------------------------------------" %><br />
+                      <font size='5'><%= "Principal" %></font>
+                  </td>
+          </tr>
+
+      </table>
+  </div>

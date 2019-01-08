@@ -5116,8 +5116,9 @@ class ExamController < ApplicationController
                 
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
-                    appeared = true
-                    full_absent = false
+                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
+                      next
+                    end
                     if rs['exam_category'] == '1'
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5138,7 +5139,9 @@ class ExamController < ApplicationController
                         at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
-                    elsif rs['exam_category'] == '3'  
+                    elsif rs['exam_category'] == '3' 
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5158,6 +5161,8 @@ class ExamController < ApplicationController
                         end 
                       end
                     elsif rs['exam_category'] == '4'  
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5176,7 +5181,9 @@ class ExamController < ApplicationController
                           subject_failed = true
                         end 
                       end
-                    elsif rs['exam_category'] == '5'  
+                    elsif rs['exam_category'] == '5'
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f

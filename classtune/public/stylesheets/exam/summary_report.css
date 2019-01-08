@@ -84,7 +84,6 @@ tr.odd{
 table#pdf-table{
     border-top: 1px solid #000000;
     border-collapse:collapse;
-    margin-bottom:10px;
 }
 
 #pdf-header-south{
@@ -95,7 +94,7 @@ h3
 {
     font-weight: bold;
     font-size: 22px;
-    margin-top:10px;
+    margin-bottom:10px;
 }
 
 .page-break td{

@@ -42,13 +42,13 @@
               <% if !@total_std_batch.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
-                        <td class="col-pdf" >Total No. of Students </td><td><%= @total_std_batch %> </td>
+                        <td class="col-pdf right-align">Total No. of Students </td><td><%= @total_std_batch %> </td>
                       </tr>
                       <tr class="table-header">
-                        <td class="col-pdf" >Absent in all Subjects </td><td><%= @absent_in_all_subject %> </td>
+                        <td class="col-pdf right-align" >Absent in all Subjects </td><td><%= @absent_in_all_subject %> </td>
                       </tr>
                       <tr class="table-header border-top">
-                        <td class="col-pdf" >Total No. of Examinees </td><td><%= @total_std_batch-@absent_in_all_subject %> </td>
+                        <td class="col-pdf right-align" >Total No. of Examinees </td><td><%= @total_std_batch-@absent_in_all_subject %> </td>
                       </tr>
                   </tr> 
               </table>     
@@ -57,13 +57,13 @@
               <% if !@student_list_first_term.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
-                        <td class="col-pdf" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
+                        <td class="col-pdf right-align" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
                       </tr>
                       <tr class="table-header">
-                        <td class="col-pdf" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count-@absent_in_all_subject %> </td>
+                        <td class="col-pdf right-align" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count-@absent_in_all_subject %> </td>
                       </tr>
                       <tr class="table-header border-top">
-                        <td class="col-pdf" ></td><td><%= @total_std_batch-@absent_in_all_subject %> </td>
+                        <td class="col-pdf right-align" ></td><td><%= @total_std_batch-@absent_in_all_subject %> </td>
                       </tr>
                   </tr> 
               </table>     
@@ -85,7 +85,7 @@
                       <% if grade.name != "F" %>
                         <% unless @grade_count[grade.name].blank?  %>
                           <tr class="table-header">
-                            <td class="col-pdf" >No. of Student(s) got <%= grade.name %> </td><td><%= @grade_count[grade.name] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
+                            <td class="col-pdf right-align" >No. of Student(s) got <%= grade.name %> </td><td><%= @grade_count[grade.name] %> <% total_got = total_got+@grade_count[grade.name].to_i %> </td>
                           </tr>
                         <% end %>
                       <% end %>
@@ -109,7 +109,7 @@
                             <% break %>
                           <% end %>
                           <tr class="table-header">
-                            <td class="col-pdf" >No. of Student(s) Failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@failed_partial_absent[key].to_i %> </td>
+                            <td class="col-pdf right-align" >No. of Student(s) Failed in <%= key %> Subjects </td><td><%= @failed_partial_absent[key] %> <% total_got = total_got+@failed_partial_absent[key].to_i %> </td>
                           </tr>
                       <% end %>
                       <tr class="table-header border-top">
@@ -127,7 +127,7 @@
                             <% break %>
                           <% end %>
                           <tr class="table-header">
-                            <td class="col-pdf" >No. of Student(s) Failed in <%= key %> Subjects </td><td><%= @failed_appeared_absent[key] %> <% total_got = total_got+@failed_appeared_absent[key].to_i %> </td>
+                            <td class="col-pdf right-align" >No. of Student(s) Failed in <%= key %> Subjects </td><td><%= @failed_appeared_absent[key] %> <% total_got = total_got+@failed_appeared_absent[key].to_i %> </td>
                           </tr>
                       <% end %>
                       <tr class="table-header border-top">

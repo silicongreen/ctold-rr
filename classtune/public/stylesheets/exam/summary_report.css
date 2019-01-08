@@ -72,14 +72,20 @@ tr.odd{
 
 }
 .table-header td{
-    padding: 5px;
+    padding: 5px 20px;
     border: 1px solid #000000;
     color: #000000;
     background: #ffffff;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     font-size: 18px;
 }
+
+ tr.table-header td.right-align
+ {
+     text-align: right;
+     width: 80%;
+ }
 
 table#pdf-table{
     border-top: 1px solid #000000;

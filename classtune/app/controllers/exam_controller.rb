@@ -4982,10 +4982,11 @@ class ExamController < ApplicationController
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
+          batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
   
-          batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
+          
           
           exam_type = 1
           connect_exam = connect_exam+1

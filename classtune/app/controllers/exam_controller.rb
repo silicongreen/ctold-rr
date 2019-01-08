@@ -4998,10 +4998,10 @@ class ExamController < ApplicationController
           
       
          
-          total_failed = 0
-          total_failed_appaered = 0
+          
           tab['students'].each do |std|
-            
+            total_failed = 0
+            total_failed_appaered = 0
             full_absent = true
             failed_on_appread = false
             std_group_name = ""

@@ -4977,6 +4977,7 @@ class ExamController < ApplicationController
             break 
           end
         end
+        @group_name_upper = group_name
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|

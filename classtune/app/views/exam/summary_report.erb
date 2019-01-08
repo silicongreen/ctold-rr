@@ -59,11 +59,22 @@
                         <td class="col-pdf" >No. of Passed Students </td><td><%= @student_list_first_term.count %> </td>
                       </tr>
                       <tr class="table-header">
-                        <td class="col-pdf" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term.count-@absent_in_all_subject %> </td>
+                        <td class="col-pdf" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count-@absent_in_all_subject %> </td>
                       </tr>
                       <tr class="table-header border-top">
                         <td class="col-pdf" ></td><td><%= @total_std_batch-@absent_in_all_subject %> </td>
                       </tr>
+                  </tr> 
+              </table>     
+              <% end %>
+              <h4 align="center">Passed Student(s)</h4>
+              <% if !@grade_count.blank? %>
+              <table id="pdf-table" width="60%" align="center" cellspacing="0">
+                      <% @grade_count.each do |key,value| %>
+                      <tr class="table-header">
+                        <td class="col-pdf" >No. of Student(s) got <%= key.to_s %> </td><td><%= @grade_count[key] %> </td>
+                      </tr>
+                      <% end %>
                   </tr> 
               </table>     
               <% end %>

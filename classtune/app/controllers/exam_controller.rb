@@ -4937,6 +4937,7 @@ class ExamController < ApplicationController
       @student_result = []
       @subject_result = {}
       @absent_in_all_subject = 0
+      @section_wise_position = {}
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
@@ -5029,6 +5030,7 @@ class ExamController < ApplicationController
               end
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1
+              @student_result[loop_std]['batch_id'] = batch_data.id
               @student_result[loop_std]['batch_data'] = batch_data.full_name
               @student_result[loop_std]['sid'] = @student_tab.admission_no
               @student_result[loop_std]['roll'] = @student_tab.class_roll_no
@@ -5489,7 +5491,14 @@ class ExamController < ApplicationController
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position[batch_data.id].blank?
+                  @section_wise_position[batch_data.id] = []
+                end
+                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
+              
+              
+              
           
             end 
         
@@ -5516,6 +5525,8 @@ class ExamController < ApplicationController
       @student_position_first_term_batch = {}
       @student_position_second_term_batch = {}
       @student_position_batch = {}
+      
+      @section_all_position_batch = {}
    
       unless @student_list.blank?
         position = 0
@@ -5526,6 +5537,21 @@ class ExamController < ApplicationController
         end 
       end
     
+      
+      unless @section_wise_position.blank?
+        @section_wise_position.each do|key,value|
+          position = 0
+          @sorted_students = @section_wise_position[key].sort
+          @sorted_students.each do|s|
+            position = position+1
+            if @section_all_position_batch[key].blank?
+              @section_all_position_batch[key] = {}
+            end
+            @section_all_position_batch[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
       unless @student_list_first_term.blank?
         position = 0
         @sorted_students = @student_list_first_term.sort

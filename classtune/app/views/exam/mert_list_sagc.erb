@@ -56,9 +56,10 @@
                         <td class="col-pdf no-warp" rowspan="2">GPA</td>
                         <td class="col-pdf no-warp" rowspan="2">Marks</td>
                         <td class="col-pdf no-warp" rowspan="2">LG</td>
-                        <td class="col-pdf no-warp center-class">Position</td>
+                        <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                     </tr>
                     <tr class="table-header">
+                        <td class="col-pdf no-warp center-class" colspan="1">Section</td>
                         <td class="col-pdf no-warp center-class" colspan="1">Class/Group
                         <% unless @group_name_upper.blank? %>
                             &nbsp;(<%= @group_name_upper %>)
@@ -109,9 +110,10 @@
                             <td class="col-pdf no-warp" rowspan="2">GPA</td>
                             <td class="col-pdf no-warp" rowspan="2">Marks</td>
                             <td class="col-pdf no-warp" rowspan="2">LG</td>
-                            <td class="col-pdf no-warp center-class">Position</td>
+                            <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                         </tr>
                         <tr class="table-header">
+                            <td class="col-pdf no-warp center-class" colspan="1">Section</td>
                             <td class="col-pdf no-warp center-class" colspan="1">Class/Group
                             <% unless @group_name_upper.blank? %>
                               &nbsp;(<%= @group_name_upper %>)
@@ -169,12 +171,13 @@
                             <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
-                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                          
+                          <% if !@section_all_position_batch.blank? && !@section_all_position_batch[std_result['batch_id'].to_i].blank? && @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp">
+                            <td class="col-pdf no-warp" colspan="2">
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?
@@ -191,7 +194,13 @@
                               %>
                             </td>
 
+                          <% end %> 
+                          
+                          <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
+                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                           <% end %>
+                            
+                          
 
                         <% end %>  
                     </tr>

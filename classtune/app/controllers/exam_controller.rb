@@ -5370,10 +5370,7 @@ class ExamController < ApplicationController
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name
                     if grade.credit_points.to_i == 0 or subject_failed == true
                       
-                      total_failed = total_failed+1
-                      if failed_on_appread
-                        total_failed_appaered = total_failed_appaered+1
-                      end 
+                       
                       
                       if @subject_result[sub['id']]['failed'].blank?
                         @subject_result[sub['id']]['failed'] = 1
@@ -5402,6 +5399,10 @@ class ExamController < ApplicationController
                           @student_result[loop_std]['subject_failed'] = []
                         end
                         @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.to_s
+                        total_failed = total_failed+1
+                        if failed_on_appread
+                          total_failed_appaered = total_failed_appaered+1
+                        end
                       end 
                     else
                       if @subject_result[sub['id']].blank?

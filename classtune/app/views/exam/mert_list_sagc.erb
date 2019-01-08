@@ -66,9 +66,9 @@
                           <td class="col-pdf no-warp" rowspan="2">Marks</td>
                           <td class="col-pdf no-warp" rowspan="2">LG</td>
                           <% if @class.blank? %>
-                          <td class="col-pdf no-warp center-class" colspan="2">Position</td>
+                            <td class="col-pdf no-warp center-class" colspan="2">Position</td>
                           <% else %>
-                          <td class="col-pdf no-warp center-class" rowspan="2" colspan="2">Position</td>
+                            <td class="col-pdf no-warp center-class" rowspan="2" colspan="2">Position</td>
                           <% end %>
                       </tr>
                       <% if @class.blank? %>
@@ -82,28 +82,28 @@
                     <% end %>    
 
                     <tr class="table-header">
-                        <td class="col-pdf no-warp"><%= srl %></td>
-                        <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
-                        <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
-                        <td class="col-pdf no-warp"><%= std_result['name'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= @batch.full_name %></td>
-                        <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= srl %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= std_result['sid'].to_s %></td> 
+                        <td class="col-pdf no-warp" rowspan="2"><%= std_result['roll'].to_s %></td> 
+                        <td class="col-pdf no-warp" rowspan="2"><%= std_result['name'].to_s %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= @batch.full_name %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= std_result['gpa'].to_s %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= std_result['gp'].to_s %></td>
+                        <td class="col-pdf no-warp" rowspan="2"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>
 
                         <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                          <td class="col-pdf no-warp"><%= std_result['lg'] %></td>
+                          <td class="col-pdf no-warp" rowspan="2"><%= std_result['lg'] %></td>
                         <% else %>
-                          <td class="col-pdf no-warp"><%= "F" %></td>
+                          <td class="col-pdf no-warp" rowspan="2"><%= "F" %></td>
                         <% end %> 
 
                         <% if @class.blank? %>
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class" rowspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" colspan="2">
+                            <td class="col-pdf no-warp" colspan="2" rowspan="2">
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?
@@ -123,18 +123,18 @@
                           <% end %> 
                           <% if @batch.name == "Morning English" %>
                             <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
-                              <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                              <td class="col-pdf no-warp center-class" rowspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
                             <% end %>
                           <% elsif !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank? %>
-                            <td class="col-pdf no-warp center-class"><%= @student_position_first_term[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class" rowspan="2"><%= @student_position_first_term[std_result['id'].to_i] %></td>
                           <% end %>
                         <% else %>
                           <% if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank? %>
 
-                            <td class="col-pdf no-warp center-class" colspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
+                            <td class="col-pdf no-warp center-class" colspan="2" rowspan="2"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" colspan="2">
+                            <td class="col-pdf no-warp" colspan="2" rowspan="2">
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?

@@ -4984,6 +4984,8 @@ class ExamController < ApplicationController
           batch_subject_id = batch_subject.map(&:id)
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+  
+          batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
           
           exam_type = 1
           connect_exam = connect_exam+1
@@ -5025,6 +5027,7 @@ class ExamController < ApplicationController
               end
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1
+              @student_result[loop_std]['batch_data'] = batch_data.full_name
               @student_result[loop_std]['sid'] = @student_tab.admission_no
               @student_result[loop_std]['roll'] = @student_tab.class_roll_no
               @student_result[loop_std]['name'] = @student_tab.full_name

@@ -5553,7 +5553,7 @@ class ExamController < ApplicationController
         end
       end
       
-      abort(@section_all_position_batch.inspect)
+     
       
       unless @student_list_first_term.blank?
         position = 0

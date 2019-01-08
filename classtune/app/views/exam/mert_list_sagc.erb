@@ -113,7 +113,7 @@
                         <td class="col-pdf no-warp"><%= std_result['sid'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['roll'].to_s %></td> 
                         <td class="col-pdf no-warp"><%= std_result['name'].to_s %></td>
-                        <td class="col-pdf no-warp"><%= @batch.full_name %></td>
+                        <td class="col-pdf no-warp"><%= std_result['batch_data'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['gpa'].to_s %></td>
                         <td class="col-pdf no-warp"><%= std_result['gp'].to_s %></td>
                         <td class="col-pdf no-warp"><%= sprintf( "%0.02f", std_result['grand_total_with_fraction'].to_f ) %></td>

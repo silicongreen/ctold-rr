@@ -5555,19 +5555,21 @@ class ExamController < ApplicationController
             elsif !full_absent && exam_type == 2
             end  
             
-            if total_failed_appaered > 0
-              if @failed_appeared_absent[total_failed_appaered].blank?
-                @failed_appeared_absent[total_failed_appaered] = 1
-              else
-                @failed_appeared_absent[total_failed_appaered] = @failed_appeared_absent[total_failed_appaered]+1
+            if !full_absent
+              if total_failed_appaered > 0
+                if @failed_appeared_absent[total_failed_appaered].blank?
+                  @failed_appeared_absent[total_failed_appaered] = 1
+                else
+                  @failed_appeared_absent[total_failed_appaered] = @failed_appeared_absent[total_failed_appaered]+1
+                end
               end
-            end
-                       
-            if total_failed > 0
-              if @failed_partial_absent[total_failed].blank?
-                @failed_partial_absent[total_failed] = 1
-              else
-                @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
+
+              if total_failed > 0
+                if @failed_partial_absent[total_failed].blank?
+                  @failed_partial_absent[total_failed] = 1
+                else
+                  @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
+                end
               end
             end
 

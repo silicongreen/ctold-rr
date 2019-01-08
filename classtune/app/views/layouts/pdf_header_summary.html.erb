@@ -1,0 +1,18 @@
+
+<div id="pdf-header-south" class="sfx-header">
+    <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+    <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+</div>
+<style>
+  #pdf-header-south h4.line-height-10
+  {
+     line-height: 15px !important;
+  }
+</style>
+
+
+
+
+
+
+

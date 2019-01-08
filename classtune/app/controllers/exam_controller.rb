@@ -2797,12 +2797,12 @@ class ExamController < ApplicationController
     finding_data5_for_test()
     render :pdf => 'summary_report',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 32,
+      :margin => {    :top=> 28,
       :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_sagc.html'}},
-      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   def mert_list_sagc
     @id = params[:id]

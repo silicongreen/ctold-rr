@@ -33,7 +33,11 @@
                       <td class="col-pdf no-warp" rowspan="2">GPA</td>
                       <td class="col-pdf no-warp" rowspan="2">Marks</td>
                       <td class="col-pdf no-warp" rowspan="2">LG</td>
+                      <% if @class.blank? %>
                       <td class="col-pdf no-warp center-class" colspan="2">Position</td>
+                      <% else %>
+                      <td class="col-pdf no-warp center-class" rowspan="2" colspan="2">Position</td>
+                      <% end %>
                   </tr> 
                   <% if @class.blank? %>
                     <tr class="table-header">
@@ -61,7 +65,11 @@
                           <td class="col-pdf no-warp" rowspan="2">GPA</td>
                           <td class="col-pdf no-warp" rowspan="2">Marks</td>
                           <td class="col-pdf no-warp" rowspan="2">LG</td>
+                          <% if @class.blank? %>
                           <td class="col-pdf no-warp center-class" colspan="2">Position</td>
+                          <% else %>
+                          <td class="col-pdf no-warp center-class" rowspan="2" colspan="2">Position</td>
+                          <% end %>
                       </tr>
                       <% if @class.blank? %>
                         <tr class="table-header">

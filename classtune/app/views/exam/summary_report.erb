@@ -56,7 +56,7 @@
               <% if !@student_list_first_term.blank? %>
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
                       <tr class="table-header">
-                        <td class="col-pdf" >No. of Passed Students </td><td><%= @student_list_first_term.count %> </td>
+                        <td class="col-pdf" >No. of Passed Students </td><td><%= @student_list_first_term_batch.count %> </td>
                       </tr>
                       <tr class="table-header">
                         <td class="col-pdf" >No. of Failed with Partial Absentee Students </td><td><%= @total_std_batch-@student_list_first_term_batch.count-@absent_in_all_subject %> </td>

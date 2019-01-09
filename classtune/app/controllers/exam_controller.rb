@@ -2817,6 +2817,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
+    @class = params[:class]
     finding_data5()
     render :pdf => 'summary_report',
       :orientation => 'Portrait', :zoom => 1.00,

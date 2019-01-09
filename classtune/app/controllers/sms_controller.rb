@@ -686,6 +686,8 @@ class SmsController < ApplicationController
   private 
   
   def send_sms_student(student_ids,message,download_opt,sent_to)
+    @conn = ActiveRecord::Base.connection
+    
     row_header = ['Mobile No','Message']
     csv = true
     if MultiSchool.current_school.id == 352
@@ -699,8 +701,7 @@ class SmsController < ApplicationController
     student_ids.each do |s_id|
       student = Student.find(s_id)
       user_id = student.user.id
-      @conn = ActiveRecord::Base.connection
-
+      
       sql = "SELECT fu.paid_username,fu.paid_password FROM students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and s.is_deleted = 0"
       student_data = @conn.execute(sql).all_hashes
       unless student_data.nil? or student_data.empty? or student_data.blank?
@@ -921,7 +922,7 @@ class SmsController < ApplicationController
           spreadsheet = StringIO.new 
           new_book.write spreadsheet 
           
-          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xlsx"
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
           
           send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
         end

@@ -244,10 +244,7 @@ p.flash-msg
     }
     if ( found )
     {
-      if ( Number(j("#sms_options_type").val()) == 0)
-      {
-          j("#sms_form").removeAttr('target');
-      }
+      j("#sms_form").removeAttr('target');
       return true;
     }
     else

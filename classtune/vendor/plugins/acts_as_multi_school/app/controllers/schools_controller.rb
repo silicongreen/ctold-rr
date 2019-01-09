@@ -548,7 +548,7 @@ class SchoolsController <  MultiSchoolController
 #            guardian_data = @conn.execute(sql).all_hashes
             
             guardian_data = @guardian_datas.select{|c| c['student_id'] == @student.id}
-            #abort(guardian_data.inspect)
+            abort(guardian_data.inspect)
             rows = []
             rows << "#{@school.name}"
             csv << rows

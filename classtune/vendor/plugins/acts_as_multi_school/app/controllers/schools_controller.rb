@@ -493,8 +493,7 @@ class SchoolsController <  MultiSchoolController
     @student_data = @conn.execute(sql).all_hashes
     
     @guardian_datas = @conn.execute(sql2).all_hashes
-    
-    abort(@guardian_datas.inspect)
+
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     

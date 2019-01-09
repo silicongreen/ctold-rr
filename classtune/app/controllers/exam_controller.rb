@@ -2781,6 +2781,29 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
    
   end
+  def subject_wise_pass_failed
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+  
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    finding_data5()
+    render :pdf => 'subject_wise_pass_failed',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 28,
+      :bottom => 30,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
+  end
   def summary_report
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)

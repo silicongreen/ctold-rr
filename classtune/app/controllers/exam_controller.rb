@@ -5409,11 +5409,11 @@ class ExamController < ApplicationController
                     @subject_result[sub['id']] = {}
                     @subject_result[sub['id']]['id'] = sub['id']
                     @subject_result[sub['id']]['name'] = sub['name']
-                    if @subject_result[sub['id']]['total'].blank?
-                      @subject_result[sub['id']]['total'] = 1
-                    else
-                      @subject_result[sub['id']]['total'] = @subject_result[sub['id']]['total']+1
-                    end
+                  end
+                  if @subject_result[sub['id']]['total'].blank?
+                    @subject_result[sub['id']]['total'] = 1
+                  else
+                    @subject_result[sub['id']]['total'] = @subject_result[sub['id']]['total']+1
                   end
                   main_mark = total_mark1+total_mark2
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

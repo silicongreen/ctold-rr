@@ -480,10 +480,10 @@ class SchoolsController <  MultiSchoolController
   #  end
   
   def download_student_list
-    @school = School.find(params[:id])
+    sch = @school = School.find(params[:id])
     #@student_data = StudentsGuardians.find(:all,:conditions=>{:school_id=>@school.id})
     @conn = ActiveRecord::Base.connection 
-    sql = "SELECT s.`id` as student_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
+    sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
               fu.paid_username,fu.paid_password FROM 
               students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{@school.id} and s.is_deleted = 0"
     
@@ -499,21 +499,20 @@ class SchoolsController <  MultiSchoolController
     
     csv_string = FasterCSV.generate do |csv|
       
-      #      csv << headers
-        
+      
       @student_data.each_with_index do |b,i|
         
-        sch = School.find(b['school_id'])
+        
         MultiSchool.current_school = sch
         
-        @student = Student.find(b['student_id'])  
+        #@student = Student.find(b['student_id'])  
         
         #        @student = Student.find(:conditions => [ "user_id = ?", b.student_id])
         #        @student = Student.find_by_user_id(b.student_id)  
         
-        unless @student.nil?
+        unless b.nil?
           #          @batch = Batch.find_by_id(@student[0].batch_id)
-          @batch = @batches.find{|d| d['id'] == @student.batch_id}
+          @batch = @batches.find{|d| d['id'] == b['batch_id']}
          
 #          Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
@@ -548,7 +547,7 @@ class SchoolsController <  MultiSchoolController
  # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
 #            guardian_data = @conn.execute(sql).all_hashes
             
-            guardian_data = @guardian_datas.select{|c| c['student_id'] == @student.id}
+            guardian_data = @guardian_datas.select{|c| c['student_id'] == b['student_id']}
             #abort(guardian_data.inspect)
             rows = []
             rows << "#{@school.name}"

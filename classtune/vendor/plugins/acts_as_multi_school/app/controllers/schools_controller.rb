@@ -486,14 +486,13 @@ class SchoolsController <  MultiSchoolController
     sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
               fu.paid_username,fu.paid_password FROM 
               students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{@school.id} and s.is_deleted = 0"
-    
-    sql2 = "SELECT g.`first_name`,g.`last_name`,gs.student_id,g.office_phone1,g.mobile_phone,
-  g.relation,fu.paid_username,fu.paid_password FROM 
-  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=#{@school.id}"    
+  
     
     @student_data = @conn.execute(sql).all_hashes
     
-    @guardian_datas = @conn.execute(sql2).all_hashes
+    @guardian_datas = Guardian.find_by_sql ["SELECT g.`first_name`,g.`last_name`,gs.student_id,g.office_phone1,g.mobile_phone,
+  g.relation,fu.paid_username,fu.paid_password FROM 
+  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=?",@school.id]
     
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]

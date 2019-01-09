@@ -698,182 +698,76 @@ class SmsController < ApplicationController
     i = 0
     tmp_message = []
     sms_setting = SmsSetting.new()
-    student_ids.each do |s_id|
-      student = Student.find(s_id)
-      user_id = student.user.id
-      
-      sql = "SELECT fu.paid_username,fu.paid_password FROM students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and s.is_deleted = 0"
+    
+    if sent_to.to_i != 3
+      sql = "SELECT s.first_name, s.middle_name, s.last_name, s.sms_number, s.phone2, fu.paid_username,fu.paid_password FROM students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and s.id IN (#{student_ids.join(',')}) and s.is_deleted = 0"
       student_data = @conn.execute(sql).all_hashes
-      unless student_data.nil? or student_data.empty? or student_data.blank?
-        full_name = student.full_name
-        user_name = student_data[0]['paid_username']
-        password = student_data[0]['paid_password']
-
-        if sent_to.to_i == 1
-          if sms_setting.student_sms_active
-
-            if student.sms_number.nil? or student.sms_number == ""
-              unless student.phone2.nil? or student.phone2 == ""
-                tmp_message[i] = message
-                tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                i += 1
-                @recipients.push student.phone2
-              end
-            else
-              unless student.sms_number.nil? or student.sms_number == ""
-                tmp_message[i] = message
-                tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                i += 1
-                @recipients.push student.sms_number
-              end
-            end
-
-            p1found = false
-            guardian = student.immediate_contact
-            unless guardian.nil?
-              user_id = guardian.user.id
-              sql = "SELECT fu.paid_username,fu.paid_password FROM guardians as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and fu.paid_username LIKE '%p1%'"
-              student_data = @conn.execute(sql).all_hashes
-              unless student_data.nil? or student_data.empty? or student_data.blank?
-                p1found = true
-                full_name = guardian.full_name
-                user_name = student_data[0]['paid_username']
-                password = student_data[0]['paid_password']
-                unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
-                  tmp_message[i] = message
-                  tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                  tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                  tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                  i += 1
-                  @recipients.push guardian.mobile_phone 
-                end
-              end
-            end
-
-            if p1found == false
-              guardians = student.guardians
-              guardians.each do |guardian|
-                user_id = guardian.user.id
-                sql = "SELECT fu.paid_username,fu.paid_password FROM guardians as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and fu.paid_username LIKE '%p1%'"
-                student_data = @conn.execute(sql).all_hashes
-                unless student_data.nil? or student_data.empty? or student_data.blank?
-                  p1found = true
-                  full_name = guardian.full_name
-                  user_name = student_data[0]['paid_username']
-                  password = student_data[0]['paid_password']
-                  unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
-                    tmp_message[i] = message
-                    tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                    tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                    tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                    i += 1
-                    unless guardian.mobile_phone.nil? or guardian.mobile_phone == ""
-                      @recipients.push guardian.mobile_phone 
-                    else
-                       unless student.sms_number.nil? or student.sms_number == ""
-                        tmp_message[i] = message
-                        tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                        tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                        tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                        i += 1
-                        @recipients.push student.sms_number
-                      end
-                    end
-                  end
-                end
-              end
-            end
-          end
-        elsif sent_to.to_i == 2
-          if student.sms_number.nil? or student.sms_number == ""
-            unless student.phone2.nil? or student.phone2 == ""
-              tmp_message[i] = message
-              tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-              tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-              tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-              i += 1
-              @recipients.push student.phone2
-            end
-          else
-            unless student.sms_number.nil? or student.sms_number == ""
-              tmp_message[i] = message
-              tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-              tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-              tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-              i += 1
-              @recipients.push student.sms_number
-            end
-          end
-        elsif sent_to.to_i == 3
-          p1found = false
-          guardian = student.immediate_contact
-          unless guardian.nil?
-            user_id = guardian.user.id
-            sql = "SELECT fu.paid_username,fu.paid_password FROM guardians as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and fu.paid_username LIKE '%p1%'"
-            student_data = @conn.execute(sql).all_hashes
-            unless student_data.nil? or student_data.empty? or student_data.blank?
-              p1found = true
-              full_name = guardian.full_name
-              user_name = student_data[0]['paid_username']
-              password = student_data[0]['paid_password']
-              unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
-                tmp_message[i] = message
-                tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                i += 1
-                @recipients.push guardian.mobile_phone 
-              else
-                unless student.sms_number.nil? or student.sms_number == ""
-                  tmp_message[i] = message
-                  tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                  tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                  tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                  i += 1
-                  @recipients.push student.sms_number
-                end
-              end
-            end
-          end
-
-          if p1found == false
-            guardians = student.guardians
-            guardians.each do |guardian|
-              user_id = guardian.user.id
-              sql = "SELECT fu.paid_username,fu.paid_password FROM guardians as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and  fu.paid_id=#{user_id} and fu.paid_username LIKE '%p1%'"
-              student_data = @conn.execute(sql).all_hashes
-              unless student_data.nil? or student_data.empty? or student_data.blank?
-                full_name = guardian.full_name
-                user_name = student_data[0]['paid_username']
-                password = student_data[0]['paid_password']
-                unless (guardian.mobile_phone.nil? or guardian.mobile_phone == "")
-                  tmp_message[i] = message
-                  tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                  tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                  tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                  i += 1
-                  @recipients.push guardian.mobile_phone 
-                else
-                  unless student.sms_number.nil? or student.sms_number == ""
-                    tmp_message[i] = message
-                    tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
-                    tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
-                    tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
-                    i += 1
-                    @recipients.push student.sms_number
-                  end
-                end
-              end
-            end
+    end
+    
+    if sent_to.to_i == 1 or sent_to.to_i == 3
+      guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')})").map(&:user_id)
+      
+      sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and  fu.paid_username LIKE '%p1%'"
+      guardians_data = @conn.execute(sql).all_hashes
+      
+    end
+    
+    if sent_to.to_i != 3
+      student_data.each do |s|
+        full_name = "#{s["first_name"]} #{s["middle_name"]} #{s["last_name"]}"
+        full_name.gsub("  "," ")
+        full_name.gsub("- ","-")
+        full_name.gsub(" -","-")
+        user_name = s['paid_username']
+        password = s['paid_password']
+        unless s['sms_number'].nil? or s['sms_number'].empty? or s['sms_number'].blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+          tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+          i += 1
+          @recipients.push s['sms_number']
+        else
+          unless s['phone2'].nil? or s['phone2'].empty? or s['phone2'].blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+            tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+            i += 1
+            @recipients.push s['phone2']
           end
         end
       end
     end
-
+    
+    if sent_to.to_i == 1 or sent_to.to_i == 3
+      guardians_data.each do |g|
+        full_name = "#{g["first_name"]} #{g["last_name"]}"
+        full_name.gsub("  "," ")
+        full_name.gsub("- ","-")
+        full_name.gsub(" -","-")
+        user_name = g['paid_username']
+        password = g['paid_password']
+        unless g['sms_number'].nil? or g['sms_number'].empty? or g['sms_number'].blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+          tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+          i += 1
+          @recipients.push g['sms_number']
+        else
+          unless g['mobile_phone'].nil? or g['mobile_phone'].empty? or g['mobile_phone'].blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+            tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+            i += 1
+            @recipients.push g['mobile_phone']
+          end
+        end
+      end
+    end
+    
     unless @recipients.empty?
       if download_opt.blank? or download_opt.to_i!=1
         sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))

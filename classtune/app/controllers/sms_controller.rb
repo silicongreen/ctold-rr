@@ -910,10 +910,12 @@ class SmsController < ApplicationController
           new_book.worksheet(0).row(0).format 2
           
           ind = 1
+          k = 0
           @recipients.each do |number|
-            row_new = [number, tmp_message[i]]
+            row_new = [number, tmp_message[k]]
             new_book.worksheet(0).insert_row(ind, row_new)
             ind += 1
+            k += 1
           end
           
           spreadsheet = StringIO.new 

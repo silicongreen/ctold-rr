@@ -88,7 +88,7 @@ tr.odd{
  }
  tr.table-header td.center-align
  {
-     text-align: right;
+     text-align: center;
  }
 
 table#pdf-table{

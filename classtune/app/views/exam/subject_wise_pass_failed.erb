@@ -43,25 +43,32 @@
                     <tr class="table-header">
                         <td class="col-pdf" rowspan="2"><b>Srl.</b></td>  
                         <td class="col-pdf" rowspan="2"><b>Subject Name</b></td> 
-                        <td class="col-pdf" rowspan="2"><b>Total Examinee</b></td> 
-                        <td class="col-pdf" rowspan="2"><b>Total Failed</b></td>
-                        <td class="col-pdf" colspan="2"><b>Failed Due To</b></td> 
+                        <td class="col-pdf center-align" rowspan="2"><b>Total Examinee</b></td> 
+                        <td class="col-pdf center-align" rowspan="2"><b>Total Passed</b></td>
+                        <td class="col-pdf center-align" rowspan="2"><b>Total Failed</b></td>
+                        <td class="col-pdf center-align" colspan="2"><b>Failed Due To</b></td> 
                     </tr> 
                     <tr class="table-header">
-                        <td class="col-pdf"><b>Appeared</b></td>
-                        <td class="col-pdf"><b>Absent</b></td> 
+                        <td class="col-pdf center-align"><b>Appeared</b></td>
+                        <td class="col-pdf center-align"><b>Absent</b></td> 
                     </tr>
                     <% srl = 0 %>
                     <% if !@subject_result.blank? %>
                       <% @subject_result.each do |key,sub_res| %>
                         <% srl = srl+1 %> 
+                        <% total_passed = 0 %>
+                        <% total_passed = @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %>
+                        <% unless @subject_result[key]['failed'].blank? %>
+                          <% total_passed = total_passed.to_i-@subject_result[key]['failed'].to_i %>
+                        <% end %>
                         <tr class="table-header">
                           <td class="col-pdf"><%= srl %></td>  
                           <td class="col-pdf"><%= @subject_result[key]['name'] unless @subject_result[key]['name'].blank? %></td> 
-                          <td class="col-pdf"><%= @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %></td> 
-                          <td class="col-pdf"><%= @subject_result[key]['failed'] unless @subject_result[key]['failed'].blank? %></td>
-                          <td class="col-pdf"><%= @subject_result[key]['appeared'] unless @subject_result[key]['appeared'].blank? %></td> 
-                          <td class="col-pdf"><%= @subject_result[key]['absent'] unless @subject_result[key]['absent'].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %></td> 
+                          <td class="col-pdf center-align"><%= total_passed %></td>
+                          <td class="col-pdf center-align"><%= @subject_result[key]['failed'] unless @subject_result[key]['failed'].blank? %></td>
+                          <td class="col-pdf center-align"><%= @subject_result[key]['appeared'] unless @subject_result[key]['appeared'].blank? %></td> 
+                          <td class="col-pdf center-align"><%= @subject_result[key]['absent'] unless @subject_result[key]['absent'].blank? %></td>
                         </tr> 
                       <% end %>
                     <% end %>

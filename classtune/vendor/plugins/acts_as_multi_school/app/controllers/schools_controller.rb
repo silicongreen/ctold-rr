@@ -494,7 +494,7 @@ class SchoolsController <  MultiSchoolController
     @student_data = @conn.execute(sql).all_hashes
     
     @guardian_datas = @conn.execute(sql2).all_hashes
-    abort(@guardian_datas.inspect)
+    
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     
@@ -548,7 +548,7 @@ class SchoolsController <  MultiSchoolController
  # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
 #            guardian_data = @conn.execute(sql).all_hashes
             
-            guardian_data = @guardian_datas.select{|c| c['student_id'] == @student.id}
+            guardian_data = @guardian_datas.find_all{|c| c["student_id"] == @student.id}
             abort(guardian_data.inspect)
             rows = []
             rows << "#{@school.name}"

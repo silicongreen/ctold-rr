@@ -14,6 +14,7 @@ if @current_user.student?
   end
 @conn = ActiveRecord::Base.connection 
 %>
+
 <div class="champs21_palette_container_1">
     <div id='boxes' style="float:left;margin-right: 0px;width:69%;height:120px;">
         <div id="demo2" class="als-container" data-id="als-container_0">
@@ -124,6 +125,15 @@ AND exam_groups.result_published = 1"
                           %>
                             <%= link_to "<div class='report_box_icon'>"+hcount+"<span class='f2'>REPORT CARD</span></div>", :controller => 'student', :action => 'class_test_report' %> 
                         </li>
+                        <% if @current_user.parent? %>
+                          <% 
+                          student_id = @current_user.guardian_entry.current_ward_id                 
+                        %>
+                          
+                          <li class="als-item" >
+                              <%=  link_to "<div class='fees_box_icon'><span class='f2'>FEES</span></div>", :controller => 'student', :action => 'fees', :id => student_id %>                
+                          </li>
+                        <% end %>
                         <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
                         <li class="als-item" >
                           <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>

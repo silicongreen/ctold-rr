@@ -48,6 +48,15 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                                   :url => {:controller=>"dashboards",:action => "homework_data"} %>
                             </li>
                          
+                            <% if @current_user.parent? %>
+                              <% 
+                              student_id = @current_user.guardian_entry.current_ward_id                 
+                            %>
+                             
+                              <li class="als-item">
+                                  <%=  link_to "<div class='fees_box_icon'><span class='f2'>FEES</span></div>", :controller => 'student', :action => 'fees', :id => student_id %>                
+                              </li>
+                            <% end %>
                             
                             <li class="als-item">
                                 <%          
@@ -176,11 +185,6 @@ AND exam_groups.result_published = 1"
                               <% 
                               student_id = @current_user.guardian_entry.current_ward_id                 
                             %>
-                             
-                              <li class="als-item">
-                                  <%=  link_to "<div class='fees_box_icon'><span class='f2'>FEES</span></div>", :controller => 'student', :action => 'fees', :id => student_id %>                
-                              </li>
-                            
                               
                              
                               <li class="als-item">

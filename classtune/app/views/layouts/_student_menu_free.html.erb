@@ -14,6 +14,7 @@ if @current_user.student?
   end
 @conn = ActiveRecord::Base.connection 
 %>
+
 <div class="champs21_palette_container_1">
     <div id='boxes' style="float:left;margin-right: 0px;width:69%;height:120px;">
         <div id="demo2" class="als-container" data-id="als-container_0">
@@ -46,6 +47,16 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                               %>
                                 <%= link_to "<div class='homework_box_icon'>"+hcount+"<span class='f2'>HOMEWORK</span></div>", :controller => 'assignments', :action => 'index' %>
                             </li>
+                            <% if @current_user.parent? %>
+                              <% 
+                              student_id = @current_user.guardian_entry.current_ward_id                 
+                            %>
+
+                              <li class="als-item">
+                                  <% link_to_echo = get_subscrived_link("<div class='fees_box_icon'><span class='f2'>FEES</span></div>") %>
+                                  <%=  link_to_echo %>
+                              </li>
+                            <% end %>
                             <li class="als-item">
                               <%=  link_to "<div class='notice_box_icon'><span class='f2'>NOTICE</span></div>", :controller => 'news', :action => 'all' %>
                             </li> 
@@ -94,10 +105,7 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                             <% if @current_user.parent? %>
                               <% student_id = @current_user.guardian_entry.current_ward_id  %>
                               
-                            <li class="als-item">
-                                <% link_to_echo = get_subscrived_link("<div class='fees_box_icon'><span class='f2'>FEES</span></div>") %>
-                                <%=  link_to_echo %>
-                            </li>
+                            
                             <li class="als-item">
                                 <% link_to_echo = get_subscrived_link("<div class='leave_box_icon'><span class='f2'>LEAVE</span></div>") %>
                                 <%=  link_to_echo %>

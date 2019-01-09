@@ -1,0 +1,454 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('sms_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('all') %></div>
+
+</div>
+
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <div style="width: 100%; text-align: center; float: left; margin: 0 auto; ">
+        <p class="flash-msg" style="float: none;"> <%= flash[:notice] %> </p>
+    </div>  
+  <% end %>
+    
+  <div class="box" style="min-height: 700px;">
+      <h2>SMS Panel</h2>
+      <hr style="border: 1px solid #ccc;" />
+      
+      <div style="width: 100%; padding: 20px 0; text-align: center;">
+        <input type="checkbox" name="sms_student" id="sms_student" class="sms_options" style="display: none;">
+        <i name="sms_student_fa" id="sms_student_fa" class="fa fa-square-o sms_options_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">SMS to Students/Parents</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" name="sms_employees" id="sms_employees" class="sms_options" style="display: none;">
+        <i name="sms_employees_fa" id="sms_employees_fa" class="fa fa-square-o sms_options_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">SMS to Employee</span>
+      </div>
+      <div id="sms_panel" style="border: 1px solid #ccc; min-height: 500px; border-radius: 5px; display: none; padding: 20px; float: left; margin-left: 17%;"></div>
+  </div>
+</div>
+<style>
+#submit_button{
+    height: 33px;
+    border-radius: 5px !important;
+}
+.text-input-bg2 select
+{
+   height: 300px;
+   background: #FFF;
+   width: 300px;
+}
+.text-input-bg select
+{
+   background: #FFF;
+   width: 300px;
+}
+.text-input-bg2 select option
+{
+   padding: 10px 4px;
+   border-bottom: 1px dotted #ccc;
+}
+p.flash-msg
+{
+  float:left;
+  clear: both;
+}
+#list {
+    margin:20px auto;
+    width:400px;
+}
+#list li {
+    padding:6px 0 0 50px;
+    list-style-type:none;
+}
+#list li label input {
+    margin-right:10px;
+}
+.each_batch{
+    font-size: 12px;
+    overflow:auto;
+    width:90%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.fee_category_scroll {
+    height:176px;
+    margin-top:-53px;
+    overflow:auto;
+    width:55%;
+    margin-left: 20px;
+    -moz-background-inline-policy: continuous;
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #C6C6C6;
+    border-radius: 10px 10px 10px 10px;
+    max-height: 100px;
+    overflow: auto;
+    padding: 7px;
+    float: left;
+    margin: 10px 10px;
+}
+
+.sel-list {
+    margin-bottom: 2px;
+    width: 197px;
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 14px;
+    margin-left: 6px;
+    padding-bottom: 15px;
+}
+.each_batch .checkbox_inline, .each_category .checkbox_inline{
+    float:left;
+    width:20px;
+    padding-top: 6px;
+    padding-right: 10px;
+}
+
+.each_batch .checkbox_label, .each_category .checkbox_label {
+    float: left;
+    width: 205px;
+    padding-left: 10px;
+    padding-top: 2px;
+}
+.students_box{
+    width: 15px !important;
+}
+</style>    
+<script>
+  function checkdata()
+  {
+    var found = false;
+    var cnt = 0;
+    var error = "Some error occured during sending SMS: \n\n";
+    if ( j("#option_sms").val() == "student_general" )
+    {
+        if ( Number(j("#is_test").val()) == 0 )
+        {
+          j(".students_box").each(function(){
+              if ( j(this).prop('checked') )
+              {
+                cnt++;
+                found = true;
+              }
+          });
+          if ( cnt == 0)
+          {
+              found = false;
+              error += "No Student selected\n";
+          }
+        }
+        else
+        {
+            if ( j.trim(j("#sms_numbers").val()) != "" )
+            {
+                found = true;
+            }
+            else
+            {
+                found = false;
+                error += "No Test Number found\n";
+            }
+        }
+    }
+    else if ( j("#option_sms").val() == "student_upassword" )
+    {
+        if ( j("#sms_to_all").prop('checked') == false && j("#sms_to_custom").prop('checked') == false )
+        {
+            found = false;
+            error += "No Option Selected\n";
+        }
+        else
+        {
+            if ( j("#sms_to_custom").prop('checked') )
+            {
+              j(".students_box").each(function(){
+                  if ( j(this).prop('checked') )
+                  {
+                    cnt++;
+                    found = true;
+                  }
+              });
+              if ( cnt == 0)
+              {
+                  found = false;
+                  error += "No Student selected\n";
+              }
+            }
+            else if ( j("#sms_to_all").prop('checked') )
+            {
+                found = true;
+            }
+        }
+    }
+    else
+    {
+      if ( Number(j("#is_test").val()) == 0 )
+      {
+        j(".students_box").each(function(){
+            if ( j(this).prop('checked') )
+            {
+              cnt++;
+              found = true;
+            }
+        });
+        if ( cnt == 0)
+        {
+            found = false;
+            error += "No Employee selected\n";
+        }
+      }
+      else
+      {
+          if ( j.trim(j("#sms_numbers").val()) != "" )
+          {
+              found = true;
+          }
+          else
+          {
+              found = false;
+              error += "No Test Number found\n";
+          }
+      }
+    }
+    
+    if ( j.trim(j("#sms_message").val()) != "" )
+    {
+        if ( found )
+        {
+          found = true;
+        }
+    }
+    else
+    {
+        found = false;
+        error += "No Text found for this SMS, Please enter a message and try again";
+    }
+    if ( found )
+    {
+      if ( Number(j("#sms_options_type").val()) == 0)
+      {
+          j("#sms_form").removeAttr('target');
+      }
+      return true;
+    }
+    else
+    {
+      alert(error);
+      return false;
+    }
+  }
+  document.observe("dom:loaded", function() {
+      j(document).on("click",".sms_options_fa",function(){
+          var a_id = this.id.split('_');
+          var id = a_id[1];
+          if (j(this).hasClass("fa-check-square-o"))
+          {
+              j(".sms_options").removeAttr('checked');
+              j(".sms_options_fa").removeAttr('checked');
+              j(".sms_options_fa").removeClass('fa-check-square-o');
+              j(".sms_options_fa").addClass('fa-square-o');
+          
+              j("#sms_" + id).removeAttr('checked');
+              j(this).removeClass("fa-check-square-o");
+              j(this).addClass("fa-square-o");
+              
+              j("#sms_panel").hide();
+          }
+          else
+          {
+              j(".sms_options").removeAttr('checked');
+              j(".sms_options_fa").removeAttr('checked');
+              j(".sms_options_fa").removeClass('fa-check-square-o');
+              j(".sms_options_fa").addClass('fa-square-o');
+              
+              j("#sms_" + id).prop('checked', true);
+              j(this).removeClass("fa-square-o");
+              j(this).addClass("fa-check-square-o");
+              new Ajax.Request('/sms/show_option', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'option='+id
+                  }
+             );
+          }
+      });
+      
+      j(document).on("click",".sms_options_student_fa",function(){
+          var a_id = this.id.split('_');
+          var id = a_id[2];
+          if (j(this).hasClass("fa-check-square-o"))
+          {
+              j(".sms_options_student").removeAttr('checked');
+              j(".sms_options_student_fa").removeAttr('checked');
+              j(".sms_options_student_fa").removeClass('fa-check-square-o');
+              j(".sms_options_student_fa").addClass('fa-square-o');
+          
+              j("#sms_student_" + id).removeAttr('checked');
+              j(this).removeClass("fa-check-square-o");
+              j(this).addClass("fa-square-o");
+              
+              j("#sms_opt").hide();
+          }
+          else
+          {
+              j(".sms_options_student").removeAttr('checked');
+              j(".sms_options_student_fa").removeAttr('checked');
+              j(".sms_options_student_fa").removeClass('fa-check-square-o');
+              j(".sms_options_student_fa").addClass('fa-square-o');
+              
+              j("#sms_student_" + id).prop('checked', true);
+              j(this).removeClass("fa-square-o");
+              j(this).addClass("fa-check-square-o");
+              new Ajax.Request('/sms/show_option_student', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'option='+id
+                  }
+             );
+          }
+      });
+      
+      j(document).on("click",".sms_to_options_fa",function(){
+          var a_id = this.id.split('_');
+          var id = a_id[2];
+          if (j(this).hasClass("fa-check-square-o"))
+          {
+              j(".sms_to_options").removeAttr('checked');
+              j(".sms_to_options_fa").removeAttr('checked');
+              j(".sms_to_options_fa").removeClass('fa-check-square-o');
+              j(".sms_to_options_fa").addClass('fa-square-o');
+          
+              j("#sms_to_" + id).removeAttr('checked');
+              j(this).removeClass("fa-check-square-o");
+              j(this).addClass("fa-square-o");
+              
+              j("#student-custom-option").hide();
+              j("#submit_button").hide();
+          }
+          else
+          {
+              j(".sms_to_options").removeAttr('checked');
+              j(".sms_to_options_fa").removeAttr('checked');
+              j(".sms_to_options_fa").removeClass('fa-check-square-o');
+              j(".sms_to_options_fa").addClass('fa-square-o');
+              
+              j("#sms_to_" + id).prop('checked', true);
+              j(this).removeClass("fa-square-o");
+              j(this).addClass("fa-check-square-o");
+              if ( id == "all" )
+              {
+                  j("#student-custom-option").hide();
+                  j("#student-custom-option").html("");
+                  j("#submit_button").show();
+              }
+              else
+              {
+                new Ajax.Request('/sms/show_option_student_upass', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true
+                    }
+               );
+             }
+          }
+      });
+      
+      j(document).on("change","#is_test",function(){
+          if ( Number(this.value) == 1 )
+          {
+            alert(this.value)
+              new Ajax.Request('/sms/show_test_employee', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true
+                  }
+             );
+          }
+          else
+          {
+              j("#employee-list").html("");
+              j("#batch_panel").show();
+          }
+      });
+      
+      j(document).on("change","#is_test_student",function(){
+          if ( Number(this.value) == 1 )
+          {
+            alert(this.value)
+              new Ajax.Request('/sms/show_test_student', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true
+                  }
+             );
+          }
+          else
+          {
+              j("#student-list").html("");
+              j("#batch_panel_student").show();
+          }
+      });
+      
+      j(document).on("keyup","#search_std",function(){
+        
+          var srch_val = this.value;
+          j('.std_name').each(function(){
+              var stdid = this.id.replace("std_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.students_box').each(function(){
+                      if ( this.value == stdid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+  });
+</script>

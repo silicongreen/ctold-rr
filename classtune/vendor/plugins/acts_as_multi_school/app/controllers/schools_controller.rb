@@ -494,8 +494,8 @@ class SchoolsController <  MultiSchoolController
     @student_data = @conn.execute(sql).all_hashes
     
     @guardian_datas = @conn.execute(sql2).all_hashes
-    @batches = Batch.find_all_by(@school.id)
-    @courses = Course.find_all_by(@school.id)
+    @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
+    @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     
     csv_string = FasterCSV.generate do |csv|
       
@@ -513,11 +513,11 @@ class SchoolsController <  MultiSchoolController
         
         unless @student.nil?
           #          @batch = Batch.find_by_id(@student[0].batch_id)
-          @batch = @batches.select{|b| b.id == @student.batch_id}
+          @batch = @batches.find{|b| b['id'] == @student.batch_id}
 #          Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
           unless @batch.blank?
-            @course = @courses.select{|c| c.id == @batch.course_id}
+            @course = @courses.find{|c| c['id'] == @batch.course_id}
 #            Course.find_by_sql ["SELECT * FROM courses WHERE id = ?", @batch[0].course_id]
 
 

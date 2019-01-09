@@ -547,8 +547,8 @@ class SchoolsController <  MultiSchoolController
  # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
 #            guardian_data = @conn.execute(sql).all_hashes
             
-            guardian_data = @guardian_datas.find{|c| c["student_id"] == @student.id}
-            abort(guardian_data.inspect)
+            guardian_data = @guardian_datas.find_all{|c| c["student_id"] == @student.id}
+           
             rows = []
             rows << "#{@school.name}"
             csv << rows

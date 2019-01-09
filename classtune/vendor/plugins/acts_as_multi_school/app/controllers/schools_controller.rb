@@ -486,9 +486,16 @@ class SchoolsController <  MultiSchoolController
     sql = "SELECT s.`id` as student_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
               fu.paid_username,fu.paid_password FROM 
               students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{@school.id} and s.is_deleted = 0"
-
-
+    
+    sql2 = "SELECT g.`first_name`,g.`last_name`,gs.student_id,g.office_phone1,g.mobile_phone,
+  g.relation,fu.paid_username,fu.paid_password FROM 
+  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=#{@school.id}"    
+    
     @student_data = @conn.execute(sql).all_hashes
+    
+    @guardian_datas = @conn.execute(sql2).all_hashes
+    @batches = Batch.find_all_by(@school.id)
+    @courses = Course.find_all_by(@school.id)
     
     csv_string = FasterCSV.generate do |csv|
       
@@ -506,22 +513,24 @@ class SchoolsController <  MultiSchoolController
         
         unless @student.nil?
           #          @batch = Batch.find_by_id(@student[0].batch_id)
-          @batch = Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
+          @batch = @batches.select{|b| b.id == @student.batch_id}
+#          Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
           unless @batch.blank?
-            @course = Course.find_by_sql ["SELECT * FROM courses WHERE id = ?", @batch[0].course_id]
+            @course = @courses.select{|c| c.id == @batch.course_id}
+#            Course.find_by_sql ["SELECT * FROM courses WHERE id = ?", @batch[0].course_id]
 
 
             batch_str = ""
-            unless @batch[0].nil?
-              if @batch[0].name != "" and @batch[0].name != "General"
-                batch_str = batch_str + "Shift:" + @batch[0].name+" | "
+            unless @batch.nil?
+              if @batch.name != "" and @batch.name != "General"
+                batch_str = batch_str + "Shift:" + @batch.name+" | "
               end
-              if @course[0].course_name != ""
-                batch_str = batch_str + "Class:" + @course[0].course_name
+              if @course.course_name != ""
+                batch_str = batch_str + "Class:" + @course.course_name
               end
-              if @course[0].section_name != ""
-                batch_str = batch_str + " | " + "Section:" + @course[0].section_name
+              if @course.section_name != ""
+                batch_str = batch_str + " | " + "Section:" + @course.section_name
               end
             end
 
@@ -533,10 +542,12 @@ class SchoolsController <  MultiSchoolController
             #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
   #g.relation,fu.paid_username,fu.paid_password FROM 
   #guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id} and fu.paid_school_id=#{@school.id}"
-         sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
-  g.relation,fu.paid_username,fu.paid_password FROM 
-  guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}"    
-            guardian_data = @conn.execute(sql).all_hashes
+#         sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
+ # g.relation,fu.paid_username,fu.paid_password FROM 
+ # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
+#            guardian_data = @conn.execute(sql).all_hashes
+            
+            guardian_data = @guardian_datas.select{|c| c['student_id'] == @student.id}
             #abort(guardian_data.inspect)
             rows = []
             rows << "#{@school.name}"

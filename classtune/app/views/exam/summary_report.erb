@@ -98,7 +98,7 @@
               <% end %>
               <% if !@failed_partial_absent.blank? %>
               
-              <h3 align="center">Failed With Partial Absentee Student(s)</h3>
+              <h3 align="center">Subject Wise Failed Student(s)</h3>
               
               
               <table id="pdf-table" width="60%" align="center" cellspacing="0">
@@ -119,22 +119,7 @@
               </table>     
               <% end %>
               <% if !@failed_appeared_absent.blank? %>
-              <h3 align="center">Failed List only Appeared in Exam</h3>
-              <table id="pdf-table" width="60%" align="center" cellspacing="0">
-                      <% total_got = 0 %>
-                      <% (1..10).each do |key| %>
-                          <% if @failed_appeared_absent[key].blank? %>
-                            <% next %>
-                          <% end %>
-                          <tr class="table-header">
-                            <td class="col-pdf right-align" >No. of Student(s) Failed in <%= key %> Subjects </td><td><%= @failed_appeared_absent[key] %> <% total_got = total_got+@failed_appeared_absent[key].to_i %> </td>
-                          </tr>
-                      <% end %>
-                      <tr class="table-header border-top">
-                        <td class="col-pdf" ></td><td><%= total_got %> </td>
-                      </tr>
-                  </tr> 
-              </table>     
+                 
               <% end %>
         </center>
     </div>

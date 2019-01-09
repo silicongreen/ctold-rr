@@ -494,6 +494,7 @@ class SchoolsController <  MultiSchoolController
   g.relation,fu.paid_username,fu.paid_password FROM 
   guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=?",@school.id]
     
+    abort(@guardian_datas.inspect)
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     

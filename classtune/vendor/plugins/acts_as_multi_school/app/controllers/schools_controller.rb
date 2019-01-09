@@ -496,14 +496,11 @@ class SchoolsController <  MultiSchoolController
 
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
-    
+    MultiSchool.current_school = sch
     csv_string = FasterCSV.generate do |csv|
       
       
       @student_data.each_with_index do |b,i|
-        
-        
-        MultiSchool.current_school = sch
         
         #@student = Student.find(b['student_id'])  
         

@@ -505,14 +505,14 @@ class SchoolsController <  MultiSchoolController
         
         MultiSchool.current_school = sch
         
-        @student = Student.find(b['student_id'])  
+        #@student = Student.find(b['student_id'])  
         
         #        @student = Student.find(:conditions => [ "user_id = ?", b.student_id])
         #        @student = Student.find_by_user_id(b.student_id)  
         
         unless b.nil?
           #          @batch = Batch.find_by_id(@student[0].batch_id)
-          @batch = @batches.find{|d| d['id'] == @student.batch_id}
+          @batch = @batches.find{|d| d['id'].to_i == b['batch_id'].to_i}
          
 #          Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
@@ -547,7 +547,7 @@ class SchoolsController <  MultiSchoolController
  # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
 #            guardian_data = @conn.execute(sql).all_hashes
             
-            guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == @student.id}
+            guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i}
            
             rows = []
             rows << "#{@school.name}"

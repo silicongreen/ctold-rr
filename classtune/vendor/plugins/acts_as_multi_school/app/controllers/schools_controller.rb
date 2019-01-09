@@ -534,7 +534,7 @@ class SchoolsController <  MultiSchoolController
               end
             end
 
-            @conn = ActiveRecord::Base.connection 
+            #@conn = ActiveRecord::Base.connection 
             #sql = "SELECT g.`first_name`,g.`last_name`,g.office_phone1,g.mobile_phone,
             ##          g.relation,fu.paid_username,fu.paid_password FROM 
             #          guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id where g.ward_id=#{@student.id} and fu.paid_school_id=#{@school.id}"

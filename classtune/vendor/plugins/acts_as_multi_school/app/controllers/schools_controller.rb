@@ -514,6 +514,7 @@ class SchoolsController <  MultiSchoolController
         unless @student.nil?
           #          @batch = Batch.find_by_id(@student[0].batch_id)
           @batch = @batches.find{|b| b['id'] == @student.batch_id}
+         
 #          Batch.find_by_sql ["SELECT * FROM batches WHERE id = ?", @student.batch_id]
           #@course = Course.find_by_id(@batch.course_id)
           unless @batch.blank?

@@ -4955,6 +4955,13 @@ class ExamController < ApplicationController
           @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
         end
       end
+      @batch_subject_hash_code = []
+      batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      unless batch_subject.blank?
+        batch_subject.each do |std_sub|
+          @batch_subject_hash_code << std_sub.code
+        end
+      end
       
       unless @tabulation_data.blank?
         connect_exam = 0
@@ -4965,10 +4972,10 @@ class ExamController < ApplicationController
           connect_exam = connect_exam+1
           if connect_exam_id.to_i == @connect_exam_obj.id
             tab['students'].each do |std| 
-              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
                 group_name = "Science" 
                 break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
                 group_name = "Business Studies" 
                 break
               elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
@@ -4982,11 +4989,21 @@ class ExamController < ApplicationController
           end
         end
         @group_name_upper = group_name
+        if batchobj.name == "Morning English"
+          group_name = "Morning English"
+        end
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
+          batch_subject_hash_code_main = []
+          unless batch_subject.blank?
+            batch_subject.each do |std_sub|
+              batch_subject_hash_code_main << std_sub.code
+            end
+          end
+          
           batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
@@ -5005,12 +5022,15 @@ class ExamController < ApplicationController
             full_absent = true
             failed_on_appread = false
             std_group_name = ""
-            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
               std_group_name = "Science" 
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
               std_group_name = "Business Studies" 
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
               std_group_name = "Humanities" 
+            end
+            if batch_data.name == "Morning English"
+              std_group_name = "Morning English"
             end
             grand_total = 0
             grand_total_with_fraction = 0
@@ -5494,7 +5514,7 @@ class ExamController < ApplicationController
             end
             
             if u_grade == 0  
-              grand_total_new = 50000-grand_total
+              grand_total_new = 50000-grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
               
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
@@ -5517,7 +5537,7 @@ class ExamController < ApplicationController
             end  
         
             if u_grade1 == 0  
-              grand_total_new = 50000-grand_total1
+              grand_total_new = 50000-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
@@ -5542,7 +5562,7 @@ class ExamController < ApplicationController
             end  
         
             if u_grade2 == 0  
-              grand_total_new = 50000-grand_total2
+              grand_total_new = 50000-grand_total2_with_fraction
               grand_grade_new = 50000-grand_grade_point2
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]

@@ -22,6 +22,10 @@
       @student_result = []
       @subject_result = {}
       @absent_in_all_subject = 0
+      @section_wise_position = {}
+      @failed_partial_absent = {}
+      @failed_appeared_absent = {}
+      @grade_count = {}
       loop_std = 0
       batchobj = Batch.find_by_id(@batch.id) 
       courseObj = Course.find_by_id(batchobj.course_id)
@@ -36,6 +40,13 @@
           @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
         end
       end
+      @batch_subject_hash_code = []
+      batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      unless batch_subject.blank?
+        batch_subject.each do |std_sub|
+          @batch_subject_hash_code << std_sub.code
+        end
+      end
       
       unless @tabulation_data.blank?
         connect_exam = 0
@@ -46,10 +57,10 @@
           connect_exam = connect_exam+1
           if connect_exam_id.to_i == @connect_exam_obj.id
             tab['students'].each do |std| 
-              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
                 group_name = "Science" 
                 break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
                 group_name = "Business Studies" 
                 break
               elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
@@ -62,13 +73,27 @@
             break 
           end
         end
+        @group_name_upper = group_name
+        if batchobj.name == "Morning English"
+          group_name = "Morning English"
+        end
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
+          batch_subject_hash_code_main = []
+          unless batch_subject.blank?
+            batch_subject.each do |std_sub|
+              batch_subject_hash_code_main << std_sub.code
+            end
+          end
+          
+          batch_data = Batch.find(@tabulation_data['batches'][batch_loop])
           batch_loop = batch_loop+1
           connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+  
+          
           
           exam_type = 1
           connect_exam = connect_exam+1
@@ -76,15 +101,21 @@
       
          
           
-          tab['students'].each do |std| 
+          tab['students'].each do |std|
+            total_failed = 0
+            total_failed_appaered = 0
             full_absent = true
+            failed_on_appread = false
             std_group_name = ""
-            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio")
+            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
               std_group_name = "Science" 
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B")
+            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
               std_group_name = "Business Studies" 
             elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
               std_group_name = "Humanities" 
+            end
+            if batch_data.name == "Morning English"
+              std_group_name = "Morning English"
             end
             grand_total = 0
             grand_total_with_fraction = 0
@@ -104,12 +135,14 @@
             grand_total_main = 0
             grade_poin_main = 0
             @student_tab = Student.find_by_id(std['id'].to_i)
-            if connect_exam_id.to_i == @connect_exam_obj.id
+            if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
               end
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1
+              @student_result[loop_std]['batch_id'] = batch_data.id
+              @student_result[loop_std]['batch_data'] = batch_data.full_name
               @student_result[loop_std]['sid'] = @student_tab.admission_no
               @student_result[loop_std]['roll'] = @student_tab.class_roll_no
               @student_result[loop_std]['name'] = @student_tab.full_name
@@ -125,7 +158,7 @@
             total_subject = 0
             tab['subjects'].each do |sub|
               
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_result[loop_std]['subjects'][sub['id'].to_s] = {}
                 @student_result[loop_std]['subjects'][sub['id'].to_s]['name'] = sub['name']
                 @student_result[loop_std]['subjects'][sub['id'].to_s]['id'] = sub['id']
@@ -188,8 +221,9 @@
                 
                 tab['exams'].each do |rs|
                   if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
-                    appeared = true
-                    full_absent = false
+                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
+                      next
+                    end
                     if rs['exam_category'] == '1'
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -210,7 +244,9 @@
                         at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
-                    elsif rs['exam_category'] == '3'  
+                    elsif rs['exam_category'] == '3' 
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -230,6 +266,8 @@
                         end 
                       end
                     elsif rs['exam_category'] == '4'  
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -248,7 +286,9 @@
                           subject_failed = true
                         end 
                       end
-                    elsif rs['exam_category'] == '5'  
+                    elsif rs['exam_category'] == '5'
+                      appeared = true
+                      full_absent = false
                       if rs['quarter'] == '1'
                         full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -417,7 +457,7 @@
                   end  
               
                 end
-                if connect_exam_id.to_i == @connect_exam_obj.id
+                if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][sub['id']]['result']['at'] = at_total_mark1+at_total_mark2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
                   
@@ -442,6 +482,8 @@
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name
                     if grade.credit_points.to_i == 0 or subject_failed == true
                       
+                       
+                      
                       if @subject_result[sub['id']]['failed'].blank?
                         @subject_result[sub['id']]['failed'] = 1
                       else
@@ -449,6 +491,7 @@
                       end
                       
                       if appeared
+                        failed_on_appread = true
                         if @subject_result[sub['id']]['appeared'].blank?
                           @subject_result[sub['id']]['appeared'] = 1
                         else
@@ -468,6 +511,10 @@
                           @student_result[loop_std]['subject_failed'] = []
                         end
                         @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.to_s
+                        total_failed = total_failed+1
+                        if failed_on_appread
+                          total_failed_appaered = total_failed_appaered+1
+                        end
                       end 
                     else
                       if @subject_result[sub['id']].blank?
@@ -511,8 +558,11 @@
        
         
             
-            if connect_exam_id.to_i == @connect_exam_obj.id
+            if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
+              
+              
+              
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
@@ -549,41 +599,91 @@
             end
             
             if u_grade == 0  
-              grand_total_new = 50000-grand_total
+              grand_total_new = 50000-grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
               
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 3
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-          
-            end
+            elsif !full_absent && exam_type == 3
+              
+            end  
         
             if u_grade1 == 0  
-              grand_total_new = 50000-grand_total1
+              grand_total_new = 50000-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 1
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position[batch_data.id].blank?
+                  @section_wise_position[batch_data.id] = []
+                end
+                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-          
-            end 
+            elsif !full_absent && exam_type == 1
+            end  
         
             if u_grade2 == 0  
-              grand_total_new = 50000-grand_total2
+              grand_total_new = 50000-grand_total2_with_fraction
               grand_grade_new = 50000-grand_grade_point2
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 2
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-          
-            end 
+            elsif !full_absent && exam_type == 2
+            end  
+            
+            if !full_absent
+              if total_failed_appaered > 0
+                if @failed_appeared_absent[total_failed_appaered].blank?
+                  @failed_appeared_absent[total_failed_appaered] = 1
+                else
+                  @failed_appeared_absent[total_failed_appaered] = @failed_appeared_absent[total_failed_appaered]+1
+                end
+              end
+
+              if total_failed > 0
+                if @failed_partial_absent[total_failed].blank?
+                  @failed_partial_absent[total_failed] = 1
+                else
+                  @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
+                end
+              end
+            end
 
           end
         end
@@ -596,6 +696,8 @@
       @student_position_first_term_batch = {}
       @student_position_second_term_batch = {}
       @student_position_batch = {}
+      
+      @section_all_position_batch = {}
    
       unless @student_list.blank?
         position = 0
@@ -606,6 +708,24 @@
         end 
       end
     
+      
+      unless @section_wise_position.blank?
+        @section_wise_position.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position[key].sort
+          @sorted_students.each do|s|
+            position = position+1
+            if @section_all_position_batch[key].blank?
+              @section_all_position_batch[key] = {}
+            end
+            @section_all_position_batch[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+     
+      
       unless @student_list_first_term.blank?
         position = 0
         @sorted_students = @student_list_first_term.sort

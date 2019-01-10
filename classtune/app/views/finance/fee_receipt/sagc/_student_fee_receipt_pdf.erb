@@ -223,7 +223,7 @@
                   <% @paid_fees.each{|a| paid += a.amount.to_f} %>
                   <% total_fees -= paid %>
                   <% if paid.to_i > 0 %>
-                    <tr  class="table-header tad">
+                  <tr  class="table-header tad" style="background: #ccc;">
                      <td colspan="1" class="col-8  left border-left-none" style="font-weight: bold;"><%= k+1 %></td>
                      <td colspan="1" class="col-8" style="font-weight: bold;"><%= t('payment_done') %></td>
                      <td class="col-6 border-right-none align-right" style="font-weight: bold;">

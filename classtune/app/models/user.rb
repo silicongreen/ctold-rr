@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   attr_accessor :pass, :save_to_free, :gender, :nationality_id, :birth_date
   attr_accessor :middle_name, :save_to_log, :guardian, :admission_no
 
-  validates_uniqueness_of :username, :scope=> [:is_deleted],:if=> 'is_deleted == false' #, :email
+  validates_uniqueness_of :username #, :email
   validates_length_of     :username, :within => 1..50
   validates_length_of     :password, :within => 4..40, :allow_nil => true
   validates_format_of     :username, :with => /^[A-Z0-9._-]*$/i,

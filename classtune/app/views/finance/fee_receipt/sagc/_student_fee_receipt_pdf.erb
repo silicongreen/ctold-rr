@@ -226,13 +226,22 @@
                     <tr  class="table-header tad">
                      <td colspan="1" class="col-8  left border-left-none" style="font-weight: bold;"><%= k+1 %></td>
                      <td colspan="1" class="col-8" style="font-weight: bold;"><%= t('payment_done') %></td>
-                     <td class="col-6 border-right-none" style="font-weight: bold;">
+                     <td class="col-6 border-right-none align-right" style="font-weight: bold;">
                        <%= precision_label(paid) %>
                      </td>
                    </tr>
                    <% k += 1 %>
                   <% end %>
                 <% end %>
+                   
+               <% if paid.to_i<=0 %> 
+                   <tr  class="table-header">
+                        <%k+=1%>
+                        <td colspan="1" class="col-8  left border-left-none"><%= k %></td>
+                        <td class="col-8 left" colspan="1" ></td>
+                        <td class="col-6 border-right-none" ></td>
+                    </tr>
+               <% end %>
                       
                       
                 <% if paid.to_i<=0 %> 

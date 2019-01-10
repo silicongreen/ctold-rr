@@ -497,7 +497,9 @@ class SchoolsController <  MultiSchoolController
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     MultiSchool.current_school = sch
-    csv_string = FasterCSV.generate do |csv|
+    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
+    destfile = Rails.root.join("public", "uploads", filename)
+    FasterCSV.open(destfile, "wb") do |csv|
       
       
       @student_data.each_with_index do |b,i|
@@ -657,13 +659,11 @@ class SchoolsController <  MultiSchoolController
             csv << rows
           end
         end
-      end
-      
+      end 
       
     end
     
-    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
-    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+    send_file(destfile, :type => 'text/csv; charset=utf-8; header=present')
   end
   
   
@@ -678,7 +678,8 @@ class SchoolsController <  MultiSchoolController
 
     @student_data = @conn.execute(sql).all_hashes
     filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
-    FasterCSV.open(filename) do |csv|
+    destfile = Rails.root.join("public", "uploads", filename)
+    FasterCSV.open(destfile) do |csv|
       
       #      csv << headers
         

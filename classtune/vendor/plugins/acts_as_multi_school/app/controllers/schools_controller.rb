@@ -488,7 +488,7 @@ class SchoolsController <  MultiSchoolController
     if !@start_index.blank? and !@total.blank?
       sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
               fu.paid_username,fu.paid_password FROM 
-              students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 limit #{@total} OFFSET #{@start_index}"
+              students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 order by id asc limit #{@total} OFFSET #{@start_index}"
       
     else
       sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,

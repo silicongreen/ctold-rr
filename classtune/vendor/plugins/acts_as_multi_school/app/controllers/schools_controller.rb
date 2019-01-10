@@ -481,11 +481,20 @@ class SchoolsController <  MultiSchoolController
   
   def download_student_list
     sch = @school = School.find(params[:id])
+    @start_index = School.find(params[:start_index])
+    @total = School.find(params[:total])
     #@student_data = StudentsGuardians.find(:all,:conditions=>{:school_id=>@school.id})
     @conn = ActiveRecord::Base.connection 
-    sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
+    if !@start_index.blank? and !@total.blank?
+      sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
+              fu.paid_username,fu.paid_password FROM 
+              students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0 limit #{@total} OFFSET #{@start_index}"
+      
+    else
+      sql = "SELECT s.`id` as student_id,s.batch_id,s.`admission_no`  ,s.`first_name`,s.`middle_name`,s.`last_name`,s.`immediate_contact_id`,s.`school_id`,
               fu.paid_username,fu.paid_password FROM 
               students as s left join tds_free_users as fu on s.user_id=fu.paid_id where s.school_id=#{@school.id} and s.is_deleted = 0"
+    end  
     sql2 = "SELECT g.`first_name`,g.`last_name`,gs.student_id,g.office_phone1,g.mobile_phone,
   g.relation,fu.paid_username,fu.paid_password FROM 
   guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where fu.paid_school_id=#{@school.id} and  g.school_id=#{@school.id}"

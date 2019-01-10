@@ -677,8 +677,8 @@ class SchoolsController <  MultiSchoolController
 
 
     @student_data = @conn.execute(sql).all_hashes
-    
-    csv_string = FasterCSV.generate do |csv|
+    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
+    FasterCSV.open(filename) do |csv|
       
       #      csv << headers
         
@@ -831,8 +831,8 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
       
     end
     
-    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
-    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+    send_file(filename, :type => 'text/csv; charset=utf-8; header=present', :x_sendfile => true, :streaming => false)
+    #send_data(:type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   end
   
   

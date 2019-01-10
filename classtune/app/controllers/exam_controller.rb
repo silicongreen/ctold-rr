@@ -5556,8 +5556,6 @@ class ExamController < ApplicationController
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-            elsif !full_absent && exam_type == 3
-              
             end  
         
             if u_grade1 == 0  
@@ -5582,7 +5580,6 @@ class ExamController < ApplicationController
                 end
                 @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-            elsif !full_absent && exam_type == 1
             end  
         
             if u_grade2 == 0  
@@ -5603,10 +5600,9 @@ class ExamController < ApplicationController
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-            elsif !full_absent && exam_type == 2
             end  
             
-            if !full_absent
+
               if total_failed_appaered > 0
                 if @failed_appeared_absent[total_failed_appaered].blank?
                   @failed_appeared_absent[total_failed_appaered] = 1
@@ -5622,7 +5618,7 @@ class ExamController < ApplicationController
                   @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
                 end
               end
-            end
+
 
           end
         end

@@ -10,6 +10,8 @@ en:
   authorize_net_transaction_password: "Transaction Password"
   online_transaction_id: "Online Transaction ID"
   gateway: "Gateway"
+  payment_type: "Payment Type"
+  ref_id: "Reference ID"
   total_payable_amount: "Total Payable Amount"
   home: "Home"
   settings: "Settings"

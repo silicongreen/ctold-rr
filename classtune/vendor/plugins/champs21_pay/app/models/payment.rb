@@ -35,6 +35,20 @@ class Payment < ActiveRecord::Base
     end
   end
 
+  def payee_admission_no
+    if payee.nil?
+      if payee_type == 'Student'
+        ArchivedStudent.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Guardian'
+        ArchivedGuardian.find_by_former_id(payee_id).try(:full_name) || "NA"
+      elsif payee_type == 'Applicant'
+        "NA"
+      end
+    else
+      payee.admission_no
+    end
+  end
+
   def payee_user
     if payee.nil?
       if payee_type == 'Student'

@@ -17,7 +17,18 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-
+<style>
+    .table{
+        font-family: verdana;
+        font-size: 12px;
+    }
+    .table > thead > tr > th {
+        vertical-align: middle !important;
+    }  
+    .table-sm td, .table-sm th {
+        padding: .3rem !important;
+    }
+</style>
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('online_payment') %></h1>
@@ -36,42 +47,70 @@
     <% end %>
   </div>
   <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
-    <div class="label-field-pair">
-      <label for="start_date"><%= t('start_date') %></label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+    <div class="label-field-pair" style="width: 40%;">
+      <div class="label-container"><%= t('start_date') %>:</div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
     </div>
-    <div class="label-field-pair">
-      <label for="start_date"><%= t('end_date') %></label>
-      <div class="text-input-bg"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+    <div class="label-field-pair" style="width: 35%;">
+        <div class="label-container" style="width: 20%;"><%= t('end_date') %>:</div>
+      <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
     </div>
-    <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
+    <div style="margin-left: 40%;">
+      <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
+    </div>
+    <div style="clear: both; height: 20px;"></div>
   <% end %>
   <% unless @online_payments.empty? %>
-    <div class="box">
-      <table id ="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-        <tr class="tr-head">
-          <td class="sl_no"><%= t('serial_no') %></td>
-          <td class="gateway_name"><%= t("gateway_name") %></td>
-          <td class="payee_name"><%= t("payee_name") %></td>
-          <td class="fee_name"><%= t("fee_name") %></td>
-          <td class="amount"><%= t("amount") %></td>
-          <td class="gateway_status"><%= t("gateway_status") %></td>
-          <td class="online_transaction_id"><%= t("online_transaction_id") %></td>
-          <td class="transaction_date"><%= t("transaction_date") %></td>
+    <div class="box" style="padding-top: 20px;">
+      <table class="table table-sm table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+        <tr>
+            <th style="width: 3%;"><%= "#" %></th>
+            <th style="width: 10%;"><%= t("gateway_name") %></th>
+            <th style="width: 10%;"><%= "Payee ID" %></th>
+            <th style="width: 30%;"><%= t("payee_name") %></th>
+            <th style="width: 10%;"><%= t("payment_type") %></th>
+            <th style="width: 10%;"><%= t("fee_name") %></th>
+            <th style="width: 10%;"><%= t("amount") %></th>
+            <th style="width: 10%;"><%= t("gateway_status") %></th>
+            <% if MultiSchool.current_school.id == 352 %>
+            <th style="width: 10%;"><%= t("ref_id") %></th>
+            <% else %>
+            <th style="width: 10%;"><%= t("online_transaction_id") %></th>
+            <% end %>
+            <th style="width: 10%;"><%= t("transaction_date") %></th>
         </tr>
+        </thead>
+        <tbody>
         <% @online_payments.each_with_index do |payment,index| %>
-          <tr class="tr-<%= cycle('odd', 'even') %>">
-            <td class="sl_no"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
-            <td class="gateway_name">
-              <% gateway_name = (payment.gateway_response.keys.include? :x_trans_id) ? "Authorize.net" : "Paypal" %>
-              <%= gateway_name %>
+          <tr>
+            <td style="vertical-align: middle;"><%= ((@online_payments.current_page - 1) * @online_payments.per_page) + index + 1 %></td>
+            <td style="text-align: center;">
+              <% gateway_name = "Online Payment"  %>  
+              <% gateway_name_data = "Online Payment"  %>  
+              <% if (payment.gateway_response.keys.include? :x_trans_id) %>  
+                <% gateway_name = "Authorize.net"  %>
+                <% gateway_name_data = "Authorize.net"  %>
+              <% elsif (payment.gateway_response.keys.include? :val) %>  
+                <% gateway_name = "SSL Commerz"  %>
+                <% gateway_name_data = "SSL Commerz"  %>
+              <% elsif (payment.gateway_response.keys.include? :order_id) %>  
+                <% gateway_name = '<img src="/images/gateway_images/trustbank.png" height="64px" />'  %>
+                <% gateway_name_data = 'trustbank'  %>
+              <% else %>
+                <% gateway_name = "Paypal"  %>
+                <% gateway_name_data = "Paypal"  %>
+              <% end %>  
+              <%= gateway_name %>  
             </td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
-            <td class="payee_name"><%= "#{payment.payee_name}(#{payment.payee_user})" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payee_admission_no}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payee_name}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payment_type}" %></td>
             <% payment_type = String.new
             if payment.payment_type == "FinanceFee"
               payment_type = payment.finance_transaction.try(:finance).try(:finance_fee_collection).try(:name)
-            elsif payment.payment_type == "HostelFee"
+            elsif payment.payment_type == "HostelFee" 
               payment_type = payment.finance_transaction.try(:finance).try(:hostel_fee_collection).try(:name)
             elsif payment.payment_type == "TransportFee"
               payment_type = payment.finance_transaction.try(:finance).try(:transport_fee_collection).try(:name)
@@ -79,34 +118,43 @@
               payment_type = "Application"
             end
           %>
-            <td class="fee_name"><%= payment_type %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= payment_type %></td>
             <% amount = payment.gateway_response[:amount]
             amount ||= payment.gateway_response[:x_amount]%>
 
-            <td class="amount"><%= amount %></td>
-            <td class="gateway_status">
+            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= amount %></td>
+            <td style="vertical-align: middle; text-align: center;">
               <% gateway_status = "Failed"
-              if gateway_name == "Paypal"
+              if gateway_name_data == "Paypal"
                 gateway_status = "Completed" if payment.gateway_response[:status] == "Completed"
+              elsif gateway_name_data == "trustbank"  
+                gateway_status = "Completed" if payment.gateway_response[:status].to_i == 1
+              elsif gateway_name_data == "SSL Commerz"  
+                gateway_status = "Completed" if payment.gateway_response[:status] == "VALID"
               elsif gateway_name == "Authorize.net"
                 gateway_status = "Completed" if payment.gateway_response[:x_response_reason_code] == "1"
               end %>
               <%= gateway_status %>
             </td>
-            <td class="online_transaction_id">
+            <td style="vertical-align: middle; text-align: center;">
               <% transaction_id = nil
-              if gateway_name == "Paypal"
+              if gateway_name_data == "Paypal"
                 transaction_id = payment.gateway_response[:transaction_id]
-              elsif gateway_name == "Authorize.net"
+              elsif gateway_name_data == "Authorize.net"
                 transaction_id = payment.gateway_response[:x_trans_id]
+              elsif gateway_name_data == "SSL Commerz"
+                transaction_id = payment.gateway_response[:transaction_id]
+              elsif gateway_name_data == "trustbank"
+                transaction_id = payment.gateway_response[:ref_id]
               end %>
               <%= transaction_id %>
             </td>
-            <td class="transaction_date">
+            <td style="vertical-align: middle; text-align: center;">
               <%= I18n.l(payment.created_at,:format=>"%d %b %Y") %>
             </td>
           </tr>
         <% end %>
+        </tbody> 
       </table>
       <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
     </div>

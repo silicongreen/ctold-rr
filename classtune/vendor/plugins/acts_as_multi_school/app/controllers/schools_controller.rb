@@ -481,8 +481,8 @@ class SchoolsController <  MultiSchoolController
   
   def download_student_list
     sch = @school = School.find(params[:id])
-    @start_index = School.find(params[:start_index])
-    @total = School.find(params[:total])
+    @start_index = params[:start_index]
+    @total = params[:total]
     #@student_data = StudentsGuardians.find(:all,:conditions=>{:school_id=>@school.id})
     @conn = ActiveRecord::Base.connection 
     if !@start_index.blank? and !@total.blank?

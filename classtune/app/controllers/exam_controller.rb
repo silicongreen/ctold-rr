@@ -2794,6 +2794,7 @@ class ExamController < ApplicationController
         @tabulation_data = student_response['data']
       end
     end
+    @class = params[:class]
     finding_data5()
     render :pdf => 'subject_wise_pass_failed',
       :orientation => 'Portrait', :zoom => 1.00,

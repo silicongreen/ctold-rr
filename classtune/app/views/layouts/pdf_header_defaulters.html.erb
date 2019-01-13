@@ -1,0 +1,27 @@
+<div id="pdf-header-south" class="sfx-header" style="width: 900px; text-align: center;">
+    <table style="width: 50%; margin: 0 auto;">
+        <tr>
+            <td>
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '40px' %>
+            </td>
+            <td>
+              <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+            </td>
+        </tr>
+    </table>
+    
+</div>
+
+<style>
+  #pdf-header-south h4.line-height-10
+  {
+     line-height: 15px !important;
+  }
+</style>
+
+
+
+
+
+
+

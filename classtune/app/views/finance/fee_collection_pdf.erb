@@ -23,7 +23,7 @@
 <div id="page-yield">
     
     <div class="hor_line"></div>
-    <h4 align="center"><%= t('fees_defaulters_text') %></h4>
+    <h4 align="center"><%= t('fees_collections_text') %></h4>
     <div class="hor_line"></div>
 
 
@@ -47,7 +47,8 @@
             <td class="col-pdf"><%= t('roll_no') %></td>
             <td class="col-pdf"><%= t('section') %></td>
             <td class="col-pdf"><%= t('student_category') %></td>
-            <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+            <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
+            <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
             <td class="col-pdf"><%= t('contact_number') %></td>
         </tr>
         <% i = 0 %>
@@ -57,7 +58,20 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 26 %>
+          <% fee_id = s.fee_id %>
+          <% finance_fee = FinanceFee.find(fee_id) %>
+          <% paid_fees = finance_fee.finance_transactions %>
+          <% transaction_ids = paid_fees.map(&:id) %>
+          <% paidAmount = 0 %>
+          <%
+            unless transaction_ids.blank?
+              paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = 0")
+              unless paidFess.blank?
+                paidAmount += paidFess.map(&:amount).sum.to_f
+              end
+            end
+          %>
+          <% if page == 1 and i== 15 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
@@ -68,13 +82,14 @@
                 <td class="col-pdf"><%= t('roll_no') %></td>
                 <td class="col-pdf"><%= t('section') %></td>
                 <td class="col-pdf"><%= t('student_category') %></td>
-                <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+                <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
+                <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
                 <td class="col-pdf"><%= t('contact_number') %></td>
               </tr>
-          <% elsif page > 1 and i== 31 %>
+          <% elsif page > 1 and i== 17 %>
               <% i= 0 %>
               <% page += 1 %>
-              <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
+              <tr style="padding: 10px; height: 25px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
                 <td class="col-pdf" style="width: 6%;">#</td>
                 <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
@@ -82,13 +97,14 @@
                 <td class="col-pdf"><%= t('roll_no') %></td>
                 <td class="col-pdf"><%= t('section') %></td>
                 <td class="col-pdf"><%= t('student_category') %></td>
-                <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+                <td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td>
+                <td class="col-pdf"><%= t('paid_amount')%> (<%= @currency_type%>)</td>
                 <td class="col-pdf"><%= t('contact_number') %></td>
               </tr>
           <% end %>
           <% i += 1  %>
           <% c =cycle('even','odd ') %>
-          <tr class="<%= "#{c}" %> td-body">
+          <tr class="<%= "#{c}" %> td-body" style="height: 55px;">
               <td class="col-pdf" style="text-align: center;"><%= index += 1 %></td>
               <td class="col-pdf" style="text-align: center;"><%= s.admission_no %></td>
               <td class="col-pdf"><%= s.full_name %></td>
@@ -96,6 +112,7 @@
               <td class="col-pdf" style="text-align: center;"><%= b.course.section_name %></td>
               <td class="col-pdf" style="text-align: center;"><%= sc.name %></td>
               <td class="col-pdf" style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
+              <td class="col-pdf" style="text-align: right;"><%= precision_label(paidAmount.to_f) %></td>
               <td class="col-pdf" style="text-align: center;"><%= s.sms_number %></td>
           </tr>
         <% end %>

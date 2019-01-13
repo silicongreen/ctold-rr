@@ -40,6 +40,7 @@
 </div>
 <div id="page-yield">
   <h2><%= "Bill Generation Report - " + @batch.full_name %></h2>
+  <div style="width: 100%; border: 1px solid #ccc; overflow-x: auto;">
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
     <thead><!-- class="thead-inverse" -->
       <tr>
@@ -152,10 +153,18 @@
     <% end %>    
     </tbody>
   </table>
-
+  </div>    
+  <div class="pdf_link" style="text-align: center;">
+      <%= link_to " ► #{t('pdf_report')}",
+        {:controller => "finance", :action => "fee_collection_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+  </div>
 </div>
 
 <style>
+    .pdf_link .user_button {
+        display: inline-block;
+        float: none;
+    }
     tr.tr-odd td, tr.tr-even td
     {
        text-align:right;

@@ -3490,14 +3490,16 @@ class FinanceController < ApplicationController
           @paid_fees = @fee.finance_transactions
           
           if advance_fee_collection
-            if @fee_collection_advances.particular_id == 0
+            fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+            if fee_collection_advances_particular.include?(0)
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             else
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             end
           else
             fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
           end
+
           fee_particulars.each do |fee_particular|
             if particulars_name.include?(fee_particular.name)
               tmp[fee_particular.name] = fee_particular.amount
@@ -3505,13 +3507,29 @@ class FinanceController < ApplicationController
           end
           
           if advance_fee_collection
-            total_payable = (fee_particulars.map{|s| s.amount}.sum * @fee_collection_advances.no_of_month.to_i).to_f
+            month = 1
+            payable = 0
+            @fee_collection_advances.each do |fee_collection_advance|
+              fee_particulars.each do |particular|
+                if fee_collection_advance.particular_id == particular.finance_fee_particular_category_id
+                  payable += particular.amount * fee_collection_advance.no_of_month.to_i
+                else
+                  payable += particular.amount
+                end
+              end
+            end
+            @total_payable=payable.to_f
           else  
-            total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
+            @total_payable=fee_particulars.map{|s| s.amount}.sum.to_f
           end
-          tmp['Total Payable'] = total_payable
+
+          tmp['Total Payable'] = @total_payable
+          total_payable = @total_payable
           @total_discount = 0
-        
+          
+          @adv_fee_discount = false
+          @actual_discount = 1
+
           if advance_fee_collection
             calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
           else
@@ -6220,6 +6238,22 @@ class FinanceController < ApplicationController
     @currency_type = currency
 
     render :pdf => 'fee_defaulters_pdf',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 22,
+      :bottom => 30,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header_defaulters.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def fee_collection_pdf
+    @batch   = Batch.find(params[:batch_id])
+    @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
+    @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.batch_id='#{@batch.id}'"],:select=>["students.*, finance_fees.id as fee_id,finance_fees.balance as balance"],:order=>"students.class_roll_no ASC").uniq
+    @currency_type = currency
+
+    render :pdf => 'fee_collection_pdf',
       :orientation => 'Portrait', :zoom => 1.00,
       :margin => {    :top=> 22,
       :bottom => 30,

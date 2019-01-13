@@ -61,6 +61,12 @@ class SmsController < ApplicationController
   end
 
   def students
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
     if current_user.admin?
       @batches = Batch.active
     elsif @current_user.employee?
@@ -119,19 +125,49 @@ class SmsController < ApplicationController
             flash[:notice]="#{t('succesffully_send')}"
           else
            
-            csv_string = FasterCSV.generate do |csv|
-              rows = []
-              rows << "Mobile No"
-              csv << rows
-              @recipients.each do |number|
+            if csv
+              csv_string = FasterCSV.generate do |csv|
                 rows = []
-                rows << "#{number}"
+                row_header.each do |r|
+                  rows << r
+                end
                 csv << rows
+                @recipients.each do |number|
+                  rows = []
+                  rows << "#{number}"
+                  csv << rows
+                end
               end
+
+              filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+              send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+            else
+              require 'spreadsheet'
+              Spreadsheet.client_encoding = 'UTF-8'
+              row_1 = row_header
+              new_book = Spreadsheet::Workbook.new
+
+              new_book.create_worksheet :name => 'SMS Data'
+              new_book.worksheet(0).insert_row(0, row_1)
+
+              new_book.worksheet(0).row(0).format 2
+
+              ind = 1
+              k = 0
+              @recipients.each do |number|
+                row_new = [number, message]
+                new_book.worksheet(0).insert_row(ind, row_new)
+                ind += 1
+                k += 1
+              end
+
+              spreadsheet = StringIO.new 
+              new_book.write spreadsheet 
+
+              filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+              send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
             end
-            
-            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-            send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
           end
           
         else
@@ -175,6 +211,21 @@ class SmsController < ApplicationController
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
       @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+    end
+  end
+  
+  def list_students_new_feedues
+    @students = []
+    unless params[:batch_id].blank?
+      unless params[:fee_id].blank?
+        batch_ids = params[:batch_id].split(",")
+        fee_collection = FinanceFeeCollection.find(params[:fee_id])
+        unless fee_collection.blank?  
+          student_ids = fee_collection.finance_fees.find(:all,:conditions=>"batch_id IN ('#{batch_ids}')").collect(&:student_id).join(',')
+          fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+          @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
+        end
+      end
     end
   end
 
@@ -285,6 +336,12 @@ class SmsController < ApplicationController
   end
 
   def employees
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
     if request.post?
       unless params[:send_sms][:employee_ids].nil?
         employee_ids = params[:send_sms][:employee_ids]
@@ -307,20 +364,49 @@ class SmsController < ApplicationController
             sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
             flash[:notice]="#{t('succesffully_send')}"
           else
-           
-            csv_string = FasterCSV.generate do |csv|
-              rows = []
-              rows << "Mobile No"
-              csv << rows
-              @recipients.each do |number|
+            if csv
+              csv_string = FasterCSV.generate do |csv|
                 rows = []
-                rows << "#{number}"
+                row_header.each do |r|
+                  rows << r
+                end
                 csv << rows
+                @recipients.each do |number|
+                  rows = []
+                  rows << "#{number}"
+                  csv << rows
+                end
               end
+
+              filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+              send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+            else
+              require 'spreadsheet'
+              Spreadsheet.client_encoding = 'UTF-8'
+              row_1 = row_header
+              new_book = Spreadsheet::Workbook.new
+
+              new_book.create_worksheet :name => 'SMS Data'
+              new_book.worksheet(0).insert_row(0, row_1)
+
+              new_book.worksheet(0).row(0).format 2
+
+              ind = 1
+              k = 0
+              @recipients.each do |number|
+                row_new = [number, message]
+                new_book.worksheet(0).insert_row(ind, row_new)
+                ind += 1
+                k += 1
+              end
+
+              spreadsheet = StringIO.new 
+              new_book.write spreadsheet 
+
+              filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+              send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
             end
-            
-            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-            send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
           end
           
         else
@@ -345,6 +431,25 @@ class SmsController < ApplicationController
       page.replace_html "student-custom-option", :partial => "student_custom_option"
       page << 'j("#student-custom-option").show();'
       page << 'j("#submit_button").show();'
+    end
+  end
+  
+  def show_option_student_feedues
+    unless params[:fee_id].nil? or params[:fee_id].empty? or params[:fee_id].blank?
+      date    =  FinanceFeeCollection.find(params[:fee_id])
+      @batches = date.batches
+      
+      render :update do |page|
+        page.replace_html "student-custom-option", :partial => "student_custom_option_feedues"
+        page << 'j("#student-custom-option").show();'
+        page << 'j("#submit_button").show();'
+      end
+    else
+      render :update do |page|
+        page.replace_html "student-custom-option", :text => ""
+        page << 'j("#student-custom-option").hide();'
+        page << 'j("#submit_button").hide();'
+      end
     end
   end
   
@@ -373,6 +478,18 @@ class SmsController < ApplicationController
           page.replace_html "sms_opt", :partial => "student_upassword"
           page << 'j("#sms_opt").show();'
         end
+      elsif params[:option] == "feedues"  
+        @finance_fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_advance_fee_collection = #{false} and finance_fee_collections.is_deleted = '#{false}'")
+        @message = ""
+        if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
+          sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
+          @message = sms_text_config['feedues']
+        end
+        
+        render :update do |page|
+          page.replace_html "sms_opt", :partial => "student_feedues"
+          page << 'j("#sms_opt").show();'
+        end
       else
         render :update do |page|
           page.replace_html "sms_panel", :partial => "employees"
@@ -388,6 +505,12 @@ class SmsController < ApplicationController
   end
   
   def show_option
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
     flash[:notice] = nil
     if request.post?
       unless params[:option_sms].blank?
@@ -412,22 +535,50 @@ class SmsController < ApplicationController
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
                 else
-
-                  csv_string = FasterCSV.generate do |csv|
-                    rows = []
-                    rows << "Mobile No"
-                    rows << "Message"
-                    csv << rows
-                    @recipients.each do |number|
+                  if csv
+                    csv_string = FasterCSV.generate do |csv|
                       rows = []
-                      rows << "#{number}"
-                      rows << "#{message}"
+                      row_header.each do |r|
+                        rows << r
+                      end
                       csv << rows
+                      @recipients.each do |number|
+                        rows = []
+                        rows << "#{number}"
+                        rows << "#{message}"
+                        csv << rows
+                      end
                     end
-                  end
 
-                  filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-                  send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+                    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                  else
+                    require 'spreadsheet'
+                    Spreadsheet.client_encoding = 'UTF-8'
+                    row_1 = row_header
+                    new_book = Spreadsheet::Workbook.new
+
+                    new_book.create_worksheet :name => 'SMS Data'
+                    new_book.worksheet(0).insert_row(0, row_1)
+
+                    new_book.worksheet(0).row(0).format 2
+
+                    ind = 1
+                    k = 0
+                    @recipients.each do |number|
+                      row_new = [number, message]
+                      new_book.worksheet(0).insert_row(ind, row_new)
+                      ind += 1
+                      k += 1
+                    end
+
+                    spreadsheet = StringIO.new 
+                    new_book.write spreadsheet 
+
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+                    send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+                  end
                 end
               end
             else
@@ -440,22 +591,50 @@ class SmsController < ApplicationController
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
                 else
-
-                  csv_string = FasterCSV.generate do |csv|
-                    rows = []
-                    rows << "Mobile No"
-                    rows << "Message"
-                    csv << rows
-                    @recipients.each do |number|
+                  if csv
+                    csv_string = FasterCSV.generate do |csv|
                       rows = []
-                      rows << "#{number}"
-                      rows << "#{message}"
+                      row_header.each do |r|
+                        rows << r
+                      end
                       csv << rows
+                      @recipients.each do |number|
+                        rows = []
+                        rows << "#{number}"
+                        rows << "#{message}"
+                        csv << rows
+                      end
                     end
-                  end
 
-                  filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-                  send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+                    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                  else
+                    require 'spreadsheet'
+                    Spreadsheet.client_encoding = 'UTF-8'
+                    row_1 = row_header
+                    new_book = Spreadsheet::Workbook.new
+
+                    new_book.create_worksheet :name => 'SMS Data'
+                    new_book.worksheet(0).insert_row(0, row_1)
+
+                    new_book.worksheet(0).row(0).format 2
+
+                    ind = 1
+                    k = 0
+                    @recipients.each do |number|
+                      row_new = [number, message]
+                      new_book.worksheet(0).insert_row(ind, row_new)
+                      ind += 1
+                      k += 1
+                    end
+
+                    spreadsheet = StringIO.new 
+                    new_book.write spreadsheet 
+
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+                    send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+                  end
                 end
               end
             end
@@ -505,22 +684,50 @@ class SmsController < ApplicationController
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
                 else
-
-                  csv_string = FasterCSV.generate do |csv|
-                    rows = []
-                    rows << "Mobile No"
-                    rows << "Message"
-                    csv << rows
-                    @recipients.each do |number|
+                  if csv
+                    csv_string = FasterCSV.generate do |csv|
                       rows = []
-                      rows << "#{number}"
-                      rows << "#{message}"
+                      row_header.each do |r|
+                        rows << r
+                      end
                       csv << rows
+                      @recipients.each do |number|
+                        rows = []
+                        rows << "#{number}"
+                        rows << "#{message}"
+                        csv << rows
+                      end
                     end
-                  end
 
-                  filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-                  send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+                    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                  else
+                    require 'spreadsheet'
+                    Spreadsheet.client_encoding = 'UTF-8'
+                    row_1 = row_header
+                    new_book = Spreadsheet::Workbook.new
+
+                    new_book.create_worksheet :name => 'SMS Data'
+                    new_book.worksheet(0).insert_row(0, row_1)
+
+                    new_book.worksheet(0).row(0).format 2
+
+                    ind = 1
+                    k = 0
+                    @recipients.each do |number|
+                      row_new = [number, message]
+                      new_book.worksheet(0).insert_row(ind, row_new)
+                      ind += 1
+                      k += 1
+                    end
+
+                    spreadsheet = StringIO.new 
+                    new_book.write spreadsheet 
+
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+                    send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+                  end
                 end
               end
             else
@@ -533,22 +740,50 @@ class SmsController < ApplicationController
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
                 else
-
-                  csv_string = FasterCSV.generate do |csv|
-                    rows = []
-                    rows << "Mobile No"
-                    rows << "Message"
-                    csv << rows
-                    @recipients.each do |number|
+                  if csv
+                    csv_string = FasterCSV.generate do |csv|
                       rows = []
-                      rows << "#{number}"
-                      rows << "#{message}"
+                      row_header.each do |r|
+                        rows << r
+                      end
                       csv << rows
+                      @recipients.each do |number|
+                        rows = []
+                        rows << "#{number}"
+                        rows << "#{message}"
+                        csv << rows
+                      end
                     end
-                  end
 
-                  filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-                  send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+                    send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+                  else
+                    require 'spreadsheet'
+                    Spreadsheet.client_encoding = 'UTF-8'
+                    row_1 = row_header
+                    new_book = Spreadsheet::Workbook.new
+
+                    new_book.create_worksheet :name => 'SMS Data'
+                    new_book.worksheet(0).insert_row(0, row_1)
+
+                    new_book.worksheet(0).row(0).format 2
+
+                    ind = 1
+                    k = 0
+                    @recipients.each do |number|
+                      row_new = [number, message]
+                      new_book.worksheet(0).insert_row(ind, row_new)
+                      ind += 1
+                      k += 1
+                    end
+
+                    spreadsheet = StringIO.new 
+                    new_book.write spreadsheet 
+
+                    filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+                    send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+                  end
                 end
               end
             end
@@ -574,6 +809,32 @@ class SmsController < ApplicationController
                 batch_ids = batches.map(&:id)
                 students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true").map(&:id)
                 send_sms_student(students, message, params[:send_sms][:download], sent_to)
+              end
+              
+            end
+          end
+        elsif params[:option_sms] == 'student_feedues'
+          sent_to = params[:send_sms][:send_to]
+          fee_collection_id = params[:fee_collections]
+          unless params[:sms_message].nil? or params[:sms_message].empty? or params[:sms_message].blank?
+            message = params[:sms_message]
+            unless params[:students].nil? or params[:students].empty? or params[:students].blank?
+              fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
+              student_ids = params[:students].join(',')
+              fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+              students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true").map(&:id)
+              send_sms_student_fees(fee_collection_id, students, message, params[:send_sms][:download], sent_to)
+            else
+              fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
+              batches = fee_collection.batches
+              
+              unless batches.nil?
+                students = []
+                batch_ids = batches.map(&:id).join(",")
+                student_ids = fee_collection.finance_fees.find(:all,:conditions=>"batch_id IN ('#{batch_ids}')").collect(&:student_id).join(',')
+                fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+                students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true").map(&:id)
+                send_sms_student_fees(fee_collection_id, students, message, params[:send_sms][:download], sent_to)
               end
               
             end
@@ -767,6 +1028,131 @@ class SmsController < ApplicationController
             tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
             i += 1
             @recipients.push g['mobile_phone']
+          end
+        end
+      end
+    end
+    
+    unless @recipients.empty?
+      if download_opt.blank? or download_opt.to_i!=1
+        sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+        flash[:notice]="#{t('succesffully_send')}"
+        redirect_to :action => "panel"
+      else
+        i = 0
+        if csv
+          csv_string = FasterCSV.generate do |csv|
+            rows = []
+            row_header.each do |r|
+              rows << r
+            end
+            csv << rows
+            @recipients.each do |number|
+              rows = []
+              rows << "#{number}"
+              rows << "#{tmp_message[i]}"
+              csv << rows
+              i += 1
+            end
+          end
+
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+          send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+        else
+          require 'spreadsheet'
+          Spreadsheet.client_encoding = 'UTF-8'
+          row_1 = row_header
+          new_book = Spreadsheet::Workbook.new
+          
+          new_book.create_worksheet :name => 'Student Data'
+          new_book.worksheet(0).insert_row(0, row_1)
+          
+          new_book.worksheet(0).row(0).format 2
+          
+          ind = 1
+          k = 0
+          @recipients.each do |number|
+            row_new = [number, tmp_message[k]]
+            new_book.worksheet(0).insert_row(ind, row_new)
+            ind += 1
+            k += 1
+          end
+          
+          spreadsheet = StringIO.new 
+          new_book.write spreadsheet 
+          
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+          
+          send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+        end
+      end
+    end
+  end
+  
+  def send_sms_student_fees(fee_collection_id, student_ids,message,download_opt,sent_to)
+    fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
+    
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
+    @recipients=[]
+    i = 0
+    tmp_message = []
+    sms_setting = SmsSetting.new()
+    std_ids = student_ids.join(",")
+    fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and students.id IN (#{ std_ids})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+    if sent_to.to_i == 2
+      fees_students.each do |fee|
+        std = Student.find(fee.student_id)
+        balance = '%.2f' % fee.balance 
+        full_name = std.full_name
+        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+          i += 1
+          @recipients.push std.sms_number
+        else
+          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+            tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+            i += 1
+            @recipients.push std.phone2
+          end
+        end
+      end
+    end
+    
+    if sent_to.to_i == 3
+      fees_students.each do |fee|
+        std = Student.find(fee.student_id)
+        balance = '%.2f' % fee.balance 
+        full_name = std.full_name
+        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+          i += 1
+          @recipients.push std.sms_number
+        else
+          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+            tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+            i += 1
+            @recipients.push std.phone2
           end
         end
       end

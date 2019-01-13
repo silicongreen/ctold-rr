@@ -6216,10 +6216,17 @@ class FinanceController < ApplicationController
   def fee_defaulters_pdf
     @batch   = Batch.find(params[:batch_id])
     @date = @finance_fee_collection = FinanceFeeCollection.find(params[:date])
-    @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and finance_fees.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"students.first_name ASC").uniq
+    @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and finance_fees.batch_id='#{@batch.id}'"],:select=>["students.*,finance_fees.balance as balance"],:order=>"students.class_roll_no ASC").uniq
     @currency_type = currency
 
-    render :pdf => 'fee_defaulters_pdf'
+    render :pdf => 'fee_defaulters_pdf',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 22,
+      :bottom => 30,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header_defaulters.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
 
   def pay_fees_defaulters

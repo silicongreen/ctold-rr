@@ -21,25 +21,41 @@
 
 </div>
 <div id="page-yield">
-
-  <div class="hor_line"></div>
-  <h2><%= t('fees_defaulters_text') %></h2>
-  <div class="hor_line"></div>
+    
+    <div class="hor_line"></div>
+    <h4 align="center"><%= t('fees_defaulters_text') %></h4>
+    <div class="hor_line"></div>
 
 
   <div class="extender"> </div>
   <div class="report">
 
     <div id ="main_info">
-      <h4> <%= "#{t('class')} :"+ " " "#{@batch.full_name}" %></h4>
+        <% batch_version = @batch.name.split(" ") %>
+        <h4 style="width: 25%; display: inline-block;"> <%= "#{t('shift')} :"+ " " "#{batch_version[0].strip}" %></h4>
+        <h4 style="width: 24%; display: inline-block; text-align: left; "> <%= "#{t('version')} :"+ " " "#{batch_version[1].strip}" %></h4>
+        <h4 style="width: 24%; display: inline-block; text-align: center;"> <%= "#{t('class')} :"+ " " "#{@batch.course.course_name}" %></h4>
+        <h4 style="width: 24%; display: inline-block; text-align: right;"> <%= "#{t('section')} :"+ " " "#{@batch.course.section_name}" %></h4>
     </div>
     <div id="pdf-info">
       <table id="pdf-table" width="100%" cellspacing="0">
-        <tr class="table-header"><td class="col-pdf"><%= t('sl_no') %></td><td class="col-pdf"><%= t('name') %></td><td class="col-pdf"><%= t('amount')%> (<%= @currency_type%>)</td></tr>
+        <tr class="table-header">
+            <td class="col-pdf" style="width: 6%;">#</td>
+            <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
+            <td class="col-pdf"><%= t('name') %></td>
+            <td class="col-pdf"><%= t('roll_no') %></td>
+            <td class="col-pdf"><%= t('section') %></td>
+            <td class="col-pdf"><%= t('student_category') %></td>
+            <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+            <td class="col-pdf"><%= t('contact_number') %></td>
+        </tr>
         <% i = 0 %>
         <% index = 0   %>
         <% c = 'even' %>
         <% @defaulters.each do |s| %>
+          <% b = Batch.find(s.batch_id)  %>
+          <% sc = StudentCategory.find(s.student_category_id)  %>
+          <% b_v = b.name.split(" ") %>
           <% if i== 22 %>
             <% i= 0 %>
             <tr class="page-break"><td colspan="3"></td></tr>
@@ -51,10 +67,15 @@
           <% end %>
           <% i += 1  %>
           <% c =cycle('even','odd ') %>
-          <tr class="<%= "#{c}" %>">
-            <td class="col-pdf"><%= index += 1 %></td>
-            <td class="col-pdf"><%= s.full_name %></td>
-            <td class="col-pdf"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
+          <tr class="<%= "#{c}" %> td-body">
+              <td class="col-pdf" style="text-align: center;"><%= index += 1 %></td>
+              <td class="col-pdf" style="text-align: center;"><%= s.admission_no %></td>
+              <td class="col-pdf"><%= s.full_name %></td>
+              <td class="col-pdf" style="text-align: center;"><%= s.class_roll_no %></td>
+              <td class="col-pdf" style="text-align: center;"><%= b.course.section_name %></td>
+              <td class="col-pdf" style="text-align: center;"><%= sc.name %></td>
+              <td class="col-pdf" style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
+              <td class="col-pdf" style="text-align: center;"><%= s.sms_number %></td>
           </tr>
         <% end %>
       </table>
@@ -63,3 +84,19 @@
   </div>
 
 </div>
+<style>
+    #pdf-table tr.table-header td {
+      color: #000;
+      font-weight: bold;
+      font-family: verdana;
+      font-size: 12px;
+    }
+    #pdf-table tr.td-body td {
+        padding: 6px 10px;
+        color: #000;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 12px;
+        background: #fff;
+    }
+</style>

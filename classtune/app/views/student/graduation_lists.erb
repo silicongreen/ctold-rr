@@ -57,7 +57,10 @@
           <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
         </li>
         <li>
-            <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+          <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+        </li>
+        <li>
+            <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
         </li>
         <li class="active">
           <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>

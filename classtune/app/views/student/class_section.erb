@@ -17,20 +17,21 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<script type="text/javascript"> function setOption(optn) {document.getElementById("option").value = optn;} </script>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-// Put jQuery 1.10.2 into noConflict mode.
-  var $jq1 = jQuery.noConflict(true);
-</script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+
+
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'form-bootstrap' %>
 <% content_for :head do %>
@@ -59,21 +60,18 @@
 
   <div class="tabbed-header-wrapper">
     <ul class="header-tabs">
-      <li class="active">
+      <li>
         <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
       </li>
       <li>
           <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
       </li>
-      <li>
+      <li class="active">
           <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
       </li>
-      <% if permitted_to? :graduation_lists,:student %>
       <li>
-          
         <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
       </li>
-      <% end %>
       <li>
           <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
       </li>
@@ -83,60 +81,39 @@
 
 </div>
 <div id="page-yield">
+  <% form_for(@student, :url => {:action=> 'view_all'}, :html=> {:id=>'new_student'}) do |s| %>  
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+    
+  <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+  <div class="form-group col-sm-6">
+    <label for="student_grade"><%= t('shift_label') %></label>
+      <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
+        {:prompt => "#{t('select')}"},
+        {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=sections_view&page=course_new&partial_view=courses_new'" ,:before => "$('loading_2').show();",
+        :success => "$('loading_2').hide();")}"} %>
+        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+  </div>
+  <% end %>
 
-    <form name="search_form" action="" style="display:inline;">
-      <%= hidden_field_tag("option", params['option'], :value => "active") %>
-      <div class="form-group col-sm-6">
-        <label for="user_name"><%= t('search_text') %>
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader",
-            :style =>"display: none;" ) %>
-        </label>
-        <%= text_field_tag("query", params['query'], :autocomplete => 'off',:class=>"form-control") %>
-
-      </div>
-      <div class="form-group col-sm-6" style="margin-top:30px;">
-          <label class="radio-inline"><input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('active')" /><%= t('present_student') %></label>
-          <label class="radio-inline"><input type="radio" name="setopt" id ="search_guardian_radio" onclick="setOption('guardian')" />Guardian</label>
-        <label class="radio-inline"><input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('former')" /><%= t('former_student') %></label>
-      </div>
-      <div class="extender"></div>
-    </form>
-
-  <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
-
-  <div id="view_all">
-
+  <div class="form-group col-sm-6">
+    <label for="student_grade"><%= t('class_label') %></label>
+    <div id="course_new"> <%= render :partial => 'student/courses_new', :object => @courses %></div>
+  </div>
+  
+  <div class="form-group col-sm-6">
+    <label for="student_grade"><%= t('section_label') %></label>
+    <div id="section_view"> <%= render :partial => 'sections_view', :object => @classes %></div>
+  </div>
+  <% end %>
+  <div id="students"> 
+    
   </div>
 
-
-<%#= observe_fields ['query', 'option'],
-:frequency => 0.5,
-:update => 'information',
-:before => "Element.show('loader')",
-:success => "Element.hide('loader')",
-:url => {:action => 'search_ajax'} %>
-
-  <script type="text/javascript">
-    function search_ajax(){
-      if ($('query').value.include("%")) return;
-<%="#{remote_function(:url => {:action => "search_ajax"},
-:with =>"j('form').serialize()",
-:before => "Element.show('loader')",
-:success => "Element.hide('loader')",
-:update=>"information"
-)}"%>
-  }
-
-  document.observe("dom:loaded", function() {
-    new Form.Element.Observer('query', 1, search_ajax);
-    new Form.Element.Observer('option', 0.5, search_ajax);
-  });
-
-  </script>
-
-  <div id="information"></div>
-
 </div>
+<script>
+  var oDataTable;
+  var jq = jQuery.noConflict();
+
+</script>  

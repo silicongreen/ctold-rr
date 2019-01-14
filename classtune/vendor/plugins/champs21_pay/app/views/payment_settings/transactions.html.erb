@@ -184,15 +184,15 @@
         <% end %>
         </tbody> 
       </table>
+      <% unless params[:page].blank?  %>
+        <% pg = ( (params[:page].to_i - 1) * 30) + 1 %>
+      <% else %>
+        <% pg = 1 %>
+      <% end %>
+      <% showing = (pg + 30) - 1 %>
+      <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
       <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type]} %>
     </div>
-    <% unless params[:page].blank?  %>
-      <% pg = ( (params[:page].to_i - 1) * 30) + 1 %>
-    <% else %>
-      <% pg = 1 %>
-    <% end %>
-    <% showing = (pg + 30) - 1 %>
-    <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
   <% else %>
     <div id="flash-box">
       <p class="flash-msg"  style="float: left;margin-top: 50px;width: 100%;">No Payments present</p>

@@ -68,6 +68,9 @@
 #my_profile_button {background:#fff url(../../images/dashboard_buttons/button_my_profile.png) 0 0 no-repeat;}
 #my_profile_button:hover {background:#fff url(../../images/dashboard_buttons/button_my_profile.png) -175px 0 no-repeat;}
 
+#online_payment_report_button {background:#fff url(../../images/dashboard_buttons/button_online_poll.png) 0 0 no-repeat;}
+#online_payment_report_button:hover {background:#fff url(../../images/dashboard_buttons/button_online_poll.png) -175px 0 no-repeat;}
+
 #leaves_button {background:#fff url(../../images/dashboard_buttons/button_leaves.png) 0 0 no-repeat;}
 #leaves_button:hover {background:#fff url(../../images/dashboard_buttons/button_leaves.png) -175px 0 no-repeat;}
 

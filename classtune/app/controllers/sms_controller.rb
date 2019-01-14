@@ -181,6 +181,10 @@ class SmsController < ApplicationController
   end
   
   def panel
+    #abort(.inspect)
+    #@valid_exam_group_ids =  if ((||[]) & [:admin, :examination_control,:enter_results,:view_results]).present? && @unpublished_exam_group_ids.present?
+    
+    
     if current_user.admin?
       @batches = Batch.active
     elsif @current_user.employee?

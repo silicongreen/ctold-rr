@@ -135,7 +135,7 @@ table#listing{
     -webkit-border-radius: 4px !important;
     display: block;
     padding: 6px 12px !important;
-    width: 102% !important;
+    width: 200px;
     font-size: 14px;
     line-height: 1.428571429;
     height: 34px  !important;

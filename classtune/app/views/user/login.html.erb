@@ -17,58 +17,62 @@
 #specific language governing permissions and limitations
 #under the License.
 #.champs21-school.com -%>
-<div class="pattern"></div>
-<div class="site_logo"></div>
-<div class="stp_banner"></div>
-<div id="wrapper">
-  <% unless flash[:notice].nil? %>
-    <p class="flash-msg"> <%= flash[:notice] %> </p>
-  <% end %>
-  <div id="login_box">
-    
-    <div id="login-input-box">
-      <div id="logo_area">
-        <div id="school-name"><%= current_school_name %></div>
-        <div id="top_logo">
-          <%= image_tag current_school_detail.logo.url %>
+
+<header class="head">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4" style="display: inline-block; float: left;">
+                  <div class="logo">
+                          <a href=""><img src="/images/login/logo.png" alt="Logo" width="210" height="50" /></a>
+                  </div>
+                </div>
+                <div class="col-md-8" style="text-align: left; padding-top: 10px; display: inline-block; float: left;">
+                    <%= image_tag current_school_detail.logo.url %>
+                    <h2 style="font-size: 24px; font-weight: bold; display: inline-block; padding-left: 10px;"><%= current_school_name %></h2>
+                </div>
+            </div>
         </div>
-      </div>
-      <% form_for :user do |form| %>
-
-        <div id="login_area">
-          <div class="login_fields">
-            <div id="username_textbox_bg">
-              <%= form.text_field :username,
-                :maxlength => 40, :placeholder=>"Username"%>
-            </div>
-            <div id="password_textbox_bg">
-              <%= form.password_field :password,:placeholder=>"Password" %>
-            </div>
-            <div id="notice">
-
-            </div>
-          </div>
-          
-
-          <div id="submit_area">            
-            <%= link_to t('forgot_password'),
-              {:controller => "user",
-              :action => "forgot_password"}, :class=>"forgot_pwd themed_hover_text" %>
-            
-            <!--<%= link_to 'Student Registration',
-              {:controller => "user",
-              :action => "new_student_registration"}, :class=>"forgot_pwd themed_hover_text" %>-->
-            <%= submit_tag t('login'), :class => "submit themed_bg themed-dark-hover-background" %>
-          </div>
-
-        </div>
-      <% end %>
     </div>
+</header> <!-- end header -->
+<div id="wrapper">
+  <main>
+    <section class="login-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="login-box">
+                        <% form_for :user do |form| %>
+                          <div class="login-logo">
+                                  <img src="/images/login/logo.png" height="50" width="200" alt="" />
+                          </div>
+                          <% unless flash[:notice].nil? %>
+                            <p class="flash-msg" style=""> <%= flash[:notice] %> </p>
+                          <% end %>
+                          <legend>Login to Your Account</legend>
+                          <div class="form-group">
+                            <%= form.text_field :username, :maxlength => 40, :placeholder=>"Username", :style=>"width: 100%;"%>
+                          </div>
+                          
+                          <div class="form-group">
+                            <%= form.password_field :password,:placeholder=>"Password", :style=>"width: 100%;" %>
+                          </div>
+                        <div class="input-group">
+                          <div class="checkbox">
+                            <%= link_to t('forgot_password'), {:controller => "user",:action => "forgot_password"}, :class=>"forgot_pwd themed_hover_text" %>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn-tune btn-login" value="Login" />
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main>  
   </div>
-  <div id="powered_by_div">
-    <%= t('powered_by') %> <a href=<%= "#{Champs21Setting.company_details[:company_url]}" %> target="_blank" style="color:#64B846;"><%= Champs21Setting.company_details[:company_name] %> </a>
-  </div>
-
 </div>
 
 

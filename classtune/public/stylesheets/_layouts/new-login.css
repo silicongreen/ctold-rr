@@ -1,0 +1,769 @@
+body{
+	background: #F7F7F7;
+	font-family: 'Roboto', sans-serif;
+}
+body{
+        background:url('/images/login-bg.png') no-repeat;
+        background-size: 100% auto;
+}
+a:hover{
+	text-decoration: none;
+}
+.btn-tune{
+	padding: 6px 20px;
+	background-image: linear-gradient(269deg, #00d9a6 0%, #9be15d 100%);
+	border-radius: 20px;
+	border: none;
+	text-align: center;
+	color: #fff;
+}
+.btn-tune-lg{
+	padding: 6px 20px;
+	background-image: linear-gradient(269deg, #00d9a6 0%, #9be15d 100%);
+	border: none;
+	text-align: center;
+	color: #fff;
+	font-size: 24px;
+	font-weight: bold;
+	margin: 15px; 
+}
+.mt-30{
+	margin-top: 30px;
+}
+.head{
+	background: #fff;
+    box-shadow: 4px 5px 10px #d2d2d2;
+    padding: 12px 35px;
+}
+.logo{
+	float: left;
+}
+.logo img{
+	width: 210px;
+	height: 50px;
+}
+.user{
+	float: right;
+}
+.user img{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 2px solid #3CD485;
+}
+.user .dropdown-toggle::after{
+	font-size: 24px;
+	color: #3CD485;
+}
+.dropdown-menu .drop{
+	
+}
+/* main content */
+.form-box, .tile-box{
+	height: 395px;
+}
+.main-content{
+	margin: 40px auto; 
+}
+.form-box{
+	box-shadow: 5px 5px 20px #dbdbdb;
+}
+.form-box .form-box-head{
+	padding: 7px;
+	background-image: linear-gradient(269deg, #00d9a6 0%, #9be15d 100%);
+}
+.form-box .form-box-head h2{
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	font-size: 26px;
+	margin: 0px;
+}
+.form-box-body{
+	height: 360px;
+	padding: 20px 15px;
+    background: #fff;
+}
+.form-box-body label{
+	color: #6A7183;
+	font-size: 18px;
+	font-weight: 6000;
+}
+.form-box-body .form-control{
+	display: inline-block;
+	width: auto;
+	border-radius: 20px;
+}
+.btn-add-section{
+	display: inline-block;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    border-radius: 50px;
+    background-image: linear-gradient(269deg, #00d9a6 0%, #9be15d 100%);
+    font-weight: 900;
+    font-size: 20px;
+    text-align: center;
+	
+}
+.tile-box{
+	box-shadow: 5px 5px 20px #dbdbdb;
+	background-image: linear-gradient(269deg, #00d9a6 0%, #9be15d 100%);
+	text-align: center;
+	vertical-align: middle;
+}
+.middle-align{
+	padding-top: 20%;
+}
+.tile-box h2{
+	color: #fff;
+	font-weight: 600;
+	font-size: 24px;
+	padding: 20px 0px;
+}
+.cat-list-head{
+	padding: 10px;
+	text-align: center;
+	color: #32DC8F;
+	font-size: 18px;
+	font-weight: 600;
+}
+/* footer */
+.footer{
+	padding: 20px 0px; 
+}
+.footer p{
+	text-align: center;
+}
+.footer .brand-txt{
+	color: #32DC8F;
+	font-weight: bold;
+	font-size: 24px;
+}
+/* override */
+.txt-center{
+	text-align: center;
+	display: block;
+}
+.txt-cb{
+	color: #9be15d;
+}
+/****************************************
+*   Login Page
+*****************************************/
+.login-page{
+	font-family: 'Roboto', sans-serif;
+}
+.login-box{
+	padding: 80px;
+	width: 520px;
+	margin: 15% auto;
+	border-radius: 30px;
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 5px 5px 20px #d2d2d2
+}
+.login-logo{
+	text-align: center;
+}
+.login-box legend{
+	text-align: center;
+	margin: 20px 0px;
+}
+.login-box .form-group input{
+	border-radius: 30px;
+	padding: 10px;
+	border: 1px solid #50DD80;
+        cursor: pointer;
+}
+.login-box .checkbox label{
+	font-size: 18px;
+	padding-left: 10px;
+}
+.btn-login{
+	display: block;
+	width: 150px;
+	height: 60px;
+	text-align: center;
+	margin: 10px auto;
+	font-size: 24px;
+    font-weight: 600;
+}
+/* modal design */
+.modal-header{
+	box-shadow: 0px 5px 10px #B1B1B1;
+    border-radius: 0px 0px 15px 15px;
+}
+.modal-header-wrap{
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+.modal-header-wrap h5.modal-title{
+	color: #3AD484;
+	font-size: 24px;
+	font-weight: 600;
+}
+.modal-body-btnwrap{
+	text-align: center;
+}
+.modal-body-btnwrap button{
+	width: 400px;
+	height: 150px;
+	box-shadow: 5px 5px 10px #d1d1d1;
+}
+.class_info{
+	font-size: 22px;
+	color: #676767;
+}
+.class_info_name{
+	color: #3ED083;
+	font-size: 24px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+.upload-info{
+	
+}
+.upload-logo{
+	padding: 20px 0px;
+	font-size: 20px;
+	font-weight: bold;
+	display: inline-block;
+	color: #646464;
+}
+.display-none{
+	display: none;
+}
+.upload-btn-wrap{
+	margin: 15px 0px 5px 0px;
+	border: 1px solid #10DA9E;
+    border-radius: 30px;
+	text-align: right;
+}
+.upload-btn{
+	padding: 6px 30px;
+    border-radius: 0px 30px 30px 0px;
+    border: none;
+    font-size: 24px;
+    background-image: linear-gradient(150deg, #ffffff 0%, #a3a3a3 100%);
+    border-left: 1px solid #0adaa2;
+    font-weight: bold;
+    color: #2d2d2d;
+}
+.upload-btn-wrap p{
+	text-align: center;
+}
+.class-info-upload{
+	box-shadow: 5px 5px 10px #d1d1d1;
+	font-size: 20px;
+	font-weight: bold;
+}
+.class-info-skip{
+	float: right;
+	border: none;
+	background: #fff;
+	padding: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.modal-body .col-md-2, .modal-body .col-md-12, .modal-body .col-md-10{
+	padding: none;
+}
+.modal-body .form-row>.col, .modal-body .form-row>[class*=col-]{
+	padding-left:0px;
+	padding-right:0px;
+}
+.class-info-skip img{
+	width: 40px;
+	height: 20px;
+}
+.edit-btn{
+	padding-left: 15px;
+	cursor: pointer;
+}
+.edit-btn img{
+	width: 30px;
+	height: 30px;
+}
+#class-name{
+	min-width: 300px;
+    padding: 5px;
+    color: #12da9d;
+    font-size: 18px;
+    font-weight: bold;
+	display: none;
+}
+#section{
+	
+}
+#class-name:focus-within{
+	outline-color: #12da9d;
+}
+#dropdownMenuLink{
+	display: block;
+}
+.dropdown-menu{
+	border: none;
+	box-shadow: 5px 5px 10px #d1d1d1;
+}
+.dropdown-menu a{
+	padding: 10px 10px;
+	border-bottom: 1px solid #d1d1d1; 
+	color: #061231;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+.dropdown-menu a:last-child{
+	border-bottom:none;
+}
+.main-content .form-box{
+		margin-bottom: 0px;
+	}
+/*
+***********************************************************************
+*               RESPONSIVE DESIGN GRID
+*
+************************************************************************
+*/
+@media (min-width: 319.99px) {
+	.col-xs-6 {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.head {
+		padding: 12px 0px;
+	}
+	.logo img{
+		width: 150px;
+		height: 40px;
+	}
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	.login-box{
+		width: 300px;
+		padding: 30px;
+		margin: 15% auto;
+	}
+	.form-box-body{
+		height: 360px;
+	}
+	.form-box, .tile-box {
+		height: 405px;
+	}
+	.form-box{
+		height: 399px;
+	}
+	#class{
+		max-width: 194px;
+	}
+	#section{
+		max-width: 143px;
+	}
+	#add-shift{
+		max-width: 165px;
+	}
+	#input_subject{
+		max-width: 175px;
+	}
+	#input_subject_code{
+		max-width: 128px;
+	}
+	#input_cat_name{
+		max-width: 170px;
+	}
+	#input_dep_name{
+		max-width: 170px;
+	}
+	.class_info {
+		font-size: 18px;
+		color: #676767;
+	}
+	.class_info_name {
+		font-size: 18px;
+	}
+	.edit-btn img {
+		width: 20px;
+		height: 20px;
+	}
+	#class-name {
+		min-width: 239px;
+		padding: 2px;
+	}
+	.upload-btn-wrap {
+		margin: 0px 0px 5px 0px;
+	}
+	.modal-body-btnwrap button {
+		width: 224px;
+		height: 100px;
+	}
+	.form-box .form-box-head h2{
+		font-size: 20px;
+	}
+}
+@media (min-width: 369.99px) {
+	.col-xs-6 {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.head {
+		padding: 12px 0px;
+	}
+	.logo img{
+		width: 190px;
+		height: 50px;
+	}
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	.form-box-body .form-control{
+		    max-width: 250px;
+	}
+	.login-box{
+		width: 320px;
+		padding: 30px;
+		margin: 15% auto;
+	}
+	#section{
+		max-width: 160px;
+	}
+	#add-shift{
+		max-width: 185px;
+	}
+	#input_subject{
+		max-width: 195px;
+	}
+	#input_subject{
+		
+	}
+	#input_subject_code{
+		max-width: 148px;
+	}
+	#input_cat_name{
+		max-width: 186px;
+	}
+	#input_dep_name{
+		max-width: 186px;
+	}
+	.class_info {
+		font-size: 18px;
+		color: #676767;
+	}
+	.class_info_name {
+		font-size: 18px;
+	}
+	.edit-btn img {
+		width: 20px;
+		height: 20px;
+	}
+	#class-name {
+		min-width: 239px;
+		padding: 2px;
+	}
+	.upload-btn-wrap {
+		margin: 0px 0px 5px 0px;
+	}
+	.modal-body-btnwrap button {
+		width: 224px;
+		height: 100px;
+	}
+	.form-box .form-box-head h2{
+		font-size: 20px;
+	}
+}
+@media (min-width: 375.99px) {
+	.col-xs-6 {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.head {
+		padding: 12px 0px;
+	}
+	.logo img{
+		width: 190px;
+		height: 50px;
+	}
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	.form-box-body .form-control{
+		    max-width: 250px;
+	}
+	.login-box{
+		width: 350px;
+		padding: 30px;
+		margin: 15% auto;
+	}
+	.class_info {
+		font-size: 18px;
+		color: #676767;
+	}
+	.class_info_name {
+		font-size: 18px;
+	}
+	.edit-btn img {
+		width: 20px;
+		height: 20px;
+	}
+	#class-name {
+		min-width: 239px;
+		padding: 2px;
+	}
+	.upload-btn-wrap {
+		margin: 0px 0px 5px 0px;
+	}
+	.modal-body-btnwrap button {
+		width: 244px;
+		height: 100px;
+	}
+}
+@media (min-width: 419.99px) {
+	.col-xs-6 {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 50%;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.head {
+		padding: 12px 0px;
+	}
+	.logo img{
+		width: 190px;
+		height: 50px;
+	}
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	.form-box-body .form-control{
+		    max-width: 250px;
+	}
+	.login-box{
+		width: 380px;
+		padding: 30px;
+		margin: 15% auto;
+	}
+	#class{
+		min-width: 300px;
+	}
+	#section{
+		min-width: 250px;
+	}
+	#add-shift{
+		min-width: 285px;
+	}
+	#input_subject{
+		min-width: 285px;
+	}
+	#input_subject_code{
+		min-width: 240px;
+	}
+	#input_cat_name{
+		min-width: 285px;
+	}
+	#input_dep_name{
+		min-width: 285px;
+	}
+	#deg_cat_select{
+		min-width: 280px;
+	}
+	#deg_name{
+		min-width: 255px;
+	}
+	.class_info {
+		font-size: 18px;
+		color: #676767;
+	}
+	.class_info_name {
+		font-size: 18px;
+	}
+	.edit-btn img {
+		width: 20px;
+		height: 20px;
+	}
+	#class-name {
+		min-width: 239px;
+		padding: 2px;
+	}
+	.upload-btn-wrap {
+		margin: 0px 0px 5px 0px;
+	}
+	.modal-body-btnwrap button {
+		width: 244px;
+		height: 100px;
+	}
+}
+@media (min-width: 575.99px) {
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	.login-box{
+		width: 520px;
+		margin: 7% auto;
+	}
+	#class{
+		min-width: 300px;
+	}
+	#section{
+		min-width: 250px;
+	}
+	#add-shift{
+		min-width: 285px;
+	}
+	#input_subject{
+		min-width: 285px;
+	}
+	#input_subject_code{
+		min-width: 240px;
+	}
+	#input_cat_name{
+		min-width: 285px;
+	}
+	#input_dep_name{
+		min-width: 285px;
+	}
+	#deg_cat_select{
+		min-width: 280px;
+	}
+	#deg_name{
+		min-width: 255px;
+	}
+}
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	.main-content .form-box{
+		margin-bottom: 20px;
+	}
+	#class{
+		min-width: 300px;
+	}
+	#section{
+		min-width: 250px;
+	}
+	#add-shift{
+		min-width: 285px;
+	}
+	#input_subject{
+		min-width: 285px;
+	}
+	#input_subject_code{
+		min-width: 240px;
+	}
+	#input_cat_name{
+		min-width: 285px;
+	}
+	#input_dep_name{
+		min-width: 285px;
+	}
+	#deg_cat_select{
+		min-width: 280px;
+	}
+	#deg_name{
+		min-width: 255px;
+	}
+}
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+	.main-content .form-box{
+		margin-bottom: 30px;
+	}
+	.form-box-body .form-control{
+		    max-width: 160px;
+	}
+	#class{
+		min-width: 210px;
+	}
+	#section{
+		min-width: 160px;
+	}
+	#add-shift{
+		min-width: 186px;
+	}
+	#input_subject{
+		min-width: 195px;
+	}
+	#input_subject_code{
+		min-width: 150px;
+	}
+	#input_cat_name{
+		min-width: 185px;
+	}
+	#input_dep_name{
+		min-width: 185px;
+	}
+	#deg_cat_select{
+		min-width: 260px;
+	}
+	#deg_name{
+		min-width: 255px;
+	}
+	.modal-body-btnwrap button {
+		width: 400px;
+		height: 150px;
+	}
+	.upload-btn {
+		padding: 14px 30px;
+	}
+	.form-box .form-box-head h2{
+		font-size: 26px;
+	}
+}
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	#class{
+		min-width: 260px;
+	}
+	#section{
+		min-width: 215px;
+	}
+	#add-shift{
+		min-width: 240px;
+	}
+	#input_subject{
+		min-width: 240px;
+	}
+	#input_subject_code{
+		min-width: 195px;
+	}
+	#input_cat_name{
+		min-width: 240px;
+	}
+	#input_dep_name{
+		min-width: 240px;
+	}
+	#deg_cat_select{
+		min-width: 305px;
+	}
+	#deg_name{
+		min-width: 305px;
+	}
+	.modal-body-btnwrap button {
+		width: 400px;
+		height: 150px;
+	}
+	.form-box .form-box-head h2{
+		font-size: 26px;
+	}
+}
+p.flash-msg {
+    margin-top: 10px;
+    background-color : #fff1ab;
+    padding : 5px;
+    font-weight: bold;
+    border:1px solid #EFDF95 ;
+    text-align : center;
+}
+p.flash-msg {
+    background-color : #fff1ab;
+    padding : 5px;
+    font-weight: bold;
+    border:1px solid #EFDF95 ;
+    text-align : center;
+}

@@ -34,11 +34,14 @@
   <h1><%= t('online_payment') %></h1>
 <div class='header-sep'>|</div>
 <div class='sub-header'><%= t('transactions') %></div>
+<% authorization = Authorization.current_user.try(:role_symbols)  %>
+<%  unless authorization.include?(:online_payment_report) %>
 <div id="inner-tab-menu">
   <ul>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "Settings", settings_online_payments_path %></li>
   </ul>
 </div>
+<% end %>
 </div>
 <div id="page-yield">
   <div id="flash-box">
@@ -47,18 +50,40 @@
     <% end %>
   </div>
   <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
-    <div class="label-field-pair" style="width: 40%;">
-      <div class="label-container"><%= t('start_date') %>:</div>
-      <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+    <div class="filter">
+      <div class="label-field-pair" style="width: 40%;">
+        <div class="label-container"><%= t('start_date') %>:</div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+      </div>
+      <div class="label-field-pair" style="width: 40%;">
+          <div class="label-container" style="width: 20%;"><%= t('end_date') %>:</div>
+        <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+      </div>
+      <div style="margin-left: 40%;">
+        <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
+      </div>
+      <div style="clear: both; height: 20px;"></div>
+      <hr style="border: 1px solid #ccc;" />  
+      <div class="label-field-pair" style="width: 25%;">
+          <div class="label-container" style="padding-top: 15px;">Ref No.:</div>
+          <div class="input-container"><input type="text" name="ref_no" id="ref_no" /></div>
+      </div>
+      <div class="label-field-pair" style="width: 25%; padding-left: 20px;">
+          <div class="label-container" style="padding-top: 15px;">Order ID:</div>
+          <div class="input-container"><input type="text" name="order_id" id="order_id" /></div>
+      </div>
+      <div class="label-field-pair" style="width: 25%;">
+          <div class="label-container" style="padding-top: 15px;">Type:</div>
+          <div class="input-container" style="padding-top: 10px;">
+              <select name="payment_type" id="payment_type">
+                  <option value="">Select a Payment Type</option>
+                  <option value="MB">Mobile Banking</option>
+                  <option value="ITCL">Card Online</option>
+              </select>
+          </div>
+      </div>
+      <div style="clear: both; height: 20px;"></div>
     </div>
-    <div class="label-field-pair" style="width: 35%;">
-        <div class="label-container" style="width: 20%;"><%= t('end_date') %>:</div>
-      <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
-    </div>
-    <div style="margin-left: 40%;">
-      <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
-    </div>
-    <div style="clear: both; height: 20px;"></div>
   <% end %>
   <% unless @online_payments.empty? %>
     <div class="box" style="padding-top: 20px;">
@@ -165,3 +190,15 @@
   <% end %>
 
 </div>
+<style>
+    .filter {
+        border: 1px solid #ccc;
+        width: 98%;
+        padding: 20px 10px 9px 10px;
+        border-radius: 7px;
+        background: #E5E5E5;
+    }    
+    .text-input-bg select, .label-field-pair input {
+        height: 22px;
+    }
+</style>

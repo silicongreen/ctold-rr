@@ -1512,6 +1512,15 @@ authorization do
       :update_dependent_payslip_fields,
       :edit_payroll_details ]
   end
+  
+  role :online_payment_report do
+    has_permission_on [:online_payments],:to =>[
+      :index
+    ]
+    has_permission_on [:payment_settings],:to=>[
+      :transactions
+    ]
+  end
 
   role :hr_basics do
     has_permission_on [:archived_employee],

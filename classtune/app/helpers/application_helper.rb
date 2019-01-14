@@ -28,9 +28,11 @@ module ApplicationHelper
     stylesheets = [] unless stylesheets
     
     if controller.controller_path == 'user' and (controller.action_name == 'dashboard' || controller.action_name == 'new_student_registration' )
-      stylesheets << @direction+'_layouts/dashboard'
+      #stylesheets << @direction+'_layouts/dashboard'
+      stylesheets << @direction+'application'
+      stylesheets << @direction+'popup.css'
     elsif controller.controller_path == 'user' and (controller.action_name == 'login' or controller.action_name == 'set_new_password' )
-      stylesheets << @direction+"_layouts/login"
+      stylesheets << @direction+"_layouts/new-login"
     else
       stylesheets << @direction+'application'
       stylesheets << @direction+'popup.css'

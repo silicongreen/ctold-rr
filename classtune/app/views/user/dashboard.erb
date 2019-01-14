@@ -193,7 +193,25 @@
     </div>
 
   <% else %>
-
+    <% 
+      show = true
+      is_online_payment = false
+      authorization = Authorization.current_user.try(:role_symbols) 
+      if authorization.include?(:online_payment_report)
+        show = false
+        is_online_payment = true
+      end
+    %>
+    <% if is_online_payment %>
+    <div class="button-box" style="border-radius: 6px;">
+      <%= link_to "<div class ='button-label'><p>#{t('online_payment_report')}</p></div>", {:controller => "online_payments", :action => "transactions"},
+        :class => "option_buttons", :id => "online_payment_report_button", :title => "  #{t('report_online_payment')}" %>
+    </div>
+    <div class="button-box" style="border-radius: 6px;">
+      <%= link_to "<div class ='button-label'><p>#{t('my_profile')}</p></div>", {:controller => "user", :action => "profile",:id => @user.username},
+        :class => "option_buttons", :id => "my_profile_button", :title => "  #{t('profile_online_payment')}" %>
+    </div>
+    <% end %>
     <% if @config.include?('HR') %>
       <% if @dashboard_modules.find{|d| d['name']=="my_profile" and d['target_controller'] == "employee" and d['target_action']=="profile"}["visible"] %>
         <div class="button-box">
@@ -240,10 +258,12 @@
       <% end %>
     <% else %>
       <% if @dashboard_modules.find{|d| d['name']=="news_text"}["visible"] %>
+        <% if show %>
         <div class="button-box">
           <%= link_to "<div class ='button-label'><p>#{t('campus_news')}</p></div>", {:controller => "news", :action => "index"},
             :class => "option_buttons", :id => "campus_news_button",:title => t('news_link_title_view')%>
         </div>
+        <% end %>
       <% end %>
     <%end%>
 
@@ -274,10 +294,12 @@
         <% end %>
       <% else %>
         <% if @dashboard_modules.find{|d| d['name']=="remainders"}["visible"] %>
+          <% if show %>
           <div class="button-box">
             <%= link_to "<div class ='button-label'><p>#{t('reminders')}</p></div>", {:controller => "reminder", :action => "index"},
               :class => "option_buttons", :id => "reminders_button", :title => "            #{t('student_messages')}"%>
           </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>

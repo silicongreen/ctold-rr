@@ -760,6 +760,7 @@ class UserController < ApplicationController
 
   def logout
     unless session[:user_id].nil?
+      authorization = Authorization.current_user.try(:role_symbols) 
       Rails.cache.delete("user_main_menu#{session[:user_id]}")
       Rails.cache.delete("user_autocomplete_menu#{session[:user_id]}")
       current_user.delete_user_menu_caches
@@ -817,14 +818,30 @@ class UserController < ApplicationController
       else
         champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
         if champs21_config['from'] == "remote"
-          redirect_to "http://www.classtune.com" and return
+          if authorization.include?(:online_payment_report)
+            redirect_to "http://" + MultiSchool.current_school.code.to_s + ".classtune.com" and return
+          else
+            if MultiSchool.current_school.code == "sagc"
+              redirect_to "https://sagc.edu.bd" and return
+            else
+              redirect_to "http://www.classtune.com" and return
+            end
+          end
         end
         redirect_to :controller => 'user', :action => 'login' and return
       end
     else
       champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
       if champs21_config['from'] == "remote"
-        redirect_to "http://www.classtune.com" and return
+        if authorization.include?(:online_payment_report)
+          redirect_to "http://" + MultiSchool.current_school.code.to_s + ".classtune.com" and return
+        else
+          if MultiSchool.current_school.code == "sagc"
+            redirect_to "https://sagc.edu.bd" and return
+          else
+            redirect_to "http://www.classtune.com" and return
+          end
+        end
       end
       redirect_to :controller => 'user', :action => 'login' and return
     end

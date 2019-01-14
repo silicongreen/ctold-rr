@@ -13,8 +13,10 @@ class PaymentSettingsController < ApplicationController
     end_date = params[:end_date]
     end_date ||= Date.today
     
-    found_query = false
     extra_query = ""
+    unless params[:payment_status].nil? or params[:payment_status].empty? or params[:payment_status].blank?
+      extra_query += ' and gateway_response like \'%:status: "' + params[:payment_status].to_s + '%\''
+    end
     unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
       extra_query += ' and gateway_response like \'%:order_id: "' + params[:order_id].to_s + '%\''
     end

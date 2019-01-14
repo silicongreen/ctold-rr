@@ -51,13 +51,23 @@
   </div>
   <% form_for :payment_transaction,:url => transactions_online_payments_url do %>
     <div class="filter">
-      <div class="label-field-pair" style="width: 40%;">
-        <div class="label-container"><%= t('start_date') %>:</div>
+      <div class="label-field-pair" style="width: 25%;">
+        <div class="label-container" style="padding-top: 15px;"><%= "Start" %>:</div>
         <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', params[:start_date].present? ? params[:start_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
       </div>
-      <div class="label-field-pair" style="width: 40%;">
-          <div class="label-container" style="width: 20%;"><%= t('end_date') %>:</div>
+      <div class="label-field-pair" style="width: 25%; padding-left: 20px;"">
+          <div class="label-container" style="padding-top: 15px;"><%= "To" %>:</div>
         <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
+      </div>
+      <div class="label-field-pair" style="width: 25%; padding-top: 0;">
+          <div class="label-container" style="padding-top: 15px;">Status:</div>
+          <div class="input-container" style="padding-top: 10px;">
+              <select name="payment_status" id="payment_status">
+                  <option value="">Select a Status</option>
+                  <option value="1" <%= 'selected' if params[:payment_status].to_i == 1 %>>Completed</option>
+                  <option value="0" <%= 'selected' if params[:payment_status].to_i == 0 %>>Failed</option>
+              </select>
+          </div>
       </div>
       <div style="clear: both; height: 20px;"></div>
       <hr style="border: 1px solid #ccc;" />  
@@ -69,7 +79,7 @@
           <div class="label-container" style="padding-top: 15px;">Order ID:</div>
           <div class="input-container"><input type="text" name="order_id" id="order_id" value="<%= params[:order_id] %>" /></div>
       </div>
-      <div class="label-field-pair" style="width: 25%;">
+      <div class="label-field-pair" style="width: 25%; padding-top: 0;">
           <div class="label-container" style="padding-top: 15px;">Type:</div>
           <div class="input-container" style="padding-top: 10px;">
               <select name="payment_type" id="payment_type">
@@ -191,7 +201,7 @@
       <% end %>
       <% showing = (pg + 30) - 1 %>
       <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
-      <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type]} %>
+      <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type], :payment_status => params[:payment_status]} %>
     </div>
   <% else %>
     <div id="flash-box">

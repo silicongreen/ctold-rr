@@ -16,8 +16,13 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<% cache News.cache_fragment_name do%>
-  <%= render :partial=>'news_bar' %>
+<% 
+  authorization = Authorization.current_user.try(:role_symbols) 
+%>
+<% unless authorization.include?(:online_payment_report) %>
+  <% cache News.cache_fragment_name do%>
+    <%= render :partial=>'news_bar' %>
+  <% end %>
 <% end %>
 
 <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>

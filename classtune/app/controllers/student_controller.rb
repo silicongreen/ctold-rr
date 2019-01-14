@@ -190,7 +190,30 @@ class StudentController < ApplicationController
     orders = params[:order]
     page = ( start.to_i / per_page.to_i ) + 1
     order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,students.admission_no asc"
-    
+    columns = params[:columns]
+    columns.keys.each do |key|
+      columns[key].each do |k, v|
+        if k == "search"
+          columns[key][k].each do |k1,v1|
+            if k1 == "value"
+              unless v1.blank?
+                if key.to_i == 3
+                  condition = condition+" and batches.name like '"+v1+"%'"
+                elsif key.to_i == 4
+                  condition = condition+" and courses.course_name = '"+v1+"'"
+                elsif key.to_i == 5
+                  condition = condition+" and courses.section_name = '"+v1+"'"
+                elsif key.to_i == 6
+                  condition = condition+" and courses.session = '"+v1+"'"
+                elsif key.to_i == 7
+                  condition = condition+" and courses.group = '"+v1+"'"
+                end  
+              end
+            end
+          end
+        end
+      end
+    end
     students_all = Student.count(:all,:conditions=>condition,:include=>[{:batch=>[:course]}])
     
     students = Student.paginate(:conditions=>condition,:include=>[{:batch=>[:course]}], :page => page.to_i, :per_page => per_page.to_i,:order=>order_str)
@@ -211,7 +234,11 @@ class StudentController < ApplicationController
         data[k] = std
         k += 1
     end
-    data_hash = {:draw => 5, :recordsTotal => students_all.to_s, :recordsFiltered => students_all.to_s, :data => data}
+    draw = 1
+    unless params[:draw].blank?
+      draw = params[:draw]
+    end
+    data_hash = {:draw => draw, :recordsTotal => students_all.to_s, :recordsFiltered => students_all.to_s, :data => data}
     @data = JSON.generate(data_hash)
   end
   def academic_report_all
@@ -2615,7 +2642,21 @@ class StudentController < ApplicationController
       @student_category = StudentCategory.new
     end
   end
-
+  def class_section
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @courses = []
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = ?", batches, false], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    
+    @batches = Batch.active
+  end
   def view_all
     @classes = []
     @batches = []

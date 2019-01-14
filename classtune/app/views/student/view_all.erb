@@ -86,31 +86,161 @@
   <% if Batch.active.find(:all, :group => "name").length > 1  %> 
   <div class="form-group col-sm-6">
     <label for="student_grade"><%= t('shift_label') %></label>
-      <%= select :student, :batch_name, options_for_select(Batch.active.find(:all, :group => "name").map {|b| [b.name, b.id]}, @batch_no.to_i), 
-        {:prompt => "#{t('select')}"},
-        {:onChange => "#{remote_function(:url => {:controller => "student", :action => "get_classes"}, :with => "'batch_id='+value+'&'+$('new_student').serialize()+'&section_page=section_view&section_partial=sections_view&page=course_new&partial_view=courses_new'" ,:before => "$('loading_2').show();",
-        :success => "$('loading_2').hide();")}"} %>
-        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+      <select id="batch_name" name="batch_name" onchange="filterbatch(this)">
+          <option value="" selected="selected">Select a Shift</option>
+          <% Batch.active.find(:all, :group => "name").each do |batch| %>
+                <% batchsplit = batch.name.split(" ") %>
+                <option value="<%= batchsplit[0] %>"><%= batchsplit[0] %></option>
+          <% end %>
+      </select>
+  </div>
+  <div class="form-group col-sm-6">
+    <label for="student_grade"><%= "Version" %></label>
+      <select id="version_name" name="version_name" onchange="filterversion(this)">
+            <% version_array = [] %>
+            <option value="" selected="selected">Select a Version</option>
+            <% Batch.active.find(:all, :group => "name").each do |batch| %>
+                  
+                  <% 
+                    batchsplit = batch.name.split(" ")
+                    version = ""
+                    unless batchsplit[1].blank?
+                      version = batchsplit[1]
+                    end
+                    unless batchsplit[2].blank?
+                      version = version+" "+batchsplit[2]
+                    end
+                
+                  %>
+                  <% if !version_array.include?(version) && !version.blank? %>
+                  <% version_array << version %>
+                  <option value="<%= version %>"><%= version %></option>
+                  <% end %>
+            <% end %>
+      </select>
   </div>
   <% end %>
-
-  <div class="form-group col-sm-6">
-    <label for="student_grade"><%= t('class_label') %></label>
-    <div id="course_new"> <%= render :partial => 'student/courses_new', :object => @courses %></div>
-  </div>
-  
-  <div class="form-group col-sm-6">
-    <label for="student_grade"><%= t('section_label') %></label>
-    <div id="section_view"> <%= render :partial => 'sections_view', :object => @classes %></div>
-  </div>
-  <% end %>
-  <div id="students"> 
     
+  <div class="form-group col-sm-6">
+    <label for="student_grade"><%= "Class" %></label>
+    <select id="class_name" name="class_name" onchange="filterclass(this)">
+        <option value="" selected="selected">Select a Class</option>
+        <% Course.active.find(:all, :group => "course_name").each do |course| %>
+            <option value="<%= course.course_name %>"><%= course.course_name %></option>
+        <% end %>
+    </select>
+  </div>
+    
+  <div class="form-group col-sm-6">
+      <label for="student_grade"><%= "Session" %></label>
+      <select id="session_name" name="session_name" onchange="filtersession(this)">
+          <option value="" selected="selected">Select a Session</option>
+          <% Course.active.find(:all, :group => "session").each do |course| %>
+              <% unless course.session.blank?  %>
+                <option value="<%= course.session %>"><%= course.session %></option>
+              <% end %>
+          <% end %>
+      </select>
+  </div>
+    
+  <div class="form-group col-sm-6">
+      <label for="student_grade"><%= "Group" %></label>
+      <select id="group_name" name="group_name" onchange="filtergroup(this)">
+          <option value="" selected="selected">Select a Group</option>
+          <% Course.active.find(:all, :group => "`group`").each do |course| %>
+              <% unless course.group.blank?  %>
+                <option value="<%= course.group %>"><%= course.group %></option>
+              <% end %>
+          <% end %>
+      </select>
+  </div>
+
+  <% end %>
+  <div id="students" style="float:left;"> 
+      <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
+          <thead>
+            <th width="20%" data-orderable="false"><%= "Name" %></th>
+            <th width="15%" data-orderable="false"><%= "Admission No" %></th>
+            <th width="13%" data-orderable="false"><%= "Shift" %></th>
+            <th width="13%" data-orderable="false"><%= "Version" %></th>
+            <th width="13%" data-orderable="false"><%= "Class" %></th>
+            <th width="13%" data-orderable="false"><%= "Section" %></th>
+            <th width="13%" data-orderable="false"><%= "Session" %></th>
+            <th width="13%" data-orderable="false"><%= "Group" %></th>
+          </thead>
+      </table>
   </div>
 
 </div>
 <script>
   var oDataTable;
   var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+  oDataTable = jq('#hr_report').DataTable( {
+        processing: true,
+        serverSide: true,
+        "searching": false,
+        "bLengthChange": false,
+        "info": false,
+        ajax: {
+            url: "/student/get_student_ajax",
+            type: 'POST'
+        },
+        columns: [
+            { "data": "student_name" },
+            { "data": "admission_no" },
+            { "data": "batch" },
+            { "data": "version" },
+            { "data": "class" },
+            { "data": "section" },
+            { "data": "session" },
+            { "data": "group" }
+        ]
+    });
+    
+  });
+  function filterbatch(data)		
+    {		
+        var value = jq("#batch_name").val();
+        if(jq("#version_name").val())
+        {
+          value = value+" "+jq("#version_name").val()
+        }  
+        oDataTable.column( 3 ).search( value ).draw(); 		
 
+    }
+  function filterversion(data)		
+    {		
+        var value = jq("#version_name").val();	
+        if(jq("#batch_name").val())
+        {
+          value = jq("#batch_name").val()+" "+value
+        }
+        oDataTable.column( 3 ).search( value ).draw(); 		
+
+    }
+  function filterclass(data)		
+  {		
+      var value = jq("#class_name").val();
+      oDataTable.column( 4 ).search( value ).draw(); 		
+
+  }
+  function filtersession(data)		
+  {		
+      var value = jq("#session_name").val();
+      oDataTable.column( 6 ).search( value ).draw(); 		
+
+  }
+  function filtergroup(data)		
+  {		
+      var value = jq("#group_name").val();
+      oDataTable.column( 7 ).search( value ).draw(); 		
+
+  }
+  function filtersection(data)		
+  {		
+      var value = jq("#section_name").val();
+      oDataTable.column( 5 ).search( value ).draw(); 		
+
+  }
 </script>  

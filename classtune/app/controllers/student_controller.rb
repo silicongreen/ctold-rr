@@ -17,8 +17,8 @@
 #limitations under the License.
 
 class StudentController < ApplicationController
-  filter_access_to :all, :except=>[:reports]
-  filter_access_to [:reports], :attribute_check=>true, :load_method => lambda { current_user }
+  filter_access_to :all, :except=>[:reports,:get_student_ajax]
+  filter_access_to [:reports,:get_student_ajax], :attribute_check=>true, :load_method => lambda { current_user }
   before_filter :login_required
   before_filter :check_permission, :only=>[:index,:admission1,:profile,:reports,:categories,:add_additional_details]
   before_filter :set_precision
@@ -181,7 +181,39 @@ class StudentController < ApplicationController
     
     @sms_module = Configuration.available_modules
   end
-  
+  def get_student_ajax
+    require 'json'
+    require "yaml"
+    condition = "1 = 1"
+    per_page = params[:length]
+    start = params[:start]
+    orders = params[:order]
+    page = ( start.to_i / per_page.to_i ) + 1
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,students.admission_no asc"
+    
+    students_all = Student.count(:all,:conditions=>condition,:include=>[{:batch=>[:course]}])
+    
+    students = Student.paginate(:conditions=>condition,:include=>[{:batch=>[:course]}], :page => page.to_i, :per_page => per_page.to_i,:order=>order_str)
+    k = 0
+    data = []
+    students.each do |student|
+        batchsplit = student.batch.name.split(" ")
+        version = ""
+        batch = batchsplit[0]
+        unless batchsplit[1].blank?
+          version = batchsplit[1]
+        end
+        unless batchsplit[2].blank?
+          version = version+" "+batchsplit[2]
+        end
+        
+        std = {:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:admission_no=>student.admission_no,:batch=>batch,:version=>version,:class=>student.batch.course.course_name,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:group=>student.batch.course.group}
+        data[k] = std
+        k += 1
+    end
+    data_hash = {:draw => 5, :recordsTotal => students_all.to_s, :recordsFiltered => students_all.to_s, :data => data}
+    @data = JSON.generate(data_hash)
+  end
   def academic_report_all
     @user = current_user
     @prev_student = @student.previous_student

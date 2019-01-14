@@ -19,7 +19,7 @@
 class Student < ActiveRecord::Base
 
   attr_accessor_with_default(:biometric_id) {BiometricInformation.find_by_user_id(user_id).try(:biometric_id)}
-  attr_accessor :pass, :section, :class_name, :batch_name, :tmp, :save_log, :save_to_free
+  attr_accessor :pass, :section, :class_name, :batch_name, :tmp, :save_log, :save_to_free,:student_count
   include CceReportMod
 
   belongs_to :country

@@ -827,8 +827,9 @@ class CoursesController < ApplicationController
           @course_name = @courses_data[0].course_name
         end
       end
-    else  
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?) ", params[:course][:id]])
+    else
+      courseobj = Course.find_by_id(params[:course][:id])
+      @batches = Batch.find(:all, :conditions => ["courses.course_name = ?", courseobj.course_name],:include=>['course'])
       code_ini = @courses_dt.course_name[0,1].upcase
       num_zeros = 4
       nums = @courses_dt.course_name.gsub("Class ","").to_s
@@ -852,6 +853,9 @@ class CoursesController < ApplicationController
           @shifts_data = []
           @subject_data = []
           @batches.each do |b|
+            unless params[:batches_selection].include?(b.name)
+              next  
+            end
             @subject_data = []
             @subjects = Subject.find(:all, :conditions => ["batch_id = ?", b.id])
             @subjects.each do |s|

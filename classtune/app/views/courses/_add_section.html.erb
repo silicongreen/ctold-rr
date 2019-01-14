@@ -82,6 +82,20 @@
         <div class="label-container"><%= f.label "#{t('group')}" %></div>
         <div class="input-container"><%= f.text_field :group %></div>
       </div>
+      <div id="ebatch">
+        <% @batches = Batch.active.find(:all, :group => "name") %>
+        <% if @batches.length > 1  or (@batches.length == 1 and @batches[0].name.downcase != 'general') %>
+        <h4><%= t('batch_selection') %></h4>
+        <% end %>
+        <% @batches.each do |b| %>
+          <div class="plugin-cell main-bg-color" style="float: left; <%= @batches.length > 1 or (@batches.length == 1 and @batches[0].name.downcase != 'general') ? "" : "display: none;"  %>">
+            <% if b.name.downcase != 'general' %>
+              <%= check_box_tag "batches_selection[]",b.name, true, :id=>"batches", :style => "margin: 8px 9px;", :class => "batches_data" %> <label for="free_feed" style="width: 70%;"><%= b.name  %> </label>
+            <% end %>
+          </div>
+        <% end %>
+       
+      </div>
 
       <%= submit_tag "", :value => "► #{t('add')}", :class => "submit_button" %>
 

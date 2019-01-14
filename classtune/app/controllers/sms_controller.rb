@@ -221,7 +221,7 @@ class SmsController < ApplicationController
         batch_ids = params[:batch_id].split(",")
         fee_collection = FinanceFeeCollection.find(params[:fee_id])
         unless fee_collection.blank?  
-          student_ids = fee_collection.finance_fees.find(:all,:conditions=>"batch_id IN ('#{batch_ids}')").collect(&:student_id).join(',')
+          student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
           fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
           @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
         end

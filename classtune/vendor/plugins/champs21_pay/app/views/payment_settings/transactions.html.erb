@@ -63,19 +63,19 @@
       <hr style="border: 1px solid #ccc;" />  
       <div class="label-field-pair" style="width: 25%;">
           <div class="label-container" style="padding-top: 15px;">Ref No.:</div>
-          <div class="input-container"><input type="text" name="ref_no" id="ref_no" /></div>
+          <div class="input-container"><input type="text" name="ref_no" id="ref_no" value="<%= params[:ref_no] %>" /></div>
       </div>
       <div class="label-field-pair" style="width: 25%; padding-left: 20px;">
           <div class="label-container" style="padding-top: 15px;">Order ID:</div>
-          <div class="input-container"><input type="text" name="order_id" id="order_id" /></div>
+          <div class="input-container"><input type="text" name="order_id" id="order_id" value="<%= params[:order_id] %>" /></div>
       </div>
       <div class="label-field-pair" style="width: 25%;">
           <div class="label-container" style="padding-top: 15px;">Type:</div>
           <div class="input-container" style="padding-top: 10px;">
               <select name="payment_type" id="payment_type">
                   <option value="">Select a Payment Type</option>
-                  <option value="MB">Mobile Banking</option>
-                  <option value="ITCL">Card Online</option>
+                  <option value="MB" <%= 'selected' if params[:payment_type] == "MB" %>>Mobile Banking</option>
+                  <option value="ITCL" <%= 'selected' if params[:payment_type] == "ITCL" %>>Card Online</option>
               </select>
           </div>
       </div>
@@ -178,13 +178,13 @@
               <%= gateway_status %>
             </td>
             <td style="vertical-align: middle; text-align: center;">
-              <%= I18n.l(payment.created_at,:format=>"%d %b %Y %I:%M %P") %>
+              <%= I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
             </td>
           </tr>
         <% end %>
         </tbody> 
       </table>
-      <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
+      <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date], :ref_no => params[:ref_no], :order_id => params[:order_id], :payment_type => params[:payment_type]} %>
     </div>
     <% unless params[:page].blank?  %>
       <% pg = ( (params[:page].to_i - 1) * 30) + 1 %>

@@ -13,7 +13,20 @@ class PaymentSettingsController < ApplicationController
     end_date = params[:end_date]
     end_date ||= Date.today
     
-    @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+    found_query = false
+    extra_query = ""
+    unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
+      extra_query += ' and gateway_response like \'%:order_id: "' + params[:order_id].to_s + '%\''
+    end
+    unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
+      extra_query += ' and gateway_response like \'%:ref_id: ' + params[:ref_no].to_s + '%\''
+    end
+    unless params[:payment_type].nil? or params[:payment_type].empty? or params[:payment_type].blank?
+      extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
+    end
+    #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+    @online_payments = Payment.paginate(:conditions=>"CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) >= '#{start_date.to_date}' and CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30)
+    ###.paginate()
     
     respond_to do |format|
       format.html #transctions.html.erb

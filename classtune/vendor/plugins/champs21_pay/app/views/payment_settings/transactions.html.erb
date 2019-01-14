@@ -59,9 +59,6 @@
           <div class="label-container" style="width: 20%;"><%= t('end_date') %>:</div>
         <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', params[:end_date].present? ? params[:end_date] : I18n.l(Date.today,:format=>"%d %b %Y"),:readonly=>true,:popup=>"force" %></div>
       </div>
-      <div style="margin-left: 40%;">
-        <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
-      </div>
       <div style="clear: both; height: 20px;"></div>
       <hr style="border: 1px solid #ccc;" />  
       <div class="label-field-pair" style="width: 25%;">
@@ -83,24 +80,32 @@
           </div>
       </div>
       <div style="clear: both; height: 20px;"></div>
+      <div style="margin-left: 40%;">
+        <%= submit_tag 'Search',:name => "search",:class => "submit-button" %>
+      </div>
+      <div style="clear: both; height: 20px;"></div>
     </div>
   <% end %>
   <% unless @online_payments.empty? %>
     <div class="box" style="padding-top: 20px;">
+      <h2 style="font-size: 14px;">Total Records: <%= @online_payments.total_entries %></h2>  
       <table class="table table-sm table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
         <thead><!-- class="thead-inverse" -->
         <tr>
             <th style="width: 3%;"><%= "#" %></th>
             <th style="width: 10%;"><%= t("gateway_name") %></th>
-            <th style="width: 10%;"><%= "Payee ID" %></th>
-            <th style="width: 30%;"><%= t("payee_name") %></th>
-            <th style="width: 10%;"><%= t("payment_type") %></th>
-            <th style="width: 10%;"><%= t("fee_name") %></th>
-            <th style="width: 10%;"><%= t("amount") %></th>
-            <th style="width: 10%;"><%= t("gateway_status") %></th>
+            <th style="width: 30%;"><%= t("user_id_name") %></th>
             <% if MultiSchool.current_school.id == 352 %>
+            <th style="width: 10%;"><%= t("payment_type") %></th>
             <th style="width: 10%;"><%= t("ref_id") %></th>
-            <% else %>
+            <th style="width: 10%;"><%= t("order_id") %></th>
+            <% end %>
+            <th style="width: 10%;"><%= t("amount") %></th>
+            <% if MultiSchool.current_school.id == 352 %>
+            <th style="width: 10%;"><%= t("service_charge") %></th>
+            <% end %>
+            <th style="width: 10%;"><%= t("gateway_status") %></th>
+            <% unless MultiSchool.current_school.id == 352 %>
             <th style="width: 10%;"><%= t("online_transaction_id") %></th>
             <% end %>
             <th style="width: 10%;"><%= t("transaction_date") %></th>
@@ -129,53 +134,51 @@
               <%= gateway_name %>  
             </td>
             <% payee_user = payment.payee.try(:user).try(:username) unless payment.payee.class.name == "Applicant" %>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payee_admission_no}" %></td>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payee_name}" %></td>
-            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.payment_type}" %></td>
-            <% payment_type = String.new
-            if payment.payment_type == "FinanceFee"
-              payment_type = payment.finance_transaction.try(:finance).try(:finance_fee_collection).try(:name)
-            elsif payment.payment_type == "HostelFee" 
-              payment_type = payment.finance_transaction.try(:finance).try(:hostel_fee_collection).try(:name)
-            elsif payment.payment_type == "TransportFee"
-              payment_type = payment.finance_transaction.try(:finance).try(:transport_fee_collection).try(:name)
-            else
-              payment_type = "Application"
-            end
-          %>
-            <td style="vertical-align: middle; text-align: center;"><%= payment_type %></td>
-            <% amount = payment.gateway_response[:amount]
-            amount ||= payment.gateway_response[:x_amount]%>
+            <td style="vertical-align: middle; text-align: left; padding-left: 10px;"><%= "#{payment.payee_admission_no}" %><br /><%= "#{payment.payee_name}" %></td>
+            <% if MultiSchool.current_school.id == 352 %>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:payment_type]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:ref_id]}" %></td>
+            <td style="vertical-align: middle; text-align: center;"><%= "#{payment.gateway_response[:order_id]}" %></td>
+            <% end %>
+            <% 
+              amount = payment.gateway_response[:amount]
+              amount ||= payment.gateway_response[:x_amount]
+            %>
 
-            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= amount %></td>
+            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(amount.to_f) %></td>
+            <% if MultiSchool.current_school.id == 352 %>
+            <% 
+              service_charge = payment.gateway_response[:service_charge]
+            %>
+            <td style="vertical-align: middle; text-align: right; padding-right: 4px;"><%= precision_label(service_charge) %></td>
+            <% end %>
             <td style="vertical-align: middle; text-align: center;">
-              <% gateway_status = "Failed"
-              if gateway_name_data == "Paypal"
-                gateway_status = "Completed" if payment.gateway_response[:status] == "Completed"
-              elsif gateway_name_data == "trustbank"  
-                gateway_status = "Completed" if payment.gateway_response[:status].to_i == 1
-              elsif gateway_name_data == "SSL Commerz"  
-                gateway_status = "Completed" if payment.gateway_response[:status] == "VALID"
-              elsif gateway_name == "Authorize.net"
-                gateway_status = "Completed" if payment.gateway_response[:x_response_reason_code] == "1"
-              end %>
+              <% 
+                b_pos = 0
+                gateway_status = "Failed"
+                if gateway_name_data == "Paypal"
+                  gateway_status = "Completed" if payment.gateway_response[:status] == "Completed"
+                  b_pos = 1 if payment.gateway_response[:status] == "Completed"
+                elsif gateway_name_data == "trustbank"  
+                  gateway_status = "Completed" if payment.gateway_response[:status].to_i == 1
+                  b_pos = 1 if payment.gateway_response[:status].to_i == 1
+                elsif gateway_name_data == "SSL Commerz"  
+                  gateway_status = "Completed" if payment.gateway_response[:status] == "VALID"
+                  b_pos = 1 if payment.gateway_response[:status] == "VALID"
+                elsif gateway_name == "Authorize.net"
+                  gateway_status = "Completed" if payment.gateway_response[:x_response_reason_code] == "1"
+                  b_pos = 1 if payment.gateway_response[:x_response_reason_code] == "1"
+                end 
+              %>
+              <% if b_pos == 1 %>  
+                <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br />
+              <% else %>  
+                <i class="fa fa-close" style="color: #AB0D14; font-size: 14px;"></i><br />
+              <% end %>  
               <%= gateway_status %>
             </td>
             <td style="vertical-align: middle; text-align: center;">
-              <% transaction_id = nil
-              if gateway_name_data == "Paypal"
-                transaction_id = payment.gateway_response[:transaction_id]
-              elsif gateway_name_data == "Authorize.net"
-                transaction_id = payment.gateway_response[:x_trans_id]
-              elsif gateway_name_data == "SSL Commerz"
-                transaction_id = payment.gateway_response[:transaction_id]
-              elsif gateway_name_data == "trustbank"
-                transaction_id = payment.gateway_response[:ref_id]
-              end %>
-              <%= transaction_id %>
-            </td>
-            <td style="vertical-align: middle; text-align: center;">
-              <%= I18n.l(payment.created_at,:format=>"%d %b %Y") %>
+              <%= I18n.l(payment.created_at,:format=>"%d %b %Y %I:%M %P") %>
             </td>
           </tr>
         <% end %>
@@ -183,6 +186,13 @@
       </table>
       <%= will_paginate @online_payments,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
     </div>
+    <% unless params[:page].blank?  %>
+      <% pg = ( (params[:page].to_i - 1) * 30) + 1 %>
+    <% else %>
+      <% pg = 1 %>
+    <% end %>
+    <% showing = (pg + 30) - 1 %>
+    <span style="font-family: verdana; font-size: 12px;">Showing <%= pg %> to <%= showing %> of <%= @online_payments.total_entries %> Records</span> 
   <% else %>
     <div id="flash-box">
       <p class="flash-msg"  style="float: left;margin-top: 50px;width: 100%;">No Payments present</p>

@@ -65,7 +65,7 @@
               <select name="payment_status" id="payment_status">
                   <option value="">Select a Status</option>
                   <option value="1" <%= 'selected' if params[:payment_status].to_i == 1 %>>Completed</option>
-                  <option value="0" <%= 'selected' if params[:payment_status].to_i == 0 %>>Failed</option>
+                  <option value="2" <%= 'selected' if params[:payment_status].to_i == 2 %>>Failed</option>
               </select>
           </div>
       </div>

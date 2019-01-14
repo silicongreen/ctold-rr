@@ -1,27 +1,32 @@
 <% @courses.each do |course| %>
   <li class="list<%=cycle('odd', 'even')%>">
-    <% sections = course.sections.split(',') %>
-    <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
-    <div id="cate_name_<%= course.id %>" class="category-name"><%=  course.course_name %></div>
-    <div id="cate_sections_<%= course.id %>" class="category-sections">
-      <% if sections.empty? %>
-        <span class="section">No-Section</span>
-      <% else %>  
-        <% sections.each do |s| %>
-          <span class="section"><%= s %> </span>
-        <% end %>  
-      <% end %>  
-    </div>
-    <div class="category-edit">
-        <% if permitted_to? :edit, :courses %>
-        <%= link_to_remote(t('edit_text'),
-        :url => { :controller=>"courses",:action => 'edit', :id =>course},
-        :method => 'get' ) %>
-        <% end %>&nbsp;<span>|</span>&nbsp;
-        <%= link_to_remote(t('manage_section'),
-        :url => { :controller=>"courses",:action => 'add_section', :id =>course},
-        :method => 'get' ) %>&nbsp;<span>|</span>&nbsp;
-    </div>
-    <div class="category-delete">   <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %></div>
+      <% sections = course.sections.split(',') %>
+  <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
+      <div id="cate_name_<%= course.id %>" class="category-name"><%=  course.course_name %></div>
+      <div id="cate_sections_<%= course.id %>" class="category-sections">
+          <% section_names = [] %>
+          <% if sections.empty? %>
+            <span class="section">No-Section</span>
+          <% else %>  
+
+            <% sections.each do |s| %>
+              <% unless section_names.include?(s) %>
+                <% section_names << s %>
+                <span class="section"><%= s %> </span>
+              <% end %>
+            <% end %>  
+          <% end %>  
+      </div>
+      <div class="category-edit">
+          <% if permitted_to? :edit, :courses %>
+            <%= link_to_remote(t('edit_text'),
+              :url => { :controller=>"courses",:action => 'edit', :id =>course},
+              :method => 'get' ) %>
+          <% end %>&nbsp;<span>|</span>&nbsp;
+          <%= link_to_remote(t('manage_section'),
+            :url => { :controller=>"courses",:action => 'add_section', :id =>course},
+            :method => 'get' ) %>&nbsp;<span>|</span>&nbsp;
+      </div>
+      <div class="category-delete">   <%= link_to(t('delete_text'), course_path(course), :method => 'delete', :confirm => "#{t('delete_confirm_msg')}") if permitted_to? :destroy, :courses %></div>
   </li>
 <% end %>

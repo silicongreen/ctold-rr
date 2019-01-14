@@ -26,6 +26,8 @@ en: # locale
       course:
         course_name: "Class name"
         section_name: "Section name"
+        session: "Session"
+        group: "Group"
         code: "Code"
         cce_weightages: "CCE Weightages"
 
@@ -1011,6 +1013,7 @@ en: # locale
   manage_section: "Manage Section"
   add: "Add"
   section_name: "Section name"
+  session: "Session"
   initial_batch: "Initial Shift Details"
   batch_selection: "Select from existing Shift"
   add_more_batch: "Add more Shift"

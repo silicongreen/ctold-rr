@@ -323,9 +323,11 @@ class CoursesController < ApplicationController
     course_name = params[:course][:course_name].strip
     code = params[:course][:code].strip
     section = params[:course][:section_name].strip
+    session = params[:course][:session]
+    group = params[:course][:group]
     #grading_type = params[:course][:grading_type]
     #course = Course.find_by_course_name_and_code_and_section_name_and_grading_type(course_name, code, section, grading_type, :include => :batches)
-    course = Course.find_by_course_name_and_code_and_section_name_and_is_deleted(course_name, code, section,false, :include => :batches)
+    course = Course.find_by_course_name_and_code_and_section_name_and_is_deleted_and_session(course_name, code, section,false,session, :include => :batches)
     if params[:new_batches_selection].join(',').to_i == 1
       #FIND IF COURSE EXISTS
       if course.nil?
@@ -352,7 +354,7 @@ class CoursesController < ApplicationController
           end
           
           if has_batch
-            @tmp_course = Course.find(:all, :conditions => ["is_deleted = 0 and course_name LIKE ? and section_name = ?", course_name, params[:course][:section_name] ])
+            @tmp_course = Course.find(:all, :conditions => ["is_deleted = 0 and course_name LIKE ? and section_name = ? and session = ?", course_name, params[:course][:section_name],session ])
             unless @tmp_course.nil? or @tmp_course.empty?
               @course = Course.new params[:course]
               @course.errors.add("Section"," is already taken")
@@ -538,7 +540,7 @@ class CoursesController < ApplicationController
             end
 
             if has_batch
-              @tmp_course = Course.find(:all, :conditions => ["is_deleted = 0 and course_name LIKE ? and section_name = ?", course_name, params[:course][:section_name] ])
+              @tmp_course = Course.find(:all, :conditions => ["is_deleted = 0 and course_name LIKE ? and section_name = ? and session = ?", course_name, params[:course][:section_name],session ])
               unless @tmp_course.nil? or @tmp_course.empty?
                 @course = Course.new params[:course]
                 @course.errors.add("Section"," is already taken")
@@ -790,7 +792,7 @@ class CoursesController < ApplicationController
     @tmp_course = Course.find_by_id(params[:id])
     @course_name = ""
     unless @tmp_course.nil?
-      @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0 ", @tmp_course.course_name], :group => "section_name")
+      @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0 ", @tmp_course.course_name])
       unless @courses_data.nil?
         @course_name = @courses_data[0].course_name
       end
@@ -820,13 +822,14 @@ class CoursesController < ApplicationController
       @tmp_course = Course.find_by_id(params[:course][:id])
       @course_name = ""
       unless @tmp_course.nil?
-        @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name], :group => "section_name")
+        @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name])
         unless @courses_data.nil?
           @course_name = @courses_data[0].course_name
         end
       end
-    else  
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?) ", params[:course][:id]])
+    else
+      courseobj = Course.find_by_id(params[:course][:id])
+      @batches = Batch.find(:all, :conditions => ["courses.course_name = ?", courseobj.course_name],:include=>['course'])
       code_ini = @courses_dt.course_name[0,1].upcase
       num_zeros = 4
       nums = @courses_dt.course_name.gsub("Class ","").to_s
@@ -840,8 +843,8 @@ class CoursesController < ApplicationController
         k += 1
       end	
       @course_new = Course.new
-      code = @courses_dt.course_name + params[:course][:section_name]
-      @courses_exits = Course.find_by_course_name_and_section_name(@courses_dt.course_name, params[:course][:section_name], :conditions => {:is_deleted => false})
+      code = @courses_dt.course_name + params[:course][:section_name] + params[:course][:session]
+      @courses_exits = Course.find_by_course_name_and_section_name_and_session(@courses_dt.course_name, params[:course][:section_name], params[:course][:session], :conditions => {:is_deleted => false})
       if @courses_exits.nil?
         if params[:course][:section_name].strip.length == 0
           @course_new.errors.add("Section Name","must not be empty")
@@ -850,6 +853,9 @@ class CoursesController < ApplicationController
           @shifts_data = []
           @subject_data = []
           @batches.each do |b|
+            unless params[:batches_selection].include?(b.name)
+              next  
+            end
             @subject_data = []
             @subjects = Subject.find(:all, :conditions => ["batch_id = ?", b.id])
             @subjects.each do |s|
@@ -860,8 +866,9 @@ class CoursesController < ApplicationController
             Rails.cache.delete("user_cat_links_for_course_#{b.name}_#{school_id}")
           end
           @class_data = []
-          @class_data << {"course_name" => @courses_dt.course_name, "section_name" => params[:course][:section_name], "code" => code, "grading_type" => @courses_dt.grading_type, "batches_attributes" => @shifts_data}
+          @class_data << {"course_name" => @courses_dt.course_name, "section_name" => params[:course][:section_name], "session" => params[:course][:session], "group" => params[:course][:group], "code" => code, "grading_type" => @courses_dt.grading_type, "batches_attributes" => @shifts_data}
           @course_new = Course.new @class_data[0]
+          
           if @course_new.save (false)
             flash[:notice] = "#{t('flash5')}"
             @sections = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0 ", @courses_dt.course_name], :select => "section_name", :group => "section_name")
@@ -869,7 +876,7 @@ class CoursesController < ApplicationController
             @tmp_course = Course.find_by_id(params[:course][:id])
             @course_name = ""
             unless @tmp_course.nil?
-              @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name], :group => "section_name")
+              @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name])
               unless @courses_data.nil?
                 @course_name = @courses_data[0].course_name
               end
@@ -908,7 +915,7 @@ class CoursesController < ApplicationController
         @course.errors.add("Section Name","must not be empty")
         @error = true
     else
-      @courses_exits = Course.find_by_course_name_and_section_name(params[:course][:course_name], params[:course][:section_name])
+      @courses_exits = Course.find_by_course_name_and_section_name_and_session(params[:course][:course_name], params[:course][:section_name], params[:course][:session])
       if @courses_exits.nil?
         if @course.update_attributes(params[:course])
           @sections = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @course.course_name], :select => "section_name", :group => "section_name")
@@ -917,7 +924,7 @@ class CoursesController < ApplicationController
           @tmp_course = Course.find_by_id(params[:id])
           @course_name = ""
           unless @tmp_course.nil?
-            @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name], :group => "section_name")
+            @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name])
             unless @courses_data.nil?
               @course_name = @courses_data[0].course_name
             end
@@ -1001,15 +1008,12 @@ class CoursesController < ApplicationController
   end
   
   def delete_section
-    @course = Course.find_by_id(params[:id])
+    @course = Course.find_by_id(params[:main_course_id])
     @found_students = false
     @found_subjects = false
     @course.batches.each do |batch|
       @batch = Batch.find_by_id(batch.id)
-      if @batch.subjects.length > 0
-        @found_subjects = true
-        break
-      elsif @batch.students.length > 0
+      if @batch.students.length > 0
         @found_students = true
         break
       end
@@ -1046,7 +1050,7 @@ class CoursesController < ApplicationController
         @tmp_course = Course.find_by_id(params[:id])
         @course_name = ""
         unless @tmp_course.nil?
-          @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name], :group => "section_name")
+          @courses_data = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @tmp_course.course_name])
           unless @courses_data.nil? or @courses_data.empty?
             @course_name = @courses_data[0].course_name
           else

@@ -16,20 +16,22 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<script type="text/javascript"> function setOption(optn) {document.getElementById("option").value = optn;} </script>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-// Put jQuery 1.10.2 into noConflict mode.
-  var $jq1 = jQuery.noConflict(true);
-</script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+
+
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'form-bootstrap' %>
 <% content_for :head do %>
@@ -102,6 +104,13 @@
     <div id="section_view"> <%= render :partial => 'sections_view', :object => @classes %></div>
   </div>
   <% end %>
-  <div id="students"> </div>
+  <div id="students"> 
+    
+  </div>
 
 </div>
+<script>
+  var oDataTable;
+  var jq = jQuery.noConflict();
+
+</script>  

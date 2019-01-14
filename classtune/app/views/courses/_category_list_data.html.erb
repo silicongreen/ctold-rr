@@ -1,6 +1,8 @@
 <% @courses_data.each do |course| %>
     <li class="list<%=cycle('odd', 'even')%>">
-      <div class="category-name" style="width: 70%;"><%=  course.section_name %></div>
+      <div class="category-name" style="width: 20%;"><%= course.section_name.strip.length > 0 ? course.section_name.strip : "no-section" %></div>
+      <div class="category-name" style="width: 20%;"><%= !course.session.nil? ? course.session.strip : "-" %></div>
+      <div class="category-name" style="width: 20%;"><%= !course.group.nil? ? course.group.strip : "-" %></div>
       <div class="category-edit" style="width: 10%;">
           <% if permitted_to? :edit, :courses %>
          <%= link_to_remote(t('edit_text'),

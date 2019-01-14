@@ -1,5 +1,5 @@
 <% if @selected_section.to_i > 0 %>
-<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip+" "+c.session.to_s : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onchange => "#{remote_function(
           :url => {:controller => "employee", :action => 'update_subjects' },
@@ -7,7 +7,7 @@
           :before => "Element.show('loading_1')",
           :success => "Element.hide('loading_1')"  )}"} %>  
 <% else %>    
-<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+<%= select :student, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip+" "+c.session.to_s : "no-section", c.id] }, @selected_section.to_i),
     {:prompt => "#{t('select')}"},
     {:onchange => "#{remote_function(
           :url => {:controller => "employee",:action => 'update_subjects' },

@@ -68,12 +68,16 @@
             <%#*<div class="category-name"><%= link_to course.course_name, course_path(course) </div>%>
             <div id="cate_name_<%= course.id %>" class="category-name"><%=  course.course_name %></div>
             <div id="cate_sections_<%= course.id %>" class="category-sections">
+              <% section_names = [] %>
               <% if sections.empty? %>
                 <span class="section">No-Section</span>
               <% else %>  
                 
                 <% sections.each do |s| %>
-                  <span class="section"><%= s %> </span>
+                  <% unless section_names.include?(s) %>
+                    <% section_names << s %>
+                    <span class="section"><%= s %> </span>
+                  <% end %>
                 <% end %>  
               <% end %>  
             </div>

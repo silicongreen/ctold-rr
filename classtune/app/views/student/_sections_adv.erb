@@ -15,12 +15,12 @@
     j("#section_data_div").show();
   </script>
   <% if @selected_section.to_i > 0 %>
-  <%= select :advv_search, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+  <%= select :advv_search, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip+" "+c.session.to_s : "no-section", c.id] }, @selected_section.to_i),
       {:prompt => "#{t('select')}"},
       {:onChange => "#{remote_function(:url => {:action => "get_batches"}, :with => "'course_id='+value+'&'+$('new_student').serialize()+'&page=batches_adv&partial_view=batches_adv'" ,:before => "$('loading_1').show();",
       :success => "$('loading_1').hide();")}"} %>  
   <% else %>    
-  <%= select :advv_search, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip : "no-section", c.id] }, @selected_section.to_i),
+  <%= select :advv_search, :section, options_for_select(@classes.map { |c| [c.section_name.strip.length > 0 ? c.section_name.strip+" "+c.session.to_s : "no-section", c.id] }, @selected_section.to_i),
       {:prompt => "#{t('select')}"},
       {:onChange => "#{remote_function(:url => {:action => "get_batches"}, :with => "'course_id='+value+'&'+$('new_student').serialize()+'&page=batches_adv&partial_view=batches_adv'" ,:before => "$('loading_1').show();",
       :success => "$('loading_1').hide();")}"} %>  

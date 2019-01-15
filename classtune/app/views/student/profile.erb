@@ -106,7 +106,9 @@
             <div id="profile_picture_display">
                 <% if @student.photo.file? %>
                   <% @profile_image = @student.photo.url %>
-                  
+                  <% unless @profile_image.index("RackMultipart").nil? %>
+                    <% @profile_image.gsub! '?', '.?' %>
+                  <% end %>
                 <% else %>
                   <% @profile_image = "master_student/profile/default_student.png" %>
                 <% end %>

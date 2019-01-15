@@ -308,23 +308,23 @@ class StudentController < ApplicationController
     k = 0
     data = []
     students.each do |student|
-        srl = k+1
-        batchsplit = student.batch.name.split(" ")
-        version = ""
-        batch = batchsplit[0]
-        unless batchsplit[1].blank?
-          version = batchsplit[1]
-        end
-        unless batchsplit[2].blank?
-          version = version+" "+batchsplit[2]
-        end
-        std_category = ""
-        unless student.student_category.blank?
-          std_category = student.student_category.name
-        end
-        std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group}
-        data[k] = std
-        k += 1
+      srl = k+1
+      batchsplit = student.batch.name.split(" ")
+      version = ""
+      batch = batchsplit[0]
+      unless batchsplit[1].blank?
+        version = batchsplit[1]
+      end
+      unless batchsplit[2].blank?
+        version = version+" "+batchsplit[2]
+      end
+      std_category = ""
+      unless student.student_category.blank?
+        std_category = student.student_category.name
+      end
+      std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group}
+      data[k] = std
+      k += 1
     end
     draw = 1
     unless params[:draw].blank?
@@ -850,7 +850,200 @@ class StudentController < ApplicationController
     end
   end
   
-  def admission1   
+  def admission_sagc   
+    @classes = []
+    @batches = []
+    @batch_no = 0
+    @course_name = ""
+    @section_name = ""
+    @courses = []
+    inserts = []
+    @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
+    @student_additional_details = StudentAdditionalDetail.find_all_by_student_id(0)
+    @std_session = StudentSession.active
+    if Batch.active.find(:all, :group => "name").length == 1
+      batches = Batch.active
+      batch_name = batches[0].name
+      batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
+      @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
+    end
+    @user = current_user
+    @student = Student.new(params[:student])
+    @student_limit = @student.get_student_limit();
+    #@student.student_activation_code = nil
+    @selected_value = Configuration.default_country 
+    @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")
+    @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
+    @config = Configuration.find_by_config_key('AdmissionNumberAutoIncrement')
+    @categories = StudentCategory.active
+    if request.post?
+     
+      if MultiSchool.current_school.id == 340 and params[:id].blank?
+        std_session = StudentSession.find(@student.session_id)
+        std_id_match = "SJW"+std_session.admission_session
+        last_admitted_student_sjws = Student.find(:first,:conditions=>["admission_no like ?",std_id_match+"%"],:order=>"admission_no desc")
+        unless last_admitted_student_sjws.blank?
+          @student.admission_no = last_admitted_student_sjws.admission_no.next
+        else
+          @student.admission_no = std_id_match+"001"
+        end  
+        
+      end
+      
+      if @student.student_category_id != 433
+        @student.staff_id = 0
+      end
+      
+      @student.save_log = true
+      @student.save_to_free = true
+      #Huffas: Task end
+      @activation_code_no_error = true
+      
+      if @activation_code_no_error == true 
+        if @config.config_value.to_i == 1
+          @exist = Student.find_by_admission_no(@student.admission_no)
+          #abort(@student.inspect)
+          if @exist.nil?
+            
+            @status = @student.save
+          else
+            
+            @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
+            @student.admission_no = @last_admitted_student.admission_no.next
+            @status = @student.save
+          end
+        else
+          
+          @status = @student.save
+        end
+        
+        if @status
+          sms_setting = SmsSetting.new()
+          if sms_setting.application_sms_active and @student.is_sms_enabled
+            recipients = []
+            message = "#{t('student_admission_done')} #{@student.admission_no} #{t('password_is')} 123456"
+            if sms_setting.student_admission_sms_active
+              recipients.push @student.phone2 unless @student.phone2.blank?
+            end
+            unless recipients.empty? or !send_sms("studentregister")
+              Delayed::Job.enqueue(SmsManager.new(message,recipients))
+            end
+          end
+          params[:guardian] = {}
+          @error=false
+          
+          @student = Student.find(@student.id)
+          
+          if !params[:m_first_name].blank? && !params[:m_last_name].blank?
+            params[:guardian][:first_name] = params[:m_first_name]
+            params[:guardian][:last_name] = params[:m_last_name]
+            params[:guardian][:relation] = "Mother"
+            @guardian = @student.guardians.build(params[:guardian])
+            @guardian.set_immediate_contact = @student.admission_no
+            if @guardian.save
+              check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+              if check_guardian.nil?
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @student.id
+                stdgu.guardian_id = @guardian.id
+                stdgu.save
+              end
+              @guardian.save_to_free = true
+              @guardian.create_guardian_user(@student,false)
+              
+            else
+              @error=true
+            end  
+          end
+          
+          if !params[:f_first_name].blank? && !params[:f_last_name].blank?
+            params[:guardian][:first_name] = params[:f_first_name]
+            params[:guardian][:last_name] = params[:f_last_name]
+            params[:guardian][:relation] = "Father"
+            @guardian = @student.guardians.build(params[:guardian])
+            @guardian.set_immediate_contact = @student.admission_no
+            if @guardian.save
+              check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+              if check_guardian.nil?
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @student.id
+                stdgu.guardian_id = @guardian.id
+                stdgu.save
+              end
+              @guardian.save_to_free = true
+              @guardian.create_guardian_user(@student,false)
+              Student.update(@student.id, :immediate_contact_id => @guardian.id)
+            else
+              @error=true
+            end 
+          end
+          
+          
+          mandatory_fields = StudentAdditionalField.find(:all, :conditions=>{:is_mandatory=>true, :status=>true})
+          mandatory_fields.each do|m|
+            unless params[:student_additional_details][m.id.to_s.to_sym].present?
+              @student.errors.add_to_base("#{m.name} must contain atleast one selected option.")
+              @error=true
+            else
+              if params[:student_additional_details][m.id.to_s.to_sym][:additional_info]==""
+                @student.errors.add_to_base("#{m.name} cannot be blank.")
+                @error=true
+              end
+            end
+          end
+      
+          unless @error==true
+            additional_field_ids_posted = []
+            additional_field_ids = @additional_fields.map(&:id)
+            if params[:student_additional_details].present?
+              params[:student_additional_details].each_pair do |k, v|
+                addl_info = v['additional_info']
+                additional_field_ids_posted << k.to_i
+                addl_field = StudentAdditionalField.find_by_id(k)
+                if addl_field.input_type == "has_many"
+                  addl_info = addl_info.join(", ")
+                end
+                prev_record = StudentAdditionalDetail.find_by_student_id_and_additional_field_id( @student.id, k)
+                unless prev_record.nil?
+                  unless addl_info.present?
+                    prev_record.destroy
+                  else
+                    prev_record.update_attributes(:additional_info => addl_info)
+                  end
+                else
+                  addl_detail = StudentAdditionalDetail.new(:student_id =>  @student.id,
+                    :additional_field_id => k,:additional_info => addl_info)
+                  addl_detail.save if addl_detail.valid?
+                end
+              end
+            end
+            if additional_field_ids.present?
+              StudentAdditionalDetail.find_all_by_student_id_and_additional_field_id(@student.id,(additional_field_ids - additional_field_ids_posted)).each do |additional_info|
+                additional_info.destroy unless additional_info.student_additional_field.is_mandatory == true
+              end
+            end
+          end
+          unless @error == true
+            flash[:notice] = "#{t('flash23')}"
+            redirect_to :controller => "student", :action => "profile", :id => @student.id
+          end
+          
+        else
+          @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
+          @selected_section = params[:student][:section]
+          @batch_id = params[:student][:batch_id]
+          @batch_no = params[:student][:batch_name]
+          @course_name = params[:student][:class_name]
+          @section_name = params[:student][:section]
+        end
+      end
+    end
+  end
+  
+  def admission1 
+    if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
+      redirect_to :controller => "student", :action => "admission_sagc"
+    end
     @classes = []
     @batches = []
     @batch_no = 0
@@ -1401,18 +1594,18 @@ class StudentController < ApplicationController
     
     if student_electives
       student_electives.each do |elect|
-       sub = Subject.find(elect.subject_id)
+        sub = Subject.find(elect.subject_id)
       
-       if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
-         @group = "Science" 
-         break
-       elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
-         @group = "Humanities"
-         break
-       elsif  sub.code == "Acc" or sub.code == "BOM" or sub.code == "PMM"
-         @group = "Business Studies"
-         break
-       end   
+        if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
+          @group = "Science" 
+          break
+        elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
+          @group = "Humanities"
+          break
+        elsif  sub.code == "Acc" or sub.code == "BOM" or sub.code == "PMM"
+          @group = "Business Studies"
+          break
+        end   
       end
      
     end
@@ -1421,7 +1614,7 @@ class StudentController < ApplicationController
     @father = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'father'")
     @mother = ArchivedGuardian.find_by_ward_id(@student.id, :conditions=>"relation = 'mother'")
     @immediate_contact = ArchivedGuardian.find_by_ward_id(@student.immediate_contact_id) \
-    unless @student.immediate_contact_id.nil? or @student.immediate_contact_id == ''
+      unless @student.immediate_contact_id.nil? or @student.immediate_contact_id == ''
     if MultiSchool.current_school.code == "sagc"
       render :template => "student/generate_tc", :layout => false  
     else 
@@ -3609,7 +3802,7 @@ class StudentController < ApplicationController
       @new_fine_amount = @fine_amount
       get_fine_discount(@date, @batch, @student)
       if @fine_amount < 0
-         @fine_amount = 0
+        @fine_amount = 0
       end
     end
 
@@ -4115,17 +4308,17 @@ class StudentController < ApplicationController
         fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)) }
         @discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         @discounts_amount = []
-          @discounts.each do |d|
-            @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount = @total_discount + @discounts_amount[d.id]
+        @discounts.each do |d|
+          @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+          @total_discount = @total_discount + @discounts_amount[d.id]
         end
       else
         fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)) }
         @discounts = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         @discounts_amount = []
-          @discounts.each do |d|
-            @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount = @total_discount + @discounts_amount[d.id]
+        @discounts.each do |d|
+          @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+          @total_discount = @total_discount + @discounts_amount[d.id]
         end
       end
     else
@@ -4232,7 +4425,7 @@ class StudentController < ApplicationController
                 unless advance_fee.nil?
                   advance_fee.each do |fee|
                     if fee.particular_id == fee_particulars_single.finance_fee_particular_category_id
-                        month = fee.no_of_month.to_i
+                      month = fee.no_of_month.to_i
                     end
                   end
                 end
@@ -4269,9 +4462,9 @@ class StudentController < ApplicationController
         @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         if @all_onetime_discounts[ind].length > 0
           @all_onetime_discounts_amount[ind] = []
-            @all_onetime_discounts[ind].each do |d|
-              @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-              @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
+          @all_onetime_discounts[ind].each do |d|
+            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
+            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
           end
         end
       else
@@ -4279,9 +4472,9 @@ class StudentController < ApplicationController
         @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         if @all_onetime_discounts[ind].length > 0
           @all_onetime_discounts_amount[ind] = []
-            @all_onetime_discounts[ind].each do |d|
-              @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-              @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
+          @all_onetime_discounts[ind].each do |d|
+            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
+            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
           end
         end
       end
@@ -4390,9 +4583,9 @@ class StudentController < ApplicationController
         @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         if @onetime_discounts[ind].length > 0
           @onetime_discounts_amount[ind] = []
-            @onetime_discounts[ind].each do |d|
-              @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-              @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
+          @onetime_discounts[ind].each do |d|
+            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
           end
         end
       else
@@ -4400,9 +4593,9 @@ class StudentController < ApplicationController
         @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
         if @onetime_discounts[ind].length > 0
           @onetime_discounts_amount[ind] = []
-            @onetime_discounts[ind].each do |d|
-              @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-              @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
+          @onetime_discounts[ind].each do |d|
+            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
+            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
           end
         end
       end
@@ -4515,7 +4708,7 @@ class StudentController < ApplicationController
   end
   
   def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
-   if MultiSchool.current_school.id == 340
+    if MultiSchool.current_school.id == 340
       #GET THE NEXT ALL months 
       extra_fine = 0
       s_date = date.start_date.to_date.beginning_of_month

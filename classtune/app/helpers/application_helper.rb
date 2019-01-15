@@ -31,7 +31,7 @@ module ApplicationHelper
       #stylesheets << @direction+'_layouts/dashboard'
       stylesheets << @direction+'application'
       stylesheets << @direction+'popup.css'
-    elsif controller.controller_path == 'user' and (controller.action_name == 'login' or controller.action_name == 'set_new_password' )
+    elsif controller.controller_path == 'user' and (controller.action_name == 'login' or controller.action_name == 'set_new_password' or controller.action_name == 'forgot_password' )
       stylesheets << @direction+"_layouts/new-login"
     else
       stylesheets << @direction+'application'
@@ -66,8 +66,8 @@ module ApplicationHelper
   def get_forgotpw_stylesheets
     @direction = (rtl?) ? 'rtl/' : ''
     stylesheets = [] unless stylesheets
-    stylesheets << @direction+"_layouts/forgotpw"
-    stylesheets << @direction+"_styles/style"
+    #stylesheets << @direction+"_layouts/forgotpw"
+    stylesheets << @direction+"_layouts/new-login"
   end
 
   def get_pdf_stylesheets

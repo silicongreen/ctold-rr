@@ -89,13 +89,18 @@
   <% end %>
     
   <% if Batch.active.find(:all, :group => "name").length > 1  %> 
+  <% batchlist = [] %>
+    
   <div class="form-group col-sm-6">
     <label for="student_grade"><%= t('shift_label') %></label>
       <select id="batch_name" name="batch_name" onchange="filterbatch(this)">
           <option value="" selected="selected">Select a Shift</option>
           <% Batch.active.find(:all, :group => "name").each do |batch| %>
                 <% batchsplit = batch.name.split(" ") %>
-                <option value="<%= batchsplit[0] %>"><%= batchsplit[0] %></option>
+                <% unless batchlist.include?(batchsplit[0]) %>
+                  <% batchlist << batchsplit[0]  %>
+                  <option value="<%= batchsplit[0] %>"><%= batchsplit[0] %></option>
+                <% end %>
           <% end %>
       </select>
   </div>
@@ -190,15 +195,17 @@
   <div id="students" style="float:left; width:100%;"> 
       <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
           <thead>
-            <th width="20%" data-orderable="false"><%= "Name" %></th>
-            <th width="15%" data-orderable="false"><%= "Admission No" %></th>
-            <th width="13%" data-orderable="false"><%= "Shift" %></th>
-            <th width="13%" data-orderable="false"><%= "Version" %></th>
-            <th width="13%" data-orderable="false"><%= "Class" %></th>
-            <th width="13%" data-orderable="false"><%= "Section" %></th>
-            <th width="13%" data-orderable="false"><%= "Session" %></th>
-            <th width="13%" data-orderable="false"><%= "Group" %></th>
-            <th width="13%" data-orderable="false"><%= "Category" %></th>
+            
+            <th data-orderable="false"><%= "Student Id" %></th>
+            <th data-orderable="false"><%= "Name" %></th>
+            <th data-orderable="false"><%= "Category" %></th>
+            <th data-orderable="false"><%= "Class" %></th>
+            <th data-orderable="false"><%= "Shift" %></th>
+            <th data-orderable="false"><%= "Section" %></th>
+            <th data-orderable="false"><%= "Session" %></th>
+            <th data-orderable="false"><%= "Version" %></th>
+            <th data-orderable="false"><%= "Group" %></th>
+            
           </thead>
       </table>
   </div>
@@ -223,15 +230,16 @@
             type: 'POST'
         },
         columns: [
-            { "data": "student_name" },
             { "data": "admission_no" },
-            { "data": "batch" },
-            { "data": "version" },
+            { "data": "student_name" },
+            { "data": "category" },
             { "data": "class" },
+            { "data": "batch" },
             { "data": "section" },
             { "data": "session" },
-            { "data": "group" },
-            { "data": "category" }
+            { "data": "version" },
+            { "data": "group" }
+            
         ]
     });
     
@@ -292,5 +300,9 @@
   .select2-container .select2-selection--single
   {
       height:32px;
+  }
+  .mdl-data-table td, .mdl-data-table th
+  {
+      text-align:left;
   }
 </style>

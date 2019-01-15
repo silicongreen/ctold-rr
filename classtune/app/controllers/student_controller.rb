@@ -186,7 +186,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    row_first = ['Name','Admission No','Shift','Version','Class','Section','Session','Group','Category']
+    row_first = ['SL','Student Id','Roll','Name','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
     new_book.worksheet(0).insert_row(0, row_first)
     batch_name = params[:batch_name]
     version_name = params[:version_name]
@@ -219,6 +219,12 @@ class StudentController < ApplicationController
     std_loop = 1
     unless students.blank?
       students.each do |student|
+        fee_particular = FinanceFeeParticular.find(:all,:conditions=>"is_deleted=#{false} and finance_fee_particular_category_id=54 and batch_id=#{student.batch.id}",:order=>"FIELD(receiver_type,'Student','StudentCategory','Batch'), id DESC").find{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        monthly_fee = 0
+        unless fee_particular.blank?
+          monthly_fee = fee_particular.amount
+        end
+        FinanceFeeParticularCategory.find(:first,:conditions=>[""])
         batchsplit = student.batch.name.split(" ")
         version = ""
         batch = batchsplit[0]
@@ -233,15 +239,19 @@ class StudentController < ApplicationController
           std_category = student.student_category.name
         end
         tmp_row = []
-        tmp_row << student.full_name
+        tmp_row << std_loop
         tmp_row << student.admission_no
-        tmp_row << batch
-        tmp_row << version
+        tmp_row << student.class_roll_no
+        tmp_row << student.full_name
+        tmp_row << std_category
         tmp_row << student.batch.course.course_name
+        tmp_row << batch
         tmp_row << student.batch.course.section_name
         tmp_row << student.batch.course.session
+        tmp_row << version
         tmp_row << student.batch.course.group
-        tmp_row << std_category
+        tmp_row << monthly_fee
+        tmp_row << student.sms_number
         new_book.worksheet(0).insert_row(std_loop, tmp_row)
         std_loop = std_loop+1
       end
@@ -257,6 +267,8 @@ class StudentController < ApplicationController
     per_page = params[:length]
     start = params[:start]
     orders = params[:order]
+    search = params[:search]
+    search_value = search["value"]
     page = ( start.to_i / per_page.to_i ) + 1
     order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,students.admission_no asc"
     columns = params[:columns]
@@ -285,12 +297,18 @@ class StudentController < ApplicationController
         end
       end
     end
+    
+    unless search_value.blank?
+      condition = condition+" and students.admission_no = '"+search_value+"'"
+    end
+    
     students_all = Student.count(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category])
     
     students = Student.paginate(:conditions=>condition,:include=>[{:batch=>[:course]},:student_category], :page => page.to_i, :per_page => per_page.to_i,:order=>order_str)
     k = 0
     data = []
     students.each do |student|
+        srl = k+1
         batchsplit = student.batch.name.split(" ")
         version = ""
         batch = batchsplit[0]
@@ -304,7 +322,7 @@ class StudentController < ApplicationController
         unless student.student_category.blank?
           std_category = student.student_category.name
         end
-        std = {:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:admission_no=>student.admission_no,:batch=>batch,:version=>version,:class=>student.batch.course.course_name,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:group=>student.batch.course.group,:category=>std_category}
+        std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group}
         data[k] = std
         k += 1
     end

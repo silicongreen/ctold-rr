@@ -934,9 +934,8 @@ class StudentController < ApplicationController
           
           @student = Student.find(@student.id)
           
-          if !params[:m_first_name].blank? && !params[:m_last_name].blank?
+          if !params[:m_first_name].blank?
             params[:guardian][:first_name] = params[:m_first_name]
-            params[:guardian][:last_name] = params[:m_last_name]
             params[:guardian][:relation] = "Mother"
             @guardian = @student.guardians.build(params[:guardian])
             @guardian.set_immediate_contact = @student.admission_no
@@ -956,9 +955,8 @@ class StudentController < ApplicationController
             end  
           end
           
-          if !params[:f_first_name].blank? && !params[:f_last_name].blank?
+          if !params[:f_first_name].blank?
             params[:guardian][:first_name] = params[:f_first_name]
-            params[:guardian][:last_name] = params[:f_last_name]
             params[:guardian][:relation] = "Father"
             @guardian = @student.guardians.build(params[:guardian])
             @guardian.set_immediate_contact = @student.admission_no
@@ -1023,10 +1021,10 @@ class StudentController < ApplicationController
               end
             end
           end
-          unless @error == true
-            flash[:notice] = "#{t('flash23')}"
-            redirect_to :controller => "student", :action => "profile", :id => @student.id
-          end
+          
+          flash[:notice] = "#{t('flash23')}"
+          redirect_to :controller => "student", :action => "profile", :id => @student.id
+         
           
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])

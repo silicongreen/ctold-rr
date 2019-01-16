@@ -506,7 +506,7 @@ class SchoolsController <  MultiSchoolController
     @batches = Batch.find_by_sql ["SELECT * FROM batches WHERE school_id = ?",@school.id]
     @courses = Course.find_by_sql ["SELECT * FROM courses WHERE school_id = ?",@school.id]
     MultiSchool.current_school = sch
-    filename = "#{@school.name}-student-list-#{Time.now.to_date.to_s}.csv"
+    filename = "#{@school.code}-student-list-#{Time.now.to_date.to_s}.csv"
     destfile = Rails.root.join("public", "uploads", filename)
     FasterCSV.open(destfile, "wb") do |csv|
       

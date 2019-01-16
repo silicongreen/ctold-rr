@@ -554,8 +554,11 @@ class SchoolsController <  MultiSchoolController
  # g.relation,fu.paid_username,fu.paid_password FROM 
  # guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join guardian_students as gs on g.id=gs.guardian_id where gs.student_id=#{@student.id}#"    
 #            guardian_data = @conn.execute(sql).all_hashes
-            
-            guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i}
+            if MultiSchool.current_school.id != 352
+              guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i}
+            else
+              guardian_data = @guardian_datas.find_all{|c| c["student_id"].to_i == b['student_id'].to_i && !c["paid_username"].index("p1").nil?}
+            end
            
             rows = []
             rows << "#{@school.name}"
@@ -579,17 +582,17 @@ class SchoolsController <  MultiSchoolController
               rows << "#{b['first_name']} #{b['last_name']}"
             end
             csv << rows
+            if MultiSchool.current_school.id != 352
+              rows = []
+              rows << "Username"
+              rows << "#{b['paid_username']}"
+              csv << rows
 
-            rows = []
-            rows << "Username"
-            rows << "#{b['paid_username']}"
-            csv << rows
-
-            rows = []
-            rows << "Password"
-            rows << "#{b['paid_password']}"
-            csv << rows
-
+              rows = []
+              rows << "Password"
+              rows << "#{b['paid_password']}"
+              csv << rows
+            end
             if guardian_data.count > 1
               guardian_data.each_with_index do |glist,i|
 
@@ -620,12 +623,15 @@ class SchoolsController <  MultiSchoolController
                 rows << "Password"
                 rows << "#{glist['paid_password']}"
                 csv << rows
-
-                rows = []
-                rows << "Phone"
-                rows << "#{gPhone}"
-                csv << rows
-
+                
+                if MultiSchool.current_school.id != 352
+                  rows = []
+                  rows << "Phone"
+                  rows << "#{gPhone}"
+                  csv << rows
+                else
+                  break
+                end
               end
             else
               guardian_data.each_with_index do |glist,i|
@@ -655,11 +661,14 @@ class SchoolsController <  MultiSchoolController
                 rows << "Password"
                 rows << "#{glist['paid_password']}"
                 csv << rows
-
-                rows = []
-                rows << "Phone"
-                rows << "#{gPhone}"
-                csv << rows
+                if MultiSchool.current_school.id != 352
+                  rows = []
+                  rows << "Phone"
+                  rows << "#{gPhone}"
+                  csv << rows
+                else
+                  break
+                end
               end
             end
 

@@ -1021,11 +1021,10 @@ class StudentController < ApplicationController
               end
             end
           end
-          
+    
           flash[:notice] = "#{t('flash23')}"
           redirect_to :controller => "student", :action => "profile", :id => @student.id
-         
-          
+  
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]

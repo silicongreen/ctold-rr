@@ -740,7 +740,7 @@ class AttendanceController extends Controller
             {
                 $message = $value->first_name . " " . $value->last_name . " is absent in " . $sub_data->name . " on " . $att_date;
             }
-            if($value->school_id)
+            if($value->school_id != 352)
             {
                 if ($value->phone2)
                 {

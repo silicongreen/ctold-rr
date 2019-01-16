@@ -68,6 +68,69 @@ class Sms
             }
         }
     }
+    
+    public static function send_sms_sagc($sms_numbers, $sms_msg_array, $school_id)
+    {
+
+        $sms_params = array();
+        if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))
+        {
+            
+            foreach ($sms_numbers as $key => $value)
+            {
+                $sms_msg = new SmsMessages();
+                $sms_msg->body = str_replace(" ", "+", $sms_msg_array[$key]);
+                $sms_msg->created_at = date("Y-m-d H:i:s");
+                $sms_msg->updated_at = date("Y-m-d H:i:s");
+                $sms_msg->school_id = $school_id;
+                $sms_msg->save();
+                if ($sms_msg)
+                {
+                    $sms_log = new SmsLogs();
+                    $sms_log->mobile = $value;
+                    $sms_log->sms_message_id = $sms_msg->id;
+                    $sms_log->gateway_response = "Success";
+                    $sms_log->created_at = date("Y-m-d H:i:s");
+                    $sms_log->updated_at = date("Y-m-d H:i:s");
+                    $sms_log->school_id = $school_id;
+                    $sms_log->save();
+                }
+                if (isset(Settings::$school_sms_extra_string[$school_id]))
+                {
+                    $sms_msg_array[$key] = $sms_msg_array[$key] . Settings::$school_sms_extra_string[$school_id];
+                }
+                $sms_params[] = "sms[" . $key . "][0]= " . $value . "&sms[" . $key . "][1]=" . urlencode($sms_msg_array[$key]) . "&sms[" . $key . "][2]=123456789";
+            }
+            if ($sms_params)
+            {
+                $user = "sanwar";
+                $pass = "88>2U83k";
+                $sid = "SANWARNonMask";
+                $url = "http://sms.sslwireless.com/pushapi/dynamic/server.php";
+                $param = "user=$user&pass=$pass";
+                $param = $param . "&" . implode("&", $sms_params) . "&sid=" . $sid;
+                $crl = curl_init();
+                curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($crl, CURLOPT_SSL_VERIFYHOST, 2);
+                curl_setopt($crl, CURLOPT_URL, $url);
+                curl_setopt($crl, CURLOPT_HEADER, 0);
+                curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($crl, CURLOPT_POST, 1);
+                curl_setopt($crl, CURLOPT_POSTFIELDS, $param);
+                $response = curl_exec($crl);
+                curl_close($crl);
+            }
+
+            $configobj = new Configurations();
+            $config_id = $configobj->getConfigId("TotalSmsCount", $school_id);
+            if ($config_id)
+            {
+                $configmain = $configobj->findByPk($config_id);
+                $configmain->config_value = $configmain->config_value + count($sms_numbers);
+                $configmain->save();
+            }
+        }
+    }
 
     public static function send_sms_sfx($sms_numbers, $sms_msg_array, $school_id)
     {
@@ -138,6 +201,10 @@ class Sms
         {
             self::send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 
+        else if ($school_id == 352)
+        {
+            self::send_sms_sagc($sms_numbers, $sms_msg_array, $school_id);
+        }
         else
         {
             $sms_params = array();

@@ -32,6 +32,7 @@ class FeeDiscount < ActiveRecord::Base
   before_update :collection_exist
 
   def validate
+    
       ds_id=id.to_i
       if finance_fee_particular_category_id == 0 and !is_late
         particulars = finance_fee_category.fee_particulars.all(:group=>["receiver_type,receiver_id"],:select=>("sum(finance_fee_particulars.amount) as pamt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and is_deleted=false")
@@ -73,12 +74,12 @@ class FeeDiscount < ActiveRecord::Base
         #tot_disc_amt=part_amt*discount.to_f/(is_amount?? part_amt : 100)
         tot_disc_amt=100 #part_amt*discount.to_f/(is_amount?? part_amt : 100)
         disc_amt=disc_amt.nil?? tot_disc_amt : discs.min
-        
-        if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
-          errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
-        elsif tot_disc_amt.to_f <= 0.0
-          errors.add_to_base(t('discount_cannot_be_zero'))
-        end
+        #abort(tot_disc_amt.to_s + "  " + tot_amt.to_s + "  " + disc_amt.to_s)
+        #if(tot_disc_amt.to_f > tot_amt.to_f) or (tot_disc_amt.to_f > disc_amt.to_f)
+        #  errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
+        #elsif tot_disc_amt.to_f <= 0.0
+        #  errors.add_to_base(t('discount_cannot_be_zero'))
+        #end
       elsif finance_fee_particular_category_id > 0 and !is_late
         
         particulars = finance_fee_category.fee_particulars.all(:group=>["receiver_type,receiver_id"],:select=>("sum(finance_fee_particulars.amount) as pamt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and is_deleted=false")
@@ -144,12 +145,14 @@ class FeeDiscount < ActiveRecord::Base
         
         #tot_disc_amt = discount_amt + discount.to_f
         tot_disc_amt = discount_amt + discount.to_f
+        
         # part_amt=fee_particular.amount.to_f if fee_particular.present?
-        if tot_disc_amt.to_f > 100.0
-          errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
-        elsif tot_disc_amt.to_f <= 0.0
-          errors.add_to_base(t('discount_cannot_be_zero'))
-        end
+        
+        #if tot_disc_amt.to_f > 100.0
+        #  errors.add_to_base(t('discount_cannot_be_greater_than_total_amount'))
+        #elsif tot_disc_amt.to_f <= 0.0
+        #  errors.add_to_base(t('discount_cannot_be_zero'))
+        #end
       end
       
       # end

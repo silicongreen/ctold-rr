@@ -17,6 +17,19 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<%= javascript_include_tag 'select2.full.min.js' %>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'form-bootstrap' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %> 
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('fee_collection_dates') %></h1>
@@ -28,8 +41,8 @@
   <% unless flash[:notice].nil? %><p class="flash-msg"><%= flash[:notice] %></p><% end %>
   <div id="batch">
     <div class="label-field-pair">
-        <div class="label-container"><label><%= t('select_batch') %> : </label></div>
-        <div class="input-container"> <%= select("id",:id,@batchs.map { |c| [c.full_name, c.id] },
+        <div class="label-container" style="text-align: right;"><label style="width: 90%; font-weight: normal; padding-top: 2px;"><%= t('select_batch') %> : </label></div>
+        <div class="input-container"> <%= select("batch",:id,@batchs.map { |c| [c.full_name, c.id] },
           {:prompt => "#{t('select_batch')}"},
           {:onChange => "#{remote_function(:url => {:action => "fee_collection_dates_batch"},
             :with => "'id='+value",
@@ -58,5 +71,30 @@
     .label-field-pair .input-container {
         width: 45% !important;
     }
-    
+    .select2-container .select2-selection--single
+    {
+        height:32px;
+    }
+    .mdl-data-table td, .mdl-data-table th
+    {
+        text-align:left;
+    }
+    .select2-results__options li {
+        padding: 10px 4px;
+        border-bottom: 1px dotted #ccc;
+    }
+    .select2-search--dropdown .select2-search__field {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        top: 4px !important;
+    }
+
 </style>
+<script>
+  var jq = jQuery.noConflict();
+  jq(document).ready(function() {
+      jq('#batch_id').select2();
+  });
+</script>

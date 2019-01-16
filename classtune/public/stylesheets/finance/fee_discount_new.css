@@ -64,32 +64,52 @@
 .each_batch{
     font-size: 12px;
     overflow:auto;
-    width:198px;
+    width:98% !important;
+    padding: 2px 0 11px 1px;
     border-bottom: 1px solid #DDDDDD;
 }
 
 .fee_category_scroll {
-    height:176px;
+    height:225px;
     margin-top:-53px;
     overflow:auto;
-    width:60%;
+    width:52%;
     -moz-background-inline-policy: continuous;
-    background: none repeat scroll 0 0 #EEEEEE;
+    background: none repeat scroll 0 0 #F5F5F5;
     border: 1px solid #C6C6C6;
-    border-radius: 10px 10px 10px 10px;
-    max-height: 100px;
+    border-radius: 4px 4px 4px 4px;
+    max-height: 225px;
     overflow: auto;
     padding: 7px;
     float: left;
     margin: 10px 10px;
 }
 
+.each_batch .checkbox_label, .each_category .checkbox_label{
+    width: 85% !important;
+}
+
+.select2-selection{
+    height: 35px !important;
+    margin-left: 10px;
+    padding-top: 2px;
+}
+
+.select2-container {
+    width: 92% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 4px !important;
+}
+
 .sel-list {
     margin-bottom: 2px;
-    width: 197px;
+    width: 96%;
     border-bottom: 1px solid #DDDDDD;
     font-size: 14px;
     margin-left: 6px;
+    padding: 0px 0 10px 1px;
 }
 
 
@@ -120,6 +140,8 @@
     font-size:14px;
     font-weight:600;
     margin:0 0 0;
+    width: 90%;
+    font-weight: normal;
     padding-top:10px;
 }
 .bread_crumb {

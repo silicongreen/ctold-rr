@@ -2006,7 +2006,7 @@ class FinanceController < ApplicationController
         page << "$('percent_span').show()"
       else
         page << "$('discount_types_radio').show()"
-        page << "j('#fee_discount_discount').css('width','94%')"
+        page << "j('#fee_discount_discount').css('width','82%')"
         page << "$('percent_span').hide()"
       end
     end
@@ -2046,12 +2046,14 @@ class FinanceController < ApplicationController
       page.replace_html "batchs" ,:partial => "fee_collection_batch_student"
       if is_late == 1
         page << "$('discount_types_radio').hide()"
-        page << "j('#fee_discount_discount').css('width','84%')"
+        page << "j('#fee_discount_discount').css('width','82%')"
         page << "$('percent_span').show()"
+        page << "j('#fee_discount_batch_id').select2()"
       else
         page << "$('discount_types_radio').show()"
-        page << "j('#fee_discount_discount').css('width','94%')"
+        page << "j('#fee_discount_discount').css('width','82%')"
         page << "$('percent_span').hide()"
+        page << "j('#fee_discount_batch_id').select2()"
       end
     end
   end
@@ -2079,11 +2081,11 @@ class FinanceController < ApplicationController
       page.replace_html "batchs" ,:partial => "student_collection_for_advance"
       if is_late == 1
         page << "$('discount_types_radio').hide()"
-        page << "j('#fee_discount_discount').css('width','84%')"
+        page << "j('#fee_discount_discount').css('width','82%')"
         page << "$('percent_span').show()"
       else
         page << "$('discount_types_radio').show()"
-        page << "j('#fee_discount_discount').css('width','94%')"
+        page << "j('#fee_discount_discount').css('width','82%')"
         page << "$('percent_span').hide()"
       end
     end
@@ -2518,57 +2520,250 @@ class FinanceController < ApplicationController
     @batch_id = params[:batch_id]
     @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
   end
+  
+  def fee_collection_assign_discount_student
+    @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_receiver_type_and_receiver_id(params[:batch_id], true, 'Student', params[:student_id] )
+    @fee_collection_id = params[:id]
+    @batch_id = params[:batch_id]
+    @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
+  end
 
   def assign_fee_discount_to_collection
     unless params[:fee_collection_id].nil?
       @discount_id = params[:id]
       @fee_collection_id = params[:fee_collection_id]
-      @batch_id = params[:batch_id]
       
       discount = FeeDiscount.find(@discount_id)
-      receiver_id = discount.receiver_id
+      
       finance_fee_category_id = discount.finance_fee_category_id
       finance_fee_particular_category_id = discount.finance_fee_particular_category_id
       is_late = discount.is_late
       batch_id = discount.batch_id
-       
-      
-      if is_late
-        fee_discount_collection = FeeDiscountCollection.new(
-              :finance_fee_collection_id => @fee_collection_id,
-              :fee_discount_id           => @discount_id,
-              :batch_id                  => @batch_id,
-              :is_late                   => 1
-          )
-          if fee_discount_collection.save
-            render :update do |page|
-              page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+      @batch_id = params[:batch_id]
+      unless params[:type_discount].nil?
+        if params[:type_discount] == "student"
+          receiver_id = discount.receiver_id
+          if receiver_id.to_i == params[:receiver_id].to_i
+            if is_late
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 1")
+              if f.blank?
+                fee_discount_collection = FeeDiscountCollection.new(
+                    :finance_fee_collection_id => @fee_collection_id,
+                    :fee_discount_id           => @discount_id,
+                    :batch_id                  => @batch_id,
+                    :is_late                   => 1
+                )
+
+                if fee_discount_collection.save
+                  render :update do |page|
+                    page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                  end
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
+            else
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 0")
+              if f.blank?
+                @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
+
+                collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
+                collection_discount.save
+                
+                @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
+                s = @fee.student
+
+                found = false
+                unless s.has_paid_fees
+                    bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
+                    if bal >= 0
+                      found = true
+                      FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                    else
+                      collection_discount.destroy
+                    end
+                end
+                
+                if found
+                  fee_discount_collection = FeeDiscountCollection.new(
+                      :finance_fee_collection_id => @fee_collection_id,
+                      :fee_discount_id           => @discount_id,
+                      :batch_id                  => @batch_id,
+                      :is_late                   => 0
+                  )
+                  fee_discount_collection.save
+                end
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
             end
           end
-      else
-        @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
-        CollectionDiscount.create(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
+        elsif params[:type_discount] == "categoy"
+          receiver_id = discount.receiver_id
+          if receiver_id.to_i == params[:receiver_id].to_i
+            if is_late
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 1")
+              if f.blank?
+                fee_discount_collection = FeeDiscountCollection.new(
+                    :finance_fee_collection_id => @fee_collection_id,
+                    :fee_discount_id           => @discount_id,
+                    :batch_id                  => @batch_id,
+                    :is_late                   => 1
+                )
 
-        @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+                if fee_discount_collection.save
+                  render :update do |page|
+                    page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                  end
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
+            else
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 0")
+              if f.blank?
+                @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
 
-        @fee.each do |fe|
-          s = fe.student
+                collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
+                collection_discount.save
+                
+                @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and students.batch_id = #{batch_id} and is_paid=#{false} and student_categories.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN student_categories ON student_categories.id = students.student_category_id ")
+                found = false
+                @fees.each do |f|
+                  s = f.student
+                  unless s.has_paid_fees
+                      bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
+                      if bal >= 0
+                        found = true
+                        FinanceFee.update_student_fee(@fee_collection, s, f)
+                      end
+                  end
+                end
+                
+                if found
+                  fee_discount_collection = FeeDiscountCollection.new(
+                      :finance_fee_collection_id => @fee_collection_id,
+                      :fee_discount_id           => @discount_id,
+                      :batch_id                  => @batch_id,
+                      :is_late                   => 0
+                  )
+                  fee_discount_collection.save
+                else
+                  collection_discount.destroy
+                end
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
+            end
+          end
+        elsif params[:type_discount] == "batch"
+          receiver_id = discount.receiver_id
+          if receiver_id.to_i == params[:receiver_id].to_i
+            if is_late
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 1")
+              if f.blank?
+                fee_discount_collection = FeeDiscountCollection.new(
+                    :finance_fee_collection_id => @fee_collection_id,
+                    :fee_discount_id           => @discount_id,
+                    :batch_id                  => @batch_id,
+                    :is_late                   => 1
+                )
 
-          unless s.has_paid_fees
-              FinanceFee.update_student_fee(@fee_collection, s, fe)
+                if fee_discount_collection.save
+                  render :update do |page|
+                    page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                  end
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
+            else
+              f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id} and is_late = 0")
+              if f.blank?
+                @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
+
+                CollectionDiscount.create(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
+
+                @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and finance_fees.batch_id = #{batch_id} and is_paid=#{false} and students.batch_id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN batches ON batches.id = students.batch_id ")
+                
+                @fees.each do |f|
+                  s = f.student
+
+                  unless s.has_paid_fees
+                      FinanceFee.update_student_fee(@fee_collection, s, f)
+                  end
+                end
+                fee_discount_collection = FeeDiscountCollection.new(
+                    :finance_fee_collection_id => @fee_collection_id,
+                    :fee_discount_id           => @discount_id,
+                    :batch_id                  => @batch_id,
+                    :is_late                   => 0
+                )
+                fee_discount_collection.save
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              else
+                render :update do |page|
+                  page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+                end
+              end
+            end
           end
         end
-        fee_discount_collection = FeeDiscountCollection.new(
-            :finance_fee_collection_id => @fee_collection_id,
-            :fee_discount_id           => @discount_id,
-            :batch_id                  => @batch_id,
-            :is_late                   => 0
-        )
-        fee_discount_collection.save
-        render :update do |page|
-          page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
-        end
       end
+      #@discount_id = params[:id]
+      
+      #@batch_id = params[:batch_id]
+      
+      
+      #receiver_id = discount.receiver_id
+      
+       
+      
+      #if is_late
+        
+      #else
+      #  @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
+      #  CollectionDiscount.create(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
+
+      #  @fee = FinanceFee.all(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
+      # @fee.each do |fe|
+      #    s = fe.student
+
+      #   unless s.has_paid_fees
+      #        FinanceFee.update_student_fee(@fee_collection, s, fe)
+      #    end
+      #  end
+      #  fee_discount_collection = FeeDiscountCollection.new(
+      #     :finance_fee_collection_id => @fee_collection_id,
+      #      :fee_discount_id           => @discount_id,
+      #      :batch_id                  => @batch_id,
+      #      :is_late                   => 0
+      #  )
+      #  fee_discount_collection.save
+      #  render :update do |page|
+      #    page.replace_html 'discount_option_' + @discount_id.to_s, :partial => 'fee_collection_discount_assign'
+      #  end
+      #end
     else
       render :text => ''
     end

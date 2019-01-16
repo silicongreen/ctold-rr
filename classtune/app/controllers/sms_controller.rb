@@ -534,7 +534,7 @@ class SmsController < ApplicationController
               
               unless @recipients.empty?
                 if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
-                  message = params[:send_sms][:message]
+                  message = params[:sms_message]
                   sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
@@ -590,7 +590,7 @@ class SmsController < ApplicationController
               @recipients = employee_ids
               unless @recipients.empty?
                 if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
-                  message = params[:send_sms][:message]
+                  message = params[:sms_message]
                   sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
@@ -683,7 +683,7 @@ class SmsController < ApplicationController
               
               unless @recipients.empty?
                 if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
-                  message = params[:send_sms][:message]
+                  message = params[:sms_message]
                   sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
@@ -739,7 +739,7 @@ class SmsController < ApplicationController
               @recipients = student_ids
               unless @recipients.empty?
                 if params[:send_sms][:download].blank? or params[:send_sms][:download].to_i!=1
-                  message = params[:send_sms][:message]
+                  message = params[:sms_message]
                   sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
                   flash[:notice]="#{t('succesffully_send')}"
                   redirect_to :action => "panel"
@@ -1039,7 +1039,7 @@ class SmsController < ApplicationController
     
     unless @recipients.empty?
       if download_opt.blank? or download_opt.to_i!=1
-        sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+        sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients))
         flash[:notice]="#{t('succesffully_send')}"
         redirect_to :action => "panel"
       else
@@ -1164,7 +1164,7 @@ class SmsController < ApplicationController
     
     unless @recipients.empty?
       if download_opt.blank? or download_opt.to_i!=1
-        sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+        sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients))
         flash[:notice]="#{t('succesffully_send')}"
         redirect_to :action => "panel"
       else

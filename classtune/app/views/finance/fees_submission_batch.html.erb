@@ -16,7 +16,14 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<%= javascript_include_tag 'select2.full.min.js' %>
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('fees_submission') %></h1>
@@ -451,6 +458,7 @@
       j('#hide2').hide();
       j('#active-batch-link').hide();
       
+      j("#fees_submission_batch_id").select2();
       
       j(document).on('click','#add_extra_particular',function(){
           if ( j("#particulars_tr_extra").length == 0 )
@@ -1005,3 +1013,47 @@
     setTimeout(function(){$('submit_button').enable();},15000);
   }
 </script>
+<style>
+    .label-field-pair .label-container {
+        width: 50% !important;
+    }
+    .label-field-pair .input-container {
+        width: 45% !important;
+    }
+    .select2-container .select2-selection--single
+    {
+        height:32px;
+    }
+    .mdl-data-table td, .mdl-data-table th
+    {
+        text-align:left;
+    }
+    .select2-results__options li {
+        padding: 10px 4px;
+        border-bottom: 1px dotted #ccc;
+    }
+    .select2-search--dropdown .select2-search__field {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        top: 4px !important;
+    }
+    .select2-selection{
+        height: 35px !important;
+        margin-left: 10px;
+        padding-top: 2px;
+    }
+    .select2-container{
+        width: 92% !important;
+    }
+    .label-field-pair textarea {
+        width: 84%;
+    }
+    .calendar_date_select_popup_icon {
+        right: -28px;
+    }
+    .label-field-pair input{
+        width: 90%;
+    }
+</style>

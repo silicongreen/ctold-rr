@@ -141,7 +141,7 @@ p.flash-msg
     var error = "Some error occured during sending SMS: \n\n";
     if ( j("#option_sms").val() == "student_general" )
     {
-        if ( Number(j("#is_test").val()) == 0 )
+        if ( Number(j("#is_test_student").val()) == 0 )
         {
           j(".students_box").each(function(){
               if ( j(this).prop('checked') )
@@ -417,7 +417,6 @@ p.flash-msg
       j(document).on("change","#is_test",function(){
           if ( Number(this.value) == 1 )
           {
-            alert(this.value)
               new Ajax.Request('/sms/show_test_employee', 
                   {
                     asynchronous:true, 

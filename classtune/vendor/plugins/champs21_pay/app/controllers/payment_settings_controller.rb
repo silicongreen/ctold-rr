@@ -31,7 +31,7 @@ class PaymentSettingsController < ApplicationController
       extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
     end
     #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-    @online_payments = Payment.paginate(:conditions=>"CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) >= '#{start_date.to_date}' and CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "created_at DESC")
+    @online_payments = Payment.paginate(:conditions=>"CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) >= '#{start_date.to_date}' and CAST( DATE_ADD( created_at, INTERVAL 6 HOUR ) AS DATE ) <= '#{end_date.to_date}' AND validation_response IS NULL #{extra_query}",:page => params[:page],:per_page => 30, :order => "created_at DESC")
     ###.paginate()
     
     respond_to do |format|

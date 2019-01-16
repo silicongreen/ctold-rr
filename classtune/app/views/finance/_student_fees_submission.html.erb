@@ -103,7 +103,7 @@
 <input type="hidden" name="batch_id_particular" id="batch_id_particular" value="<%= @batch.id %>" />
 <input type="hidden" name="student_id_particular" id="student_id_particular" value="<%= @student.id %>" />
 <input type="hidden" name="date_id_particular" id="date_id_particular" value="<%= @date.id %>" />
-
+<span class="small" style="margin: 0 20px 20px 0;"><%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount_student', :id => @date.id,:batch_id=>@batch.id, :student_id => @student.id} %></span>
 <% total_fees =0 %>
 <% total_payable =0 %>
 <% if @student.has_dues %>
@@ -1019,7 +1019,7 @@
                   <div class="input-container">
                       <input type="hidden" name="current_balnce" id="current_balnce" value="<%= precision_label total_fees %>" />
                       <input type="hidden" name="tot_fee_amount" id="tot_fee_amount" value="<%= precision_label total_fees %>" />
-                      <label id="total_fees_payment_record" style="padding: 6px; border: 1px solid #ccc; margin: 6px 11px; width: 220px; border-radius: 5px; font-family: verdana; font-size: 14px; font-weight: normal;"><%= precision_label total_fees %></label>
+                      <label id="total_fees_payment_record" style="padding: 6px; border: 1px solid #ccc; margin: 6px 11px; width: 154px; border-radius: 5px; font-family: verdana; font-size: 14px; font-weight: normal;"><%= precision_label total_fees %></label>
                     <%#= form.text_field :fees_paid, :value=> precision_label(balance+@fine_amount.to_f), :class=>'precision_text' %>
                     <%=  hidden_field_tag :total_fees, total_fees1 %>
                   </div>

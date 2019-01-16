@@ -9,14 +9,14 @@
 class Sms
 {
 
-    public static $sms_attendence_school = [2, 296,319,312];
+    public static $sms_attendence_school = [2, 296,319,312,346];
     public static $sms_all_guardian = [2];
     public static $sms_subject_attendence_school = [2];
     //296
 
-    public static $sms_school_host = array(2 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd");
-    public static $sms_school_param = array(2 => "param_ssd", 296 => "param_ssd", 319 => "param_ssd", 312 => "param_ssd");
-    public static $sms_school_hosts_return = array(2 => "host_return_ssd", 296 => "host_return_ssd", 319 => "host_return_ssd", 312 => "host_return_ssd");
+    public static $sms_school_host = array(2 => "host_ssd", 296 => "host_ssd", 319 => "host_ssd", 312 => "host_ssd", 352 => "host_ssd", 346 => "host_ssd");
+    public static $sms_school_param = array(2 => "param_ssd", 296 => "param_ssd", 319 => "param_ssd", 312 => "param_ssd", 352 => "param_ssd", 346 => "param_ssd");
+    public static $sms_school_hosts_return = array(2 => "host_return_ssd", 296 => "host_return_ssd", 319 => "host_return_ssd", 312 => "host_return_ssd", 346 => "host_return_ssd", 352 => "host_return_ssd");
     public static $param_ssd = array("msisdn", "sms");
     public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=classtune&pass=ssl@123&sid=ClassTune";
     public static $host_return_ssd = "Success";
@@ -201,7 +201,7 @@ class Sms
         {
             self::send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 
-        else if ($school_id == 352)
+        else if ($school_id == 352 or $school_id = 346)
         {
             self::send_sms_sagc($sms_numbers, $sms_msg_array, $school_id);
         }

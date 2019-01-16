@@ -108,11 +108,17 @@ class CardattController extends Controller
         $student_ids[$studentdata->user_id] = $studentdata->id;
         
         $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
-        if($studentdata->phone2)
+        if($studentdata->phone2 && $studentdata->school_id != 352)
         {
             $sms_numbers[] = $studentdata->phone2;
             $sms_msg[] = $message;
         }
+        
+        if($studentdata->sms_number && $studentdata->school_id == 352)
+        {
+            $sms_numbers[] = $studentdata->sms_number;
+            $sms_msg[] = $message;
+        } 
         
         $gstudent = new GuardianStudent(); 
         
@@ -131,7 +137,7 @@ class CardattController extends Controller
                         $reminderrecipients[] = $grdata->user_id;
                         $batch_ids[$grdata->user_id] = $studentdata->batch_id;
                         $student_ids[$grdata->user_id] = $studentdata->id;
-                        if($grdata->mobile_phone && $grdata->id == $studentdata->immediate_contact_id)
+                        if($grdata->mobile_phone && $grdata->id == $studentdata->immediate_contact_id && $studentdata->school_id != 352)
                         {
                             $sms_numbers[] = $grdata->mobile_phone;
                             $sms_msg[] = $message;

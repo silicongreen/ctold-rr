@@ -740,17 +740,24 @@ class AttendanceController extends Controller
             {
                 $message = $value->first_name . " " . $value->last_name . " is absent in " . $sub_data->name . " on " . $att_date;
             }
-
-            if ($value->phone2)
+            if($value->school_id)
             {
-                $sms_numbers[] = $value->phone2;
-                $sms_msg_array[] = $message;
+                if ($value->phone2)
+                {
+                    $sms_numbers[] = $value->phone2;
+                    $sms_msg_array[] = $message;
+                }
+                if (isset($value['guradianDetails']) && $value['guradianDetails'] && $value['guradianDetails']->mobile_phone)
+                {
+                    $sms_numbers[] = $value['guradianDetails']->mobile_phone;
+                    $sms_msg_array[] = $message;
+                }
             }
-            if (isset($value['guradianDetails']) && $value['guradianDetails'] && $value['guradianDetails']->mobile_phone)
+            else if($value->sms_number)
             {
-                $sms_numbers[] = $value['guradianDetails']->mobile_phone;
+                $sms_numbers[] = $value->sms_number;
                 $sms_msg_array[] = $message;
-            }
+            }    
 
             
 

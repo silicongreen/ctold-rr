@@ -77,11 +77,29 @@ class FeeImportsController < ApplicationController
   end
 
   def list_students_by_batch
-    @students = Student.find_all_by_batch_id(params[:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'first_name ASC')
+    unless params[:batch][:batch_id].blank?
+      if params[:query].blank?
+        @students = Student.find_all_by_batch_id(params[:batch][:batch_id],:conditions=>"has_paid_fees=#{false}", :order => 'first_name ASC')
+      else
+        @students = Student.active.find(:all,
+        :conditions => ["(first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? )) and batch_id = ? ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%", params[:batch][:batch_id] ],
+        :order => "batch_id asc,first_name asc") unless params[:query] == ''
+      end  
+    else
+      @students = Student.active.find(:all,
+      :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                        OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
+        "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+        "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
+      :order => "batch_id asc,first_name asc") unless params[:query] == ''
+    end  
     unless @students.blank?
       @student = @students.first
 
-     collection_dates
+      collection_dates
 
       @fee_collection_dates=@fee_collection_dates.uniq
       @finance_fees = FinanceFee.find_all_by_student_id(@student.id)

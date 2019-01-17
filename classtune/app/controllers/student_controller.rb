@@ -186,7 +186,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list'
-    row_first = ['SL','Student Id','Roll','Name','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
+    row_first = ['SL','Student Id','Roll','Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
     new_book.worksheet(0).insert_row(0, row_first)
     batch_name = params[:batch_name]
     version_name = params[:version_name]
@@ -243,6 +243,7 @@ class StudentController < ApplicationController
         tmp_row << student.admission_no
         tmp_row << student.class_roll_no
         tmp_row << student.full_name
+        tmp_row << student.blood_group unless student.blood_group.nil?
         tmp_row << std_category
         tmp_row << student.batch.course.course_name
         tmp_row << batch

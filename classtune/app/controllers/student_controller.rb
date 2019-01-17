@@ -322,6 +322,7 @@ class StudentController < ApplicationController
       unless student.student_category.blank?
         std_category = student.student_category.name
       end
+#      send_sms = "<a href='javascript:void(0)' onClick='send_sms("+student.id.to_s+")'>Send Password</a>"
       std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group}
       data[k] = std
       k += 1
@@ -332,6 +333,22 @@ class StudentController < ApplicationController
     end
     data_hash = {:draw => draw, :recordsTotal => students_all.to_s, :recordsFiltered => students_all.to_s, :data => data}
     @data = JSON.generate(data_hash)
+  end
+  def send_sms_username_password
+    @student = Student.find(params[:id])
+    student_ids = []
+    student_ids << @student.id
+    message = ""
+    if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
+      sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
+      message = sms_text_config['upass']
+    end
+    download_opt = 0
+    sent_to = 1
+    unless message.blank?
+      send_sms_student(student_ids,message,download_opt,sent_to)
+    end
+    render :text => "Successfully Send"
   end
   def academic_report_all
     @user = current_user
@@ -5039,6 +5056,149 @@ class StudentController < ApplicationController
     end
     
     
+  end
+  
+  def send_sms_student(student_ids,message,download_opt,sent_to)
+    @conn = ActiveRecord::Base.connection
+    
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
+    @recipients=[]
+    i = 0
+    tmp_message = []
+    sms_setting = SmsSetting.new()
+    
+    if sent_to.to_i != 3
+      sql = "SELECT s.first_name, s.middle_name, s.last_name, s.sms_number, s.phone2, fu.paid_username,fu.paid_password FROM students as s left join tds_free_users as fu on s.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and s.id IN (#{student_ids.join(',')}) and s.is_deleted = 0"
+      student_data = @conn.execute(sql).all_hashes
+    end
+    
+    if sent_to.to_i == 1 or sent_to.to_i == 3
+      guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')})").map(&:user_id)
+      
+      if MultiSchool.current_school.id == 352
+        sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and fu.paid_username LIKE '%p1%' and s.is_deleted = 0" 
+      else
+        sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and s.is_deleted = 0"
+      end
+      guardians_data = @conn.execute(sql).all_hashes
+      
+    end
+    
+    if sent_to.to_i != 3
+      student_data.each do |s|
+        full_name = "#{s["first_name"]} #{s["middle_name"]} #{s["last_name"]}"
+        full_name.gsub("  "," ")
+        full_name.gsub("- ","-")
+        full_name.gsub(" -","-")
+        user_name = s['paid_username']
+        password = s['paid_password']
+        unless s['sms_number'].nil? or s['sms_number'].empty? or s['sms_number'].blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+          tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+          i += 1
+          @recipients.push s['sms_number']
+        else
+          unless s['phone2'].nil? or s['phone2'].empty? or s['phone2'].blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+            tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+            i += 1
+            @recipients.push s['phone2']
+          end
+        end
+      end
+    end
+    
+    if sent_to.to_i == 1 or sent_to.to_i == 3
+      guardians_data.each do |g|
+        full_name = "#{g["first_name"]} #{g["last_name"]}"
+        full_name.gsub("  "," ")
+        full_name.gsub("- ","-")
+        full_name.gsub(" -","-")
+        user_name = g['paid_username']
+        password = g['paid_password']
+        unless g['sms_number'].nil? or g['sms_number'].empty? or g['sms_number'].blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+          tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+          i += 1
+          @recipients.push g['sms_number']
+        else
+          unless g['mobile_phone'].nil? or g['mobile_phone'].empty? or g['mobile_phone'].blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+            tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+            i += 1
+            @recipients.push g['mobile_phone']
+          end
+        end
+      end
+    end
+    
+    unless @recipients.empty?
+      if download_opt.blank? or download_opt.to_i!=1
+        sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
+        flash[:notice]="#{t('succesffully_send')}"
+        redirect_to :action => "panel"
+      else
+        i = 0
+        if csv
+          csv_string = FasterCSV.generate do |csv|
+            rows = []
+            row_header.each do |r|
+              rows << r
+            end
+            csv << rows
+            @recipients.each do |number|
+              rows = []
+              rows << "#{number}"
+              rows << "#{tmp_message[i]}"
+              csv << rows
+              i += 1
+            end
+          end
+
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+          send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+        else
+          require 'spreadsheet'
+          Spreadsheet.client_encoding = 'UTF-8'
+          row_1 = row_header
+          new_book = Spreadsheet::Workbook.new
+          
+          new_book.create_worksheet :name => 'Student Data'
+          new_book.worksheet(0).insert_row(0, row_1)
+          
+          new_book.worksheet(0).row(0).format 2
+          
+          ind = 1
+          k = 0
+          @recipients.each do |number|
+            row_new = [number, tmp_message[k]]
+            new_book.worksheet(0).insert_row(ind, row_new)
+            ind += 1
+            k += 1
+          end
+          
+          spreadsheet = StringIO.new 
+          new_book.write spreadsheet 
+          
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+          
+          send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+        end
+      end
+    end
   end
  
 end

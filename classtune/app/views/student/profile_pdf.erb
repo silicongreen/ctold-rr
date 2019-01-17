@@ -104,6 +104,10 @@
           <td class="col-pdf name"> <%= t('gender') %> </td>
           <td class="col-pdf amnt"> <%= t("#{@student.gender_as_text.downcase}") %> </td>
         </tr>
+        <tr class="odd">
+          <td class="col-pdf name"><%= t('blood_group') %></td>
+          <td class="col-pdf amnt"><%= @student.blood_group unless @student.blood_group.nil? %> </td>
+        </tr>
         <tr class="even">
           <td class="col-pdf name"> <%= t('nationality') %></td>
           <td class="col-pdf amnt bnla"> <%= @student.nationality.nationality.nationality unless @student.nationality_id.nil? %></td>

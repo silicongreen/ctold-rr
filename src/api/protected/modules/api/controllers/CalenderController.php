@@ -1060,8 +1060,9 @@ class CalenderController extends Controller
         $date = Yii::app()->request->getPost('date');
         //$reason = Yii::app()->request->getPost('reason');
 
-        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $batch_id)
+        if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin) && $batch_id)
         {
+           
             $student_ids = array();
             if($student_id)
             {
@@ -1072,6 +1073,8 @@ class CalenderController extends Controller
             {
                 $date = date("Y-m-d");
             }
+            
+           
             $attendence = new Attendances();
             $attendence_batch = $attendence->getAttendenceBatch($batch_id, $date);
             if ($attendence_batch)
@@ -1097,6 +1100,7 @@ class CalenderController extends Controller
                     }
                 }
 
+              
             foreach ($student_ids as $key => $student_id)
             {
 

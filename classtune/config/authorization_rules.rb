@@ -689,6 +689,7 @@ authorization do
       :show,
       :view_all,
       :get_student_ajax,
+      :send_sms_username_password,
       :download_student_list,
       :class_section,
       :web_register,
@@ -720,6 +721,7 @@ authorization do
       :show,
       :view_all,
       :get_student_ajax,
+      :send_sms_username_password,
       :download_student_list,
       :class_section,
       :web_register,
@@ -896,6 +898,7 @@ authorization do
       :show,
       :view_all,
       :get_student_ajax,
+      :send_sms_username_password,
       :download_student_list,
       :class_section,
       :web_register,
@@ -1921,6 +1924,7 @@ authorization do
       :subjects,
       :get_subject_student,
       :save_attendance_subject,
+      :save_attendance_day,
       :get_subject_report_all,
       :get_subject_report_all_name,
       :get_subject_report_pdf,
@@ -2743,6 +2747,7 @@ authorization do
       :view_all,
       :class_section,
       :get_student_ajax,
+      :send_sms_username_password,
       :download_student_list,
       :class_section,
       :web_register,
@@ -3632,7 +3637,7 @@ authorization do
       :to=>[
       :get_batches_classes
     ]  
-    has_permission_on [:attendances], :to => [:index,:show_report_student,:rollcall,:subjects,:save_attendance_subject,
+    has_permission_on [:attendances], :to => [:index,:show_report_student,:rollcall,:subjects,:save_attendance_subject,:save_attendance_day,
       :get_subject_student,:get_subject_report_all,:get_subject_report_pdf,
       :get_subject_report_all_name,
       :subjects2,

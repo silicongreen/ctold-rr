@@ -29,9 +29,10 @@
                 <% if school_smartcard_allowed? %>
                 <th></th>
                 <% end %>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th style="text-align: center;"><input type="radio" value="1" checked="checked" name="check_all" class="check_all" />&nbsp;&nbsp;Present</th>
+                <th style="text-align: center;"><input type="radio" value="2" name="check_all" class="check_all" />&nbsp;&nbsp;Absent</th>
+                <th style="text-align: center;"><input type="radio" value="3" name="check_all" class="check_all" />&nbsp;&nbsp;Late</th>
+
 
             </tr>
         </thead>
@@ -77,110 +78,34 @@
                  
               </td>
               <% end %>
-              <td class="col-2 status-class" id="status-absent-<%=student['student_id']%>" style="text-align: center;<% if student['main_status']== 0 %>background-color:#D92313; color:white;<% end %>">
+              <td class="col-2 status-class" >
                   <div class="image_loading">
-                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_absent_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
+                      <input type="radio" value="1" <% if student['status']==1 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student present_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Present
+
                   </div>
-                  <% if student['status']!=3 and student['status']!=0  %>
-                    <%= link_to_remote "Absent",
-                      :before => "Element.show('loader_absent_#{student['student_id']}')",
-                      :success => "Element.hide('loader_absent_#{student['student_id']}')",
-                      :url=>{:controller=>"attendances", :action=>"show"},
-                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=0&attandence_date='+$('attandence_date').value"%>
-
-
-                  <% elsif student['status'] !=3 %>
-                    <%= link_to_remote "Absent",
-                      :before => "Element.show('loader_absent_#{student['student_id']}')",
-                      :success => "Element.hide('loader_absent_#{student['student_id']}')",
-                      :url=>{:controller=>"attendances", :action=>"show"},
-                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=1&attandence_date='+$('attandence_date').value"%>
-                  <% end %>
               </td>
-              <td class="col-2 status-class" id="status-late-<%=student['student_id']%>" style="text-align: center;<% if student['status']!=3 %>cursor:pointer;<% end %><% if student['main_status']==2 %>background-color:#FFB800; color:white;<% end %>">
+
+              <td class="col-2 status-class">
                   <div class="image_loading">
-                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_late_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
-                  </div>
-                  <% if student['status']!=3 and student['status']!=2  %>
-                    <%= link_to_remote "Late",
-                      :before => "Element.show('loader_late_#{student['student_id']}')",
-                      :success => "Element.hide('loader_late_#{student['student_id']}')",
-                      :url=>{:controller=>"attendances", :action=>"show"},
-                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=2&attandence_date='+$('attandence_date').value"%>
+                      <input type="radio" value="2" <% if student['status']==0 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student absent_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Absent
 
-                  <% elsif student['status'] !=3 %>
-                    <%= link_to_remote "Late",
-                      :before => "Element.show('loader_late_#{student['student_id']}')",
-                      :success => "Element.hide('loader_late_#{student['student_id']}')",
-                      :url=>{:controller=>"attendances", :action=>"show"},
-                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=1&attandence_date='+$('attandence_date').value"%>
-                  <% end %>
+                  </div>
               </td>
-              <%
-              str_class = ''
-              if student['status'] == 3
-              #str_class = 'approved'
-                elsif student['status'] == 4
-              #str_class = 'declined'
-                end
-             %>
-              <td class="col-2 status-class <%= str_class %>" id="status-leave-<%=student['student_id']%>">
-                  
+              <td class="col-2 status-class">
                   <div class="image_loading">
-                      <%= image_tag("loader.gif",:align => "absmiddle",:border => 0,:id => "loader_leave_#{student['student_id']}",:style =>"display: none; float:left;" ) %>
+                      <input type="radio" value="3" <% if student['status']==2 %> checked="checked" <% end %> name="attendance_<%= student['student_id'] %>" class="absent_student late_std" id="<%= student['student_id'] %>" />&nbsp;&nbsp;Late
+
                   </div>
-                  
-                  <% if student['leave_id'].to_i == 0 %>
-                    <%= link_to_remote "<div class=\"leave_sts\">On Leave</div>",
-                      :before => "Element.show('loader_leave_#{student['student_id']}')",
-                      :success => "Element.hide('loader_leave_#{student['student_id']}')",
-                      :url=>{:controller=>"attendances", :action=>"immediate_leave"},
-                      :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
-                  <% else %>
-                    <div class="leave_sts">On Leave</div>
-                  <% end %>
-
-                  <% if (student['status'] == 4) and (student['viewed_by_teacher'].to_i == 0) %>
-                    <div class="leave_sts_appr">
-                        <%= link_to_remote "Approve",
-                          :before => "Element.show('loader_leave_#{student['student_id']}')",
-                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
-                          :url=>{:controller=>"attendances", :action=>"show"},
-                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
-                    </div>
-                    <div class="leave_sts_deny">
-                        <%= link_to_remote "Deny",
-                          :before => "Element.show('loader_leave_#{student['student_id']}')",
-                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
-                          :url=>{:controller=>"attendances", :action=>"show"},
-                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=4&attandence_date='+$('attandence_date').value" %>
-                    </div>
-                  <% end %>
-
-                  <% if student['status'] == 4 and student['viewed_by_teacher'].to_i == 1 %>
-                    <div class="leave_sts_appr">
-                        <%= link_to_remote "Approve",
-                          :before => "Element.show('loader_leave_#{student['student_id']}')",
-                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
-                          :url=>{:controller=>"attendances", :action=>"show"},
-                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=3&attandence_date='+$('attandence_date').value" %>
-                    </div>
-                  <% end %>
-
-                  <% if student['status'] == 3 %>
-                    <div class="leave_sts_deny">
-                        <%= link_to_remote "Deny",
-                          :before => "Element.show('loader_leave_#{student['student_id']}')",
-                          :success => "Element.hide('loader_leave_#{student['student_id']}')",
-                          :url=>{:controller=>"attendances", :action=>"show"},
-                          :with => "'batch_id=#{params[:batch_id]}'+'&student_id=#{student['student_id']}'+'&leave_id=#{student['leave_id']}'+'&status_change=4&attandence_date='+$('attandence_date').value" %>
-                    </div>
-                  <% end %>
-
               </td>
+              
           </tr>          
         <% end %>
     </table>
+    <br/>
+    <input type="button" name="save" id="attendance_save_all" value="Save Attendance"  style=" cursor: pointer;"  />
+    <br/>
+    <h4 style="color:green; display:none;" id="att_taken">Attendance Successfully Saved</h4>
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading-att", :style =>"display: none;" ) %>
 
 
 </div>
@@ -338,31 +263,86 @@
       z-index: 999;
       
     }
-</style>    
+</style> 
 <script>
-  var jq = jQuery.noConflict();
-  jq(document).ready(function() {
-    jq(".student-name-attendance").on({
+  var jj = jQuery.noConflict();
+  jj(document).ready(function() {
+    jj('.check_all').click(function () {
+      
+        if(jj(this).val() == 1)
+        {
+          jj('.present_std').trigger("click");
+        } 
+        if(jj(this).val() == 2)
+        {
+          jj('.absent_std').trigger("click");
+        }
+        if(jj(this).val() == 3)
+        {
+          jj('.late_std').trigger("click");
+        } 
+      });
+    jj('#attendance_save_all').click(function () {
+      
+          var student_ids = new Array;
+          var late = new Array;
+          jj('input.absent_student').each(function (checkbox)
+          {
+         
+              if (jj(this).is(":checked") && jj(this).val() != 1)
+              {
+                  if (jj(this).val() == 2)
+                  {
+                      Array.prototype.push.call(late, 0);
+                  }
+                  else
+                  {
+                      Array.prototype.push.call(late, 1);
+                  }
+                  Array.prototype.push.call(student_ids, this.id);
+              }
+          });
+          Element.show('loading-att');
+          new Ajax.Request('/attendances/save_attendance_day', {
+              method: 'post',
+              onSuccess: function (request) {
+                Element.hide('loading-att');
+                Element.show('att_taken');
+                setTimeout(function(){ Element.hide('att_taken'); }, 3000);
+              },
+              parameters: {
+                  student_id: student_ids.toString(),
+                  late: late.toString(),
+                  attandence_date: jj('#attandence_date').val(),
+                  batch_id: <%= @batch_data.id %>
+              }
+          });
+
+
+
+      });
+    
+    jj(".student-name-attendance").on({
       mouseenter: function () {
         var this_id = this.id;
         std_id = this_id.replace("student-name-attendance-","");
-        jq.getJSON("/attendances/get_att_log", {
+        jj.getJSON("/attendances/get_att_log", {
           student_id: std_id,
-          date: jq('#attandence_date').val()
+          date: jj('#attandence_date').val()
         })
         .done(function( data ) {
           var log_string = "";
-          jq.each( data, function( i, item ) {
+          jj.each( data, function( i, item ) {
             log_string +="<span style='white-space: nowrap; padding: 10px 20px;'>"+item.employee_name+"&nbsp;&nbsp;"+item.status+"&nbsp;&nbsp;"+item.date+"</span><br/>";
           });
           
           if(log_string!="")
           {
-            jq('#attednace-log-'+std_id).html(log_string);
+            jj('#attednace-log-'+std_id).html(log_string);
           }
           else
           {
-            jq('#attednace-log-'+std_id).html("No Log Found");
+            jj('#attednace-log-'+std_id).html("No Log Found");
           }  
         });
       }  

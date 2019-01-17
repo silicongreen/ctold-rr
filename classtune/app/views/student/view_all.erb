@@ -193,6 +193,7 @@
 
   
   <div id="students" style="float:left; width:100%;"> 
+      <div id="image_loading" style="display:none;"><%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2" ) %></div>
       <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
           <thead>
             
@@ -205,7 +206,7 @@
             <th data-orderable="false"><%= "Session" %></th>
             <th data-orderable="false"><%= "Version" %></th>
             <th data-orderable="false"><%= "Group" %></th>
-            
+            <th data-orderable="false"><%= "Password" %></th>
           </thead>
       </table>
   </div>
@@ -218,6 +219,14 @@
 <script>
   var oDataTable;
   var jq = jQuery.noConflict();
+  function send_sms(student_id)
+  {
+    var image_loading = jq('#image_loading').html()
+    jq('#student_'+student_id).html(image_loading);
+    jq.get( "/student/send_sms_username_password/"+student_id, function( data ) {
+      jq('#student_'+student_id).html("<font color='green'>Massage Send</font>");
+    });
+  }
   jq(document).ready(function() {
     jq('.js-example-basic-single').select2();
   oDataTable = jq('#hr_report').DataTable( {
@@ -238,7 +247,8 @@
             { "data": "section" },
             { "data": "session" },
             { "data": "version" },
-            { "data": "group" }
+            { "data": "group" },
+            { "data": "send_sms" }
             
         ]
     });

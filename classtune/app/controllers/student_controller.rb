@@ -322,8 +322,8 @@ class StudentController < ApplicationController
       unless student.student_category.blank?
         std_category = student.student_category.name
       end
-#      send_sms = "<a href='javascript:void(0)' onClick='send_sms("+student.id.to_s+")'>Send Password</a>"
-      std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group}
+      send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
+      std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1
     end
@@ -344,9 +344,9 @@ class StudentController < ApplicationController
       message = sms_text_config['upass']
     end
     download_opt = 0
-    sent_to = 1
+    sent_to = 3
     unless message.blank?
-      send_sms_student(student_ids,message,download_opt,sent_to)
+      send_sms_student(student_ids,message,sent_to)
     end
     render :text => "Successfully Send"
   end
@@ -5058,7 +5058,7 @@ class StudentController < ApplicationController
     
   end
   
-  def send_sms_student(student_ids,message,download_opt,sent_to)
+  def send_sms_student(student_ids,message,sent_to)
     @conn = ActiveRecord::Base.connection
     
     row_header = ['Mobile No','Message']
@@ -5080,7 +5080,7 @@ class StudentController < ApplicationController
     if sent_to.to_i == 1 or sent_to.to_i == 3
       guardians = Guardian.find(:all, :conditions => "ward_id IN (#{student_ids.join(',')})").map(&:user_id)
       
-      if MultiSchool.current_school.id == 352
+      if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
         sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and fu.paid_username LIKE '%p1%' and s.is_deleted = 0" 
       else
         sql = "SELECT g.first_name, g.last_name, s.sms_number, g.mobile_phone,fu.paid_username,fu.paid_password FROM guardians as g INNER join students s ON s.id = g.ward_id left join tds_free_users as fu on g.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and fu.paid_id IN (#{guardians.join(',')}) and s.is_deleted = 0"
@@ -5146,58 +5146,7 @@ class StudentController < ApplicationController
     end
     
     unless @recipients.empty?
-      if download_opt.blank? or download_opt.to_i!=1
-        sms = Delayed::Job.enqueue(SmsManager.new(message,@recipients))
-        flash[:notice]="#{t('succesffully_send')}"
-        redirect_to :action => "panel"
-      else
-        i = 0
-        if csv
-          csv_string = FasterCSV.generate do |csv|
-            rows = []
-            row_header.each do |r|
-              rows << r
-            end
-            csv << rows
-            @recipients.each do |number|
-              rows = []
-              rows << "#{number}"
-              rows << "#{tmp_message[i]}"
-              csv << rows
-              i += 1
-            end
-          end
-
-          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
-          send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
-        else
-          require 'spreadsheet'
-          Spreadsheet.client_encoding = 'UTF-8'
-          row_1 = row_header
-          new_book = Spreadsheet::Workbook.new
-          
-          new_book.create_worksheet :name => 'Student Data'
-          new_book.worksheet(0).insert_row(0, row_1)
-          
-          new_book.worksheet(0).row(0).format 2
-          
-          ind = 1
-          k = 0
-          @recipients.each do |number|
-            row_new = [number, tmp_message[k]]
-            new_book.worksheet(0).insert_row(ind, row_new)
-            ind += 1
-            k += 1
-          end
-          
-          spreadsheet = StringIO.new 
-          new_book.write spreadsheet 
-          
-          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
-          
-          send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
-        end
-      end
+      sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients)) 
     end
   end
  

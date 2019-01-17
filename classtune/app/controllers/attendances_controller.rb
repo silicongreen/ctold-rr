@@ -522,6 +522,22 @@ class AttendancesController < ApplicationController
     end
   end
   
+  def save_attendance_day
+    now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+    batch_id = params[:batch_id]
+    if params[:attandence_date].nil? || params[:attandence_date].empty?
+      @date_to_use = @local_tzone_time.to_date
+    elsif current_user.admin?
+      @date_to_use = params[:attandence_date].to_date
+    else
+      @date_to_use = @local_tzone_time.to_date
+    end 
+    
+    add_attendence_day(batch_id,@date_to_use,params[:student_id],params[:late])
+    render :text=>"success"
+    
+  end
+  
   def save_attendance_subject
     now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
     if params[:attandence_date].nil? || params[:attandence_date].empty?
@@ -1596,6 +1612,27 @@ class AttendancesController < ApplicationController
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
       request.set_form_data({"date"=>date_to_use,"student_id"=>student_id,"late"=>late,"subject_id" =>subject_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+
+      response = http.request(request)
+      @student_response = JSON::parse(response.body)
+    end
+    
+    @student_response
+  end
+  
+  def add_attendence_day(batch_id,date_to_use,student_id,late)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    date_to_use = date_to_use.to_date unless date_to_use.blank?
+    if current_user.employee? or current_user.admin?
+      api_uri = URI(api_endpoint + "api/calender/addattendence")
+      http = Net::HTTP.new(api_uri.host, api_uri.port)
+      request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+      request.set_form_data({"date"=>date_to_use,"batch_id"=>batch_id,"late"=>late,"student_id" =>student_id ,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
 
       response = http.request(request)
       @student_response = JSON::parse(response.body)

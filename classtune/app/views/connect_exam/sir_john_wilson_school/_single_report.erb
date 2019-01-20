@@ -16,13 +16,13 @@
       <p>&nbsp;<p>
       
       <% total_subject_main = @report_data['report']['subjects'].count %>    
-      <table class="sjws_table_head std_name_and_class" width="100%" cellspacing="0">
+      <table class="sjws_table_head std_name_and_class"<% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %>cellspacing="0">
           <tr class="table-header">
-              <td colspan="2"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
+              <td colspan="2" class="align-left"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
           </tr>
           <tr class="table-header">
-              <td colspan="1"><b>Class : <%= @batch.course.course_name %></b></td>
-              <td colspan="1"><b>Section : <%= @batch.course.section_name %></b></td> 
+              <td colspan="1" class="align-left"><b>Class : <%= @batch.course.course_name %></b></td>
+              <td colspan="1" class="align-left"><b>Section : <%= @batch.course.section_name %></b></td> 
           </tr>
       </table>
       <p>&nbsp;<p>
@@ -30,7 +30,7 @@
           <div id="grouped_exam_report">
 
               
-              <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="80%" <% end %> cellspacing="0">
+              <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %> cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>                      
@@ -74,19 +74,28 @@
                             <% if main_mark > 0 %>
                           
                               <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% else %> p-gap-<%= total_subject_main %><% end %>">
-                                <% if main_mark >69 and main_mark < 101 %>
+                                <% if main_mark > 84 and main_mark < 101 %>
+                                  <p><span class="tickbox_check"></span>Progressing excellently</p>
+                                  <p><span class="tickbox_uncheck"></span>Progressing well</p>
+                                  <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
+                                  <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
+                                <% elsif main_mark >69 and main_mark < 85 %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing excellently</p>
                                   <p><span class="tickbox_check"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                   <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
                                 <% elsif main_mark > 49 and main_mark < 70 %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing excellently</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                   <p><span class="tickbox_check"></span>Progressing with difficulty</p>
                                   <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
                                 <% elsif main_mark > 0 and main_mark < 50 %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing excellently</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                   <p><span class="tickbox_check"></span>Unsatisfactory progress</p>
                                 <% else %>
+                                  <p><span class="tickbox_uncheck"></span>Progressing excellently</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                   <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                   <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
@@ -94,6 +103,7 @@
                               </td>                            
                             <% else  %>                            
                               <td class="col-pdf <% if total_subject_main > 6 %>checkbox_inline<% else %> p-gap-<%= total_subject_main %><% end %>">
+                                <p><span class="tickbox_uncheck"></span>Progressing excellently</p>
                                 <p><span class="tickbox_uncheck"></span>Progressing well</p>
                                 <p><span class="tickbox_uncheck"></span>Progressing with difficulty</p>
                                 <p><span class="tickbox_uncheck"></span>Unsatisfactory progress</p>
@@ -156,15 +166,16 @@
               <table class='sjws_table_head std_name_and_class' width="100%" >                 
                       <tr>
                           <td width="50%">
-                              <p class="note">Note: The level of progress is based on the marking class works and class test(s) taken in the month of 
-                                <b><%= @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%= @connect_exam_obj.attandence_end_date.strftime("%B") %> <%= @connect_exam_obj.attandence_end_date.strftime("%Y") %></b>.
+                              <p class="note">Note: The level of progress is based on the marking class works and class test(s) taken from the month of 
+                                <b><%= @connect_exam_obj.attandence_start_date.strftime("%B") %> till <%= @connect_exam_obj.attandence_end_date.strftime("%B") %> <%= @connect_exam_obj.attandence_end_date.strftime("%d") %>, <%= @connect_exam_obj.attandence_end_date.strftime("%Y") %></b>.
                                 Parents are encouraged to meet the subject teachers if the students are progressing with difficulty or below the satisfactory level.
                               </p>
                           </td>                          
                           <td width="50%">
                               <div class="roundbox">
                                 <span class="roundbox_line">Progress Indicator Key:</span>
-                                <span>70-100% - Progressing well (Grade A + B)</span><br />
+                                <span>85-100% - Progressing excellently (Grade A)</span><br />
+                                <span>70-84% - Progressing well (Grade B)</span><br />
                                 <span>50-69% - Progressing with difficulty (Grade C)</span><br />
                                 <span>49% and below - Unsatisfactory progress (Grade D)</span>
                               </div>
@@ -292,9 +303,13 @@
   {
       padding:5px 20px;
   }
-  sjws_table_head tr td.text_center
+  .sjws_table_head tr td.text_center
   {
       text-align: center !important;
+  }
+  .sjws_table_head tr td.align-left
+  {
+      text-align: left !important;
   }
   .p-gap-3 p
   {

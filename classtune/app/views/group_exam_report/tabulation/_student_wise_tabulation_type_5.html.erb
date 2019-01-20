@@ -169,7 +169,7 @@
             <% end %>
           <% end %>
           <% if now_total < 3 %>
-              <hr class="white-color"/>&nbsp;
+              <hr class="white-color" />&nbsp;
           <% end %>
           
             
@@ -181,9 +181,11 @@
 <% end %>
 <% end %>
     
-    <style>
-      hr.white-color
-      {
-         color: white !important;
-      }
-    </style>    
+<style>
+  #pdf-table hr.white-color
+  {
+     color: white !important;
+     background: white !important;
+     opacity: 0.1 !important;
+  }
+</style>    

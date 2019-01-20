@@ -33,6 +33,7 @@
       %>
 <% if !@students.blank? %>
   <% extender = 0 %>
+  <% total_part = 0 %>
   <% std_count = 0 %>
   <% c  = 'even' %>
   <% j = 0 %>
@@ -130,6 +131,8 @@
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %> min-height-200">
       <td class="name-std"><%= student.class_roll_no %></td>
       <td class="name-std"><%= student.full_name %></td>
+      <% now_total = 0 %>
+      
       <% @elective_subjects.each do |esubject| %>
           <td>
           <% exam_score.each do |es| %>
@@ -149,6 +152,8 @@
                 <% elsif es.exam.subject.name.index(" 6") %>
                     <% sub_name = "P6" %>
                 <% end %>
+                
+                <% now_total = now_total+1 %>
                 <%= sub_name %>&nbsp;|&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;|&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
@@ -160,6 +165,12 @@
             <% else %>
               -
             <% end %>
+          <% end %> 
+          <% if now_total > total_part %>
+            <% total_part = now_total %>  
+          <% end %> 
+          <% if total_part > now_total %>  
+              <br/>
           <% end %>    
           </td>
       <% end %>
@@ -167,11 +178,4 @@
     </tr> 
 
 <% end %>
-<% end %>
-    
-<style>
-.min-height-200
-{
-   min-height: 200px;
-}
-</style>    
+<% end %>  

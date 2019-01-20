@@ -17,15 +17,17 @@
       
       <% total_subject_main = @report_data['report']['subjects'].count %>  
       <div class ="current_batch std_name_and_class" style="margin-left:0px;">
-        <table class="sjws_table_head"<% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %>cellspacing="0">
-            <tr class="table-header">
-                <td colspan="2" class="align-left"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
-            </tr>
-            <tr class="table-header">
-                <td colspan="1" class="align-left"><b>Class : <%= @batch.course.course_name %></b></td>
-                <td colspan="1" class="align-left"><b>Section : <%= @batch.course.section_name %></b></td> 
-            </tr>
-        </table>
+        <div id="grouped_exam_report">
+          <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %> cellspacing="0">
+              <tr class="table-header">
+                  <td colspan="2" class="align-left"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
+              </tr>
+              <tr class="table-header">
+                  <td colspan="1" class="align-left"><b>Class : <%= @batch.course.course_name %></b></td>
+                  <td colspan="1" class="align-left"><b>Section : <%= @batch.course.section_name %></b></td> 
+              </tr>
+          </table>
+        </div>    
       </div>    
       <p>&nbsp;<p>
       <div class ="current_batch std_name_and_class" style="margin-left:0px;">

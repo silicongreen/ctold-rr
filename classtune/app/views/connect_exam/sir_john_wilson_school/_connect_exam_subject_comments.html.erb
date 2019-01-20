@@ -59,9 +59,9 @@
     <div class="zui-scroller">
         <table class="zui-table">
        
-          <tr class="tr-head fixed-position">
-            <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
-            <td><b><%= "Effort" %></b></td>
+          <tr class="tr-head">
+            <td class="zui-sticky-col" style="border:none;"><b></b></td>
+            
             <% unless @exams.blank? %>
             <% @exams.each do |exam| %>
               <% if exam.exam_group.exam_category == 4 && has_subject_group(@exam_subject.id) && params[:evaluation].blank? %>
@@ -113,7 +113,7 @@
                     
                    <p style="font-size: 10px;"> 
                         <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                            <%= text_field_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :class=>"marks-box" %>
+                            <%= text_field_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :class=>"marks-box width-55" %>
                          <% else %>
                             <%= exam.alternative_title %>
                          <% end %> 
@@ -135,14 +135,16 @@
             <td><b><%= "M. Obt." %><hr><%="T. Marks"%></b></td>
             <td><b><%= "%" %></b></td>
             <td><b><%= "Grade" %></b></td>
+            <td><b><%= "Effort" %></b></td>
             <td><b><%= t('remarks') %></b></td>
             <% end %>
             
             
           </tr>
+          
           <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
-              <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
+              <td class="zui-sticky-col column-sticky"><%= student.full_name %> </td>
               <%
                 exam_comment = ""
                 @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@exam_connect.id,:subject_id => @exam_subject.id, :student_id => student.id} )
@@ -151,15 +153,7 @@
                   exam_effort = @exam_comments.effort
                 end
               %>
-              <td class="col-2 td-mark">
-                  
-                  <div class="label-field-pair2">
-                  
-                  <div class="text-input-bg2">
-                    <%= text_field_tag "exam[#{student.id}][effort]",exam_effort, :size => '2' %></div>
-                  </div>
-                  
-              </td>
+              
             
               <% total_mark = 0 %>
               <% full_mark = 0 %>
@@ -199,7 +193,7 @@
                                                 <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                               <% end %>
                                             <% end %>
-                                            <td  class="col-2 td-mark" style="text-align:center; width:60px;">
+                                            <td  class="td-mark" style="text-align:center; width:60px;">
                                                 <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][remarks][]", exam_group_remarks, :size => '4' %>
                                                 <div class="date2" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name.name.to_s+">>"+sub_group_name %></div></span></div>
                                             </td>
@@ -211,7 +205,7 @@
                                       </table>
                                      </td>    
                                   <% else %>
-                                    <td  class="col-2 td-mark" style="text-align:center; width:60px;">
+                                    <td  class="td-mark" style="text-align:center; width:60px;">
                                      <% exam_group_remarks = "" %>
                                       <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
 
@@ -244,20 +238,20 @@
                     <% score_now = @exam_absent.remarks  %>
                  <% end %>
                   <% full_mark = full_mark+exam['maximum_marks'].to_f %>
-                  <td class="col-2 td-mark">
+                  <td class="td-mark">
                       <div class="label-field-pair2">
                         <div class="text-input-bg2">
                             <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %>
                          </div>
                       </div>
-                      <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>
+                      <div class="date" ><span class="themed_text"><div> <%= exam.name %></div></span></div>
                   </td>                    
                 <% end %>
                 <% end %>  
               <% end %>
               <% if params[:evaluation].blank? %>
-              <td class="col-2 td-mark"><center><b><%=total_mark.to_i%><hr><%=  full_mark.to_i %></b></center></td>
-              <td class="col-2 td-mark">
+              <td class="td-mark"><center><b><%=total_mark.to_i%><hr><%=  full_mark.to_i %></b></center></td>
+              <td class="td-mark">
                 <%
                   stGetPercentage = 0
                   if full_mark != 0
@@ -266,7 +260,7 @@
                 %>
                 <center><b><%=  stGetPercentage.to_i%> % </b></center>
               </td>
-              <td class="col-2 td-mark">
+              <td class="td-mark">
                 <%  grade = GradingLevel.percentage_to_grade(stGetPercentage, @batch.id) %>
                 <% if !grade.blank? and !grade.name.blank? %>
                   <center><b><%= grade.name %></b></center>
@@ -274,13 +268,22 @@
                   <center><b>-</b></center>
                 <% end %>
               </td>
-              <td class="col-2 td-mark">
+              <td class="td-mark">
+                  
+                  <div class="label-field-pair2">
+                  
+                  <div class="text-input-bg2">
+                    <%= text_field_tag "exam[#{student.id}][effort]",exam_effort, :size => '2' %></div>
+                  </div>
+                  
+              </td>
+              <td class="td-mark">
                   
                   <div class="label-field-pair2">
                   
                   <div class="text-input-bg2">
                     
-                    <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %></div>
+                    <%= text_area_tag "exam[#{student.id}][comments]", exam_comment, :rows=>3, :cols=>40 %></div>
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td> 
@@ -309,6 +312,7 @@
     width: 100%;
     overflow-x: auto;
 }
+
 .zui-table {
     border: none;
     border-right: solid 1px #DDEFEF;
@@ -325,24 +329,37 @@
     text-shadow: 1px 1px 1px #fff;
     white-space: nowrap;
 }
+td.column-sticky:first-child
+{
+  border-top: solid 1px #DDEFEF;
+}
 .zui-table tbody td {
-    border-bottom: solid 1px #DDEFEF;
+   border-bottom: solid 1px #DDEFEF;
     color: #333;
-    padding: 10px;
+    padding: 9px 10px;
+    height: 54px;
     text-shadow: 1px 1px 1px #fff;
-    white-space: nowrap;
-    border-left: solid 1px #DDEFEF;
 }
 .zui-wrapper {
     position: relative;
 }
 .zui-scroller {
-    overflow-x: auto;
-    overflow-y: auto;
+    margin-left: 184px;
+    overflow-x: scroll;
+    overflow-y: visible;
     padding-bottom: 5px;
-    width: 930px;
-    max-height: 500px;
+    width: 80%;
 }
+.zui-table .zui-sticky-col {
+    border-left: solid 1px #DDEFEF;
+    border-right: solid 1px #DDEFEF;
+    left: 0;
+    position: absolute;
+    top: auto;
+    width: 163px;
+}
+
+
 
 .td-mark .date2{
     position: relative;
@@ -382,17 +399,20 @@
 .td-mark:hover .date span{
     display: block;
     position: absolute;
-    min-width: 150px;
+    min-width: 67px;
     background-color: #fff;
-    border:1px solid #c3d9ff;
+    border: 1px solid #c3d9ff;
     min-height: 20px;
-    left: 20px;
-    top: 10px;
+    left: 172px;
+    top: 22px;
     color: #FFFFFF;
     padding: 3px;
-
-    color:#990A10;
+    color: #990A10;
     font-size: 12px;
+}
+.width-55
+{
+  width: 55px;
 }
 
 </style>

@@ -323,8 +323,13 @@ class StudentController < ApplicationController
       unless student.student_category.blank?
         std_category = student.student_category.name
       end
+      password = "";
+      @paid_data = TdsFreeUser.find_by_paid_id(student.user_id)
+      unless @paid_data.blank?
+        password = @paid_data.paid_password
+      end
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
-      std = {:admission_no=>student.admission_no,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
+      std = {:admission_no=>student.admission_no,:password=>password,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1
     end

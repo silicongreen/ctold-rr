@@ -131,9 +131,10 @@
     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %> min-height-200">
       <td class="name-std"><%= student.class_roll_no %></td>
       <td class="name-std"><%= student.full_name %></td>
-      <% now_total = 0 %>
+      
       
       <% @elective_subjects.each do |esubject| %>
+          <% now_total = 0 %>
           <td>
           <% exam_score.each do |es| %>
               <% if es.exam.subject.elective_group.id.to_i == esubject.to_i %>
@@ -157,9 +158,7 @@
                 <%= sub_name %>&nbsp;|&nbsp;<%= es.marks.present? ? mark=es.marks.to_f : '-' %>&nbsp;|&nbsp;<%= es.marks.present? ? sprintf( "%0.02f", sub_marks) : '-' %><hr/>
               <% end %>
           <% end %>
-          <% if now_total < 3 %>
-          &nbsp;<hr/> 
-          <% end %> 
+          
           <% if !elective_group_mark[esubject].blank? %>
             Total&nbsp;|&nbsp;<%= elective_group_mark[esubject].round() %>&nbsp;|&nbsp;
             <%  grade = GradingLevel.percentage_to_grade(elective_group_mark[esubject].round(), @batch.id) %>
@@ -168,7 +167,10 @@
             <% else %>
               -
             <% end %>
-          <% end %> 
+          <% end %>
+          <% if now_total < 3 %>
+              <br/>
+          <% end %>
           
             
           </td>

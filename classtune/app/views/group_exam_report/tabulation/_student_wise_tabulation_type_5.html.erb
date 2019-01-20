@@ -169,9 +169,7 @@
           <% if now_total > total_part %>
             <% total_part = now_total %>  
           <% end %> 
-          <% if total_part > now_total %>  
-              <br/>
-          <% end %>    
+            
           </td>
       <% end %>
  
@@ -179,3 +177,9 @@
 
 <% end %>
 <% end %>  
+<style>
+tr.min-height-200 td
+{
+   min-height: 300px !important;
+}
+</style>    

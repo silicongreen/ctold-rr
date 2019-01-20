@@ -127,7 +127,7 @@
           <% end %>         
         </tr>
     <% end %>
-    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+    <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %> min-height-200">
       <td class="name-std"><%= student.class_roll_no %></td>
       <td class="name-std"><%= student.full_name %></td>
       <% @elective_subjects.each do |esubject| %>
@@ -168,3 +168,10 @@
 
 <% end %>
 <% end %>
+    
+<style>
+.min-height-200
+{
+   min-height: 200px;
+}
+</style>    

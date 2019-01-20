@@ -17,7 +17,7 @@
       
       <% total_subject_main = @report_data['report']['subjects'].count %>  
           
-      <table class="sjws_table_head left-margin-small std_name_and_class"<% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %>cellspacing="0">
+      <table class="sjws_table_head left-margin-small std_name_and_class"<% if total_subject_main > 6 %> width="100%" <% else %> width="100%" <% end %>cellspacing="0">
           <tr class="table-header">
               <td colspan="2" class="align-left"><b>STUDENT'S NAME : <%= @student.full_name %> </b></td> 
           </tr>
@@ -31,7 +31,7 @@
           <div id="grouped_exam_report">
 
               
-              <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="90%" <% end %> cellspacing="0">
+              <table id="pdf-table" class="sjws_table_intro align-center-table" <% if total_subject_main > 6 %> width="100%" <% else %> width="100%" <% end %> cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf"><%= "Subject" %></b></td>                      

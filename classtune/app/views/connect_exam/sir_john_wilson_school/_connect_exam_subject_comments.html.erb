@@ -416,3 +416,32 @@ td.column-sticky:first-child
 }
 
 </style>
+
+<script>
+  var jj = jQuery.noConflict();
+   jj(document).ready(function () {
+ 
+      jj('input').keyup(function (e) {
+        if (e.which == 39) { // right arrow
+          jj(this).closest('td').next().find('input').focus();
+          
+ 
+        } else if (e.which == 37) { // left arrow
+          jj(this).closest('td').prev().find('input').focus();
+         
+ 
+        } else if (e.which == 40) { // down arrow
+         
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
+          
+ 
+        } else if (e.which == 38) { // up arrow
+          child_number = jj(this).closest('td').index()+1
+          jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
+          
+        }
+     });
+   }); 
+ 
+</script>  

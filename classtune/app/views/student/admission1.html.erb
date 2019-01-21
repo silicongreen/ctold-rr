@@ -114,6 +114,7 @@
                     </div>
 
                     <% else %>
+                    <% @last_admitted_student = Student.find(:last,:order=>"id ASC") %>
                     <div class="form-group col-sm-6 even">
 
                         <label for="student_admission_no"><%= t('admission_number') %> <span class="necessary-field">*</span> </label>          

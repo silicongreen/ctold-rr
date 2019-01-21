@@ -756,11 +756,11 @@ class StudentController < ApplicationController
               @student = Student.new(params[:student]) 
               @selected_value = Configuration.default_country 
               @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")
-              @last_admitted_student = Student.find(:last)
+              
               @config = Configuration.find_by_config_key('AdmissionNumberAutoIncrement')
               @categories = StudentCategory.active              
               
-              @last_admitted_student = Student.find(:last)
+              @last_admitted_student = Student.find(:last,:order=>"id ASC")
               if row[0].nil?                
                 unless @config.config_value == '0' or @last_admitted_student.nil?
                   @student.admission_no = @last_admitted_student.admission_no.next

@@ -2118,6 +2118,9 @@ table.top-left-center tr.remarks-tr td
     height: 100px !important;
     vertical-align: top !important;
 }
-
+div.sjws *
+{
+    font-family: "Times New Roman", Georgia, Serif !important; 
+}
 
 

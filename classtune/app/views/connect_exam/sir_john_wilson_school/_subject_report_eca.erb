@@ -11,7 +11,7 @@
                   <h4 class="no-warp">Extra Curricular Activities</h4>   
                 </td>
                 
-                <td class="col-pdf td-align-right" colspan="3">
+                <td class="col-pdf td-align-right" colspan="3" >
                     <h4>
                       <%= @connect_exam_obj.name %>&nbsp;
                       <% if month_number.to_i>6 %>
@@ -142,6 +142,7 @@
     td.td-align-right
     {
         text-align: right !important;
+        white-space: nowrap !important;
     }
     .width-60
     {

@@ -113,7 +113,8 @@
                     
                    <p style="font-size: 10px;"> 
                         <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                            <%= text_field_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :class=>"marks-box width-55" %>
+                            
+                            <%= text_area_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :rows=>2, :cols=>10, :class=>"marks-box width-55" %>
                          <% else %>
                             <%= exam.alternative_title %>
                          <% end %> 
@@ -283,7 +284,7 @@
                   
                   <div class="text-input-bg2">
                     
-                    <%= text_area_tag "exam[#{student.id}][comments]", exam_comment, :rows=>3, :cols=>40 %></div>
+                    <%= text_area_tag "exam[#{student.id}][comments]", exam_comment, :rows=>3, :cols=>50 %></div>
                   </div>
                   <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
               </td> 

@@ -370,7 +370,8 @@ td.column-sticky:first-child
     display: none;
     color: #FFFFFF;
 }
-.td-mark:hover .date2 span{
+
+td.hover .date2 span{
     display: block;
     position: absolute;
     min-width: 150px;
@@ -396,7 +397,8 @@ td.column-sticky:first-child
     display: none;
     color: #FFFFFF;
 }
-.td-mark:hover .date span{
+
+td.hover .date span{
     display: block;
     position: absolute;
     min-width: 67px;
@@ -422,26 +424,41 @@ td.column-sticky:first-child
    jj(document).ready(function () {
  
       jj('input').keyup(function (e) {
+        jj('td.td-mark').removeClass('hover');
         if (e.which == 39) { // right arrow
           jj(this).closest('td').next().find('input').focus();
+          
+          jj(this).closest('td.td-mark').next().addClass('hover');
+         
           
  
         } else if (e.which == 37) { // left arrow
           jj(this).closest('td').prev().find('input').focus();
+          jj(this).closest('td').prev().addClass('hover');
          
  
         } else if (e.which == 40) { // down arrow
          
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
+          jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').addClass('hover');
           
  
         } else if (e.which == 38) { // up arrow
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
+          jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').addClass('hover');
           
         }
      });
+     
+     jj(document).on("click","input",function(){
+       jj('td.td-mark').removeClass('hover');
+       jj(this).closest('td.td-mark').addClass('hover');
+     });
+   
+
+   
    }); 
  
 </script>  

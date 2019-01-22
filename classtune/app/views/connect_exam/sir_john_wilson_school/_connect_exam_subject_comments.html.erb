@@ -421,31 +421,64 @@ td.hover .date span{
 </style>
 
 <script>
+  
   var jj = jQuery.noConflict();
+  var cangoleft = false;
+  var cangoright = false;
+  
    jj(document).ready(function () {
  
       jj('input').keyup(function (e) {
-        jj('td.td-mark').removeClass('hover');
+        
+        
         if (e.which == 39) { // right arrow
-          jj(this).closest('td').next().find('input').focus();
+          var input_value = jj(this).closest('td').find('input').val();
+          var input_length = input_value.length
+         
+          var s_end = this.selectionStart;
+           
           
-          jj(this).closest('td.td-mark').next().addClass('hover');
+          if(s_end > input_length || cangoleft == true)
+          {
+            jj('td.td-mark').removeClass('hover');
+            jj(this).closest('td').next().find('input').focus();
+            jj(this).closest('td.td-mark').next().addClass('hover');
+            cangoleft = false;
+          }
+          else if(s_end == input_length)
+          {
+            cangoleft = true;
+          } 
          
           
  
         } else if (e.which == 37) { // left arrow
-          jj(this).closest('td').prev().find('input').focus();
-          jj(this).closest('td').prev().addClass('hover');
+          var input_value = jj(this).closest('td').find('input').val();
+          var input_length = input_value.length
+          var s_end = this.selectionStart;
+          if(s_end == 0 || cangoright == true)
+          {
+            jj('td.td-mark').removeClass('hover');
+            jj(this).closest('td').prev().find('input').focus();
+            jj(this).closest('td').prev().addClass('hover');
+            cangoright = false;
+          } 
+          else if(s_end == 1)
+          {
+            cangoright = true;
+          } 
          
  
         } else if (e.which == 40) { // down arrow
          
+          jj('td.td-mark').removeClass('hover');
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').find('input').focus();
           jj(this).closest('tr').next().next().find('td:nth-child('+child_number+')').addClass('hover');
           
  
         } else if (e.which == 38) { // up arrow
+          jj('td.td-mark').removeClass('hover');
           child_number = jj(this).closest('td').index()+1
           jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
           jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').addClass('hover');
@@ -461,5 +494,6 @@ td.hover .date span{
 
    
    }); 
+   
  
 </script>  

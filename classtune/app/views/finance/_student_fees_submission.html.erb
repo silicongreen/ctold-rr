@@ -614,6 +614,13 @@
           <td class="col-2" colspan="3"></td>
           <td class="col-6" style="text-align: right; "><span style="color: #666; text-decoration: line-through;"><%= precision_label 0 %></span>&nbsp;&nbsp;&nbsp;</td>
         </tr>
+        <tr id="discount_0" class="<%= cycle("odd","even") %> discount_tr" style="display: none;">
+          <td class="col-1" style=" text-align: center;">
+            <i class="fa fa-close" style="font-size: 16px; cursor: pointer; color: #990A10;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">0</span>
+          </td>
+          <td class="col-2" colspan="3"></td>
+          <td class="col-6" style="text-align: right; "><span style="color: #666; text-decoration: line-through;"><%= precision_label 0 %></span>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
         <tr>
             <td class="col-1" style=" text-align: center;">
                   <div id="discount_on_div" style="display: none;">
@@ -629,6 +636,13 @@
               </td>
             <td colspan="4" id="add_extra_discount" class="col-2" style="font-size: 14px; font-weight: bold; cursor: pointer;"><i class="fa fa-plus-square-o" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;Add Discount</td>
         </tr>   
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><%= t('total_discount') %> </td>
+          <td class="col-6" style="text-align: right;">
+              <span id="discount_total_amount_label" style="color: #000;"><%= precision_label(discount_total) %></span>
+              <input type="hidden" name="discount_total_amount" id="discount_total_amount" value="<%= precision_label(discount_total) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+          </td>
+        </tr>
       <% end %>      
         
       <% unless @vat.nil? and @paid_fees.blank? %>

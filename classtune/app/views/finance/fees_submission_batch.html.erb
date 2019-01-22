@@ -505,6 +505,7 @@
     {
         j(".discount_category").each(function(){
               var discount_id = parseInt(this.id.replace("discount_category_",""));
+              
               if ( parseInt(discount_id_to_disabled) == discount_id )
               {
                   if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
@@ -520,11 +521,6 @@
                       calculateAmountToPay(0);
                       calculateDiscount();
                   }
-                  j("#discount_" + discount_id).remove();
-                  resetSN();
-              }
-              else
-              {
                   j("#discount_" + discount_id).remove();
                   resetSN();
               }

@@ -4835,7 +4835,7 @@ class FinanceController < ApplicationController
               discount.destroy
             end
             render :update do |page|
-              page << "reload_discount(#{discount.id});"
+              page << "reload_discount(#{@discount_id});"
             end
           else
             collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
@@ -4847,7 +4847,7 @@ class FinanceController < ApplicationController
               discount.destroy
             end
             render :update do |page|
-              page << "reload_discount(#{discount.id});"
+              page << "reload_discount(#{@discount_id});"
             end
           end
         else
@@ -4868,7 +4868,7 @@ class FinanceController < ApplicationController
             discount.destroy
           end
           render :update do |page|
-            page << "reload_discount(#{discount.id});"
+            page << "reload_discount(#{@discount_id});"
           end
         end
       else
@@ -4889,7 +4889,7 @@ class FinanceController < ApplicationController
           FinanceFee.update_student_fee(@fee_collection, s, @fee)
       end
       render :update do |page|
-        page << "reload_discount(#{discount.id});"
+        page << "reload_discount(#{@discount_id});"
       end
     end
   end

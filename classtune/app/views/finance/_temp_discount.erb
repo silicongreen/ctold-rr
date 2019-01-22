@@ -1,0 +1,35 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% d = @fee_discount %>
+<% discount_amount =  d.discount %>
+<td class="col-1" style=" text-align: center;">
+  <input type="hidden" class="discount_category" name="discount_category_<%= d.id %>" id="discount_category_<%= d.id %>" value="<%= d.finance_fee_particular_category_id  %> " data-is-onetime="1" />  
+  <input type="checkbox" name="fee_discount_<%= d.id %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
+  <i name="fee_discount_fa_<%= d.id %>" id="fee_discount_fa_<%= d.id %>" class="fa fa-check-square-o fees_discount_fa" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= 10 %></span>
+</td>
+<% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+<td class="col-2" colspan="3">
+  <%= discount_text %>
+  <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_discount_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :discount_id=>d.id },:confirm => 'Are you sure, you want to remove this discount?'%></span>    
+</td>
+<td class="col-6" style="text-align: right;">
+    <span class="fee_amount_discount editable"  name="fee_amount_discount_<%= d.id %>" id="fee_amount_discount_<%= d.id %>"><i class="fa fa-pencil" style="font-size: 12px;" aria-hidden="true"></i> <span><%= precision_label discount_amount %></span></span>
+    <input type="hidden" name="fee_discount_amount_<%= d.id %>" id="fee_discount_amount_<%= d.id %>" value="<%= precision_label discount_amount %>" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 70%;" onkeypress="return isNumberKey(event,this, 'discount')" onkeydown="checkKey(event,this, 'discount')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_discount" name="fee_discount_chk_<%= d.id %>" id="fee_discount_chk_<%= d.id %>" style="font-size: 16px; cursor: pointer; display: none;" aria-hidden="true"></i>
+</td>

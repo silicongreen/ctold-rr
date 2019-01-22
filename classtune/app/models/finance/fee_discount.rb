@@ -24,6 +24,7 @@ class FeeDiscount < ActiveRecord::Base
   belongs_to :receiver,:polymorphic=>true
   has_many   :finance_fee_collections,:through=>:collection_discounts
   has_many   :collection_discounts
+  has_many   :student_exclude_discounts
   belongs_to :batch
   belongs_to :finance_fee_particular
 #  validates_uniqueness_of :name,:scope=>[:batch_id,:finance_fee_category_id]

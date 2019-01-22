@@ -36,6 +36,25 @@
       </tr>
     </thead>
     <tbody>
+    <tr id="batch_discount_div" style="background: #FFF1AB; display: none;">
+        <td colspan="6" style="text-align: left;">
+            <div style="border: 1px solid #ccc; position: relative; border-radius: 6px; padding-bottom: 10px; max-height: 120px; overflow-y: auto;">
+                <a id="batch_discount_close" href="javascript:;" style="position: absolute; font-size: 16px; font-family: verdana; font-weight: bold; top: 0px; right: 10px; text-decoration: none; ">&times;</a>
+                <p id="batch_discount_error" class="flash-msg" style="font-size: 16px; padding: 10px; margin-top: -1px; border-top-left-radius: 9px; border-top-right-radius: 9px;"></p>
+                <table class="table table-striped table-bordered" id="student-list-table-batch" cellspacing="0" cellpadding="0" border="0" style="width: 98%; margin: 0 auto; margin-top: -5px; display: none;">
+                  <thead><!-- class="thead-inverse" -->
+                    <tr>
+                      <th><%= t('admission_no') %></th>
+                      <th><%= t('name') %></th>
+                      <th><%= t('roll_no') %></th>
+                      <th><%= t('balance') %></th>
+                    </tr>
+                  </thead>
+                  <tbody id="student_list_mismatch_discount_batch"></tbody>
+                </table>
+            </div>
+        </td>
+    </tr>    
     <% batch_discount.each do |f| %>
       <tr class="<%= cycle('odd', 'even')%>">
         <td class="col-3"><%= f.name %></td>
@@ -47,9 +66,9 @@
           <td class="col-1">
             <div id="discount_option_<%= f.id %>" class="options">
               <% if @fee_collection_discount.include?(f.id) %>  
-              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
+              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}", :html => {:id=>"remove_student_#{f.id}"},:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"batch", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#remove_student_#{f.id}').attr('href','javascript:;');j('#remove_student_#{f.id}').attr('data-onclick',j('#remove_student_#{f.id}').attr('onclick'));j('#remove_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>  
               <% else %>  
-              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"batch", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').removeAttr('onclick');j('#assign_student_#{f.id}').attr('href','javascript:;');", :success => "Element.hide('loader_#{f.id}')" %></span>
+              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"batch", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').attr('href','javascript:;');j('#assign_student_#{f.id}').attr('data-onclick',j('#assign_student_#{f.id}').attr('onclick'));j('#assign_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>
               <% end %>
             </div>
             <div class="loader_div">
@@ -98,6 +117,28 @@
       </tr>
     </thead>
     <tbody>
+    <tr id="category_discount_div" style="background: #FFF1AB; display: none;">
+        <td colspan="6" style="text-align: left;">
+            <div style="border: 1px solid #ccc; position: relative; border-radius: 6px; padding-bottom: 10px; max-height: 120px; overflow-y: auto;">
+                <a id="category_discount_close" href="javascript:;" style="position: absolute; font-size: 16px; font-family: verdana; font-weight: bold; top: 0px; right: 10px; text-decoration: none; ">&times;</a>
+                <p id="category_discount_error" class="flash-msg" style="font-size: 16px; padding: 10px; margin-top: -1px; border-top-left-radius: 9px; border-top-right-radius: 9px;">This is a good thing</p>
+                <table class="table table-striped table-bordered" id="student-list-table" cellspacing="0" cellpadding="0" border="0" style="width: 98%; margin: 0 auto; margin-top: -5px; display: none;">
+                  <thead><!-- class="thead-inverse" -->
+                    <tr>
+                      <th><%= t('admission_no') %></th>
+                      <th><%= t('name') %></th>
+                      <th><%= t('roll_no') %></th>
+                      <th><%= t('balance') %></th>
+                    </tr>
+                  </thead>
+                  <tbody id="student_list_mismatch_discount">
+                    <tr><td style="text-align: left;"><a href="/student/fee_details/23815/1622" target="_blank">15448</a></td><td style="text-align: left;">Mst. Maryum  Rahman</td><td style="text-align: left;">1</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23816/1622" target="_blank">15222</a></td><td style="text-align: left;">Muntahina Masud  Rayya</td><td style="text-align: left;">2</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23817/1622" target="_blank">15208</a></td><td style="text-align: left;">Afsara Binte  Momin</td><td style="text-align: left;">3</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23818/1622" target="_blank">15230</a></td><td style="text-align: left;">D.M. Turjaun  Alam</td><td style="text-align: left;">4</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23821/1622" target="_blank">15188</a></td><td style="text-align: left;">Yushra  Inaaya</td><td style="text-align: left;">7</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23822/1622" target="_blank">15444</a></td><td style="text-align: left;">Zakiyah  Rahman</td><td style="text-align: left;">8</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23823/1622" target="_blank">15210</a></td><td style="text-align: left;">Jaika  Jannat</td><td style="text-align: left;">9</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23824/1622" target="_blank">15800</a></td><td style="text-align: left;">Arifun  Nahar</td><td style="text-align: left;">10</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23825/1622" target="_blank">15438</a></td><td style="text-align: left;">Adrita  </td><td style="text-align: left;">11</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23826/1622" target="_blank">15203</a></td><td style="text-align: left;">Maimuna  Tasnim</td><td style="text-align: left;">12</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23827/1622" target="_blank">15226</a></td><td style="text-align: left;">Mahzabin  Effat</td><td style="text-align: left;">13</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23829/1622" target="_blank">15206</a></td><td style="text-align: left;">Dahnaz  Farzeen</td><td style="text-align: left;">15</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23832/1622" target="_blank">15218</a></td><td style="text-align: left;">Sumaiya Binte Baki  Laiba</td><td style="text-align: left;">18</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23834/1622" target="_blank">171036</a></td><td style="text-align: left;">Zunairah  Mehrish</td><td style="text-align: left;">20</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23838/1622" target="_blank">16483</a></td><td style="text-align: left;">Nusaiba  Naziha</td><td style="text-align: left;">24</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23839/1622" target="_blank">15199</a></td><td style="text-align: left;">Sidratul Muntaha Binte  Zakir</td><td style="text-align: left;">25</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23840/1622" target="_blank">15804</a></td><td style="text-align: left;">Syeda Zafnah Hasan  (Dia)</td><td style="text-align: left;">26</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23841/1622" target="_blank">15191</a></td><td style="text-align: left;">Tanisha  Anwar</td><td style="text-align: left;">27</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23842/1622" target="_blank">15215</a></td><td style="text-align: left;">Huzaifa Tasfia  Elma</td><td style="text-align: left;">28</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23843/1622" target="_blank">14520</a></td><td style="text-align: left;">Kazi Israt Jahan  Sristy</td><td style="text-align: left;">29</td><td style="text-align: right;">32610.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23844/1622" target="_blank">15888</a></td><td style="text-align: left;">Barika Zabeen  Purna</td><td style="text-align: left;">30</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23845/1622" target="_blank">15232</a></td><td style="text-align: left;">Zaima  Farzeen</td><td style="text-align: left;">31</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23847/1622" target="_blank">15443</a></td><td style="text-align: left;">Humayra  Marium</td><td style="text-align: left;">34</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23850/1622" target="_blank">15207</a></td><td style="text-align: left;">Jannatul Mawa  Noshin</td><td style="text-align: left;">37</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23851/1622" target="_blank">15814</a></td><td style="text-align: left;">Rubaba  Mehrin</td><td style="text-align: left;">38</td><td style="text-align: right;">19250.00</td></tr><tr><td style="text-align: left;"><a href="/student/fee_details/23853/1622" target="_blank">18606</a></td><td style="text-align: left;">Nahiyean  Alvi</td><td style="text-align: left;">40</td><td style="text-align: right;">19250.00</td></tr>
+                  </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    
     <% category_discount.each do |f| %>
       <tr class="<%= cycle('odd', 'even')%>">
         <td class="col-3"><%= f.name %></td>
@@ -107,22 +148,22 @@
           <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
         </td>
        
-          <td class="col-1">
-            <div id="discount_option_<%= f.id %>" class="options">
-              <% if @fee_collection_discount.include?(f.id) %>  
-              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
-              <% else %>  
-              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"categoy", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').removeAttr('onclick');j('#assign_student_#{f.id}').attr('href','javascript:;');", :success => "Element.hide('loader_#{f.id}')" %></span>
-              <% end %>
-            </div>
-            <div class="loader_div">
-              <%= image_tag("loader.gif",
-                :align => "absmiddle",
-                :border => 0,
-                :id => "loader_#{f.id}",
-                :style =>"display: none; padding-top: 5px;" ) %>
-            </div>  
-          </td>
+        <td class="col-1">
+          <div id="discount_option_<%= f.id %>" class="options">
+            <% if @fee_collection_discount.include?(f.id) %>  
+            <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}", :html => {:id=>"remove_student_#{f.id}"},:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"categoy", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#remove_student_#{f.id}').attr('href','javascript:;');j('#remove_student_#{f.id}').attr('data-onclick',j('#remove_student_#{f.id}').attr('onclick'));j('#remove_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>  
+            <% else %>  
+            <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"categoy", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').attr('href','javascript:;');j('#assign_student_#{f.id}').attr('data-onclick',j('#assign_student_#{f.id}').attr('onclick'));j('#assign_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>
+            <% end %>
+          </div>
+          <div class="loader_div">
+            <%= image_tag("loader.gif",
+              :align => "absmiddle",
+              :border => 0,
+              :id => "loader_#{f.id}",
+              :style =>"display: none; padding-top: 5px;" ) %>
+          </div>  
+        </td>
       </tr>
     <% end %>
     </tbody>
@@ -163,6 +204,7 @@
       </tr>
     </thead>
     <tbody>
+    <tr id="student_discount_div" style="display: none;"><td colspan="6" style="text-align: center;"><p id="student_discount_error" class="flash-msg"></p></td></tr>         
     <% student_discount.each do |f| %>
       <tr class="<%= cycle('odd', 'even')%>">
         <td class="col-3"><%= f.name %></td>
@@ -176,9 +218,9 @@
           <td class="col-1">
             <div id="discount_option_<%= f.id %>" class="options">
               <% if @fee_collection_discount.include?(f.id) %>  
-              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}",:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id},:before => "Element.show('loader_#{f.id}')", :success => "Element.hide('loader_#{f.id}')" %></span>  
+              <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}", :html => {:id=>"remove_student_#{f.id}"},:url => {:action => 'remove_fee_discount_from_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"student", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#remove_student_#{f.id}').attr('href','javascript:;');j('#remove_student_#{f.id}').attr('data-onclick',j('#remove_student_#{f.id}').attr('onclick'));j('#remove_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>  
               <% else %>  
-              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"student", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').removeAttr('onclick');j('#assign_student_#{f.id}').attr('href','javascript:;');", :success => "Element.hide('loader_#{f.id}')" %></span>
+              <span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{f.id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"student", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#assign_student_#{f.id}').attr('data-onclick',j('#assign_student_#{f.id}').attr('onclick'));j('#assign_student_#{f.id}').removeAttr('onclick');j('#assign_student_#{f.id}').attr('href','javascript:;');", :success => "Element.hide('loader_#{f.id}')" %></span>
               <% end %>
             </div>
             <div class="loader_div">
@@ -232,4 +274,12 @@
 
 <% end %>
 </div>
-  <div style="clear: both; height: 20px;"></div>
+<div style="clear: both; height: 20px;"></div>
+
+<style>
+    #student-list-table > thead > tr > th, #student-list-table > tbody > tr > th, #student-list-table > tfoot > tr > th, #student-list-table > thead > tr > td, #student-list-table > tbody > tr > td, #student-list-table > tfoot > tr > td {
+        padding: 1px 7px !important;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+    }
+</style>

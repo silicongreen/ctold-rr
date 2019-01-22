@@ -96,5 +96,21 @@
   var jq = jQuery.noConflict();
   jq(document).ready(function() {
       jq('#batch_id').select2();
+      
+      jq(document).on('click', '#category_discount_close', function(){
+          jq('#category_discount_div').hide();
+      });
+      
+      jq(document).on('click', '#batch_discount_close', function(){
+          jq('#batch_discount_div').hide();
+      });
+      
+      jq(document).on('click', '#list_of_student_category', function(){
+          jq('#student-list-table').slideToggle();
+      });
+      
+      jq(document).on('click', '#list_of_student_batch', function(){
+          jq('#student-list-table-batch').slideToggle();
+      });
   });
 </script>

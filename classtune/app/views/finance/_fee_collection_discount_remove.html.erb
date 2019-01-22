@@ -15,4 +15,4 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
-<span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}",:url => {:action => 'assign_fee_discount_to_collection', :id => @discount_id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id} %></span>
+<span class="small"> <%= link_to_remote "#{t('assign')}",:confirm=>"#{t('assign_confirm_msg')}", :html => {:id=>"assign_student_#{@discount_id}"},:url => {:action => 'assign_fee_discount_to_collection', :id => @discount_id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>@type_discount, :receiver_id=>@receiver_id},:before => "Element.show('loader_#{@discount_id}');j('#assign_student_#{@discount_id}').attr('href','javascript:;');j('#assign_student_#{@discount_id}').attr('data-onclick',j('#assign_student_#{@discount_id}').attr('onclick'));j('#assign_student_#{@discount_id}').removeAttr('onclick');", :success => "Element.hide('loader_#{@discount_id}')" %></span>

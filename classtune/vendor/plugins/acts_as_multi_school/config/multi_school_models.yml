@@ -144,6 +144,7 @@ multi_school_models:
 - BoardExamStudentSubject
 - BoardExamSubject
 - BoardSession
+- StudentExcludeDiscount
 
 general_models:
 - PrivilegeTag

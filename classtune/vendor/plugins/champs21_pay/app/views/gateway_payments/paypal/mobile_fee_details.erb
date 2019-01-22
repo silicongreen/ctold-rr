@@ -286,13 +286,13 @@
                                         o = [('a'..'z'), (1..9)].map(&:to_a).flatten
                                         string = (0...8).map { o[rand(o.length)] }.join 
                                       %>
-                                        <% email = 'sagc.fee@classtune.com' %>
+                                        <% email = '-' %>
                                         <% unless @student.immediate_contact.nil? or @student.immediate_contact.blank? %>
-                                          <% unless @student.immediate_contact.email.blank? %>
-                                            <% email = @student.immediate_contact.email %>
-                                          <% end %>
-                                        <% end %>     
-                                        <%= trustbank_pay_button(@merchant_id,total_fees,@student.full_name, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
+                                             <% unless @student.immediate_contact.email.blank? %>
+                                                <% email = @student.immediate_contact.email %>
+                                             <% end %>
+                                        <% end %> 
+                                        <%= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
                                       <% end %>
 
                                   </div>

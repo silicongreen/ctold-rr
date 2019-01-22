@@ -103,7 +103,12 @@
 <input type="hidden" name="batch_id_particular" id="batch_id_particular" value="<%= @batch.id %>" />
 <input type="hidden" name="student_id_particular" id="student_id_particular" value="<%= @student.id %>" />
 <input type="hidden" name="date_id_particular" id="date_id_particular" value="<%= @date.id %>" />
-<span class="small" style="margin: 0 20px 20px 0;"><%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount_student', :id => @date.id,:batch_id=>@batch.id, :student_id => @student.id} %></span>
+<div style="clear: both; height: 4px;"></div>
+<% unless @financefee.is_paid == true or (@total_payable-@total_discount==0) or @self_advance_fee %>
+<span class="small" style="margin: 0 20px 20px 0;">
+  <%= link_to_remote t('assign_discount_text'), :url => {:action => 'fee_collection_assign_discount_student', :id => @date.id,:batch_id=>@batch.id, :student_id => @student.id} %>
+</span>
+<% end %>
 <% total_fees =0 %>
 <% total_payable =0 %>
 <% if @student.has_dues %>
@@ -605,7 +610,6 @@
         </tr>
         <% end %>
       <% end %>
-        
       <% if total_fees > 0 and !@self_advance_fee and !add_discount_link %>  
         <tr id="discount_0" class="<%= cycle("odd","even") %> discount_tr" style="display: none;">
           <td class="col-1" style=" text-align: center;">

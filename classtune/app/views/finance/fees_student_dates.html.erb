@@ -17,6 +17,8 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/javascripts/finance.js"></script>
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('fees_submission') %></h1>
@@ -55,89 +57,7 @@
 </div>
 
 <div id="modal-box" style="display:none;"></div>
-<script type="text/javascript">
-  function reloadFeeSubmission(date_id,student_id,submission_date)
-  {
-      var year = submission_date.getFullYear();
-      var month = submission_date.getMonth() + 1;
-      var day = submission_date.getDate();
-      if (month < 10) {
-          month = "0" + month;
-      }
-      if (day < 10) {
-          day = "0" + day;
-      }
-      var dt = year + '-' + month + '-' + day;
-      new Ajax.Request('/finance/fees_submission_student', 
-            {
-              asynchronous:true, 
-              evalScripts:true, 
-              parameters:'date='+date_id+'&id='+student_id+'&submission_date='+dt
-            }
-      )
-  } 
-</script>
-<script type="text/javascript">
-  <% unless params[:id2].blank? %>
-    $jq = jQuery.noConflict();
-    $jq("#fees_submission_dates_id").val(<%= params[:id2] %>);
-    $jq("#fees_submission_dates_id").trigger("change");
-  <% end %>  
-  function validate_payment_mode()
-  {
-    if ($('payment')!=null)
-    {
-      if ($('payment').select('input')[0].value=="")
-      {
-        alert('<%= "#{t('select_one_payment_mode')}"%>');
-        return false;
-      }
-      else
-      {
-        return true;
-      }
-    }
-    else
-    {
-      return true;
-    }
-  }
-  function validate_fine()
-  {
-    if(isNaN($('fine_fee').value)==false)
-    {
-      if($('fine_fee').value <= 0)
-      {
-        $('fine_fee').value=""
-        alert("Please enter a positive value for fine");
-        return false;
-      }
-      else if($('fine_fee').value=="")
-      {
-        alert("Please enter a positive value for fine");
-        return false;
-      }
-      else{
-        return true;
-      }
-    }
-    else
-    {
-      $('fine_fee').value=""
-      alert("Please enter a numeric value for fine");
-      return false;
-    }
-  }
-  function prev_double(){
-    $('fees_form').setAttribute("onsubmit", "return false")
-    $('submit_button').disable();
-  }
 
-  function set_back(){
-    $('fees_form').removeAttr("onsubmit");
-    setTimeout(function(){$('submit_button').enable();},15000);
-  }
-</script>
 <style>
 .input-container2 select
 {

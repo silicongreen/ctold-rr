@@ -645,6 +645,7 @@ authorization do
       :to => [
       :profile,
       :admission1,
+      :admission_sagc,
       :all_students_import,
       :get_section_data,
       :get_classes,
@@ -2711,6 +2712,7 @@ authorization do
       :insert_into_new_parent_student_table,
       :profile,
       :admission1,
+      :admission_sagc,
       :all_students_import,
       :get_section_data,
       :get_classes,

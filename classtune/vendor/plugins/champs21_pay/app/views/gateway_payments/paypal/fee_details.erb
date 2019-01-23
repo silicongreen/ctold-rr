@@ -221,9 +221,6 @@
                     <br />(<small><%= month %> Month Advances</small>)
                    <% end %>
               <% end %>  
-              <% if fee.is_tmp and paidAmount == 0 %>
-                <span style="float: right;"><%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>fee.id },:confirm => 'Are you sure, you want to remove this particular?'%></span>
-              <% end %>  
             </td>
             <% if @self_advance_fee %>
             <td class="col-6" style="text-align: right;">(<%= precision_label fee.amount %> <%= "x " + month.to_s  %>)</td>
@@ -604,13 +601,6 @@
               </td>
               <td class="col-2">
                   <span class="themed_text"><%= "VAT" %></span>
-                  <% if @vat_as_particular and paidAmount == 0 %>
-                    <span id="rm_vat" style="float: right;">
-                        <%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10;" aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>@vat_particular_id },:confirm => 'Are you sure, you want to remove this particular?'%>
-                    </span>
-                  <% else %>  
-                    <span id="rm_vat" style="float: right;"></span>
-                  <% end %> 
               </td>
               <td class="col-6" style="text-align: right;">
                   <%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;
@@ -646,13 +636,6 @@
               </td>
               <td class="col-2">
                   <span class="themed_text"><%= "VAT" %></span>
-                  <% if @vat_as_particular and paidAmount == 0 %>
-                    <span id="rm_vat" style="float: right;">
-                        <%= link_to_remote '<i class="fa fa-minus-circle" style="font-size: 20px; color: #990A10; " aria-hidden="true"></i>',:url => {:action => 'remove_tmp_particular_from_fee', :batch_id => @batch.id, :student => @student.id, :date=> @date.id, :particular_id=>@vat_particular_id },:confirm => 'Are you sure, you want to remove this particular?'%>
-                    </span>
-                  <% else %>  
-                    <span id="rm_vat" style="float: right;"></span>
-                  <% end %> 
               </td>
               <td class="col-6" style="text-align: right;">
                   <%= precision_label @vat.to_f %>&nbsp;&nbsp;&nbsp;
@@ -967,7 +950,9 @@
             }
         });
       </script>
+      <% if MultiSchool.current_school.id == 352 %>
       <% @student_has_due = false %>
+      <% end %>
       <% if @student_has_due == false %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
@@ -994,7 +979,7 @@
                   <% end %>     
                   <%= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
                 <% end %>
-                <%= link_to "â–º #{t('print_receipt')}",
+                <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id},:target => '_blank', :class=> 'user_button' %>
                 </div></div>  
               </td>

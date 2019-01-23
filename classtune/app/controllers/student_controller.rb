@@ -1809,6 +1809,10 @@ class StudentController < ApplicationController
     @batches = []
     @user = current_user
     @student = Student.find(params[:id])
+    
+    @previous_batch_id = @student.batch_id
+    @previous_category_id = @student.student_category_id
+    
     @student.pass = "01"
     @student.gender=@student.gender.downcase
     @student_user = @student.user
@@ -1861,6 +1865,50 @@ class StudentController < ApplicationController
         unless params[:student][:image_file].size.to_f > 280000
           if @student.update_attributes(params[:student])
             
+            if @previous_category_id != @student.student_category_id
+              @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+              @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+
+              @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
+              @payed_fees ||= []
+
+              @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
+              @fee_collection_dates.each do |date|
+                d = FinanceFeeCollection.find(date.id)
+                if @student_fees.include?(d.id)
+                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
+                  unless fee.blank?
+                    FinanceFee.update_student_fee(d,@student, fee)
+                  else
+                    FinanceFee.new_student_fee(d,@student)
+                  end
+                end
+              end
+            end
+            
+            if @previous_batch_id != @student.batch_id
+              @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+              @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+
+              @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
+              @payed_fees ||= []
+
+              @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
+              @fee_collection_dates.each do |date|
+                d = FinanceFeeCollection.find(date.id)
+                if @student_fees.include?(d.id)
+                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @previous_batch_id, false)
+                  fee.destroy if fee.finance_transactions.empty?
+                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
+                  unless fee.blank?
+                    FinanceFee.update_student_fee(d,@student, fee)
+                  else
+                    FinanceFee.new_student_fee(d,@student)
+                  end
+                end
+              end
+            end
+            
             username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
             champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
             api_endpoint = champs21_api_config['api_url']
@@ -1884,6 +1932,50 @@ class StudentController < ApplicationController
         end
       else
         if @student.update_attributes(params[:student])
+          if @previous_category_id != @student.student_category_id
+            @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+            @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+
+            @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
+            @payed_fees ||= []
+
+            @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
+            @fee_collection_dates.each do |date|
+              d = FinanceFeeCollection.find(date.id)
+              if @student_fees.include?(d.id)
+                fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
+                unless fee.blank?
+                  FinanceFee.update_student_fee(d,@student, fee)
+                else
+                  FinanceFee.new_student_fee(d,@student)
+                end
+              end
+            end
+          end
+
+          if @previous_batch_id != @student.batch_id
+            @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+            @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+
+            @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
+            @payed_fees ||= []
+
+            @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
+            @fee_collection_dates.each do |date|
+              d = FinanceFeeCollection.find(date.id)
+              if @student_fees.include?(d.id)
+                fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @previous_batch_id, false)
+                fee.destroy if fee.finance_transactions.empty?
+                fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
+                unless fee.blank?
+                  FinanceFee.update_student_fee(d,@student, fee)
+                else
+                  FinanceFee.new_student_fee(d,@student)
+                end
+              end
+            end
+          end
+          
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
           champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
           api_endpoint = champs21_api_config['api_url']

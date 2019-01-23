@@ -46,7 +46,7 @@
 
   <% if @connect_exam_obj.result_type == 11 or @connect_exam_obj.result_type == 6 %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/first_term_report_for_10_to_12" %> 
-  <% if @connect_exam_obj.result_type == 15 %>
+  <% elsif @connect_exam_obj.result_type == 15 %>
     <%= render  :partial=>"/connect_exam/sir_john_wilson_school/report_for_mock" %>
   <% elsif @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 4 %>
     

@@ -226,7 +226,7 @@
     var image_loading = jq('#image_loading').html()
     jq('#student_'+student_id).html(image_loading);
     jq.get( "/student/send_sms_username_password/"+student_id, function( data ) {
-      jq('#student_'+student_id).html("<font color='green'>Massage Send</font>");
+      jq('#student_'+student_id).html("<font color='green'>Message Send</font>");
     });
   }
   jq(document).ready(function() {

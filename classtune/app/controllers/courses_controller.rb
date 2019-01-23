@@ -915,7 +915,7 @@ class CoursesController < ApplicationController
         @course.errors.add("Section Name","must not be empty")
         @error = true
     else
-      @courses_exits = Course.find_by_course_name_and_section_name_and_session(params[:course][:course_name], params[:course][:section_name], params[:course][:session])
+      @courses_exits = Course.find_by_course_name_and_section_name_and_session(params[:course][:course_name], params[:course][:section_name], params[:course][:session],:conditions=>["id != ?",@course.id])
       if @courses_exits.nil?
         if @course.update_attributes(params[:course])
           @sections = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0  ", @course.course_name], :select => "section_name", :group => "section_name")

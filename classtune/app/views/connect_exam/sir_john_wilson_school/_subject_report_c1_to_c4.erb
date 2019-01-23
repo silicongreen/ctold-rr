@@ -29,10 +29,13 @@
                 <td class="col-pdf rotate" rowspan="2"><div><span><br/>Without help<br/><br/></span></div></td>
                 <td class="col-pdf rotate" rowspan="2"><div><span><br/>High level<br/><br/></span></div></td>
             </tr>     
-            <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>"> 
-                <td class="col-pdf margin-padding-0" colspan="2">
-                    <h4>NAME : <%= @student.full_name %></h4>
+            <tr class="even"> 
+                <td class="col-pdf margin-padding-0  border-left-none">
+                    <h4 class="no-warp">NAME : <%= @student.full_name %></h4>
                     <h4>Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
+                </td>
+                <td class="col-pdf td-align-right">
+                  
                 </td>
             </tr> 
             <% subject_groups = get_subject_group(subjects['id']) %> 
@@ -240,7 +243,7 @@
 
               <tr>
                   <td class="col-pdf align-center"><b><%= @teacher_name %></b></td>  
-                  <td class="col-pdf border-none">&nbsp;</td>
+                  <td class="col-pdf border-none"><center><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %></center></td>
                   <td class="col-pdf align-center"><b>Date</b></td>                          
               </tr>
           </table>
@@ -254,6 +257,10 @@
     td.td-align-right
     {
         text-align: right !important;
+    }
+    td.border-none center
+    {
+        margin-top: -50px !important;
     }
     
 </style>    

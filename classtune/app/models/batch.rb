@@ -61,6 +61,7 @@ class Batch < ActiveRecord::Base
   has_many :fee_collection_batches
   has_many :fee_discounts
   accepts_nested_attributes_for :subjects
+  validates_uniqueness_of :name, :scope=>[:course_id],:message=>'Already in database'
   delegate :course_name,:section_name, :code, :to => :course
   delegate :grading_type, :cce_enabled?, :observation_groups, :cce_weightages, :to=>:course
 

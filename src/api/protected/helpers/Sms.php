@@ -9,7 +9,7 @@
 class Sms
 {
 
-    public static $sms_attendence_school = [2, 296,319,312,346];
+    public static $sms_attendence_school = [2, 296,319,312,352];
     public static $sms_all_guardian = [2];
     public static $sms_subject_attendence_school = [2];
     //296
@@ -20,7 +20,7 @@ class Sms
     public static $param_ssd = array("msisdn", "sms");
     public static $host_ssd = "http://sms.sslwireless.com/pushapi/dynamic/server.php?user=classtune&pass=ssl@123&sid=ClassTune";
     public static $host_return_ssd = "Success";
-
+  
     public static function send_sms($sms_data, $school_id, $msg_id)
     {
         if (in_array($school_id, self::$sms_attendence_school))

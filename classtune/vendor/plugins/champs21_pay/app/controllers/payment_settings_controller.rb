@@ -55,7 +55,7 @@ class PaymentSettingsController < ApplicationController
         
         require 'socket'
 
-        addr_infos = Socket.gethostname
+        addr_infos = IPSocket.getaddress(Socket.gethostname)
         abort(addr_infos.inspect)
         uri = URI(request_url)
         http = Net::HTTP.new(uri.host, uri.port)

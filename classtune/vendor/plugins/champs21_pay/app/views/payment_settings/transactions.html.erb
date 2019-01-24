@@ -119,6 +119,9 @@
             <th style="width: 10%;"><%= t("online_transaction_id") %></th>
             <% end %>
             <th style="width: 10%;"><%= t("transaction_date") %></th>
+            <% if MultiSchool.current_school.id == 352 %>
+            <th style="width: 10%;"><%= "Verified" %></th>
+            <% end %>
         </tr>
         </thead>
         <tbody>
@@ -190,6 +193,13 @@
             <td style="vertical-align: middle; text-align: center;">
               <%= I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
             </td>
+            <% if MultiSchool.current_school.id == 352 %>
+              <% if payment.gateway_response[:verified].to_i == 0 %>
+              <td style="text-align: center; vertical-align: middle;"><i id="payment<%= payment.id %>" class="fa fa-square-o payment_verify" style="color: #49BB4B; font-size: 24px; cursor: pointer;"></i><br /></td>
+              <% else %>
+              <td style="text-align: center; vertical-align: middle;"><i class="fa fa-check-square-o" style="color: #49BB4B; font-size: 24px;"></i><br /></td>
+              <% end %>
+            <% end %>
           </tr>
         <% end %>
         </tbody> 
@@ -225,3 +235,17 @@
         height: 22px;
     }
 </style>
+<script>
+  j(document).ready(function(){
+      j(document).on("click",".payment_verify",function(){
+          var id = this.id.replace("payment","");
+          new Ajax.Request('/online_payments/verify_payment', 
+                {
+                  asynchronous:true, 
+                  evalScripts:true, 
+                  parameters:'payment_id='+id
+                }
+          )
+      });
+  });
+</script>

@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :online_payments, :controller => "payment_settings",:collection => {:transactions => [:get,:post],:settings => [:get,:post],:return_to_champs21_pages => [:get,:post]}
+  map.resources :online_payments, :controller => "payment_settings",:collection => {:transactions => [:get,:post],:settings => [:get,:post],:verify_payment => [:get,:post],:return_to_champs21_pages => [:get,:post]}
   map.feed 'online_payments/', :controller=>'payment_settings',:action=>'index'
   # The priority is based upon order of creation: first created -> highest priority.
 

@@ -80,3 +80,4 @@ en:
   merchant_id: "Merchant Id"
   is_test_sslcommerz: "Test SSL Commerz"
   is_test_testtrustbank: "Test Trustbank API"
+  keycode_verification: "Keycode"

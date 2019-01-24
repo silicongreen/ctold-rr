@@ -78,8 +78,8 @@ module OnlinePayment
           @self_advance_fee = false
           @fee_has_advance_particular = false
           
-          @batch = @student.batch
           @student = Student.find(params[:id])
+          @batch = @student.batch
           
           @date = @fee_collection = FinanceFeeCollection.find(params[:id2])
           @student_has_due = false
@@ -651,8 +651,9 @@ module OnlinePayment
                     :service_charge=>validation_service_charge_post,
                     :pan=>validation_pan
                   }
-                  validation_payment = Payment.new(:payee => @student,:payment => @financefee, :gateway_response => gateway_response, :validation_response => validation_response)
-                  validation_payment.save
+                  payment.update_attributes(:gateway_response => validation_response, :validation_response => validation_response)
+                  #validation_payment = Payment.new(:payee => @student,:payment => @financefee, :gateway_response => gateway_response, :validation_response => validation_response)
+                  #validation_payment.save
                   status = 0
                   status_text = 0
                   amount = 0

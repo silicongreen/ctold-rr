@@ -53,6 +53,10 @@ class PaymentSettingsController < ApplicationController
         request_url = @verification_url + '/Get_Transaction_Ref'
         #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
         
+        require 'socket'
+
+        addr_infos = Socket.ip_address_list
+        abort(addr_infos.inspect)
         uri = URI(request_url)
         http = Net::HTTP.new(uri.host, uri.port)
         auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})

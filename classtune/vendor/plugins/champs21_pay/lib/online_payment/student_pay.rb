@@ -884,7 +884,7 @@ module OnlinePayment
                           end
                         end
                         #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-                        send_sms(message,recipients)
+                        #send_sms(message,recipients)
                       end
                       
 

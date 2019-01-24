@@ -5292,7 +5292,7 @@ class StudentController < ApplicationController
   end
   
   def send_sms(multi_message, recipients)
-    @recipients = recipients.map{|r| r.to_s.gsub(' ','')}
+    @recipients = recipients.map{|r| r.gsub(' ','')}
     @multi_message = multi_message
     @config = SmsSetting.get_sms_config
     unless @config.blank?

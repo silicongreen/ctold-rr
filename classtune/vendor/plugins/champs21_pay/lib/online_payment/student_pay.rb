@@ -929,13 +929,10 @@ module OnlinePayment
       /(\d{4}-\d{2}-\d{2})/.match(date)
     end
     
-    def send_sms(message, recipients)
+    def send_sms(multi_message, recipients)
       @recipients = recipients.map{|r| r.to_s.gsub(' ','')}
-    
-      @message = CGI::escape message
-      @message_without_encode = message
+      @multi_message = multi_message
       @config = SmsSetting.get_sms_config
-      
       unless @config.blank?
         @sendername = @config['sms_settings']['sendername']
         @sms_url = @config['sms_settings']['host_url']
@@ -959,19 +956,21 @@ module OnlinePayment
           end
         end
       end
-      
+
       if @config.present?
-        message_log = SmsMessage.new(:body=> @message)
-        message_log.save
-        encoded_message = @message
         @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
 
+        i = 0
         @i_sms_loop = 0
         @recipients.each do |recipient|
+         message = @multi_message[i]
+         message_escape = CGI::escape message
          if @i_sms_loop == 3
+           message_log = SmsMessage.new(:body=> message_escape)
+           message_log.save
            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-           @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+           @sms_hash["sms[#{@i_sms_loop}][1]"] = message
            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
 
            api_uri = URI.parse(@sms_url)
@@ -989,9 +988,11 @@ module OnlinePayment
 
            @i_sms_loop = 0
          elsif recipient.equal? @recipients.last
+           message_log = SmsMessage.new(:body=> message_escape)
+           message_log.save
            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-           @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+           @sms_hash["sms[#{@i_sms_loop}][1]"] = message
            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
 
            api_uri = URI.parse(@sms_url)
@@ -1005,13 +1006,15 @@ module OnlinePayment
            sms_count.update_attributes(:config_value=>new_count)
          else
            @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
-           @sms_hash["sms[#{@i_sms_loop}][1]"] = @message_without_encode
+           @sms_hash["sms[#{@i_sms_loop}][1]"] = message
            @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+           message_log = SmsMessage.new(:body=> message_escape)
+           message_log.save
            message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
            @i_sms_loop = @i_sms_loop+1
          end   
 
-
+         i += 1
         end
       end
     end

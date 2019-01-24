@@ -66,7 +66,7 @@ class PaymentSettingsController < ApplicationController
         unless xml_res.xpath("/").empty?
           status = xml_res.xpath("/").text
         end
-        abort(status.to_s + "  " + payment.gateway_response[:order_id].to_s + "  " + @merchant_id.to_s +  "   " + @keycode.to_s + "  " + request_url.to_s)
+        #abort(status.to_s + "  " + payment.gateway_response[:order_id].to_s + "  " + @merchant_id.to_s +  "   " + @keycode.to_s + "  " + request_url.to_s)
         result = Base64.decode64(status)
         
         ref_id = ""

@@ -94,7 +94,7 @@ class PaymentSettingsController < ApplicationController
         card_order_status = ""
         
         xml_str = Nokogiri::XML(result)
-        abort(xml_str.inspect)
+        abort(result.inspect)
         unless xml_str.xpath("//Response/TransactionInfo/RefID").empty?
           ref_id = xml_str.xpath("//Response/TransactionInfo/RefID").text
         end

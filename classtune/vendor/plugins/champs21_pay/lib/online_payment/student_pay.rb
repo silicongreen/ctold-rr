@@ -930,7 +930,7 @@ module OnlinePayment
     end
     
     def send_sms(message, recipients)
-      @recipients = recipients.map{|r| r.gsub(' ','')}
+      @recipients = recipients.map{|r| r.to_s.gsub(' ','')}
     
       @message = CGI::escape message
       @message_without_encode = message

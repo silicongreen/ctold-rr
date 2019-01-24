@@ -1865,6 +1865,7 @@ class StudentController < ApplicationController
         unless params[:student][:image_file].size.to_f > 280000
           if @student.update_attributes(params[:student])
             
+            abort(@previous_category_id.to_s + "  " + @student.student_category_id.to_s)
             if @previous_category_id != @student.student_category_id
               @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
               @student_fees = @finance_fees.map{|s| s.fee_collection_id}
@@ -1878,9 +1879,11 @@ class StudentController < ApplicationController
                 if @student_fees.include?(d.id)
                   fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
                   unless fee.blank?
-                    FinanceFee.update_student_fee(d,@student, fee)
+                    s = Student.find(@student.id)
+                    FinanceFee.update_student_fee(d,s, fee)
                   else
-                    FinanceFee.new_student_fee(d,@student)
+                    s = Student.find(@student.id)
+                    FinanceFee.new_student_fee(d,s)
                   end
                 end
               end
@@ -1901,9 +1904,11 @@ class StudentController < ApplicationController
                   fee.destroy if fee.finance_transactions.empty?
                   fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
                   unless fee.blank?
-                    FinanceFee.update_student_fee(d,@student, fee)
+                    s = Student.find(@student.id)
+                    FinanceFee.update_student_fee(d,s, fee)
                   else
-                    FinanceFee.new_student_fee(d,@student)
+                    s = Student.find(@student.id)
+                    FinanceFee.new_student_fee(d,s)
                   end
                 end
               end
@@ -1932,22 +1937,22 @@ class StudentController < ApplicationController
         end
       else
         if @student.update_attributes(params[:student])
+          
           if @previous_category_id != @student.student_category_id
             @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
             @student_fees = @finance_fees.map{|s| s.fee_collection_id}
-
-            @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
-            @payed_fees ||= []
-
+            
             @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
             @fee_collection_dates.each do |date|
               d = FinanceFeeCollection.find(date.id)
               if @student_fees.include?(d.id)
                 fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
                 unless fee.blank?
-                  FinanceFee.update_student_fee(d,@student, fee)
+                    s = Student.find(@student.id)
+                    FinanceFee.update_student_fee(d,s, fee)
                 else
-                  FinanceFee.new_student_fee(d,@student)
+                  s = Student.find(@student.id)
+                  FinanceFee.new_student_fee(d,s)
                 end
               end
             end
@@ -1957,9 +1962,6 @@ class StudentController < ApplicationController
             @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
             @student_fees = @finance_fees.map{|s| s.fee_collection_id}
 
-            @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
-            @payed_fees ||= []
-
             @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
             @fee_collection_dates.each do |date|
               d = FinanceFeeCollection.find(date.id)
@@ -1968,9 +1970,11 @@ class StudentController < ApplicationController
                 fee.destroy if fee.finance_transactions.empty?
                 fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
                 unless fee.blank?
-                  FinanceFee.update_student_fee(d,@student, fee)
+                  s = Student.find(@student.id)
+                  FinanceFee.update_student_fee(d,s, fee)
                 else
-                  FinanceFee.new_student_fee(d,@student)
+                  s = Student.find(@student.id)
+                  FinanceFee.new_student_fee(d,s)
                 end
               end
             end

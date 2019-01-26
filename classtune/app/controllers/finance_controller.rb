@@ -5309,7 +5309,7 @@ class FinanceController < ApplicationController
         end
         @due_date = @fee_collection.due_date
         @paid_fees = @fee.finance_transactions
-        abort(@paid_fees.map(&:id).inspect)
+        #abort(@paid_fees.map(&:id).inspect)
         @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
         if advance_fee_collection

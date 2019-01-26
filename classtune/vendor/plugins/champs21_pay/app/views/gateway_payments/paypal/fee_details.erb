@@ -901,9 +901,15 @@
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>
         <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><b><%= "Payment Done" %></b></td>
+          <td class="col-6"  style="text-align: right;">
+              <span id="remaining_amount_label" style="color: #000;"><%= precision_label(paid) %></span>&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
+          </td>  
+        </tr>
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
           <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><b><%= "Advanced Payment" %></b></td>
           <td class="col-6"  style="text-align: right;">
-              <span id="remaining_amount_label" style="color: #000;"><%= precision_label(amount_advanced) %></span>
+              <span id="remaining_amount_label" style="color: #000;"><%= precision_label(amount_advanced) %></span>&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
           </td>  
         </tr>
         <% end %>

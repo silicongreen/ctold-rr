@@ -894,6 +894,19 @@
       <% unless @paid_fees.nil? %>
         <% paid=0 %>
         <% @paid_fees.each{|a| paid += a.amount.to_f} %>
+        <% if total_payable < paid %>
+        <% amount_advanced = paid - total_payable  %>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="tr-blank"></tr>
+        <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
+          <td class="col-8" colspan="4"  style="text-align: right; font-weight: bold;"><b><%= "Advanced Payment" %></b></td>
+          <td class="col-6"  style="text-align: right;">
+              <span id="remaining_amount_label" style="color: #000;"><%= precision_label(amount_advanced) %></span>
+          </td>  
+        </tr>
+        <% end %>
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>

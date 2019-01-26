@@ -60,6 +60,10 @@
       <% @selected = (@is_test_school == 1) ? true : false %>    
       <%= radio_button_tag "school[is_test_school]","1", @selected, :id=>"is_test_school", :style => "margin: 8px 9px;" %> <label for="is_test_school" style="width: 70%;">Test School</label>
     </div>
+    <div class="plugin-cell main-bg-color" style="width: 30%;">
+      <% @selected = (@is_test_school == 2) ? true : false %>    
+      <%= radio_button_tag "school[is_test_school]","2", @selected, :id=>"is_test_school", :style => "margin: 8px 9px;" %> <label for="is_test_school" style="width: 70%;">Demo School</label>
+    </div>
     <div class="plugin-cell" style="width: 30%;">
     </div>
   </fieldset>

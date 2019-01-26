@@ -951,7 +951,7 @@ guardians as g left join tds_free_users as fu on g.user_id=fu.paid_id left join 
     @institutional_phone_no = ""
     @free_feed_for_admin = "0"
     @free_feed_for_teacher = "0"
-    @free_feed_for_student = "1"
+    @free_feed_for_student = "0"
     @is_test_school = 1    
     
     @school_group = admin_user_session.school_group

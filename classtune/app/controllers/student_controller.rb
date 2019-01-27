@@ -909,6 +909,7 @@ class StudentController < ApplicationController
     end
     @user = current_user
     @student = Student.new(params[:student])
+    
     @student_limit = @student.get_student_limit();
     #@student.student_activation_code = nil
     @selected_value = Configuration.default_country 
@@ -933,7 +934,7 @@ class StudentController < ApplicationController
       if @student.student_category_id != 433
         @student.staff_id = 0
       end
-      
+      @student.pass = (('2'..'9').to_a + ('a'..'h').to_a + ('p'..'z').to_a + ('A'..'H').to_a + ('P'..'Z').to_a).shuffle.first(6).join
       @student.save_log = true
       @student.save_to_free = true
       #Huffas: Task end

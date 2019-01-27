@@ -139,23 +139,9 @@
                         <%= s.text_field :email, :class=>"form-control" %>
                     </div>
                     <div class="form-group col-sm-6">
-                        <label for="student_email"><%= t('password') %><span class="necessary-field">*</span></label>
-                        <%= s.password_field :pass, :autocomplete=>"new-password", :class=>"form-control" %>
-                    </div>
-                    <div class="form-group col-sm-6 even">
                       <label for="student_phone2"><%= "Designated Number for SMS" %><span class="necessary-field">*</span></label>
                       <%= s.text_field :sms_number, :class=>"form-control" %>
                     </div>
-                    <% if MultiSchool.current_school.id == 340  %>
-                    <div class="form-group col-sm-6">
-                      <label for="student_phone2"><%= "Form Serial Number" %><span class="necessary-field">*</span></label>
-                      <%= s.text_field :serial_no, :class=>"form-control" %>
-                    </div>
-                    <div class="form-group col-sm-6 even" >
-                        <label for="advisor_id"><%= "Advisor" %></label>
-                        <%= select :student, :advisor_id, options_for_select(Employee.find(:all,:order=>"first_name asc, last_name asc",:conditions=>["is_advisor = ?",true]).map {|c| [c.full_name, c.id]}), { :prompt => "Select Advisor" } %>
-                    </div>
-                    <% end %>
                 </fieldset>
             </div>
 

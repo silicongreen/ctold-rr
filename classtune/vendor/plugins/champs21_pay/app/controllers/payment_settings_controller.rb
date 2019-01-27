@@ -660,11 +660,11 @@ class PaymentSettingsController < ApplicationController
         end
         
         result = Base64.decode64(status)
-        abort(Hash.from_xml(result).to_json.inspect)
+        s = Hash.from_xml(result).to_json
         @financefee = FinanceFee.find(83278)
         @student = Student.find(22845)
       
-        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => result.to_xml, :validation_response => o.to_s)
+        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => s, :validation_response => o.to_s)
         payment.save
       
     end

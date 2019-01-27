@@ -5398,6 +5398,7 @@ class FinanceController < ApplicationController
         
         render :update do |page|
           page.replace_html "student", :partial => "student_fees_submission"
+          page << "loadJS();"
         end
       else
         render :update do |page|

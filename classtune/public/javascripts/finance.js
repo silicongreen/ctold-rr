@@ -550,772 +550,775 @@ function disableFineDiscountAlso()
     j(".fee_fine_discount_fa").addClass("fa-square-o");
 }
 
-document.observe("dom:loaded", function() {
-    j('#hide2').hide();
-    j('#active-batch-link').hide();
+function loadJS()
+{
+    document.observe("dom:loaded", function() {
+        j('#hide2').hide();
+        j('#active-batch-link').hide();
 
-    j("#fees_submission_batch_id").select2();
+        j("#fees_submission_batch_id").select2();
 
-    j(document).on('click','#add_extra_particular',function(){
-        if ( j("#particulars_tr_extra").length == 0 )
-        {
-          var html = '<tr id="particulars_tr_extra">';
-          html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-particular" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
-          html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
-          html += 'Particular Name: &nbsp;&nbsp;&nbsp;<input type="text" name="extra_particular" id="extra_particular" value="" style="border-radius: 4px; border: 1px solid #999; padding: 5px; width: 60%;" />';
-          html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
-          html += '<input type="text" name="extra_particular_amount" id="extra_particular_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'particular_extra\')" onkeydown="checkKey(event,this, \'particular_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_particular" name="extra_particular_chk" id="extra_particular_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
-          j('.particulars_tr').last().after(html);
-        }
-    });
-
-    j(document).on('click','#add_extra_discount',function(){
-        if ( j("#discount_tr_extra").length == 0 )
-        {
-          var select = j("#discount_on_tmp").html();
-          var html = '<tr id="discount_tr_extra">';
-          html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-discount" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
-          html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
-          html += '<div style="padding: 10px;"><label style="width: 30%; display: inline-block;">Discount On: </label>&nbsp;&nbsp;&nbsp;<select name="discount_on_tmp_create" id="discount_on_tmp_create" style="padding: 4px 12px; border-radius: 4px; border: 1px solid #ccc; height: 34px; width: 64%;">' + select + '</select></div>';
-          html += '<div style="padding: 10px;"><label style="width: 30%; display: inline-block;">Discount Text: </label>&nbsp;&nbsp;&nbsp;<input type="text" name="extra_discount" id="extra_discount" value="" style="border-radius: 4px; border: 1px solid #ccc; height: 20px; padding: 5px 12px; width: 61%;" /></div>';
-          html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
-          html += '<input type="text" name="extra_discount_amount" id="extra_discount_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'discount_extra\')" onkeydown="checkKey(event,this, \'discount_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_discount" name="extra_discount_chk" id="extra_discount_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
-          j('.discount_tr').last().after(html);
-          j('#discount_on_tmp_create').focus();
-        }
-    });
-
-    j(document).on('click','#remove-extra-discount',function(){
-        j("#discount_tr_extra").remove();
-    });
-
-    j(document).on('click','#remove-extra-particular',function(){
-        j("#particulars_tr_extra").remove();
-    });
-
-    j(document).on('change','#discount_on_tmp_create',function(){
-        if ( j.trim(this.value) != "" )
-        {
-            var txt = j('#discount_on_tmp_create option:selected').text();
-            j("#extra_discount").val(txt + " Discount (BDT)");
-        }
-        else
-        {
-            j("#extra_discount").val("");
-        }
-        //j("#particulars_tr_extra").remove();
-    });
-
-    j(document).on("click",".fees_particular_fa",function(){
-        var id = this.id.replace('fee_particular_fa_','');
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            var fee_particular_category_id = parseInt(j("#fee_category_" + id).val());
-
-            j(".discount_category").each(function(){
-                if ( this.value == fee_particular_category_id )
-                {
-                    var discount_id = this.id.replace("discount_category_","");
-                    if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
-                    {
-                        j("#fee_amount_discount_" + discount_id).addClass('disabled');
-                        j("#fee_amount_discount_" + discount_id).css('border', 'none');
-                        j("#fee_amount_discount_" + discount_id + " i").css('display', 'none');
-                        j("#fee_amount_discount_" + discount_id).css('color', '#999');
-                        j("#fee_amount_discount_" + discount_id + " span").css('color', '#999');
-                        j("#fee_discount_" + discount_id).removeAttr('checked');
-                        j("#fee_discount_fa_" + discount_id).removeClass("fa-check-square-o");
-                        j("#fee_discount_fa_" + discount_id).addClass("fa-square-o");
-                    }
-                }
-            });
-
-            j("#fee_amount_particular_" + id).addClass('disabled');
-            j("#fee_amount_particular_" + id).css('border', 'none');
-            j("#fee_amount_particular_" + id + " i").css('display', 'none');
-            j("#fee_amount_particular_" + id).css('color', '#999');
-            j("#fee_amount_particular_" + id + " span").css('color', '#999');
-            j("#fee_particular_" + id).removeAttr('checked');
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-
-            calculateDiscount();
-            calculateAmountToPay(id);
-            var discount = Number(j("#discount_total_amount").val());
-            var total_amount = Number(j("#fee_total_amount").val());
-            if ( discount > total_amount )
+        j(document).on('click','#add_extra_particular',function(){
+            if ( j("#particulars_tr_extra").length == 0 )
             {
+              var html = '<tr id="particulars_tr_extra">';
+              html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-particular" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
+              html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
+              html += 'Particular Name: &nbsp;&nbsp;&nbsp;<input type="text" name="extra_particular" id="extra_particular" value="" style="border-radius: 4px; border: 1px solid #999; padding: 5px; width: 60%;" />';
+              html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
+              html += '<input type="text" name="extra_particular_amount" id="extra_particular_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'particular_extra\')" onkeydown="checkKey(event,this, \'particular_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_particular" name="extra_particular_chk" id="extra_particular_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
+              j('.particulars_tr').last().after(html);
+            }
+        });
+
+        j(document).on('click','#add_extra_discount',function(){
+            if ( j("#discount_tr_extra").length == 0 )
+            {
+              var select = j("#discount_on_tmp").html();
+              var html = '<tr id="discount_tr_extra">';
+              html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-discount" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
+              html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
+              html += '<div style="padding: 10px;"><label style="width: 30%; display: inline-block;">Discount On: </label>&nbsp;&nbsp;&nbsp;<select name="discount_on_tmp_create" id="discount_on_tmp_create" style="padding: 4px 12px; border-radius: 4px; border: 1px solid #ccc; height: 34px; width: 64%;">' + select + '</select></div>';
+              html += '<div style="padding: 10px;"><label style="width: 30%; display: inline-block;">Discount Text: </label>&nbsp;&nbsp;&nbsp;<input type="text" name="extra_discount" id="extra_discount" value="" style="border-radius: 4px; border: 1px solid #ccc; height: 20px; padding: 5px 12px; width: 61%;" /></div>';
+              html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
+              html += '<input type="text" name="extra_discount_amount" id="extra_discount_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'discount_extra\')" onkeydown="checkKey(event,this, \'discount_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_discount" name="extra_discount_chk" id="extra_discount_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
+              j('.discount_tr').last().after(html);
+              j('#discount_on_tmp_create').focus();
+            }
+        });
+
+        j(document).on('click','#remove-extra-discount',function(){
+            j("#discount_tr_extra").remove();
+        });
+
+        j(document).on('click','#remove-extra-particular',function(){
+            j("#particulars_tr_extra").remove();
+        });
+
+        j(document).on('change','#discount_on_tmp_create',function(){
+            if ( j.trim(this.value) != "" )
+            {
+                var txt = j('#discount_on_tmp_create option:selected').text();
+                j("#extra_discount").val(txt + " Discount (BDT)");
+            }
+            else
+            {
+                j("#extra_discount").val("");
+            }
+            //j("#particulars_tr_extra").remove();
+        });
+
+        j(document).on("click",".fees_particular_fa",function(){
+            var id = this.id.replace('fee_particular_fa_','');
+            if (j(this).hasClass("fa-check-square-o"))
+            {
+                var fee_particular_category_id = parseInt(j("#fee_category_" + id).val());
+
                 j(".discount_category").each(function(){
-                    var discount_id = this.id.replace("discount_category_","");
-                    if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
+                    if ( this.value == fee_particular_category_id )
                     {
-                        j("#fee_amount_discount_" + discount_id).addClass('disabled');
-                        j("#fee_amount_discount_" + discount_id).css('border', 'none');
-                        j("#fee_amount_discount_" + discount_id + " i").css('display', 'none');
-                        j("#fee_amount_discount_" + discount_id).css('color', '#999');
-                        j("#fee_amount_discount_" + discount_id + " span").css('color', '#999');
-                        j("#fee_discount_" + discount_id).removeAttr('checked');
-                        j("#fee_discount_fa_" + discount_id).removeClass("fa-check-square-o");
-                        j("#fee_discount_fa_" + discount_id).addClass("fa-square-o");
+                        var discount_id = this.id.replace("discount_category_","");
+                        if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
+                        {
+                            j("#fee_amount_discount_" + discount_id).addClass('disabled');
+                            j("#fee_amount_discount_" + discount_id).css('border', 'none');
+                            j("#fee_amount_discount_" + discount_id + " i").css('display', 'none');
+                            j("#fee_amount_discount_" + discount_id).css('color', '#999');
+                            j("#fee_amount_discount_" + discount_id + " span").css('color', '#999');
+                            j("#fee_discount_" + discount_id).removeAttr('checked');
+                            j("#fee_discount_fa_" + discount_id).removeClass("fa-check-square-o");
+                            j("#fee_discount_fa_" + discount_id).addClass("fa-square-o");
+                        }
                     }
                 });
+
+                j("#fee_amount_particular_" + id).addClass('disabled');
+                j("#fee_amount_particular_" + id).css('border', 'none');
+                j("#fee_amount_particular_" + id + " i").css('display', 'none');
+                j("#fee_amount_particular_" + id).css('color', '#999');
+                j("#fee_amount_particular_" + id + " span").css('color', '#999');
+                j("#fee_particular_" + id).removeAttr('checked');
+                j(this).removeClass("fa-check-square-o");
+                j(this).addClass("fa-square-o");
+
+                calculateDiscount();
+                calculateAmountToPay(id);
+                var discount = Number(j("#discount_total_amount").val());
+                var total_amount = Number(j("#fee_total_amount").val());
+                if ( discount > total_amount )
+                {
+                    j(".discount_category").each(function(){
+                        var discount_id = this.id.replace("discount_category_","");
+                        if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
+                        {
+                            j("#fee_amount_discount_" + discount_id).addClass('disabled');
+                            j("#fee_amount_discount_" + discount_id).css('border', 'none');
+                            j("#fee_amount_discount_" + discount_id + " i").css('display', 'none');
+                            j("#fee_amount_discount_" + discount_id).css('color', '#999');
+                            j("#fee_amount_discount_" + discount_id + " span").css('color', '#999');
+                            j("#fee_discount_" + discount_id).removeAttr('checked');
+                            j("#fee_discount_fa_" + discount_id).removeClass("fa-check-square-o");
+                            j("#fee_discount_fa_" + discount_id).addClass("fa-square-o");
+                        }
+                    });
+                }
+                calculateDiscount();
+                calculateAmountToPay(id);
             }
-            calculateDiscount();
+            else
+            {
+                j("#fee_amount_particular_" + id).removeClass('disabled');
+                j("#fee_amount_particular_" + id).css('border-bottom', '1px dashed #000');
+                j("#fee_amount_particular_" + id + " i").css('display', 'inline-block');
+                j("#fee_amount_particular_" + id).css('color', '#990A10');
+                j("#fee_amount_particular_" + id + " span").css('color', '#990A10');
+                j("#fee_particular_" + id).prop('checked', true);
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
+            }
             calculateAmountToPay(id);
-        }
-        else
-        {
-            j("#fee_amount_particular_" + id).removeClass('disabled');
-            j("#fee_amount_particular_" + id).css('border-bottom', '1px dashed #000');
-            j("#fee_amount_particular_" + id + " i").css('display', 'inline-block');
-            j("#fee_amount_particular_" + id).css('color', '#990A10');
-            j("#fee_amount_particular_" + id + " span").css('color', '#990A10');
-            j("#fee_particular_" + id).prop('checked', true);
-            j(this).removeClass("fa-square-o");
-            j(this).addClass("fa-check-square-o");
-        }
-        calculateAmountToPay(id);
-    });
+        });
 
-    j(document).on("click",".fee_fine_discount_fa",function(){
-        var id = this.id.replace('fee_fine_discount_fa_','');
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            j("#fee_fine_amount_discount_" + id).addClass('disabled');
-            j("#fee_fine_amount_discount_" + id).css('border', 'none');
-            j("#fee_fine_amount_discount_" + id + " i").css('display', 'none');
-            j("#fee_fine_amount_discount_" + id).css('color', '#999');
-            j("#fee_fine_amount_discount_" + id + " span").css('color', '#999');
-            j("#fee_fine_discount_fa_" + id).removeAttr('checked');
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-        }
-        else
-        {
-            var fine_amount = 0; 
+        j(document).on("click",".fee_fine_discount_fa",function(){
+            var id = this.id.replace('fee_fine_discount_fa_','');
+            if (j(this).hasClass("fa-check-square-o"))
+            {
+                j("#fee_fine_amount_discount_" + id).addClass('disabled');
+                j("#fee_fine_amount_discount_" + id).css('border', 'none');
+                j("#fee_fine_amount_discount_" + id + " i").css('display', 'none');
+                j("#fee_fine_amount_discount_" + id).css('color', '#999');
+                j("#fee_fine_amount_discount_" + id + " span").css('color', '#999');
+                j("#fee_fine_discount_fa_" + id).removeAttr('checked');
+                j(this).removeClass("fa-check-square-o");
+                j(this).addClass("fa-square-o");
+            }
+            else
+            {
+                var fine_amount = 0; 
 
-            j(".fee_amount_fine").each(function(){
-                if ( !j(this).hasClass('disabled') )
-                {
-                    var fine = parseFloat(j("#fee_fine_amount").val());
-                    fine_amount += fine;
-                }
-            });
-
-            var fine_discount = 0;
-            j(".fee_fine_amount_discount").each(function(){
-                if ( !j(this).hasClass('disabled') )
-                {
-                    var discount_id = this.id.replace('fee_fine_amount_discount_','');
-                    var fine = parseFloat(j("#fee_fine_discount_amount_" + discount_id).val());
-                    fine_discount += fine;
-                }
-                else
-                {
-                    var discount_id = this.id.replace('fee_fine_amount_discount_','');
-                    if ( discount_id == id )
+                j(".fee_amount_fine").each(function(){
+                    if ( !j(this).hasClass('disabled') )
                     {
+                        var fine = parseFloat(j("#fee_fine_amount").val());
+                        fine_amount += fine;
+                    }
+                });
+
+                var fine_discount = 0;
+                j(".fee_fine_amount_discount").each(function(){
+                    if ( !j(this).hasClass('disabled') )
+                    {
+                        var discount_id = this.id.replace('fee_fine_amount_discount_','');
                         var fine = parseFloat(j("#fee_fine_discount_amount_" + discount_id).val());
                         fine_discount += fine;
                     }
+                    else
+                    {
+                        var discount_id = this.id.replace('fee_fine_amount_discount_','');
+                        if ( discount_id == id )
+                        {
+                            var fine = parseFloat(j("#fee_fine_discount_amount_" + discount_id).val());
+                            fine_discount += fine;
+                        }
+                    }
+                });
+
+                if ( fine_discount > fine_amount )
+                {
+                  alert("Sorry you can't able to Enable the fine Discount");
                 }
-            });
+                else
+                {
+                  j("#fee_fine_amount_discount_" + id).removeClass('disabled');
+                  j("#fee_fine_amount_discount_" + id).css('border-bottom', '1px dashed #000');
+                  j("#fee_fine_amount_discount_" + id + " i").css('display', 'inline-block');
+                  j("#fee_fine_amount_discount_" + id).css('color', '#990A10');
+                  j("#fee_fine_amount_discount_" + id + " span").css('color', '#990A10');
+                  j("#fee_fine_discount_fa_" + id).prop('checked', true);
+                  j(this).removeClass("fa-square-o");
+                  j(this).addClass("fa-check-square-o");
+                }
+            }
+            generateAmountToPay();
+        });
 
-            if ( fine_discount > fine_amount )
+        j(document).on("click",".fee_vat_fa",function(){
+            if (j(this).hasClass("fa-check-square-o"))
             {
-              alert("Sorry you can't able to Enable the fine Discount");
+                j("#fee_amount_vat").addClass('disabled');
+                j("#fee_amount_vat").css('border', 'none');
+                j("#fee_amount_vat" + " i").css('display', 'none');
+                j("#fee_amount_vat").css('color', '#999');
+                j("#fee_amount_vat" + " span").css('color', '#999');
+                j("#fee_vat").removeAttr('checked');
+                j(this).removeClass("fa-check-square-o");
+                j(this).addClass("fa-square-o");
             }
             else
             {
-              j("#fee_fine_amount_discount_" + id).removeClass('disabled');
-              j("#fee_fine_amount_discount_" + id).css('border-bottom', '1px dashed #000');
-              j("#fee_fine_amount_discount_" + id + " i").css('display', 'inline-block');
-              j("#fee_fine_amount_discount_" + id).css('color', '#990A10');
-              j("#fee_fine_amount_discount_" + id + " span").css('color', '#990A10');
-              j("#fee_fine_discount_fa_" + id).prop('checked', true);
-              j(this).removeClass("fa-square-o");
-              j(this).addClass("fa-check-square-o");
+                if ( !j("#fee_amount_vat").hasClass("only_enable_vat") )
+                {
+                    j("#fee_amount_vat").removeClass('disabled');
+                    j("#fee_amount_vat").css('border-bottom', '1px dashed #000');
+                    j("#fee_amount_vat" + " i").css('display', 'inline-block');
+                    j("#fee_amount_vat").css('color', '#990A10');
+                    j("#fee_amount_vat" + " span").css('color', '#990A10');
+                }
+                else
+                {
+                    j("#fee_amount_vat").removeClass('disabled');
+                    j("#fee_amount_vat").css('color', '#000');
+                    j("#fee_amount_vat" + " span").css('color', '#000');
+                }
+                j("#fee_vat").prop('checked', true);
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
             }
-        }
-        generateAmountToPay();
-    });
+            calculateAmountToPay(id);
+        });
 
-    j(document).on("click",".fee_vat_fa",function(){
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            j("#fee_amount_vat").addClass('disabled');
-            j("#fee_amount_vat").css('border', 'none');
-            j("#fee_amount_vat" + " i").css('display', 'none');
-            j("#fee_amount_vat").css('color', '#999');
-            j("#fee_amount_vat" + " span").css('color', '#999');
-            j("#fee_vat").removeAttr('checked');
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-        }
-        else
-        {
-            if ( !j("#fee_amount_vat").hasClass("only_enable_vat") )
+        j(document).on("click",".fee_fine_fa",function(){
+            if (j(this).hasClass("fa-check-square-o"))
             {
-                j("#fee_amount_vat").removeClass('disabled');
-                j("#fee_amount_vat").css('border-bottom', '1px dashed #000');
-                j("#fee_amount_vat" + " i").css('display', 'inline-block');
-                j("#fee_amount_vat").css('color', '#990A10');
-                j("#fee_amount_vat" + " span").css('color', '#990A10');
+                j("#fee_amount_fine").addClass('disabled');
+                j("#fee_amount_fine").css('border', 'none');
+                j("#fee_amount_fine" + " i").css('display', 'none');
+                j("#fee_amount_fine").css('color', '#999');
+                j("#fee_amount_fine" + " span").css('color', '#999');
+                j("#fee_fine").removeAttr('checked');
+                disableFineDiscountAlso();
+
+                j(this).removeClass("fa-check-square-o");
+                j(this).addClass("fa-square-o");
             }
             else
             {
-                j("#fee_amount_vat").removeClass('disabled');
-                j("#fee_amount_vat").css('color', '#000');
-                j("#fee_amount_vat" + " span").css('color', '#000');
+                j("#fee_amount_fine").removeClass('disabled');
+                j("#fee_amount_fine").css('border-bottom', '1px dashed #000');
+                j("#fee_amount_fine" + " i").css('display', 'inline-block');
+                j("#fee_amount_fine").css('color', '#990A10');
+                j("#fee_amount_fine" + " span").css('color', '#990A10');
+                j("#fee_fine").prop('checked', true);
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
             }
-            j("#fee_vat").prop('checked', true);
-            j(this).removeClass("fa-square-o");
-            j(this).addClass("fa-check-square-o");
-        }
-        calculateAmountToPay(id);
-    });
+            generateAmountToPay();
+        });
 
-    j(document).on("click",".fee_fine_fa",function(){
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            j("#fee_amount_fine").addClass('disabled');
-            j("#fee_amount_fine").css('border', 'none');
-            j("#fee_amount_fine" + " i").css('display', 'none');
-            j("#fee_amount_fine").css('color', '#999');
-            j("#fee_amount_fine" + " span").css('color', '#999');
-            j("#fee_fine").removeAttr('checked');
-            disableFineDiscountAlso();
-
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-        }
-        else
-        {
-            j("#fee_amount_fine").removeClass('disabled');
-            j("#fee_amount_fine").css('border-bottom', '1px dashed #000');
-            j("#fee_amount_fine" + " i").css('display', 'inline-block');
-            j("#fee_amount_fine").css('color', '#990A10');
-            j("#fee_amount_fine" + " span").css('color', '#990A10');
-            j("#fee_fine").prop('checked', true);
-            j(this).removeClass("fa-square-o");
-            j(this).addClass("fa-check-square-o");
-        }
-        generateAmountToPay();
-    });
-
-    j(document).on("click",".fees_discount_fa",function(){
-        var id = this.id.replace('fee_discount_fa_','');
-        if (j(this).hasClass("fa-check-square-o"))
-        {
-            j("#fee_amount_discount_" + id).addClass('disabled');
-            j("#fee_amount_discount_" + id).css('border', 'none');
-            j("#fee_amount_discount_" + id + " i").css('display', 'none');
-            j("#fee_amount_discount_" + id).css('color', '#999');
-            j("#fee_amount_discount_" + id + " span").css('color', '#999');
-            j("#fee_discount_" + id).removeAttr('checked');
-            j(this).removeClass("fa-check-square-o");
-            j(this).addClass("fa-square-o");
-        }
-        else
-        {
-            var fee_particular_category_id = j("#discount_category_" + id).val();
-
-            var discount_on_total_fees = 0;
-            var discount_on_particular = 0;
-            j(".discount_category").each(function(){
-               var discount_particular_category_id = this.value;
-               var discount_id = this.id.replace("discount_category_","");
-               if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
-               {
-                   if ( discount_particular_category_id == 0 )
-                   {
-                       discount_on_total_fees++;
-                   }
-                   else if ( discount_particular_category_id > 0 )
-                   {
-                       discount_on_particular++;
-                   }
-               }
-            });
-
-            if ( parseInt(fee_particular_category_id) == 0 )
+        j(document).on("click",".fees_discount_fa",function(){
+            var id = this.id.replace('fee_discount_fa_','');
+            if (j(this).hasClass("fa-check-square-o"))
             {
-                  if ( discount_on_particular > 0 )
-                  {
-                    var confirm_user = confirm("If you want to enabled discount on total fees, your other discount on particulars will be disabled. do you wish to continue?");
-                    if ( confirm_user == false )
+                j("#fee_amount_discount_" + id).addClass('disabled');
+                j("#fee_amount_discount_" + id).css('border', 'none');
+                j("#fee_amount_discount_" + id + " i").css('display', 'none');
+                j("#fee_amount_discount_" + id).css('color', '#999');
+                j("#fee_amount_discount_" + id + " span").css('color', '#999');
+                j("#fee_discount_" + id).removeAttr('checked');
+                j(this).removeClass("fa-check-square-o");
+                j(this).addClass("fa-square-o");
+            }
+            else
+            {
+                var fee_particular_category_id = j("#discount_category_" + id).val();
+
+                var discount_on_total_fees = 0;
+                var discount_on_particular = 0;
+                j(".discount_category").each(function(){
+                   var discount_particular_category_id = this.value;
+                   var discount_id = this.id.replace("discount_category_","");
+                   if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
+                   {
+                       if ( discount_particular_category_id == 0 )
+                       {
+                           discount_on_total_fees++;
+                       }
+                       else if ( discount_particular_category_id > 0 )
+                       {
+                           discount_on_particular++;
+                       }
+                   }
+                });
+
+                if ( parseInt(fee_particular_category_id) == 0 )
+                {
+                      if ( discount_on_particular > 0 )
+                      {
+                        var confirm_user = confirm("If you want to enabled discount on total fees, your other discount on particulars will be disabled. do you wish to continue?");
+                        if ( confirm_user == false )
+                        {
+                            return false;
+                        }
+                        disabled_discount_val(0);
+                      }
+                }
+                else if ( parseInt(fee_particular_category_id) > 0 )
+                {
+                    if ( discount_on_total_fees > 0 )
+                    {
+                        alert("Please disabled discount on total fees first if you want to enabled this discount");
+                        return false;
+                    }
+                }
+
+                if ( fee_particular_category_id == 0 )
+                {
+                    var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
+                    var discountAmount = parseFloat(j("#fee_discount_amount_" + id).val()) + parseFloat(j("#discount_total_amount").val());
+                    if ( discountAmount > feeTotalAmount )
                     {
                         return false;
                     }
-                    disabled_discount_val(0);
-                  }
-            }
-            else if ( parseInt(fee_particular_category_id) > 0 )
-            {
-                if ( discount_on_total_fees > 0 )
-                {
-                    alert("Please disabled discount on total fees first if you want to enabled this discount");
-                    return false;
                 }
-            }
-
-            if ( fee_particular_category_id == 0 )
-            {
-                var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
-                var discountAmount = parseFloat(j("#fee_discount_amount_" + id).val()) + parseFloat(j("#discount_total_amount").val());
-                if ( discountAmount > feeTotalAmount )
+                else
                 {
-                    return false;
-                }
-            }
-            else
-            {
-              var fnd = false;
-              j(".fee_category").each(function(){
-                  if ( this.value == fee_particular_category_id )
-                  {
-                      var fee_id = this.id.replace("fee_category_","");
-                      if (j("#fee_amount_particular_" + fee_id).hasClass("disabled"))
+                  var fnd = false;
+                  j(".fee_category").each(function(){
+                      if ( this.value == fee_particular_category_id )
                       {
-                          fnd = true;
-                      }
-                      if ( ! fnd )
-                      {
-                        var fee_amount = parseFloat(j("#fee_particular_amount_" + fee_id).val());
-                        var discountAmount = parseFloat(j("#fee_discount_amount_" + id).val());
-                        if ( discountAmount > fee_amount )
-                        {
-                            fnd = true;
-                        }
-                      }
-                  }
-              });
-              if ( fnd )
-              {
-                  return false;
-              }
-            }
-            j("#fee_amount_discount_" + id).removeClass('disabled');
-            j("#fee_amount_discount_" + id).css('border-bottom', '1px dashed #000');
-            j("#fee_amount_discount_" + id + " i").css('display', 'inline-block');
-            j("#fee_amount_discount_" + id).css('color', '#990A10');
-            j("#fee_amount_discount_" + id + " span").css('color', '#990A10');
-            j("#fee_discount_" + id).prop('checked', true);
-            j(this).removeClass("fa-square-o");
-            j(this).addClass("fa-check-square-o");
-        }
-        calculateDiscount();
-        //calculateAmountToPay(id);
-    });
-
-    j(document).on("click",".fee_amount_particular",function(){
-        if ( !j(this).hasClass('disabled') )
-        {
-            var id = this.id.replace('fee_amount_particular_','');
-            j(this).hide();
-            j("#fee_particular_amount_" + id).attr('type','text');
-            j("#fee_particular_chk_" + id).show();
-            j("#fee_particular_amount_" + id).focus();
-            var data = j("#fee_particular_amount_" + id).val();
-            j("#fee_particular_amount_" + id).val('').val(data);
-        }
-    });
-
-    j(document).on("click",".fee_amount_discount",function(){
-        if ( !j(this).hasClass('disabled') )
-        {
-            var id = this.id.replace('fee_amount_discount_','');
-            j(this).hide();
-            j("#fee_discount_amount_" + id).attr('type','text');
-            j("#fee_discount_chk_" + id).show();
-            j("#fee_discount_amount_" + id).focus();
-            var data = j("#fee_discount_amount_" + id).val();
-            j("#fee_discount_amount_" + id).val('').val(data);
-        }
-    });
-
-    j(document).on("click",".fee_amount_vat",function(){
-        if ( !j(this).hasClass('disabled') )
-        {
-            j(this).hide();
-            j("#fee_vat_amount").attr('type','text');
-            j("#fee_vat_chk").show();
-            j(".assign_vat_to_user").show();
-            j("#fee_vat_amount").focus();
-            var data = j("#fee_vat_amount").val();
-            j("#fee_vat_amount").val('').val(data);
-        }
-    });
-
-    j(document).on("click",".fee_fine_amount_discount",function(){
-        if ( !j(this).hasClass('disabled') )
-        {
-            var id = this.id.replace('fee_fine_amount_discount_','');
-            j(this).hide();
-            j("#fee_fine_discount_amount_" + id).attr('type','text');
-            j("#fee_fine_discount_chk_" + id).show();
-            j("#fee_fine_discount_amount_" + id).focus();
-            var data = j("#fee_fine_discount_amount_" + id).val();
-            j("#fee_fine_discount_amount_" + id).val('').val(data);
-        }
-    });
-
-    j(document).on("click",".fee_amount_fine",function(){
-        if ( !j(this).hasClass('disabled') )
-        {
-            j(this).hide();
-            j("#fee_fine_amount").attr('type','text');
-            j("#fee_fine_chk").show();
-            j("#fee_fine_amount").focus();
-            var data = j("#fee_fine_amount").val();
-            j("#fee_fine_amount").val('').val(data);
-        }
-    });
-
-    j(document).on("click",".chk_particular",function(){
-          var id = this.id.replace('fee_particular_chk_','');
-          j(this).hide();
-          j("#fee_particular_amount_" + id).attr('type','hidden');
-          j("#fee_amount_particular_" + id).show();
-          j("#fee_amount_particular_" + id + " span").html(parseFloat(j("#fee_particular_amount_" + id).val()).toFixed(2));
-          calculateAmountToPay(id);
-    });
-
-    j(document).on("click",".chk_vat",function(){
-          j(this).hide();
-          j("#fee_vat_amount").attr('type','hidden');
-          j(".assign_vat_to_user").hide();
-          j("#fee_amount_vat").show();
-          j("#fee_amount_vat" + " span").html(parseFloat(j("#fee_vat_amount").val()).toFixed(2));
-          calculateTotalFees(); 
-    });
-
-    j(document).on("click",".chk_fine",function(){
-          j(this).hide();
-          j("#fee_fine_amount").attr('type','hidden');
-          j(".assign_fine_to_user").hide();
-          j("#fee_amount_fine").show();
-          j("#fee_amount_fine" + " span").html(parseFloat(j("#fee_fine_amount").val()).toFixed(2));
-          generateAmountToPay(); 
-    });
-
-    j(document).on("click",".chk_fine_discount",function(){
-          var id = this.id.replace('fee_fine_discount_chk_','');
-
-          var fine_amount = 0; 
-
-          j(".fee_amount_fine").each(function(){
-              if ( !j(this).hasClass('disabled') )
-              {
-                  var fine = parseFloat(j("#fee_fine_amount").val());
-                  fine_amount += fine;
-              }
-          });
-
-          var fine_discount = 0;
-          j(".fee_fine_amount_discount").each(function(){
-              if ( !j(this).hasClass('disabled') )
-              {
-                  var discount_id = this.id.replace('fee_fine_amount_discount_','');
-                  var fine = parseFloat(j("#fee_fine_discount_amount_" + discount_id).val());
-                  fine_discount += fine;
-              }
-          });
-
-          if ( fine_discount > fine_amount )
-          {
-              alert("Total Discount on fine can't be greater than fine, Please correct your value and try again");
-          }
-          else
-          {
-            j(this).hide();
-            j("#fee_fine_discount_amount_" + id).attr('type','hidden');
-            j("#fee_fine_amount_discount_" + id).show();
-            j("#fee_fine_amount_discount_" + id + " span").html(parseFloat(j("#fee_fine_discount_amount_" + id).val()).toFixed(2));
-            generateAmountToPay(); 
-          }
-    });
-
-    j(document).on("click",".remove_fine",function(){
-          j("#fine_blank_space_1").remove();
-          j("#fine_blank_space_2").remove();
-          j("#fine_blank_space_3").remove();
-          j("#fine_blank_space_4").remove();
-          j("#extra_fine").remove();
-          generateAmountToPay(); 
-    });
-
-    j(document).on("click",".chk_extra_particular",function(){
-         var particular_name = j.trim(j("#extra_particular").val());
-         if ( particular_name.length == 0 )
-         {
-            alert("Particular Name Can't be Empty");
-            return ;
-         }
-         var particular_amount = parseFloat(j.trim(j("#extra_particular_amount").val()));
-         if ( particular_amount == 0 )
-         {
-            alert("Particular amount Can't be Zero");
-            return ;
-         }
-         var html = '<tr id="particulars_tr_id"></tr>';
-         j('.particulars_tr').last().after(html);
-
-         j('#remove-extra-particular').removeClass("fa-minus-circle");
-         j('#remove-extra-particular').addClass("fa-spinner");
-         j('#remove-extra-particular').addClass("fa-spin");
-         j('#remove-extra-particular').attr("id", "remove-extra-particular-spin");
-
-         new Ajax.Request('/finance/create_fees_with_tmp_particular', 
-              {
-                asynchronous:true, 
-                evalScripts:true, 
-                parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+'&no_vat=1'
-              }
-         );
-    });
-
-    j(document).on("click",".chk_extra_discount",function(){
-         var discount_name = j.trim(j("#extra_discount").val());
-         if ( discount_name.length == 0 )
-         {
-            alert("Discount Text Can't be Empty");
-            return ;
-         }
-         var discount_amount = parseFloat(j.trim(j("#extra_discount_amount").val()));
-         if ( discount_amount == 0 )
-         {
-            alert("Discount amount Can't be Zero");
-            return ;
-         }
-
-         var discount_on = j.trim(j("#discount_on_tmp_create").val());
-         if ( discount_on == "" )
-         {
-            alert("Please select a particular, you want to give the discount");
-            return ;
-         }
-
-         var discount_on_total_fees = 0;
-         var discount_on_particular = 0;
-         var tmp_discount_ids = "";
-         j(".discount_category").each(function(){
-            var discount_particular_category_id = this.value;
-            var discount_id = this.id.replace("discount_category_","");
-            //if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
-            //{
-                if ( discount_particular_category_id == 0 )
-                {
-                    discount_on_total_fees++;
-                }
-                else if ( discount_particular_category_id > 0 )
-                {
-                    discount_on_particular++;
-                    tmp_discount_ids += discount_id + ",";
-                }
-            //}
-         });
-
-        if ( tmp_discount_ids.length > 0 )
-        {
-            tmp_discount_ids = tmp_discount_ids.substr(0, tmp_discount_ids.length - 1);
-        }
-
-         var forced_add_discount = true;
-         var discount_ids = "";
-         if ( parseInt(discount_on) == 0 )
-         {
-
-              var has_repeat_discount = 0;
-              j(".discount_category").each(function(){
-                  var discount_particular_category_id = this.value;
-
-                  if ( parseInt(discount_particular_category_id) == 0 )
-                  {
-                      if ( parseInt(j(this).data('is-onetime')) == 0 )
-                      {
-                          var discount_id = this.id.replace("discount_category_","");
-                          discount_ids = discount_id + ",";
-                          has_repeat_discount++;
-                      }
-                  }
-                  else
-                  {
-                      var discount_id = this.id.replace("discount_category_","");
-                      discount_ids = discount_id + ",";
-                  }
-              });
-
-              if ( discount_ids.length > 0 )
-              {
-                  discount_ids = discount_ids.substr(0, discount_ids.length - 1);
-              }
-
-              if ( has_repeat_discount > 0 )
-              {
-                  var forced_add_discount = confirm("Your previous discount on total fees will be overwrite by this discount, do you wish to continue?");
-              }
-              else
-              {
-                  var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
-                  var discountAmount = discount_amount + parseFloat(j("#discount_total_amount").val());
-                  if ( discountAmount > feeTotalAmount )
-                  {
-                      alert("Discount Amount can't be greater than fee amount");
-                      return ;
-                  }
-                  else
-                  {
-                      if ( discount_on_particular > 0 )
-                      {
-                        discount_ids = tmp_discount_ids;
-                        var forced_add_discount = confirm("If you add this discount on total fees, your other discount on particular will be removed, do you wish to continue?");
-                      }
-                  }
-              }
-         }
-         else
-         {
-              var has_repeat_discount = 0;
-              j(".discount_category").each(function(){
-                  var discount_particular_category_id = this.value;
-
-                  if ( parseInt(discount_particular_category_id) == parseInt(discount_on) )
-                  {
-                      if ( parseInt(j(this).data('is-onetime')) == 0 )
-                      {
-                          var discount_id = this.id.replace("discount_category_","");
-                          discount_ids = discount_id + ",";
-                          has_repeat_discount++;
-                      }
-                  }
-              });
-
-              if ( discount_ids.length > 0 )
-              {
-                  discount_ids = discount_ids.substr(0, discount_ids.length - 1);
-              }
-
-              if ( has_repeat_discount > 0 )
-              {
-                  var forced_add_discount = confirm("Your previous discount on this particular will be overwrite by this discount, do you wish to continue?");
-              }
-              else
-              {
-                  var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
-                  var discountAmount = discount_amount + parseFloat(j("#discount_total_amount").val());
-                  if ( discountAmount > feeTotalAmount )
-                  {
-                      alert("Discount Amount can't be greater than fee amount");
-                      return ;
-                  }
-                  else
-                  {
-                      var disabled_particular = false;
-                      var fnd = false;
-                      j(".fee_category").each(function(){
-                          var particular_particular_category_id = this.value;
-                          if ( parseInt(this.value) == parseInt(discount_on) )
+                          var fee_id = this.id.replace("fee_category_","");
+                          if (j("#fee_amount_particular_" + fee_id).hasClass("disabled"))
                           {
-                              var fee_id = this.id.replace("fee_category_","");
-                              if (j("#fee_amount_particular_" + fee_id).hasClass("disabled"))
-                              {
-                                  disabled_particular = true;
-                              }
-                              if ( ! fnd )
-                              {
-                                var fee_amount = parseFloat(j("#fee_particular_amount_" + fee_id).val());
-                                var dis_amount = 0;
-                                j(".discount_category").each(function(){
-                                  var discount_particular_category_id = this.value;
-                                  var discount_id = this.id.replace("discount_category_","");
-
-                                  if ( discount_particular_category_id == particular_particular_category_id )
-                                  {
-                                    dis_amount += parseFloat(j("#fee_discount_amount_" + discount_id).val());
-                                  }
-                                });
-
-                                var discountAmount = discount_amount + dis_amount;
-                                if ( discountAmount > fee_amount )
-                                {
-                                    fnd = true;
-                                }
-                              }
+                              fnd = true;
                           }
-                      });
-                      if ( disabled_particular )
-                      {
-                          alert("You can't assign discount to this particular as this particular is disabled");
-                          return ;
+                          if ( ! fnd )
+                          {
+                            var fee_amount = parseFloat(j("#fee_particular_amount_" + fee_id).val());
+                            var discountAmount = parseFloat(j("#fee_discount_amount_" + id).val());
+                            if ( discountAmount > fee_amount )
+                            {
+                                fnd = true;
+                            }
+                          }
                       }
-                      if ( fnd )
-                      {
-                          alert("Discount Amount can't be greater than particular fee amount");
-                          return ;
-                      }
-                  }
-
-                  if ( discount_on_total_fees > 0 )
+                  });
+                  if ( fnd )
                   {
-                    alert("Sorry you can't add this discount on this particular. You must remove the discount on total fees first");
-                    return ;
+                      return false;
                   }
-              }
-         }
+                }
+                j("#fee_amount_discount_" + id).removeClass('disabled');
+                j("#fee_amount_discount_" + id).css('border-bottom', '1px dashed #000');
+                j("#fee_amount_discount_" + id + " i").css('display', 'inline-block');
+                j("#fee_amount_discount_" + id).css('color', '#990A10');
+                j("#fee_amount_discount_" + id + " span").css('color', '#990A10');
+                j("#fee_discount_" + id).prop('checked', true);
+                j(this).removeClass("fa-square-o");
+                j(this).addClass("fa-check-square-o");
+            }
+            calculateDiscount();
+            //calculateAmountToPay(id);
+        });
 
-         if ( forced_add_discount )
-         {
-            var html = '<tr id="discount_tr_id"></tr>';
-            j('.discount_tr').last().after(html);
-            j('#remove-extra-discount').removeClass("fa-minus-circle");
-            j('#remove-extra-discount').addClass("fa-spinner");
-            j('#remove-extra-discount').addClass("fa-spin");
-            j('#remove-extra-discount').attr("id", "remove-extra-discount-spin");
-            new Ajax.Request('/finance/create_fees_with_tmp_discount', 
-                 {
-                   asynchronous:true, 
-                   evalScripts:true, 
-                   parameters:'amount='+discount_amount+'&discount_ids='+discount_ids+'&discount_on='+discount_on+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&discount_name='+discount_name+'&no_vat=1'
-                 }
-            );
-         }
-    });
+        j(document).on("click",".fee_amount_particular",function(){
+            if ( !j(this).hasClass('disabled') )
+            {
+                var id = this.id.replace('fee_amount_particular_','');
+                j(this).hide();
+                j("#fee_particular_amount_" + id).attr('type','text');
+                j("#fee_particular_chk_" + id).show();
+                j("#fee_particular_amount_" + id).focus();
+                var data = j("#fee_particular_amount_" + id).val();
+                j("#fee_particular_amount_" + id).val('').val(data);
+            }
+        });
 
-    j(document).on('click','.assign_vat_to_user', function(){
-         var particular_name = "VAT";
-         var particular_amount = parseFloat(j.trim(j("#fee_vat_amount").val()));
-         if ( particular_amount == 0 )
-         {
-            alert("Particular amount Can't be Zero");
-            return ;
-         }
+        j(document).on("click",".fee_amount_discount",function(){
+            if ( !j(this).hasClass('disabled') )
+            {
+                var id = this.id.replace('fee_amount_discount_','');
+                j(this).hide();
+                j("#fee_discount_amount_" + id).attr('type','text');
+                j("#fee_discount_chk_" + id).show();
+                j("#fee_discount_amount_" + id).focus();
+                var data = j("#fee_discount_amount_" + id).val();
+                j("#fee_discount_amount_" + id).val('').val(data);
+            }
+        });
 
-        new Ajax.Request('/finance/create_fees_with_tmp_particular', 
-              {
-                asynchronous:true, 
-                evalScripts:true, 
-                parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+''
-              }
-         );
-    });
+        j(document).on("click",".fee_amount_vat",function(){
+            if ( !j(this).hasClass('disabled') )
+            {
+                j(this).hide();
+                j("#fee_vat_amount").attr('type','text');
+                j("#fee_vat_chk").show();
+                j(".assign_vat_to_user").show();
+                j("#fee_vat_amount").focus();
+                var data = j("#fee_vat_amount").val();
+                j("#fee_vat_amount").val('').val(data);
+            }
+        });
 
-    j(document).on("click",".chk_discount",function(){
-          var id = this.id.replace('fee_discount_chk_','');
-          if ( checkValidDiscount(id) )
-          {
+        j(document).on("click",".fee_fine_amount_discount",function(){
+            if ( !j(this).hasClass('disabled') )
+            {
+                var id = this.id.replace('fee_fine_amount_discount_','');
+                j(this).hide();
+                j("#fee_fine_discount_amount_" + id).attr('type','text');
+                j("#fee_fine_discount_chk_" + id).show();
+                j("#fee_fine_discount_amount_" + id).focus();
+                var data = j("#fee_fine_discount_amount_" + id).val();
+                j("#fee_fine_discount_amount_" + id).val('').val(data);
+            }
+        });
+
+        j(document).on("click",".fee_amount_fine",function(){
+            if ( !j(this).hasClass('disabled') )
+            {
+                j(this).hide();
+                j("#fee_fine_amount").attr('type','text');
+                j("#fee_fine_chk").show();
+                j("#fee_fine_amount").focus();
+                var data = j("#fee_fine_amount").val();
+                j("#fee_fine_amount").val('').val(data);
+            }
+        });
+
+        j(document).on("click",".chk_particular",function(){
+              var id = this.id.replace('fee_particular_chk_','');
               j(this).hide();
-              j("#fee_discount_amount_" + id).attr('type','hidden');
-              j("#fee_amount_discount_" + id).show();
-              j("#fee_amount_discount_" + id + " span").html(parseFloat(j("#fee_discount_amount_" + id).val()).toFixed(2));
-              calculateDiscount();
-          }
-          else
-          {
-              alert("Invalid Discount Amount");
-          }
+              j("#fee_particular_amount_" + id).attr('type','hidden');
+              j("#fee_amount_particular_" + id).show();
+              j("#fee_amount_particular_" + id + " span").html(parseFloat(j("#fee_particular_amount_" + id).val()).toFixed(2));
+              calculateAmountToPay(id);
+        });
+
+        j(document).on("click",".chk_vat",function(){
+              j(this).hide();
+              j("#fee_vat_amount").attr('type','hidden');
+              j(".assign_vat_to_user").hide();
+              j("#fee_amount_vat").show();
+              j("#fee_amount_vat" + " span").html(parseFloat(j("#fee_vat_amount").val()).toFixed(2));
+              calculateTotalFees(); 
+        });
+
+        j(document).on("click",".chk_fine",function(){
+              j(this).hide();
+              j("#fee_fine_amount").attr('type','hidden');
+              j(".assign_fine_to_user").hide();
+              j("#fee_amount_fine").show();
+              j("#fee_amount_fine" + " span").html(parseFloat(j("#fee_fine_amount").val()).toFixed(2));
+              generateAmountToPay(); 
+        });
+
+        j(document).on("click",".chk_fine_discount",function(){
+              var id = this.id.replace('fee_fine_discount_chk_','');
+
+              var fine_amount = 0; 
+
+              j(".fee_amount_fine").each(function(){
+                  if ( !j(this).hasClass('disabled') )
+                  {
+                      var fine = parseFloat(j("#fee_fine_amount").val());
+                      fine_amount += fine;
+                  }
+              });
+
+              var fine_discount = 0;
+              j(".fee_fine_amount_discount").each(function(){
+                  if ( !j(this).hasClass('disabled') )
+                  {
+                      var discount_id = this.id.replace('fee_fine_amount_discount_','');
+                      var fine = parseFloat(j("#fee_fine_discount_amount_" + discount_id).val());
+                      fine_discount += fine;
+                  }
+              });
+
+              if ( fine_discount > fine_amount )
+              {
+                  alert("Total Discount on fine can't be greater than fine, Please correct your value and try again");
+              }
+              else
+              {
+                j(this).hide();
+                j("#fee_fine_discount_amount_" + id).attr('type','hidden');
+                j("#fee_fine_amount_discount_" + id).show();
+                j("#fee_fine_amount_discount_" + id + " span").html(parseFloat(j("#fee_fine_discount_amount_" + id).val()).toFixed(2));
+                generateAmountToPay(); 
+              }
+        });
+
+        j(document).on("click",".remove_fine",function(){
+              j("#fine_blank_space_1").remove();
+              j("#fine_blank_space_2").remove();
+              j("#fine_blank_space_3").remove();
+              j("#fine_blank_space_4").remove();
+              j("#extra_fine").remove();
+              generateAmountToPay(); 
+        });
+
+        j(document).on("click",".chk_extra_particular",function(){
+             var particular_name = j.trim(j("#extra_particular").val());
+             if ( particular_name.length == 0 )
+             {
+                alert("Particular Name Can't be Empty");
+                return ;
+             }
+             var particular_amount = parseFloat(j.trim(j("#extra_particular_amount").val()));
+             if ( particular_amount == 0 )
+             {
+                alert("Particular amount Can't be Zero");
+                return ;
+             }
+             var html = '<tr id="particulars_tr_id"></tr>';
+             j('.particulars_tr').last().after(html);
+
+             j('#remove-extra-particular').removeClass("fa-minus-circle");
+             j('#remove-extra-particular').addClass("fa-spinner");
+             j('#remove-extra-particular').addClass("fa-spin");
+             j('#remove-extra-particular').attr("id", "remove-extra-particular-spin");
+
+             new Ajax.Request('/finance/create_fees_with_tmp_particular', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+'&no_vat=1'
+                  }
+             );
+        });
+
+        j(document).on("click",".chk_extra_discount",function(){
+             var discount_name = j.trim(j("#extra_discount").val());
+             if ( discount_name.length == 0 )
+             {
+                alert("Discount Text Can't be Empty");
+                return ;
+             }
+             var discount_amount = parseFloat(j.trim(j("#extra_discount_amount").val()));
+             if ( discount_amount == 0 )
+             {
+                alert("Discount amount Can't be Zero");
+                return ;
+             }
+
+             var discount_on = j.trim(j("#discount_on_tmp_create").val());
+             if ( discount_on == "" )
+             {
+                alert("Please select a particular, you want to give the discount");
+                return ;
+             }
+
+             var discount_on_total_fees = 0;
+             var discount_on_particular = 0;
+             var tmp_discount_ids = "";
+             j(".discount_category").each(function(){
+                var discount_particular_category_id = this.value;
+                var discount_id = this.id.replace("discount_category_","");
+                //if (j("#fee_discount_fa_" + discount_id).hasClass("fa-check-square-o"))
+                //{
+                    if ( discount_particular_category_id == 0 )
+                    {
+                        discount_on_total_fees++;
+                    }
+                    else if ( discount_particular_category_id > 0 )
+                    {
+                        discount_on_particular++;
+                        tmp_discount_ids += discount_id + ",";
+                    }
+                //}
+             });
+
+            if ( tmp_discount_ids.length > 0 )
+            {
+                tmp_discount_ids = tmp_discount_ids.substr(0, tmp_discount_ids.length - 1);
+            }
+
+             var forced_add_discount = true;
+             var discount_ids = "";
+             if ( parseInt(discount_on) == 0 )
+             {
+
+                  var has_repeat_discount = 0;
+                  j(".discount_category").each(function(){
+                      var discount_particular_category_id = this.value;
+
+                      if ( parseInt(discount_particular_category_id) == 0 )
+                      {
+                          if ( parseInt(j(this).data('is-onetime')) == 0 )
+                          {
+                              var discount_id = this.id.replace("discount_category_","");
+                              discount_ids = discount_id + ",";
+                              has_repeat_discount++;
+                          }
+                      }
+                      else
+                      {
+                          var discount_id = this.id.replace("discount_category_","");
+                          discount_ids = discount_id + ",";
+                      }
+                  });
+
+                  if ( discount_ids.length > 0 )
+                  {
+                      discount_ids = discount_ids.substr(0, discount_ids.length - 1);
+                  }
+
+                  if ( has_repeat_discount > 0 )
+                  {
+                      var forced_add_discount = confirm("Your previous discount on total fees will be overwrite by this discount, do you wish to continue?");
+                  }
+                  else
+                  {
+                      var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
+                      var discountAmount = discount_amount + parseFloat(j("#discount_total_amount").val());
+                      if ( discountAmount > feeTotalAmount )
+                      {
+                          alert("Discount Amount can't be greater than fee amount");
+                          return ;
+                      }
+                      else
+                      {
+                          if ( discount_on_particular > 0 )
+                          {
+                            discount_ids = tmp_discount_ids;
+                            var forced_add_discount = confirm("If you add this discount on total fees, your other discount on particular will be removed, do you wish to continue?");
+                          }
+                      }
+                  }
+             }
+             else
+             {
+                  var has_repeat_discount = 0;
+                  j(".discount_category").each(function(){
+                      var discount_particular_category_id = this.value;
+
+                      if ( parseInt(discount_particular_category_id) == parseInt(discount_on) )
+                      {
+                          if ( parseInt(j(this).data('is-onetime')) == 0 )
+                          {
+                              var discount_id = this.id.replace("discount_category_","");
+                              discount_ids = discount_id + ",";
+                              has_repeat_discount++;
+                          }
+                      }
+                  });
+
+                  if ( discount_ids.length > 0 )
+                  {
+                      discount_ids = discount_ids.substr(0, discount_ids.length - 1);
+                  }
+
+                  if ( has_repeat_discount > 0 )
+                  {
+                      var forced_add_discount = confirm("Your previous discount on this particular will be overwrite by this discount, do you wish to continue?");
+                  }
+                  else
+                  {
+                      var feeTotalAmount = parseFloat(j("#fee_total_amount").val());
+                      var discountAmount = discount_amount + parseFloat(j("#discount_total_amount").val());
+                      if ( discountAmount > feeTotalAmount )
+                      {
+                          alert("Discount Amount can't be greater than fee amount");
+                          return ;
+                      }
+                      else
+                      {
+                          var disabled_particular = false;
+                          var fnd = false;
+                          j(".fee_category").each(function(){
+                              var particular_particular_category_id = this.value;
+                              if ( parseInt(this.value) == parseInt(discount_on) )
+                              {
+                                  var fee_id = this.id.replace("fee_category_","");
+                                  if (j("#fee_amount_particular_" + fee_id).hasClass("disabled"))
+                                  {
+                                      disabled_particular = true;
+                                  }
+                                  if ( ! fnd )
+                                  {
+                                    var fee_amount = parseFloat(j("#fee_particular_amount_" + fee_id).val());
+                                    var dis_amount = 0;
+                                    j(".discount_category").each(function(){
+                                      var discount_particular_category_id = this.value;
+                                      var discount_id = this.id.replace("discount_category_","");
+
+                                      if ( discount_particular_category_id == particular_particular_category_id )
+                                      {
+                                        dis_amount += parseFloat(j("#fee_discount_amount_" + discount_id).val());
+                                      }
+                                    });
+
+                                    var discountAmount = discount_amount + dis_amount;
+                                    if ( discountAmount > fee_amount )
+                                    {
+                                        fnd = true;
+                                    }
+                                  }
+                              }
+                          });
+                          if ( disabled_particular )
+                          {
+                              alert("You can't assign discount to this particular as this particular is disabled");
+                              return ;
+                          }
+                          if ( fnd )
+                          {
+                              alert("Discount Amount can't be greater than particular fee amount");
+                              return ;
+                          }
+                      }
+
+                      if ( discount_on_total_fees > 0 )
+                      {
+                        alert("Sorry you can't add this discount on this particular. You must remove the discount on total fees first");
+                        return ;
+                      }
+                  }
+             }
+
+             if ( forced_add_discount )
+             {
+                var html = '<tr id="discount_tr_id"></tr>';
+                j('.discount_tr').last().after(html);
+                j('#remove-extra-discount').removeClass("fa-minus-circle");
+                j('#remove-extra-discount').addClass("fa-spinner");
+                j('#remove-extra-discount').addClass("fa-spin");
+                j('#remove-extra-discount').attr("id", "remove-extra-discount-spin");
+                new Ajax.Request('/finance/create_fees_with_tmp_discount', 
+                     {
+                       asynchronous:true, 
+                       evalScripts:true, 
+                       parameters:'amount='+discount_amount+'&discount_ids='+discount_ids+'&discount_on='+discount_on+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&discount_name='+discount_name+'&no_vat=1'
+                     }
+                );
+             }
+        });
+
+        j(document).on('click','.assign_vat_to_user', function(){
+             var particular_name = "VAT";
+             var particular_amount = parseFloat(j.trim(j("#fee_vat_amount").val()));
+             if ( particular_amount == 0 )
+             {
+                alert("Particular amount Can't be Zero");
+                return ;
+             }
+
+            new Ajax.Request('/finance/create_fees_with_tmp_particular', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+''
+                  }
+             );
+        });
+
+        j(document).on("click",".chk_discount",function(){
+              var id = this.id.replace('fee_discount_chk_','');
+              if ( checkValidDiscount(id) )
+              {
+                  j(this).hide();
+                  j("#fee_discount_amount_" + id).attr('type','hidden');
+                  j("#fee_amount_discount_" + id).show();
+                  j("#fee_amount_discount_" + id + " span").html(parseFloat(j("#fee_discount_amount_" + id).val()).toFixed(2));
+                  calculateDiscount();
+              }
+              else
+              {
+                  alert("Invalid Discount Amount");
+              }
+        });
     });
-});
+}
 
 function show_inactive_batches(){
     $('fees_submission_batch_id').value=""

@@ -587,7 +587,7 @@ class PaymentSettingsController < ApplicationController
             messages = []
             messages[0] = message
             #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-            #send_sms(messages,recipients)
+            send_sms(messages,recipients)
           end
           
           paymentnew = Payment.find(payment.id)

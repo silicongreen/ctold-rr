@@ -98,8 +98,12 @@ class PaymentSettingsController < ApplicationController
         
         xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
         childs = xml_transaction_info[xml_transaction_info.length - 1].children
+        abort(childs.inspect)
         childs.each do |c|
           abort(c.inspect)
+        end
+        xml_str.xpath("//Response/TransactionInfo").each do |node|
+          
         end
         abort('here')
         unless xml_str.xpath("//Response/TransactionInfo/RefID").empty?

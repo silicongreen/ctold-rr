@@ -101,7 +101,7 @@ class PaymentSettingsController < ApplicationController
         #abort(childs.inspect)
         childs.each do |c|
           if c.name == "RefID"
-            abort(c.Text.to_s)
+            abort(c.text.to_s)
           end
           abort(c.name.inspect)
         end

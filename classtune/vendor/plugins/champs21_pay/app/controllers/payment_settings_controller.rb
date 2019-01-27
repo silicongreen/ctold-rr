@@ -776,12 +776,12 @@ class PaymentSettingsController < ApplicationController
           }
       
           @student = Student.find_by_admission_no(name)
-          create_at = Date.parse(trans_date)
-          start_month = create_at.beginning_of_month
-          end_month = create_at.end_of_month
+          #create_at = Date.parse(trans_date)
+          #start_month = create_at.beginning_of_month
+          #end_month = create_at.end_of_month
           
-          fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
-          fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and fee_collection_id IN (#{fee_collection.map(&:id).join(",")})")
+          #fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
+          fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id}")
           
           unless fees.nil?
             @financefee = FinanceFee.find(fees.id)

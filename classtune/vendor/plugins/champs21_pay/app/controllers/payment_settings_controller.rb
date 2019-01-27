@@ -101,83 +101,55 @@ class PaymentSettingsController < ApplicationController
         #abort(childs.inspect)
         childs.each do |c|
           if c.name == "RefID"
-            abort(c.text.to_s)
+            ref_id = c.text
+          elsif c.name == "OrderID"
+            orderId = c.text
+          elsif c.name == "Name"
+            name = c.text
+          elsif c.name == "Email"
+            email = c.text
+          elsif c.name == "Amount"
+            amount = c.text
+          elsif c.name == "ServiceCharge"
+            service_charge = c.text
+          elsif c.name == "TotalAmount"
+            total_amount = c.text
+          elsif c.name == "Status"
+            status = c.text
+          elsif c.name == "StatusText"
+            status_text = c.text
+          elsif c.name == "Used"
+            used = c.text
+          elsif c.name == "Verified"
+            verified = c.text
+          elsif c.name == "PaymentType"
+            payment_type = c.text
+          elsif c.name == "PAN"
+            pan = c.text
+          elsif c.name == "TBMM_Account"
+            tbbmm_account = c.text
+          elsif c.name == "MarchentID"
+            merchant_id = c.text
+          elsif c.name == "OrderDateTime"
+            order_datetime = c.text
+          elsif c.name == "PaymentDateTime"
+            trans_date = c.text
+          elsif c.name == "EMI_No"
+            emi_no = c.text
+          elsif c.name == "InterestAmount"
+            interest_amount = c.text
+          elsif c.name == "PayWithCharge"
+            pay_with_charge = c.text
+          elsif c.name == "CardResponseCode"
+            card_response_code = c.text
+          elsif c.name == "CardResponseDescription"
+            card_response_desc = c.text
+          elsif c.name == "CardOrderStatus"
+            card_order_status = c.text
           end
-          abort(c.name.inspect)
-        end
-        xml_str.xpath("//Response/TransactionInfo").each do |node|
           
         end
-        abort('here')
-        unless xml_str.xpath("//Response/TransactionInfo/RefID").empty?
-          ref_id = xml_str.xpath("//Response/TransactionInfo/RefID").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/OrderID").empty?
-          orderId = xml_str.xpath("//Response/TransactionInfo/OrderID").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Name").empty?
-          name = xml_str.xpath("//Response/TransactionInfo/Name").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Email").empty?
-          email = xml_str.xpath("//Response/TransactionInfo/Email").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Amount").empty?
-          amount = xml_str.xpath("//Response/TransactionInfo/Amount").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/ServiceCharge").empty?
-          service_charge = xml_str.xpath("//Response/TransactionInfo/ServiceCharge").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/TotalAmount").empty?
-          total_amount = xml_str.xpath("//Response/TransactionInfo/TotalAmount").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Status").empty?
-          status = xml_str.xpath("//Response/TransactionInfo/Status").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/StatusText").empty?
-          status_text = xml_str.xpath("//Response/TransactionInfo/StatusText").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Used").empty?
-          used = xml_str.xpath("//Response/TransactionInfo/Used").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/Verified").empty?
-          verified = xml_str.xpath("//Response/TransactionInfo/Verified").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/PaymentType").empty?
-          payment_type = xml_str.xpath("//Response/TransactionInfo/PaymentType").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/PAN").empty?
-          pan = xml_str.xpath("//Response/TransactionInfo/PAN").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/TBMM_Account").empty?
-          tbbmm_account = xml_str.xpath("//Response/TransactionInfo/TBMM_Account").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/MarchentID").empty?
-          merchant_id = xml_str.xpath("//Response/TransactionInfo/MarchentID").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/OrderDateTime").empty?
-          order_datetime = xml_str.xpath("//Response/TransactionInfo/OrderDateTime").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/PaymentDateTime").empty?
-          trans_date = xml_str.xpath("//Response/TransactionInfo/PaymentDateTime").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/EMI_No").empty?
-          emi_no = xml_str.xpath("//Response/TransactionInfo/EMI_No").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/InterestAmount").empty?
-          interest_amount = xml_str.xpath("//Response/TransactionInfo/InterestAmount").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/PayWithCharge").empty?
-          pay_with_charge = xml_str.xpath("//Response/TransactionInfo/PayWithCharge").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/CardResponseCode").empty?
-          card_response_code = xml_str.xpath("//Response/TransactionInfo/CardResponseCode").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/CardResponseDescription").empty?
-          card_response_desc = xml_str.xpath("//Response/TransactionInfo/CardResponseDescription").text
-        end
-        unless xml_str.xpath("//Response/TransactionInfo/CardOrderStatus").empty?
-          card_order_status = xml_str.xpath("//Response/TransactionInfo/CardOrderStatus").text
-        end
+        
         
         gateway_response = {
           :total_amount => total_amount,
@@ -250,74 +222,58 @@ class PaymentSettingsController < ApplicationController
         
         xml_str = Nokogiri::XML(result)
         
-        unless xml_str.xpath("//Response/RefID").empty?
-          verification_ref_id = xml_str.xpath("//Response/RefID").text
-        end
-        unless xml_str.xpath("//Response/OrderID").empty?
-          verification_orderId = xml_str.xpath("//Response/OrderID").text
-        end
-        unless xml_str.xpath("//Response/Name").empty?
-          verification_name = xml_str.xpath("//Response/Name").text
-        end
-        unless xml_str.xpath("//Response/Email").empty?
-          verification_email = xml_str.xpath("//Response/Email").text
-        end
-        unless xml_str.xpath("//Response/Amount").empty?
-          verification_amount = xml_str.xpath("//Response/Amount").text
-        end
-        unless xml_str.xpath("//Response/ServiceCharge").empty?
-          verification_service_charge = xml_str.xpath("//Response/ServiceCharge").text
-        end
-        unless xml_str.xpath("//Response/TotalAmount").empty?
-          verification_total_amount = xml_str.xpath("//Response/TotalAmount").text
-        end
-        unless xml_str.xpath("//Response/Status").empty?
-          verification_status = xml_str.xpath("//Response/Status").text
-        end
-        unless xml_str.xpath("//Response/StatusText").empty?
-          verification_status_text = xml_str.xpath("//Response/StatusText").text
-        end
-        unless xml_str.xpath("//Response/Used").empty?
-          verification_used = xml_str.xpath("//Response/Used").text
-        end
-        unless xml_str.xpath("//Response/Verified").empty?
-          verification_verified = xml_str.xpath("//Response/Verified").text
-        end
-        unless xml_str.xpath("//Response/PaymentType").empty?
-          verification_payment_type = xml_str.xpath("//Response/PaymentType").text
-        end
-        unless xml_str.xpath("//Response/PAN").empty?
-          verification_pan = xml_str.xpath("//Response/PAN").text
-        end
-        unless xml_str.xpath("//Response/TBMM_Account").empty?
-          verification_tbbmm_account = xml_str.xpath("//Response/TBMM_Account").text
-        end
-        unless xml_str.xpath("//Response/MarchentID").empty?
-          verification_merchant_id = xml_str.xpath("//Response/MarchentID").text
-        end
-        unless xml_str.xpath("//Response/OrderDateTime").empty?
-          verification_order_datetime = xml_str.xpath("//Response/OrderDateTime").text
-        end
-        unless xml_str.xpath("//Response/PaymentDateTime").empty?
-          verification_trans_date = xml_str.xpath("//Response/PaymentDateTime").text
-        end
-        unless xml_str.xpath("//Response/EMI_No").empty?
-          verification_emi_no = xml_str.xpath("//Response/EMI_No").text
-        end
-        unless xml_str.xpath("//Response/InterestAmount").empty?
-          verification_interest_amount = xml_str.xpath("//Response/InterestAmount").text
-        end
-        unless xml_str.xpath("//Response/PayWithCharge").empty?
-          verification_pay_with_charge = xml_str.xpath("//Response/PayWithCharge").text
-        end
-        unless xml_str.xpath("//Response/CardResponseCode").empty?
-          verification_card_response_code = xml_str.xpath("//Response/CardResponseCode").text
-        end
-        unless xml_str.xpath("//Response/CardResponseDescription").empty?
-          verification_card_response_desc = xml_str.xpath("//Response/CardResponseDescription").text
-        end
-        unless xml_str.xpath("//Response/CardOrderStatus").empty?
-          verification_card_order_status = xml_str.xpath("//Response/CardOrderStatus").text
+        xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
+        childs = xml_transaction_info[xml_transaction_info.length - 1].children
+        abort(childs.inspect)
+        childs.each do |c|
+          if c.name == "RefID"
+            ref_id = c.text
+          elsif c.name == "OrderID"
+            orderId = c.text
+          elsif c.name == "Name"
+            name = c.text
+          elsif c.name == "Email"
+            email = c.text
+          elsif c.name == "Amount"
+            amount = c.text
+          elsif c.name == "ServiceCharge"
+            service_charge = c.text
+          elsif c.name == "TotalAmount"
+            total_amount = c.text
+          elsif c.name == "Status"
+            status = c.text
+          elsif c.name == "StatusText"
+            status_text = c.text
+          elsif c.name == "Used"
+            used = c.text
+          elsif c.name == "Verified"
+            verified = c.text
+          elsif c.name == "PaymentType"
+            payment_type = c.text
+          elsif c.name == "PAN"
+            pan = c.text
+          elsif c.name == "TBMM_Account"
+            tbbmm_account = c.text
+          elsif c.name == "MarchentID"
+            merchant_id = c.text
+          elsif c.name == "OrderDateTime"
+            order_datetime = c.text
+          elsif c.name == "PaymentDateTime"
+            trans_date = c.text
+          elsif c.name == "EMI_No"
+            emi_no = c.text
+          elsif c.name == "InterestAmount"
+            interest_amount = c.text
+          elsif c.name == "PayWithCharge"
+            pay_with_charge = c.text
+          elsif c.name == "CardResponseCode"
+            card_response_code = c.text
+          elsif c.name == "CardResponseDescription"
+            card_response_desc = c.text
+          elsif c.name == "CardOrderStatus"
+            card_order_status = c.text
+          end
+          
         end
         
         validation_response = {

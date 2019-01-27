@@ -974,32 +974,31 @@ class StudentController < ApplicationController
           
           @student = Student.find(@student.id)
           
-          if !params[:m_first_name].blank?
-            params[:guardian][:first_name] = params[:m_first_name]
-            params[:guardian][:relation] = "Mother"
-            @guardian = @student.guardians.build(params[:guardian])
-            @guardian.set_immediate_contact = @student.admission_no
-            if @guardian.save
-              check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
-              if check_guardian.nil?
-                stdgu = GuardianStudents.new
-                stdgu.student_id = @student.id
-                stdgu.guardian_id = @guardian.id
-                stdgu.save
-              end
-              @guardian.save_to_free = true
-              @guardian.create_guardian_user(@student,false)
-              
-            else
-              @error=true
-            end  
-          end
           
           if !params[:f_first_name].blank?
             params[:guardian][:first_name] = params[:f_first_name]
             params[:guardian][:relation] = "Father"
             @guardian = @student.guardians.build(params[:guardian])
             @guardian.set_immediate_contact = @student.admission_no
+            @guardian.save_to_free = true
+            if @guardian.save
+              check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+              if check_guardian.nil?
+                stdgu = GuardianStudents.new
+                stdgu.student_id = @student.id
+                stdgu.guardian_id = @guardian.id
+                stdgu.save
+              end
+              Student.update(@student.id, :immediate_contact_id => @guardian.id)
+            else
+              @error=true
+            end 
+          end
+          
+          if !params[:m_first_name].blank?
+            params[:guardian][:first_name] = params[:m_first_name]
+            params[:guardian][:relation] = "Mother"
+            @guardian = @student.guardians.build(params[:guardian])
             if @guardian.save
               check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
               if check_guardian.nil?
@@ -1010,11 +1009,11 @@ class StudentController < ApplicationController
               end
               @guardian.save_to_free = true
               @guardian.create_guardian_user(@student,false)
-              Student.update(@student.id, :immediate_contact_id => @guardian.id)
             else
               @error=true
-            end 
+            end  
           end
+          
           
           
           mandatory_fields = StudentAdditionalField.find(:all, :conditions=>{:is_mandatory=>true, :status=>true})

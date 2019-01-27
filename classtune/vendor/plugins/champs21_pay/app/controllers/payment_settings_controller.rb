@@ -777,7 +777,11 @@ class PaymentSettingsController < ApplicationController
       
           @student = Student.find_by_admission_no(name)
           create_at = Date.parse(trans_date)
-          abort(create_at.beginning_of_month.inspect)
+          start_month = create_at.beginning_of_month
+          end_month = create_at.end_of_month
+          
+          fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
+          abort(fee_collection.map(&:id).inspect)
     end
     
     start_date = params[:start_date]

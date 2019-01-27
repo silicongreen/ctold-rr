@@ -57,7 +57,7 @@ class PaymentSettingsController < ApplicationController
         http = Net::HTTP.new(uri.host, uri.port)
         auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
         auth_req.set_form_data({"OrderID" => payment.gateway_response[:order_id], "MerchantID" => @merchant_id, "KeyCode" => @keycode})
-        
+        abort({"OrderID" => payment.gateway_response[:order_id], "MerchantID" => @merchant_id, "KeyCode" => @keycode}.inspect)
         http.use_ssl = true
         auth_res = http.request(auth_req)
         

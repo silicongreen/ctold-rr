@@ -69,7 +69,7 @@ class PaymentSettingsController < ApplicationController
         end
         
         result = Base64.decode64(status)
-        abort(result.inspect)
+        
         ref_id = ""
         orderId = ""
         name = ""

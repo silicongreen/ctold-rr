@@ -608,66 +608,66 @@ class PaymentSettingsController < ApplicationController
   end
   
   def transactions
-    order_ids = [578295,183713,164960,313774,829086,116118,316269,218700,730609,582237,443344,206133,982115,35211,744726,238119,158413,818546,281728,299472,645537,489160,209061,604298,468086,582005,378562,46380,558208,580076,959126,219310,467155,730538,422603,226044,803161,871810,88918,305829,37984,208863,252379,670872,705585,202593,535532,750873,224746,189135,748423,648411,588957,956877,714919,261896,315153,590181,434118,320801,30913,599161,275793,319681,819909,650009,402711,537808,932751,716113,188536,994595,930841,688095,912503,21250,191039,570850,218572,863043,898196,693319,154917,740912,373785,242982,883858,997010,708797,877488,274153,413169,107202,675566,754385,403237,766840,478038,854723,28597,652614,299279,51740,635440,613291,466245,724483,446689,756258,774909,891350,142665,602192,820346,731291,229013,441398,771468,35242,389216,706950,626058,961271,918433,833185,661401,659944,244430,535780,705490,251140,866601,120695,157144,766891,416334,284051,225046,327909,115933,193054,862344,49123,647545,589797,535082,429234,9962,55591,239413,594570,527153,152674,76387,776635,224005,289457,773749,683572,243570,539289,672529,231428,618347,660098,927822,400085,457711,576043,466398,390335]
-    
-    order_ids.each do |o|
-      testtrustbank = false
-        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
-          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
-            payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
-            unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-              testtrustbank = payment_configs["testtrustbank"]
-            end
-          end
-        end
-        if testtrustbank
-          merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
-          @merchant_id = merchant_info["merchant_id"]
-          @keycode = merchant_info["keycode"]
-          @verification_url = merchant_info["validation_api"]
-          @merchant_id ||= String.new
-          @keycode ||= String.new
-          @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
-        else  
-          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-            @verification_url = payment_urls["trustbank_verification_url"]
-            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
-          else
-            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
-          end
-          @merchant_id = PaymentConfiguration.config_value("merchant_id")
-          @keycode = PaymentConfiguration.config_value("keycode_verification")
-          @merchant_id ||= String.new
-          @keycode ||= String.new
-        end
-        request_url = @verification_url + '/Get_Transaction_Ref'
-        #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
-        
-        uri = URI(request_url)
-        http = Net::HTTP.new(uri.host, uri.port)
-        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-        auth_req.set_form_data({"OrderID" => o.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
-        
-        http.use_ssl = true
-        auth_res = http.request(auth_req)
-        
-        xml_res = Nokogiri::XML(auth_res.body)
-        
-        status = ""
-        unless xml_res.xpath("/").empty?
-          status = xml_res.xpath("/").text
-        end
-        
-        result = Base64.decode64(status)
-        s = Hash.from_xml(result).to_json
-        @financefee = FinanceFee.find(83278)
-        @student = Student.find(22845)
-      
-        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => s, :validation_response => o.to_s)
-        payment.save
-      
-    end
+#    order_ids = [578295,183713,164960,313774,829086,116118,316269,218700,730609,582237,443344,206133,982115,35211,744726,238119,158413,818546,281728,299472,645537,489160,209061,604298,468086,582005,378562,46380,558208,580076,959126,219310,467155,730538,422603,226044,803161,871810,88918,305829,37984,208863,252379,670872,705585,202593,535532,750873,224746,189135,748423,648411,588957,956877,714919,261896,315153,590181,434118,320801,30913,599161,275793,319681,819909,650009,402711,537808,932751,716113,188536,994595,930841,688095,912503,21250,191039,570850,218572,863043,898196,693319,154917,740912,373785,242982,883858,997010,708797,877488,274153,413169,107202,675566,754385,403237,766840,478038,854723,28597,652614,299279,51740,635440,613291,466245,724483,446689,756258,774909,891350,142665,602192,820346,731291,229013,441398,771468,35242,389216,706950,626058,961271,918433,833185,661401,659944,244430,535780,705490,251140,866601,120695,157144,766891,416334,284051,225046,327909,115933,193054,862344,49123,647545,589797,535082,429234,9962,55591,239413,594570,527153,152674,76387,776635,224005,289457,773749,683572,243570,539289,672529,231428,618347,660098,927822,400085,457711,576043,466398,390335]
+#    
+#    order_ids.each do |o|
+#      testtrustbank = false
+#        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+#          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+#            payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+#            unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+#              testtrustbank = payment_configs["testtrustbank"]
+#            end
+#          end
+#        end
+#        if testtrustbank
+#          merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+#          @merchant_id = merchant_info["merchant_id"]
+#          @keycode = merchant_info["keycode"]
+#          @verification_url = merchant_info["validation_api"]
+#          @merchant_id ||= String.new
+#          @keycode ||= String.new
+#          @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
+#        else  
+#          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+#            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+#            @verification_url = payment_urls["trustbank_verification_url"]
+#            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+#          else
+#            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+#          end
+#          @merchant_id = PaymentConfiguration.config_value("merchant_id")
+#          @keycode = PaymentConfiguration.config_value("keycode_verification")
+#          @merchant_id ||= String.new
+#          @keycode ||= String.new
+#        end
+#        request_url = @verification_url + '/Get_Transaction_Ref'
+#        #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
+#        
+#        uri = URI(request_url)
+#        http = Net::HTTP.new(uri.host, uri.port)
+#        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+#        auth_req.set_form_data({"OrderID" => o.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
+#        
+#        http.use_ssl = true
+#        auth_res = http.request(auth_req)
+#        
+#        xml_res = Nokogiri::XML(auth_res.body)
+#        
+#        status = ""
+#        unless xml_res.xpath("/").empty?
+#          status = xml_res.xpath("/").text
+#        end
+#        
+#        result = Base64.decode64(status)
+#        s = Hash.from_xml(result).to_json
+#        @financefee = FinanceFee.find(83278)
+#        @student = Student.find(22845)
+#      
+#        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => s, :validation_response => o.to_s)
+#        payment.save
+#      
+#    end
     
     start_date = params[:start_date]
     start_date ||= Date.today

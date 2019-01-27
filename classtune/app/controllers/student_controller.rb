@@ -214,7 +214,7 @@ class StudentController < ApplicationController
     unless category_name.blank?
       condition = condition+" and student_categories.name = '"+category_name+"'"
     end
-    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
     students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
     std_loop = 1
     unless students.blank?
@@ -976,11 +976,11 @@ class StudentController < ApplicationController
           @student = Student.find(@student.id)
           
 
-          @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
-          @fee_collection_dates.each do |date|
-            d = FinanceFeeCollection.find(date.id)
-            FinanceFee.new_student_fee(d,@student)
-          end
+#          @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
+#          @fee_collection_dates.each do |date|
+#            d = FinanceFeeCollection.find(date.id)
+#            FinanceFee.new_student_fee(d,@student)
+#          end
             
           
           

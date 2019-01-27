@@ -776,7 +776,8 @@ class PaymentSettingsController < ApplicationController
           }
       
           @student = Student.find_by_admission_no(name)
-          abort(@student.inspect)
+          create_at = trans_date.to_data
+          abort(create_at.beginning_of_month.inspect)
     end
     
     start_date = params[:start_date]

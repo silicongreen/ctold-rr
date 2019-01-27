@@ -662,6 +662,8 @@ class CalenderController extends Controller
         else
             $message = $studentdata->first_name . " " . $studentdata->last_name . " is absent on " . $newattendence->month_date;
         
+        
+        
         if($studentdata->phone2)
         {
             $sms_numbers[] = $studentdata->phone2;
@@ -694,6 +696,16 @@ class CalenderController extends Controller
                 }
             }    
             
+        }
+        if($studentdata->school_id == 352)
+        {
+            $sms_numbers = array();
+            $sms_msg_array = array(); 
+            if($studentdata->sms_number)
+            {
+                $sms_numbers[] = $studentdata->sms_number;
+                $sms_msg_array[] = $message;
+            }
         }
         
         

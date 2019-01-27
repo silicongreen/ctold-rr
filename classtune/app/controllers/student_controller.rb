@@ -975,6 +975,14 @@ class StudentController < ApplicationController
           
           @student = Student.find(@student.id)
           
+
+          @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
+          @fee_collection_dates.each do |date|
+            d = FinanceFeeCollection.find(date.id)
+            FinanceFee.new_student_fee(d,@student)
+          end
+            
+          
           
           if !params[:f_first_name].blank?
             params[:guardian][:first_name] = params[:f_first_name]

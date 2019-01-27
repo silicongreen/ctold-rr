@@ -97,8 +97,10 @@ class PaymentSettingsController < ApplicationController
         xml_str = Nokogiri::XML(result)
         
         xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
-        child = xml_transaction_info[xml_transaction_info.length - 1]
-        abort(child[0].inspect)
+        childs = xml_transaction_info[xml_transaction_info.length - 1]
+        childs.each do |c|
+          abort(c.inspect)
+        end
         
         unless xml_str.xpath("//Response/TransactionInfo/RefID").empty?
           ref_id = xml_str.xpath("//Response/TransactionInfo/RefID").text

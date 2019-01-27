@@ -318,7 +318,7 @@ class PaymentSettingsController < ApplicationController
           :pan=>verification_pan
         }
         
-        abort(validation_response.inspect)
+        
         
         if verified.to_i == 1
           finance_fee_id = payment.payment_id

@@ -326,235 +326,236 @@ class PaymentSettingsController < ApplicationController
           fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id}")
           @student = Student.find(payee_id)
           @batch = @student.batch
-          unless fee.is_paid
-            fee_collection_id = fee.fee_collection_id
-            advance_fee_collection = false
-            @self_advance_fee = false
-            @fee_has_advance_particular = false
+          unless fee.nil?
+            unless fee.is_paid
+              fee_collection_id = fee.fee_collection_id
+              advance_fee_collection = false
+              @self_advance_fee = false
+              @fee_has_advance_particular = false
 
-            @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
-            @student_has_due = false
-            @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
-            unless @std_finance_fee_due.blank?
-              @student_has_due = true
-            end
-            @financefee = @student.finance_fee_by_date(@date)
-
-            if @financefee.has_advance_fee_id
-              if @date.is_advance_fee_collection
-                @self_advance_fee = true
-                advance_fee_collection = true
+              @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
+              @student_has_due = false
+              @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+              unless @std_finance_fee_due.blank?
+                @student_has_due = true
               end
-              @fee_has_advance_particular = true
-              @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
-              @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
-            end
+              @financefee = @student.finance_fee_by_date(@date)
 
-            @due_date = @fee_collection.due_date
-            @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
-            
-            @paid_fees = @financefee.finance_transactions
-
-            if advance_fee_collection
-              fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
-              if fee_collection_advances_particular.include?(0)
-                @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-              else
-                @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-              end
-            else
-              @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
-            end
-
-            if advance_fee_collection
-              month = 1
-              payable = 0
-              @fee_collection_advances.each do |fee_collection_advance|
-                @fee_particulars.each do |particular|
-                  if fee_collection_advance.particular_id == particular.finance_fee_particular_category_id
-                    payable += particular.amount * fee_collection_advance.no_of_month.to_i
-                  else
-                    payable += particular.amount
-                  end
+              if @financefee.has_advance_fee_id
+                if @date.is_advance_fee_collection
+                  @self_advance_fee = true
+                  advance_fee_collection = true
                 end
+                @fee_has_advance_particular = true
+                @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+                @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
               end
-              @total_payable=payable.to_f
-            else  
-              @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
-            end
 
-            @total_discount = 0
+              @due_date = @fee_collection.due_date
+              @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
 
-            #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
-            @adv_fee_discount = false
-            @actual_discount = 1
+              @paid_fees = @financefee.finance_transactions
 
-            if advance_fee_collection
-              calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
-            else
-              if @fee_has_advance_particular
-                calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
-              else
-                calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
-              end
-            end
-
-            bal=(@total_payable-@total_discount).to_f
-            
-            require 'date'
-            days=(verification_trans_date.to_date - @date.due_date.to_date).to_i
-            
-            auto_fine=@date.fine
-
-            @has_fine_discount = false
-            if days > 0 and auto_fine #and @financefee.is_paid == false
-              @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
-              @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-
-              calculate_extra_fine(@date, @batch, @student, @fine_rule)
-
-              @new_fine_amount = @fine_amount
-              get_fine_discount(@date, @batch, @student)
-              if @fine_amount < 0
-                 @fine_amount = 0
-              end
-            end
-
-            @fine_amount=0 if @financefee.is_paid
-
-            unless advance_fee_collection
-              if @total_discount == 0
-                @adv_fee_discount = true
-                @actual_discount = 0
-                calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
-              end
-            end
-
-            total_fees = @financefee.balance.to_f+@fine_amount.to_f
-            
-            if amount.to_f > 0
-              if amount.to_f == Champs21Precision.set_and_modify_precision(total_fees).to_f
-                transaction = FinanceTransaction.new
-                transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
-                transaction.category = FinanceTransactionCategory.find_by_name("Fee")
-                transaction.payee = @student
-                transaction.finance = @financefee
-                transaction.amount = total_fees
-                transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
-                transaction.fine_amount = @fine.to_f + @fine_amount.to_f
-                transaction.transaction_date = Date.today
-                transaction.payment_mode = "Online Payment"
-                transaction.save
-                if transaction.save
-                  total_fine_amount = 0
-                  unless (@fine.to_f + @fine_amount.to_f).zero?
-                    total_fine_amount = @fine.to_f + @fine_amount.to_f
-                  end
-                  is_paid =@financefee.balance==0 ? true : false
-                  @financefee.update_attributes( :is_paid=>is_paid)
-
-                  @paid_fees = @financefee.finance_transactions
-
-                  proccess_particulars_category = []
-                  loop_particular = 0
-                  @fee_particulars.each do |fp|
-                    particular_amount = fp.amount.to_f
-                    finance_transaction_particular = FinanceTransactionParticular.new
-                    finance_transaction_particular.finance_transaction_id = transaction.id
-                    finance_transaction_particular.particular_id = fp.id
-                    finance_transaction_particular.particular_type = 'Particular'
-                    finance_transaction_particular.transaction_type = 'Fee Collection'
-                    finance_transaction_particular.amount = particular_amount
-                    finance_transaction_particular.transaction_date = transaction.transaction_date
-                    finance_transaction_particular.save
-                  end
-
-                  unless @onetime_discounts.blank?
-                    @onetime_discounts.each do |od|
-                      discount_amount = @onetime_discounts_amount[od.id].to_f
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = od.id
-                      finance_transaction_particular.particular_type = 'Adjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    end
-                  end
-
-
-                  unless @discounts.blank?
-                    @discounts.each do |od|
-                      discount_amount = @discounts_amount[od.id]
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = od.id
-                      finance_transaction_particular.particular_type = 'Adjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    end
-                  end
-
-                  if transaction.vat_included?
-                    vat_amount = transaction.vat_amount
-                    finance_transaction_particular = FinanceTransactionParticular.new
-                    finance_transaction_particular.finance_transaction_id = transaction.id
-                    finance_transaction_particular.particular_id = 0
-                    finance_transaction_particular.particular_type = 'VAT'
-                    finance_transaction_particular.transaction_type = ''
-                    finance_transaction_particular.amount = vat_amount
-                    finance_transaction_particular.transaction_date = transaction.transaction_date
-                    finance_transaction_particular.save
-                  end
-
-                  if total_fine_amount
-                    fine_amount = total_fine_amount
-                    finance_transaction_particular = FinanceTransactionParticular.new
-                    finance_transaction_particular.finance_transaction_id = transaction.id
-                    finance_transaction_particular.particular_id = 0
-                    finance_transaction_particular.particular_type = 'Fine'
-                    finance_transaction_particular.transaction_type = ''
-                    finance_transaction_particular.amount = fine_amount
-                    finance_transaction_particular.transaction_date = transaction.transaction_date
-                    finance_transaction_particular.save
-                  end
-
-
-                  if @has_fine_discount
-                    @discounts_on_lates.each do |fd|
-                      discount_amount = @discounts_late_amount[od.id]
-                      discount_amount = params["fee_fine_discount_amount_" + fd.id.to_s].to_f
-                      finance_transaction_particular = FinanceTransactionParticular.new
-                      finance_transaction_particular.finance_transaction_id = transaction.id
-                      finance_transaction_particular.particular_id = fd.id
-                      finance_transaction_particular.particular_type = 'FineAdjustment'
-                      finance_transaction_particular.transaction_type = 'Discount'
-                      finance_transaction_particular.amount = discount_amount
-                      finance_transaction_particular.transaction_date = transaction.transaction_date
-                      finance_transaction_particular.save
-                    end
-                  end
-                end
-                payment.update_attributes(:finance_transaction_id => transaction.id)
-                unless @financefee.transaction_id.nil?
-                  tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
+              if advance_fee_collection
+                fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+                if fee_collection_advances_particular.include?(0)
+                  @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
                 else
-                  tid=transaction.id
+                  @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
                 end
-                is_paid = @financefee.balance==0 ? true : false
+              else
+                @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+              end
+
+              if advance_fee_collection
+                month = 1
+                payable = 0
+                @fee_collection_advances.each do |fee_collection_advance|
+                  @fee_particulars.each do |particular|
+                    if fee_collection_advance.particular_id == particular.finance_fee_particular_category_id
+                      payable += particular.amount * fee_collection_advance.no_of_month.to_i
+                    else
+                      payable += particular.amount
+                    end
+                  end
+                end
+                @total_payable=payable.to_f
+              else  
+                @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
+              end
+
+              @total_discount = 0
+
+              #calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
+              @adv_fee_discount = false
+              @actual_discount = 1
+
+              if advance_fee_collection
+                calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+              else
+                if @fee_has_advance_particular
+                  calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                else
+                  calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+                end
+              end
+
+              bal=(@total_payable-@total_discount).to_f
+
+              require 'date'
+              days=(verification_trans_date.to_date - @date.due_date.to_date).to_i
+
+              auto_fine=@date.fine
+
+              @has_fine_discount = false
+              if days > 0 and auto_fine #and @financefee.is_paid == false
+                @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
+                @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
+
+                calculate_extra_fine(@date, @batch, @student, @fine_rule)
+
+                @new_fine_amount = @fine_amount
+                get_fine_discount(@date, @batch, @student)
+                if @fine_amount < 0
+                   @fine_amount = 0
+                end
+              end
+
+              @fine_amount=0 if @financefee.is_paid
+
+              unless advance_fee_collection
+                if @total_discount == 0
+                  @adv_fee_discount = true
+                  @actual_discount = 0
+                  calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+                end
+              end
+
+              total_fees = @financefee.balance.to_f+@fine_amount.to_f
+
+              if amount.to_f > 0
+                if amount.to_f == Champs21Precision.set_and_modify_precision(total_fees).to_f
+                  transaction = FinanceTransaction.new
+                  transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
+                  transaction.category = FinanceTransactionCategory.find_by_name("Fee")
+                  transaction.payee = @student
+                  transaction.finance = @financefee
+                  transaction.amount = total_fees
+                  transaction.fine_included = (@fine.to_f + @fine_amount.to_f).zero? ? false : true
+                  transaction.fine_amount = @fine.to_f + @fine_amount.to_f
+                  transaction.transaction_date = Date.today
+                  transaction.payment_mode = "Online Payment"
+                  transaction.save
+                  if transaction.save
+                    total_fine_amount = 0
+                    unless (@fine.to_f + @fine_amount.to_f).zero?
+                      total_fine_amount = @fine.to_f + @fine_amount.to_f
+                    end
+                    is_paid =@financefee.balance==0 ? true : false
+                    @financefee.update_attributes( :is_paid=>is_paid)
+
+                    @paid_fees = @financefee.finance_transactions
+
+                    proccess_particulars_category = []
+                    loop_particular = 0
+                    @fee_particulars.each do |fp|
+                      particular_amount = fp.amount.to_f
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = fp.id
+                      finance_transaction_particular.particular_type = 'Particular'
+                      finance_transaction_particular.transaction_type = 'Fee Collection'
+                      finance_transaction_particular.amount = particular_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
+                    end
+
+                    unless @onetime_discounts.blank?
+                      @onetime_discounts.each do |od|
+                        discount_amount = @onetime_discounts_amount[od.id].to_f
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = od.id
+                        finance_transaction_particular.particular_type = 'Adjustment'
+                        finance_transaction_particular.transaction_type = 'Discount'
+                        finance_transaction_particular.amount = discount_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                    end
+
+
+                    unless @discounts.blank?
+                      @discounts.each do |od|
+                        discount_amount = @discounts_amount[od.id]
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = od.id
+                        finance_transaction_particular.particular_type = 'Adjustment'
+                        finance_transaction_particular.transaction_type = 'Discount'
+                        finance_transaction_particular.amount = discount_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                    end
+
+                    if transaction.vat_included?
+                      vat_amount = transaction.vat_amount
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = 0
+                      finance_transaction_particular.particular_type = 'VAT'
+                      finance_transaction_particular.transaction_type = ''
+                      finance_transaction_particular.amount = vat_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
+                    end
+
+                    if total_fine_amount
+                      fine_amount = total_fine_amount
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = 0
+                      finance_transaction_particular.particular_type = 'Fine'
+                      finance_transaction_particular.transaction_type = ''
+                      finance_transaction_particular.amount = fine_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
+                    end
+
+
+                    if @has_fine_discount
+                      @discounts_on_lates.each do |fd|
+                        discount_amount = @discounts_late_amount[od.id]
+                        discount_amount = params["fee_fine_discount_amount_" + fd.id.to_s].to_f
+                        finance_transaction_particular = FinanceTransactionParticular.new
+                        finance_transaction_particular.finance_transaction_id = transaction.id
+                        finance_transaction_particular.particular_id = fd.id
+                        finance_transaction_particular.particular_type = 'FineAdjustment'
+                        finance_transaction_particular.transaction_type = 'Discount'
+                        finance_transaction_particular.amount = discount_amount
+                        finance_transaction_particular.transaction_date = transaction.transaction_date
+                        finance_transaction_particular.save
+                      end
+                    end
+                  end
+                  payment.update_attributes(:finance_transaction_id => transaction.id)
+                  unless @financefee.transaction_id.nil?
+                    tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
+                  else
+                    tid=transaction.id
+                  end
+                  is_paid = @financefee.balance==0 ? true : false
 
 
 
-                @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
-                @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
-                
+                  @financefee.update_attributes(:transaction_id=>tid, :is_paid=>is_paid)
+                  @paid_fees = FinanceTransaction.find(:all,:conditions=>"FIND_IN_SET(id,\"#{tid}\")")
+
+                end
               end
             end
           end
-          
           sms_setting = SmsSetting.new()
           if sms_setting.student_sms_active or sms_setting.parent_sms_active    
             message = "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, Sender - SAGC"

@@ -337,14 +337,13 @@ class PaymentSettingsController < ApplicationController
           finance_fee_id = payment.payment_id
           payee_id = payment.payee_id
           fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id}")
+          @student = Student.find(payee_id)
+          @batch = @student.batch
           unless fee.is_paid
             fee_collection_id = fee.fee_collection_id
             advance_fee_collection = false
             @self_advance_fee = false
             @fee_has_advance_particular = false
-
-            @student = Student.find(payee_id)
-            @batch = @student.batch
 
             @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
             @student_has_due = false
@@ -568,6 +567,41 @@ class PaymentSettingsController < ApplicationController
               end
             end
           end
+          
+          sms_setting = SmsSetting.new()
+          if sms_setting.student_sms_active or sms_setting.parent_sms_active    
+            message = "Fees received BDT #AMOUNT# for #UNAME#(#UID#) as on #PAIDDATE# by TBL. TranID-#TRANID# TranRef-#TRANREF#, Sender - SAGC"
+            if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
+              sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
+              message = sms_text_config['feepaid']
+            end
+            recipients = []
+            unless @student.sms_number.nil? or @student.sms_number.empty? or @student.sms_number.blank?
+              message = message.gsub("#UNAME#", @student.full_name)
+              message = message.gsub("#UID#", @student.admission_no)
+              message = message.gsub("#AMOUNT#", amount_from_gateway.to_s)
+              message = message.gsub("#PAIDDATE#", trans_date.to_date.strftime("%d-%m-%Y"))
+              message = message.gsub("#TRANID#", orderId)
+              message = message.gsub("#TRANREF#", ref_id)
+              recipients.push @student.sms_number
+            else
+              unless @student.phone2.nil? or @student.phone2.empty? or @student.phone2.blank?
+                message = message
+                message = message.gsub("#UNAME#", @student.full_name)
+                message = message.gsub("#UID#", @student.admission_no)
+                message = message.gsub("#AMOUNT#", amount_from_gateway.to_s)
+                message = message.gsub("#PAIDDATE#", trans_date.to_date.strftime("%d-%m-%Y"))
+                message = message.gsub("#TRANID#", orderId)
+                message = message.gsub("#TRANREF#", ref_id)
+                recipients.push @student.phone2
+              end
+            end
+            messages = []
+            messages[0] = message
+            #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
+            send_sms(messages,recipients)
+          end
+          
           paymentnew = Payment.find(payment.id)
           paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
           render :update do |page|
@@ -697,6 +731,96 @@ class PaymentSettingsController < ApplicationController
   end
 
   private
+  
+  def send_sms(multi_message, recipients)
+    @recipients = recipients.map{|r| r.gsub(' ','')}
+    @multi_message = multi_message
+    @config = SmsSetting.get_sms_config
+    unless @config.blank?
+      @sendername = @config['sms_settings']['sendername']
+      @sms_url = @config['sms_settings']['host_url']
+      @username = @config['sms_settings']['username']
+      @password = @config['sms_settings']['password']
+      @success_code = @config['sms_settings']['success_code']
+      @username_mapping = @config['parameter_mappings']['username']
+      @username_mapping ||= 'username'
+      @password_mapping = @config['parameter_mappings']['password']
+      @password_mapping ||= 'password'
+      @phone_mapping = @config['parameter_mappings']['phone']
+      @phone_mapping ||= 'phone'
+      @sender_mapping = @config['parameter_mappings']['sendername']
+      @sender_mapping ||= 'sendername'
+      @message_mapping = @config['parameter_mappings']['message']
+      @message_mapping ||= 'message'
+      unless @config['additional_parameters'].blank?
+        @additional_param = ""
+        @config['additional_parameters'].split(',').each do |param|
+          @additional_param += "&#{param}"
+        end
+      end
+    end
+
+    if @config.present?
+      @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
+
+      i = 0
+      @i_sms_loop = 0
+      @recipients.each do |recipient|
+       message = @multi_message[i]
+       message_escape = CGI::escape message
+       if @i_sms_loop == 3
+         message_log = SmsMessage.new(:body=> message_escape)
+         message_log.save
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+
+         api_uri = URI.parse(@sms_url)
+         http = Net::HTTP.new(api_uri.host, api_uri.port)
+         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+         request.set_form_data(@sms_hash)
+
+         http.request(request)
+
+         sms_count = Configuration.find_by_config_key("TotalSmsCount")
+         new_count = sms_count.config_value.to_i + 4
+         sms_count.update_attributes(:config_value=>new_count)
+
+         @sms_hash = {"user"=>@username,"pass"=>@password,"sid" =>@sendername}
+
+         @i_sms_loop = 0
+       elsif recipient.equal? @recipients.last
+         message_log = SmsMessage.new(:body=> message_escape)
+         message_log.save
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+
+         api_uri = URI.parse(@sms_url)
+         http = Net::HTTP.new(api_uri.host, api_uri.port)
+         request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+         request.set_form_data(@sms_hash)
+         http.request(request)
+
+         sms_count = Configuration.find_by_config_key("TotalSmsCount")
+         new_count = sms_count.config_value.to_i + 1+@i_sms_loop
+         sms_count.update_attributes(:config_value=>new_count)
+       else
+         @sms_hash["sms[#{@i_sms_loop}][0]"] = recipient
+         @sms_hash["sms[#{@i_sms_loop}][1]"] = message
+         @sms_hash["sms[#{@i_sms_loop}][2]"] = @i_sms_loop
+         message_log = SmsMessage.new(:body=> message_escape)
+         message_log.save
+         message_log.sms_logs.create(:mobile=>recipient,:gateway_response=>"Successfull")
+         @i_sms_loop = @i_sms_loop+1
+       end   
+
+       i += 1
+      end
+    end
+  end
 
   def calculate_discount(date,batch,student,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
     exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)

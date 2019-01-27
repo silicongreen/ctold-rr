@@ -100,7 +100,7 @@ class PaymentSettingsController < ApplicationController
         childs = xml_transaction_info[xml_transaction_info.length - 1].children
         #abort(childs.inspect)
         childs.each do |c|
-          abort(c.inspect)
+          abort(c.name.inspect)
         end
         xml_str.xpath("//Response/TransactionInfo").each do |node|
           

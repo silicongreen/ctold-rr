@@ -321,6 +321,11 @@ class PaymentSettingsController < ApplicationController
         
         
         if verified.to_i == 1 or verification_verified.to_i == 1
+          if verified.to_i == 0
+            if verification_verified.to_i == 1
+              gateway_response = validation_response
+            end
+          end
           finance_fee_id = payment.payment_id
           payee_id = payment.payee_id
           fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id}")

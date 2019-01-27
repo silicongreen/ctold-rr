@@ -664,7 +664,7 @@ class PaymentSettingsController < ApplicationController
         @financefee = FinanceFee.find(83278)
         @student = Student.find(22845)
       
-        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => result)
+        payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => result.to_xml, :validation_response => o.to_s)
         payment.save
       
     end

@@ -214,7 +214,7 @@ class StudentController < ApplicationController
     unless category_name.blank?
       condition = condition+" and student_categories.name = '"+category_name+"'"
     end
-    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = "" or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,students.admission_no asc"
     students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
     std_loop = 1
     unless students.blank?
@@ -280,7 +280,7 @@ class StudentController < ApplicationController
             if k1 == "value"
               unless v1.blank?
                 if key.to_i == 3
-                  condition = condition+" and batches.name like '%"+v1+"%'"
+                  condition = condition+" and batches.name like '"+v1+"%'"
                 elsif key.to_i == 4
                   condition = condition+" and courses.course_name = '"+v1+"'"
                 elsif key.to_i == 5
@@ -344,7 +344,7 @@ class StudentController < ApplicationController
       
       
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
-      std = {:admission_no=>student.admission_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
+      std = {:admission_no=>student.admission_no,:password=>password,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1
     end
@@ -2003,11 +2003,11 @@ class StudentController < ApplicationController
           @auth_response = JSON::parse(auth_res.body)
           
           flash[:notice] = "#{t('flash3')}"
-          if found_paid_fees
-            redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :paid_fees => @fee_ids, :paid_fees_type => paid_fees_type
-          else
+          #if found_paid_fees
+          #  redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :paid_fees => @fee_ids, :paid_fees_type => paid_fees_type
+          #else
             redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
-          end
+          #end
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]

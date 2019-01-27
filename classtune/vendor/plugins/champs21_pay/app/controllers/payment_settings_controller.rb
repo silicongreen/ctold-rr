@@ -579,7 +579,7 @@ class PaymentSettingsController < ApplicationController
             unless @student.sms_number.nil? or @student.sms_number.empty? or @student.sms_number.blank?
               message = message.gsub("#UNAME#", @student.full_name)
               message = message.gsub("#UID#", @student.admission_no)
-              message = message.gsub("#AMOUNT#", amount_from_gateway.to_s)
+              message = message.gsub("#AMOUNT#", amount.to_s)
               message = message.gsub("#PAIDDATE#", trans_date.to_date.strftime("%d-%m-%Y"))
               message = message.gsub("#TRANID#", orderId)
               message = message.gsub("#TRANREF#", ref_id)
@@ -589,7 +589,7 @@ class PaymentSettingsController < ApplicationController
                 message = message
                 message = message.gsub("#UNAME#", @student.full_name)
                 message = message.gsub("#UID#", @student.admission_no)
-                message = message.gsub("#AMOUNT#", amount_from_gateway.to_s)
+                message = message.gsub("#AMOUNT#", amount.to_s)
                 message = message.gsub("#PAIDDATE#", trans_date.to_date.strftime("%d-%m-%Y"))
                 message = message.gsub("#TRANID#", orderId)
                 message = message.gsub("#TRANREF#", ref_id)

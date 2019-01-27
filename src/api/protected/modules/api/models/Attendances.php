@@ -163,7 +163,7 @@ class Attendances extends CActiveRecord {
     {
         $criteria = new CDbCriteria;
         $criteria->select="t.id";
-        $criteria->compare('month_date', date("Y-m-d"));
+        $criteria->compare('month_date', $date);
         $criteria->compare('batch_id', $batch_id);
         $data = $this->findAll($criteria);
         return $data;

@@ -162,7 +162,7 @@ class Attendances extends CActiveRecord {
     public function getAttendenceBatch($batch_id,$date)
     {
         $criteria = new CDbCriteria;
-        $criteria->select="t.id";
+        $criteria->select="t.id,t.student_id,t.forenoon,t.afternoon";
         $criteria->compare('month_date', $date);
         $criteria->compare('batch_id', $batch_id);
         $data = $this->findAll($criteria);

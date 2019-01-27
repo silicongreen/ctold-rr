@@ -1088,6 +1088,7 @@ class CalenderController extends Controller
             
            
             $attendence = new Attendances();
+            
             $attendence_batch = $attendence->getAttendenceBatch($batch_id, $date);
             if ($attendence_batch)
                 foreach ($attendence_batch as $value)
@@ -1150,11 +1151,26 @@ class CalenderController extends Controller
                     $newattendence->afternoon = 1;
                 }
                 $newattendence->save();
-                Settings::save_attt_to_log($newattendence,$att_type);
-
-                if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+                
+                $send_notification = true;
+                if($attendence_batch)
                 {
-                    $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                    foreach($attendence_batch as $value)
+                    {
+                        if($value->student_id == $newattendence->student_id && $value->forenoon == $newattendence->forenoon && $value->afternoon == $newattendence->afternoon)
+                        {
+                            $send_notification = false;
+                        }
+                    }
+                    
+                }
+                Settings::save_attt_to_log($newattendence,$att_type);
+                if($send_notification)
+                {
+                    if(!isset($newattendence->is_leave) || $newattendence->is_leave!=1)
+                    {
+                        $this->sendnotificationAttendence($student_id, $newattendence, $late);
+                    }
                 }
             }
             

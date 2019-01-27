@@ -100,6 +100,9 @@ class PaymentSettingsController < ApplicationController
         childs = xml_transaction_info[xml_transaction_info.length - 1].children
         #abort(childs.inspect)
         childs.each do |c|
+          if c.name == "RefID"
+            abort(c.Text.to_s)
+          end
           abort(c.name.inspect)
         end
         xml_str.xpath("//Response/TransactionInfo").each do |node|

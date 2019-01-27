@@ -165,7 +165,7 @@ class PaymentSettingsController < ApplicationController
         unless xml_str.xpath("//Response/TransactionInfo/CardOrderStatus").empty?
           card_order_status = xml_str.xpath("//Response/TransactionInfo/CardOrderStatus").text
         end
-        
+        abort(service_charge.to_s)
         gateway_response = {
           :total_amount => total_amount,
           :amount => amount,

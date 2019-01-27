@@ -1,0 +1,254 @@
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div class="header-wrapper">
+
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "student Fees", :controller => "student", :action => "fees", :id => @student.id %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
+        <ul class="header-tabs">
+            <li class="active">
+                <%= link_to "#{t('fees_text')}", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "#{t('view_refunds')}", {:controller => 'finance', :action => "refund_student_view",:id => @student.id}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+            </li>
+        </ul>
+        <% end %>
+    </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+    <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
+      <div class="fees_wrapper">
+          <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
+          <div id="student_profile_heading">
+              <div id="profile_picture_display">
+                  <% if @student.photo.file? %>
+                    <% @profile_image = @student.photo.url %>
+                    <% unless @profile_image.index("RackMultipart").nil? %>
+                      <% @profile_image.gsub! '?', '.?' %>
+                    <% end %>
+
+                  <% else %>
+                    <% @profile_image = "master_student/profile/default_student.png" %>
+                  <% end %>
+                  <%= image_tag "#{@profile_image}" %>
+                  <% if @student.photo.file? %>
+                  <% if @current_user.admin? or permitted_to? :remove_photo, :student %>
+                  <div class="image-delete-link" />
+                     <%= link_to '<img src="/images/buttons/delete-new.png" />', {:controller => 'student', :action => 'remove_photo', :id => @student.id}, :confirm => "Do you realy want to remove this photo?" %>
+                  </div>
+                  <% end %>
+                  <% end %>
+
+              </div>
+
+              <div id ="student_main_info">
+                  <div id="student_name" class="f2"><%= @student.full_name %></div>
+                  <div id="student_class"><%= @student.batch.course.course_name %></div>
+              </div>
+          </div>
+          
+          <div id="personal_info_wrapper">
+              <div id="class_info">
+                <% if Batch.active.find(:all, :group => "name").length > 1  %>
+                  <div class="infos">
+                      <div><%= @student.batch.name %></div>
+                      <div><%= t('batch_text') %></div>
+                  </div>
+                <% end %>
+                <div class="infos">
+                    <div><%= @student.admission_no %></div>
+                    <div><%= t('adm_no') %></div>
+                </div>
+                <div class="infos last">
+                    <% unless  @student.batch.course.section_name.empty? %>
+                    <div><%= @student.batch.course.section_name %></div>
+                    <div><%= t('profile_section_label') %></div>
+                    <% else %>
+                    <div> No Section</div>
+                    <div></div>
+                    <% end %>
+                    
+                </div>
+            </div>
+          </div>
+          
+          
+          <div id="student_profile_heading1">
+              <div id="student_main_info1">
+                  <% if @paid_fees_type == "category" %>
+                  <p>Student Category has been changed</p>
+                  <% end %>
+                  <span class="name"><h1> Adjust Paid Fees</h1> </span>
+              </div>
+              <div class="extender"> </div>
+          </div>
+
+          <div class="fees" style="display: none;">
+              <% if permitted_to? :fees_received, :finance %>
+                <% form_for :fee do |f|%>
+      <%# if @student.has_paid_fees == true %>
+      <%#*<div class="check_box"> <%= check_box :fee, :has_paid_fees,:checked=>true  %>
+      <%# else %>
+      <%#*<div class="check_box"><%= check_box :fee, :has_paid_fees,:checked=>false %>
+      <%# end %>
+                  <div class="check_box"><%= check_box :fee, :has_paid_fees,:checked=>@student.has_paid_fees %></div>
+                  <div class="paid_text"><%= t('has_paid_all_the_fees') %></div>
+                  <%= submit_tag "► #{t('update')}",:class=>'user_button' %>
+                <% end %>
+              <% end %>
+          </div>
+          <div class="extender"> </div>
+          <div class="line" style=""></div>
+          <div id="fees_list" style="background: #FBFBFB; padding: 20px;">
+              <div style="width: 100%; text-align: right;"></div>
+              <div style="text-align: center; width: 100%;">
+                <%- @dates_unpaid.each do |d| -%>
+                  <%  finance_fee = @student.finance_fee_by_date(d) %>
+                  <%  paid_fees = finance_fee.finance_transactions %>
+                  <%
+                    paid_amount = 0.0
+                    unless paid_fees.nil? or paid_fees.blank?
+                      paid_fees.each do |pf|
+                        paid_amount += pf.amount
+                      end
+                    end
+                  %>
+                  <div class='fee_details_box'>
+                      <div class="fee_name"><%= d.name  %></div>
+                      <div class='fee_details'>
+                          <table style='width: 100%;'>
+                              <tr><td class="fee_due" colspan="2"><b>Fee Details</b></td></tr>
+                              <tr>
+                                  <td class='fee_due'><b>Due Date</b></td>
+                                  <td class='fee_due'><%= d.due_date %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Amount</b></td>
+                                  <td class='fee_due'><%= precision_label(finance_fee.balance.to_f+d.fine_to_pay(@student).to_f+paid_amount.to_f)  %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Paid</b></td>
+                                  <td class='fee_due'><%=  precision_label(paid_amount) %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Due</b></td>
+                                  <td class='fee_due'><%=  precision_label((finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)) %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Status</b></td>
+                                  <% if finance_fee.balance.to_f > 0 %>
+                                  <td class='fee_due'>Unpaid</td>
+                                  <% else %>
+                                  <td class='fee_due'>Paid</td>
+                                  <% end %>
+                              </tr>
+                          </table>
+                      </div>
+                      <div class="fee_bottom">
+                          <div><%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"fee_link" %></div>
+                          <div><%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></div>
+                      </div>
+                  </div>
+                  <div style="float: left; width: 3%; height: 300px;"></div>
+                <% end %>
+                <%- @dates_paid.each do |d| -%>
+                  <%  finance_fee = @student.finance_fee_by_date(d) %>
+                  <%  paid_fees = finance_fee.finance_transactions %>
+                  <%
+                    paid_amount = 0.0
+                    unless paid_fees.nil? or paid_fees.blank?
+                      paid_fees.each do |pf|
+                        paid_amount += pf.amount
+                      end
+                    end
+                  %>
+                  <%  %>
+                  <% if finance_fee.balance.to_f+d.fine_to_pay(@student).to_f == 0.00 %>
+                  <% bal = FinanceFee.get_student_balance(d,@student, finance_fee) %>  
+                  <% else %>
+                  <% bal = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
+                  <% end %>
+                  <div class='fee_details_box'>
+                      <div class="fee_name" style="position: relative;"><span style="position: absolute; top: 10px; left: 10px;"><i class="fa fa-check-square-o" style="font-size: 30px; color: #598A3D; "></i></span><%= d.name  %></div>
+                      <div class='fee_details'>
+                          <table style='width: 100%;'>
+                              <tr><td class="fee_due" colspan="2"><b>Fee Details</b></td></tr>
+                              <tr>
+                                  <td class='fee_due'><b>Due Date</b></td>
+                                  <td class='fee_due'><%= d.due_date %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Amount</b></td>
+                                  <td class='fee_due'>BDT <%= precision_label(bal.to_f)  %></td>
+                              </tr>
+                              <tr>
+                                  <td class='fee_due'><b>Paid</b></td>
+                                  <td class='fee_due'>BDT <%=  precision_label(paid_amount) %></td>
+                              </tr>
+                              <% if paid_amount - bal > 0 %>
+                              <tr>
+                                  <td class='fee_due'><b>Advance</b></td>
+                                  <% advance = paid_amount - bal %>
+                                  <td class='fee_due'>BDT <%=  precision_label(advance) %></td>
+                              </tr>
+                              <% else %>
+                              <tr>
+                                  <td class='fee_due'><b>Due</b></td>
+                                  <% due = bal - paid_amount %>
+                                  <td class='fee_due'>BDT <%=  precision_label(due) %></td>
+                              </tr>
+                              <% end %>
+                              <tr>
+                                  <td class='fee_due'><b>Status</b></td>
+                                  <% if finance_fee.balance.to_f > 0 %>
+                                  <td class='fee_due'>Unpaid</td>
+                                  <% else %>
+                                  <td class='fee_due'>Paid</td>
+                                  <% end %>
+                              </tr>
+                          </table>
+                      </div>
+                      <div class="fee_bottom">
+                          <div><%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"fee_link" %></div>
+                          <div><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></div>
+                      </div>
+                  </div>
+                  <div style="float: left; width: 3%; height: 300px;"></div>
+                <% end %>  
+              </div>
+            </div>
+
+      </div>
+    <% else %>
+      <div id="page-yield">
+        <h2 style="padding: 10px;">Coming Soon</h2>
+      </div>
+    <% end %>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>

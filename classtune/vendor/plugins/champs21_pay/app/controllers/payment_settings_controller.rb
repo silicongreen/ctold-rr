@@ -222,7 +222,7 @@ class PaymentSettingsController < ApplicationController
         
         xml_str = Nokogiri::XML(result)
         abort(result.inspect)
-        xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
+        xml_transaction_info = xml_str.xpath("//Response")
         childs = xml_transaction_info[xml_transaction_info.length - 1].children
         abort(childs.inspect)
         childs.each do |c|

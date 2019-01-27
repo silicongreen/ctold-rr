@@ -781,7 +781,7 @@ class PaymentSettingsController < ApplicationController
           end_month = create_at.end_of_month
           
           fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
-          fees = FinanceFee.Find(:first, :conditions => "student_id = #{@student.id} and fee_collection_id IN #{fee_collection.map(&:id).join(",")}")
+          fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and fee_collection_id IN #{fee_collection.map(&:id).join(",")}")
           abort(fees.inspect)
     end
     

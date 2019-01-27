@@ -221,7 +221,7 @@ class PaymentSettingsController < ApplicationController
         verification_card_order_status = ""
         
         xml_str = Nokogiri::XML(result)
-        
+        abort(result.inspect)
         xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
         childs = xml_transaction_info[xml_transaction_info.length - 1].children
         abort(childs.inspect)

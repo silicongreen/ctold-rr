@@ -209,6 +209,7 @@ class PaymentSettingsController < ApplicationController
         end
         
         result = Base64.decode64(status)
+        abort(result.inspect)
         verification_ref_id = ""
         verification_orderId = ""
         verification_name = ""

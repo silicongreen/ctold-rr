@@ -776,7 +776,8 @@ class PaymentSettingsController < ApplicationController
           }
       
           @student = Student.find_by_admission_no(name)
-          create_at = trans_date.to_data
+          require 'Date'
+          create_at = Date.parse(trans_date)
           abort(create_at.beginning_of_month.inspect)
     end
     

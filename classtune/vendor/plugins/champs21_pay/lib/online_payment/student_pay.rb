@@ -429,7 +429,7 @@ module OnlinePayment
               }
 
             end
-            payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response)
+            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response)
             if payment.save
               gateway_status = false
               if @active_gateway == "Paypal"

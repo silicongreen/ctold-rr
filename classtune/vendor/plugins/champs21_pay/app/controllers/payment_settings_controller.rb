@@ -1190,14 +1190,14 @@ class PaymentSettingsController < ApplicationController
           if op.gateway_response[:payment_type] != 'ITCL'
             order_ids[i] = op.gateway_response[:order_id]
             i += 1
-            if i > 100
-              break
-            end
+            #if i > 100
+            #  break
+            #end
           end
         end
       end
     end
-    abort(order_ids.inspect)
+    abort(i.inspect)
     
     start_date = params[:start_date]
     start_date ||= Date.today

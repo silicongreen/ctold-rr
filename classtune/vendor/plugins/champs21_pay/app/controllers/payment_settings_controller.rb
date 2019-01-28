@@ -1190,7 +1190,7 @@ class PaymentSettingsController < ApplicationController
         end
       end
     end
-    abort(i)
+    abort(i.to_s)
     
     start_date = params[:start_date]
     start_date ||= Date.today

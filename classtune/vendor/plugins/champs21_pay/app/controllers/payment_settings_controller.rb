@@ -686,8 +686,8 @@ class PaymentSettingsController < ApplicationController
     
     if request.post?
       unless params[:order_id].blank?
-        order_id_vals =  params[:order_id]
-        order_ids = order_id_vals.split(",").map{ |s| s.strip }
+        #order_id_vals =  params[:order_id]
+        #order_ids = order_id_vals.split(",").map{ |s| s.strip }
         
         num_orders = order_ids.length
         verified_no = 0

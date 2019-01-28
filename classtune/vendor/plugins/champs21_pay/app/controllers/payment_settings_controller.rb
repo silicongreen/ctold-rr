@@ -1187,10 +1187,12 @@ class PaymentSettingsController < ApplicationController
       unless op.gateway_response[:verified].nil?
         verified = op.gateway_response[:verified]
         if verified.to_i == 0
-          order_ids[i] = op.gateway_response[:order_id]
-          i += 1
-          if i > 100
-            break
+          if op.gateway_response[:payment_type] != 'ITCL'
+            order_ids[i] = op.gateway_response[:order_id]
+            i += 1
+            if i > 100
+              break
+            end
           end
         end
       end

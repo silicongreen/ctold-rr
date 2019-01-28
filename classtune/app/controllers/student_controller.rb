@@ -199,6 +199,9 @@ class StudentController < ApplicationController
     unless batch_name.blank?
       condition = condition+" and batches.name like '%"+batch_name+"%'"
     end
+    unless version_name.blank?
+      condition = condition+" and batches.name like '%"+version_name+"%'"
+    end
     unless class_name.blank?
       condition = condition+" and courses.course_name = '"+class_name+"'"
     end

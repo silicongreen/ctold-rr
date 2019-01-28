@@ -1182,15 +1182,20 @@ class PaymentSettingsController < ApplicationController
     
     online_payments = Payment.all
     i = 0
+    order_ids = []
     online_payments.each do |op|
       unless op.gateway_response[:verified].nil?
         verified = op.gateway_response[:verified]
         if verified.to_i == 0
+          order_ids[i] = op.gateway_response[:order_id]
           i += 1
+          if i > 100
+            break
+          end
         end
       end
     end
-    abort(i.to_s)
+    abort(order_ids.inspect)
     
     start_date = params[:start_date]
     start_date ||= Date.today

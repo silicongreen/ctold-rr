@@ -537,7 +537,7 @@ function checkValidDiscount(discount_id)
         return fnd;
     }
 }
-
+    
 function disableFineDiscountAlso()
 {
     j(".fee_fine_amount_discount").addClass('disabled');
@@ -548,10 +548,10 @@ function disableFineDiscountAlso()
     j(".fee_fine_discount").removeAttr('checked');
     j(".fee_fine_discount_fa").removeClass("fa-check-square-o");
     j(".fee_fine_discount_fa").addClass("fa-square-o");
-}
-
+}    
+    
 function loadJS()
-{
+{    
     document.observe("dom:loaded", function() {
         j('#hide2').hide();
         j('#active-batch-link').hide();
@@ -1421,3 +1421,5 @@ function set_back(){
     $('fees_form').removeAttr("onsubmit");
     setTimeout(function(){$('submit_button').enable();},15000);
 }
+
+loadJS();

@@ -95,8 +95,29 @@ class PaymentSettingsController < ApplicationController
         card_order_status = ""
         xml_str = Nokogiri::XML(result)
         
-        xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")
-        childs = xml_transaction_info[xml_transaction_info.length - 1].children
+        verifiedId = 0
+        found_verified = false
+        xmlind = 0
+        xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
+        xml_transaction_infos.each do |xml_transaction_info|
+          childs = xml_transaction_info.children
+          childs.each do |c|
+            if c.name == "Verified"
+              v = c.text
+              if v.to_i == 1
+                verifiedId = xmlind
+                found_verified = true
+              end
+            end
+          end
+          xmlind += 1
+        end
+        if found_verified
+          childs = xml_transaction_infos[verifiedId].children
+        else  
+          childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+        end
+        
         #abort(childs.inspect)
         childs.each do |c|
           if c.name == "RefID"

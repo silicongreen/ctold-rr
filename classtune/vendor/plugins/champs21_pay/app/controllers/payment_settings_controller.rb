@@ -749,11 +749,9 @@ class PaymentSettingsController < ApplicationController
             elsif c.name == "OrderID"
               orderId = c.text
             elsif c.name == "Name"
-              #name = c.text
-              name = '141009'
+              name = c.text
             elsif c.name == "Email"
-              #email = c.text
-              email = '-'
+              email = c.text
             elsif c.name == "Amount"
               amount = c.text
             elsif c.name == "ServiceCharge"

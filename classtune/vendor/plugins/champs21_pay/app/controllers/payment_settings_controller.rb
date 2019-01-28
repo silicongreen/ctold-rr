@@ -1179,6 +1179,15 @@ class PaymentSettingsController < ApplicationController
 #          end
 #    end
     
+    
+    online_payments = Payment.all
+    online_payments.each do |op|
+      unless op.gateway_response[:order_id].nil?
+        order_id = op.gateway_response[:order_id]
+        op.update_attributes(:order_id => order_id)
+      end
+    end
+    
     start_date = params[:start_date]
     start_date ||= Date.today
     end_date = params[:end_date]

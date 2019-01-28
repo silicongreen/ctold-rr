@@ -664,25 +664,25 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-#    online_payments = Payment.all
-#    i = 0
-#    order_ids = []
-#    online_payments.each do |op|
-#      unless op.gateway_response[:verified].nil?
-#        verified = op.gateway_response[:verified]
-#        if verified.to_i == 0
-#          if op.gateway_response[:payment_type] != 'ITCL'
-#            order_ids[i] = op.gateway_response[:order_id]
-#            i += 1
-#            #if i > 100
-#            #  break
-#            #end
-#          end
-#        end
-#      end
-#    end
+    online_payments = Payment.all
+    i = 0
+    order_ids = []
+    online_payments.each do |op|
+      unless op.gateway_response[:verified].nil?
+        verified = op.gateway_response[:verified]
+        if verified.to_i == 0
+          if op.gateway_response[:payment_type] != 'ITCL'
+            order_ids[i] = op.gateway_response[:order_id]
+            i += 1
+            #if i > 100
+            #  break
+            #end
+          end
+        end
+      end
+    end
     order_ids = ["410202", "410202", "588254", "588254", "889707", "889707", "346240", "346240", "284674", "284674", "752775", "752775", "900481", "900481", "144658", "144658", "994418", "994418", "805254", "805254", "145218", "145218", "487866", "487866", "126529", "126529", "977381", "977381", "352622", "352622", "180363", "180363", "871216", "871216", "180783", "180783", "510797", "510797", "913520", "913520", "989037", "989037", "191434", "191434", "782724", "782724", "350415", "350415", "923373", "923373", "669304", "669304", "242781", "242781"]
-    #abort(order_ids.inspect)
+    abort(order_ids.inspect)
     
     if request.post?
       unless params[:order_id].blank?

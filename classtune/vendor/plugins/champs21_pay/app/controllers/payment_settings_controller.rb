@@ -175,7 +175,7 @@ class PaymentSettingsController < ApplicationController
           :service_charge=>service_charge,
           :pan=>pan
         }
-        
+        abort(gateway_response.inspect)
         request_url = @verification_url + '/Transaction_Verify_Details'
         #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
         

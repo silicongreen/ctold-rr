@@ -81,3 +81,5 @@ en:
   is_test_sslcommerz: "Test SSL Commerz"
   is_test_testtrustbank: "Test Trustbank API"
   keycode_verification: "Keycode"
+  order_verification: "Order Verification"
+  verify_order: "Verify Order"

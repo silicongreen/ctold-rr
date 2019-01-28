@@ -39,6 +39,9 @@
 <div id="inner-tab-menu">
   <ul>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "Settings", settings_online_payments_path %></li>
+    <% if MultiSchool.current_school.id == 352 %>  
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('order_verification')}", {:controller => "online_payments", :action => "order_verifications"} %></li>
+    <% end %>
   </ul>
 </div>
 <% end %>

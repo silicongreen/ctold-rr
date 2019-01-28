@@ -39,7 +39,10 @@
     </div>
       
     <% if MultiSchool.current_school.id == 352 %>  
-      
+        <div class="link-box">
+          <div class="link-heading"><%= link_to "#{t('order_verification')}", {:controller => "online_payments", :action => "order_verifications"} %> </div>
+          <div class="link-descr"><%= t('order_verification') %></div>
+        </div>
     <% end %>  
   </div>
 </div>

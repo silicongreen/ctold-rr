@@ -9,6 +9,7 @@ authorization do
       :show_gateway_fields,
       :return_to_champs21_pages,
       :index,
+      :order_verifications,
       :verify_payment,
       :transactions
     ]

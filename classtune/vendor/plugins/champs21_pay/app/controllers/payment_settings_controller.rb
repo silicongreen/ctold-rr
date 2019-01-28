@@ -93,7 +93,7 @@ class PaymentSettingsController < ApplicationController
         card_response_code = ""
         card_response_desc = ""
         card_order_status = ""
-        
+        abort(result.inspect)
         xml_str = Nokogiri::XML(result)
         
         xml_transaction_info = xml_str.xpath("//Response/TransactionInfo")

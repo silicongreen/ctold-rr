@@ -3,7 +3,7 @@
 <%# theme = 'coursemate' %>
 <%# end %>
 <% if MultiSchool.current_school.is_test_school == 2 %>
-<%= render "layouts/theme/application." + theme.downcase + ".html" %>
-<% else %>
 <%= render "layouts/theme/application.setup.demo.html" %>
+<% else %>
+<%= render "layouts/theme/application." + theme.downcase + ".html" %>
 <% end %>

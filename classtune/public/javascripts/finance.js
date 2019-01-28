@@ -583,7 +583,7 @@ function loadJS()
               html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
               html += '<input type="text" name="extra_discount_amount" id="extra_discount_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'discount_extra\')" onkeydown="checkKey(event,this, \'discount_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_discount" name="extra_discount_chk" id="extra_discount_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
               j('.discount_tr').last().after(html);
-              j('#discount_on_tmp_create').focus();
+              //j('#discount_on_tmp_create').focus();
             }
         });
 

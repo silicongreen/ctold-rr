@@ -786,6 +786,8 @@ class PaymentSettingsController < ApplicationController
         
         num_orders = order_ids.length
         verified_no = 0
+        
+        order_ids_new = []
         order_ids.each do |o|
           testtrustbank = false
             if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
@@ -1132,6 +1134,7 @@ class PaymentSettingsController < ApplicationController
                       gateway_response = validation_response
                     end
                   end
+                  order_ids_new << o
                   verified_no += 1
                 end
                 
@@ -1361,13 +1364,14 @@ class PaymentSettingsController < ApplicationController
                 paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
               end
         end
+        
         if verified_no.to_i == num_orders.to_i
           flash[:notice] = "All Orders has been changed successfully"
         else
           if verified_no.to_i == 0
             flash[:notice] = "No Orders has not verify yet"
           else
-            flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified"
+            flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(",")
           end
         end
       else

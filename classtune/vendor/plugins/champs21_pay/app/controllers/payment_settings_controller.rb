@@ -1117,7 +1117,7 @@ class PaymentSettingsController < ApplicationController
                   :pan=>verification_pan
                 }
 
-                payment = Payment.find(o.to_i)
+                payment = Payment.find_by_order_id(o.to_i)
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 
               

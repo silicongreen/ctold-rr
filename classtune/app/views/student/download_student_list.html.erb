@@ -5,7 +5,7 @@
       <div id="pdf-header-south" class="general-header">
         <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
         <h2 align="center">Student List-2019</h2>
-        <h2 align="center">Shift-<%= @batch_name_pdf %> Class-<%= @class_name_pdf %></h2>
+        <h2 align="center"><% unless @batch_name_pdf.blank? %>Shift-<%= @batch_name_pdf %><% end %> <% unless @class_name_pdf.blank? %>Class-<%= @class_name_pdf %><% end %></h2>
         <h2 align="center"><% unless @version_pdf.blank? %>Version-<%= @version_pdf %><% end %><% unless @section_pdf.blank? %>Section-<%= @section_pdf %><% end %> </h2>
       </div>
       

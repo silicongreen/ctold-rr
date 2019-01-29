@@ -656,14 +656,58 @@ class PaymentSettingsController < ApplicationController
     end
     #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
     if MultiSchool.current_school.id == 352
-      @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "id")
+      @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
     else
       @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
     end
     ###.paginate()
     
-    respond_to do |format|
-      format.html #transctions.html.erb
+    unless params[:export].nil?
+      if params[:export].to_i == 1
+        require 'spreadsheet'
+        Spreadsheet.client_encoding = 'UTF-8'
+    
+        date = Spreadsheet::Format.new :number_format => 'MM/DD/YYYY'
+    
+        row_1 = ["Ref ID","Order ID","Name","Marchent ID","Amount","Fees","Service Charge","Status","Verified","Trn Date"]
+        
+        # Create a new Workbook
+        new_book = Spreadsheet::Workbook.new
+
+        # Create the worksheet
+        new_book.create_worksheet :name => 'Online Transaction'
+
+        # Add row_1
+        new_book.worksheet(0).insert_row(0, row_1)
+
+        ind = 1
+        @online_payments.each do |payment|
+          amt = payment.gateway_response[:amount].to_f
+          service_change = payment.gateway_response[:service_charge].to_f
+          tot_amt = amt + service_change
+          verified = "false"
+          unless payment.gateway_response[:verified].nil?
+            if payment.gateway_response[:verified].to_i == 1
+              verified = "true"
+            end
+          end
+          row_new = [payment.gateway_response[:ref_id], payment.gateway_response[:order_id], payment.gateway_response[:name], payment.gateway_response[:merchant_id], Champs21Precision.set_and_modify_precision(tot_amt), Champs21Precision.set_and_modify_precision(amt), Champs21Precision.set_and_modify_precision(service_change), payment.gateway_response[:status], verified, I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y")]
+          new_book.worksheet(0).insert_row(ind, row_new)
+          ind += 1
+        end
+        spreadsheet = StringIO.new 
+        new_book.write spreadsheet 
+
+        send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
+      else
+        respond_to do |format|
+          format.html #transctions.html.erb
+        end
+      end
+    else
+      respond_to do |format|
+        format.html #transctions.html.erb
+      end
     end
   end
   
@@ -673,7 +717,7 @@ class PaymentSettingsController < ApplicationController
       op.order_id = op.gateway_response[:order_id]
       op.save
     end
-    abort('here')
+#    abort('here')
     online_payments = Payment.all
     i = 0
     j = 0
@@ -691,6 +735,7 @@ class PaymentSettingsController < ApplicationController
       else
         ords = Payment.find(:all, :conditions => "order_id = #{op.order_id}")
         fnd = false
+        not_inc_k = false
         k = 1
         ords.each do |o|
           unless o.gateway_response[:name].nil?
@@ -701,21 +746,25 @@ class PaymentSettingsController < ApplicationController
             else
               adm_no = admission_no
             end
-            if adm_no.strip == admission_no.strip
+            if adm_no.strip.to_s == admission_no.strip.to_s
               if k > 1
                 o.destroy
+                fnd = true
+              else
+                k = 2
               end
             else
               o.destroy
+              fnd = true
             end
           else
             o.destroy
+            fnd = true
           end
-          k += 1
         end
       end
     end
-    abort(order_ids_no_verified.inspect)
+    #abort(order_ids_no_verified.inspect)
 #    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
     abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     

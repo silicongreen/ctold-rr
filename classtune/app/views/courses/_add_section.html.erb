@@ -31,7 +31,7 @@
         <p class="flash-msg"> <%= flash[:notice] %> </p>
       <% end %>
     </div>  
-    <ul id="category-list" style="height: 132px; overflow-y: auto; overflow-x: hidden; ">
+    <ul id="category-list" style="height: 120px; overflow-y: auto; overflow-x: hidden; ">
     <% @courses_data.each do |course| %>
         <li class="list<%=cycle('odd', 'even')%>">
           <div class="category-name" style="width: 20%;"><%= course.section_name.strip.length > 0 ? course.section_name.strip : "no-section" %></div>

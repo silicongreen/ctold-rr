@@ -664,29 +664,29 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-    online_payments = Payment.all
-    i = 0
-    order_ids = []
-    online_payments.each do |op|
-      require 'date'
-      unless op.gateway_response[:tran_date].nil?
-        dt = op.gateway_response[:tran_date].split(".")
-        op.transaction_datetime = dt[0]
-        op.save
-      end
-      unless op.gateway_response[:verified].nil?
-        verified = op.gateway_response[:verified]
-        if verified.to_i == 0
-          if op.gateway_response[:payment_type] != 'ITCL'
-            order_ids[i] = op.gateway_response[:order_id]
-            i += 1
-            #if i > 100
-            #  break
-            #end
-          end
-        end
-      end
-    end
+#    online_payments = Payment.all
+#    i = 0
+#    order_ids = []
+#    online_payments.each do |op|
+#      require 'date'
+#      unless op.gateway_response[:tran_date].nil?
+#        dt = op.gateway_response[:tran_date].split(".")
+#        op.transaction_datetime = dt[0]
+#        op.save
+#      end
+#      unless op.gateway_response[:verified].nil?
+#        verified = op.gateway_response[:verified]
+#        if verified.to_i == 0
+#          if op.gateway_response[:payment_type] != 'ITCL'
+#            order_ids[i] = op.gateway_response[:order_id]
+#            i += 1
+#            #if i > 100
+#            #  break
+#            #end
+#          end
+#        end
+#      end
+#    end
 #    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(order_ids.inspect)
     
@@ -882,6 +882,9 @@ class PaymentSettingsController < ApplicationController
                 :pan=>pan
               }
 
+              dt = trans_date.split(".")
+              transaction_datetime = dt[0]
+              
               @student = Student.find_by_admission_no(name)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month
@@ -1045,7 +1048,7 @@ class PaymentSettingsController < ApplicationController
                 
                 payment = Payment.find_by_payee_id_and_payment_id(@student.id,@financefee.id)
                 if payment.nil?
-                  payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response, :validation_response => validation_response)
+                  payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save
                 end
 
@@ -1248,7 +1251,7 @@ class PaymentSettingsController < ApplicationController
                             end
                           end
                         end
-                        payment.update_attributes(:finance_transaction_id => transaction.id)
+                        payment.update_attributes(:finance_transaction_id => transaction.id, :transaction_datetime => transaction_datetime)
                         unless @financefee.transaction_id.nil?
                           tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"
                         else
@@ -1266,7 +1269,7 @@ class PaymentSettingsController < ApplicationController
                   end
                 end
                 paymentnew = Payment.find(payment.id)
-                paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
+                paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
               end
         end
         if verified_no.to_i == num_orders.to_i

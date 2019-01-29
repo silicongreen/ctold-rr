@@ -655,7 +655,11 @@ class PaymentSettingsController < ApplicationController
       extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
     end
     #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-    @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "id")
+    if MultiSchool.current_school.id == 352
+      @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "id")
+    else
+      @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+    end
     ###.paginate()
     
     respond_to do |format|
@@ -664,31 +668,56 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-#    online_payments = Payment.all
-#    i = 0
-#    order_ids = []
-#    online_payments.each do |op|
-#      require 'date'
-#      unless op.gateway_response[:tran_date].nil?
-#        dt = op.gateway_response[:tran_date].split(".")
-#        op.transaction_datetime = dt[0]
-#        op.save
-#      end
-#      unless op.gateway_response[:verified].nil?
-#        verified = op.gateway_response[:verified]
-#        if verified.to_i == 0
-#          if op.gateway_response[:payment_type] != 'ITCL'
-#            order_ids[i] = op.gateway_response[:order_id]
-#            i += 1
-#            #if i > 100
-#            #  break
-#            #end
-#          end
-#        end
-#      end
-#    end
+    online_payments = Payment.find(:all, :conditions=>"order_id IS NULL")
+    online_payments.each do |op|
+      op.order_id = op.gateway_response[:order_id]
+      op.save
+    end
+    abort('here')
+    online_payments = Payment.all
+    i = 0
+    j = 0
+    order_ids = []
+    verified = 0
+    order_ids_no_verified = []
+    user_ids = [22479,23675,25360,25372,26164,26302,26467,26533,27312,28528,28966,29116,29915,30092,30373,30632,31978]
+    online_payments.each do |op|
+      unless order_ids.include?(op.order_id) 
+        order_ids[i] = op.order_id
+        i += 1
+        if op.gateway_response[:verified].to_i == 1
+          verified += 1
+        end
+      else
+        ords = Payment.find(:all, :conditions => "order_id = #{op.order_id}")
+        fnd = false
+        k = 1
+        ords.each do |o|
+          unless o.gateway_response[:name].nil?
+            admission_no = o.gateway_response[:name]
+            unless user_ids.include?(o.payee_id)
+              std = Student.find(o.payee_id)
+              adm_no = std.admission_no
+            else
+              adm_no = admission_no
+            end
+            if adm_no.strip == admission_no.strip
+              if k > 1
+                o.destroy
+              end
+            else
+              o.destroy
+            end
+          else
+            o.destroy
+          end
+          k += 1
+        end
+      end
+    end
+    abort(order_ids_no_verified.inspect)
 #    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
-#    abort(order_ids.inspect)
+    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
     if request.post?
       unless params[:order_id].blank?

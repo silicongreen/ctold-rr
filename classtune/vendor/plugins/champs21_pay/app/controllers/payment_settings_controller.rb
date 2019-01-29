@@ -976,6 +976,151 @@ class PaymentSettingsController < ApplicationController
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
               
+              request_url = @verification_url + '/Transaction_Verify_Details'
+                #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
+
+                uri = URI(request_url)
+                http = Net::HTTP.new(uri.host, uri.port)
+                auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+                auth_req.set_form_data({"OrderID" => orderId, "MerchantID" => @merchant_id, "RefID" => ref_id})
+
+                http.use_ssl = true
+                auth_res = http.request(auth_req)
+
+                xml_res = Nokogiri::XML(auth_res.body)
+                status = ""
+                unless xml_res.xpath("/").empty?
+                  status = xml_res.xpath("/").text
+                end
+
+                result = Base64.decode64(status)
+                #abort(result.inspect)
+                verification_ref_id = ""
+                verification_orderId = ""
+                verification_name = ""
+                verification_email = ""
+                verification_amount = 0.00
+                verification_service_charge = 0.00
+                verification_total_amount = 0.00
+                verification_status = 0
+                verification_status_text = ""
+                verification_used = ""
+                verification_verified = 0
+                verification_payment_type = ""
+                verification_pan = ""
+                verification_tbbmm_account = ""
+                verification_merchant_id = ""
+                verification_order_datetime = ""
+                verification_trans_date = ""
+                verification_emi_no = ""
+                verification_interest_amount = ""
+                verification_pay_with_charge = ""
+                verification_card_response_code = ""
+                verification_card_response_desc = ""
+                verification_card_order_status = ""
+
+                xml_str = Nokogiri::XML(result)
+
+                unless xml_str.xpath("//Response/RefID").empty?
+                  verification_ref_id = xml_str.xpath("//Response/RefID").text
+                end
+                unless xml_str.xpath("//Response/OrderID").empty?
+                  verification_orderId = xml_str.xpath("//Response/OrderID").text
+                end
+                unless xml_str.xpath("//Response/Name").empty?
+                  verification_name = xml_str.xpath("//Response/Name").text
+                end
+                unless xml_str.xpath("//Response/Email").empty?
+                  verification_email = xml_str.xpath("//Response/Email").text
+                end
+                unless xml_str.xpath("//Response/Amount").empty?
+                  verification_amount = xml_str.xpath("//Response/Amount").text
+                end
+                unless xml_str.xpath("//Response/ServiceCharge").empty?
+                  verification_service_charge = xml_str.xpath("//Response/ServiceCharge").text
+                end
+                unless xml_str.xpath("//Response/TotalAmount").empty?
+                  verification_total_amount = xml_str.xpath("//Response/TotalAmount").text
+                end
+                unless xml_str.xpath("//Response/Status").empty?
+                  verification_status = xml_str.xpath("//Response/Status").text
+                end
+                unless xml_str.xpath("//Response/StatusText").empty?
+                  verification_status_text = xml_str.xpath("//Response/StatusText").text
+                end
+                unless xml_str.xpath("//Response/Used").empty?
+                  verification_used = xml_str.xpath("//Response/Used").text
+                end
+                unless xml_str.xpath("//Response/Verified").empty?
+                  verification_verified = xml_str.xpath("//Response/Verified").text
+                end
+                unless xml_str.xpath("//Response/PaymentType").empty?
+                  verification_payment_type = xml_str.xpath("//Response/PaymentType").text
+                end
+                unless xml_str.xpath("//Response/PAN").empty?
+                  verification_pan = xml_str.xpath("//Response/PAN").text
+                end
+                unless xml_str.xpath("//Response/TBMM_Account").empty?
+                  verification_tbbmm_account = xml_str.xpath("//Response/TBMM_Account").text
+                end
+                unless xml_str.xpath("//Response/MarchentID").empty?
+                  verification_merchant_id = xml_str.xpath("//Response/MarchentID").text
+                end
+                unless xml_str.xpath("//Response/OrderDateTime").empty?
+                  verification_order_datetime = xml_str.xpath("//Response/OrderDateTime").text
+                end
+                unless xml_str.xpath("//Response/PaymentDateTime").empty?
+                  verification_trans_date = xml_str.xpath("//Response/PaymentDateTime").text
+                end
+                unless xml_str.xpath("//Response/EMI_No").empty?
+                  verification_emi_no = xml_str.xpath("//Response/EMI_No").text
+                end
+                unless xml_str.xpath("//Response/InterestAmount").empty?
+                  verification_interest_amount = xml_str.xpath("//Response/InterestAmount").text
+                end
+                unless xml_str.xpath("//Response/PayWithCharge").empty?
+                  verification_pay_with_charge = xml_str.xpath("//Response/PayWithCharge").text
+                end
+                unless xml_str.xpath("//Response/CardResponseCode").empty?
+                  verification_card_response_code = xml_str.xpath("//Response/CardResponseCode").text
+                end
+                unless xml_str.xpath("//Response/CardResponseDescription").empty?
+                  verification_card_response_desc = xml_str.xpath("//Response/CardResponseDescription").text
+                end
+                unless xml_str.xpath("//Response/CardOrderStatus").empty?
+                  verification_card_order_status = xml_str.xpath("//Response/CardOrderStatus").text
+                end
+
+                validation_response = {
+                  :total_amount => verification_total_amount,
+                  :amount => verification_amount,
+                  :name => verification_name,
+                  :email => verification_email,
+                  :merchant_id => verification_merchant_id,
+                  :order_datetime => verification_order_datetime,
+                  :emi_no => verification_emi_no,
+                  :tbbmm_account => verification_tbbmm_account,
+                  :interest_amount => verification_interest_amount,
+                  :pay_with_charge => verification_pay_with_charge,
+                  :card_response_code => verification_card_response_code,
+                  :card_response_desc => verification_card_response_desc,
+                  :card_order_status => verification_card_order_status,
+                  :used => verification_used,
+                  :verified => verification_verified,
+                  :status_text => verification_status_text,
+                  :status => verification_status,
+                  :ref_id => verification_ref_id,
+                  :order_id=>verification_orderId,
+                  :tran_date=>verification_trans_date,
+                  :payment_type=>verification_payment_type,
+                  :service_charge=>verification_service_charge,
+                  :pan=>verification_pan
+                }
+
+                payment = Payment.find(391)
+                payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                abort('here')
+              
               @student = Student.find_by_admission_no(name)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month

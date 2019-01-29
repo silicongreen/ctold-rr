@@ -1117,9 +1117,9 @@ class PaymentSettingsController < ApplicationController
                   :pan=>verification_pan
                 }
 
-                payment = Payment.find(391)
+                payment = Payment.find(o.to_i)
                 payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
-                abort('here')
+                
               
               @student = Student.find_by_admission_no(name)
               #create_at = Date.parse(trans_date)

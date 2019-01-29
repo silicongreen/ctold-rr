@@ -671,7 +671,7 @@ class PaymentSettingsController < ApplicationController
       require 'date'
       unless op.gateway_response[:tran_date].nil?
         dt = op.gateway_response[:tran_date].split(".")
-        op.transaction_datetime = dt[0].to_datetime   
+        op.transaction_datetime = dt[0]
         op.save
       end
       unless op.gateway_response[:verified].nil?

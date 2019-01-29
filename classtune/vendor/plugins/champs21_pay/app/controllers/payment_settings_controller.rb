@@ -889,6 +889,7 @@ class PaymentSettingsController < ApplicationController
               if found_verified
                 childs = xml_transaction_infos[verifiedId].children
               else  
+                abort(xml_transaction_infos.inspect)
                 childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
               end
 

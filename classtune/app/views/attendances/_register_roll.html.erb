@@ -265,6 +265,35 @@
     }
 </style> 
 <script>
+var jj = jQuery.noConflict();
+jj(".student-name-attendance").on({
+      mouseenter: function () {
+        var this_id = this.id;
+        std_id = this_id.replace("student-name-attendance-","");
+        jj.getJSON("/attendances/get_att_log", {
+          student_id: std_id,
+          date: jj('#attandence_date').val()
+        })
+        .done(function( data ) {
+          var log_string = "";
+          jj.each( data, function( i, item ) {
+            log_string +="<span style='white-space: nowrap; padding: 10px 20px;'>"+item.employee_name+"&nbsp;&nbsp;"+item.status+"&nbsp;&nbsp;"+item.date+"</span><br/>";
+          });
+          
+          if(log_string!="")
+          {
+            jj('#attednace-log-'+std_id).html(log_string);
+          }
+          else
+          {
+            jj('#attednace-log-'+std_id).html("No Log Found");
+          }  
+        });
+      }  
+    });
+ </script>   
+  <% end %>
+  <script>
   var jj = jQuery.noConflict();
   jj(document).ready(function() {
     jj('.check_all').click(function () {
@@ -322,31 +351,7 @@
 
       });
     
-    jj(".student-name-attendance").on({
-      mouseenter: function () {
-        var this_id = this.id;
-        std_id = this_id.replace("student-name-attendance-","");
-        jj.getJSON("/attendances/get_att_log", {
-          student_id: std_id,
-          date: jj('#attandence_date').val()
-        })
-        .done(function( data ) {
-          var log_string = "";
-          jj.each( data, function( i, item ) {
-            log_string +="<span style='white-space: nowrap; padding: 10px 20px;'>"+item.employee_name+"&nbsp;&nbsp;"+item.status+"&nbsp;&nbsp;"+item.date+"</span><br/>";
-          });
-          
-          if(log_string!="")
-          {
-            jj('#attednace-log-'+std_id).html(log_string);
-          }
-          else
-          {
-            jj('#attednace-log-'+std_id).html("No Log Found");
-          }  
-        });
-      }  
-    });
+    
   });
 </script> 
-<% end %>
+

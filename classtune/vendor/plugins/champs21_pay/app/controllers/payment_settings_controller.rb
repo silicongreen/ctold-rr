@@ -723,11 +723,11 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-    online_payments = Payment.find(:all, :conditions=>"order_id IS NULL")
-    online_payments.each do |op|
-      op.order_id = op.gateway_response[:order_id]
-      op.save
-    end
+#    online_payments = Payment.find(:all, :conditions=>"order_id IS NULL")
+#    online_payments.each do |op|
+#      op.order_id = op.gateway_response[:order_id]
+#      op.save
+#    end
 ##    abort('here')
 #    online_payments = Payment.all
 #    i = 0

@@ -668,7 +668,10 @@ class PaymentSettingsController < ApplicationController
     i = 0
     order_ids = []
     online_payments.each do |op|
-      op.transaction_datetime = DateTime.parse(op.gateway_response[:tran_date])
+      unless op.gateway_response[:tran_date].nil?
+        op.transaction_datetime = DateTime.parse(op.gateway_response[:tran_date])
+        op.save
+      end
       unless op.gateway_response[:verified].nil?
         verified = op.gateway_response[:verified]
         if verified.to_i == 0

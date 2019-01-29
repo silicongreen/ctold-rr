@@ -191,9 +191,9 @@ class StudentController < ApplicationController
     @batch_name_pdf = batch_name = params[:batch_name]
     @version_pdf = version_name = params[:version_name]
     @class_name_pdf = class_name = params[:class_name]
-    @section_pdf = session_name = params[:session_name]
+    session_name = params[:session_name]
     group_name = params[:group_name]
-    section_name = params[:section_name]
+    @section_pdf = section_name = params[:section_name]
     category_name = params[:category_name]
     condition = "1 = 1"
     unless batch_name.blank?
@@ -219,7 +219,7 @@ class StudentController < ApplicationController
     end
     order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
     @students_pdf = students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
-    unless params[:pdf].blank?
+    if !params[:pdf].blank? and params[:pdf] == "1"
       render :pdf => "download_student_list",
       :orientation => 'Portrait',
       :margin => {    :top=> 10,

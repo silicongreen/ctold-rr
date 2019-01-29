@@ -70,6 +70,13 @@ module ApplicationHelper
     stylesheets << @direction+"_layouts/new-login"
   end
 
+  def get_demoschool_stylesheets
+    stylesheets = [] unless stylesheets
+    stylesheets << "dashboards/style"
+    
+    return stylesheets
+  end
+
   def get_pdf_stylesheets
     @direction = (rtl?) ? 'rtl/' : ''
     stylesheets = [] unless stylesheets

@@ -9,50 +9,7 @@ employee_id = @current_user.employee_record.id
           <div class="als-viewport"  style="float:left;  overflow: hidden; width: auto;">
             <ul class="als-wrapper"   data-id="als-wrapper_0" style="width: 635px;  height: 135px;"> 
             
-             <% 
-              all_new_reminders = @current_user.all_new_reminders_user
-              homework_count = 0
-              classwork_count = 0
-              reportcard_count = 0
-              exam_rountine_count = 0
-              leave_application_count = 0
-              meetings_count = 0
-
-              homework_string = ""
-              classwork_string = ""
-              reportcard_string = ""
-              exam_rountine_string = ""
-              leave_application_string = ""
-              meetings_string = ""
-              unless all_new_reminders.blank?
-                all_new_reminders.each do |reminder|
-                  if reminder.rtype == 2
-                    exam_rountine_count = exam_rountine_count+1
-                    exam_rountine_string = '<div class="msg-count-2">'+exam_rountine_count.to_s+'</div>'
-                  end
-                  if reminder.rtype == 4
-                    homework_count = homework_count+1
-                    homework_string = '<div class="msg-count-2">'+homework_count.to_s+'</div>'
-                  end
-                  if reminder.rtype == 31
-                    classwork_count = classwork_count+1
-                    classwork_string = '<div class="msg-count-2">'+classwork_count.to_s+'</div>'
-                  end
-                  if reminder.rtype == 3
-                    reportcard_count = reportcard_count+1
-                    reportcard_string = '<div class="msg-count-2">'+reportcard_count.to_s+'</div>'
-                  end
-                  if reminder.rtype == 7 or reminder.rtype == 8 or reminder.rtype == 9 or reminder.rtype == 10 
-                    leave_application_count = leave_application_count+1
-                    leave_application_string = '<div class="msg-count-2">'+leave_application_count.to_s+'</div>'
-                  end
-                  if reminder.rtype == 11 or reminder.rtype == 12 or reminder.rtype == 13 or reminder.rtype == 14
-                    meetings_count = meetings_count+1
-                    meetings_string = '<div class="msg-count-2">'+meetings_count.to_s+'</div>'
-                  end
-                end  
-              end  
-            %>   
+             
               
               <li class="als-item" >
                 <%= link_to_remote "<div class='rountine_box_icon_2 active'><span class='f2'>CLASS ROUTINE</span></div>",
@@ -76,9 +33,9 @@ employee_id = @current_user.employee_record.id
               
               <li class="als-item">
                 <% if MultiSchool.current_school.id == 340 %>
-                  <%=  link_to "<div class='homework_box_icon'><span class='f2'>HOMEWORK"+homework_string+"</span></div>", :controller => 'assignments', :action => 'index' %>
+                  <%=  link_to "<div class='homework_box_icon'><span class='f2'>HOMEWORK</span></div>", :controller => 'assignments', :action => 'index' %>
                 <% else %>  
-                <%= link_to_remote "<div class='homework_box_icon'><span class='f2'>HOMEWORK"+homework_string+"</span></div>",
+                <%= link_to_remote "<div class='homework_box_icon'><span class='f2'>HOMEWORK</span></div>",
                   :update => "dashboard-data",
                   :before => "Element.show('loader');j('.partial_homework').empty();",
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .homework_box_icon').addClass('active');",
@@ -96,7 +53,7 @@ employee_id = @current_user.employee_record.id
                   :url => {:controller=>"dashboards",:action => "employee_quiz_data"} %>
               </li>
               <li class="als-item" >
-                <%= link_to_remote "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE"+exam_rountine_string+"</span></div>",
+                <%= link_to_remote "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE</span></div>",
                   :update => "dashboard-data",
                   :before => "Element.show('loader');j('.partial_homework').empty();",
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
@@ -104,7 +61,7 @@ employee_id = @current_user.employee_record.id
               </li>
               <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
               <li class="als-item" >
-                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
+                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
               </li>
               <% end %>
             
@@ -116,14 +73,14 @@ employee_id = @current_user.employee_record.id
               </li>
               <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam_report,:marks %>
                 <li class="als-item" >
-                  <%=  link_to "<div class='report_card_box_icon'><span class='f2'>REPORT CARD"+reportcard_string+"</span></div>", :controller => 'marks', :action => 'connect_exam_report' %>
+                  <%=  link_to "<div class='report_card_box_icon'><span class='f2'>REPORT CARD</span></div>", :controller => 'marks', :action => 'connect_exam_report' %>
                 </li>
               <% end %>
               <li class="als-item" >
-                <%=  link_to "<div class='leave_box_icon'><span class='f2'>LEAVE"+leave_application_string+"</span></div>", :controller => 'employee_attendance', :action => 'leaves', :id => employee_id %>
+                <%=  link_to "<div class='leave_box_icon'><span class='f2'>LEAVE</span></div>", :controller => 'employee_attendance', :action => 'leaves', :id => employee_id %>
               </li>
               <li class="als-item" >
-                <%=  link_to "<div class='meeting_box_icon'><span class='f2'>MEETING"+meetings_string+"</span></div>", :controller => 'meetings', :action => 'index' %>
+                <%=  link_to "<div class='meeting_box_icon'><span class='f2'>MEETING</span></div>", :controller => 'meetings', :action => 'index' %>
               </li>
               <%  if !@current_user.admin? %>
               <li class="als-item" >
@@ -184,13 +141,12 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#A1C935; color:white;'><span style='text-align:center;width:80%; float:left;'>Confidential Card</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'other', :action => 'student_record' %>
       <% end %>
       <%  if (@current_user.admin? || @current_user.privileges.include?(Privilege.find_by_name('SMSManagement'))) && sms_enable? && @current_user.id != 33910 %> 
-        <% if MultiSchool.current_school.id == 352 %>
-          <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'panel' %>
-        <% else %>
-          <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Students</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'students' %>
-      
-          <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#FF6347; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Employee</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'employees' %>
-        <% end  %>  
+          <% if MultiSchool.current_school.id == 352 %>
+            <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'panel' %>
+          <% else %>
+            <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#8B4513; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Students</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'students' %>
+            <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#FF6347; color:white;'><span style='text-align:center;width:80%; float:left;'>Send Sms To Employee</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'sms', :action => 'employees' %>
+          <% end %>
       <% end %>
       <% if (@current_user.employee or @current_user.admin) and can_access_request? :connect_exam,:marks %>
         <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246  %>
@@ -273,24 +229,5 @@ employee_id = @current_user.employee_record.id
   .school_feed_box a
   {
       text-decoration: none;
-  }
-  .msg-count-2
-  {
-    position: relative;
-    padding: 5px 10px;
-    top: -36px;
-    left: 72px;
-    background-color: red;
-    color: white;
-    font-weight: bold;
-    font-size: 0.55em;
-    border-radius: 30px;
-    box-shadow: 1px 1px 1px grey;
-    color: #ffffff;
-    margin-left: 5px;
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    float: left;
   }
 </style>

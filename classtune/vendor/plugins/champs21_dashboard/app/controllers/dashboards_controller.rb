@@ -4,123 +4,123 @@ class DashboardsController < ApplicationController
   filter_access_to :all
 
   def index
-      
-      require "yaml"
-      require "time"
-      time_now = Time.now
-      detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/detention.yml")['school']
-      all_schools = detention_config['numbers'].split(",")
-      current_school = MultiSchool.current_school.id
-      
-      @school_code = MultiSchool.current_school.code
-      @data = {}
-      @view_layout = 'student'
-      
-      @allow_detention = false
-      if all_schools.include?(current_school.to_s)
-        @allow_detention = true      
-      end
-      time_diff = Time.now-time_now
-      time_now = Time.now
-      
-      
-      if current_user.employee?
-        @view_layout = 'employee'
-        @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?)", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
-        
-        if check_free_school?
-          get_employee_homework
-          if @employee_homework_response['status']['code'].to_i == 200
-            @data['employee_homework'] = @employee_homework_response['data']['homework']
-          end
-        else
-          get_next_class_routine
-          if @next_routine_response['status']['code'].to_i == 200
-            @data['next_class'] = @next_routine_response['data']['time_table']
-          end
+      unless MultiSchool.current_school.is_test_school == 2
+        require "yaml"
+        require "time"
+        time_now = Time.now
+        detention_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/detention.yml")['school']
+        all_schools = detention_config['numbers'].split(",")
+        current_school = MultiSchool.current_school.id
 
-          get_class_routine
-          if @routine_response['status']['code'].to_i == 200
-            @data['today_class'] = @routine_response['data']['time_table']
+        @school_code = MultiSchool.current_school.code
+        @data = {}
+        @view_layout = 'student'
+
+        @allow_detention = false
+        if all_schools.include?(current_school.to_s)
+          @allow_detention = true      
+        end
+        time_diff = Time.now-time_now
+        time_now = Time.now
+
+
+        if current_user.employee?
+          @view_layout = 'employee'
+          @news = News.find(:all,:conditions=>["is_published = 1 AND (department_news.department_id = ? or news.is_common = 1 or author_id=? or user_news.user_id = ?)", current_user.employee_record.employee_department_id,current_user.id,current_user.id], :limit =>4,:include=>[:department_news,:user_news])
+
+          if check_free_school?
+            get_employee_homework
+            if @employee_homework_response['status']['code'].to_i == 200
+              @data['employee_homework'] = @employee_homework_response['data']['homework']
+            end
+          else
+            get_next_class_routine
+            if @next_routine_response['status']['code'].to_i == 200
+              @data['next_class'] = @next_routine_response['data']['time_table']
+            end
+
+            get_class_routine
+            if @routine_response['status']['code'].to_i == 200
+              @data['today_class'] = @routine_response['data']['time_table']
+            end
           end
         end
-      end
-      time_diff1 = Time.now-time_now
-      time_now = Time.now
-      if current_user.admin?
-        time_diff_if = Time.now-time_now
+        time_diff1 = Time.now-time_now
         time_now = Time.now
-        @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
-        time_diff2 = Time.now-time_now
-        time_now = Time.now
-        @view_layout = 'employee'
-        
-        if check_free_school?
-          get_employee_homework
-          if @employee_homework_response['status']['code'].to_i == 200
-            @data['employee_homework'] = @employee_homework_response['data']['homework']
-          end
-        else
-          get_next_class_routine_admin
-          time_diff3 = Time.now-time_now
+        if current_user.admin?
+          time_diff_if = Time.now-time_now
           time_now = Time.now
-          if @next_routine_response['status']['code'].to_i == 200
-            @data['next_class'] = @next_routine_response['data']['next_classess']
-            @data['current_class'] = @next_routine_response['data']['current_class']
+          @news = News.find(:all,:conditions=>{:is_published=>1}, :limit =>3)
+          time_diff2 = Time.now-time_now
+          time_now = Time.now
+          @view_layout = 'employee'
+
+          if check_free_school?
+            get_employee_homework
+            if @employee_homework_response['status']['code'].to_i == 200
+              @data['employee_homework'] = @employee_homework_response['data']['homework']
+            end
+          else
+            get_next_class_routine_admin
+            time_diff3 = Time.now-time_now
+            time_now = Time.now
+            if @next_routine_response['status']['code'].to_i == 200
+              @data['next_class'] = @next_routine_response['data']['next_classess']
+              @data['current_class'] = @next_routine_response['data']['current_class']
+            end
           end
         end
-      end
-      
-     
-    
-      if current_user.parent? or current_user.student?
-        get_homework
-        if @homework_response['status']['code'].to_i == 200
-          @data = @homework_response['data']['homework']
+
+
+
+        if current_user.parent? or current_user.student?
+          get_homework
+          if @homework_response['status']['code'].to_i == 200
+            @data = @homework_response['data']['homework']
+          end
         end
-      end
-    
-      if current_user.student?
-        student = current_user.student_record
-      end  
-      if current_user.parent?
-        target = current_user.guardian_entry.current_ward_id      
-        student = Student.find_by_id(target)
-      end
-      
-      @subject_id = 0
-      @due_date = ''  
-      if current_user.student? or current_user.parent?
-        @batch = student.batch      
-        @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false", :include => [:employees])
-        @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
-        @elective_subjects = []
-        @student_electives.each do |e|
-          @elective_subjects.push Subject.find(e.subject_id)
+
+        if current_user.student?
+          student = current_user.student_record
+        end  
+        if current_user.parent?
+          target = current_user.guardian_entry.current_ward_id      
+          student = Student.find_by_id(target)
         end
-        @subjects = @normal_subjects+@elective_subjects
-        
-        @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
-      
-      
-      end
-    
-      
-      @event = Event.find(:first, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'",:order=>"end_date ASC")
-      time_diff4 = Time.now-time_now
-      time_now = Time.now
-      @att_text = ''
-      @att_image = ''
-      get_attendence_text
-      if @attendence_text['status']['code'].to_i == 200
-        @att_text = @attendence_text['data']['text']
-        @att_image = @attendence_text['data']['profile_picture']
-      end
-      time_diff5 = Time.now-time_now
-      time_now = Time.now
-      
-      @time_diff_string = "Time  : "+time_diff.to_s+" || Time 1 : "+time_diff1.to_s+" || Time if : "+time_diff_if.to_s+" || Time 2 : "+time_diff2.to_s+" || Time 3 : "+time_diff3.to_s+" || Time 4 : "+time_diff4.to_s+" || Time 5 : "+time_diff5.to_s
-      
+
+        @subject_id = 0
+        @due_date = ''  
+        if current_user.student? or current_user.parent?
+          @batch = student.batch      
+          @normal_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>"elective_group_id IS NULL AND is_deleted = false", :include => [:employees])
+          @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+          @elective_subjects = []
+          @student_electives.each do |e|
+            @elective_subjects.push Subject.find(e.subject_id)
+          end
+          @subjects = @normal_subjects+@elective_subjects
+
+          @news = News.find(:all,:conditions=>["is_published = 1 AND (batch_news.batch_id = ? or user_news.user_id = ? or news.is_common = 1)", student.batch_id,student.user_id], :limit=>4,:include=>[:batch_news,:user_news]) 
+
+
+        end
+
+
+        @event = Event.find(:first, :conditions=>" is_common = 1 AND is_exam = 0 AND is_due = 0 AND is_club = 0 AND end_date >= '" + I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')+ "'",:order=>"end_date ASC")
+        time_diff4 = Time.now-time_now
+        time_now = Time.now
+        @att_text = ''
+        @att_image = ''
+        get_attendence_text
+        if @attendence_text['status']['code'].to_i == 200
+          @att_text = @attendence_text['data']['text']
+          @att_image = @attendence_text['data']['profile_picture']
+        end
+        time_diff5 = Time.now-time_now
+        time_now = Time.now
+
+        @time_diff_string = "Time  : "+time_diff.to_s+" || Time 1 : "+time_diff1.to_s+" || Time if : "+time_diff_if.to_s+" || Time 2 : "+time_diff2.to_s+" || Time 3 : "+time_diff3.to_s+" || Time 4 : "+time_diff4.to_s+" || Time 5 : "+time_diff5.to_s
+      end 
 #    end
   end
   

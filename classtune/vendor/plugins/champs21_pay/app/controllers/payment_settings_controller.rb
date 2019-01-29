@@ -655,15 +655,16 @@ class PaymentSettingsController < ApplicationController
       extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''
     end
     #@online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-    if MultiSchool.current_school.id == 352
-      @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
-    else
-      @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
-    end
+    
     ###.paginate()
     
     unless params[:export].nil?
       if params[:export].to_i == 1
+        if MultiSchool.current_school.id == 352
+          @online_payments = Payment.find(:all, :conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}", :order => "transaction_datetime DESC", :group => "order_id")
+        else
+          @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}
+        end
         require 'spreadsheet'
         Spreadsheet.client_encoding = 'UTF-8'
     
@@ -700,11 +701,21 @@ class PaymentSettingsController < ApplicationController
 
         send_data spreadsheet.string, :filename => "online_transactions.xls", :type =>  "application/vnd.ms-excel"
       else
+        if MultiSchool.current_school.id == 352
+          @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+        else
+          @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+        end
         respond_to do |format|
           format.html #transctions.html.erb
         end
       end
     else
+      if MultiSchool.current_school.id == 352
+        @online_payments = Payment.paginate(:conditions=>"transaction_datetime >= '#{start_date.to_date}' and transaction_datetime <= '#{end_date.to_date}' #{extra_query}",:page => params[:page],:per_page => 30, :order => "transaction_datetime DESC", :group => "order_id")
+      else
+        @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
+      end
       respond_to do |format|
         format.html #transctions.html.erb
       end

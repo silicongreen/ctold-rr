@@ -668,6 +668,7 @@ class PaymentSettingsController < ApplicationController
     i = 0
     order_ids = []
     online_payments.each do |op|
+      require 'datetime'
       unless op.gateway_response[:tran_date].nil?
         dt = op.gateway_response[:tran_date].split(".")
         op.transaction_datetime = DateTime.parse(dt[0])

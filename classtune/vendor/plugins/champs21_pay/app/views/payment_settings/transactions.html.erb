@@ -194,7 +194,7 @@
               <%= gateway_status %>
             </td>
             <td style="vertical-align: middle; text-align: center;">
-              <%= I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
+              <%= I18n.l((payment.transaction_datetime.to_time + 6.hours).to_datetime,:format=>"%d %b %Y %I:%M %P") %>
             </td>
             <% if MultiSchool.current_school.id == 352 %>
               <% if payment.gateway_response[:verified].to_i == 0 %>

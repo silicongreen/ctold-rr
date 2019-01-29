@@ -829,7 +829,7 @@ class CoursesController < ApplicationController
       end
     else
       courseobj = Course.find_by_id(params[:course][:id])
-      @batches = Batch.find(:all, :conditions => ["courses.course_name = ?", courseobj.course_name],:include=>['course'])
+      @batches = Batch.find(:all, :conditions => ["courses.course_name = ? and batches.is_deleted = ?", courseobj.course_name, false],:include=>['course'],:group=>"batches.name")
       code_ini = @courses_dt.course_name[0,1].upcase
       num_zeros = 4
       nums = @courses_dt.course_name.gsub("Class ","").to_s
@@ -869,7 +869,7 @@ class CoursesController < ApplicationController
           @class_data << {"course_name" => @courses_dt.course_name, "section_name" => params[:course][:section_name], "session" => params[:course][:session], "group" => params[:course][:group], "code" => code, "grading_type" => @courses_dt.grading_type, "batches_attributes" => @shifts_data}
           @course_new = Course.new @class_data[0]
           
-          if @course_new.save (false)
+          if @course_new.save
             flash[:notice] = "#{t('flash5')}"
             @sections = Course.find(:all, :conditions => ["course_name = ? and is_deleted = 0 ", @courses_dt.course_name], :select => "section_name", :group => "section_name")
             @course_id = params[:course][:id]
@@ -899,6 +899,7 @@ class CoursesController < ApplicationController
               end
             end
           else
+            @course_new.errors.add("Section Name","already exists")
             @error = true
           end
         end

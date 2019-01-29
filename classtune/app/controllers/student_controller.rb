@@ -188,10 +188,10 @@ class StudentController < ApplicationController
     sheet1 = new_book.create_worksheet :name => 'student_list'
     row_first = ['SL','Student Id','Roll','Name','Blood Group','Category','Class','Shift','Section','Session','Version','Group','Tuition Fees','Mobile']
     new_book.worksheet(0).insert_row(0, row_first)
-    batch_name = params[:batch_name]
-    version_name = params[:version_name]
-    class_name = params[:class_name]
-    session_name = params[:session_name]
+    @batch_name_pdf = batch_name = params[:batch_name]
+    @version_pdf = version_name = params[:version_name]
+    @class_name_pdf = class_name = params[:class_name]
+    @section_pdf = session_name = params[:session_name]
     group_name = params[:group_name]
     section_name = params[:section_name]
     category_name = params[:category_name]
@@ -218,51 +218,62 @@ class StudentController < ApplicationController
       condition = condition+" and student_categories.name = '"+category_name+"'"
     end
     order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
-    students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
-    std_loop = 1
-    unless students.blank?
-      students.each do |student|
-        fee_particular = FinanceFeeParticular.find(:all,:conditions=>"is_deleted=#{false} and finance_fee_particular_category_id=54 and batch_id=#{student.batch.id}",:order=>"FIELD(receiver_type,'Student','StudentCategory','Batch'), id DESC").find{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        monthly_fee = 0
-        unless fee_particular.blank?
-          monthly_fee = fee_particular.amount
+    @students_pdf = students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
+    unless params[:pdf].blank?
+      render :pdf => "download_student_list",
+      :orientation => 'Portrait',
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    else
+      std_loop = 1
+      unless students.blank?
+        students.each do |student|
+          fee_particular = FinanceFeeParticular.find(:all,:conditions=>"is_deleted=#{false} and finance_fee_particular_category_id=54 and batch_id=#{student.batch.id}",:order=>"FIELD(receiver_type,'Student','StudentCategory','Batch'), id DESC").find{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+          monthly_fee = 0
+          unless fee_particular.blank?
+            monthly_fee = fee_particular.amount
+          end
+          FinanceFeeParticularCategory.find(:first,:conditions=>[""])
+          batchsplit = student.batch.name.split(" ")
+          version = ""
+          batch = batchsplit[0]
+          unless batchsplit[1].blank?
+            version = batchsplit[1]
+          end
+          unless batchsplit[2].blank?
+            version = version+" "+batchsplit[2]
+          end
+          std_category = ""
+          unless student.student_category.blank?
+            std_category = student.student_category.name
+          end
+          tmp_row = []
+          tmp_row << std_loop
+          tmp_row << student.admission_no
+          tmp_row << student.class_roll_no
+          tmp_row << student.full_name
+          tmp_row << student.blood_group unless student.blood_group.nil?
+          tmp_row << std_category
+          tmp_row << student.batch.course.course_name
+          tmp_row << batch
+          tmp_row << student.batch.course.section_name
+          tmp_row << student.batch.course.session
+          tmp_row << version
+          tmp_row << student.batch.course.group
+          tmp_row << monthly_fee
+          tmp_row << student.sms_number
+          new_book.worksheet(0).insert_row(std_loop, tmp_row)
+          std_loop = std_loop+1
         end
-        FinanceFeeParticularCategory.find(:first,:conditions=>[""])
-        batchsplit = student.batch.name.split(" ")
-        version = ""
-        batch = batchsplit[0]
-        unless batchsplit[1].blank?
-          version = batchsplit[1]
-        end
-        unless batchsplit[2].blank?
-          version = version+" "+batchsplit[2]
-        end
-        std_category = ""
-        unless student.student_category.blank?
-          std_category = student.student_category.name
-        end
-        tmp_row = []
-        tmp_row << std_loop
-        tmp_row << student.admission_no
-        tmp_row << student.class_roll_no
-        tmp_row << student.full_name
-        tmp_row << student.blood_group unless student.blood_group.nil?
-        tmp_row << std_category
-        tmp_row << student.batch.course.course_name
-        tmp_row << batch
-        tmp_row << student.batch.course.section_name
-        tmp_row << student.batch.course.session
-        tmp_row << version
-        tmp_row << student.batch.course.group
-        tmp_row << monthly_fee
-        tmp_row << student.sms_number
-        new_book.worksheet(0).insert_row(std_loop, tmp_row)
-        std_loop = std_loop+1
       end
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+      send_data spreadsheet.string, :filename => "Student_list.xls", :type =>  "application/vnd.ms-excel"
     end
-    spreadsheet = StringIO.new 
-    new_book.write spreadsheet 
-    send_data spreadsheet.string, :filename => "Student_list.xls", :type =>  "application/vnd.ms-excel"
   end
   def get_student_ajax
     require 'json'

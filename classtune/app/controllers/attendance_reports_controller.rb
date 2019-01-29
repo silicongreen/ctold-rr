@@ -429,7 +429,7 @@ class AttendanceReportsController < ApplicationController
 
             @academic_days = 0
             @student_leaves = []
-            if @end_date > @start_date
+            if @end_date >= @start_date
               @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
               @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
             end
@@ -772,7 +772,7 @@ class AttendanceReportsController < ApplicationController
 
           @academic_days = 0
           @student_leaves = []
-          if @end_date > @start_date
+          if @end_date >= @start_date
             @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
             @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
           end

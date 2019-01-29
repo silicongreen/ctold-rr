@@ -16,7 +16,7 @@ module OnlinePayment
       orderId = ""
       ref_id = ""
       merchant_id = ""
-      transaction_datetime = now
+      #transaction_datetime = now
       if Champs21Plugin.can_access_plugin?("champs21_pay")
         if (PaymentConfiguration.config_value("enabled_fees").present? and PaymentConfiguration.config_value("enabled_fees").include? "Student Fee") 
           @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
@@ -429,11 +429,11 @@ module OnlinePayment
                 :pan=>pan
               }
               
-              dt = trans_date.split(".")
-              transaction_datetime = dt[0]
+              #dt = trans_date.split(".")
+              #transaction_datetime = dt[0]
               
             end
-            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+            payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response)
             if payment.save
               gateway_status = false
               if @active_gateway == "Paypal"

@@ -1165,11 +1165,13 @@ class PaymentSettingsController < ApplicationController
                   order_ids_new << o
                   verified_no += 1
                 end
-                abort('here')
+                
                 payment = Payment.find_by_order_id(orderId)
                 if payment.nil?
                   payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save
+                else
+                  payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
 
                 

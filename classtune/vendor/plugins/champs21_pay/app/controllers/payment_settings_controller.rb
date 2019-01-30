@@ -347,9 +347,10 @@ class PaymentSettingsController < ApplicationController
           end
           finance_fee_id = payment.payment_id
           payee_id = payment.payee_id
-          fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id}")
           @student = Student.find(payee_id)
           @batch = @student.batch
+          fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
+          
           unless fee.nil?
             unless fee.is_paid
               fee_collection_id = fee.fee_collection_id
@@ -359,7 +360,7 @@ class PaymentSettingsController < ApplicationController
 
               @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
               @student_has_due = false
-              @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+              @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ? and finance_fees.batch_id = ?", @date.due_date,@student.id, @student.batch_id],:include=>"finance_fee_collection")
               unless @std_finance_fee_due.blank?
                 @student_has_due = true
               end
@@ -839,6 +840,7 @@ class PaymentSettingsController < ApplicationController
             end
 
             result = Base64.decode64(status)
+            
             #s = Hash.from_xml(result).to_json
             #@financefee = FinanceFee.find(83278)
             #@student = Student.find(22845)
@@ -983,7 +985,7 @@ class PaymentSettingsController < ApplicationController
               #end_month = create_at.end_of_month
 
               #fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
-              fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id}")
+              fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
 
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
@@ -1145,11 +1147,13 @@ class PaymentSettingsController < ApplicationController
                   payment.save
                 end
 
-                finance_fee_id = payment.payment_id
-                payee_id = payment.payee_id
-                fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id}")
                 @student = Student.find(payee_id)
                 @batch = @student.batch
+                
+                finance_fee_id = payment.payment_id
+                payee_id = payment.payee_id
+                fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
+                
                 unless fee.nil?
                   unless fee.is_paid
                     fee_collection_id = fee.fee_collection_id
@@ -1159,7 +1163,7 @@ class PaymentSettingsController < ApplicationController
 
                     @date = @fee_collection = FinanceFeeCollection.find(fee_collection_id)
                     @student_has_due = false
-                    @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ?", @date.due_date,@student.id],:include=>"finance_fee_collection")
+                    @std_finance_fee_due = FinanceFee.find(:first,:conditions=>["finance_fee_collections.due_date < ? and finance_fees.is_paid = 0 and finance_fees.student_id = ? and finance_fees.batch_id = ?", @date.due_date,@student.id, @student.batch_id],:include=>"finance_fee_collection")
                     unless @std_finance_fee_due.blank?
                       @student_has_due = true
                     end

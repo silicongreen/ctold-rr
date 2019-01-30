@@ -433,6 +433,13 @@ module OnlinePayment
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
               
+              if verified.to_i == 0
+                if transaction_datetime.nil?
+                  dt = order_datetime.split(".")
+                  transaction_datetime = dt[0]
+                end
+              end
+              
             end
             payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
             if payment.save

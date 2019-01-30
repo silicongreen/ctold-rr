@@ -170,6 +170,15 @@ class PaymentSettingsController < ApplicationController
           
         end
         
+        dt = trans_date.split(".")
+        transaction_datetime = dt[0]
+        
+        if verified.to_i == 0
+          if transaction_datetime.nil?
+            dt = order_datetime.split(".")
+            transaction_datetime = dt[0]
+          end
+        end
         
         gateway_response = {
           :total_amount => total_amount,
@@ -626,7 +635,7 @@ class PaymentSettingsController < ApplicationController
             end
 
             paymentnew = Payment.find(payment.id)
-            paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
+            paymentnew.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
             render :update do |page|
               page << "j('#payment#{payment.id}').removeClass('payment_verify');"
               page << "j('#payment#{payment.id}').removeClass('fa-square-o');"

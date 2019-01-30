@@ -1142,6 +1142,7 @@ class PaymentSettingsController < ApplicationController
                 end
                 
                 payment = Payment.find_by_order_id(orderId)
+                abort(payment.inspect)
                 if payment.nil?
                   payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save

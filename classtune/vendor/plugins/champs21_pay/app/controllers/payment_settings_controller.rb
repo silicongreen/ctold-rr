@@ -1147,11 +1147,12 @@ class PaymentSettingsController < ApplicationController
                   payment.save
                 end
 
+                payee_id = payment.payee_id
                 @student = Student.find(payee_id)
                 @batch = @student.batch
                 
                 finance_fee_id = payment.payment_id
-                payee_id = payment.payee_id
+                
                 fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
                 
                 unless fee.nil?

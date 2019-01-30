@@ -993,10 +993,10 @@ class PaymentSettingsController < ApplicationController
               else
                 @student = ArchivedStudent.find_by_admission_no(admission_no)
                 unless @student.nil?
-                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.former_id} and batch_id = #{@student.batch_id}")
                 end
               end
-              abort(@student.inspect)
+              
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
 

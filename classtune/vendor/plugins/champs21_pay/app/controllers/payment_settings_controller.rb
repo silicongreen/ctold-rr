@@ -787,21 +787,11 @@ class PaymentSettingsController < ApplicationController
         order_id_vals =  params[:order_id]
         order_ids = order_id_vals.split(",").map{ |s| s.strip }
         
-        lla = []
-        order_ids.each_with_index do |o, i|
-          lla[i] = admission_nos[i]
-        end
-      end
-      abort(lla.inspect)
-      unless params[:order_id].blank?
-        order_id_vals =  params[:order_id]
-        order_ids = order_id_vals.split(",").map{ |s| s.strip }
-        
         num_orders = order_ids.length
         verified_no = 0
         
         order_ids_new = []
-        order_ids.each do |o|
+        order_ids.each_with_index do |o, i|
           testtrustbank = false
             if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
               if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
@@ -990,7 +980,8 @@ class PaymentSettingsController < ApplicationController
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
               
-              @student = Student.find_by_admission_no(name)
+              admission_no = admission_nos[i]
+              @student = Student.find_by_admission_no(admission_no)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month
               #end_month = create_at.end_of_month

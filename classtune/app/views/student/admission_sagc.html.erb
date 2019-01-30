@@ -206,8 +206,8 @@
 
                 <div class="form-group col-sm-6" style="margin-top:18px;" >
                     <div class="col-sm-12" style="padding:0px; font-weight: bold;"><%= t('gender') %></div>
-                    <label class="radio-inline"><%= s.radio_button  "gender", "m", :checked => "checked" %><%= t('male') %></label>
-                    <label class="radio-inline"><%= s.radio_button  "gender", "f" %><%= t('female') %></label>
+                    <label class="radio-inline"><%= s.radio_button  "gender", "m" %><%= t('male') %></label>
+                    <label class="radio-inline"><%= s.radio_button  "gender", "f", :checked => "checked" %><%= t('female') %></label>
                 </div>
 
 
@@ -228,7 +228,7 @@
                 </div>
                 <div class="form-group col-sm-6 even">
                     <label for="student_religion"><%= t('religion') %></label>
-                    <%= s.text_field :religion, :class=>"form-control" %>
+                    <%= select :student, :religion, ["Islam", "Hindu", "Christian", "Buddhist", "Other"],{:prompt=> "Select Religion"} %>
                 </div>
                 <div class="form-group col-sm-6">
                     <label for="student_nationality"><%= t("dual_nationality") %></label>

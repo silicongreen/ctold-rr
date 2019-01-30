@@ -781,7 +781,7 @@ class PaymentSettingsController < ApplicationController
 ##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
-    admission_nos = [1773,109188,109778,108339,151000,182767,151016,1543,16160,17651,110153,171037,15115,15408,17169,109541,1713,106157,151022,16757,18864,109279,108972,109362,16188,15990,14363]
+    admission_nos = [16188,15990,14363]
     if request.post?
       unless params[:order_id].blank?
         order_id_vals =  params[:order_id]

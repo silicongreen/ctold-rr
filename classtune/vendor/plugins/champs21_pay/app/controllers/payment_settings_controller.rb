@@ -996,7 +996,7 @@ class PaymentSettingsController < ApplicationController
                   fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
                 end
               end
-
+              abort(@student.inspect)
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
 

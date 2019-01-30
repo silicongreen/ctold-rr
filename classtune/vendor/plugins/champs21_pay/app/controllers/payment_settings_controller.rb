@@ -841,7 +841,7 @@ class PaymentSettingsController < ApplicationController
             end
 
             result = Base64.decode64(status)
-            
+            abort(result.inspect)
             #s = Hash.from_xml(result).to_json
             #@financefee = FinanceFee.find(83278)
             #@student = Student.find(22845)

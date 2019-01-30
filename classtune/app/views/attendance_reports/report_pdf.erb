@@ -51,14 +51,14 @@
                           <% else %>
                             <h5> <%= "#{t('total_no_of_wrkng_hours')} = " + @academic_days.to_s %></h5>
                           <% end %>
-                        </div>
-                        <div class="info-right">
-                            <% if @subject.nil? %>
-                              <h5> <%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></h5>
-                            <% else %>
-                              <h5> <%= "#{t('subject')} : " + @subject.name  %></h5>
-                            <% end %>
-                          
+                      </div>
+                      <div class="info-right">
+                          <% if @subject.nil? %>
+                            <h5> <%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></h5>
+                          <% else %>
+                            <h5> <%= "#{t('subject')} : " + @subject.name  %></h5>
+                          <% end %>
+
                       </div>
                   </div>
               </div>
@@ -91,12 +91,48 @@
                   <% std_count = 0 %>
                   <% @students.each_with_index do |student,i| %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>57 && extender ==0 %>
+                    <% if std_count>56 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
-                      </tr>    
+                      </tr>
+                      <tr class="header-td">
+                          <td colspan="100">
+
+                      <center>
+                          <div id ="main_info">
+                              <div class="info1">
+                                  <div class="info-left">
+                                      <h5><%= t('course') %> : <%= @batch.course.full_name %></h5>
+                                  </div>
+                                  <div class="info-right">
+                                      <h5 style="color:black;"><%= @batch.full_name %></h5>
+                                  </div>
+                                  <div class="hor_line1"></div>
+                              </div>
+                              <div class="info1">
+                                  <div class="info-left">
+                                      <% if @config.config_value == 'Daily' %>
+                                        <h5> <%= "#{t('total_no_of_wrkng_days')} = " + @academic_days.to_s %></h5>
+                                      <% else %>
+                                        <h5> <%= "#{t('total_no_of_wrkng_hours')} = " + @academic_days.to_s %></h5>
+                                      <% end %>
+                                  </div>
+                                  <div class="info-right">
+                                      <% if @subject.nil? %>
+                                        <h5> <%= "#{t('subject')} : " + "#{t('all_subjects')}"  %></h5>
+                                      <% else %>
+                                        <h5> <%= "#{t('subject')} : " + @subject.name  %></h5>
+                                      <% end %>
+
+                                  </div>
+                              </div>
+                          </div>
+                      </center>
+
+                      </td>
+                      </tr>
                       <tr class="table-header">
                           <td class="col-pdf1"><%= "Roll" %></td>
                           <td class="col-pdf1"><%= t('name') %></td>
@@ -174,14 +210,19 @@
 
 </div>
 <style>
-  .no-warp
-  {
-    white-space: nowrap;
-    text-align: left !important;
-  }
-  table#pdf-table tr.table-header td
-  {
-      padding: 2px !important;
-      font-size: 11px !important;
-  }
+    .no-warp
+    {
+        white-space: nowrap;
+        text-align: left !important;
+    }
+    table#pdf-table tr.table-header td
+    {
+        padding: 2px !important;
+        font-size: 11px !important;
+    }
+    .page-break td{
+        height: 50px;
+        border: 1px solid #fff;
+        border-bottom: 1px solid #ADACAB;
+    }
 </style>

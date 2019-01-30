@@ -789,7 +789,7 @@ class PaymentSettingsController < ApplicationController
         
         lla = []
         order_ids.each_with_index do |o, i|
-          lla[i] = admission_no[i]
+          lla[i] = admission_nos[i]
         end
       end
       abort(lla.inspect)

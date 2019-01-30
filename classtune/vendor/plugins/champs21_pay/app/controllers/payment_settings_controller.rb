@@ -781,7 +781,7 @@ class PaymentSettingsController < ApplicationController
 ##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
-    admission_nos = [16188,15990,14363]
+    #admission_nos = []
     if request.post?
       unless params[:order_id].blank?
         order_id_vals =  params[:order_id]
@@ -980,15 +980,22 @@ class PaymentSettingsController < ApplicationController
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
               
-              admission_no = admission_nos[i]
-              #admission_no = name
+              #admission_no = admission_nos[i]
+              admission_no = name
               @student = Student.find_by_admission_no(admission_no)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month
               #end_month = create_at.end_of_month
 
               #fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
-              fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+              unless @student.nil?
+                fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+              else
+                @student = ArchivedStudent.find_by_admission_no(admission_no)
+                unless @student.nil?
+                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+                end
+              end
 
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
@@ -1150,13 +1157,22 @@ class PaymentSettingsController < ApplicationController
                   payment.save
                 end
 
+                archived = false
                 payee_id = payment.payee_id
                 @student = Student.find(payee_id)
-                @batch = @student.batch
+                unless @student.nil?
+                  @batch = @student.batch
+                else
+                  archived = true
+                  @student = ArchivedStudent.find(payee_id)
+                  @batch = @student.batch
+                end
                 
                 finance_fee_id = payment.payment_id
                 
-                fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
+                unless archived
+                  fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
+                end
                 
                 unless fee.nil?
                   unless fee.is_paid
@@ -1171,7 +1187,11 @@ class PaymentSettingsController < ApplicationController
                     unless @std_finance_fee_due.blank?
                       @student_has_due = true
                     end
-                    @financefee = @student.finance_fee_by_date(@date)
+                    unless archived
+                      @financefee = @student.finance_fee_by_date(@date)
+                    else
+                      @financefee = FinanceFee.find_by_fee_collection_id_and_student_id(@date.id, @student.former_id)
+                    end
 
                     if @financefee.has_advance_fee_id
                       if @date.is_advance_fee_collection

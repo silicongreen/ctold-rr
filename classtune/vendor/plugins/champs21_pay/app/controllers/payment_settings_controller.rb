@@ -993,6 +993,14 @@ class PaymentSettingsController < ApplicationController
 
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
+              
+              if verified.to_i == 0
+                if transaction_datetime.nil?
+                  dt = order_datetime.split(".")
+                  transaction_datetime = dt[0]
+                end
+              end
+          
               archived = false
               #admission_no = admission_nos[i]
               admission_no = name

@@ -1171,6 +1171,7 @@ class PaymentSettingsController < ApplicationController
                   payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save
                 else
+                  abort(payment.inspect)
                   payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
 

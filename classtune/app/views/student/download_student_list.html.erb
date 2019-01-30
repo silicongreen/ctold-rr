@@ -38,11 +38,30 @@
               end
             
             %>
-            <% if std_count>43 %>
+            <% if std_count>55 %>
               <% std_count = 0 %>
               <tr class="page-break">
                   <td colspan="100">&nbsp;</td>
-              </tr> 
+              </tr>
+              <tr class="header-td">
+                  <td colspan="100">
+                    
+                      <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
+                      <h2 align="center">Student List-2019</h2>
+                      <h2 align="center"><% unless @batch_name_pdf.blank? %>Shift-<%= @batch_name_pdf %><% end %> <% unless @class_name_pdf.blank? %>Class-<%= @class_name_pdf %><% end %></h2>
+                      <h2 align="center"><% unless @version_pdf.blank? %>Version-<%= @version_pdf %><% end %><% unless @section_pdf.blank? %>Section-<%= @section_pdf %><% end %> </h2>
+                    
+                  </td>
+              </tr>
+              <tr class="table-header">
+                <td class="col-pdf aling-left"><b>Student ID</b></td> 
+                <td class="col-pdf aling-left"><b>Roll</b></td> 
+                <td class="col-pdf aling-left"><b>Name</b></td> 
+                <td class="col-pdf"><b>Blood Group</b></td> 
+                <td class="col-pdf aling-left"><b>Category</b></td> 
+                <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
+                <td class="col-pdf aling-left"><b>Mobile</b></td>
+              </tr>
             <% end %>
             
               <tr class="table-header">
@@ -89,11 +108,16 @@ table#pdf-table{
 #pdf-header-south{
     width:1000px;
 }
+
+    
 .page-break td{
-    height: 180px;
+    height: 60px;
     border: 1px solid #fff;
     border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+}
+.header-td td
+{
+    text-align: center;
 }
 .table-header td.aling-left
 {

@@ -831,6 +831,7 @@ class AttendanceReportsController < ApplicationController
       @report = ''
     end
     render :pdf => 'report_pdf',
+      :page_size => 'Legal',
       :margin => {:top=> 40,
       :bottom => 10,
       :left=> 10,

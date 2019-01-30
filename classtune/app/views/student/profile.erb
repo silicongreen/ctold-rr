@@ -110,6 +110,7 @@
                 <% else %>
                   <% @profile_image = "master_student/profile/default_student.png" %>
                 <% end %>
+                
                 <%= image_tag "#{@profile_image}" %>
                 <% if @student.photo.file? %>
                 <% if @current_user.admin? or permitted_to? :remove_photo, :student %>

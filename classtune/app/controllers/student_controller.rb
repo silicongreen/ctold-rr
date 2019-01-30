@@ -222,6 +222,7 @@ class StudentController < ApplicationController
     if !params[:pdf].blank? and params[:pdf] == "1"
       render :pdf => "download_student_list",
       :orientation => 'Portrait',
+      :page_size => 'Legal',
       :margin => {    :top=> 10,
       :bottom => 10,
       :left=> 10,

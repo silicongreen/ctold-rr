@@ -1160,7 +1160,7 @@ class PaymentSettingsController < ApplicationController
 
                 
                 payee_id = payment.payee_id
-                if archived 
+                unless archived 
                   @student = Student.find(payee_id)
                 else
                   @student = ArchivedStudent.find(payee_id)

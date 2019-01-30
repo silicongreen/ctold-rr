@@ -91,7 +91,7 @@
                   <% std_count = 0 %>
                   <% @students.each_with_index do |student,i| %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>58 && extender ==0 %>
+                    <% if std_count>57 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -117,7 +117,7 @@
                           <td class="col-pdf1"><%= t('percentage') %></td>
                           <td class="col-pdf1"><%= "Mobile" %></td>
                       </tr>
-                    <% elsif std_count>29 && extender ==1 %>
+                    <% elsif std_count>63 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">

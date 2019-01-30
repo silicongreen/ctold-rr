@@ -1141,9 +1141,9 @@ class PaymentSettingsController < ApplicationController
                   verified_no += 1
                 end
                 
-                payment = Payment.find_by_payee_id_and_payment_id(@student.id,@financefee.id)
+                payment = Payment.find_by_order_id(orderId)
                 if payment.nil?
-                  payment = Payment.new(:payee => @student,:payment => @financefee,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                  payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save
                 end
 

@@ -706,6 +706,7 @@ class PaymentSettingsController < ApplicationController
         else
           @online_payments = Payment.all.select{|p| p.created_at.to_date >= start_date.to_date and p.created_at.to_date <= end_date.to_date}.paginate(:page => params[:page],:per_page => 30)
         end
+        #abort(@online_payments.inspect)
         respond_to do |format|
           format.html #transctions.html.erb
         end
@@ -723,11 +724,11 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-#    online_payments = Payment.find(:all, :conditions=>"order_id IS NULL")
-#    online_payments.each do |op|
-#      op.order_id = op.gateway_response[:order_id]
-#      op.save
-#    end
+    online_payments = Payment.all
+    online_payments.each do |op|
+      op.order_id = op.gateway_response[:order_id]
+      op.save
+    end
 ##    abort('here')
 #    online_payments = Payment.all
 #    i = 0

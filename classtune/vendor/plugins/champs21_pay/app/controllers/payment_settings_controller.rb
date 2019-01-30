@@ -781,7 +781,7 @@ class PaymentSettingsController < ApplicationController
 ##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
-    admission_nos = [17467,18407,14904,142597,18723,1812,1567,109187,18602,15823,108209,110016,182815,16767,15383,15367,141107,181052,16223,104946,17174,108412,17966]
+    #admission_nos = [17467,18407,14904,142597,18723,1812,1567,109187,18602,15823,108209,110016,182815,16767,15383,15367,141107,181052,16223,104946,17174,108412,17966]
     if request.post?
       unless params[:order_id].blank?
         order_id_vals =  params[:order_id]
@@ -980,7 +980,8 @@ class PaymentSettingsController < ApplicationController
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
               
-              admission_no = admission_nos[i]
+              #admission_no = admission_nos[i]
+              admission_no = name
               @student = Student.find_by_admission_no(admission_no)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month

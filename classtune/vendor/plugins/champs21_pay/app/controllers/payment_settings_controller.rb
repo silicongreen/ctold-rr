@@ -804,7 +804,7 @@ class PaymentSettingsController < ApplicationController
 ##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
-    admission_nos = [182768]
+    #admission_nos = []
     if request.post?
       unless params[:order_id].blank?
         order_id_vals =  params[:order_id]
@@ -1011,8 +1011,8 @@ class PaymentSettingsController < ApplicationController
               end
           
               archived = false
-              admission_no = admission_nos[i]
-              #admission_no = name
+              #admission_no = admission_nos[i]
+              admission_no = name
               @student = Student.find_by_admission_no(admission_no)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month

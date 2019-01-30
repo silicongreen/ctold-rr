@@ -979,7 +979,7 @@ class PaymentSettingsController < ApplicationController
 
               dt = trans_date.split(".")
               transaction_datetime = dt[0]
-              
+              archived = false
               #admission_no = admission_nos[i]
               admission_no = name
               @student = Student.find_by_admission_no(admission_no)
@@ -991,6 +991,7 @@ class PaymentSettingsController < ApplicationController
               unless @student.nil?
                 fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
               else
+                archived = true
                 @student = ArchivedStudent.find_by_admission_no(admission_no)
                 unless @student.nil?
                   fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.former_id} and batch_id = #{@student.batch_id}")
@@ -1157,16 +1158,14 @@ class PaymentSettingsController < ApplicationController
                   payment.save
                 end
 
-                archived = false
+                
                 payee_id = payment.payee_id
-                @student = Student.find(payee_id)
-                unless @student.nil?
-                  @batch = @student.batch
+                if archived 
+                  @student = Student.find(payee_id)
                 else
-                  archived = true
                   @student = ArchivedStudent.find(payee_id)
-                  @batch = @student.batch
                 end
+                @batch = @student.batch
                 
                 finance_fee_id = payment.payment_id
                 

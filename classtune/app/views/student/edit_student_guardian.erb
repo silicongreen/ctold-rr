@@ -34,6 +34,15 @@
 
     <% form_for :student, :url => {:action => 'edit_student_guardian'}, :html => {:multipart => true, :id => 'new_student'} do |s| %>
       <%= error_messages_for 'student' %>
+      <%  if MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346 %>
+      <div id="admission1-form">
+        <div class="label-field-pair">
+            <label for="student_image_file"><%= t('upload_photo') %> (<%= t('max_size') %>)</label>
+            <%= s.file_field :photo, :size=>12, :class=>"form-control" %>
+        </div>
+      </div>
+      
+      <% else %>
       <div id="admission1-form">
           <div id="necessary-field-notification"><%= t('legend1') %><span class="necessary-field">*</span> <%= t('legend2') %></div>
 
@@ -51,6 +60,7 @@
               <label for="student_email"><%= t('email_for_school_use') %><span class="necessary-field">*</span></label>
               <div class="text-input-bg"><%= s.text_field :email %></div>
           </div>
+          
 
         
           
@@ -112,6 +122,7 @@
                   <label for="master_student_phone2"><%= t('mobile') %></label>
                   <div class="text-input-bg"><%= s.text_field :phone2, :value =>@student.phone2 %></div>
               </div>
+              
               
             
 
@@ -182,9 +193,11 @@
           
       </div> 
       <% end %>
+      <% end %>
+      <%= submit_tag "", :class => "submit_button", :value => "► #{t('update')}" %>
   </div>
 
-  <%= submit_tag "", :class => "submit_button", :value => "► #{t('update')}" %>
+  
 <% end %>
 
 <% content_for :head do %>

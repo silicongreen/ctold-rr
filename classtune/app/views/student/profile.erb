@@ -106,9 +106,7 @@
             <div id="profile_picture_display">
                 <% if @student.photo.file? %>
                   <% @profile_image = @student.photo.url %>
-                  <% unless @profile_image.index("RackMultipart").nil? %>
-                    <% @profile_image.gsub! '?', '.?' %>
-                  <% end %>
+                  
                 <% else %>
                   <% @profile_image = "master_student/profile/default_student.png" %>
                 <% end %>
@@ -119,6 +117,17 @@
                    <%= link_to '<img src="/images/buttons/delete-new.png" />', {:controller => 'student', :action => 'remove_photo', :id => @student.id}, :confirm => "Do you realy want to remove this photo?" %>
                 </div>
                 <% end %>
+                
+                <% end %>
+                <% if permitted_to? :edit_student_guardian, :student %>
+                  <% @config = Configuration.find_by_config_key('ParentCanEdit') %>
+                    <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
+                      <div class="image-delete-link" style="margin-top:-31px;" />
+                          <%= link_to '<div class="edit-icon">Edit</div>',
+                            {:controller => "student", :action => "edit_student_guardian", :id => @student.id}, :class=> 'user_button small-button' %>
+                      </div>
+                  <% end %>
+
                 <% end %>
 
             </div>
@@ -721,7 +730,7 @@
 
 
     <div id="new_profile_info_top"> 
-        
+        <%  if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 346 %>
         <% if permitted_to? :edit_student_guardian, :student %>
           <% @config = Configuration.find_by_config_key('ParentCanEdit') %>
             <% if !@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1 %>
@@ -730,6 +739,13 @@
                     {:controller => "student", :action => "edit_student_guardian", :id => @student.id}, :class=> 'user_button' %>
               </div>
           <% end %>
+        
+        <% end %>
+        <% else %>
+              <div class="buttons">
+                  <%= link_to "Edit Password",
+                    {:controller => "user", :action => "change_password"}, :class=> 'user_button' %>
+              </div>
         
         <% end %>
         
@@ -796,5 +812,9 @@
     {
       float:left;
       clear:both;
+    }
+    a.small-button
+    {
+      padding: 5px 10px !important;
     }
 </style>

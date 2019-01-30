@@ -928,7 +928,7 @@ class StudentController < ApplicationController
     #@student.student_activation_code = nil
     @selected_value = Configuration.default_country 
     @application_sms_enabled = SmsSetting.find_by_settings_key("ApplicationEnabled")
-    @last_admitted_student = Student.find(:first,:order=>"admission_no desc")
+    @last_admitted_student = Student.find(:first,:order=>"id desc")
     @config = Configuration.find_by_config_key('AdmissionNumberAutoIncrement')
     @categories = StudentCategory.active
     if request.post?
@@ -2102,23 +2102,27 @@ class StudentController < ApplicationController
     @student = Student.find(params[:id])
     @additional_fields = StudentAdditionalField.find(:all, :conditions=> "status = true", :order=>"priority ASC")
     @additional_details = StudentAdditionalDetail.find_all_by_student_id(@student)
-    @student.pass = "01"
+    if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 346
+      @student.pass = "01"
+    end
     @student.gender=@student.gender.downcase
     @student_user = @student.user
     
 
     if request.post?
-      params[:student].delete "pass"
-      params[:student_additional_details].each_pair do |k, v|
-        additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
-        unless additional_detail.blank?
-          if v['additional_info'].blank?
-            additional_detail.destroy
-          else 
-            StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+      if MultiSchool.current_school.id != 352 and MultiSchool.current_school.id != 346
+        params[:student].delete "pass"
+        params[:student_additional_details].each_pair do |k, v|
+          additional_detail=StudentAdditionalDetail.find_by_student_id_and_additional_field_id(@student.id,k)
+          unless additional_detail.blank?
+            if v['additional_info'].blank?
+              additional_detail.destroy
+            else 
+              StudentAdditionalDetail.update(additional_detail.id,:additional_info => v['additional_info'])
+            end
+          else
+            StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
           end
-        else
-          StudentAdditionalDetail.create(:student_id=>@student.id,:additional_field_id=>k,:additional_info=>v['additional_info'])
         end
       end
       unless params[:student][:image_file].blank?
@@ -2130,7 +2134,11 @@ class StudentController < ApplicationController
             uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
             http = Net::HTTP.new(uri.host, uri.port)
             auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-            auth_req.set_form_data({"paid_id" => @student.user.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
+            password_main = ""
+            unless params[:student][:pass].blank?
+              password_main = params[:student][:pass]
+            end
+            auth_req.set_form_data({"paid_id" => @student.user.id,"paid_password"=>password_main, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
             auth_res = http.request(auth_req)
             @auth_response = JSON::parse(auth_res.body)
             

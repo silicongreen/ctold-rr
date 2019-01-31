@@ -116,7 +116,26 @@ class PaymentSettingsController < ApplicationController
         if found_verified
           childs = xml_transaction_infos[verifiedId].children
         else  
-          childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+          found_paid = false 
+          paidId = 0
+          xml_transaction_infos.each do |xml_transaction_info|
+            childs = xml_transaction_info.children
+            childs.each do |c|
+              if c.name == "Status"
+                v = c.text
+                if v.to_i == 1
+                  paidId = xmlind
+                  found_paid = true
+                end
+              end
+            end
+            xmlind += 1
+          end
+          if found_paid
+            childs = xml_transaction_infos[paidId].children
+          else
+            childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+          end
         end
         
         #abort(childs.inspect)
@@ -926,7 +945,26 @@ class PaymentSettingsController < ApplicationController
               if found_verified
                 childs = xml_transaction_infos[verifiedId].children
               else  
-                childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                found_paid = false 
+                paidId = 0
+                xml_transaction_infos.each do |xml_transaction_info|
+                  childs = xml_transaction_info.children
+                  childs.each do |c|
+                    if c.name == "Status"
+                      v = c.text
+                      if v.to_i == 1
+                        paidId = xmlind
+                        found_paid = true
+                      end
+                    end
+                  end
+                  xmlind += 1
+                end
+                if found_paid
+                  childs = xml_transaction_infos[paidId].children
+                else
+                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                end
               end
 
               #abort(childs.inspect)

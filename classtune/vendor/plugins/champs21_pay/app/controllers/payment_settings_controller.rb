@@ -251,7 +251,7 @@ class PaymentSettingsController < ApplicationController
         
         res2 = result
         xml_str = Nokogiri::XML(result)
-        abort(res1 + "   \n\n\n " + res2)
+        #abort(res1 + "   \n\n\n " + res2)
         unless xml_str.xpath("//Response/RefID").empty?
           verification_ref_id = xml_str.xpath("//Response/RefID").text
         end

@@ -1074,7 +1074,7 @@ class PaymentSettingsController < ApplicationController
                 verification_card_response_code = ""
                 verification_card_response_desc = "" 
                 verification_card_order_status = ""
-abort(result.inspect) 
+
                 xml_str = Nokogiri::XML(result)
 
                 unless xml_str.xpath("//Response/RefID").empty?

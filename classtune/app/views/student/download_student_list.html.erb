@@ -5,8 +5,23 @@
             <div id="pdf-header-south" class="general-header">
                 <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
                 <h2 align="center">Student List-2019</h2>
-                <h2 align="center">&nbsp;<% unless @batch_name_pdf.blank? %>Shift-<%= @batch_name_pdf %><% end %> <% unless @class_name_pdf.blank? %>Class-<%= @class_name_pdf %><% end %>&nbsp;</h2>
-                <h2 align="center">&nbsp;<% unless @version_pdf.blank? %>Version-<%= @version_pdf %><% end %><% unless @section_pdf.blank? %>Section-<%= @section_pdf %><% end %> &nbsp;</h2>
+                <% if !@section_pdf.blank? && @class_name_pdf.blank? %>
+                  <% 
+
+                  main_course = course.find_by_section_name(@section_pdf)
+                  @class_name_pdf = main_course.course_name
+
+                %>
+                <% end %>
+                <h2 align="center"><% unless @batch_name_pdf.blank? %>Shift: <%= @batch_name_pdf %><% end %><% unless @class_name_pdf.blank? %> Class: <%= @class_name_pdf %><% end %></h2>
+                <h2 align="center"><% unless @version_pdf.blank? %>Version: <%= @version_pdf %><% end %><% unless @section_pdf.blank? %>  Section: <%= @section_pdf %><% end %></h2>
+                <% if @batch_name_pdf.blank? && @class_name_pdf.blank? %>
+                  <h2 align="center">&nbsp;</h2>
+                <% end %>
+                <% if @version_pdf.blank? && @section_pdf.blank? %>
+                  <h2 align="center">&nbsp;</h2>
+                <% end %>
+
             </div>
 
 
@@ -38,7 +53,7 @@
                       end
 
                   %>
-                    <% if std_count>50 %>
+                    <% if std_count>49 %>
                       <% std_count = 0 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
@@ -48,8 +63,15 @@
 
                               <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
                               <h2 align="center">Student List-2019</h2>
-                              <h2 align="center">&nbsp;<% unless @batch_name_pdf.blank? %>Shift-<%= @batch_name_pdf %><% end %> <% unless @class_name_pdf.blank? %>Class-<%= @class_name_pdf %><% end %>&nbsp;</h2>
-                              <h2 align="center">&nbsp;<% unless @version_pdf.blank? %>Version-<%= @version_pdf %><% end %><% unless @section_pdf.blank? %>Section-<%= @section_pdf %><% end %> &nbsp;</h2>
+
+                              <h2 align="center"><% unless @batch_name_pdf.blank? %>Shift: <%= @batch_name_pdf %><% end %><% unless @class_name_pdf.blank? %> Class: <%= @class_name_pdf %><% end %></h2>
+                              <h2 align="center"><% unless @version_pdf.blank? %>Version: <%= @version_pdf %><% end %><% unless @section_pdf.blank? %>  Section: <%= @section_pdf %><% end %></h2>
+                              <% if @batch_name_pdf.blank? && @class_name_pdf.blank? %>
+                                <h2 align="center">&nbsp;</h2>
+                              <% end %>
+                              <% if @version_pdf.blank? && @section_pdf.blank? %>
+                                <h2 align="center">&nbsp;</h2>
+                              <% end %>
 
                           </td>
                       </tr>

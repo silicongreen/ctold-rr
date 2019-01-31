@@ -358,6 +358,7 @@ class PaymentSettingsController < ApplicationController
           end
         end
         unless archived
+          abort('here')
           if verified.to_i == 1 or verification_verified.to_i == 1
             if verified.to_i == 0
               if verification_verified.to_i == 1

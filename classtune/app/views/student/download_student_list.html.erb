@@ -98,7 +98,7 @@
                     <tr class="table-header">
                         <td class="col-pdf aling-left"><%= student.admission_no %></td>
                         <td class="col-pdf aling-left"><%= student.class_roll_no %></td>
-                        <td class="col-pdf aling-left"><%= student.full_name %></td>
+                        <td class="col-pdf aling-left no-warp"><%= student.full_name %></td>
                         <% if @section_pdf.blank? %>
                             <td class="col-pdf aling-left"><%= student.batch.course.section_name %></td>
                         <% end %>
@@ -141,6 +141,10 @@
 
     #pdf-header-south{
         width:1000px;
+    }
+    .no-warp
+    {
+        white-space: nowrap;
     }
 
 

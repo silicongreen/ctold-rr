@@ -28,16 +28,16 @@
             <% c = 'even' %>
             <table id="pdf-table" width="100%" cellspacing="0">
                 <tr class="table-header">
-                    <td class="col-pdf aling-left"><b>Student ID</b></td> 
-                    <td class="col-pdf aling-left"><b>Roll</b></td> 
-                    <td class="col-pdf aling-left"><b>Name</b></td>
+                    <td class="col-pdf aling-left no-warp"><b>Student ID</b></td> 
+                    <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                    <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                     <% if @section_pdf.blank? %>
-                      <td class="col-pdf aling-left"><b>Section Name</b></td>
+                      <td class="col-pdf aling-left no-warp"><b>Section</b></td>
                     <% end %>
-                    <td class="col-pdf"><b>Blood Group</b></td> 
-                    <td class="col-pdf aling-left"><b>Category</b></td> 
-                    <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
-                    <td class="col-pdf aling-left"><b>Mobile</b></td>
+                    <td class="col-pdf no-warp"><b>Blood Group</b></td> 
+                    <td class="col-pdf aling-left no-warp"><b>Category</b></td> 
+                    <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td>  
+                    <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                 </tr>
                 <% std_count = 0 %>
                 <% extender = 0 %>
@@ -57,8 +57,8 @@
                       end
 
                   %>
-                    
-                    <% if std_count>48 %>
+
+                    <% if std_count>49 %>
                       <% std_count = 1 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
@@ -81,26 +81,26 @@
                           </td>
                       </tr>
                       <tr class="table-header">
-                          <td class="col-pdf aling-left"><b>Student ID</b></td> 
-                          <td class="col-pdf aling-left"><b>Roll</b></td> 
-                          <td class="col-pdf aling-left"><b>Name</b></td> 
+                          <td class="col-pdf aling-left no-warp"><b>Student ID</b></td> 
+                          <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                          <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                           <% if @section_pdf.blank? %>
-                            <td class="col-pdf aling-left"><b>Section Name</b></td>
+                            <td class="col-pdf aling-left no-warp"><b>Section</b></td>
                           <% end %>
-                          <td class="col-pdf"><b>Blood Group</b></td> 
-                          <td class="col-pdf aling-left"><b>Category</b></td> 
-                          <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
-                          <td class="col-pdf aling-left"><b>Mobile</b></td>
+                          <td class="col-pdf no-warp"><b>Blood Group</b></td> 
+                          <td class="col-pdf aling-left no-warp"><b>Category</b></td> 
+                          <td class="col-pdf aling-left no-warp"><b>Tuition Fees</b></td>  
+                          <td class="col-pdf aling-left no-warp"><b>Mobile</b></td>
                       </tr>
                     <% end %>
-                    
+
 
                     <tr class="table-header">
                         <td class="col-pdf aling-left"><%= student.admission_no %></td>
                         <td class="col-pdf aling-left"><%= student.class_roll_no %></td>
                         <td class="col-pdf aling-left no-warp"><%= student.full_name %></td>
                         <% if @section_pdf.blank? %>
-                            <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td>
+                          <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td>
                         <% end %>
                         <td class="col-pdf"><%= student.blood_group unless student.blood_group.nil? %></td>
                         <td class="col-pdf aling-left no-warp"><%= std_category %></td>
@@ -149,7 +149,7 @@
 
 
     .page-break td{
-        height: 130px;
+        height: 100px;
         border: 1px solid #fff;
         border-top: 1px solid #000000;
     }

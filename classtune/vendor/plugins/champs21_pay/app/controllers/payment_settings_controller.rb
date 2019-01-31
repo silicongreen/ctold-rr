@@ -358,9 +358,8 @@ class PaymentSettingsController < ApplicationController
           end
         end
         unless archived
-          
           if verified.to_i == 1 or verification_verified.to_i == 1
-            abort('here')
+            
             if verified.to_i == 0
               if verification_verified.to_i == 1
                 gateway_response = validation_response
@@ -371,8 +370,9 @@ class PaymentSettingsController < ApplicationController
             @student = Student.find(payee_id)
             @batch = @student.batch
             fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
-
+            
             unless fee.nil?
+              abort('here')
               unless fee.is_paid
                 fee_collection_id = fee.fee_collection_id
                 advance_fee_collection = false

@@ -895,10 +895,10 @@ class PaymentSettingsController < ApplicationController
               card_response_code = ""
               card_response_desc = ""
               card_order_status = ""
-              abort(result.inspect)
+              
               xml_str = Nokogiri::XML(result)
 
-              verifiedId = 0
+              verifiedId = 0 
               found_verified = false 
               xmlind = 0
               xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
@@ -1072,9 +1072,9 @@ class PaymentSettingsController < ApplicationController
                 verification_interest_amount = ""
                 verification_pay_with_charge = ""
                 verification_card_response_code = ""
-                verification_card_response_desc = ""
+                verification_card_response_desc = "" 
                 verification_card_order_status = ""
-
+abort(result.inspect) 
                 xml_str = Nokogiri::XML(result)
 
                 unless xml_str.xpath("//Response/RefID").empty?

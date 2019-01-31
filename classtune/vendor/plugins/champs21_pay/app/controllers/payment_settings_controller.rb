@@ -895,11 +895,11 @@ class PaymentSettingsController < ApplicationController
               card_response_code = ""
               card_response_desc = ""
               card_order_status = ""
-
+              abort(result.inspect)
               xml_str = Nokogiri::XML(result)
 
               verifiedId = 0
-              found_verified = false
+              found_verified = false 
               xmlind = 0
               xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
               xml_transaction_infos.each do |xml_transaction_info|

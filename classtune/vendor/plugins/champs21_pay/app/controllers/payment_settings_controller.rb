@@ -118,6 +118,7 @@ class PaymentSettingsController < ApplicationController
         else  
           found_paid = false 
           paidId = 0
+          xmlind = 0
           xml_transaction_infos.each do |xml_transaction_info|
             childs = xml_transaction_info.children
             childs.each do |c|
@@ -947,6 +948,7 @@ class PaymentSettingsController < ApplicationController
               else  
                 found_paid = false 
                 paidId = 0
+                xmlind = 0
                 xml_transaction_infos.each do |xml_transaction_info|
                   childs = xml_transaction_info.children
                   childs.each do |c|

@@ -37,6 +37,7 @@
                     <td class="col-pdf aling-left"><b>Mobile</b></td>
                 </tr>
                 <% std_count = 0 %>
+                <% extender = 0 %>
                 <% unless @students_pdf.blank? %>  
                   <% @students_pdf.each do |student| %>
                     <%
@@ -54,7 +55,41 @@
 
                   %>
                     
-                    <% if std_count>49 %>
+                    <% if std_count>49 && extender = 0 %>
+                      <% extender = 1 %>
+                      <% std_count = 0 %>
+                      <tr class="page-break">
+                          <td colspan="100">&nbsp;</td>
+                      </tr>
+                      <tr class="header-td">
+                          <td colspan="100">
+
+                              <h1 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h1>
+                              <h2 align="center">Student List-2019</h2>
+
+                              <h2 align="center"><% unless @batch_name_pdf.blank? %>Shift: <%= @batch_name_pdf %><% end %><% unless @class_name_pdf.blank? %> Class: <%= @class_name_pdf %><% end %></h2>
+                              <h2 align="center"><% unless @version_pdf.blank? %>Version: <%= @version_pdf %><% end %><% unless @section_pdf.blank? %>  Section: <%= @section_pdf %><% end %></h2>
+                              <% if @batch_name_pdf.blank? && @class_name_pdf.blank? %>
+                                <h2 align="center">&nbsp;</h2>
+                              <% end %>
+                              <% if @version_pdf.blank? && @section_pdf.blank? %>
+                                <h2 align="center">&nbsp;</h2>
+                              <% end %>
+
+                          </td>
+                      </tr>
+                      <tr class="table-header">
+                          <td class="col-pdf aling-left"><b>Student ID</b></td> 
+                          <td class="col-pdf aling-left"><b>Roll</b></td> 
+                          <td class="col-pdf aling-left"><b>Name</b></td> 
+                          <td class="col-pdf"><b>Blood Group</b></td> 
+                          <td class="col-pdf aling-left"><b>Category</b></td> 
+                          <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
+                          <td class="col-pdf aling-left"><b>Mobile</b></td>
+                      </tr>
+                    <% end %>
+                    <% if std_count>48 && extender = 1 %>
+                      <% extender = 1 %>
                       <% std_count = 0 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>

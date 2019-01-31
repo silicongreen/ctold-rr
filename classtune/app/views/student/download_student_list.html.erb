@@ -30,7 +30,10 @@
                 <tr class="table-header">
                     <td class="col-pdf aling-left"><b>Student ID</b></td> 
                     <td class="col-pdf aling-left"><b>Roll</b></td> 
-                    <td class="col-pdf aling-left"><b>Name</b></td> 
+                    <td class="col-pdf aling-left"><b>Name</b></td>
+                    <% if @section_pdf.blank? %>
+                      <td class="col-pdf aling-left"><b>Section Name</b></td>
+                    <% end %>
                     <td class="col-pdf"><b>Blood Group</b></td> 
                     <td class="col-pdf aling-left"><b>Category</b></td> 
                     <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
@@ -81,6 +84,9 @@
                           <td class="col-pdf aling-left"><b>Student ID</b></td> 
                           <td class="col-pdf aling-left"><b>Roll</b></td> 
                           <td class="col-pdf aling-left"><b>Name</b></td> 
+                          <% if @section_pdf.blank? %>
+                            <td class="col-pdf aling-left"><b>Section Name</b></td>
+                          <% end %>
                           <td class="col-pdf"><b>Blood Group</b></td> 
                           <td class="col-pdf aling-left"><b>Category</b></td> 
                           <td class="col-pdf aling-left"><b>Tuition Fees</b></td>  
@@ -93,6 +99,9 @@
                         <td class="col-pdf aling-left"><%= student.admission_no %></td>
                         <td class="col-pdf aling-left"><%= student.class_roll_no %></td>
                         <td class="col-pdf aling-left"><%= student.full_name %></td>
+                        <% if @section_pdf.blank? %>
+                            <td class="col-pdf aling-left"><%= student.batch.course.section_name %></td>
+                        <% end %>
                         <td class="col-pdf"><%= student.blood_group unless student.blood_group.nil? %></td>
                         <td class="col-pdf aling-left"><%= std_category %></td>
                         <td class="col-pdf aling-left"><%= monthly_fee %></td>

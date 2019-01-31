@@ -138,7 +138,7 @@ class Guardian < ActiveRecord::Base
       
       u.is_deleted = is_deleted
       
-      u.pass = self.pass.blank? ? "123456" : self.pass.to_s
+      u.pass = self.pass.blank? ? password_auto : self.pass.to_s
       u.guardian = true
      
       u.save_to_log = true

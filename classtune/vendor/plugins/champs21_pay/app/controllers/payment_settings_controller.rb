@@ -93,6 +93,7 @@ class PaymentSettingsController < ApplicationController
         card_response_code = ""
         card_response_desc = ""
         card_order_status = ""
+        res1 = result
         xml_str = Nokogiri::XML(result)
         
         verifiedId = 0
@@ -248,8 +249,9 @@ class PaymentSettingsController < ApplicationController
         verification_card_response_desc = ""
         verification_card_order_status = ""
         
+        res2 = result
         xml_str = Nokogiri::XML(result)
-        
+        abort(res1 + "   \n\n\n " + res2)
         unless xml_str.xpath("//Response/RefID").empty?
           verification_ref_id = xml_str.xpath("//Response/RefID").text
         end
@@ -644,15 +646,19 @@ class PaymentSettingsController < ApplicationController
               page << "j('#payment#{payment.id}').css('cursor','default');"
             end
           else
-            abort('hehe')
             render :update do |page|
               page << "alert('Still unverified please try again later')"
             end
           end
-        end
+        else
           render :update do |page|
               page << "alert('To verified Archieved student transaction, Please use Order verification form')"
           end
+        end
+      else
+        render :update do |page|
+            page << "alert('To verified Archieved student transaction, Please use Order verification form')"
+        end
       end
     end
   end

@@ -294,6 +294,14 @@ class BoardController < ApplicationController
     @board_exam = @student.board_exam
     
     if @student.update_attributes(params[:board_exam_student])
+      unless @student.avg_credit_points.blank?
+        gradeObj = BoardGradingLevel.new
+        grading_level = gradeObj.grade_point_to_grade(@student.avg_credit_points)
+        unless grading_level.blank?
+          @student.board_grading_level_id = grading_level.id
+          @student.save
+        end
+      end
       @error = false
       @students = BoardExamStudent.find_all_by_board_exam_id(@board_exam.id)
       flash[:notice] = "Student Successfuly Update"
@@ -310,6 +318,14 @@ class BoardController < ApplicationController
     @board_exam = BoardExam.find(params[:board_exam_student][:board_exam_id])
     
     if @student.save
+      unless @student.avg_credit_points.blank?
+        gradeObj = BoardGradingLevel.new
+        grading_level = gradeObj.grade_point_to_grade(@student.avg_credit_points)
+        unless grading_level.blank?
+          @student.board_grading_level_id = grading_level.id
+          @student.save
+        end
+      end
       count = @board_exam.number_of_students+1
       @board_exam.update_attribute("number_of_students",count)
       @students = BoardExamStudent.find_all_by_board_exam_id(@board_exam.id)

@@ -76,6 +76,8 @@
                     <%= link_to "<i class='fa fa-list-ol'></i> Marks", {:action => "student_marks_entry", :id=>@board_exam.id,:id2=>student.id} %>
                     <% if @board_exam.is_published.to_i == 1 %>
                       &nbsp;<%= link_to "<i class='fa fa-graduation-cap'></i> Report", {:action => "exam_result", :id=>@board_exam.id,:id2=>student.id} %>
+                    <% end %>   
+                    <% unless student.board_grading_level_id.blank? %> 
                       <br/><%= link_to "<i class='fa fa-print'></i> Sign Testimonial", {:action => "testimonial", :id=>@board_exam.id,:id2=>student.id,:sign=>"Yes"} %><br/>
                           <%= link_to "<i class='fa fa-print'></i> Testimonial", {:action => "testimonial", :id=>@board_exam.id,:id2=>student.id} %>
                     <% end %>  

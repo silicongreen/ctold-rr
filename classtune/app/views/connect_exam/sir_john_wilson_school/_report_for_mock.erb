@@ -212,15 +212,15 @@
                       </tr> 
               </table>
               
-              <table id="pdf-table" width="100%" cellspacing="0">              
+              <table id="pdf-table" class="sign-advisor" width="100%" cellspacing="0">              
                       <tr class="table-header t_head">
                           <td class="col-pdf" width='10%'>
                               <p class="note">
                                 <b>Advisor's Comments</b>                                
                               </p>
                           </td>                          
-                          <td class="col-pdf" width='90%'>
-                              <table width="100%" class="no-border" >
+                          <td class="col-pdf componants-td" width='90%'>
+                              <table width="100%" class="no-border componants" >
                                 <tr>
                                   <td  width='50%'>
                                     <i>
@@ -229,7 +229,7 @@
                                       <% end %>  
                                     </i>
                                   </td>
-                                  <td  width='50%' class="align-center">
+                                  <td  width='50%' class="align-center componants-td">
                                      <% advisor_name = "Advisor" %>
                                      <% unless @student.advisor_id.blank? %>
                                       <% emp_data = Employee.find_by_id(@student.advisor_id) %>
@@ -238,10 +238,10 @@
                                        <% end %>
                                      <% end %> 
                                      <p>
-                                    
+                                     <br/>
                                      <hr/>
                                      <%= advisor_name %></p>
-                                     
+                                     <br/>
                                      <p><hr/>
                                      Date</p>
 
@@ -252,7 +252,7 @@
                       </tr> 
               </table>
               
-              <table id="pdf-table" width="100%" cellspacing="0">     
+              <table id="pdf-table" class="sign-advisor" width="100%" cellspacing="0">     
                       <tr class="table-header t_head">
                           <td class="col-pdf" width='10%'>
                               <p class="note">
@@ -260,7 +260,7 @@
                               </p>
                           </td>                          
                           <td class="col-pdf height-100" width='50%'>&nbsp;</td>
-                          <td class="col-pdf" rowspan="2" width='40%'>
+                          <td class="col-pdf componants-td" rowspan="2" width='40%'>
                               <p>KEY FOR GRADES<br />
                               85% and above - A - Outstanding<br/>
                               70% and above - B - Very Good<br/>
@@ -285,15 +285,24 @@
 <% end %>
 
 <style>
-  
+  div.sjws table.sign-advisor tr.table-header td
+  {
+      padding: 2px 5px !important;
+  }
   table.componants,table.componants tr, table.componants td
   {
       border: 0px;
   }
    div.sjws table.sjws_table_intro tr td.componants-td
   {
-      padding: 2px 5px !important;
+      padding: 2px 10px !important;
   }
+   div.sjws table.sign-advisor tr td.componants-td
+  {
+      padding: 2px 10px !important;
+  }
+ 
+  
   .underscore
   {
       text-decoration: underline;

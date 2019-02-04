@@ -17,10 +17,10 @@
 
       <table class="sjws_table_head" width="100%" cellspacing="0">
           <tr>
-              <td colspan="2"><b>NAME : <%= @student.full_name %></b></td> 
+              <td colspan="2"><b>NAME : <%= @student.full_name.upcase %></b></td> 
           </tr>
           <tr>
-              <td colspan="1"><b>CLASS : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></td>
+              <td colspan="1"><b>CLASS : <%= @batch.course.course_name.upcase %>&nbsp;<%= @batch.course.section_name.upcase %></b></td>
               <td colspan="1" class="text_right"><b>STUDENT ID: <%= @student.admission_no %> </b></td> 
           </tr>
       </table>
@@ -91,7 +91,7 @@
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% total_exam_count = @report_data['report']['exams'].count %>
                               <% @report_data['report']['exams'].each do |report| %>                              
-                                  <% if report['exam_category'].to_i == 4 %>
+                                  <% if report['exam_category'].to_i != 5 %>
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                     <% end %>
@@ -112,7 +112,7 @@
                             main_mark = main_mark.round()
                           %>
                           
-                          <td class="col-pdf"><center><%=main_mark.to_i %></center></td>
+                          <td class="col-pdf"><center><%=  main_mark.to_i %></center></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>
                           <td class="col-pdf"><center><%= grade.name %></center></td>
@@ -150,6 +150,7 @@
                                               <% end %>
                                           <% end %>
                                         <% end %>
+                                        <% subjects['name'].gsub! subjects_main['elective_group_name'], '' %>   
                                         <b class="underscore"><%= subjects['name'] %></b><br/>
                                         Out of <%= full_mark %><br/>
                                         <b><%= total_mark.round() %></b>
@@ -285,6 +286,7 @@
   table.componants tr td, table.componants, table.componants tr
   {
       border: none !important;
+      text-align:center;
   }
   .underscore
   {
@@ -332,6 +334,10 @@
   .logo_left
   {
       margin-top: -20px !important;
+  }
+  div.sjws table.sjws_table_intro tr.table-header td
+  {
+      padding: 0px !important;
   }
 </style>
 

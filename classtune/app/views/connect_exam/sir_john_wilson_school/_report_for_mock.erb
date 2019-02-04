@@ -122,52 +122,54 @@
                           <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects_main['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
                           <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>  
                           
-                          <td class="col-pdf">
-                              <table class="componants" >
-                                  <tr>
-                                    <% main_mark = 0 %>
-                                    <% total_main_mark = 0 %>
-                                    <% total_full_mark = 0 %>
-                                    <% subject_elective.each do |subjects| %>
-                                      <% subjectdata = Subject.find(subjects['id'].to_i) %>
-                                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
-                                      <% if @has_exam_student == false %>
-                                        <% next %>
-                                      <% end %>
-                                      <% total_mark = 0 %>
-                                      <% full_mark = 0 %>
-                                      <td>
-                                        <% unless @report_data['report']['exams'].blank? %>  
-                                          <% total_exam_count = @report_data['report']['exams'].count %>
-                                          <% @report_data['report']['exams'].each do |report| %>                              
-                                              <% if report['exam_category'].to_i == 5 %>
-                                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                                  <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                                <% end %>
-                                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                                  <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-                                                <% end %> 
-                                              <% end %>
-                                          <% end %>
+                          <td class="col-pdf componants-td">
+                              <center>
+                                <table class="componants" >
+                                    <tr>
+                                      <% main_mark = 0 %>
+                                      <% total_main_mark = 0 %>
+                                      <% total_full_mark = 0 %>
+                                      <% subject_elective.each do |subjects| %>
+                                        <% subjectdata = Subject.find(subjects['id'].to_i) %>
+                                        <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                                        <% if @has_exam_student == false %>
+                                          <% next %>
                                         <% end %>
-                                        <% subjects['name'].gsub! subjects_main['elective_group_name'], '' %>   
-                                        <b class="underscore"><%= subjects['name'] %></b><br/>
-                                        Out of <%= full_mark %><br/>
-                                        <b><%= total_mark.round() %></b>
-                                        <% total_main_mark = total_mark.round()+total_main_mark %>
-                                        <% total_full_mark = full_mark.round()+total_full_mark %>
-                                        
-                                      </td>
-                                    <% end %>
-                                    <% 
-                                      if total_main_mark.to_f>0 and total_full_mark.to_f>0
-                                        main_mark = (total_main_mark.round().to_f/total_full_mark.to_f)*100 
-                                      else
-                                        main_mark = 0
-                                      end   
-                                    %>
-                                  </tr>    
-                              </table>    
+                                        <% total_mark = 0 %>
+                                        <% full_mark = 0 %>
+                                        <td class="componants-td">
+                                          <% unless @report_data['report']['exams'].blank? %>  
+                                            <% total_exam_count = @report_data['report']['exams'].count %>
+                                            <% @report_data['report']['exams'].each do |report| %>                              
+                                                <% if report['exam_category'].to_i == 5 %>
+                                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                                    <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                                  <% end %>
+                                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                                    <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                                  <% end %> 
+                                                <% end %>
+                                            <% end %>
+                                          <% end %>
+                                          <% subjects['name'].gsub! subjects_main['elective_group_name'], '' %>   
+                                          <b class="underscore"><%= subjects['name'] %></b><br/>
+                                          Out of <%= full_mark %><br/>
+                                          <b><%= total_mark.round() %></b>
+                                          <% total_main_mark = total_mark.round()+total_main_mark %>
+                                          <% total_full_mark = full_mark.round()+total_full_mark %>
+
+                                        </td>
+                                      <% end %>
+                                      <% 
+                                        if total_main_mark.to_f>0 and total_full_mark.to_f>0
+                                          main_mark = (total_main_mark.round().to_f/total_full_mark.to_f)*100 
+                                        else
+                                          main_mark = 0
+                                        end   
+                                      %>
+                                    </tr>    
+                                </table> 
+                              </center>    
                           </td>
                           <% main_mark = main_mark.round() %>
                           <%  grade2 = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -283,10 +285,14 @@
 <% end %>
 
 <style>
-  table.componants tr td, table.componants, table.componants tr
+  
+  table.componants,table.componants tr, table.componants td
   {
-      border: none !important;
-      text-align:center;
+      border: 0px;
+  }
+   div.sjws table.sjws_table_intro tr td.componants-td
+  {
+      padding: 2px 5px !important;
   }
   .underscore
   {
@@ -335,10 +341,7 @@
   {
       margin-top: -20px !important;
   }
-  div.sjws table.sjws_table_intro tr.table-header td
-  {
-      padding: 0px !important;
-  }
+ 
 </style>
 
 

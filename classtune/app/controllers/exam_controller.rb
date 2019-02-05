@@ -3033,6 +3033,7 @@ class ExamController < ApplicationController
     
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
+   
     
     pdf_name = "continues_connect_exam_"+@connect_exam_obj.id.to_s+".pdf"
     dirname = Rails.root.join('public','result_pdf',"0"+MultiSchool.current_school.id.to_s,"0"+@batch.id.to_s,"continues","0"+@connect_exam_obj.id.to_s)
@@ -4479,6 +4480,7 @@ class ExamController < ApplicationController
   private
   
   def render_connect_exam(template,for_save=false,file_name="")
+    
     if MultiSchool.current_school.id == 246
       render :pdf => template,
         :save_to_file => file_name,
@@ -4489,8 +4491,7 @@ class ExamController < ApplicationController
         :left=> 10,
         :right => 10}
     elsif MultiSchool.current_school.id == 352 or MultiSchool.current_school.id == 346
-      if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 11
-        
+      if @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type.to_i == 11
         render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,

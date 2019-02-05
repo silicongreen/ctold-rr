@@ -51,7 +51,11 @@ class ArchivedEmployee < ActiveRecord::Base
     :path => "public/uploads/:class/:attachment/:id/:style/:basename.:extension"
 
   def full_name
-    "#{first_name} #{middle_name} #{last_name}"
+    full_name = "#{first_name} #{middle_name} #{last_name}"
+    full_name.gsub!("  "," ")
+    full_name.gsub!("- ","-")
+    full_name.gsub!(" -","-")
+    full_name
   end
 
   def find_experience_years

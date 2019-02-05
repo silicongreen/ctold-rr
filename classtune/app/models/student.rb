@@ -33,7 +33,6 @@ class Student < ActiveRecord::Base
   belongs_to    :immediate_contact,:class_name => 'Guardian'
   has_one    :student_previous_data
   has_many   :student_previous_subject_mark
-  has_many   :student_exclude_discounts
   #  has_many   :guardians, :foreign_key => 'ward_id'
   has_many   :guardians, :foreign_key => 'ward_id', :primary_key=>:sibling_id
   has_many   :finance_transactions, :as => :payee
@@ -336,9 +335,9 @@ class Student < ActiveRecord::Base
 
   def full_name
     full_name = "#{first_name} #{middle_name} #{last_name}"
-    full_name.gsub("  "," ")
-    full_name.gsub("- ","-")
-    full_name.gsub(" -","-")
+    full_name.gsub!("  "," ")
+    full_name.gsub!("- ","-")
+    full_name.gsub!(" -","-")
     full_name
   end
 

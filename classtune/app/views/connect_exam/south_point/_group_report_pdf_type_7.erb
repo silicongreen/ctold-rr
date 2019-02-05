@@ -33,7 +33,7 @@
                   <% c = 'even'  %>
                   <tr class="table-header">
                       <td class="col-pdf no-warp" colspan="8" ><%= first_term_exam_name %> Examination</td>
-                      <td class="col-pdf no-warp" colspan="6" ><%= final_term_exam_name %></td>
+                      <td class="col-pdf no-warp" colspan="6" >Mock Test</td>
                       <td class="col-pdf no-warp" colspan="2" >Combined Result</td>
                   </tr>    
                   <tr class="table-header">
@@ -48,7 +48,6 @@
                       <% @report_data['report']['exams'].each do |report| %>
                        <% if report['exam_category'] == '6'  %>
                             <% unless @exam_marks[report['exam_id'].to_s].blank?  %>
-                                <% total_mark_of_allexam = total_mark_of_allexam+@exam_marks[report['exam_id'].to_s].to_i  %>
                                 <td class="col-pdf">
                                   <%= report['exam_name'] %>(<%= @exam_marks[report['exam_id'].to_s].to_i %>)
                                 </td>
@@ -220,7 +219,7 @@
                               #Calculation 4th Quarter Mark
                               if report['exam_category'] == '6'
                                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                    final_term_full_mark = final_term_full_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
+                                    final_term_full_mark = final_term_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f
                                   end
                                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                     final_term_mark = final_term_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -310,8 +309,11 @@
 
                           full_mark_final_term = final_term_full_mark
                           obtained_mark_final_term = final_term_mark.round()
-                          main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
-                          main_mark_final_term = main_mark_final_term.round()
+                          main_mark_final_term = 0
+                          if obtained_mark_final_term > 0
+                            main_mark_final_term = (obtained_mark_final_term.to_f/full_mark_final_term.to_f)*100
+                            main_mark_final_term = main_mark_final_term.round()
+                          end
 
                           full_mark = full_mark_first_term+full_mark_final_term
                           obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
@@ -345,7 +347,7 @@
                                 <% end %>   
                             <% end %>
                            <% end %>
-                          <td class="col-pdf"><%= sprintf( "%0.02f", full_mark_final_term) %></td>
+                          <td class="col-pdf"><%= sprintf( "%0.02f", obtained_mark_final_term) %></td>
                           <td class="col-pdf"><%= sprintf( "%0.02f", main_mark_final_term) %></td>
                           <%  grade = GradingLevel.percentage_to_grade(main_mark_final_term, @batch.id) %>
                           <% if !grade.blank? and !grade.name.blank? %>

@@ -789,7 +789,7 @@ class PaymentSettingsController < ApplicationController
         f_trans = FinanceTransaction.find(:first, :conditions => "id = #{op.finance_transaction_id}")
         unless f_trans.nil?
           if f_trans.amount.to_f != op.gateway_response[:amount].to_f
-            finance_amount_not_match += f_trans.id.to_s + ","
+            finance_amount_not_match += f_trans.id.to_s + "-" + f_trans.amount.to_s + "-" + op.gateway_response[:amount].to_s + ","
           end
         end
       end

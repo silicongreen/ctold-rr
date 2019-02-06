@@ -79,12 +79,12 @@ module OnlinePayment
           #@fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
           #@total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
           
-          if request.post?
+          if request.post? and params[:order_id].present?
             @finance_order = FinanceOrder.find_by_order_id(params[:order_id])
             @finance_order.update_attributes(:request_params => params)
             
             @student = Student.find(params[:id])
-            @total_amount = params[:fee_total_amount]
+            @total_amount = params[:amount_to_pay]
             
             unless params[:mobile_view].blank?
               render 'gateway_payments/paypal/mobile_fee_details_execute',:layout => false
@@ -470,7 +470,7 @@ module OnlinePayment
                   :pan=>pan
                 }
                 @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-                abort(@finance_order.inspect)
+                #abort(@finance_order.inspect)
                 request_params = @finance_order.request_params
                 
                 dt = trans_date.split(".")
@@ -1078,7 +1078,7 @@ module OnlinePayment
                           messages = []
                           messages[0] = message
                           #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-                          send_sms(messages,recipients)
+                          #send_sms(messages,recipients)
                         end
 
 

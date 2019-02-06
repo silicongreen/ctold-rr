@@ -990,9 +990,9 @@ class StudentController < ApplicationController
           
           @student = Student.find(@student.id)
           
-          #@fee_collection_dates = @student.batch.fee_collection_dates
+#          @fee_collection_dates = @student.batch.fee_collection_dates
 #          @fee_collection_dates = @fee_collection_dates.select{|d| d.due_date>=@student.admission_date }
-         @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id INNER JOIN fee_collection_batches ON fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id",:conditions=>"fee_collection_batches.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
+         @fee_collection_dates = FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch' and finance_fee_collections.due_date>='#{@student.admission_date}'",:select=>"finance_fee_collections.*").uniq
           @fee_collection_dates.each do |date|
             d = FinanceFeeCollection.find(date.id)
             FinanceFee.new_student_fee(d,@student)
@@ -1651,22 +1651,18 @@ class StudentController < ApplicationController
     @student = ArchivedStudent.find_by_former_id(params[:id])
     
     student_electives = StudentsSubject.find_all_by_student_id(params[:id],:conditions=>"batch_id = #{@student.batch_id}")
-    @group = ""
+    @group = @student.batch.group
     
     if student_electives
       student_electives.each do |elect|
         sub = Subject.find(elect.subject_id)
-      
-        if sub.code == "Phys" or sub.code == "Chem" or sub.code == "Bio"
-          @group = "Science" 
-          break
+        if sub.code == "Bio"
+           std_group_name = "Science" 
+        elsif sub.code == "F&B"
+           std_group_name = "Business Studies" 
         elsif sub.code == "Eco" or sub.code == "Islam" or sub.code == "Geo"
-          @group = "Humanities"
-          break
-        elsif  sub.code == "Acc" or sub.code == "BOM" or sub.code == "PMM"
-          @group = "Business Studies"
-          break
-        end   
+           std_group_name = "Humanities" 
+        end  
       end
      
     end

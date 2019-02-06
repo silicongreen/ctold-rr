@@ -62,7 +62,9 @@
                   <% end %>
 
                   <% total_terms = [] %>
+                  
                   <% full_marks_term = [] %>
+                  <% colspan = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -73,7 +75,7 @@
                             <% @top_exam_group.each do |top_exam| %>
                               <% this_term = 0 %>
                               <% this_full_marks = 0 %>
-                              
+                              <% colspan = 0 %>
                               <% @report_data['report']['exams'].each do |report| %>
                                   <% if !report['exam_name'].index(top_exam).nil? %>
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -82,6 +84,7 @@
                                       <% else %>
                                         <td>-</td>
                                       <% end %> 
+                                      <% colspan = colspan+1 %>  
                                       <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% this_full_marks = this_full_marks+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                       <% end %>
@@ -102,6 +105,7 @@
                                    
                               <% top_loop = top_loop+1 %>
                               <td><%= this_term.round() %></td>
+                              <% colspan = colspan+1 %>
                               <% grade_mark = (this_term.to_f/this_full_marks.to_f)*100 %>
                               <%  grade = GradingLevel.percentage_to_grade(grade_mark, @batch.id) %>
                               
@@ -116,7 +120,34 @@
                           <% end %>
                       </tr> 
                     <% end %>  
-                  <% end %>          
+                  <% end %>  
+                  <%
+                    group_exams = GroupedExam.find_all_by_connect_exam_id(@connect_exam_obj.id) 
+                    @all_subjects = []
+                    group_exams.each do |group_exam|
+                      allexams = Exam.find_all_by_exam_group_id(group_exam.exam_group_id);
+                      allexams.each do |exam|
+                        if !@all_subjects.include?(exam.subject.id)
+                          @all_subjects << exam.subject.id
+                        end
+                      end
+                    end 
+                  %>
+                  <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
+                    <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
+
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
+                     
+                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        
+                        <td class="col-pdf td-align-left"><%= report['subject_name'] %></td>
+                        <td class="col-pdf" colspan="<%= colspan %>"></td>
+                        
+                        <td class="col-pdf"><b><%= report['subject_comment'] %></b></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
                   <tr class="odd">
                       <td class="col-pdf border-left-none"><b>Total Mark</b></td>
 

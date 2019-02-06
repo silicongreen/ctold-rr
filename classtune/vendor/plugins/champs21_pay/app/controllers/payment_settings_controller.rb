@@ -776,12 +776,12 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
-#    online_payments = Payment.all
-#    online_payments.each do |op|
-#      op.order_id = op.gateway_response[:order_id]
-#      op.save
-#    end
-##    abort('here')
+    online_payments = Payment.all
+    online_payments.each do |op|
+      op.order_id = op.gateway_response[:order_id]
+      op.save
+    end
+    abort('here')
 #    online_payments = Payment.all
 #    i = 0
 #    j = 0

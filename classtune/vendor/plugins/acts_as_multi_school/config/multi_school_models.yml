@@ -53,6 +53,7 @@ multi_school_models:
 - ArchivedEmployeeAdditionalDetail
 - Student
 - FinanceTransactionTrigger
+- FinanceOrder
 - FinanceFeeCategory
 - FinanceFeeParticularCategory
 - FeeDiscountCollection

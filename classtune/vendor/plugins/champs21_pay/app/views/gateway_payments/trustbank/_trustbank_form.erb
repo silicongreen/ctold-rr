@@ -9,7 +9,13 @@
     <% extra_string = "&mobile_view=1" %>
   <% end %>
   <%= hidden_field_tag :PaymentSuccessUrl,@payment_success_url %>
-  <% if @amount > 0 %>
-    <%= f.submit '► Pay Fees',:class => "submit_button btn btn-success" %>
+  <% if @amount.to_f > 0 %>
+    <%#= f.submit '► Pay Fees',:class => "submit_button btn btn-success" %>
   <% end %>
 <% end %>
+
+<script>
+  $(document).ready(function(){
+    $('form').submit();
+  });
+</script>

@@ -37,7 +37,7 @@
         <% unless @fee_particulars.nil? %>
 
 
-
+          <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id,:id2 => @date.id,:mobile_view=>1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
           <% total_fees = 0  %>
           <table class="table table-striped">
               <thead><!-- class="thead-inverse" -->
@@ -284,6 +284,7 @@
                                       <% elsif @active_gateway == "ssl.commerce" %>
                                         <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
                                       <% elsif @active_gateway == "trustbank" %>
+                                        <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                                         <% 
                                         require 'securerandom'
                                         o = [('a'..'z'), (1..9)].map(&:to_a).flatten
@@ -295,7 +296,7 @@
                                                 <% email = @student.immediate_contact.email %>
                                              <% end %>
                                         <% end %> 
-                                        <%= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
+                                        <%#= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
                                       <% end %>
 
                                   </div>
@@ -313,6 +314,7 @@
       <% end %>   
   </tbody>    
   </table>
+          <% end %>
 <% end %> 
 </body>
 

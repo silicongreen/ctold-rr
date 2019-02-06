@@ -795,7 +795,7 @@ class PaymentSettingsController < ApplicationController
       end
     end
     
-    abort('here')
+    abort(finance_amount_not_match)
 #    online_payments = Payment.all
 #    i = 0
 #    j = 0

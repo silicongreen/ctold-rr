@@ -1651,7 +1651,7 @@ class StudentController < ApplicationController
     @student = ArchivedStudent.find_by_former_id(params[:id])
     
     student_electives = StudentsSubject.find_all_by_student_id(params[:id],:conditions=>"batch_id = #{@student.batch_id}")
-    @group = @student.batch.group
+    @group = @student.batch.course.group
     
     if student_electives
       student_electives.each do |elect|

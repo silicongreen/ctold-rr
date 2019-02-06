@@ -265,6 +265,7 @@
                             <%= precision_label(0) %>
                           <% end %>
                       </td>
+                      <input type="hidden" name="amount_to_pay" id="amount_to_pay" value="<%= balance+@fine_amount.to_f %>" />
                   </tr>
                   <% if MultiSchool.current_school.id == 352 %>
                   <% @student_has_due = false %>
@@ -284,6 +285,7 @@
                                       <% elsif @active_gateway == "ssl.commerce" %>
                                         <%= ssl_commerce_pay_button(@store_id,@store_password,total_fees,"Fee (#{@student.full_name}-#{@student.admission_no}-#{@fee_collection.name})","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_cancel_transaction=1","http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_fail_transaction=3",@trans_id_ssl_commerce,@paid_fees,"float: right;margin: 18px 0 0;") %>
                                       <% elsif @active_gateway == "trustbank" %>
+                                        <input type="hidden" name="order_id" id="order_id" value="<%= @order_id %>" />
                                         <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button' %>
                                         <% 
                                         require 'securerandom'

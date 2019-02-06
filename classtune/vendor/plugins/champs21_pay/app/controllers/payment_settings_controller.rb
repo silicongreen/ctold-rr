@@ -776,11 +776,25 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications
+#    online_payments = Payment.all
+#    online_payments.each do |op|
+#      op.order_id = op.gateway_response[:order_id]
+#      op.save
+#    end
+
     online_payments = Payment.all
+    finance_amount_not_match = ""
     online_payments.each do |op|
-      op.order_id = op.gateway_response[:order_id]
-      op.save
+      unless op.finance_transaction_id.nil?
+        f_trans = FinanceTransaction.find(:first, :conditions => "id = #{op.finance_transaction_id}")
+        unless f_trans.nil?
+          if f_trans.amount.to_f != op.gateway_response[:amount].to_f
+            finance_amount_not_match += f_trans.amount.id.to_s + ","
+          end
+        end
+      end
     end
+    
     abort('here')
 #    online_payments = Payment.all
 #    i = 0

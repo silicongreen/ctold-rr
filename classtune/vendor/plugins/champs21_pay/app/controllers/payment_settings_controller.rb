@@ -1062,6 +1062,7 @@ class PaymentSettingsController < ApplicationController
               #admission_no = admission_nos[i]
               admission_no = name
               @student = Student.find_by_admission_no(admission_no)
+              abort(@student.inspect)
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month
               #end_month = create_at.end_of_month

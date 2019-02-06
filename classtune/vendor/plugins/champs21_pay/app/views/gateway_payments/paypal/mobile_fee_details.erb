@@ -37,7 +37,6 @@
         <% unless @fee_particulars.nil? %>
 
 
-          <% form_remote_for :fees, :url => {:controller => 'student',:action => 'fee_details',:id => @student.id,:id2 => @date.id,:mobile_view=>1}, :html => {:id => "fees_form"}, :before=>"prev_double();$('loader_pay').show();",:complete=>"set_back();$('loader_pay').hide();" do |form| %>
           <% total_fees = 0  %>
           <table class="table table-striped">
               <thead><!-- class="thead-inverse" -->
@@ -314,7 +313,6 @@
       <% end %>   
   </tbody>    
   </table>
-          <% end %>
 <% end %> 
 </body>
 

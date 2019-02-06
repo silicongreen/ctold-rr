@@ -470,7 +470,7 @@ module OnlinePayment
                   :pan=>pan
                 }
                 @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
-                
+                abort(@finance_order.inspect)
                 request_params = @finance_order.request_params
                 
                 dt = trans_date.split(".")

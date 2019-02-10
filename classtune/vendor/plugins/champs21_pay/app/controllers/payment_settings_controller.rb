@@ -795,15 +795,17 @@ class PaymentSettingsController < ApplicationController
 #      end
 #    end
     
+    cnt = 0
     online_payments = Payment.all
     finance_amount_not_match = ""
     online_payments.each do |op|
       if op.finance_transaction_id.nil?
         finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+        cnt += 1
       end
     end
     
-    abort(finance_amount_not_match)
+    abort(cnt.to_s + "  " + finance_amount_not_match)
 #    online_payments = Payment.all
 #    i = 0
 #    j = 0

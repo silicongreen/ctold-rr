@@ -24,6 +24,7 @@
     <% if !@connect_exam_obj.blank? && (@connect_exam_obj.result_type.to_i == 3 || @connect_exam_obj.result_type.to_i == 4 )  %>
     <div id="pdf-header-south" class="general-header cbis-header">
         <table width="100%">
+            
             <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/246/cherry-logo-bran-new.jpg")),:width=> '100%' %></span></td>
             <td class="name-td name-td-south">
                   <h4 align="center"><%=Configuration.get_config_value('InstitutionName').upcase; %></h4>
@@ -168,7 +169,7 @@
 <div id="pdf-header-south" class="general-header <% if !@connect_exam_obj.blank? %> <% if @connect_exam_obj.result_type.to_i != 1 && @connect_exam_obj.result_type.to_i != 6  %>potrait_header_south_point<% else %>lanscape_header_south_point<%  end %><% end %>">
     <table width="100%">
         <% if !@connect_exam_obj.blank? %> 
-          <% if @connect_exam_obj.result_type.to_i == 1 || @connect_exam_obj.result_type.to_i == 6  %>
+          <% if @connect_exam_obj.result_type.to_i == 1 || @connect_exam_obj.result_type.to_i == 6  || @connect_exam_obj.result_type.to_i == 7 %>
             <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '85%' %></span></td>
           <% else %>
             <td class="south-logo"><span><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/312/logo.jpg")),:width=> '100%' %></span></td>

@@ -801,7 +801,59 @@ class PaymentSettingsController < ApplicationController
     online_payments.each do |op|
       if op.finance_transaction_id.nil?
         cnt += 1
-        finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+        #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+        
+        
+        testtrustbank = false
+        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+            payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+            unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+              testtrustbank = payment_configs["testtrustbank"]
+            end
+          end
+        end
+        if testtrustbank
+          merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+          @merchant_id = merchant_info["merchant_id"]
+          @keycode = merchant_info["keycode"]
+          @verification_url = merchant_info["validation_api"]
+          @merchant_id ||= String.new
+          @keycode ||= String.new
+          @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
+        else  
+          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+            @verification_url = payment_urls["trustbank_verification_url"]
+            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+          else
+            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+          end
+          @merchant_id = PaymentConfiguration.config_value("merchant_id")
+          @keycode = PaymentConfiguration.config_value("keycode_verification")
+          @merchant_id ||= String.new
+          @keycode ||= String.new
+        end
+        request_url = @verification_url + '/Get_Transaction_Ref'
+        #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
+
+        uri = URI(request_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"OrderID" => op.order_id.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
+
+        http.use_ssl = true
+        auth_res = http.request(auth_req)
+
+        xml_res = Nokogiri::XML(auth_res.body)
+
+        status = ""
+        unless xml_res.xpath("/").empty?
+          status = xml_res.xpath("/").text
+        end
+        abort(status.inspect)
+        result = Base64.decode64(status)
+        
       end
     end
     

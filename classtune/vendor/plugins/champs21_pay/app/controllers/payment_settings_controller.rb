@@ -797,7 +797,12 @@ class PaymentSettingsController < ApplicationController
 
     cnt = 0
     students = Student.active
-    abort(students.inspect)
+    students.each do |s|
+      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id != #{s.batch_id} and is_paid=#{false}")
+      unless ff.nil?
+        ff.destroy
+      end
+    end
     
     cnt = 0
     online_payments = Payment.all

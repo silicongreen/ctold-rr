@@ -776,107 +776,6 @@ class PaymentSettingsController < ApplicationController
   end
   
   def order_verifications  
-#    online_payments = Payment.all
-#    online_payments.each do |op|
-#      op.order_id = op.gateway_response[:order_id]
-#      op.save
-#    end
-
-#    online_payments = Payment.all
-#    finance_amount_not_match = ""
-#    online_payments.each do |op|
-#      unless op.finance_transaction_id.nil?
-#        f_trans = FinanceTransaction.find(:first, :conditions => "id = #{op.finance_transaction_id}")
-#        unless f_trans.nil?
-#          if f_trans.amount.to_f != op.gateway_response[:amount].to_f
-#            finance_amount_not_match += f_trans.id.to_s + "-" + f_trans.amount.to_s + "-" + op.gateway_response[:amount].to_s + ","
-#          end
-#        end
-#      end
-#    end
-
-    cnt = 0
-    std_id = ""
-    students = Student.active
-    students.each do |s|
-      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id != #{s.batch_id} and is_paid=#{true}")
-      unless ff.nil?
-        cnt += 1
-        std_id += s.id.to_s + ","
-        #ff.destroy
-      end
-    end
-    abort(cnt.to_s + "  " + std_id)
-    cnt = 0
-    online_payments = Payment.all
-    finance_amount_not_match = ""
-    online_payments.each do |op|
-      if op.finance_transaction_id.nil?
-#        ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
-#        unless ff.nil?
-#          fts = ff.finance_transactions
-#          fts.each do |ft|
-#            if ft.amount.to_f == op.gateway_response[:amount].to_f
-#              op.update_attributes(:finance_transaction_id => ft.id)
-              cnt += 1
-              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
-#            end
-#          end
-#          
-#        end
-      end
-    end
-    
-    abort(cnt.to_s + "  " + finance_amount_not_match)
-#    online_payments = Payment.all
-#    i = 0
-#    j = 0
-#    order_ids = []
-#    verified = 0
-#    order_ids_no_verified = []
-#    user_ids = [22479,23675,25360,25372,26164,26302,26467,26533,27312,28528,28966,29116,29915,30092,30373,30632,31978]
-#    online_payments.each do |op|
-#      unless order_ids.include?(op.order_id) 
-#        order_ids[i] = op.order_id
-#        i += 1
-#        if op.gateway_response[:verified].to_i == 1
-#          verified += 1
-#        end
-#      else
-#        ords = Payment.find(:all, :conditions => "order_id = #{op.order_id}")
-#        fnd = false
-#        not_inc_k = false
-#        k = 1
-#        ords.each do |o|
-#          unless o.gateway_response[:name].nil?
-#            admission_no = o.gateway_response[:name]
-#            unless user_ids.include?(o.payee_id)
-#              std = Student.find(o.payee_id)
-#              adm_no = std.admission_no
-#            else
-#              adm_no = admission_no
-#            end
-#            if adm_no.strip.to_s == admission_no.strip.to_s
-#              if k > 1
-#                o.destroy
-#                fnd = true
-#              else
-#                k = 2
-#              end
-#            else
-#              o.destroy
-#              fnd = true
-#            end
-#          else
-#            o.destroy
-#            fnd = true
-#          end
-#        end
-#      end
-#    end
-#    #abort(order_ids_no_verified.inspect)
-##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
-#    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
     #admission_nos = []
     if request.post?
@@ -1540,6 +1439,108 @@ class PaymentSettingsController < ApplicationController
   end
   
   def settings
+    #    online_payments = Payment.all
+#    online_payments.each do |op|
+#      op.order_id = op.gateway_response[:order_id]
+#      op.save
+#    end
+
+#    online_payments = Payment.all
+#    finance_amount_not_match = ""
+#    online_payments.each do |op|
+#      unless op.finance_transaction_id.nil?
+#        f_trans = FinanceTransaction.find(:first, :conditions => "id = #{op.finance_transaction_id}")
+#        unless f_trans.nil?
+#          if f_trans.amount.to_f != op.gateway_response[:amount].to_f
+#            finance_amount_not_match += f_trans.id.to_s + "-" + f_trans.amount.to_s + "-" + op.gateway_response[:amount].to_s + ","
+#          end
+#        end
+#      end
+#    end
+#
+    cnt = 0
+    std_id = ""
+    students = Student.active
+    students.each do |s|
+      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id != #{s.batch_id} and is_paid=#{true}")
+      unless ff.nil?
+        cnt += 1
+        std_id += s.id.to_s + ","
+        #ff.destroy
+      end
+    end
+    abort(cnt.to_s + "  " + std_id)
+#    cnt = 0
+#    online_payments = Payment.all
+#    finance_amount_not_match = ""
+#    online_payments.each do |op|
+#      if op.finance_transaction_id.nil?
+##        ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
+##        unless ff.nil?
+##          fts = ff.finance_transactions
+##          fts.each do |ft|
+##            if ft.amount.to_f == op.gateway_response[:amount].to_f
+##              op.update_attributes(:finance_transaction_id => ft.id)
+#              cnt += 1
+#              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+##            end
+##          end
+##          
+##        end
+#      end
+#    end
+#    
+#    abort(cnt.to_s + "  " + finance_amount_not_match)
+#    online_payments = Payment.all
+#    i = 0
+#    j = 0
+#    order_ids = []
+#    verified = 0
+#    order_ids_no_verified = []
+#    user_ids = [22479,23675,25360,25372,26164,26302,26467,26533,27312,28528,28966,29116,29915,30092,30373,30632,31978]
+#    online_payments.each do |op|
+#      unless order_ids.include?(op.order_id) 
+#        order_ids[i] = op.order_id
+#        i += 1
+#        if op.gateway_response[:verified].to_i == 1
+#          verified += 1
+#        end
+#      else
+#        ords = Payment.find(:all, :conditions => "order_id = #{op.order_id}")
+#        fnd = false
+#        not_inc_k = false
+#        k = 1
+#        ords.each do |o|
+#          unless o.gateway_response[:name].nil?
+#            admission_no = o.gateway_response[:name]
+#            unless user_ids.include?(o.payee_id)
+#              std = Student.find(o.payee_id)
+#              adm_no = std.admission_no
+#            else
+#              adm_no = admission_no
+#            end
+#            if adm_no.strip.to_s == admission_no.strip.to_s
+#              if k > 1
+#                o.destroy
+#                fnd = true
+#              else
+#                k = 2
+#              end
+#            else
+#              o.destroy
+#              fnd = true
+#            end
+#          else
+#            o.destroy
+#            fnd = true
+#          end
+#        end
+#      end
+#    end
+#    #abort(order_ids_no_verified.inspect)
+##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
+#    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
+    
     @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
     if @active_gateway == "Paypal"
       @gateway_fields = Champs21Pay::PAYPAL_CONFIG_KEYS

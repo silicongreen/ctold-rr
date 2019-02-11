@@ -804,9 +804,10 @@ class PaymentSettingsController < ApplicationController
         unless ff.nil?
           fts = ff.finance_transactions
           fts.each do |ft|
-            if ft.amount.to_f != op.gateway_response[:amount].to_f
-              cnt += 1
-              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+            if ft.amount.to_f == op.gateway_response[:amount].to_f
+              opt.update_attributes(:finance_transaction_id => ft.id)
+              #cnt += 1
+              #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
             end
           end
           

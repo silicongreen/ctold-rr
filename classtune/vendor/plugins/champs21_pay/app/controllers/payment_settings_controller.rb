@@ -802,7 +802,7 @@ class PaymentSettingsController < ApplicationController
       if op.finance_transaction_id.nil?
         cnt += 1
         #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
-        f_tmp = Payment.find(:first, :conditions => "order_id = #{op.order_id} and finance_transaction_id IS NOT NULL")
+        f_tmp = Payment.find(:first, :conditions => "order_id = '#{op.order_id}' and finance_transaction_id IS NOT NULL")
         unless f_tmp.nil?
           op.destroy
         end

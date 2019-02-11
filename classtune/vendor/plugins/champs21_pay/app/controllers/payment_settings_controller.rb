@@ -804,7 +804,7 @@ class PaymentSettingsController < ApplicationController
         #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
         f_tmp = Payment.find(:first, :conditions => "order_id = #{op.order_id} and finance_transaction_id IS NOT NULL")
         unless f_tmp.nil?
-          op.destory
+          op.destroy
         end
 #        testtrustbank = false
 #        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1

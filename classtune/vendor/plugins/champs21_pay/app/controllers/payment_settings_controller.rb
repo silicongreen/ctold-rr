@@ -794,6 +794,10 @@ class PaymentSettingsController < ApplicationController
 #        end
 #      end
 #    end
+
+    cnt = 0
+    students = Student.active
+    abort(students.inspect)
     
     cnt = 0
     online_payments = Payment.all

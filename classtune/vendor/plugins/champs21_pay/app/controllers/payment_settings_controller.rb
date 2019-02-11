@@ -975,7 +975,9 @@ class PaymentSettingsController < ApplicationController
 
               end
               
-        abort(status.inspect)
+        if status.to_i == 8
+          op.destroy
+        end
         
       end
     end

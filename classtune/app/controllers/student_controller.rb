@@ -181,6 +181,82 @@ class StudentController < ApplicationController
     
     @sms_module = Configuration.available_modules
   end
+  def download_student_family_list
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'student_list'
+    row_first = ['SL','Student Id','Roll No.','Student Name','Father Name','Mother Name']
+    new_book.worksheet(0).insert_row(0, row_first)
+    @batch_name_pdf = batch_name = params[:batch_name]
+    @version_pdf = version_name = params[:version_name]
+    @class_name_pdf = class_name = params[:class_name]
+    session_name = params[:session_name]
+    group_name = params[:group_name]
+    @section_pdf = section_name = params[:section_name]
+    category_name = params[:category_name]
+    condition = "1 = 1"
+    unless batch_name.blank?
+      condition = condition+" and batches.name like '%"+batch_name+"%'"
+    end
+    unless version_name.blank?
+      condition = condition+" and batches.name like '%"+version_name+"%'"
+    end
+    unless class_name.blank?
+      condition = condition+" and courses.course_name = '"+class_name+"'"
+    end
+    unless section_name.blank?
+      condition = condition+" and courses.section_name = '"+section_name+"'"
+    end
+    unless session_name.blank?
+      condition = condition+" and courses.session = '"+session_name+"'"
+    end
+    unless group_name.blank?
+      condition = condition+" and courses.group = '"+group_name+"'"
+    end
+    unless category_name.blank?
+      condition = condition+" and student_categories.name = '"+category_name+"'"
+    end
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
+    @students_pdf = students = Student.find(:all,:conditions=>condition,:include=>[{:batch=>[:course]},:student_category],:order=>order_str)
+    std_loop = 1
+    
+      unless students.blank?
+        students.each do |student|
+          father_name = ""
+          mother_name = ""
+          guardians = student.guardians  
+          unless guardians.nil?
+            p_loop = 0
+            guardians.each do |guardian|
+                if p_loop == 0
+                  father_name = guardian.first_name+" "+guardian.last_name
+                else
+                  mother_name = guardian.first_name+" "+guardian.last_name
+                  break
+                end
+                p_loop = p_loop+1
+            end
+          end
+          
+      
+          tmp_row = []
+          tmp_row << std_loop
+          tmp_row << student.admission_no
+          tmp_row << student.class_roll_no
+          tmp_row << student.full_name
+          tmp_row << father_name
+          tmp_row << mother_name
+          
+          new_book.worksheet(0).insert_row(std_loop, tmp_row)
+          std_loop = std_loop+1
+        end
+      end
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+      send_data spreadsheet.string, :filename => "Student_family_list.xls", :type =>  "application/vnd.ms-excel"
+    
+  end
   def download_student_list
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'

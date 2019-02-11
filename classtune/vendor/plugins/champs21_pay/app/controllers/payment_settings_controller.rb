@@ -799,14 +799,8 @@ class PaymentSettingsController < ApplicationController
     online_payments = Payment.all
     finance_amount_not_match = ""
     online_payments.each do |op|
-      unless op.finance_transaction_id.nil?
-        f_trans = FinanceTransaction.find(:first, :conditions => "id = #{op.finance_transaction_id}")
-        if f_trans.nil?
-         finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + "," 
-         cnt += 1
-        end
-        #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
-        
+      if op.finance_transaction_id.nil?
+        finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
       end
     end
     

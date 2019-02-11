@@ -230,9 +230,9 @@ class StudentController < ApplicationController
             p_loop = 0
             guardians.each do |guardian|
                 if p_loop == 0
-                  father_name = guardian.first_name+" "+guardian.last_name
+                  father_name = guardian.first_name.to_s+" "+guardian.last_name.to_s
                 else
-                  mother_name = guardian.first_name+" "+guardian.last_name
+                  mother_name = guardian.first_name.to_s+" "+guardian.last_name.to_s
                   break
                 end
                 p_loop = p_loop+1

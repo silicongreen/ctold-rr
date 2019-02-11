@@ -803,181 +803,181 @@ class PaymentSettingsController < ApplicationController
         cnt += 1
         finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
         
-#        testtrustbank = false
-#        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
-#          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
-#            payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
-#            unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
-#              testtrustbank = payment_configs["testtrustbank"]
-#            end
-#          end
-#        end
-#        if testtrustbank
-#          merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
-#          @merchant_id = merchant_info["merchant_id"]
-#          @keycode = merchant_info["keycode"]
-#          @verification_url = merchant_info["validation_api"]
-#          @merchant_id ||= String.new
-#          @keycode ||= String.new
-#          @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
-#        else  
-#          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
-#            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
-#            @verification_url = payment_urls["trustbank_verification_url"]
-#            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
-#          else
-#            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
-#          end
-#          @merchant_id = PaymentConfiguration.config_value("merchant_id")
-#          @keycode = PaymentConfiguration.config_value("keycode_verification")
-#          @merchant_id ||= String.new
-#          @keycode ||= String.new
-#        end
-#        request_url = @verification_url + '/Get_Transaction_Ref'
-#        #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
-#
-#        uri = URI(request_url)
-#        http = Net::HTTP.new(uri.host, uri.port)
-#        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
-#        auth_req.set_form_data({"OrderID" => op.order_id.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
-#
-#        http.use_ssl = true
-#        auth_res = http.request(auth_req)
-#
-#        xml_res = Nokogiri::XML(auth_res.body)
-#
-#        status = ""
-#        unless xml_res.xpath("/").empty?
-#          status = xml_res.xpath("/").text
-#        end
-#        
-#        result = Base64.decode64(status)
-#        
-#        
-#        ref_id = ""
-#              orderId = ""
-#              name = ""
-#              email = ""
-#              amount = 0.00
-#              service_charge = 0.00
-#              total_amount = 0.00
-#              status = 0
-#              status_text = ""
-#              used = ""
-#              verified = 0
-#              payment_type = ""
-#              pan = ""
-#              tbbmm_account = ""
-#              merchant_id = ""
-#              order_datetime = ""
-#              trans_date = ""
-#              emi_no = ""
-#              interest_amount = ""
-#              pay_with_charge = ""
-#              card_response_code = ""
-#              card_response_desc = ""
-#              card_order_status = ""
-#              
-#              xml_str = Nokogiri::XML(result)
-#
-#              verifiedId = 0 
-#              found_verified = false 
-#              xmlind = 0
-#              xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
-#              xml_transaction_infos.each do |xml_transaction_info|
-#                childs = xml_transaction_info.children
-#                childs.each do |c|
-#                  if c.name == "Verified"
-#                    v = c.text
-#                    if v.to_i == 1
-#                      verifiedId = xmlind
-#                      found_verified = true
-#                    end
-#                  end
-#                end
-#                xmlind += 1
-#              end
-#              if found_verified
-#                childs = xml_transaction_infos[verifiedId].children
-#              else  
-#                found_paid = false 
-#                paidId = 0
-#                xmlind = 0
-#                xml_transaction_infos.each do |xml_transaction_info|
-#                  childs = xml_transaction_info.children
-#                  childs.each do |c|
-#                    if c.name == "Status"
-#                      v = c.text
-#                      if v.to_i == 1
-#                        paidId = xmlind
-#                        found_paid = true
-#                      end
-#                    end
-#                  end
-#                  xmlind += 1
-#                end
-#                if found_paid
-#                  childs = xml_transaction_infos[paidId].children
-#                else
-#                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
-#                end
-#              end
-#
-#              #abort(childs.inspect)
-#              childs.each do |c|
-#                if c.name == "RefID"
-#                  ref_id = c.text
-#                elsif c.name == "OrderID"
-#                  orderId = c.text
-#                elsif c.name == "Name"
-#                  name = c.text
-#                elsif c.name == "Email"
-#                  email = c.text
-#                elsif c.name == "Amount"
-#                  amount = c.text
-#                elsif c.name == "ServiceCharge"
-#                  service_charge = c.text
-#                elsif c.name == "TotalAmount"
-#                  total_amount = c.text
-#                elsif c.name == "Status"
-#                  status = c.text
-#                elsif c.name == "StatusText"
-#                  status_text = c.text
-#                elsif c.name == "Used"
-#                  used = c.text
-#                elsif c.name == "Verified"
-#                  verified = c.text
-#                elsif c.name == "PaymentType"
-#                  payment_type = c.text
-#                elsif c.name == "PAN"
-#                  pan = c.text
-#                elsif c.name == "TBMM_Account"
-#                  tbbmm_account = c.text
-#                elsif c.name == "MarchentID"
-#                  merchant_id = c.text
-#                elsif c.name == "OrderDateTime"
-#                  order_datetime = c.text
-#                elsif c.name == "PaymentDateTime"
-#                  trans_date = c.text
-#                elsif c.name == "EMI_No"
-#                  emi_no = c.text
-#                elsif c.name == "InterestAmount"
-#                  interest_amount = c.text
-#                elsif c.name == "PayWithCharge"
-#                  pay_with_charge = c.text
-#                elsif c.name == "CardResponseCode"
-#                  card_response_code = c.text
-#                elsif c.name == "CardResponseDescription"
-#                  card_response_desc = c.text
-#                elsif c.name == "CardOrderStatus"
-#                  card_order_status = c.text
-#                end
-#
-#              end
-#              
-#        if status.to_i == 8
-#          op.destroy
-#        end
+        testtrustbank = false
+        if PaymentConfiguration.config_value('is_test_testtrustbank').to_i == 1
+          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/payment_config_tcash.yml")
+            payment_configs = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","payment_config_tcash.yml"))
+            unless payment_configs.nil? or payment_configs.empty? or payment_configs.blank?
+              testtrustbank = payment_configs["testtrustbank"]
+            end
+          end
+        end
+        if testtrustbank
+          merchant_info = payment_configs["merchant_info_" + MultiSchool.current_school.id.to_s]
+          @merchant_id = merchant_info["merchant_id"]
+          @keycode = merchant_info["keycode"]
+          @verification_url = merchant_info["validation_api"]
+          @merchant_id ||= String.new
+          @keycode ||= String.new
+          @verification_url ||= "https://ibanking.tblbd.com/TestCheckout/Services/Payment_Info.asmx"
+        else  
+          if File.exists?("#{Rails.root}/vendor/plugins/champs21_pay/config/online_payment_url.yml")
+            payment_urls = YAML.load_file(File.join(Rails.root,"vendor/plugins/champs21_pay/config/","online_payment_url.yml"))
+            @verification_url = payment_urls["trustbank_verification_url"]
+            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+          else
+            @verification_url ||= "https://ibanking.tblbd.com/Checkout/Services/Payment_Info.asmx"
+          end
+          @merchant_id = PaymentConfiguration.config_value("merchant_id")
+          @keycode = PaymentConfiguration.config_value("keycode_verification")
+          @merchant_id ||= String.new
+          @keycode ||= String.new
+        end
+        request_url = @verification_url + '/Get_Transaction_Ref'
+        #requested_url = request_url + "?OrderID=" + payment.gateway_response[:order_id] + "&MerchantID=" + @merchant_id + "&KeyCode=" + @keycode  
+
+        uri = URI(request_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"OrderID" => op.order_id.to_s, "MerchantID" => @merchant_id, "KeyCode" => @keycode})
+
+        http.use_ssl = true
+        auth_res = http.request(auth_req)
+
+        xml_res = Nokogiri::XML(auth_res.body)
+
+        status = ""
+        unless xml_res.xpath("/").empty?
+          status = xml_res.xpath("/").text
+        end
+        
+        result = Base64.decode64(status)
+        
+        
+        ref_id = ""
+              orderId = ""
+              name = ""
+              email = ""
+              amount = 0.00
+              service_charge = 0.00
+              total_amount = 0.00
+              status = 0
+              status_text = ""
+              used = ""
+              verified = 0
+              payment_type = ""
+              pan = ""
+              tbbmm_account = ""
+              merchant_id = ""
+              order_datetime = ""
+              trans_date = ""
+              emi_no = ""
+              interest_amount = ""
+              pay_with_charge = ""
+              card_response_code = ""
+              card_response_desc = ""
+              card_order_status = ""
+              
+              xml_str = Nokogiri::XML(result)
+
+              verifiedId = 0 
+              found_verified = false 
+              xmlind = 0
+              xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
+              xml_transaction_infos.each do |xml_transaction_info|
+                childs = xml_transaction_info.children
+                childs.each do |c|
+                  if c.name == "Verified"
+                    v = c.text
+                    if v.to_i == 1
+                      verifiedId = xmlind
+                      found_verified = true
+                    end
+                  end
+                end
+                xmlind += 1
+              end
+              if found_verified
+                childs = xml_transaction_infos[verifiedId].children
+              else  
+                found_paid = false 
+                paidId = 0
+                xmlind = 0
+                xml_transaction_infos.each do |xml_transaction_info|
+                  childs = xml_transaction_info.children
+                  childs.each do |c|
+                    if c.name == "Status"
+                      v = c.text
+                      if v.to_i == 1
+                        paidId = xmlind
+                        found_paid = true
+                      end
+                    end
+                  end
+                  xmlind += 1
+                end
+                if found_paid
+                  childs = xml_transaction_infos[paidId].children
+                else
+                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                end
+              end
+
+              #abort(childs.inspect)
+              childs.each do |c|
+                if c.name == "RefID"
+                  ref_id = c.text
+                elsif c.name == "OrderID"
+                  orderId = c.text
+                elsif c.name == "Name"
+                  name = c.text
+                elsif c.name == "Email"
+                  email = c.text
+                elsif c.name == "Amount"
+                  amount = c.text
+                elsif c.name == "ServiceCharge"
+                  service_charge = c.text
+                elsif c.name == "TotalAmount"
+                  total_amount = c.text
+                elsif c.name == "Status"
+                  status = c.text
+                elsif c.name == "StatusText"
+                  status_text = c.text
+                elsif c.name == "Used"
+                  used = c.text
+                elsif c.name == "Verified"
+                  verified = c.text
+                elsif c.name == "PaymentType"
+                  payment_type = c.text
+                elsif c.name == "PAN"
+                  pan = c.text
+                elsif c.name == "TBMM_Account"
+                  tbbmm_account = c.text
+                elsif c.name == "MarchentID"
+                  merchant_id = c.text
+                elsif c.name == "OrderDateTime"
+                  order_datetime = c.text
+                elsif c.name == "PaymentDateTime"
+                  trans_date = c.text
+                elsif c.name == "EMI_No"
+                  emi_no = c.text
+                elsif c.name == "InterestAmount"
+                  interest_amount = c.text
+                elsif c.name == "PayWithCharge"
+                  pay_with_charge = c.text
+                elsif c.name == "CardResponseCode"
+                  card_response_code = c.text
+                elsif c.name == "CardResponseDescription"
+                  card_response_desc = c.text
+                elsif c.name == "CardOrderStatus"
+                  card_order_status = c.text
+                end
+
+              end
+              
+        if status.to_i == 8
+          op.destroy
+        end
         
       end
     end

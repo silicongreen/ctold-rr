@@ -800,7 +800,7 @@ class PaymentSettingsController < ApplicationController
     finance_amount_not_match = ""
     online_payments.each do |op|
       if op.finance_transaction_id.nil?
-        #ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
+        ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
         unless ff.nil?
           fts = ff.finance_transactions
           fts.each do |ft|

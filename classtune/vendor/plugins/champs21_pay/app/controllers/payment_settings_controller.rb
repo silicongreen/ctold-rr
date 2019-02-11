@@ -852,7 +852,131 @@ class PaymentSettingsController < ApplicationController
         end
         
         result = Base64.decode64(status)
-        abort(result.inspect)
+        
+        
+        ref_id = ""
+              orderId = ""
+              name = ""
+              email = ""
+              amount = 0.00
+              service_charge = 0.00
+              total_amount = 0.00
+              status = 0
+              status_text = ""
+              used = ""
+              verified = 0
+              payment_type = ""
+              pan = ""
+              tbbmm_account = ""
+              merchant_id = ""
+              order_datetime = ""
+              trans_date = ""
+              emi_no = ""
+              interest_amount = ""
+              pay_with_charge = ""
+              card_response_code = ""
+              card_response_desc = ""
+              card_order_status = ""
+              
+              xml_str = Nokogiri::XML(result)
+
+              verifiedId = 0 
+              found_verified = false 
+              xmlind = 0
+              xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
+              xml_transaction_infos.each do |xml_transaction_info|
+                childs = xml_transaction_info.children
+                childs.each do |c|
+                  if c.name == "Verified"
+                    v = c.text
+                    if v.to_i == 1
+                      verifiedId = xmlind
+                      found_verified = true
+                    end
+                  end
+                end
+                xmlind += 1
+              end
+              if found_verified
+                childs = xml_transaction_infos[verifiedId].children
+              else  
+                found_paid = false 
+                paidId = 0
+                xmlind = 0
+                xml_transaction_infos.each do |xml_transaction_info|
+                  childs = xml_transaction_info.children
+                  childs.each do |c|
+                    if c.name == "Status"
+                      v = c.text
+                      if v.to_i == 1
+                        paidId = xmlind
+                        found_paid = true
+                      end
+                    end
+                  end
+                  xmlind += 1
+                end
+                if found_paid
+                  childs = xml_transaction_infos[paidId].children
+                else
+                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+                end
+              end
+
+              #abort(childs.inspect)
+              childs.each do |c|
+                if c.name == "RefID"
+                  ref_id = c.text
+                elsif c.name == "OrderID"
+                  orderId = c.text
+                elsif c.name == "Name"
+                  name = c.text
+                elsif c.name == "Email"
+                  email = c.text
+                elsif c.name == "Amount"
+                  amount = c.text
+                elsif c.name == "ServiceCharge"
+                  service_charge = c.text
+                elsif c.name == "TotalAmount"
+                  total_amount = c.text
+                elsif c.name == "Status"
+                  status = c.text
+                elsif c.name == "StatusText"
+                  status_text = c.text
+                elsif c.name == "Used"
+                  used = c.text
+                elsif c.name == "Verified"
+                  verified = c.text
+                elsif c.name == "PaymentType"
+                  payment_type = c.text
+                elsif c.name == "PAN"
+                  pan = c.text
+                elsif c.name == "TBMM_Account"
+                  tbbmm_account = c.text
+                elsif c.name == "MarchentID"
+                  merchant_id = c.text
+                elsif c.name == "OrderDateTime"
+                  order_datetime = c.text
+                elsif c.name == "PaymentDateTime"
+                  trans_date = c.text
+                elsif c.name == "EMI_No"
+                  emi_no = c.text
+                elsif c.name == "InterestAmount"
+                  interest_amount = c.text
+                elsif c.name == "PayWithCharge"
+                  pay_with_charge = c.text
+                elsif c.name == "CardResponseCode"
+                  card_response_code = c.text
+                elsif c.name == "CardResponseDescription"
+                  card_response_desc = c.text
+                elsif c.name == "CardOrderStatus"
+                  card_order_status = c.text
+                end
+
+              end
+              
+        abort(status.inspect)
+        
       end
     end
     

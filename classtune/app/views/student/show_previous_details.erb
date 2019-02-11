@@ -41,10 +41,10 @@
         <% unless @student.photo.url.index("RackMultipart").nil? %>	
             <% @student.photo.url.gsub! '?', '.?' %>	
          <% end %>
-        <%= image_tag @student.photo.url %>
+        <%= image_tag @student.photo.url, :width=>"125" %>
         
       <% else %>
-        <%= image_tag "master_student/profile/default_student.png" %>
+        <%= image_tag "master_student/profile/default_student.png", :width=>"125" %>
       <% end %>
     </div>
 

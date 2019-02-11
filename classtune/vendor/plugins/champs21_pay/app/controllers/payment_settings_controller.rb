@@ -803,10 +803,13 @@ class PaymentSettingsController < ApplicationController
         ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
         unless ff.nil?
           fts = ff.finance_transactions
-          if fts.length > 1
-            cnt += 1
-            finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+          fts.each do |ft|
+            if ft.amount.to_f != op.gateway_response[:amount].to_f
+              cnt += 1
+              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+            end
           end
+          
         end
       end
     end

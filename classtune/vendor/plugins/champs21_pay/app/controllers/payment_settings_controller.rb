@@ -851,7 +851,6 @@ class PaymentSettingsController < ApplicationController
           status = xml_res.xpath("/").text
         end
         
-        abort(status.inspect)
         result = Base64.decode64(status)
         abort(result.inspect)
       end

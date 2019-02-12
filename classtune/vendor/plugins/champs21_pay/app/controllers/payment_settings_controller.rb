@@ -1458,32 +1458,32 @@ class PaymentSettingsController < ApplicationController
 #      end
 #    end
 #
-    cnt = 0
-    std_id = ""
-    students = Student.find(:all, :conditions => "id IN (21312,21744,21873,22064,22618,22922,25100,25392,25407,25417,25478,25494,25565,25590,25601,25660,25711,25718,25769,25852,25854,25857,25867,25897,25899,25923,25940,25941,25963,26119,26234,26401,30586,30597,30647,30768,30814,30928,30964,31176,31222,31226,31249,31254,31966,32070,30779)")
-    students.each do |s|
-      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and is_paid=#{true}")
-      unless ff.nil?
-        fts = ff.finance_transactions
-        unless fts.nil?
-          fts.each do |ft|
-            transaction_id = ft.id
-            payment_id = ff.id
-            op = Payment.find(:first, :conditions => "payee_id = #{s.id}")
-            op.update_attributes(:finance_transaction_id => transaction_id, :payment_id => payment_id)
-  #          f_collection_id = ff.fee_collection_id
-  #          fc = FinanceFeeCollection.find(f_collection_id)
-  #          FinanceFee.update_student_fee(fc,s,ff)
-            cnt += 1
-            std_id += s.id.to_s + "-" + ft.id.to_s + "-" + op.length.to_s + ","
-          end
-        end
-        #ff.destroy
-      else
-        
-      end
-    end
-    abort(cnt.to_s + "  " + std_id)
+#    cnt = 0
+#    std_id = ""
+#    students = Student.find(:all, :conditions => "id IN (21312,21744,21873,22064,22618,22922,25100,25392,25407,25417,25478,25494,25565,25590,25601,25660,25711,25718,25769,25852,25854,25857,25867,25897,25899,25923,25940,25941,25963,26119,26234,26401,30586,30597,30647,30768,30814,30928,30964,31176,31222,31226,31249,31254,31966,32070,30779)")
+#    students.each do |s|
+#      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and is_paid=#{true}")
+#      unless ff.nil?
+#        fts = ff.finance_transactions
+#        unless fts.nil?
+#          fts.each do |ft|
+#            transaction_id = ft.id
+#            payment_id = ff.id
+#            op = Payment.find(:first, :conditions => "payee_id = #{s.id}")
+#            op.update_attributes(:finance_transaction_id => transaction_id, :payment_id => payment_id)
+#  #          f_collection_id = ff.fee_collection_id
+#  #          fc = FinanceFeeCollection.find(f_collection_id)
+#  #          FinanceFee.update_student_fee(fc,s,ff)
+#            cnt += 1
+#            std_id += s.id.to_s + "-" + ft.id.to_s + "-" + op.length.to_s + ","
+#          end
+#        end
+#        #ff.destroy
+#      else
+#        
+#      end
+#    end
+#    abort(cnt.to_s + "  " + std_id)
     cnt = 0
     online_payments = Payment.all
     finance_amount_not_match = ""

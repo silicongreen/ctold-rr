@@ -362,7 +362,7 @@ class StudentController < ApplicationController
     search = params[:search]
     search_value = search["value"]
     page = ( start.to_i / per_page.to_i ) + 1
-    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,students.admission_no asc"
+    order_str = "courses.course_name asc,courses.section_name asc,courses.session asc,if(class_roll_no = '' or class_roll_no is null,0,cast(class_roll_no as unsigned)),students.admission_no asc"
     columns = params[:columns]
     columns.keys.each do |key|
       columns[key].each do |k, v|
@@ -441,10 +441,10 @@ class StudentController < ApplicationController
        else 
          @profile_image = "/master_student/profile/default_student.png" 
        end 
-      
+      blood_group = student.blood_group
       p_image = "<img src='#{@profile_image}' width='100' />"
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
-      std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
+      std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1
     end

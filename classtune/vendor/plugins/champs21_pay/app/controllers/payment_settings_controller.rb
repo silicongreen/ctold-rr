@@ -1497,7 +1497,8 @@ class PaymentSettingsController < ApplicationController
 #            if ft.amount.to_f == op.gateway_response[:amount].to_f
 #              op.update_attributes(:finance_transaction_id => ft.id)
               cnt += 1
-              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+              #finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+              finance_amount_not_match += op.payee_id.to_s  + ","
 #            end
 #          end
 #          

@@ -1469,7 +1469,8 @@ class PaymentSettingsController < ApplicationController
           fts.each do |ft|
             transaction_id = ft.id
             payment_id = ff.id
-            op = Payment.find(:all, :conditions => "payee_id = #{s.id}")
+            op = Payment.find(:first, :conditions => "payee_id = #{s.id}")
+            op.update_attributes(:finance_transaction_id => transaction_id, :payment_id => payment_ids)
   #          f_collection_id = ff.fee_collection_id
   #          fc = FinanceFeeCollection.find(f_collection_id)
   #          FinanceFee.update_student_fee(fc,s,ff)

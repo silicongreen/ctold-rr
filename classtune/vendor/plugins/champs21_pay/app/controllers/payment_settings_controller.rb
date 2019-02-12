@@ -1469,7 +1469,7 @@ class PaymentSettingsController < ApplicationController
           fc = FinanceFeeCollection.find(f_collection_id)
           FinanceFee.update_student_fee(fc,s,ff)
           cnt += 1
-          std_id += s.id.to_s + ","
+          std_id += s.id.to_s + "-" + f_collection_id + "-" + ff.id + ","
         end
         #ff.destroy
       end

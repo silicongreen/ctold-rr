@@ -1462,7 +1462,7 @@ class PaymentSettingsController < ApplicationController
     std_id = ""
     students = Student.active
     students.each do |s|
-      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id == #{s.batch_id} and balance = 0 and is_paid=#{false}")
+      ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and balance = 0 and is_paid=#{false}")
       unless ff.nil?
         cnt += 1
         std_id += s.id.to_s + ","

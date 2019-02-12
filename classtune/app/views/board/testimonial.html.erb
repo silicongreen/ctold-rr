@@ -13,7 +13,7 @@
         <p class="left-font" id="left-position-6"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
         <p class="left-font" id="left-position-7"><%= @board_exam_student.registration %></p>
         <% unless params[:sign].blank? %>
-        <p class="left-font" id="left-position-8"><img src="/images/school_logo/352/principal.png" width="100"></p>
+        <p class="left-font" id="left-position-8"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
         <% end %>
         
         <p id="position-0"><%= @std_info.admission_no %></p>
@@ -23,11 +23,11 @@
         <p id="position-4"><%= @board_exam.center %></p>
         <p id="position-5"><%= @board_exam_student.roll %></p>
         <p id="position-6"><%= @board_exam_student.avg_credit_points %></p>
-        <p id="position-7"><%= @board_exam.board_session.name %></p>
+        <p id="position-7"><%= @board_exam.passing_year %></p>
         <p id="position-8"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-        <p id="position-9"><%= @board_exam_student.registration %></p>
+        <p id="position-9"><%= @board_exam_student.registration %>-<%= @board_exam.board_session.name %></p>
         <% unless params[:sign].blank? %>
-        <p id="position-10"><img src="/images/school_logo/352/principal.png" width="100"></p>
+        <p id="position-10"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
         <% end %>
     </body>
 </html>
@@ -46,49 +46,49 @@
     {
         position: fixed;
         left: 50;
-        top: 144;
+        top: 164;
     }
     #left-position-1
     {
         position: fixed;
         left: 60;
-        top: 220;
+        top: 240;
     }
     #left-position-2
     {
         position: fixed;
         left: 115;
-        top: 268;
+        top: 288;
     }
     #left-position-3
     {
         position: fixed;
-        left: 70;
-        top: 317;
+        left: 75;
+        top: 334;
     }
     #left-position-4
     {
         position: fixed;
         left: 143;
-        top: 317;
+        top: 334;
     }
     #left-position-5
     {
         position: fixed;
         left: 90;
-        top: 406;
+        top: 420;
     }
     #left-position-6
     {
         position: fixed;
         left: 115;
-        top: 452;
+        top: 462;
     }
     #left-position-7
     {
         position: fixed;
         left: 115;
-        top: 499;
+        top: 509;
     }
     #left-position-8
     {
@@ -100,62 +100,62 @@
     #position-0
     {
         position: fixed;
-        left: 440;
-        top: 109;
+        left: 430;
+        top: 139;
     }
     #position-1
     {
         position: fixed;
         left: 560;
-        top: 152;
+        top: 172;
     }
     #position-2
     {
         position: fixed;
         left: 500;
-        top: 195;
+        top: 205;
     }
     #position-3
     {
         position: fixed;
         left: 785;
-        top: 195;
+        top: 205;
     }
     #position-4
     {
         position: fixed;
         left: 555;
-        top: 232;
+        top: 242;
     }
     #position-5
     {
         position: fixed;
         left: 750;
-        top: 235;
+        top: 242;
     }
     #position-6
     {
         position: fixed;
         left: 960;
-        top: 264;
+        top: 274;
     }
     #position-7
     {
         position: fixed;
         left: 830;
-        top: 336;
+        top: 356;
     }
     #position-8
     {
         position: fixed;
         left: 560;
-        top: 375;
+        top: 395;
     }
     #position-9
     {
         position: fixed;
         left: 591;
-        top: 413;
+        top: 426;
     }
     #position-10
     {

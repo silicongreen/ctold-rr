@@ -1462,12 +1462,12 @@ class PaymentSettingsController < ApplicationController
     std_id = ""
     students = Student.active
     students.each do |s|
-      ffs = FinanceFee.find(:all, :conditions => "student_id = #{s.id} and batch_id != #{s.batch_id} and balance = 0 and is_paid=#{false}")
+      ffs = FinanceFee.find(:all, :conditions => "student_id = #{s.id} and batch_id == #{s.batch_id} and balance = 0 and is_paid=#{false}")
       unless ffs.nil?
         ffs.each do |ff|
-          f_collection_id = ff.fee_collection_id
-          fc = FinanceFeeCollection.find(f_collection_id)
-          FinanceFee.update_student_fee(fc,s,ff)
+#          f_collection_id = ff.fee_collection_id
+#          fc = FinanceFeeCollection.find(f_collection_id)
+#          FinanceFee.update_student_fee(fc,s,ff)
           cnt += 1
           std_id += s.id.to_s + "-" + f_collection_id.to_s + "-" + ff.id.to_s + ","
         end

@@ -1458,44 +1458,45 @@ class PaymentSettingsController < ApplicationController
 #      end
 #    end
 #
-    cnt = 0
-    std_id = ""
-    students = Student.active
-    students.each do |s|
-      ffs = FinanceFee.find(:all, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and balance = 0 and is_paid=#{false}")
-      unless ffs.nil?
-        ffs.each do |ff|
-#          f_collection_id = ff.fee_collection_id
-#          fc = FinanceFeeCollection.find(f_collection_id)
-#          FinanceFee.update_student_fee(fc,s,ff)
-          cnt += 1
-          std_id += s.id.to_s + "-" + f_collection_id.to_s + "-" + ff.id.to_s + ","
-        end
-        #ff.destroy
-      end
-    end
-    abort(cnt.to_s + "  " + std_id)
 #    cnt = 0
-#    online_payments = Payment.all
-#    finance_amount_not_match = ""
-#    online_payments.each do |op|
-#      if op.finance_transaction_id.nil?
-##        ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id} and is_paid=#{true}")
-##        unless ff.nil?
-##          fts = ff.finance_transactions
-##          fts.each do |ft|
-##            if ft.amount.to_f == op.gateway_response[:amount].to_f
-##              op.update_attributes(:finance_transaction_id => ft.id)
-#              cnt += 1
-#              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
-##            end
-##          end
-##          
-##        end
+#    std_id = ""
+#    students = Student.active
+#    students.each do |s|
+#      ffs = FinanceFee.find(:all, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and balance = 0 and is_paid=#{false}")
+#      unless ffs.nil?
+#        ffs.each do |ff|
+##          f_collection_id = ff.fee_collection_id
+##          fc = FinanceFeeCollection.find(f_collection_id)
+##          FinanceFee.update_student_fee(fc,s,ff)
+#          cnt += 1
+#          std_id += s.id.to_s + "-" + f_collection_id.to_s + "-" + ff.id.to_s + ","
+#        end
+#        #ff.destroy
 #      end
 #    end
-#    
-#    abort(cnt.to_s + "  " + finance_amount_not_match)
+#    abort(cnt.to_s + "  " + std_id)
+    cnt = 0
+    online_payments = Payment.all
+    finance_amount_not_match = ""
+    online_payments.each do |op|
+      ff = FinanceFee.find(:first, :conditions => "id = #{op.payment_id} and student_id = #{op.payee_id}")
+      if ff.nil?
+#        
+#        unless ff.nil?
+#          fts = ff.finance_transactions
+#          fts.each do |ft|
+#            if ft.amount.to_f == op.gateway_response[:amount].to_f
+#              op.update_attributes(:finance_transaction_id => ft.id)
+              cnt += 1
+              finance_amount_not_match += op.id.to_s + "-" + op.payee_id.to_s + "-" + op.payment_id.to_s + ","
+#            end
+#          end
+#          
+#        end
+      end
+    end
+    
+    abort(cnt.to_s + "  " + finance_amount_not_match)
 #    online_payments = Payment.all
 #    i = 0
 #    j = 0

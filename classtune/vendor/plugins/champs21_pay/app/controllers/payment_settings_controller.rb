@@ -1464,6 +1464,7 @@ class PaymentSettingsController < ApplicationController
     students.each do |s|
       ff = FinanceFee.find(:first, :conditions => "student_id = #{s.id} and batch_id = #{s.batch_id} and is_paid=#{true}")
       f_trans = ff.finance_transactions
+      cnt += 1
       std_id += s.id.to_s + "-" + f_trans.length.to_s + ","
 #      unless ffs.nil?
 #        ffs.each do |ff|

@@ -25,7 +25,7 @@
         <p id="position-6"><%= @board_exam_student.avg_credit_points %></p>
         <p id="position-7"><%= @board_exam.passing_year %></p>
         <p id="position-8"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-        <p id="position-9"><%= @board_exam_student.registration %>-<%= @board_exam.board_session.name %></p>
+        <p id="position-9"><%= @board_exam_student.registration %>/<%= @board_exam.board_session.name %></p>
         <% unless params[:sign].blank? %>
         <p id="position-10"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
         <% end %>

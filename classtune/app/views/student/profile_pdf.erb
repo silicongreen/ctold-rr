@@ -36,9 +36,9 @@
     <% end %>
 
   <% else %>
-    <% @profile_image = "master_student/profile/default_student.png" %>
+    <% @profile_image = "/master_student/profile/default_student.png" %>
   <% end %>
-<p class='ab-image'><%= image_tag "#{@profile_image}", :width=>"100" %></p>
+<p class='ab-image'><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ @profile_image),:width=> '55%' %></p>
 <div id="page-yield" class="available_sections">
     <table id="pdf-table" width="100%">
         <tr>

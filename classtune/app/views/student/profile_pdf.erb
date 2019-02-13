@@ -283,12 +283,21 @@
                       <td class="col-pdf"><%= "Srl" %></td>
                       <td class="col-pdf"><%= "Code" %></td>
                       <td class="col-pdf"><%= "Subject Course Name" %></td>
+                      <td class="col-pdf"><%= "T" %></td>
                     </tr>
                 <% @subjects.each do |subject| %>
                     <tr class="even">
                       <td class="col-pdf"><%= start_loop+1 %></td>
                       <td class="col-pdf"><%= subject.code %></td>
                       <td class="col-pdf"><%= subject.name %></td>
+                      <% e_sub = @student_electives.find{|es| es.subject_id == subject.id } %>
+                      <% t = "C" %>
+                      <% unless e_sub.blank? %>
+                        <% if e_sub.elective_type == 4 or e_sub.elective_type == 3 %>
+                        <% t = "O" %>
+                        <% end %>
+                      <% end %>
+                      <td class="col-pdf"><%= t %></td>
                     </tr>
                     <% start_loop = start_loop+1 %>
                     <% if start_loop > 6 %>
@@ -305,6 +314,7 @@
                       <td class="col-pdf"><%= "Srl" %></td>
                       <td class="col-pdf"><%= "Code" %></td>
                       <td class="col-pdf"><%= "Subject Course Name" %></td>
+                      <td class="col-pdf"><%= "T" %></td>
                     </tr>
                 <% @subjects.each do |subject| %>
                     <% if start_loop < 7 %>
@@ -315,6 +325,14 @@
                       <td class="col-pdf"><%= start_loop+1 %></td>
                       <td class="col-pdf"><%= subject.code %></td>
                       <td class="col-pdf"><%= subject.name %></td>
+                      <% e_sub = @student_electives.find{|es| es.subject_id == subject.id } %>
+                      <% t = "C" %>
+                      <% unless e_sub.blank? %>
+                        <% if e_sub.elective_type == 4 or e_sub.elective_type == 3 %>
+                        <% t = "O" %>
+                        <% end %>
+                      <% end %>
+                      <td class="col-pdf"><%= t %></td>
                     </tr>
                    <% start_loop = start_loop+1 %>
                     
@@ -334,13 +352,13 @@
 
             <tr class="even border-bottom-1-px">
                 <td class="col-pdf " width="25%">
-                     <br/><br/>
+                     <br/><br/><br/>
                 </td>
                 <td class="col-pdf" width="25%">
-                    <br/><br/>
+                    <br/><br/><br/>
                 </td> 
                 <td class="col-pdf " width="25%">
-                    <br/><br/>
+                    <br/><br/><br/>
                 </td>
             </tr>
             <tr class="even">

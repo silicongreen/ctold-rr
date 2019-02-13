@@ -47,7 +47,7 @@
     <table id="pdf-table" width="100%">
         <tr>
           <td class="align-left-bottom">
-          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '55%' %>
+          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '75%' %>
 
           </td>
           <td>
@@ -74,6 +74,12 @@
     unless batchsplit[2].blank?
       version = version+" "+batchsplit[2]
     end
+  
+    fee_particular = FinanceFeeParticular.find(:all,:conditions=>"is_deleted=#{false} and finance_fee_particular_category_id=54 and batch_id=#{@student.batch.id}",:order=>"FIELD(receiver_type,'Student','StudentCategory','Batch'), id DESC").find{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+    monthly_fee = 0
+    unless fee_particular.blank?
+      monthly_fee = fee_particular.amount
+    end
   %>
   <div id="general_info">
   <table id="pdf-table" width="100%">
@@ -97,11 +103,11 @@
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Monthly Fee" %></td>
-          <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= "" %></td>
+          <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= monthly_fee %></td>
           <td class="col-pdf no-border" colspan="2"></td>
         </tr>
         <tr>
-          <td class="col-pdf" colspan="1"><%= "Program/Class" %></td>
+          <td class="col-pdf" colspan="1"><%= "Class" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.batch.course.course_name unless @student.batch.course.course_name.nil? %></td>
           <td class="col-pdf no-border" colspan="2"></td>
         </tr>
@@ -144,173 +150,105 @@
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.blood_group unless @student.blood_group.nil? %></td>
         </tr>
         <tr>
-          <td class="col-pdf" colspan="1"><%= "Email" %></td>
-          <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.email %></td>
+          
           <td class="col-pdf" colspan="1"><%= "Religion" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.religion %></td>
-        </tr>
-        <tr>
           <td class="col-pdf" colspan="1"><%= "Contact No." %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.phone2 %></td>
-          <td class="col-pdf" colspan="1"><%= "Home District" %></td>
-          <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.student_category.name unless @student.student_category.nil? %></td>
         </tr>
         <tr>
-          <td class="col-pdf" colspan="1"><%= "Emergency Contact No" %></td>
-          <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.sms_number %></td>
+          
+          
+        </tr>
+        <tr>
+         
           <td class="col-pdf" colspan="1"><%= "Nationality" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.nationality.nationality.nationality unless @student.nationality_id.nil? %></td>
+          <td class="col-pdf no-border" colspan="2"></td>
         </tr>
-        
+        <% father = mother = Guardian.new %>
         <% unless @student.guardians.empty? %>
           <% g_loop = 0 %>
           <%- @student.guardians.each do |p| -%>
-          <% if g_loop == 0 %>
+            <% if g_loop == 0 %>
+              <% father = p %>
+            <% end %>
+            <% if g_loop == 1 %>
+              <% mother = p %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% unless father.nil? %>
+          
           <tr class="odd">
-            <td class="col-pdf" colspan="4"><%= "Father's Details" %></td>
+            <td class="col-pdf" colspan="4"><%= "Parent's Details" %></td>
           </tr>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Father's Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.first_name %> <%= p.last_name %></td>
-            <td class="col-pdf" colspan="1"><%= "Profession/Occupation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.occupation %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.first_name %> <%= father.last_name %></td>
+            <td class="col-pdf" colspan="1"><%= "Mother's Name" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;
+            <%  unless mother.nil? %>
+              <%= "#{mother.first_name} #{mother.last_name}" %>
+              
+            <% end %>  
+            </td>
           </tr>
           <tr>
-            <td class="col-pdf" colspan="1"><%= "Designation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.designation %></td>
-            <td class="col-pdf" colspan="1"><%= "Office Phone" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_phone1 %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.mobile_phone %></td>
-            <td class="col-pdf" colspan="1"><%= "National Id No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.passport %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Jop Location" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_address_line1 %> <%= p.office_address_line2 %></td>
-            <td class="col-pdf" colspan="1"><%= "Annual Income" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.income %></td>
+            <td class="col-pdf" colspan="1"><%= "Profession" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.occupation %></td>
+            <td class="col-pdf" colspan="1"><%= "Profession" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.occupation unless mother.nil? %></td>
           </tr>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Rank" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-            <td class="col-pdf" colspan="1"><%= "Arms/Service" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.designation %></td>
+            <td class="col-pdf" colspan="1"><%= "Rank" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.designation unless mother.nil? %></td>
           </tr>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Station Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-            <td class="col-pdf" colspan="1"><%= "Retirement Date" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.organization %></td>
+            <td class="col-pdf" colspan="1"><%= "Station Name" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.organization unless mother.nil? %></td>
           </tr>
-          <tr>
+           <tr>
             <td class="col-pdf" colspan="1"><%= "Unit Name" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-            <td class="col-pdf" colspan="1"><%= "Regiment No" %></td>
+            <td class="col-pdf" colspan="1"><%= "Unit Name" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
           </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Mission start Date" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-            <td class="col-pdf" colspan="1"><%= "Place Of Mission" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Office Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.organization %></td>
-            <td class="col-pdf" colspan="1"><%= "Mission end Date" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Official Address" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_address_line1 %> <%= p.office_address_line2 %></td>
-            <td class="col-pdf" colspan="1"><%= "EMail" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.email %></td>
-          </tr>
-          <% end %>
-          <% if g_loop == 1 %>
-          <tr class="odd">
-            <td class="col-pdf" colspan="4"><%= "Mother's Details" %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Mother's Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.first_name %> <%= p.last_name %></td>
-            <td class="col-pdf" colspan="1"><%= "Profession/Occupation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.occupation %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Designation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.designation %></td>
-            <td class="col-pdf" colspan="1"><%= "Office Phone" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_phone1 %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.mobile_phone %></td>
-            <td class="col-pdf" colspan="1"><%= "National Id No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.passport %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Annual Income" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.income %></td>
+           <tr>
             <td class="col-pdf" colspan="1"><%= "Email" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.email %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.email %></td>
+            <td class="col-pdf" colspan="1"><%= "Email" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.email unless mother.nil? %></td>
           </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Office Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.organization %></td>
-            <td class="col-pdf" colspan="1"><%= "Office Address" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_address_line1 %> <%= p.office_address_line2 %></td>
-          </tr>
-          <% break %>
-          <% end %>
-          <% g_loop = g_loop+1 %>
-          <% end %>
-        <% end %>
           
-        <% unless @student.guardians.empty? %>
+        <% end %>
+        <% @guardian = Guardian.find(@student.immediate_contact_id) %>
+        <% unless @guardian.blank? %>
           <% g_loop = 0 %>
-          <%- @student.guardians.each do |p| -%>
-          <% if g_loop == 0 %>
+          <% p = @guardian %>
+          
           <tr class="odd">
             <td class="col-pdf" colspan="4"><%= "Local Guardian's Details" %></td>
           </tr>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Guardian's Name" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.first_name %> <%= p.last_name %></td>
+            <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
+            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= @student.sms_number %></td>
+            
+          </tr>
+          <tr>
             <td class="col-pdf" colspan="1"><%= "Profession/Occupation" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.occupation %></td>
-          </tr>
-          <tr>
             <td class="col-pdf" colspan="1"><%= "Designation" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.designation %></td>
-            <td class="col-pdf" colspan="1"><%= "Office Phone" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_phone1 %></td>
           </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.mobile_phone %><</td>
-            <td class="col-pdf" colspan="1"><%= "National Id No" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.passport %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Annual Income" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.income %></td>
-            <td class="col-pdf" colspan="1"><%= "Email" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.email %></td>
-          </tr>
-          <tr>
-            <td class="col-pdf" colspan="1"><%= "Office Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.organization %></td>
-            <td class="col-pdf" colspan="1"><%= "Office Address" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.office_address_line1 %> <%= p.office_address_line2 %></td>
-          </tr>
-          <% break %>
-          <% end %>
-          <% g_loop = g_loop+1 %>
-          <% end %>
+          
+          
         <% end %>
         <tr class="odd">
           <td class="col-pdf" colspan="4"><%= "Tc Information" %></td>
@@ -459,23 +397,23 @@
 }
 #pdf-table tr td
 {
-    padding: 2px 5px;
-    font-size:12px;
+    padding: 4px;
+    font-size:14px;
     vertical-align: top;
     
 }
 #pdf-table tr.odd td
 {
-    padding: 2px 5px;  
+    padding: 4px;  
     border: 1px solid #000000;
-    font-size:12px;
+    font-size:14px;
  
 }
 #pdf-table tr.even td
 {
-    padding: 2px 5px; 
+    padding: 4px;
     border: 1px solid #000000;
-    font-size:12px;
+    font-size:14px;
    
 }
 

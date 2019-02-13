@@ -38,7 +38,7 @@
   <% else %>
     <% @profile_image = "/master_student/profile/default_student.png" %>
   <% end %>
-<p class='ab-image'><img src='<%= @profile_image %>' width='100'></p>
+<p class='ab-image'><img src='http://www.<%= current_school_detail.code %>.com<%= @profile_image %>' width='100'></p>
 <div id="page-yield" class="available_sections">
     <table id="pdf-table" width="100%">
         <tr>

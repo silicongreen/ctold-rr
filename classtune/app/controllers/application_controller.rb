@@ -44,6 +44,7 @@ class ApplicationController < ActionController::Base
   helper_method :check_free_school?
   helper_method :can_access_plugin?
   helper_method :can_access_feature?
+
   helper_method :currency
   protect_from_forgery # :secret => '434571160a81b5595319c859d32060c1'
   filter_parameter_logging :password
@@ -62,6 +63,7 @@ class ApplicationController < ActionController::Base
   before_filter :dev_mode
   include CustomInPlaceEditing
   
+
 
   def get_student_all_type(id)
     std = Student.find_by_id(id)

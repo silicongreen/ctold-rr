@@ -8,6 +8,18 @@ class OtherController < ApplicationController
   def admit_card
     @batches=Batch.active.all(:include=>:course)
   end
+  def bus_card
+    @batches=Batch.active.all(:include=>:course)
+  end
+  def print_bus_card
+    if request.post?
+      unless params[:admid_card][:student_ids].nil?
+          @student_ids = params[:admid_card][:student_ids]
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
+      end   
+    end
+    render :layout => false
+  end
   def list_students
     @students = []
     unless params[:batch_id].blank?

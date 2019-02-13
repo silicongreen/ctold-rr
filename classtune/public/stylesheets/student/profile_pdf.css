@@ -92,10 +92,7 @@ table#pdf-table{
 
 }
 
-#general_info,#personal_info{
-    height: 900px;
-    clear:both;
-}
+
 
 #signature{
     text-align: right;

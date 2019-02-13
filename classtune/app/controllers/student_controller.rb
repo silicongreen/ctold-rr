@@ -2797,6 +2797,13 @@ class StudentController < ApplicationController
     
     @att_text = ''
     @att_image = ''
+    @normal_subjects = Subject.find_all_by_batch_id(@student.batch.id,:conditions=>"no_exams = false AND elective_group_id IS NULL AND is_deleted = false")
+    @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
+    @elective_subjects = []
+    @student_electives.each do |e|
+      @elective_subjects.push Subject.find(e.subject_id)
+    end
+    @subjects = @normal_subjects+@elective_subjects
     get_attendence_text
     unless @attendence_text.nil?
       if @attendence_text['status']['code'].to_i == 200
@@ -2806,7 +2813,7 @@ class StudentController < ApplicationController
     end
     render :pdf => "profile_pdf",
       :margin => {    :top=> 0,
-      :bottom => 15,
+      :bottom => 0,
       :left=> 10,
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},

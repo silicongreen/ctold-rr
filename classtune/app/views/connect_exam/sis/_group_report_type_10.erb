@@ -51,6 +51,10 @@
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                               
+                              if report['exam_category'] == '6'
+                                 next
+                              end
+                              
                               if report['quarter'] == '1'
                                 has_quarter = true
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?

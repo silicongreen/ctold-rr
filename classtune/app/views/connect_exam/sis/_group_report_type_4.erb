@@ -25,8 +25,13 @@
                           <% assessment_full_mark = 0 %>
 
                           <td class="col-pdf left-td"><%= subjects['name'] %></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
+                          <% unless @report_data['report']['exams'].blank? %>
+                          
+                            
                             <% @report_data['report']['exams'].each do |report| %> 
+                              <% if report['exam_category'] == '6' %>
+                                <% next %>
+                              <% end %>
                               <% if report['exam_category'] != '5' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                   <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -39,7 +44,10 @@
                           <% end %>
                           
                           <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>  
+                            <% @report_data['report']['exams'].each do |report| %> 
+                              <% if report['exam_category'] == '6' %>
+                                <% next %>
+                             <% end %>
                               <% if report['exam_category'] == '5' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                   <% assessment_total_mark = assessment_total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
@@ -66,7 +74,7 @@
                             else
                               show_marks = total_mark.round()
                               main_mark = (show_marks.to_f/full_mark.to_f)*100
-                            end
+                            end  
                           end 
                         
                           if assessment_full_mark > 0
@@ -74,7 +82,7 @@
                             show_marks = total_mark_with_assessment.to_f/2
                             full_mark = full_mark+assessment_full_mark
                             total_mark = show_marks.round()*2
-                            main_mark = (total_mark.to_f/full_mark.to_f)*100
+                            main_mark = (show_marks.round().to_f/20.00)*100
                           end  
                           
                         %>

@@ -21,7 +21,10 @@
 
                           <td class="col-pdf left-td"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>      
+                            <% @report_data['report']['exams'].each do |report| %> 
+                              <% if report['exam_category'] == '6' %>
+                                <% next %>
+                            <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                 <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% end %>
@@ -39,15 +42,13 @@
                           
                           show_marks = 0
                           if total_mark.to_f>0 and full_mark.to_f>0
-                            show_marks = total_mark.to_f/2
-                            total_mark = show_marks.round()*2
                             main_mark = (total_mark.to_f/full_mark.to_f)*100
                           else
                             main_mark = 0
                           end  
                         %>
 
-                          <% if full_mark.to_f > 0 && show_marks > 0 %>
+                          <% if full_mark.to_f > 0 && main_mark > 0 %>
                             <td class="col-pdf"><b><%= main_mark.round() %></b></td>
                             <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, subjects['id'].to_i) %>
                             <% if !grade.blank? and !grade.name.blank? %>

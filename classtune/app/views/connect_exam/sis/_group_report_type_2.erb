@@ -1,6 +1,8 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
 <% unless @report_data['report']['subjects'].blank? %>
+                    <% subjectt_left = 0 %>
+                    <% subjectt_right = 0 %>
                     <% c = 'even' %>
                     <% sub_loop = 0 %>
                     <% total_subject = @report_data['report']['subjects'].count %>
@@ -20,11 +22,10 @@
               
                     
                       
-                      
+                      <% subjectt_left = subjectt_left+1 %>
                       <tr class="odd">
                           
-                          <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
-                          <td class="col-pdf no-warp align-left marks-sub"></td>    
+                          <td class="col-pdf no-warp align-left subject-padding" colspan="2"><b><%= subjects['name'].upcase %></b></td>   
 
                       </tr> 
                       
@@ -32,31 +33,36 @@
                           <% iloop = 0 %>
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                               <% subject_groups.each do |group_name| %>
+                                <% subjectt_left = subjectt_left+1 %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
-                                    <td class="col-pdf no-warp align-left"></td>
+                                    <td class="col-pdf no-warp align-left">-</td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
+                                       <% subjectt_left = subjectt_left+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <tr class="even subgroup">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left"></td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                           </tr> 
                                           <% break %>
                                         <% else %>
                                             <tr class="even subgroup">
                                               <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
-                                             <td class="col-pdf no-warp align-left"></td> 
+                                             <td class="col-pdf no-warp align-left">-</td> 
                                             </tr>
                                             <% break %>
                                          <% end %>
@@ -67,17 +73,20 @@
                                     <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left"></td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                        <% else %>
-                                           <td class="col-pdf no-warp align-left"></td> 
+                                           <td class="col-pdf no-warp">-</td> 
                                        <% end %>     
                                     <% end %>
                                     </tr>          
@@ -90,7 +99,7 @@
                     <% end %> 
                     </table>
                     <% sub_loop = 0 %>
-                    <table id="pdf-table" width="48%" class="left-table odd-table" cellspacing="0">
+                    <table id="pdf-table" width="47.9%" class="left-table odd-table second" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       
                       <% sub_loop +=1  %>
@@ -100,11 +109,10 @@
               
                     
                       
-                      
+                      <% subjectt_right = subjectt_right+1 %>
                       <tr class="odd">
                           
-                          <td class="col-pdf no-warp align-left"><b><%= subjects['name'].upcase %></b></td>
-                          <td class="col-pdf no-warp align-left marks-sub"></td>    
+                          <td class="col-pdf no-warp align-left subject-padding2" colspan="2"><b><%= subjects['name'].upcase %></b></td>   
 
                       </tr> 
                       
@@ -112,31 +120,36 @@
                           <% iloop = 0 %>
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                               <% subject_groups.each do |group_name| %>
+                                <% subjectt_right = subjectt_right+1 %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
                                     <td class="col-pdf no-warp align-left"><b><%= group_name.name %></b></td>
-                                    <td class="col-pdf no-warp align-left"></td>
+                                    <td class="col-pdf no-warp align-left">-</td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
+                                       <% subjectt_right = subjectt_right+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
+                                        <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <tr class="even">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left"></td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                           </tr> 
                                           <% break %>
                                         <% else %>
                                             <tr class="even">
                                               <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
-                                             <td class="col-pdf no-warp align-left"></td> 
+                                             <td class="col-pdf no-warp">-</td> 
                                             </tr>
                                             <% break %>
                                          <% end %>
@@ -144,20 +157,24 @@
                                       <% iloop+=1 %> 
                                     <% end %>
                                 <% else %>
+                                    
                                     <tr class="odd">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
                                           <% unless wordString_split[iloop.to_i].blank? %>
-                                              <td class="col-pdf no-warp align-left"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
+                                              <td class="col-pdf no-warp"><b><%= wordString_split[iloop.to_i].to_s %></b></td>
                                               
                                           <% else %>
-                                            <td class="col-pdf no-warp align-left"></td>
+                                            <td class="col-pdf no-warp">-</td>
                                           <% end %>
                                        <% else %>
-                                           <td class="col-pdf no-warp align-left"></td> 
+                                           <td class="col-pdf no-warp">-</td> 
                                        <% end %>     
                                     <% end %>
                                     </tr>          
@@ -169,7 +186,7 @@
                       
                     <% end %> 
                     </table>
-                  <% end %> 
+                  <% end %>  
 <% end %>
 <style>
     

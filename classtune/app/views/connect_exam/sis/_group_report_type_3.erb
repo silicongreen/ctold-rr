@@ -1,6 +1,6 @@
 <% c = 'even' %>
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-           <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">
+          <table id="pdf-table" width="48%" class="left-table even-table extra_padding" cellspacing="0">
                   <% c = 'even'  %>
                   <tr class="odd">
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
@@ -19,8 +19,12 @@
                           <% full_mark = 0 %>
 
                           <td class="col-pdf left-td"><%= subjects['name'] %></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>      
+                          <% unless @report_data['report']['exams'].blank? %> 
+                            
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if report['exam_category'] == '6' %>
+                                  <% next %>
+                              <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                 <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% end %>

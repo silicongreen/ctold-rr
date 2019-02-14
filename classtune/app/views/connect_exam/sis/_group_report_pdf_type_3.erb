@@ -60,8 +60,12 @@
                           <% full_mark = 0 %>
 
                           <td class="col-pdf left-td"><%= subjects['name'] %></td>
-                          <% unless @report_data['report']['exams'].blank? %>  
-                            <% @report_data['report']['exams'].each do |report| %>      
+                          <% unless @report_data['report']['exams'].blank? %> 
+                            
+                            <% @report_data['report']['exams'].each do |report| %>
+                              <% if report['exam_category'] == '6' %>
+                                  <% next %>
+                              <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>       
                                 <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% end %>
@@ -172,6 +176,9 @@
                       <% wordString_main = "" %>
                   
                       <% @report_data['report']['exams'].each do |report| %>
+                        <% if report['exam_category'] == '6' %>
+                            <% next %>
+                        <% end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                           <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                           <% break %>

@@ -83,6 +83,9 @@
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% subjectt_left = subjectt_left+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <tr class="even subgroup">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
@@ -110,6 +113,9 @@
                                     <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>
@@ -164,6 +170,9 @@
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% subjectt_right = subjectt_right+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
+                                        <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <tr class="even">
                                           <td class="col-pdf no-warp align-left"><%= sub_group_name %></td>
@@ -192,6 +201,9 @@
                                     <tr class="odd">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
+                                       <% if report['exam_category'] == '6' %>
+                                            <% next %>
+                                        <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
                                           <% wordString = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
                                           <% wordString_split = wordString.split("|") %>

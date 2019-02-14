@@ -3,7 +3,7 @@
             <table id="pdf-table"  width="30%" class="left-table even-table exam-marks" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII"   %>
+                      <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>
                         <td class="col-pdf" rowspan="2"><%= "Subject" %></td>
                       <% else %>
                         <td class="col-pdf"><%= "Subject" %></td>
@@ -55,7 +55,9 @@
                           <% 
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
-                              
+                              if report['exam_category'] == '6'
+                                 next
+                              end
                               if report['quarter'] == '1'
                                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank?
                                   q1_mark = q1_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f
@@ -184,6 +186,7 @@
                           
 
                       </tr> 
+                      <% total_subject = total_subject+1 %>
                     <% end %>  
                   <% end %>   
                   <%  
@@ -203,6 +206,7 @@
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
                       <%  if @all_subjects.include?(report['id'].to_i) %>
+                      <% total_subject = total_subject+1 %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <td class="col-pdf no-warp  align-left"><%= report['subject_name'] %></td>
                           <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII"  or @batch.course.course_name == "VIII" %>

@@ -557,7 +557,7 @@ class ClassworkController extends Controller
                 {
                     $notification_id = implode("*", $notification_ids);
                     $user_id = implode("*", $reminderrecipients);
-                    shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+                    //shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
                     //Settings::sendCurlNotification($user_id, $notification_id);
                 }
                 $response['status']['code'] = 200;
@@ -791,7 +791,7 @@ class ClassworkController extends Controller
                         {
                             $notification_id = implode("*", $notification_ids);
                             $user_id = implode("*", $reminderrecipients);
-                            shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
+                            //shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
                             //Settings::sendCurlNotification($user_id, $notification_id);
                         }
                     }

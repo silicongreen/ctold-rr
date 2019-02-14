@@ -15,7 +15,7 @@ class OtherController < ApplicationController
     if request.post?
       unless params[:admid_card][:student_ids].nil?
           @student_ids = params[:admid_card][:student_ids]
-          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
       end   
     end
     render :layout => false
@@ -24,14 +24,14 @@ class OtherController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids)
+      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>["is_deleted = ?",false])
     end
   end
   def print_admit_card
     if request.post?
       unless params[:admid_card][:student_ids].nil?
           @student_ids = params[:admid_card][:student_ids]
-          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
           @exam_name = params[:exam_name]
           @term_year = params[:term_year]
       end   
@@ -46,14 +46,14 @@ class OtherController < ApplicationController
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")
-      @students = Student.find_all_by_batch_id(batch_ids,:order=>"batch_id asc,first_name asc, last_name asc")
+      @students = Student.find_all_by_batch_id(batch_ids,:order=>"batch_id asc,first_name asc, last_name asc",:conditions=>["is_deleted = ?",false])
     end
   end
   def print_student_record
     if request.post?
       unless params[:student_record][:student_ids].nil?
           @student_ids = params[:student_record][:student_ids]
-          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}])
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
           @section_name = params[:section_name]
           @year = params[:year]
       end   

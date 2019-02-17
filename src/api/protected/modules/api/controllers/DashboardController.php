@@ -35,6 +35,8 @@ class DashboardController extends Controller
     private function atttext($school_id,$batch_id,$student_id)
     {
         $date = date('Y-m-d');
+        $std_obj = new Students();
+        $std_data = $std_obj->getStudentById($student_id);
         $objattendence = new Attendances();
         $attendence_return = false;
         $holiday = new Events();

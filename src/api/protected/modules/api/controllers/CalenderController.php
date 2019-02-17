@@ -374,7 +374,24 @@ class CalenderController extends Controller
                                     }
                                     if (!isset($msg[$dt->format("Y-m-d")]))
                                     {
-                                        $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Present";
+                                        $card_att = true;
+                                        if(in_array($stddata->school_id,Settings::$card_attendence_school))
+                                        {
+                                            $card_att = new CardAttendance();
+                                            $std_att = $card_att->getEmpAttExists($stddata->user_id);
+                                            if($std_att == false)
+                                            {
+                                               $card_att = false; 
+                                            }
+                                        }
+                                        if($card_att)
+                                        {
+                                            $msg[$dt->format("Y-m-d")] = $text . " " . $stddata->first_name . " is Present";
+                                        }
+                                        else
+                                        {
+                                            $msg[$dt->format("Y-m-d")] = "No Status Found for " . date('jS F', strtotime($dt->format("Y-m-d")))." yet";
+                                        }    
                                     }
                                 }
                             }

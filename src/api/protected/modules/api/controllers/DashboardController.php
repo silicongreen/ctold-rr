@@ -84,24 +84,31 @@ class DashboardController extends Controller
                 {
                     $timetableobj = new TimetableEntries();
                     $class_started = $timetableobj->classStarted($batch_id);
-                   
+                    
+                    $card_att = true;
                     if(in_array($school_id,Settings::$card_attendence_school))
                     {
                         $card_att = new CardAttendance();
                         $std_att = $card_att->getEmpAttExists($std_data->user_id);
                         if($std_att == false)
                         {
-                           $class_started = false; 
+                           $card_att = false; 
                         }
                     }
-                    if($class_started)
+
+                    if($class_started && $card_att)
                     {
                         $attendence_ret = 6;
+                    }
+                    else if($class_started && $card_att == false)
+                    {
+                        $attendence_ret = 8;
                     }
                     else if($date==date("Y-m-d"))
                     {
                         $attendence_ret = 7;
-                    }    
+                    } 
+                       
                     $attendence_return = true;
                 }
             }

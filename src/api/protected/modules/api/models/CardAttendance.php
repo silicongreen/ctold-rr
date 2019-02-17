@@ -95,12 +95,20 @@ class CardAttendance extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getEmpAttExists($user_id)
+        public function getEmpAttExists($user_id,$date = false)
         {
             $criteria = new CDbCriteria;
             $criteria->select = 't.id';
             $criteria->compare('user_id',$user_id);
-            $criteria->compare('date',date("Y-m-d"));
+            if($date)
+            {
+                $criteria->compare('date',$date);
+            }
+            else
+            {
+                $criteria->compare('date',date("Y-m-d"));
+            }
+            
             $criteria->limit = 1;
             $data = $this->find($criteria);
             if($data)

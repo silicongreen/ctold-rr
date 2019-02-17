@@ -89,7 +89,7 @@ class DashboardController extends Controller
                     if(in_array($school_id,Settings::$card_attendence_school))
                     {
                         $card_att = new CardAttendance();
-                        $std_att = $card_att->getEmpAttExists($std_data->user_id);
+                        $std_att = $card_att->getEmpAttExists($std_data->user_id,$date);
                         if($std_att == false)
                         {
                            $card_att = false; 
@@ -949,7 +949,7 @@ class DashboardController extends Controller
                                     if(in_array($school_details->id,Settings::$card_attendence_school))
                                     {
                                         $card_att = new CardAttendance();
-                                        $std_att = $card_att->getEmpAttExists($std_data->user_id);
+                                        $std_att = $card_att->getEmpAttExists($std_data->user_id,$date);
                                         if($std_att == false)
                                         {
                                            $card_att = false; 

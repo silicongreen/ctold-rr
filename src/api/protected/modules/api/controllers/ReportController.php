@@ -708,7 +708,7 @@ class ReportController extends Controller
                             if(in_array($school_id,Settings::$card_attendence_school))
                             {
                                 $card_att = new CardAttendance();
-                                $std_att = $card_att->getEmpAttExists($stddata->user_id);
+                                $std_att = $card_att->getEmpAttExists($stddata->user_id,$date);
                                 if($std_att == false)
                                 {
                                    $card_att = false; 

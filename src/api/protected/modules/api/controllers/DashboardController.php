@@ -82,6 +82,16 @@ class DashboardController extends Controller
                 {
                     $timetableobj = new TimetableEntries();
                     $class_started = $timetableobj->classStarted($batch_id);
+                   
+                    if(in_array($school_details->id,Settings::$card_attendence_school))
+                    {
+                        $card_att = new CardAttendance();
+                        $std_att = $card_att->getEmpAttExists($std_data->user_id);
+                        if($std_att == false)
+                        {
+                           $class_started = false; 
+                        }
+                    }
                     if($class_started)
                     {
                         $attendence_ret = 6;

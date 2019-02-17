@@ -43,7 +43,7 @@
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% subjectt_left = subjectt_left+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
-                                       <% if report['exam_category'] == '6' %>
+                                       <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
@@ -73,7 +73,7 @@
                                     <tr class="odd subgroup">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
-                                       <% if report['exam_category'] == '6' %>
+                                       <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
@@ -130,7 +130,7 @@
                                     <% subject_subgroup.each do |sub_group_name| %>
                                        <% subjectt_right = subjectt_right+1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
-                                        <% if report['exam_category'] == '6' %>
+                                        <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
                                         <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
@@ -161,7 +161,7 @@
                                     <tr class="odd">
                                     <td class="col-pdf no-warp align-left"><%= group_name.name %></td>
                                     <% @report_data['report']['exams'].each do |report| %>
-                                       <% if report['exam_category'] == '6' %>
+                                       <% if report['exam_category'] == '7' %>
                                             <% next %>
                                         <% end %>
                                        <% unless report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>

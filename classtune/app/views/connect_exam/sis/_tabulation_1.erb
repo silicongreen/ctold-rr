@@ -77,7 +77,7 @@
         check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(ras.student_id,sub['id'].to_i)
         if @all_subject_id.include?(sub['id'].to_i) and (!check_std_subject.blank? or subjectdata.elective_group_id.blank?)
           @report_data['report']['exams'].each do |rs|
-            if rs['exam_category'] == '6'
+            if rs['exam_category'] == '7'
               next
             end
             %>
@@ -287,7 +287,7 @@
                             <% end %>
 
                             <% @report_data['report']['exams'].each do |rs| %>
-                              <% if rs['exam_category'] == '6'
+                              <% if rs['exam_category'] == '7'
                                 next
                               end %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>

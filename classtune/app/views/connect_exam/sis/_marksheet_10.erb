@@ -290,7 +290,7 @@
                           <% @report_data['result']['ALL'].each do |rs| %>
                             <% if rs['quarter'] == '6' or rs['quarter'] == '5' %>
                               <td>
-                               <% if rs['exam_category'] == '6' %>
+                               <% if rs['exam_category'] == '7' %>
                                   <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['remarks'].blank? %>
                                     <%= rs['students'][std['id']]['remarks'] %>
                                   <% else %>

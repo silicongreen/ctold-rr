@@ -81,7 +81,7 @@
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 
                               
-                              if report['exam_category'] == '6'
+                              if report['exam_category'] == '7'
                                  next
                               end
                               
@@ -306,7 +306,7 @@
                       <% wordString_main = "" %>
                   
                       <% @report_data['report']['exams'].each do |report| %>
-                         <% if report['exam_category'] == '6' %>
+                         <% if report['exam_category'] == '7' %>
                             <% next %>
                          <% end %>
                          <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>

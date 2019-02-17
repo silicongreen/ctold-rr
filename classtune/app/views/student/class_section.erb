@@ -66,6 +66,9 @@
       <li>
           <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
       </li>
+      <li>
+        <%= link_to 'Category Wise Students', {:controller => 'student', :action => 'category_student'}, {:class => 'f2'} %>
+      </li>
       <li class="active">
           <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
       </li>

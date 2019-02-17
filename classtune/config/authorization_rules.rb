@@ -2741,6 +2741,7 @@ authorization do
       :close_letter,
       :noc_letter_update,
       :studentformlist,
+      :category_student,
       :update_letter_status,
       :generate_pdf_letter,
       :forward_form,

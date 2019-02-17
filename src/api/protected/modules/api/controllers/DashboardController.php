@@ -926,9 +926,24 @@ class DashboardController extends Controller
                                 {
                                     $timetableobj = new TimetableEntries();
                                     $class_started = $timetableobj->classStarted($batch_id);
-                                    if($class_started)
+                                    $card_att = true;
+                                    if(in_array($school_details->id,Settings::$card_attendence_school))
+                                    {
+                                        $card_att = new CardAttendance();
+                                        $std_att = $card_att->getEmpAttExists($std_data->user_id);
+                                        if($std_att == false)
+                                        {
+                                           $card_att = false; 
+                                        }
+                                    }
+                                    
+                                    if($class_started && $card_att)
                                     {
                                         $merging_data['attendence'] = "was Present Today";
+                                    }
+                                    else if($class_started && $card_att == false)
+                                    {
+                                        $merging_data['attendence'] = "Attendance Not Synced Yet";
                                     }
                                     else if($date==date("Y-m-d"))
                                     {

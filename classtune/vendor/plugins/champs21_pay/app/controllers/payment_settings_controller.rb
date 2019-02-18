@@ -371,12 +371,24 @@ class PaymentSettingsController < ApplicationController
         admission_no = name
         @student = Student.find_by_admission_no(admission_no)
         unless @student.nil?
-          fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+          finance_order = FinanceOrder.find_by_order_id(o)
+          unless finance_order.nil?
+            fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id} and id = #{finance_order.finance_fee_id}")
+          else  
+            fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+          end
+          #fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
         else
           archived = true
           @student = ArchivedStudent.find_by_admission_no(admission_no)
           unless @student.nil?
-            fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.former_id} and batch_id = #{@student.batch_id}")
+            finance_order = FinanceOrder.find_by_order_id(o)
+            unless finance_order.nil?
+              fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id} and id = #{finance_order.finance_fee_id}")
+            else  
+              fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+            end
+            #fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.former_id} and batch_id = #{@student.batch_id}")
           end
         end
         unless archived
@@ -846,167 +858,167 @@ class PaymentSettingsController < ApplicationController
             #payment.save
 
             ref_id = ""
-              orderId = ""
-              name = ""
-              email = ""
-              amount = 0.00
-              service_charge = 0.00
-              total_amount = 0.00
-              status = 0
-              status_text = ""
-              used = ""
-              verified = 0
-              payment_type = ""
-              pan = ""
-              tbbmm_account = ""
-              merchant_id = ""
-              order_datetime = ""
-              trans_date = ""
-              emi_no = ""
-              interest_amount = ""
-              pay_with_charge = ""
-              card_response_code = ""
-              card_response_desc = ""
-              card_order_status = ""
-              
-              xml_str = Nokogiri::XML(result)
+            orderId = ""
+            name = ""
+            email = ""
+            amount = 0.00
+            service_charge = 0.00
+            total_amount = 0.00
+            status = 0
+            status_text = ""
+            used = ""
+            verified = 0
+            payment_type = ""
+            pan = ""
+            tbbmm_account = ""
+            merchant_id = ""
+            order_datetime = ""
+            trans_date = ""
+            emi_no = ""
+            interest_amount = ""
+            pay_with_charge = ""
+            card_response_code = ""
+            card_response_desc = ""
+            card_order_status = ""
 
-              verifiedId = 0 
-              found_verified = false 
+            xml_str = Nokogiri::XML(result)
+
+            verifiedId = 0 
+            found_verified = false 
+            xmlind = 0
+            xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
+            xml_transaction_infos.each do |xml_transaction_info|
+              childs = xml_transaction_info.children
+              childs.each do |c|
+                if c.name == "Verified"
+                  v = c.text
+                  if v.to_i == 1
+                    verifiedId = xmlind
+                    found_verified = true
+                  end
+                end
+              end
+              xmlind += 1
+            end
+            if found_verified
+              childs = xml_transaction_infos[verifiedId].children
+            else  
+              found_paid = false 
+              paidId = 0
               xmlind = 0
-              xml_transaction_infos = xml_str.xpath("//Response/TransactionInfo")
               xml_transaction_infos.each do |xml_transaction_info|
                 childs = xml_transaction_info.children
                 childs.each do |c|
-                  if c.name == "Verified"
+                  if c.name == "Status"
                     v = c.text
                     if v.to_i == 1
-                      verifiedId = xmlind
-                      found_verified = true
+                      paidId = xmlind
+                      found_paid = true
                     end
                   end
                 end
                 xmlind += 1
               end
-              if found_verified
-                childs = xml_transaction_infos[verifiedId].children
-              else  
-                found_paid = false 
-                paidId = 0
-                xmlind = 0
-                xml_transaction_infos.each do |xml_transaction_info|
-                  childs = xml_transaction_info.children
-                  childs.each do |c|
-                    if c.name == "Status"
-                      v = c.text
-                      if v.to_i == 1
-                        paidId = xmlind
-                        found_paid = true
-                      end
-                    end
-                  end
-                  xmlind += 1
-                end
-                if found_paid
-                  childs = xml_transaction_infos[paidId].children
-                else
-                  childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
-                end
+              if found_paid
+                childs = xml_transaction_infos[paidId].children
+              else
+                childs = xml_transaction_infos[xml_transaction_infos.length - 1].children
+              end
+            end
+
+            #abort(childs.inspect)
+            childs.each do |c|
+              if c.name == "RefID"
+                ref_id = c.text
+              elsif c.name == "OrderID"
+                orderId = c.text
+              elsif c.name == "Name"
+                name = c.text
+              elsif c.name == "Email"
+                email = c.text
+              elsif c.name == "Amount"
+                amount = c.text
+              elsif c.name == "ServiceCharge"
+                service_charge = c.text
+              elsif c.name == "TotalAmount"
+                total_amount = c.text
+              elsif c.name == "Status"
+                status = c.text
+              elsif c.name == "StatusText"
+                status_text = c.text
+              elsif c.name == "Used"
+                used = c.text
+              elsif c.name == "Verified"
+                verified = c.text
+              elsif c.name == "PaymentType"
+                payment_type = c.text
+              elsif c.name == "PAN"
+                pan = c.text
+              elsif c.name == "TBMM_Account"
+                tbbmm_account = c.text
+              elsif c.name == "MarchentID"
+                merchant_id = c.text
+              elsif c.name == "OrderDateTime"
+                order_datetime = c.text
+              elsif c.name == "PaymentDateTime"
+                trans_date = c.text
+              elsif c.name == "EMI_No"
+                emi_no = c.text
+              elsif c.name == "InterestAmount"
+                interest_amount = c.text
+              elsif c.name == "PayWithCharge"
+                pay_with_charge = c.text
+              elsif c.name == "CardResponseCode"
+                card_response_code = c.text
+              elsif c.name == "CardResponseDescription"
+                card_response_desc = c.text
+              elsif c.name == "CardOrderStatus"
+                card_order_status = c.text
               end
 
-              #abort(childs.inspect)
-              childs.each do |c|
-                if c.name == "RefID"
-                  ref_id = c.text
-                elsif c.name == "OrderID"
-                  orderId = c.text
-                elsif c.name == "Name"
-                  name = c.text
-                elsif c.name == "Email"
-                  email = c.text
-                elsif c.name == "Amount"
-                  amount = c.text
-                elsif c.name == "ServiceCharge"
-                  service_charge = c.text
-                elsif c.name == "TotalAmount"
-                  total_amount = c.text
-                elsif c.name == "Status"
-                  status = c.text
-                elsif c.name == "StatusText"
-                  status_text = c.text
-                elsif c.name == "Used"
-                  used = c.text
-                elsif c.name == "Verified"
-                  verified = c.text
-                elsif c.name == "PaymentType"
-                  payment_type = c.text
-                elsif c.name == "PAN"
-                  pan = c.text
-                elsif c.name == "TBMM_Account"
-                  tbbmm_account = c.text
-                elsif c.name == "MarchentID"
-                  merchant_id = c.text
-                elsif c.name == "OrderDateTime"
-                  order_datetime = c.text
-                elsif c.name == "PaymentDateTime"
-                  trans_date = c.text
-                elsif c.name == "EMI_No"
-                  emi_no = c.text
-                elsif c.name == "InterestAmount"
-                  interest_amount = c.text
-                elsif c.name == "PayWithCharge"
-                  pay_with_charge = c.text
-                elsif c.name == "CardResponseCode"
-                  card_response_code = c.text
-                elsif c.name == "CardResponseDescription"
-                  card_response_desc = c.text
-                elsif c.name == "CardOrderStatus"
-                  card_order_status = c.text
-                end
+            end
 
+
+            gateway_response = {
+              :total_amount => total_amount,
+              :amount => amount,
+              :name => name,
+              :email => email,
+              :merchant_id => merchant_id,
+              :order_datetime => order_datetime,
+              :emi_no => emi_no,
+              :tbbmm_account => tbbmm_account,
+              :interest_amount => interest_amount,
+              :pay_with_charge => pay_with_charge,
+              :card_response_code => card_response_code,
+              :card_response_desc => card_response_desc,
+              :card_order_status => card_order_status,
+              :used => used,
+              :verified => verified,
+              :status_text => status_text,
+              :status => status,
+              :ref_id => ref_id,
+              :order_id=>orderId,
+              :tran_date=>trans_date,
+              :payment_type=>payment_type,
+              :service_charge=>service_charge,
+              :pan=>pan
+            }
+
+            dt = trans_date.split(".")
+            transaction_datetime = dt[0]
+
+            if verified.to_i == 0
+              if transaction_datetime.nil?
+                dt = order_datetime.split(".")
+                transaction_datetime = dt[0]
               end
+            end
 
-
-              gateway_response = {
-                :total_amount => total_amount,
-                :amount => amount,
-                :name => name,
-                :email => email,
-                :merchant_id => merchant_id,
-                :order_datetime => order_datetime,
-                :emi_no => emi_no,
-                :tbbmm_account => tbbmm_account,
-                :interest_amount => interest_amount,
-                :pay_with_charge => pay_with_charge,
-                :card_response_code => card_response_code,
-                :card_response_desc => card_response_desc,
-                :card_order_status => card_order_status,
-                :used => used,
-                :verified => verified,
-                :status_text => status_text,
-                :status => status,
-                :ref_id => ref_id,
-                :order_id=>orderId,
-                :tran_date=>trans_date,
-                :payment_type=>payment_type,
-                :service_charge=>service_charge,
-                :pan=>pan
-              }
-
-              dt = trans_date.split(".")
-              transaction_datetime = dt[0]
-              
-              if verified.to_i == 0
-                if transaction_datetime.nil?
-                  dt = order_datetime.split(".")
-                  transaction_datetime = dt[0]
-                end
-              end
-          
-              archived = false
-              #admission_no = admission_nos[i]
-              admission_no = name
-              @student = Student.find_by_admission_no(admission_no)
+            archived = false
+            #admission_no = admission_nos[i]
+            admission_no = name
+            @student = Student.find_by_admission_no(admission_no)
               
               #create_at = Date.parse(trans_date)
               #start_month = create_at.beginning_of_month
@@ -1014,12 +1026,22 @@ class PaymentSettingsController < ApplicationController
 
               #fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
               unless @student.nil?
-                fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+                finance_order = FinanceOrder.find_by_order_id(o)
+                unless finance_order.nil?
+                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id} and id = #{finance_order.finance_fee_id}")
+                else  
+                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+                end
               else
                 archived = true
                 @student = ArchivedStudent.find_by_admission_no(admission_no)
                 unless @student.nil?
-                  fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.former_id} and batch_id = #{@student.batch_id}")
+                  finance_order = FinanceOrder.find_by_order_id(o)
+                  unless finance_order.nil?
+                    fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id} and id = #{finance_order.finance_fee_id}")
+                  else  
+                    fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and batch_id = #{@student.batch_id}")
+                  end
                 end
               end
               

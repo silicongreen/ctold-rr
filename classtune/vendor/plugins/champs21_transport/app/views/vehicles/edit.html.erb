@@ -34,7 +34,7 @@
       <% @employees = Employee.all %>
       <div class="label-field-pair">
         <label for="vehicle_no"><%= "Driver" %><span class="necessary-field">*</span> </label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+        <div class="text-input-bg">
         <%= v.text_field :driver %>
         </div>
       </div>
@@ -48,7 +48,7 @@
       </div>
       <div class="label-field-pair">
         <label for="vehicle_no"><%= "Contact Number" %> </label>
-        <div class="text-input-bg" style="margin-left:10px; margin-top:5px;">
+        <div class="text-input-bg">
          <%= v.text_field :bus_mother_contact %>
         </div>
       </div>

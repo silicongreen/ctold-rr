@@ -171,7 +171,7 @@ class ExamConnect extends CActiveRecord
                         'joinType' => 'LEFT JOIN',
                         'with' => array(
                             'Exams' => array(
-                                'select' => 'Exams.id,Exams.maximum_marks,Exams.alternative_title,Exams.end_time,Exams.weightage',
+                                'select' => 'Exams.id,Exams.maximum_marks,Exams.alternative_title,Examps.exam_date,Exams.end_time,Exams.weightage',
                                 'joinType' => 'LEFT JOIN',
                                 'with' => array(
                                     'Scores' => array(
@@ -222,8 +222,12 @@ class ExamConnect extends CActiveRecord
                         $result['CT'][$i]['exam_category'] = $groupedexam['examgroup']->exam_category;
                         $result['CT'][$i]['name'] = $groupedexam['examgroup']->name;
                         $result['CT'][$i]['alternative_title'] = $exam->alternative_title;
-                        $result['CT'][$i]['exam_date'] = date("d/m/y",strtotime($exam->end_time));
                         
+                        $result['CT'][$i]['exam_date'] = date("d/m/y",strtotime($exam->end_time));
+                        if($exam->exam_date)
+                        {
+                            $result['CT'][$i]['alternative_title'] = $exam->alternative_title." ".date("d/m",strtotime($exam->exam_date));
+                        }
                         $result['CT'][$i]['quarter'] = $groupedexam['examgroup']->quarter;
                         
                         $result['CT'][$i]['maximum_marks'] = $exam->maximum_marks;
@@ -267,6 +271,10 @@ class ExamConnect extends CActiveRecord
                         $result['ST'][$k]['exam_category'] = $groupedexam['examgroup']->exam_category;
                         $result['ST'][$k]['name'] = $groupedexam['examgroup']->name;
                         $result['ST'][$k]['alternative_title'] = $exam->alternative_title;
+                        if($exam->exam_date)
+                        {
+                            $result['ST'][$k]['alternative_title'] = $exam->alternative_title." ".date("d/m",strtotime($exam->exam_date));
+                        }
                         $result['ST'][$k]['exam_date'] = date("d/m/y",strtotime($exam->end_time));
                         $result['ST'][$k]['quarter'] = $groupedexam['examgroup']->quarter;
                         
@@ -307,6 +315,10 @@ class ExamConnect extends CActiveRecord
                     $result['ALL'][$f]['exam_category'] = $groupedexam['examgroup']->exam_category;
                     $result['ALL'][$f]['name'] = $groupedexam['examgroup']->name;
                     $result['ALL'][$f]['alternative_title'] = $exam->alternative_title;
+                    if($exam->exam_date)
+                    {
+                        $result['ALL'][$f]['alternative_title'] = $exam->alternative_title."<br/>".date("d/m",strtotime($exam->exam_date));
+                    }
                     $result['ALL'][$f]['exam_id'] = $exam->id;
                     $result['ALL'][$f]['exam_date'] =  date("d/m/y",strtotime($exam->end_time));
                     $result['ALL'][$f]['quarter'] = $groupedexam['examgroup']->quarter;

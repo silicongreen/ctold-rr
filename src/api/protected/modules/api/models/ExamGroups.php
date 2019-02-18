@@ -992,7 +992,7 @@ class ExamGroups extends CActiveRecord
         
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.weightage',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.exam_date,Exams.weightage',
                     'with' => array(
                         'Scores' => array(
                             'select' => 'Scores.marks,Scores.remarks',
@@ -1024,7 +1024,7 @@ class ExamGroups extends CActiveRecord
         $criteria->compare('Subjects.is_deleted', false);
         $criteria->with = array(
                 'Exams' => array(
-                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.weightage',
+                    'select' => 'Exams.maximum_marks,Exams.alternative_title,Exams.exam_date,Exams.weightage',
                     'with' => array(
                         'Subjects' => array(
                             'select' => 'Subjects.id',

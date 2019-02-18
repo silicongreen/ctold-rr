@@ -150,7 +150,13 @@
             <td class="name"><center><%= mark_obtain_in_40.to_i %></center></td>
             <td class="name"><center><%= mark_obtain_in_60.to_i %></center></td>
             <% main_mark = mark_obtain_in_40.to_i + mark_obtain_in_60.to_i %>
-            <td class="name"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
+            <%
+                extra_class = "underline_red"
+                if main_mark.round >= 80
+                  extra_class = ""
+                end
+            %>
+            <td class="name <%= extra_class %>"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
             <td class="name"><center><%= grade.name %></center></td>
@@ -158,9 +164,24 @@
               <td class="name"><center>-</center></td>
             <% end %> 
             
-            <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject_id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+            <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
+            <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,std['id'].to_i],:include=>[:assignment]) %>
             
-            <td class="name"> <center><%= "0" %><hr><%= assignmentCount %></center></td>
+            <%
+              extra_class = ""
+              if assignmentCount > 0
+                extra_class = "underline_red"
+                if assignmentDone > 0
+                  diff = assignmentDone.to_f/assignmentDone.to_f
+                  diff = diff.round
+                  if diff >= 80
+                    extra_class = ""
+                  end
+                end
+              end
+          
+            %>
+            <td class="name <%= extra_class %>"> <center><%= assignmentDone %><hr><%= assignmentCount %></center></td>
             <%
               exam_comment = ""
               exam_effort = ""
@@ -187,3 +208,11 @@
   
   
 </div>
+
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>

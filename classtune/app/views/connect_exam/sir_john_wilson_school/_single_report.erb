@@ -5,7 +5,13 @@
           <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '120%' %>
         </div>
         <div class="exam_title_left">
-            <p>PROGRESS REPORT OF <%= @connect_exam_obj.name %> (YEAE <%= Time.current.year %> - <%= Time.current.year + 1 %>)</p>
+            <p>PROGRESS REPORT OF <%= @connect_exam_obj.name %> (YEAE 
+            <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+            <% if month_number.to_i>6 %>
+              <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>
+            <% else %>
+              <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+            <% end %>)</p>
             <p>EVALUATION PERIOD: <%= @connect_exam_obj.attandence_start_date.strftime("%B") %> - <%= @connect_exam_obj.attandence_end_date.strftime("%B") %> <%= @connect_exam_obj.attandence_end_date.strftime("%Y") %></p>
         </div>
         <div class="grad_list_right">&nbsp; </div> 
@@ -138,7 +144,7 @@
                       <tr>
                           <td class="col-pdf">
                               <table class='sjws_table_head' width="100%"><tr>
-                                      <td class="col-pdf"><b>CLASS TEACHER'S SIGNATURE:</b> </td><td class="col-pdf"><b>.............................................................................</b></td>  
+                                      <td class="col-pdf"><b>CLASS TEACHER'S SIGNATURE:</b> </td><td class="col-pdf"><b>..........................................................................</b></td>  
                                   </tr>
                                   <tr>
                                       <% if @teacher_name.blank? %>
@@ -155,7 +161,7 @@
                           <td class="col-pdf">
                               <table class='sjws_table_head' width="100%">
                                   <tr>
-                                    <td class="col-pdf"><b>DATE: <%=Time.now.strftime("%d-%m-%Y")%></b></td> 
+                                    <td class="col-pdf" style="white-space: nowrap;"><b>DATE: <%=  (@connect_exam_obj.printing_date.blank?)?Time.now.strftime("%d-%m-%Y"):@connect_exam_obj.printing_date %></b></td> 
                                   </tr>
                                   <tr>
                                       <td class="col-pdf"></td><td class="col-pdf text_center">&nbsp;</td>  
@@ -338,3 +344,10 @@ table.align-center-table tr.table-header td
 }
 </style>
 <% end %>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>

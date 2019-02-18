@@ -114,7 +114,18 @@
                           <td class="col-pdf"><center><%=main_mark.round().to_i %></center></td>
               
                           <td class="col-pdf"><center><%=main_mark2.round().to_i %></center></td>
-                          <td class="col-pdf"><center><%= (main_mark.round() + main_mark2.round()).to_i %></center></td>
+  
+                          <%
+                            main_mark_new = (main_mark.round() + main_mark2.round()).to_i
+                           
+                            extra_class = "underline_red"
+                            if main_mark_new.round >= 80
+                              extra_class = ""
+                            end
+          
+                        
+                          %>
+                          <td class="col-pdf <%= extra_class %>"><center><%= (main_mark.round() + main_mark2.round()).to_i %></center></td>
                           <%  grade2 = GradingLevel.percentage_to_grade(main_mark.round() + main_mark2.round(), @batch.id) %>
                           <% if !grade2.blank? and !grade2.name.blank? %>
                           <td class="col-pdf"><center><%= grade2.name %></center></td>
@@ -132,8 +143,24 @@
                           <td class="col-pdf"><center>-</center></td>
                           <% end %> 
                             
-                          <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                          <td class="col-pdf"><center><%= "0" %>/<%= assignmentCount %></center></td>  
+                          <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",subjects['id'].to_i,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
+                          <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",subjects['id'].to_i,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,@student.id.to_i],:include=>[:assignment]) %>
+                          
+                          <%
+                            extra_class = ""
+                            if assignmentCount > 0
+                              extra_class = "underline_red"
+                              if assignmentDone > 0
+                                diff = assignmentDone.to_f/assignmentDone.to_f
+                                diff = diff.round
+                                if diff >= 80
+                                  extra_class = ""
+                                end
+                              end
+                            end
+
+                          %>
+                          <td class="col-pdf <%= extra_class %>"><center><%= assignmentDone %>/<%= assignmentCount %></center></td>  
                           
                           <%                           
                             exam_effort2 = ""
@@ -212,35 +239,31 @@
                                 <b>Advisor's Comments</b>                                
                              </div> 
                           </td>                          
-                          <td class="col-pdf" width='80%'>
-                              <table id="pdf-table" class="no_border" width="100%" cellspacing="0"><tr>
-                              <td  width='50%'>
-                                <i>
-                                  <% if !@exam_comment.blank? %>
-                                    <%=  @exam_comment.comments %>
-                                  <% end %>  
-                                </i>
-                              </td>
-                              <td  width='50%' class="align-center">
-                                 <% advisor_name = "Advisor" %>
-                                 <% unless @student.advisor_id.blank? %>
-                                  <% emp_data = Employee.find_by_id(@student.advisor_id) %>
-                                   <% unless emp_data.blank?  %>
-                                      <% advisor_name = emp_data.first_name+" "+emp_data.last_name %>
-                                   <% end %>
-                                 <% end %> 
-                                 <p>
-                                 <br/>
-                                 <hr/>
-                                 <%= advisor_name %></p>
-                                 <br/>
-                                 <p><hr/>
-                                 Date</p>
-                                  
-                              </td>
-                             </tr>
-                             </table>
-                          </td>                          
+                         
+                          <td  width='40%'>
+                            <i>
+                              <% if !@exam_comment.blank? %>
+                                <%=  @exam_comment.comments %>
+                              <% end %>  
+                            </i>
+                          </td>
+                          <td  width='40%' class="align-center">
+                             <% advisor_name = "Advisor" %>
+                             <% unless @student.advisor_id.blank? %>
+                              <% emp_data = Employee.find_by_id(@student.advisor_id) %>
+                               <% unless emp_data.blank?  %>
+                                  <% advisor_name = emp_data.first_name+" "+emp_data.last_name %>
+                               <% end %>
+                             <% end %> 
+                             <p>
+                             <br/>
+                             <hr/>
+                             <%= advisor_name %></p>
+                             <br/>
+                             <p><hr/>
+                             Date</p>
+
+                          </td>                        
                       </tr> 
               </table>
               <br />
@@ -313,7 +336,11 @@
     {
         font-family: serif !important;
     }
-   
+    td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
 </style>    
 
 

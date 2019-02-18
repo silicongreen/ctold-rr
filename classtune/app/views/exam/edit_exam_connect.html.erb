@@ -157,6 +157,13 @@
           </div>
         </div>
         <div class="label-field-pair"  style="float:left; clear:both;">
+          <label for="duedate">Printing Date</label>
+          <div  class="text-input-bg">
+            <%= calendar_date_select_tag "exam_grouping[printing_date]",
+              @exam_connect.printing_date.blank?  ? I18n.l(1.week.since,:format=>"%d %b %Y") : I18n.l(@exam_connect.printing_date,:format=>"%d %b %Y") ,:class=>"text-input-bg",:readonly=>true,:popup=>:force%>
+          </div>
+        </div>
+        <div class="label-field-pair"  style="float:left; clear:both;">
           <label for="duedate">Next Session/Term Begins</label>
           <div  class="text-input-bg">
             <%= calendar_date_select_tag "exam_grouping[next_session_begins]",

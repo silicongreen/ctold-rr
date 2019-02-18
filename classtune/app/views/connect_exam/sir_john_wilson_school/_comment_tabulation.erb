@@ -180,9 +180,13 @@
                         
                         end
                         main_mark = main_mark.round()
+                        extra_class = "underline_red"
+                        if main_mark.round >= 80
+                          extra_class = ""
+                        end
                      
                       %> 
-                    <td>
+                    <td class="<%= extra_class %>">
                        <% total_mark = total_mark+main_mark_sum.to_f %>
                        <%= main_mark_sum.to_i %><hr/>
                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
@@ -227,3 +231,10 @@
       <% end %>
     </center>
   </div>
+  <style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>

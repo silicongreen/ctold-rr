@@ -1956,7 +1956,7 @@ authorization do
       :subject_wise_register,
       :daily_register
     ]
-    has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card,:student_record,:list_student_record,:print_student_record]
+    has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card,:student_record,:list_student_record,:print_student_record,:print_bus_card,:list_student_bus_card,:bus_card]
     has_permission_on [:empattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
     has_permission_on [:stdattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
     has_permission_on [:sms],  :to => [:index, :settings, :update_general_sms_settings, :students, :list_students, :batches, :sms_all, :employees, :list_employees, :departments, :all, :show_sms_messages, :show_sms_logs, :panel, :show_option, :list_students_new, :list_employees_new, :show_test_employee, :show_option_student, :show_test_student, :show_option_student_upass, :list_students_new_upassword, :show_option_student_feedues, :list_students_new_feedues]

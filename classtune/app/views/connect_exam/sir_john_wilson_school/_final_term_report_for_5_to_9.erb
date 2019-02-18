@@ -134,7 +134,7 @@
                           <td class="col-pdf"><center><%=main_mark.to_i %>  <%#=exam_priority%></center></td>                          
                           <td class="col-pdf"><center><%= main_mark2.to_i %></center></td>
                           
-                          <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                         
                           
                           <% 
                             if total_mark_3.to_f>0 and full_mark_3.to_f>0
@@ -160,6 +160,9 @@
                               exam_comment2 = @exam_comments['comments']
                               exam_effort2 = @exam_comments['effort']
                             end
+                            
+                          
+                            
                           %>
                           
                           <td class="col-pdf"><center><%= (main_mark + main_mark2).to_i %></center></td>
@@ -171,9 +174,20 @@
                           <% final40Mark = ((main_mark.to_f + main_mark2.to_f)/100)*40 %>
                           <% final60Mark = ((main_mark3.to_f + main_mark4.to_f)/100)*60 %>
                           <% finalMark = final40Mark.to_f + final60Mark.to_f %>
+              
                           <td class="col-pdf"><center><%= final40Mark.to_i %></center></td>
                           <td class="col-pdf"><center><%= final60Mark.to_i %></center></td>
-                          <td class="col-pdf"><center><%= finalMark.to_i %></center></td>
+  
+                          <%
+                           
+                           
+                            extra_class = "underline_red"
+                            if finalMark.to_i >= 80
+                              extra_class = ""
+                            end
+                        
+                          %>
+                          <td class="col-pdf <%= extra_class %>"><center><%= finalMark.to_i %></center></td>
                           
                           
                           <%  grade2 = GradingLevel.percentage_to_grade(finalMark, @batch.id) %>
@@ -262,5 +276,12 @@
   </div>
 
 <% end %>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>
 
 

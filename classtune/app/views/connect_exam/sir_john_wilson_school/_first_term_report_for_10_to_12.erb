@@ -122,9 +122,24 @@
                           <td class="col-pdf"><center><%= grade.name %></center></td>
                           <% else %>
                           <td class="col-pdf"><center>-</center></td>
-                          <% end %>  
-                          <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => subjects['id'],:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
-                          <td class="col-pdf"><center><%= "0" %><hr><%= assignmentCount %></center></td>  
+                          <% end %> 
+                          <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",subjects['id'].to_i,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
+                          <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",subjects['id'].to_i,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,@student.id.to_i],:include=>[:assignment]) %>
+                          <%
+                            extra_class = ""
+                            if assignmentCount > 0
+                              extra_class = "underline_red"
+                              if assignmentDone > 0
+                                diff = assignmentDone.to_f/assignmentDone.to_f
+                                diff = diff.round
+                                if diff >= 80
+                                  extra_class = ""
+                                end
+                              end
+                            end
+
+                          %>
+                          <td class="col-pdf <%= extra_class %>"><center><%= assignmentDone %><hr><%= assignmentCount %></center></td>  
                           
                           <%
                             exam_comment2 = ""
@@ -234,5 +249,12 @@
   </div>
 
 <% end %>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>
 
 

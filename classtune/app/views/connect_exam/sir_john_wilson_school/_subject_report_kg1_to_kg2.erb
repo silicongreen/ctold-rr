@@ -156,11 +156,18 @@
         <table class='sjws_table_head' width="100%" >                 
             <tr>
                 <td class="col-pdf">TEACHER'S SIGNATURE: .................................... </td>                          
-                <td class="col-pdf">DATE: <%=Time.now.strftime("%d-%m-%Y")%> </td>                          
+                <td class="col-pdf">DATE: <%=  (@connect_exam_obj.printing_date.blank?)?Time.now.strftime("%d-%m-%Y"):@connect_exam_obj.printing_date %> </td>                          
             </tr> 
         </table>
     </div>
 </div>
 
 </div>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>
 

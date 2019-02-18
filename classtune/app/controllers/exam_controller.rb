@@ -766,7 +766,12 @@ class ExamController < ApplicationController
             max_score = ExamScore.find(:first,:select=>'max(marks) as marks',:conditions => {:exam_id => @exam.id})
             if @exam.alternative_title != max_mark[:alternative_title]
               @exam.update_attribute(:alternative_title,max_mark[:alternative_title])
-            end   
+            end 
+            unless max_mark[:exam_date].blank?
+              if @exam.exam_date != max_mark[:exam_date]
+                @exam.update_attribute(:exam_date,max_mark[:exam_date])
+              end
+            end 
              
             if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
               @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
@@ -980,7 +985,7 @@ class ExamController < ApplicationController
               flash[:notice]="#{t('flash25')}"
               return
             else
-              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to], :batch_id => params[:id], :school_id => MultiSchool.current_school.id,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
+              @exam_connect  = ExamConnect.create(:name => params[:exam_grouping][:name],:printing_date => params[:exam_grouping][:printing_date],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to], :batch_id => params[:id], :school_id => MultiSchool.current_school.id,:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
               @exam_connect_id = @exam_connect.id
                             
               exam_group_ids = params[:exam_grouping][:exam_group_ids]
@@ -1021,7 +1026,7 @@ class ExamController < ApplicationController
               flash[:notice]="#{t('flash25')}"
               return
             else              
-              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
+              @exam_connect.update_attributes(:name=> params[:exam_grouping][:name],:printing_date => params[:exam_grouping][:printing_date],:result_type => params[:exam_grouping][:result_type],:quarter_number => params[:exam_grouping][:quarter_number],:next_session_begins => params[:exam_grouping][:next_session_begins],:promoted_to => params[:exam_grouping][:promoted_to],:attandence_start_date => params[:exam_grouping][:attandence_start_date],:attandence_end_date => params[:exam_grouping][:attandence_end_date],:published_date => params[:exam_grouping][:published_date])
                      
               @exam_connect_id = @exam_connect.id
               

@@ -13,14 +13,25 @@ class OtherController < ApplicationController
   end
   def print_bus_card
     if request.post?
-      unless params[:admid_card][:student_ids].nil?
-          @student_ids = params[:admid_card][:student_ids]
+      unless params[:bus_card][:student_ids].nil?
+          @student_ids = params[:bus_card][:student_ids]
           @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
+          std_ids = @students.map(&:id)
+          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"])
+          transport_std = @transports.map(&:receiver_id)
+          @students.reject!{|s| !transport_std.include?(s.id)}
       end   
     end
     render :layout => false
   end
   def list_students
+    @students = []
+    unless params[:batch_id].blank?
+      batch_ids = params[:batch_id].split(",")
+      @students = Student.find_all_by_batch_id(batch_ids,:conditions=>["is_deleted = ?",false])
+    end
+  end
+  def list_student_bus_card
     @students = []
     unless params[:batch_id].blank?
       batch_ids = params[:batch_id].split(",")

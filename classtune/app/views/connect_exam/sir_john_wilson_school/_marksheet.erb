@@ -54,6 +54,7 @@
               <% c = 'even' %>
               <% full_mark = 0 %>
               <% colspan = 0 %>
+              <% extra_loop = 0 %>
               <table id="pdf-table" class="sjws_table_head" width="100%" cellspacing="0">
 
                   <tr class="sjws-table-header">
@@ -69,29 +70,26 @@
                             <p><b>&nbsp;&nbsp;Subject : <%= @subject.name %></b></p>
                           <% end %> 
                       </td>
+                      <% total_exam = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
                         <% if rs['exam_category'].to_i!=4 %>
                         <td class="rotate"><center><div>
-                       
-                        <% alter_text = rs['alternative_title'].split(" on ") %>
-                        <% if alter_text.length > 1 %>
-                          <% date_string = alter_text[alter_text.length-1] %>
-                          <% alter_text.pop %>
-                          <% if date_string.to_i > 0 %>
-                            <span><%=  alter_text.join(" on ") %><br /></span>
-                            <span><%=  date_string %></span>
-                          <% else %>
-                            <span><%=  rs['alternative_title'] %></span>
-                          <% end %>
-                        <% else %>
-                          <span><%=  rs['alternative_title'] %></span>
-                        <% end %>
+                        <span><%=  rs['alternative_title'] %></span>
                           
-                        </div><br /></center></td>
-                        <% colspan = colspan+1 %>  
+                        </div></center></td>
+                        <% colspan = colspan+1 %> 
+                        <% total_exam = total_exam+1 %>
                         <% end %>
                       <% end %> 
-                      <% assignmentCount = Assignment.count(:all, :conditions => {:subject_id => @subject.id,:is_published=>1,:duedate => @connect_exam_obj.attandence_start_date..@connect_exam_obj.attandence_end_date}) %>
+                      <% extra_loop = 16-total_exam %>
+                      <% if extra_loop > 0 %>
+                        <% (1..extra_loop).each do |i| %>
+                        <td>&nbsp;</td>
+                        
+                        <% end %>
+                        
+                      <% end %>  
+                      
 
                       <td class="rotate"><center><div><span>TOTAL NUM. OF H.W.</span></div></center></td>
                       <td class="rotate"><div><br /><br /><br /><span>MARKS ACHIEVED </span><br /><br /><span> MRKS OUT OF</span><br /></div></td>
@@ -109,7 +107,14 @@
 
                         <% colspan = colspan+1 %>
                         <% end %>
-                      <% end %>  
+                      <% end %> 
+                      <% if extra_loop > 0 %>
+                         <% (1..extra_loop).each do |i| %>
+                         <td class="class_test">&nbsp;</td>
+
+                         <% end %>
+
+                       <% end %>
                       <td>&darr;</td>
                       <td>&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</td>
                       <td>&nbsp;</td>
@@ -171,7 +176,29 @@
                             </td>
                             <% end %>
                           <% end %> 
-                          <td>0/<%= assignmentCount %></td>  
+                          <% if extra_loop > 0 %>
+                            <% (1..extra_loop).each do |i| %>
+                              <td>&nbsp;</td>
+                            <% end %>
+                          <% end %>
+                          <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
+                          <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,std['id'].to_i],:include=>[:assignment]) %>
+                          
+                          <%
+                            extra_class = ""
+                            if assignmentCount > 0
+                              extra_class = "underline_red"
+                              if assignmentDone > 0
+                                diff = assignmentDone.to_f/assignmentDone.to_f
+                                diff = diff.round
+                                if diff >= 80
+                                  extra_class = ""
+                                end
+                              end
+                            end
+
+                          %>    
+                          <td class="<%= extra_class %>"><%= assignmentDone %>/<%= assignmentCount %></td>  
                           <td class="name">&nbsp;&nbsp;&nbsp;<%=total_mark.round().to_i %>&nbsp; /&nbsp; <%=full_mark.to_i %></td>  
                           <% main_mark = (total_mark.round().to_f/full_mark.to_f)*100 %>
                           
@@ -226,5 +253,12 @@
     .sjws .exam_title_left
     {
         font-size: 18px;
+    }
+</style>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
     }
 </style>

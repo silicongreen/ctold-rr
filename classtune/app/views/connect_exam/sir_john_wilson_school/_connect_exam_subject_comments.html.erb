@@ -114,15 +114,25 @@
                    <p style="font-size: 10px;"> 
                         <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
                             
-                            <%= text_area_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :rows=>2, :cols=>10, :class=>"marks-box width-55" %>
+                            <%= text_area_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :rows=>2, :cols=>15, :class=>"marks-box width-55" %>
                          <% else %>
                             <%= exam.alternative_title %>
                          <% end %> 
                     </p>
+                    <p style="width:95px;"> 
+                        <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                            <%= calendar_date_select_tag "exam_marks[#{exam.id}][exam_date]",exam.exam_date,
+           :class=>"text-input-bg-new",:readonly=>true,:popup=>:force%>
+                         <% else %>
+                            <%= exam.exam_date %>
+                         <% end %> 
+                    </p>
+                 
+                    
                   
                    <p> 
                        <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                          <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
+                          <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '6', :class=>"marks-box" %>
                        <% else %>
                           <%= exam.maximum_marks.to_i %>
                        <% end %>
@@ -195,7 +205,7 @@
                                               <% end %>
                                             <% end %>
                                             <td  class="td-mark" style="text-align:center; width:60px;">
-                                                <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][remarks][]", exam_group_remarks, :size => '4' %>
+                                                <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][remarks][]", exam_group_remarks, :size => '6' %>
                                                 <div class="date2" ><span class="themed_text"><%=  student.full_name %><div> <%= group_name.name.to_s+">>"+sub_group_name %></div></span></div>
                                             </td>
                                             <% @group_loop = @group_loop+1 %>
@@ -242,7 +252,7 @@
                   <td class="td-mark">
                       <div class="label-field-pair2">
                         <div class="text-input-bg2">
-                            <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %>
+                            <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '6', :class=>"marks-4box" %>
                          </div>
                       </div>
                       <div class="date" ><span class="themed_text"><div> <%= exam.name %></div></span></div>
@@ -415,7 +425,11 @@ td.hover .date span{
 }
 .width-55
 {
-  width: 55px;
+  width: 67px;
+}
+.text-input-bg-new
+{
+    width: 70px;
 }
 
 </style>

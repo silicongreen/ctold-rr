@@ -120,7 +120,13 @@
             
             <td class="name"><center><%=total_mark.to_i%></center></td>
             <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-            <td class="name"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
+            <%
+                extra_class = "underline_red"
+                if main_mark.round >= 80
+                  extra_class = ""
+                end
+            %>
+            <td class="name <%= extra_class %>"><center><%= sprintf( "%0.02f", main_mark).to_i %> %</center></td>  
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
               <%
@@ -158,3 +164,10 @@
   
   
 </div>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>

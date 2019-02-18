@@ -806,6 +806,8 @@ en: # locale
   messages: "Messages"
   reminder_text: "Reminder"
   send_sms: "Send SMS"
+  select_employees: "Select Employees"
+  select_a_department: "Select a Department"
   application: "Application"
   general_sms_setting: "General SMS Settings"
   student_admission: "Student Admission"

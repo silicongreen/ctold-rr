@@ -1195,7 +1195,7 @@ authorization do
   end
   role :sms_management do
     has_permission_on [:configuration], :to => [:index]
-    has_permission_on [:sms], :to => [:index, :settings, :students, :batches, :employees, :departments,:all, :update_general_sms_settings, :list_students, :sms_all, :list_employees, :show_sms_messages, :show_sms_logs, :panel, :show_option, :list_students_new, :list_employees_new, :show_test_employee, :show_option_student, :show_test_student, :show_option_student_upass, :list_students_new_upassword, :show_option_student_feedues, :list_students_new_feedues]
+    has_permission_on [:sms], :to => [:index, :settings, :students, :batches, :employees, :departments,:all, :update_general_sms_settings, :list_students, :sms_all, :list_employees, :show_sms_messages, :show_sms_logs, :panel, :show_option, :list_students_new, :list_employees_new, :show_test_employee, :show_option_student,:show_option_employee,:show_option_employee_upass,:list_employee_new_upassword, :show_test_student, :show_option_student_upass, :list_students_new_upassword, :show_option_student_feedues, :list_students_new_feedues]
   end
   role :event_management do
 
@@ -1959,7 +1959,7 @@ authorization do
     has_permission_on [:other], :to => [:admit_card,:list_students,:print_admit_card,:student_record,:list_student_record,:print_student_record,:print_bus_card,:list_student_bus_card,:bus_card]
     has_permission_on [:empattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
     has_permission_on [:stdattendance],  :to => [:index,:campus_report_show, :list_options, :campus_report_view]
-    has_permission_on [:sms],  :to => [:index, :settings, :update_general_sms_settings, :students, :list_students, :batches, :sms_all, :employees, :list_employees, :departments, :all, :show_sms_messages, :show_sms_logs, :panel, :show_option, :list_students_new, :list_employees_new, :show_test_employee, :show_option_student, :show_test_student, :show_option_student_upass, :list_students_new_upassword, :show_option_student_feedues, :list_students_new_feedues]
+    has_permission_on [:sms],  :to => [:index, :settings, :update_general_sms_settings, :students, :list_students, :batches, :sms_all, :employees, :list_employees, :departments, :all, :show_sms_messages, :show_sms_logs, :panel, :show_option, :list_students_new, :list_employees_new, :show_test_employee, :show_option_student,:show_option_employee_upass,:list_employee_new_upassword,:show_option_employee, :show_test_student, :show_option_student_upass, :list_students_new_upassword, :show_option_student_feedues, :list_students_new_feedues]
     has_permission_on [:sms_settings],  :to => [:index, :update_general_sms_settings]
     has_permission_on [:class_timings],  :to => [:index, :edit, :destroy, :show, :new, :create, :update]
     has_permission_on [:attendance_reports], :to => [:index,:load_end_date, :subject, :mode, :show, :year, :report, :filter, :student_details,:report_pdf,:filter_report_pdf]

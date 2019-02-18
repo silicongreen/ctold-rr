@@ -29,49 +29,14 @@
   <div id="page-yield-new">
     <div class="box">
       <% form_for :send_sms, :html => {:target=>'receiver', :onsubmit => "return checkdata();", :id => "sms_form", :before=>"$('submit_button').disable();$('loader1').show();",:complete=>"setTimeout(function(){$('submit_button').enable();$('loader1').hide();},5000)"} do |x| %>
-        <input type="hidden" name="option_sms" id="option_sms" value="employee" />
-        <div style="clear: both; height: 12px;"></div> 
-        <div class="label-field-pair">
-          <div class="label-container"><label>Select Option</label></div>
-          <div class="text-input-bg">
-            <select name="send_sms[is_test]" id="is_test">
-              <option value="1">Test</option>
-              <option value="0">Live</option>
-            </select>
-          </div>
-          <div style="clear: both; height: 12px;"></div> 
-        
-          <div id="batch_panel" style="display: none;">
-            <div class="label-container"><label><%= t('select_a_department') %>:</label> </div>
-            <div class="text-input-bg text-input-bg2" style="height: 320px;">
-              <%= select :send_sms, :batch_id,
-                EmployeeDepartment.all.map {|b| [b.name, b.id]},
-                {:prompt => "#{t('select_a_department')}"},
-                {:multiple => true,:onChange => "#{remote_function(:url => {:action => "list_employees_new"},
-                :with => "'dept_id='+j('#send_sms_batch_id').val()",
-                :before => "Element.show('loader')",
-                :success => "Element.hide('loader')"
-                )}"} %>
-              <%= image_tag("loader.gif",
-                :align => "absmiddle",
-                :border => 0,
-                :id => "loader",
-                :style =>"display: none;" ) %>
-            </div>
-          </div>
-          <div class="label-container"><label>Only Download?</label></div>
-          <div class="text-input-bg">
-            <select id="sms_options_type" name="send_sms[download]">
-              <option value="1">Yes</option>
-              <option value="0">No</option>
-            </select>
-          </div>
+        <div style="width: 100%; padding: 20px 0; text-align: center; border-bottom: 1px solid #ccc;min-width: 630px;">
+          <input type="checkbox" name="sms_employee_upassword" id="sms_employee_upassword" class="sms_options_employee" style="display: none;">
+          <i name="sms_employee_upassword_fa" id="sms_employee_upassword_fa" class="fa fa-square-o sms_options_employee_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">SMS Username/Password</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="checkbox" name="sms_employee_general" id="sms_employee_general" class="sms_options_employee" style="display: none;">
+          <i name="sms_employee_general_fa" id="sms_employee_general_fa" class="fa fa-square-o sms_options_employee_fa" style="font-size: 20px; cursor: pointer; color: #49BB4B;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;">General SMS</span>
         </div>
-
-        <div style="clear: both; height: 12px;"></div> 
-        <div id="employee-list">
-            <%= render :partial => "test_employee" %> 
-        </div>
+        <div style="clear: both; height: 12px;"></div>
+        <div id="sms_opt"></div>
 
       <% end %>
 

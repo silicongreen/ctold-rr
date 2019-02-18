@@ -217,6 +217,16 @@ class SmsController < ApplicationController
       @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
     end
   end
+
+  def list_employee_new_upassword
+    @employees= []
+    unless params[:depart_id].blank?
+      depart_ids = params[:depart_id].split(",")
+      # EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
+      @employees = Employee.find(:all,:select=>"user_id,employee_number",:conditions => "employee_department_id=#{params[:depart_id]}")
+      # @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+    end
+  end
   
   def list_students_new_feedues
     @students = []
@@ -437,6 +447,15 @@ class SmsController < ApplicationController
       page << 'j("#submit_button").show();'
     end
   end
+
+  def show_option_employee_upass
+    @departments = EmployeeDepartment.find(:all,:select=>'id, name',:order => "name asc",:conditions=>"status = 1 AND school_id=#{MultiSchool.current_school.id}")
+    render :update do |page|
+      page.replace_html "employee-custom-option", :partial => "employee_custom_option"
+      page << 'j("#employee-custom-option").show();'
+      page << 'j("#submit_button").show();'
+    end
+  end
   
   def show_option_student_feedues
     unless params[:fee_id].nil? or params[:fee_id].empty? or params[:fee_id].blank?
@@ -506,6 +525,38 @@ class SmsController < ApplicationController
         page << 'j("#sms_opt").hide();'
       end
     end 
+  end
+
+  def show_option_employee
+    unless params[:option].blank?
+      if params[:option] == "general"
+        render :update do |page|
+          page.replace_html "sms_opt", :partial => "employee_general"
+          page << 'j("#sms_opt").show();'
+        end
+      elsif params[:option] == "upassword"
+        @message = ""
+        if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
+          sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
+          @message = sms_text_config['epass']
+        end
+
+        render :update do |page|
+          page.replace_html "sms_opt", :partial => "employee_upassword"
+          page << 'j("#sms_opt").show();'
+        end
+      else
+        render :update do |page|
+          page.replace_html "sms_panel", :partial => "employees"
+          page << 'j("#sms_panel").show();'
+        end
+      end
+    else
+      render :update do |page|
+        page.replace_html "sms_opt", :text => ""
+        page << 'j("#sms_opt").hide();'
+      end
+    end
   end
   
   def show_option
@@ -641,6 +692,22 @@ class SmsController < ApplicationController
                   end
                 end
               end
+            end
+          end
+        elsif params[:option_sms] == 'employee_upassword'
+          unless params[:sms_message].nil? or params[:sms_message].empty? or params[:sms_message].blank?
+            message = params[:sms_message]
+            option = 0
+            if params[:sms_to_all_em] == 'on'
+              option = 1
+              employees_ids = [];
+              send_sms_employee(employees_ids, message, params[:send_sms][:download],option)
+            elsif params[:sms_to_custom_em] == 'on'
+              option = 2
+            end
+            unless params[:employees].nil? or params[:employees].empty? or params[:employees].blank?
+              employees_ids = params[:employees]
+              send_sms_employee(employees_ids, message, params[:send_sms][:download],option)
             end
           end
         elsif params[:option_sms] == 'student_general'
@@ -1087,6 +1154,100 @@ class SmsController < ApplicationController
           
           filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
           
+          send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
+        end
+      end
+    end
+  end
+
+  def send_sms_employee(employee_ids,message,download_opt,option)
+    @conn = ActiveRecord::Base.connection
+
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
+    @recipients=[]
+    i = 0
+    tmp_message = []
+    sms_setting = SmsSetting.new()
+      if option == 1
+        sql = "SELECT e.first_name, e.middle_name, e.last_name, e.mobile_phone, u.username,fu.paid_password FROM employees as e inner join users as u on e.user_id=u.id left join tds_free_users as fu on e.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id}"
+      elsif option == 2
+        sql = "SELECT e.first_name, e.middle_name, e.last_name, e.mobile_phone, u.username,fu.paid_password FROM employees as e inner join users as u on e.user_id=u.id left join tds_free_users as fu on e.user_id=fu.paid_id where fu.paid_school_id=#{MultiSchool.current_school.id} and e.user_id IN (#{employee_ids.join(',')})"
+      end
+
+      employees_data = @conn.execute(sql).all_hashes
+
+      employees_data.each do |e|
+        full_name = "#{e["first_name"]} #{e["last_name"]}"
+        full_name.gsub("  "," ")
+        full_name.gsub("- ","-")
+        full_name.gsub(" -","-")
+        user_name = e['username']
+        password = e['paid_password']
+          unless e['mobile_phone'].nil? or e['mobile_phone'].empty? or e['mobile_phone'].blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#NAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", user_name)
+            tmp_message[i] = tmp_message[i].gsub("#PASSWORD#", password)
+            i += 1
+            @recipients.push e['mobile_phone']
+          end
+      end
+
+    unless @recipients.empty?
+      if download_opt.blank? or download_opt.to_i!=1
+        sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients))
+        flash[:notice]="#{t('succesffully_send')}"
+        redirect_to :action => "panel"
+      else
+        i = 0
+        if csv
+          csv_string = FasterCSV.generate do |csv|
+            rows = []
+            row_header.each do |r|
+              rows << r
+            end
+            csv << rows
+            @recipients.each do |number|
+              rows = []
+              rows << "#{number}"
+              rows << "#{tmp_message[i]}"
+              csv << rows
+              i += 1
+            end
+          end
+
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+          send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+        else
+          require 'spreadsheet'
+          Spreadsheet.client_encoding = 'UTF-8'
+          row_1 = row_header
+          new_book = Spreadsheet::Workbook.new
+
+          new_book.create_worksheet :name => 'Employee Data'
+          new_book.worksheet(0).insert_row(0, row_1)
+
+          new_book.worksheet(0).row(0).format 2
+
+          ind = 1
+          k = 0
+          @recipients.each do |number|
+            row_new = [number, tmp_message[k]]
+            new_book.worksheet(0).insert_row(ind, row_new)
+            ind += 1
+            k += 1
+          end
+
+          spreadsheet = StringIO.new
+          new_book.write spreadsheet
+
+          filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
           send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
         end
       end

@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <title>Bus Card</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <% i = 0 %>
+        <% @students.each do |std_info| %>
+
+          <div class="col-xs-12" style="margin-top:10px;">
+              <div class="col-xs-6">
+                  <div class="col-xs-12">
+                      <div class="col-xs-1" style="padding:0px;"><img style='margin-top:9px; height:45px;' src='<%=  current_school_detail.logo.url %>' /></div>
+                      <div class="col-xs-11">
+                          <div class="col-xs-12"><center><b><font size="2"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
+                          <div class="col-xs-12"><center><font size="1">Dhaka Cantonment, Dhaka</font></center></div>
+                          <div class="col-xs-12"><center><font size="1">Contact:983306</font></center></div>
+                      </div>
+                  </div>
+                  <div class="col-xs-12">
+                      <center>
+                          <b><font size="2">BUS CARD</font></b>
+                      </center>    
+                  </div>
+                  <div class="col-xs-6">
+                      <table class="table table-user-information" width="100%">
+                          <tbody>
+                              <tr>
+                                  <td colspan="2">Student Name&nbsp;:&nbsp;<%= std_info.full_name %></td>
+                              </tr>
+                              <tr>
+                                  <td>Class&nbsp;:&nbsp;<%= std_info.batch.course.course_name %></td>
+                                  <td>Section&nbsp;:&nbsp;<%= std_info.batch.course.section_name %></td>
+                                  
+                              </tr>
+                              <tr>
+                                  <td>ID&nbsp;:&nbsp;<%= std_info.admission_no %></td>
+                                  <td>Roll&nbsp;:&nbsp;<%= std_info.class_roll_no %></td>
+                              </tr>
+                              <%
+                              father = ""
+                              guardians = std_info.guardians
+                              unless guardians.blank?
+                                father = guardians[0].first_name+" "+guardians[0].last_name
+                                end
+                            %>
+                              <tr>
+                                  <td colspan="2">Father Name&nbsp;:&nbsp;<%= father %></td>
+                              </tr>
+                              <tr>
+                                  <td colspan="2">Issue Date&nbsp;:&nbsp;<%= Time.now.strftime("%d-%m-%Y") %></td>
+                              </tr>
+                              <tr>
+                                  <td colspan="2">Mobile&nbsp;:&nbsp;<%= std_info.sms_number %></td>
+                                 
+                              </tr>
+                              <tr>
+                                  <%
+                                  transport = @transports.find{|v| v.receiver_id = std_info.id}
+                                %>
+                                  <td colspan="2">Departure&nbsp;:&nbsp;<%= transport.route.destination unless transport.blank? %></td>
+                              </tr>
+                          </tbody> 
+                      </table>       
+                  </div>
+                  <div class="col-xs-6">
+                        <% if std_info.photo.file? %>
+                        <% @profile_image = std_info.photo.url %>
+                        <% unless @profile_image.index("RackMultipart").nil? %>	
+                           <% @profile_image.gsub! '?', '.?' %>	
+                        <% end %>
+
+                      <% else %>
+                        <% @profile_image = "master_student/profile/default_student.png" %>
+                      <% end %>
+                      <%= image_tag "#{@profile_image}", :width=>"60" %>
+                  </div>
+                  <div class="col-xs-12" style="margin-top:-80px;">
+                      <div class="col-xs-6"></div>
+                      <div class="col-xs-6">
+                        <div class="col-xs-12"><center><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="200"></center></div>
+                        <div class="col-xs-12">
+                            <center>Principal</center>
+                        </div>
+                      </div>
+                  </div>
+              </div> 
+              <div class="col-xs-6">
+                <div class="col-xs-12">
+                      <center>
+                          <h5><b><font size="2">Rules & Regulation</font></b></h5>
+                      </center>    
+                </div>
+                <div class="col-xs-12 rules">
+                    <p>
+                    1. To cancel Bus card application is to be submitted one ......<br/>  
+                    2. Bus card should be continued until the submission of application ......<br/>
+                    3. After issuing a bus card if a student does not avail the card even though she is to continue paying bus fee (if her bus card has not been canceled).<br/>
+                    4. Bus fee is to be paid even if the bus service is not available due to mechanical problem.<br/>
+                    5. Bus card is to be renewed every year in January paying tk.20.<br/>
+                    6. Monthly Bus fee should be paid with monthly tuition fee.<br/>
+                    7. Bus card cannot be canceled in month of December.
+                    </p>
+                </div>
+              </div>
+
+
+          </div>   
+        <% end %>
+    </body>
+</html>
+<style>
+    
+    .rules p
+    {
+        font-size: 10px;
+    }
+    .table-user-information > tbody > tr:first-child {
+        border-top: 0;
+    }
+
+    .table-user-information
+    {
+        border: 0;
+
+    }
+    .table-user-information > tbody > tr > td {
+        border: 0;
+        font-size: 10px;
+
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        padding: 0px 5px;
+    }
+
+</style>
+<style type="text/css" media="print">
+    @page { size: portrait; }
+</style>
+<script>
+  window.print();
+</script>  

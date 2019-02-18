@@ -9,17 +9,17 @@ class OtherController < ApplicationController
     @batches=Batch.active.all(:include=>:course)
   end
   def bus_card
-    @batches=Batch.active.all(:include=>:course)
+    @transports = Transport.find(:all,:conditions=>["receiver_type = ?","Student"])
+    @student_ids = @transports.map(&:receiver_id)
+    @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
   end
   def print_bus_card
     if request.post?
-      unless params[:bus_card][:student_ids].nil?
-          @student_ids = params[:bus_card][:student_ids]
+      unless params[:students].nil?
+          @student_ids = params[:students]
           @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
           std_ids = @students.map(&:id)
-          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"])
-          transport_std = @transports.map(&:receiver_id)
-          @students.reject!{|s| !transport_std.include?(s.id)}
+          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"],:include=>[:route])
       end   
     end
     render :layout => false

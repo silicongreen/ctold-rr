@@ -58,7 +58,7 @@
         </tr>
     </div>
   <div id="general_info">
-  <table id="pdf-table" width="100%">
+  <table id="pdf-table" width="100%" style="margin-top: 15px;">
         <% unless @students.blank? %>
           <tr class="odd">
             <td class="col-pdf" colspan="4"><%= "Category Wise Student Information" %></td>
@@ -134,21 +134,21 @@
 }
 #pdf-table tr td
 {
-    padding: 3px;
+    padding: 5px;
     font-size:13px;
     vertical-align: top;
     
 }
 #pdf-table tr.odd td
 {
-    padding: 3px;  
+    padding: 5px;  
     border: 1px solid #000000;
     font-size:14px;
  
 }
 #pdf-table tr.even td
 {
-    padding: 3px;
+    padding: 5px;
     border: 1px solid #000000;
     font-size:14px;
    

@@ -152,6 +152,7 @@ class AssignmentsController < ApplicationController
         
           @subjects.reject! {|s| !s.batch.is_active?}
           @students = @subject.batch.students
+          @students.reject!{|e| e.is_deleted = 1}
         end
         render :action=>:use_homework,:id=>params[:used_id]
       end
@@ -573,10 +574,11 @@ class AssignmentsController < ApplicationController
         unless employeeassociated.nil?
           if subject.elective_group_id.nil?
             @students = subject.batch.students
+            @students.reject!{|e| e.is_deleted = 1}
           else
             assigned_students = StudentsSubject.find_all_by_subject_id(subject.id)
             @students = assigned_students.map{|s| Student.find s}
-            @students.reject!{|e| e.batch_id!=@subject.batch_id}
+            @students.reject!{|e| e.batch_id!=@subject.batch_id or e.is_deleted = 1}
           end
           @assignment = subject.assignments.build
         end
@@ -589,6 +591,7 @@ class AssignmentsController < ApplicationController
       unless @subject.nil?
         if @subject.elective_group_id.nil?
           @students = @subject.batch.students
+          @students.reject!{|e| e.is_deleted = 1}
         else
           assigned_students = StudentsSubject.find_all_by_subject_id(@subject.id)
           @students= []
@@ -600,7 +603,7 @@ class AssignmentsController < ApplicationController
               @assigned_students << s
             end
           end
-          @students.reject!{|e| e.batch_id!=@subject.batch_id}
+          @students.reject!{|e| e.batch_id!=@subject.batch_id or e.is_deleted = 1}
         end
       end
 
@@ -630,6 +633,7 @@ class AssignmentsController < ApplicationController
         end
         @students=@students.compact
       end
+      @students.reject!{|e| e.is_deleted = 1}
     end
     render(:update) do |page|
       page.replace_html 'subjects_student_list', :partial=>"subjects_student_list"

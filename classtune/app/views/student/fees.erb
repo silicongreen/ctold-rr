@@ -118,7 +118,14 @@
           </div>
           <div class="extender"> </div>
           <div class="line" style=""></div>
-          <div id="fees_list" style="background: #FBFBFB; padding: 20px;">
+          <div id="fees_list" style="background: #FBFBFB; padding: 20px; min-height: 300px;">
+              <% found_fees = false %>
+              <% if @dates_unpaid.present? %>
+              <% found_fees = true %>
+              <% end %>
+              <% if @dates_paid.present? %>
+              <% found_fees = true %>
+              <% end %>
               <div style="width: 100%; text-align: right;"></div>
               <div style="text-align: center; width: 100%;">
                 <%- @dates_unpaid.each do |d| -%>
@@ -133,7 +140,8 @@
                     end
                   %>
                   <div class='fee_details_box'>
-                      <div class="fee_name"><%= d.name  %></div>
+                      <div class="fee_name" style="position: relative;"><span style="position: absolute; top: 10px; left: 10px; height: 30px; width: 30px;"><i id="fee_collection_<%= finance_fee.id %>" class="fa fa-square-o finance_fees_collection_chk" style="font-size: 30px; color: #FFFFFF; "></i></span><%= d.name  %></div>
+                      <!--div class="fee_name"><%#= d.name  %></div-->
                       <div class='fee_details'>
                           <table style='width: 100%;'>
                               <tr><td class="fee_due" colspan="2"><b>Fee Details</b></td></tr>
@@ -235,8 +243,17 @@
                   <div style="float: left; width: 3%; height: 300px;"></div>
                 <% end %>  
               </div>
+              <% if found_fees %>
+              <div id="combined_pay" style="display: none;">
+                <div style="clear: both; height: 4px;"></div>
+                <hr style="border-top: 1px solid #ccc;" />
+                <div style="width: 100%; text-align: right;">
+                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, {:class=> 'user_button', :id => "lnk_btn"} %></div>
+                </div>
+              </div>
+              <% end %>
+              
             </div>
-
       </div>
     <% else %>
       <div id="page-yield">
@@ -249,3 +266,44 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
+
+
+<script>
+  j(document).ready(function(){
+      j(document).on('click', '.finance_fees_collection_chk', function(){
+          var count_fees = 0;
+          var fees = "";
+          
+          if ( j(this).hasClass('fa-check-square-o') )
+          {
+              j(this).addClass('fa-square-o');
+              j(this).removeClass('fa-check-square-o');
+          }
+          else
+          {
+              j(this).removeClass('fa-square-o');
+              j(this).addClass('fa-check-square-o');
+          }
+          j('.finance_fees_collection_chk').each(function(){
+              if ( j(this).hasClass('fa-check-square-o') )
+              {
+                var fee_id = this.id.replace('fee_collection_','');
+                fees += fee_id + ",";
+                count_fees++;
+              }
+          });
+          if ( count_fees == 0 )
+          {
+              j("#combined_pay").hide();
+          }
+          else
+          {
+              fees = fees.substr(0, fees.length - 1);
+              j("#combined_pay").show();
+              j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+              var href = j('#lnk').children('a').attr('href');
+              j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+          }
+      });
+  });
+</script>

@@ -222,9 +222,7 @@ class SmsController < ApplicationController
     @employees= []
     unless params[:depart_id].blank?
       depart_ids = params[:depart_id].split(",")
-      # EmployeeDepartment.find(:all,:order => "name asc",:conditions=>'status = 1')
-      @employees = Employee.find(:all,:select=>"user_id,employee_number",:conditions => "employee_department_id=#{params[:depart_id]}")
-      # @students = Student.find_all_by_batch_id(batch_ids,:conditions=>"is_sms_enabled=true")
+      @employees = Employee.find(:all,:select=>"user_id,employee_number,first_name,middle_name,last_name",:conditions => "employee_department_id=#{params[:depart_id]}")
     end
   end
   

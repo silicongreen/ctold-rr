@@ -24,12 +24,12 @@
                 
             </tr>
             <tr  class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-              <td class="col-pdf  margin-padding-0  border-left-none" colspan="3">
+              <td class="col-pdf  margin-padding-0  border-left-none" colspan="2">
                 <h4 class="no-warp">Name : <%= @student.full_name %></h4>
                 <h4 class="no-warp">Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
               </td>
-              <td class="col-pdf td-align-right">
-                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %>
+              <td class="col-pdf td-align-right" colspan="2">
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '40%' %>
               </td>
               <td class="col-pdf text_center width-60"><b>Grade</b></td>
               <td class="col-pdf text_center width-60"><b>Effort</b></td>

@@ -103,6 +103,10 @@
 
                 </tbody>
               </table>
+                <div class="buttons">
+                  <%= link_to "#{t('pdf_report')}",
+                              {:controller => "student", :action => "category_student_pdf"},:target => '_blank', :class=> 'user_button' %>
+                </div>
             </div>
 
             <link href="/stylesheets/list_table.css?1526281034" media="screen" rel="stylesheet" type="text/css">

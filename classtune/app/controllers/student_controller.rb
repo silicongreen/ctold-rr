@@ -2819,7 +2819,7 @@ class StudentController < ApplicationController
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     
-  end
+    end
 
   def show_previous_details
     @previous_data = StudentPreviousData.find_by_student_id(@student.id)
@@ -3239,6 +3239,18 @@ class StudentController < ApplicationController
     @students = []
     # @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}'  and finance_fee_collections.is_deleted=#{false} and ((finance_fees.balance > 0 and finance_fees.batch_id<>#{@student.batch_id}) or (finance_fees.batch_id=#{@student.batch_id}) )").uniq
     @students = Student.find(:all,:select=>'COUNT(*) as number_of_students, student_categories.name as category_name', :joins=>'INNER JOIN student_categories on student_categories.id = students.student_category_id',:group=>'student_categories.id')
+  end
+
+  def category_student_pdf
+    category_student
+    render :pdf => "category_student_pdf",
+           :margin => {    :top=> 0,
+                           :bottom => 0,
+                           :left=> 10,
+                           :right => 10},
+           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+
   end
 
   def get_section_by_class

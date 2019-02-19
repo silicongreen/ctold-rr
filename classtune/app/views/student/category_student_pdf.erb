@@ -1,0 +1,177 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<%-
+#page breaking implemented page
+#'available_sections' marks beginning of a pdf page, all the contents within a 'section' class beneath -
+#the 'available_section' will be taken to another div with a class 'page' dynamically by the javascript -
+#written in layouts/pdf.html.erb. 'page' has style for page-break-after:auto property which makes sure -
+#content within class 'section' breaks on each page if its the last content and no space left in current page
+#warning: the 'page' div is created directly below html , so style your pdf keeping that in mind.
+#point to note: make an easy guess the length of content a page can hold, and make sure each 'section' will -
+#not exceed the a page size, like we did below for student_additional_fields, we force a new table to be drawn -
+#each time the row count reaches 28, as 28 being the max number of rows an A4 can hold.
+#avoid creating deeper nests, make 'section' simpler.
+-%>
+
+<p class='ab-image'>
+
+</p>
+<div id="page-yield" class="available_sections">
+    <table id="pdf-table" width="100%">
+        <tr>
+          <td class="align-left-bottom">
+          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '62%' %>
+
+          </td>
+          <td>
+              <b><%=Configuration.get_config_value('InstitutionName'); %></b><br/>
+              Dhaka Cantonment<br/>
+              Dhaka-1216<br/>
+              Phone: #025399 web: sagc.edu.bd
+          </td>
+          <td class="align-right-bottom">
+              <b>Category Wise Students</b><br/>
+              <small>Printing Date: <%= I18n.l(Date.today,:format=>"%d %b %Y") %></small>
+          </td>
+        </tr>
+    </div>
+  <div id="general_info">
+  <table id="pdf-table" width="100%">
+        <% unless @students.blank? %>
+          <tr class="odd">
+            <td class="col-pdf" colspan="4"><%= "Category Wise Student Information" %></td>
+          </tr>
+          <% start_loop = 0 %>
+         
+          <tr>
+              <td class="col-pdf" colspan="2">
+                <table id="pdf-table" width="100%">
+                    <tr class="odd">
+                      <td class="col-pdf"><%= "Srl" %></td>
+                      <td class="col-pdf"><%= "Category" %></td>
+                      <td class="col-pdf"><%= "No Of Student" %></td>
+                    </tr>
+                <% @students.each do |student| %>
+                    <tr class="even">
+                      <td class="col-pdf"><%= start_loop+1 %></td>
+                      <td class="col-pdf"><%= student.category_name %></td>
+                      <td class="col-pdf"><%= student.number_of_students %></td>
+                    </tr>
+                    <% start_loop = start_loop+1 %>
+                    <% if start_loop > 6 %>
+                      <% break %>
+                    <% end %>
+                <% end %>
+                </table>    
+              </td>
+
+          </tr>     
+        
+        <% end %>
+        
+        
+          
+  </table>
+  </div>    
+  
+</div>
+<style>
+    .ab-image
+    {
+        width: 100px;
+        position: fixed;
+        top:115px;
+        left: 700px;
+    }
+    #page-yield
+   {
+       font-size: 12px;
+   }
+  div.hor_line
+  {
+      background: red;
+  }
+.hor_line2{
+    width:200px;
+    background: #333333;
+    height: 2px;
+}
+#pdf-table tr td.align-left-bottom
+{
+    text-align:left;
+    vertical-align: bottom;
+}
+#pdf-table tr td.align-right-bottom
+{
+    text-align:right;
+    vertical-align: bottom;
+}
+#pdf-table tr td.no-border,table#pdf-table
+{
+    border: none;
+}
+#pdf-table tr td
+{
+    padding: 3px;
+    font-size:13px;
+    vertical-align: top;
+    
+}
+#pdf-table tr.odd td
+{
+    padding: 3px;  
+    border: 1px solid #000000;
+    font-size:14px;
+ 
+}
+#pdf-table tr.even td
+{
+    padding: 3px;
+    border: 1px solid #000000;
+    font-size:14px;
+   
+}
+
+table#pdf-table{
+    border-top: none;
+    border-collapse:collapse
+}
+table.sign_table
+{
+    border:none !important;
+}
+table.sign_table tr.even td.col-pdf
+{
+    border:none !important;
+    text-align: center !important;
+}
+table.sign_table tr.border-bottom-1-px td.col-pdf
+{
+    border-bottom:1px dashed black !important;
+}
+table.sign_table
+{
+    border-collapse: separate !important;
+    border-spacing: 18px !important;
+
+}
+
+  
+</style>   

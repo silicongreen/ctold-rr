@@ -2511,7 +2511,7 @@ module OnlinePayment
               end
             end
 
-            payment = Payment.find(:order_id => orderId, :payee_id => @student.id, :payment_id => @financefee.id)
+            payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, @financefee.id)
             payment.update_attributes(:finance_transaction_id => transaction.id)
             unless @financefee.transaction_id.nil?
               tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"

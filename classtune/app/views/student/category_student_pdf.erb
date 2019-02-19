@@ -38,7 +38,7 @@
         <tr>
           <td class="align-left-bottom">
               <% if MultiSchool.current_school.id == 352 %>
-                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ "public/images/school_logo/352/logo-sagc.png"),:width=> '62%' %>
+                <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ "public/images/school_logo/352/logo-sagc.png"),:width=> '32%' %>
               <% else %>
                 <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '62%' %>
               <% end %>

@@ -310,7 +310,7 @@ class EventController extends Controller
                     {
                         $leave[$i]['status'] = 0;
                     }
-                    $leave[$i]['created_at'] = date("Y-m-d", strtotime($value->created_at));
+                    $leave[$i]['created_at'] = date("Y-m-d", strtotime("+6 hours",$value->created_at));
                     $i++;
                 }
              

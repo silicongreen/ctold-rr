@@ -14,14 +14,18 @@
             <div class="page-break-main"></div>
             <% i = 1 %>
           <% end %>
-          <div class="col-xs-12" style="margin-top:10px;">
+          <div class="col-xs-12" style="margin-top:35px;">
               <div class="col-xs-6">
                   <div class="col-xs-12">
-                      <div class="col-xs-2" style="padding:0px;"><img style='width:100%;' src='<%=  current_school_detail.logo.url %>' /></div>
+                      <% if MultiSchool.current_school.id == 352 %>
+                        <div class="col-xs-2" style="padding:0px;"><img style='width:100%;' src='/images/school_logo/352/sagc-logo.svg' /></div>
+                      <% else %>
+                        <div class="col-xs-2" style="padding:0px;"><img style='width:100%;' src='<%=  current_school_detail.logo.url %>' /></div>
+                      <% end %>
                       <div class="col-xs-10">
                           <div class="col-xs-12" style="padding: 0px; white-space: nowrap;"><center><b><font size="1"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
                           <div class="col-xs-12"><center><font size="1">Dhaka Cantonment, Dhaka</font></center></div>
-                          <div class="col-xs-12"><center><font size="1">Contact:983306</font></center></div>
+                          <div class="col-xs-12"><center><font size="1">Phone:9833306</font></center></div>
                       </div>
                   </div>
                   <div class="col-xs-12">
@@ -67,6 +71,9 @@
                                 %>
                                   <td colspan="2">Departure&nbsp;:&nbsp;<%= transport.route.destination unless transport.blank? %></td>
                               </tr>
+                              <tr>
+                                  <td colspan="2">Bus No&nbsp;:&nbsp;<%= transport.vehicle.vehicle_no unless transport.blank? %></td>
+                              </tr>
                           </tbody> 
                       </table>       
                   </div>
@@ -82,7 +89,7 @@
                       <% end %>
                       <%= image_tag "#{@profile_image}", :width=>"60" %>
                   </div>
-                  <div class="col-xs-12" style="margin-top:-70px; margin-left:30px;">
+                  <div class="col-xs-12" style="margin-top:-73px; margin-left:30px;">
                       <div class="col-xs-6"></div>
                       <div class="col-xs-6">
                         <div class="col-xs-12"><center><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="200"></center></div>
@@ -95,14 +102,14 @@
               <div class="col-xs-6">
                 <div class="col-xs-12">
                       <center>
-                          <b><font size="1">Rules & Regulation</font></b>
+                          <h4><b><font size="2">Rules & Regulation</font></b></h4>
                       </center>    
                 </div>
                 <div class="col-xs-12 rules">
                     <p>
-                    1. To cancel Bus card application is to be submitted one ......<br/>  
-                    2. Bus card should be continued until the submission of application ......<br/>
-                    3. After issuing a bus card if a student does not avail the card even though she is to continue paying bus fee (if her bus card has not been canceled).<br/>
+                    1. To cancel Bus card application is to be submitted one month earlier.<br/>  
+                    2. Bus fee should be continued until the submission of application.<br/>
+                    3. After issuing a bus card if a student does not avail the bus service even though she is to continue paying bus fee (if her bus card has not been canceled).<br/>
                     4. Bus fee is to be paid even if the bus service is not available due to mechanical problem.<br/>
                     5. Bus card is to be renewed every year in January paying tk.20.<br/>
                     6. Monthly Bus fee should be paid with monthly tuition fee.<br/>

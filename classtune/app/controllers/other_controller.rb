@@ -19,7 +19,7 @@ class OtherController < ApplicationController
           @student_ids = params[:students]
           @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
           std_ids = @students.map(&:id)
-          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"],:include=>[:route])
+          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"],:include=>[:route,:vehicle])
       end   
     end
     render :layout => false

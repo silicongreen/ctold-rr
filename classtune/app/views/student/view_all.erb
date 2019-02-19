@@ -169,16 +169,18 @@
       </select>
     </div>
 
-    <div class="form-group col-sm-6">
-      <label for="student_grade"><%= "Section" %></label>
-      <select id="section_name" name="section_name" class="js-example-basic-single" onchange="filtersection(this)">
-        <option value="" selected="selected">Select a Section</option>
-        <% Course.active.find(:all, :group => "`section_name`").each do |course| %>
-          <% unless course.section_name.blank?  %>
-            <option value="<%= course.section_name %>"><%= course.section_name %></option>
+    <div id="studentSection">
+      <div class="form-group col-sm-6">
+        <label for="student_grade"><%= "Section" %></label>
+        <select id="section_name" name="section_name" class="js-example-basic-single" onchange="filtersection(this)">
+          <option value="" selected="selected">Select a Section</option>
+          <% Course.active.find(:all, :group => "`section_name`").each do |course| %>
+            <% unless course.section_name.blank?  %>
+              <option value="<%= course.section_name %>"><%= course.section_name %></option>
+            <% end %>
           <% end %>
-        <% end %>
-      </select>
+        </select>
+      </div>
     </div>
 
     <div class="form-group col-sm-6">
@@ -242,6 +244,16 @@
     }
     jq(document).ready(function() {
         jq('.js-example-basic-single').select2();
+        var value = jq("#class_name").val();
+        if ( value != null )
+        {
+            new Ajax.Request('/student/get_section_by_class/'+value,
+                {
+                    asynchronous:true,
+                    evalScripts:true
+                }
+            );
+        }
         oDataTable = jq('#hr_report').DataTable( {
             processing: true,
             serverSide: true,
@@ -304,6 +316,15 @@
     function filterclass(data)
     {
         var value = jq("#class_name").val();
+        if ( value != null )
+        {
+            new Ajax.Request('/student/get_section_by_class/'+value,
+                {
+                    asynchronous:true,
+                    evalScripts:true
+                }
+            );
+        }
         oDataTable.column( 4 ).search( value ).draw();
 
     }

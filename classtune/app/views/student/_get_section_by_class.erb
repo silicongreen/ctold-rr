@@ -1,0 +1,11 @@
+<div class="form-group col-sm-6">
+  <label for="student_grade"><%= "Section" %></label>
+  <select id="section_name" name="section_name" class="js-example-basic-single" onchange="filtersection(this)">
+    <option value="" selected="selected">Select a Section</option>
+    <% @section.each do |sec| %>
+      <% unless sec.section_name.blank?  %>
+        <option value="<%= sec.section_name %>"><%= sec.section_name %></option>
+      <% end %>
+    <% end %>
+  </select>
+</div>

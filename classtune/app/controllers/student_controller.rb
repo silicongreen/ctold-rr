@@ -3254,7 +3254,14 @@ class StudentController < ApplicationController
   end
 
   def get_section_by_class
+    class_name = params[:id]
+    school_id = MultiSchool.current_school.id
+    @section = Course.active.find(:all, :group => "`section_name`",:conditions=>"course_name LIKE '%#{class_name}%' AND school_id = #{school_id}")
+    render :update do |page|
+      page.replace_html "studentSection", :partial => "get_section_by_class"
+      page << 'jq(".js-example-basic-single").select2();'
 
+    end
   end
   
   def web_register

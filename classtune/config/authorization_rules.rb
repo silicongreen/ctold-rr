@@ -2743,6 +2743,7 @@ authorization do
       :studentformlist,
       :category_student,
       :category_student_pdf,
+      :get_section_by_class,
       :update_letter_status,
       :generate_pdf_letter,
       :forward_form,

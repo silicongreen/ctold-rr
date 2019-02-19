@@ -848,12 +848,12 @@ module OnlinePayment
                     unless multiple.nil?
                       if multiple.to_s == "true"
                         fees = request_params[:fees].split(",")
-                        pay_student_index(amount_from_gateway, total_fees, request_params, orderId, fees)
+                        pay_student_index(amount_from_gateway, total_fees, request_params, orderId, trans_date, fees)
                       else
-                        pay_student(amount_from_gateway, total_fees, request_params, orderId)
+                        pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date)
                       end
                     else
-                      pay_student(amount_from_gateway, total_fees, request_params, orderId)
+                      pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date)
                     end
                   end
                   
@@ -1941,7 +1941,7 @@ module OnlinePayment
       end
     end
     
-    def pay_student_index(amount_from_gateway, total_fees, request_params, orderId, fees)
+    def pay_student_index(amount_from_gateway, total_fees, request_params, orderId, trans_date, fees)
       fees.each do |fee|
         f = fee.to_i
         
@@ -2272,7 +2272,7 @@ module OnlinePayment
       
     end
     
-    def pay_student(amount_from_gateway, total_fees, request_params, orderId)
+    def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date)
       unless @financefee.is_paid?
         unless amount_from_gateway.to_f < 0
             unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f

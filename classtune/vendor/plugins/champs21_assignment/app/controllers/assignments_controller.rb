@@ -603,7 +603,7 @@ class AssignmentsController < ApplicationController
           end
           @students.reject!{|e| e.batch_id!=@subject.batch_id}
         end
-        @students.reject!{|e| e.is_deleted = 1}
+        @students.reject!{|e| e.is_deleted == 1}
       end
 
       
@@ -632,7 +632,7 @@ class AssignmentsController < ApplicationController
         end
         @students=@students.compact
       end
-      @students.reject!{|e| e.is_deleted = 1}
+      @students.reject!{|e| e.is_deleted == 1}
     end
     render(:update) do |page|
       page.replace_html 'subjects_student_list', :partial=>"subjects_student_list"

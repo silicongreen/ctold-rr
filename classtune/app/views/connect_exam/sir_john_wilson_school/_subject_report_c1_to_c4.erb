@@ -14,8 +14,8 @@
                     <h4><%= subjects['name'] %></h4>
                     
                 </td>
-                <td class="col-pdf td-align-right" colspan="1">
-                    <h4>
+                <td class="col-pdf td-align-right" style="white-space:nowrap;" colspan="1">
+                    <h4 style="white-space:nowrap;">
                       <%= @connect_exam_obj.name %>&nbsp;
                       <% if month_number.to_i>6 %>
                         <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>        
@@ -35,7 +35,7 @@
                     <h4>Class : <%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %> </h4>
                 </td>
                 <td class="col-pdf td-align-right">
-                  
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %>
                 </td>
             </tr> 
             <% subject_groups = get_subject_group(subjects['id']) %> 
@@ -243,7 +243,7 @@
 
               <tr>
                   <td class="col-pdf align-center"><b><%= @teacher_name %></b></td>  
-                  <td class="col-pdf border-none"><center><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %></center></td>
+                  <td class="col-pdf border-none">&nbsp;</td>
                   <td class="col-pdf align-center"><b>Date</b></td>                          
               </tr>
           </table>

@@ -11,8 +11,8 @@
                   <h4 class="no-warp">Extra Curricular Activities</h4>   
                 </td>
                 
-                <td class="col-pdf td-align-right" colspan="3" >
-                    <h4>
+                <td class="col-pdf td-align-right" style="white-space:nowrap;" colspan="3" >
+                    <h4 style="white-space:nowrap;">
                       <%= @connect_exam_obj.name %>&nbsp;
                       <% if month_number.to_i>6 %>
                         <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>        

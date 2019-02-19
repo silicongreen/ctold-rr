@@ -1041,6 +1041,37 @@
         </tr>
         <tr class="tr-blank"></tr>
         <% @paid_fees.each_with_index do |f , i| %>
+          <% if f.is_child_transaction %>
+            <% trans = FinanceTransaction.find(:all, :conditions => "parent_transaction_id = #{f.parent_transaction_id}")  %>
+            <% fees = FinanceFee.find(:all, :conditions => "id IN (#{trans.map(&:finance_id).join(",")})") %>
+            <% fee_collection = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fees.map(&:fee_collection_id).join(",")})") %>
+            <% fee_collection_name = "Fees payment for the Month of (" %>
+            <% m = 0 %>
+            <% fee_collection.each do |fee| %>
+              <% if m == 0 %>
+                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+              <% end %>
+              <% if m == fee_collection.length - 1 %>
+                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+              <% end %>
+              <% m += 1 %>
+            <% end %>
+            <% tran = FinanceTransaction.find(f.parent_transaction_id) %>
+            <% if trans.length > 1 %>
+            <tr class="tr-<%= cycle("odd","even") %>">
+                <td colspan="5" style="font-weight: bold;"><%= fee_collection_name %></td>
+            </tr>
+            <% end %>
+            <tr class="tr-<%= cycle("odd","even") %>">
+              <td class="col-1"><%= i +=1 %></td>
+              <td class="col-3"><%= tran.transaction_date %></td>
+              <td class="col-3"><%= tran.payment_mode %></td>
+              <td class="col-2"><%= tran.payment_note %></td>
+              <td class="col-3">
+                <%= precision_label(tran.amount.to_f) %>
+              </td>
+            </tr>
+          <% else %>
           <tr class="tr-<%= cycle("odd","even") %>">
             <td class="col-1"><%= i +=1 %></td>
             <td class="col-3"><%= f.transaction_date %></td>
@@ -1050,6 +1081,7 @@
               <%= precision_label(f.amount.to_f) %>
             </td>
           </tr>
+          <% end %>
         <% end %>
       </table>
 

@@ -225,14 +225,14 @@
                 <input type="hidden" name="fee_category_<%= fee.id %>_<%= f %>" class="fee_category" id="fee_category_<%= fee.id %>" value="<%= fee.finance_fee_particular_category_id  %> " />
                 <% if fee_amount > 0 %>
                 <% if @self_advance_fee[f] %>
-                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+                <input type="checkbox" name="fee_particular_<%= fee.id %>_<%= f %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
                 <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
                 <% else %>
                 <% if @fee_has_advance_particular[f] and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) ) %>
-                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" data-fee_amount="<%= precision_label fee.amount %>">
+                <input type="checkbox" name="fee_particular_<%= fee.id %>_<%= f %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" data-fee_amount="<%= precision_label fee.amount %>">
                 <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-square-o" style="color: #598A3D; font-size: 16px; cursor: pointer; color: #999;" aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
                 <% else %>
-                <input type="checkbox" name="fee_particular_<%= fee.id %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
+                <input type="checkbox" name="fee_particular_<%= fee.id %>_<%= f %>" id="fee_particular_<%= fee.id %>" class="fees_particular" style="display: none;" checked="" data-fee_amount="<%= precision_label fee.amount %>">
                 <i name="fee_particular_fa_<%= fee.id %>" id="fee_particular_fa_<%= fee.id %>" class="fa fa-check-square-o fees_particular_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
                 <% end %>
                 <% end %>
@@ -420,7 +420,7 @@
             <tr class="<%= cycle("odd","even") %>  tr_fees_<%= f %>" style="display: none;">
               <td class="col-1" style=" text-align: center;">
                 <input type="hidden" class="discount_category" name="discount_category_<%= d.id %>_<%= f %>" id="discount_category_<%= d.id %>" value="<%= d.finance_fee_particular_category_id  %> " />  
-                <input type="checkbox" name="fee_discount_<%= d.id %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
+                <input type="checkbox" name="fee_discount_<%= d.id %>_<%= f %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
                 <i name="fee_discount_fa_<%= d.id %>" id="fee_discount_fa_<%= d.id %>" class="fa fa-check-square-o fees_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
               </td>
               <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
@@ -551,7 +551,7 @@
             <tr class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;">
               <td class="col-1" style=" text-align: center;">
                 <input type="hidden" class="discount_category" name="discount_category_<%= d.id %>_<%= f %>" id="discount_category_<%= d.id %>" value="<%= d.finance_fee_particular_category_id  %> " />  
-                <input type="checkbox" name="fee_discount_<%= d.id %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
+                <input type="checkbox" name="fee_discount_<%= d.id %>_<%= f %>" id="fee_discount_<%= d.id %>" class="fee_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label discount_amount %>">
                 <i name="fee_discount_fa_<%= d.id %>" id="fee_discount_fa_<%= d.id %>" class="fa fa-check-square-o fees_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
               </td>
               <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
@@ -632,7 +632,7 @@
           <% else %>  
             <% if @vat_as_particular[f] %>
               <td class="col-1" style="text-align: center;">
-                  <input type="checkbox" name="fee_vat" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat[f].to_f %>">
+                  <input type="checkbox" name="fee_vat_<%= f %>" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat[f].to_f %>">
                   <i name="fee_vat" id="fee_vat" class="fa fa-check-square-o fee_vat_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
               </td>
               <td class="col-2">
@@ -667,7 +667,7 @@
               <td class="col-2" style="text-align: right;"><%= precision_label 0.00 %>&nbsp;&nbsp;&nbsp;</td>
               <% else %>
               <td class="col-1" style="text-align: center;">
-                  <input type="checkbox" name="fee_vat" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat[f].to_f %>">
+                  <input type="checkbox" name="fee_vat_<%= f %>" id="fee_vat" class="fee_vat" style="display: none;" checked="" data-fee_amount="<%= precision_label @vat[f].to_f %>">
                   <i name="fee_vat" id="fee_vat" class="fa fa-check-square-o fee_vat_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
               </td>
               <td class="col-2">
@@ -755,7 +755,7 @@
         <% total_fees_individual[f] += @fine[f].to_f %>
         <tr id="extra_fine" class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;">
           <td class="col-1" style="text-align: center;">
-              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @fine[f].to_f %>">
+              <input type="checkbox" name="fee_fine_<%= f %>" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @fine[f].to_f %>">
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2"><span class="themed_text">
@@ -819,7 +819,7 @@
         <% if paidAmount > 0 %>
         <tr id="extra_fine" class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;">
           <td class="col-1" style="text-align: center;">
-              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label remaining_amount %>">
+              <input type="checkbox" name="fee_fine_<%= f %>" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label remaining_amount %>">
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2">
@@ -836,7 +836,7 @@
         <% else %>
         <tr id="extra_fine" class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;">
           <td class="col-1" style="text-align: center;">
-              <input type="checkbox" name="fee_fine" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @new_fine_amount[f] %>">
+              <input type="checkbox" name="fee_fine_<%= f %>" id="fee_fine" class="fee_fine" style="display: none;" checked="" data-fee_amount="<%= precision_label @new_fine_amount[f] %>">
               <i name="fee_fine" id="fee_fine" class="fa fa-check-square-o fee_fine_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
           </td>
           <td class="col-2">
@@ -881,7 +881,7 @@
               <% if fine_amount_total > @discounts_late_amount[f][d.id] %>
               <tr class="<%= cycle("odd","even") %> tr_fees_<%= f %>" style="display: none;">
                 <td class="col-1" style="text-align: center;">
-                    <input type="checkbox" name="fee_fine_discount_<%= d.id %>" id="fee_fine_discount_<%= d.id %>" class="fee_fine_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label @discounts_late_amount[f][d.id] %>">
+                    <input type="checkbox" name="fee_fine_discount_<%= d.id %>_<%= f %>" id="fee_fine_discount_<%= d.id %>" class="fee_fine_discount" style="display: none;" checked="" data-fee_amount="<%= precision_label @discounts_late_amount[f][d.id] %>">
                     <i name="fee_fine_discount_fa_<%= d.id %>" id="fee_fine_discount_fa_<%= d.id %>" class="fa fa-check-square-o fee_fine_discount_fa" style="color: #598A3D; font-size: 20px; " aria-hidden="true"></i>&nbsp;&nbsp;<span class="sl_no" style="color: #000;"><%= i+=1 %></span>
                 </td>  
                 <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
@@ -1092,7 +1092,7 @@
                   <% end %>      
                   <%#= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
                 <% end %>
-                <%= link_to "► #{t('print_receipt')}",
+                <%#= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id},:target => '_blank', :class=> 'user_button' %>
                 </div></div>  
               </td>
@@ -1136,36 +1136,103 @@
         });
     });
 </script>
+<% parent_id = [] %>
 <% @fees_collections.each do |fee| %>
   <% f = fee.to_i %>
   <% unless @paid_fees[f].empty? %>
-    <div id="payments_details">
-      <div class="label-field-pair3">
-        <label><%= t('payment_history') %> </label>
-      </div>
-      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-        <tr class="tr-head">
-          <td><%= t('sl_no') %></td>
-          <td><%= t('payment_date') %></td>
-          <td><%= t('payment_mode') %></td>
-          <td><%= t('payment_notes') %></td>
-          <td><%= t('amount') %> (<%= currency %>  )</td>
-        </tr>
-        <tr class="tr-blank"></tr>
-        <% @paid_fees[f].each_with_index do |g , i| %>
-          <tr class="tr-<%= cycle("odd","even") %>">
-            <td class="col-1"><%= i +=1 %></td>
-            <td class="col-3"><%= g.transaction_date %></td>
-            <td class="col-3"><%= g.payment_mode %></td>
-            <td class="col-2"><%= g.payment_note %></td>
-            <td class="col-3">
-              <%= precision_label(g.amount.to_f) %>
-            </td>
-          </tr>
-        <% end %>
-      </table>
+    <% @paid_fees[f].each_with_index do |g , i| %>
+      <% if g.is_child_transaction %>
+        <% parent_id << g.parent_transaction_id %>
+      <% else %>
+        <% parent_id << g.id %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
 
-    </div>
+<% unless parent_id.blank? %>
+  <% trans_ids = parent_id.map(&:to_i).uniq %>
+  <% paid_fees = FinanceTransaction.find(:all, :conditions => "id IN (#{trans_ids.join(",")})")  %>
+  <% unless paid_fees.empty? %>
+    <div id="payments_details">
+        <div class="label-field-pair3">
+          <label><%= t('payment_history') %> </label>
+        </div>
+        <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <tr class="tr-head">
+            <td><%= t('sl_no') %></td>
+            <td><%= t('payment_date') %></td>
+            <td><%= t('payment_mode') %></td>
+            <td><%= t('payment_notes') %></td>
+            <td><%= t('amount') %> (<%= currency %>  )</td>
+          </tr>
+          <tr class="tr-blank"></tr>
+          <% paid_fees.each_with_index do |f , i| %>
+            <% if f.is_child_transaction %>
+              <% trans = FinanceTransaction.find(:all, :conditions => "parent_transaction_id = #{f.parent_transaction_id}")  %>
+              <% fees = FinanceFee.find(:all, :conditions => "id IN (#{trans.map(&:finance_id).join(",")})") %>
+              <% fee_collection = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fees.map(&:fee_collection_id).join(",")})") %>
+              <% fee_collection_name = "Fees payment for the Month of (" %>
+              <% m = 0 %>
+              <% fee_collection.each do |fee| %>
+                <% if m == 0 %>
+                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                <% end %>
+                <% if m == fee_collection.length - 1 %>
+                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                <% end %>
+                <% m += 1 %>
+              <% end %>
+              <% tran = FinanceTransaction.find(f.parent_transaction_id) %>
+              <% if trans.length > 1 %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                  <td colspan="5" style="font-weight: bold;"><%= fee_collection_name %></td>
+              </tr>
+              <% end %>
+              <tr class="tr-<%= cycle("odd","even") %>">
+                <td class="col-1"><%= i +=1 %></td>
+                <td class="col-3"><%= tran.transaction_date %></td>
+                <td class="col-3"><%= tran.payment_mode %></td>
+                <td class="col-2"><%= tran.payment_note %></td>
+                <td class="col-3">
+                  <%= precision_label(tran.amount.to_f) %>
+                </td>
+              </tr>
+            <% else %>
+            <% trans = FinanceTransaction.find(:all, :conditions => "parent_transaction_id = #{f.id}")  %>
+            <% fees = FinanceFee.find(:all, :conditions => "id IN (#{trans.map(&:finance_id).join(",")})") %>
+            <% fee_collection = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fees.map(&:fee_collection_id).join(",")})") %>
+            <% fee_collection_name = "Fees payment for the Month of (" %>
+            <% m = 0 %>
+            <% fee_collection.each do |fee| %>
+              <% if m == 0 %>
+                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+              <% end %>
+              <% if m == fee_collection.length - 1 %>
+                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+              <% end %>
+              <% m += 1 %>
+            <% end %>
+            <% tran = FinanceTransaction.find(f.id) %>  
+            <% if trans.length > 1 %>
+            <tr class="tr-<%= cycle("odd","even") %>">
+                <td colspan="5" style="font-weight: bold;"><%= fee_collection_name %></td>
+            </tr>
+            <% end %>  
+            <tr class="tr-<%= cycle("odd","even") %>">
+              <td class="col-1"><%= i +=1 %></td>
+              <td class="col-3"><%= f.transaction_date %></td>
+              <td class="col-3"><%= f.payment_mode %></td>
+              <td class="col-2"><%= f.payment_note %></td>
+              <td class="col-3">
+                <%= precision_label(f.amount.to_f) %>
+              </td>
+            </tr>
+            <% end %>
+          <% end %>
+        </table>
+
+      </div>
   <% end %>
 <% end %>
 

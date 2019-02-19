@@ -19,7 +19,7 @@
                     <h4>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h4>
                 </td>
                 <td class="col-pdf td-align-right">
-                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '100px' %>
                 </td>
             </tr> 
             <% subject_groups = get_subject_group(subjects['id']) %>          

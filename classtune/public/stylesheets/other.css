@@ -16,9 +16,7 @@
     height: 16px;
     overflow: hidden;
     position: absolute;
-    left: 50%;
-    margin-left: -35px;
-    bottom: -16px;
+    
 }
 .arrow.top {
     top: -16px;

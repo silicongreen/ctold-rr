@@ -58,7 +58,8 @@ class UserController < ApplicationController
           if !@user_info2.blank? && @user_info2.student
             @student_info2 = @user_info2.student_record
             @std_obj = Student.find @student_info2.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
+            @std_obj.update_attribute("sibling_id",@main_std_id)
+            @std_obj.update_attribute("immediate_contact_id",@main_std_immediate_contact_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -77,7 +78,8 @@ class UserController < ApplicationController
           if !@user_info3.blank? && @user_info3.student
             @student_info3 = @user_info3.student_record
             @std_obj = Student.find @student_info3.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
+            @std_obj.update_attribute("sibling_id",@main_std_id)
+            @std_obj.update_attribute("immediate_contact_id",@main_std_immediate_contact_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -96,7 +98,8 @@ class UserController < ApplicationController
           if !@user_info4.blank? && @user_info4.student
             @student_info4 = @user_info4.student_record
             @std_obj = Student.find @student_info4.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
+            @std_obj.update_attribute("sibling_id",@main_std_id)
+            @std_obj.update_attribute("immediate_contact_id",@main_std_immediate_contact_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -115,7 +118,8 @@ class UserController < ApplicationController
           if !@user_info5.blank? && @user_info5.student
             @student_info5 = @user_info5.student_record
             @std_obj = Student.find @student_info5.id
-            @std_obj.update_attributes(:immediate_contact_id => @main_std_immediate_contact_id,:sibling_id => @main_std_id)
+            @std_obj.update_attribute("sibling_id",@main_std_id)
+            @std_obj.update_attribute("immediate_contact_id",@main_std_immediate_contact_id)
             GuardianStudents.destroy_all(:student_id=>@std_obj.id)
             if !@all_guardian.blank?
               @all_guardian.each do |gu|
@@ -760,7 +764,6 @@ class UserController < ApplicationController
 
   def logout
     unless session[:user_id].nil?
-      authorization = Authorization.current_user.try(:role_symbols) 
       Rails.cache.delete("user_main_menu#{session[:user_id]}")
       Rails.cache.delete("user_autocomplete_menu#{session[:user_id]}")
       current_user.delete_user_menu_caches
@@ -818,30 +821,14 @@ class UserController < ApplicationController
       else
         champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
         if champs21_config['from'] == "remote"
-          if authorization.include?(:online_payment_report)
-            redirect_to "http://" + MultiSchool.current_school.code.to_s + ".classtune.com" and return
-          else
-            if MultiSchool.current_school.code == "sagc"
-              redirect_to "https://sagc.edu.bd" and return
-            else
-              redirect_to "http://www.classtune.com" and return
-            end
-          end
+          redirect_to "http://www.classtune.com" and return
         end
         redirect_to :controller => 'user', :action => 'login' and return
       end
     else
       champs21_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
       if champs21_config['from'] == "remote"
-        if authorization.include?(:online_payment_report)
-          redirect_to "http://" + MultiSchool.current_school.code.to_s + ".classtune.com" and return
-        else
-          if MultiSchool.current_school.code == "sagc"
-            redirect_to "https://sagc.edu.bd" and return
-          else
-            redirect_to "http://www.classtune.com" and return
-          end
-        end
+        redirect_to "http://www.classtune.com" and return
       end
       redirect_to :controller => 'user', :action => 'login' and return
     end

@@ -14,9 +14,12 @@
                 <td class="col-pdf rotate" rowspan="2"><div><span>High level</span></div></td>
             </tr>     
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>"> 
-                <td class="col-pdf" colspan="2">
-                    <h4>NAME : <%= @student.full_name %></h4>
+                <td class="col-pdf margin-padding-0  border-left-none">
+                    <h4>Name : <%= @student.full_name %></h4>
                     <h4>Class : <%= @batch.course.course_name %>&nbsp;Class : <%= @batch.course.course_name %> </h4>
+                </td>
+                <td class="col-pdf td-align-right">
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '30%' %>
                 </td>
             </tr> 
             <% subject_groups = get_subject_group(subjects['id']) %>          
@@ -163,6 +166,17 @@
 </div>
 
 </div>
+<style>
+    td.td-align-right
+    {
+        text-align: right !important;
+    }
+    td.border-none center
+    {
+        margin-top: -50px !important;
+    }
+    
+</style> 
 <style>
   td.underline_red
     {

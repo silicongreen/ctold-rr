@@ -209,6 +209,7 @@
         <th data-orderable="false"><%= "Mobile" %></th>
         <th data-orderable="false"><%= "Name" %></th>
         <th data-orderable="false"><%= "Category" %></th>
+        <th data-orderable="false"><%= "Blood Group" %></th>
         <th data-orderable="false"><%= "Class" %></th>
         <th data-orderable="false"><%= "Shift" %></th>
         <th data-orderable="false"><%= "Section" %></th>
@@ -257,7 +258,6 @@
         oDataTable = jq('#hr_report').DataTable( {
             processing: true,
             serverSide: true,
-            "bLengthChange": false,
             "info": false,
             ajax: {
                 url: "/student/get_student_ajax",
@@ -271,6 +271,7 @@
                 { "data": "sms_number" },
                 { "data": "student_name" },
                 { "data": "category" },
+                { "data": "blood_group" },
                 { "data": "class" },
                 { "data": "batch" },
                 { "data": "section" },

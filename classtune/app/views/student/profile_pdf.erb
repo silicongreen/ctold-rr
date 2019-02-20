@@ -173,7 +173,9 @@
           <% end %>
         <% end %>
         <% unless father.nil? %>
-          
+          <%
+            aditional_details = StudentAdditionalDetail.find_all_by_student_id(@student.id,:include=>[:student_additional_field])
+          %>
           <tr class="odd">
             <td class="col-pdf" colspan="4"><%= "Parent's Details" %></td>
           </tr>
@@ -194,23 +196,30 @@
             <td class="col-pdf" colspan="1"><%= "Profession" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.occupation unless mother.nil? %></td>
           </tr>
+          
+          <%
+        
+          unless aditional_details.blank?
+            rank = aditional_details.find{|ad| ad.additional_field_id == 38}
+          end
+          unless aditional_details.blank?
+            station = aditional_details.find{|ad| ad.additional_field_id == 39}
+          end
+          unless aditional_details.blank?
+            unit = aditional_details.find{|ad| ad.additional_field_id == 40}
+          end
+          %>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Rank/Designation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.designation %></td>
-            <td class="col-pdf" colspan="1"><%= "Rank/Designation" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.designation unless mother.nil? %></td>
+            <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= rank.additional_info unless rank.blank? %></td>
           </tr>
           <tr>
             <td class="col-pdf" colspan="1"><%= "Station Name/Office Address" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= father.organization %></td>
-            <td class="col-pdf" colspan="1"><%= "Station Name/Office Address" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= mother.organization unless mother.nil? %></td>
+            <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= station.additional_info unless station.blank? %></td>
           </tr>
            <tr>
             <td class="col-pdf" colspan="1"><%= "Unit Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
-            <td class="col-pdf" colspan="1"><%= "Unit Name" %></td>
-            <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>
+            <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= unit.additional_info unless unit.blank? %></td>
           </tr>
            <tr>
             <td class="col-pdf" colspan="1"><%= "Email" %></td>
@@ -242,10 +251,14 @@
             
           </tr>
           <tr>
-            <td class="col-pdf" colspan="1"><%= "Profession/Occupation" %></td>
+            <td class="col-pdf" colspan="1"><%= "Profession" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.occupation %></td>
             <td class="col-pdf" colspan="1"><%= "Designation/Rank" %></td>
             <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= p.designation %></td>
+          </tr>
+          <tr>
+            <td class="col-pdf" colspan="1"><%= "Contact No" %></td>
+            <td class="col-pdf" colspan="3">:&nbsp;&nbsp;&nbsp;<%= p.office_phone1 %></td>
           </tr>
           
           

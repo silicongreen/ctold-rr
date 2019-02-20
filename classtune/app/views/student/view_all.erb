@@ -202,22 +202,23 @@
       <div id="image_loading" style="display:none;"><%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2" ) %></div>
       <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
         <thead>
-        <th data-orderable="false"><%= "#" %></th>
+        <th data-orderable="false"><%= "Photo" %></th>
+        <th data-orderable="false"><%= "ID" %></th>
+        
         <th data-orderable="false"><%= "Roll" %></th>
-        <th data-orderable="false"><%= "Student Id" %></th>
-        <th data-orderable="false"><%= "Pass" %></th>
-        <th data-orderable="false"><%= "Mobile" %></th>
         <th data-orderable="false"><%= "Name" %></th>
-        <th data-orderable="false"><%= "Category" %></th>
         <th data-orderable="false"><%= "Blood Group" %></th>
+        <th data-orderable="false"><%= "Category" %></th>
         <th data-orderable="false"><%= "Class" %></th>
-        <th data-orderable="false"><%= "Shift" %></th>
         <th data-orderable="false"><%= "Section" %></th>
+        <th data-orderable="false"><%= "Shift" %></th>
+        
         <th data-orderable="false"><%= "Session" %></th>
         <th data-orderable="false"><%= "Version" %></th>
         <th data-orderable="false"><%= "Group" %></th>
-
         <th data-orderable="false"><%= "Password" %></th>
+        <th data-orderable="false"><%= "Mobile" %></th>
+        <th data-orderable="false"><%= "Action" %></th>
         </thead>
       </table>
     </div>
@@ -259,25 +260,26 @@
             processing: true,
             serverSide: true,
             "info": false,
+            "pageLength": 100,
             ajax: {
                 url: "/student/get_student_ajax",
                 type: 'POST'
             },
             columns: [
                 { "data": "p_image" },
-                { "data": "roll_no" },
                 { "data": "admission_no" },
-                { "data": "password" },
-                { "data": "sms_number" },
+                { "data": "roll_no" },
                 { "data": "student_name" },
-                { "data": "category" },
                 { "data": "blood_group" },
+                { "data": "category" },
                 { "data": "class" },
-                { "data": "batch" },
                 { "data": "section" },
+                { "data": "batch" },
                 { "data": "session" },
                 { "data": "version" },
                 { "data": "group" },
+                { "data": "password" },
+                { "data": "sms_number" },
                 { "data": "send_sms" }
 
             ]

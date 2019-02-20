@@ -452,6 +452,7 @@ class StudentController < ApplicationController
       blood_group = student.blood_group
       p_image = "<img src='#{@profile_image}' width='100' />"
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
+      send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/student/edit/"+student.id.to_s+"' target='_blank' >Edit</a>"
       std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1

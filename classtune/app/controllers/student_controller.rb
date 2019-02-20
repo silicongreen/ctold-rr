@@ -42,7 +42,7 @@ class StudentController < ApplicationController
       page.replace_html "studentSection", :partial => "get_section_by_class"
       page << 'jq(".js-example-basic-single").select2();'
      end
-  end	  end
+  end	 
   def graduation_lists
     @schoo_batch_id = Batch.all.map(&:id)
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')

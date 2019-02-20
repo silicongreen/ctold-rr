@@ -447,7 +447,7 @@ class StudentController < ApplicationController
             @profile_image.gsub! '?', '.?' 	
          end 
        else 
-         @profile_image = "/master_student/profile/default_student.png" 
+         @profile_image = "/images/master_student/profile/default_student.png" 
        end 
       blood_group = student.blood_group
       p_image = "<img src='#{@profile_image}' width='100' />"

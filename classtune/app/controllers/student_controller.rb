@@ -34,7 +34,15 @@ class StudentController < ApplicationController
     :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details, :form_to_apply, :noc_letter, :noc_letter_update, :close_letter
   ]
   CONN = ActiveRecord::Base.connection
-  
+  def get_section_by_class
+    class_name = params[:id]
+    school_id = MultiSchool.current_school.id
+    @section = Course.active.find(:all, :group => "`section_name`",:conditions=>"course_name LIKE '%#{class_name}%' AND school_id = #{school_id}")
+    render :update do |page|
+      page.replace_html "studentSection", :partial => "get_section_by_class"
+      page << 'jq(".js-example-basic-single").select2();'
+     end
+  end	  end
   def graduation_lists
     @schoo_batch_id = Batch.all.map(&:id)
     @graduation_session = BatchTransfer.find(:all,:conditions=>["from_id IN (?) and to_id = ?",@schoo_batch_id,0],:limit=>100,:order=>'created_at DESC')

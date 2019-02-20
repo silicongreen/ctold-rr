@@ -3141,18 +3141,21 @@ class StudentController < ApplicationController
     unless @student.all_siblings.collect(&:immediate_contact_id).include? params[:id].to_i or total_std>1
       if @guardian.id==@student.immediate_contact_id
         if @guardian.destroy
-          @guardian.user.soft_delete
+          @guardian.user.destroy
           flash[:notice] = "#{t('flash6')}"
           redirect_to :controller => 'student', :action => 'admission3_1', :id => params[:student_id]
         end
       else
         if @guardian.destroy
+          @guardian.user.destroy
           flash[:notice] = "#{t('flash6')}"
           redirect_to :controller => 'student', :action => 'profile', :id => params[:student_id]
         end
       end
     else
-      flash[:notice] = "#{t('unable_to_delete_guardian_since_there_exist_siblings')} #{@student.all_siblings.select{|s| s.immediate_contact_id==@guardian.id}.collect(&:full_name).join(',')}"
+      if @guardian.destroy
+        @guardian.user.destroy
+      end
       redirect_to :controller => 'student', :action => 'profile', :id => params[:student_id]
     end
   end

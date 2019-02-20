@@ -54,6 +54,12 @@ class User < ActiveRecord::Base
 
   after_save :create_default_menu_links, :save_user_to_free
 
+  def before_destroy
+    free_user = TdsFreeUser.find_by_paid_id(self.id)
+    unless free_user.blank?
+      free_user.destroy
+    end
+  end
   def before_save
     self.salt = random_string(8) if self.salt == nil
     self.hashed_password = Digest::SHA1.hexdigest(self.salt + self.password) unless self.password.nil?

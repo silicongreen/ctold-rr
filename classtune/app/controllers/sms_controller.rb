@@ -231,11 +231,28 @@ class SmsController < ApplicationController
     unless params[:batch_id].blank?
       unless params[:fee_id].blank?
         batch_ids = params[:batch_id].split(",")
-        fee_collection = FinanceFeeCollection.find(params[:fee_id])
-        unless fee_collection.blank?  
-          student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
-          fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
-          @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
+        if params[:fee_id].to_i == 0
+          fee_collections  =  FinanceFeeCollection.find(:all, :conditions => "id IN (#{params[:fee_collection_ids]})")
+          fee_collection_students = []
+          unless fee_collections.nil?  
+            fee_collections.each do |fee_collection|
+              fee_collection_name = fee_collection.name
+              fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+              fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+              #batches_id = 
+            end
+            fee_collection_students = fee_collection_students.reject { |c| c.empty? }
+            @students = Student.find(:all,:conditions=>"is_sms_enabled=true and id IN (#{fee_collection_students.join(",")})")
+          end
+        else
+          fee_collection = FinanceFeeCollection.find(params[:fee_id])
+          unless fee_collection.blank?  
+            fee_collection_name = fee_collection.name
+            fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+            #student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
+            fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+            @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
+          end
         end
       end
     end
@@ -457,13 +474,53 @@ class SmsController < ApplicationController
   
   def show_option_student_feedues
     unless params[:fee_id].nil? or params[:fee_id].empty? or params[:fee_id].blank?
-      date    =  FinanceFeeCollection.find(params[:fee_id])
-      @batches = date.batches
-      
-      render :update do |page|
-        page.replace_html "student-custom-option", :partial => "student_custom_option_feedues"
-        page << 'j("#student-custom-option").show();'
-        page << 'j("#submit_button").show();'
+      if params[:fee_id].to_i == 0
+        fee_collections  =  FinanceFeeCollection.find(:all, :conditions => "id IN (#{params[:fee_collection_ids]})")
+        fee_collection_batches = []
+        unless fee_collections.nil?  
+          fee_collections.each do |fee_collection|
+            fee_collection_name = fee_collection.name
+            fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+            fee_collection_batches << FeeCollectionBatch.find(:all, :conditions=>"finance_fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) ").map(&:batch_id)
+            #batches_id = 
+          end
+          fee_collection_batches = fee_collection_batches.reject { |c| c.empty? }
+          @batches = Batch.find(:all, :conditions => "id IN (#{fee_collection_batches.join(",")})")
+
+          render :update do |page|
+            page.replace_html "student-custom-option", :partial => "student_custom_option_feedues"
+            page << 'j("#student-custom-option").show();'
+            page << 'j("#submit_button").show();'
+          end
+        else
+          render :update do |page|
+            page.replace_html "student-custom-option", :text => ""
+            page << 'j("#student-custom-option").hide();'
+            page << 'j("#submit_button").hide();'
+          end
+        end
+      else
+        fee_collection  =  FinanceFeeCollection.find(params[:fee_id])
+        unless fee_collection.blank?  
+          fee_collection_name = fee_collection.name
+          fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+          #student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
+          fee_collection_batches = FeeCollectionBatch.find(:all, :conditions=>"finance_fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) ").map(&:batch_id)
+          #@students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
+          @batches = Batch.find(:all, :conditions => "id IN (#{fee_collection_batches.join(",")})")
+
+          render :update do |page|
+            page.replace_html "student-custom-option", :partial => "student_custom_option_feedues"
+            page << 'j("#student-custom-option").show();'
+            page << 'j("#submit_button").show();'
+          end
+        else
+          render :update do |page|
+            page.replace_html "student-custom-option", :text => ""
+            page << 'j("#student-custom-option").hide();'
+            page << 'j("#submit_button").hide();'
+          end
+        end
       end
     else
       render :update do |page|
@@ -500,7 +557,7 @@ class SmsController < ApplicationController
           page << 'j("#sms_opt").show();'
         end
       elsif params[:option] == "feedues"  
-        @finance_fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_advance_fee_collection = #{false} and finance_fee_collections.is_deleted = '#{false}'")
+        @finance_fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_advance_fee_collection = #{false} and finance_fee_collections.is_deleted = '#{false}'", :group => "finance_fee_collections.name")
         @message = ""
         if File.exists?("#{Rails.root}/config/sms_text_#{MultiSchool.current_school.id}.yml")
           sms_text_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/sms_text_#{MultiSchool.current_school.id}.yml")['school']
@@ -885,27 +942,67 @@ class SmsController < ApplicationController
         elsif params[:option_sms] == 'student_feedues'
           sent_to = params[:send_sms][:send_to]
           fee_collection_id = params[:fee_collections]
+          fee_collection_ids = params[:fee_collection][:collection_id]
           unless params[:sms_message].nil? or params[:sms_message].empty? or params[:sms_message].blank?
             message = params[:sms_message]
             unless params[:students].nil? or params[:students].empty? or params[:students].blank?
-              fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
               student_ids = params[:students].join(',')
-              fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
-              students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true").map(&:id)
-              send_sms_student_fees(fee_collection_id, students, message, params[:send_sms][:download], sent_to)
-            else
-              fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
-              batches = fee_collection.batches
-              
-              unless batches.nil?
-                students = []
-                batch_ids = batches.map(&:id).join(",")
-                student_ids = fee_collection.finance_fees.find(:all,:conditions=>"batch_id IN ('#{batch_ids}')").collect(&:student_id).join(',')
-                fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+              if fee_collection_id.to_i == 0
+                fee_collections_new  =  FinanceFeeCollection.find(:all, :conditions => "id IN (#{fee_collection_ids.join(",")})")
+                fee_collection_students = []
+                unless fee_collections_new.nil?  
+                  fee_collections_new.each do |fee_collection|
+                    fee_collection_name = fee_collection.name
+                    fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+                    fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+                    #fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+                    #batches_id = 
+                  end
+                  fee_collection_students = fee_collection_students.reject { |c| c.empty? }
+                  
+                  students = Student.find(:all,:conditions=>"is_sms_enabled=true and id IN (#{fee_collection_students.join(",")})").map(&:id)
+                  send_sms_student_fees_combined(fee_collections_new, students, message, params[:send_sms][:download], sent_to)
+                end
+              else
+                fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
+                fee_collection_name = fee_collection.name
+                fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+                fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 and FIND_IN_SET(students.id,'#{ student_ids}')" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
                 students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true").map(&:id)
                 send_sms_student_fees(fee_collection_id, students, message, params[:send_sms][:download], sent_to)
               end
-              
+            else
+              if fee_collection_id.to_i == 0
+                fee_collections_new  =  FinanceFeeCollection.find(:all, :conditions => "id IN (#{fee_collection_ids.join(",")})")
+                fee_collection_students = []
+                unless fee_collections_new.nil?  
+                  fee_collections_new.each do |fee_collection|
+                    fee_collection_name = fee_collection.name
+                    fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+                    fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+                    #fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+                    #batches_id = 
+                  end
+                  fee_collection_students = fee_collection_students.reject { |c| c.empty? }
+                  students = Student.find(:all,:conditions=>"is_sms_enabled=true and id IN (#{fee_collection_students.join(",")})").map(&:id)
+                  send_sms_student_fees_combined(fee_collections_new, students, message, params[:send_sms][:download], sent_to)
+                end
+              else
+                fee_collection = FinanceFeeCollection.find(fee_collection_id)
+                #fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
+                #batches = fee_collection.batches
+
+                unless fee_collection.nil?
+                  fee_collection_name = fee_collection.name
+                  fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+                  students = []
+                  fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+
+                  students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true").map(&:id)
+                  #abort(fees_students.length.to_s + "  " + students.length.to_s)
+                  send_sms_student_fees(fee_collection_id, students, message, params[:send_sms][:download], sent_to)
+                end
+              end
             end
           end
         end
@@ -1115,6 +1212,7 @@ class SmsController < ApplicationController
             row_header.each do |r|
               rows << r
             end
+            rows = rows.reject { |c| c.empty? }
             csv << rows
             @recipients.each do |number|
               rows = []
@@ -1255,56 +1353,167 @@ class SmsController < ApplicationController
   def send_sms_student_fees(fee_collection_id, student_ids,message,download_opt,sent_to)
     fee_collection  =  FinanceFeeCollection.find(fee_collection_id)
     
-    row_header = ['Mobile No','Message']
-    csv = true
-    if MultiSchool.current_school.id == 352
-      row_header = ['start','']
-      csv = false
-    end
-    @recipients=[]
-    i = 0
-    tmp_message = []
-    sms_setting = SmsSetting.new()
-    std_ids = student_ids.join(",")
-    fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{fee_collection.id} and is_paid = #{false} and balance > 0 and students.id IN (#{ std_ids})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
-    if sent_to.to_i == 2
-      fees_students.each do |fee|
-        std = Student.find(fee.student_id)
-        balance = '%.2f' % fee.balance 
-        full_name = std.full_name
-        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
-          tmp_message[i] = message
-          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
-          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
-          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
-          i += 1
-          @recipients.push std.sms_number
-        else
-          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+    unless fee_collection.nil?
+      fee_collection_name = fee_collection.name
+      row_header = ['Mobile No','Message']
+      csv = true
+      if MultiSchool.current_school.id == 352
+        row_header = ['start','']
+        csv = false
+      end
+      @recipients=[]
+      i = 0
+      tmp_message = []
+      sms_setting = SmsSetting.new()
+      std_ids = student_ids.join(",")
+      fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+      fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 and students.id IN (#{ std_ids})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+      if sent_to.to_i == 2
+        fees_students.each do |fee|
+          std = Student.find(fee.student_id)
+          balance = '%.2f' % fee.balance 
+          full_name = std.full_name
+          unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
             tmp_message[i] = message
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
             tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
-            @recipients.push std.phone2
+            @recipients.push std.sms_number
+          else
+            unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+              tmp_message[i] = message
+              tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+              tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+              tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+              i += 1
+              @recipients.push std.phone2
+            end
+          end
+        end
+      end
+
+      if sent_to.to_i == 3
+        fees_students.each do |fee|
+          std = Student.find(fee.student_id)
+          balance = '%.2f' % fee.balance 
+          full_name = std.full_name
+          unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+            tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+            i += 1
+            @recipients.push std.sms_number
+          else
+            unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+              tmp_message[i] = message
+              tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+              tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+              tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+              i += 1
+              @recipients.push std.phone2
+            end
+          end
+        end
+      end
+
+      unless @recipients.empty?
+        if download_opt.blank? or download_opt.to_i!=1
+          sms = Delayed::Job.enqueue(SmsManagerIndividualMessage.new(tmp_message,@recipients))
+          flash[:notice]="#{t('succesffully_send')}"
+          redirect_to :action => "panel"
+        else
+          i = 0
+          if csv
+            csv_string = FasterCSV.generate do |csv|
+              rows = []
+              row_header.each do |r|
+                rows << r
+              end
+              csv << rows
+              @recipients.each do |number|
+                rows = []
+                rows << "#{number}"
+                rows << "#{tmp_message[i]}"
+                csv << rows
+                i += 1
+              end
+            end
+
+            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.csv"
+            send_data(csv_string, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+          else
+            require 'spreadsheet'
+            Spreadsheet.client_encoding = 'UTF-8'
+            row_1 = row_header
+            new_book = Spreadsheet::Workbook.new
+
+            new_book.create_worksheet :name => 'Student Data'
+            new_book.worksheet(0).insert_row(0, row_1)
+
+            new_book.worksheet(0).row(0).format 2
+
+            ind = 1
+            k = 0
+            @recipients.each do |number|
+              row_new = [number, tmp_message[k]]
+              new_book.worksheet(0).insert_row(ind, row_new)
+              ind += 1
+              k += 1
+            end
+
+            spreadsheet = StringIO.new 
+            new_book.write spreadsheet 
+
+            filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
+
+            send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
           end
         end
       end
     end
+  end
+  
+  def send_sms_student_fees_combined(fee_collections, student_ids,message,download_opt,sent_to)
+    fee_collections_ids = []
+    fee_collections.each do |fee_collection|
+      fee_collection_name = fee_collection.name
+      fee_collections_ids << FinanceFeeCollection.find_all_by_name(fee_collection_name).map(&:id)
+    end
+    fee_collections_ids = fee_collections_ids.reject { |c| c.empty? }
+    fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections_ids.join(",")}) and is_paid = #{false} and balance > 0 and students.id IN (#{student_ids.join(',')})" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id  and finance_fees.batch_id = students.batch_id INNER JOIN finance_fee_collections ON finance_fees.fee_collection_id = finance_fee_collections.id ')
     
-    if sent_to.to_i == 3
-      fees_students.each do |fee|
-        std = Student.find(fee.student_id)
-        balance = '%.2f' % fee.balance 
+    @recipients=[]
+    i = 0
+    tmp_message = []
+    row_header = ['Mobile No','Message']
+    csv = true
+    if MultiSchool.current_school.id == 352
+      row_header = ['start','']
+      csv = false
+    end
+    sms_setting = SmsSetting.new()
+    student_ids.each do |s|
+      fee = fees_students.select{|f| f.student_id.to_i == s.to_i}
+      #abort(fee.inspect)
+      balance = fee.map{|f|f.balance.to_f}.sum
+      #balance = fee.total_balance
+      
+      if sent_to.to_i == 2
+        std = Student.find(s.to_i)
+        balance = '%.2f' % balance 
         full_name = std.full_name
         unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
           tmp_message[i] = message
           tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
           tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
           tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
           i += 1
           @recipients.push std.sms_number
         else
@@ -1313,7 +1522,33 @@ class SmsController < ApplicationController
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee.due_date.to_date.strftime("%d-%b-%Y"))
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+            i += 1
+            @recipients.push std.phone2
+          end
+        end
+      end
+
+      if sent_to.to_i == 3
+        std = Student.find(s.to_i)
+        #balance = '%.2f' % fee.total_balance
+        balance = '%.2f' % balance
+        full_name = std.full_name
+        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
+          tmp_message[i] = message
+          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+          i += 1
+          @recipients.push std.sms_number
+        else
+          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+            tmp_message[i] = message
+            tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+            tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+            tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+            tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
             @recipients.push std.phone2
           end
@@ -1351,12 +1586,12 @@ class SmsController < ApplicationController
           Spreadsheet.client_encoding = 'UTF-8'
           row_1 = row_header
           new_book = Spreadsheet::Workbook.new
-          
+
           new_book.create_worksheet :name => 'Student Data'
           new_book.worksheet(0).insert_row(0, row_1)
-          
+
           new_book.worksheet(0).row(0).format 2
-          
+
           ind = 1
           k = 0
           @recipients.each do |number|
@@ -1365,15 +1600,16 @@ class SmsController < ApplicationController
             ind += 1
             k += 1
           end
-          
+
           spreadsheet = StringIO.new 
           new_book.write spreadsheet 
-          
+
           filename = "#{MultiSchool.current_school.name}-sms-list-#{Time.now.to_date.to_s}.xls"
-          
+
           send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
         end
       end
     end
+    
   end
 end

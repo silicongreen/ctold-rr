@@ -27,7 +27,17 @@
           <option value="<%= d.id %>"><%= d.name %></option>
         <% end %>  
       <% end %>  
+      <option value="0">Combined Dues</option>      
     </select>
+  </div>
+  <div style="clear: both; height: 12px;"></div> 
+  <div id="combined_fees" style="float: left; width: 100%; display: none;">
+    <div class="label-container"><label><%= "Select Multiple Fess" %>:</label> </div>
+    <div class="text-input-bg text-input-bg2" style="height: 320px; "><%= select :fee_collection, :collection_id,
+       @finance_fee_collections.map {|f| [f.name, f.id]},
+       {},{:multiple => true} %>
+    </div>
+    <div style="clear: both; height: 2px;"></div>   
   </div>
   <div style="clear: both; height: 12px;"></div> 
   <div class="label-field-pair">

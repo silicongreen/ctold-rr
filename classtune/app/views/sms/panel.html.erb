@@ -367,6 +367,13 @@ p.flash-msg
     }
   }
   document.observe("dom:loaded", function() {
+      j(document).on("click","#fee_collections", function(){
+          j("#combined_fees").hide();
+          if ( j(this).val() == "0" )
+          {
+              j("#combined_fees").show();
+          }
+      });
       j(document).on("click",".sms_options_fa",function(){
           var a_id = this.id.split('_');
           var id = a_id[1];
@@ -521,13 +528,26 @@ p.flash-msg
                 }
                 else if ( j("#option_sms").val() == "student_feedues" )
                 {
-                    new Ajax.Request('/sms/show_option_student_feedues', 
-                        {
-                          asynchronous:true, 
-                          evalScripts:true,
-                          parameters:'fee_id='+j("#fee_collections").val()
-                        }
-                   );
+                    if ( parseInt(j("#fee_collections").val()) == 0 )
+                    {
+                        new Ajax.Request('/sms/show_option_student_feedues', 
+                            {
+                              asynchronous:true, 
+                              evalScripts:true,
+                              parameters:'fee_id='+j("#fee_collections").val() + '&fee_collection_ids=' + j("#fee_collection_collection_id").val()
+                            }
+                       );
+                    }
+                    else
+                    {
+                      new Ajax.Request('/sms/show_option_student_feedues', 
+                          {
+                            asynchronous:true, 
+                            evalScripts:true,
+                            parameters:'fee_id='+j("#fee_collections").val()
+                          }
+                     );
+                   }
                 }
              }
           }

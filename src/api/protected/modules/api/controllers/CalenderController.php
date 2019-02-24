@@ -725,7 +725,7 @@ class CalenderController extends Controller
             }
         }
        
-        if($studentdata->school_id == 352 or $studentdata->school_id == 312)
+        if($studentdata->school_id == 352)
         {
             $sms_numbers = array();
             $sms_msg_array = array(); 

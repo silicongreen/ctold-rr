@@ -316,17 +316,21 @@ if @total_std.blank?
 
 
 
-            if full_mark1 >=100
+            if full_mark1 == 75
+              full_mark1 = 75
+              elsif full_mark1 >=100
               full_mark1 = 100
               else
               full_mark1 = 50
               end  
 
-            if full_mark2 >=100
+            if full_mark2 == 75
+              full_mark2 = 75
+              elsif full_mark2 >=100
               full_mark2 = 100
               else
               full_mark2 = 50
-              end  
+              end   
 
             total_mark2_no_round = total_mark2
             full_mark2 = full_mark2
@@ -672,12 +676,12 @@ if @total_std.blank?
               if full_mark2 > 0 && monthly_full_mark1 != 0
                 full_mark2 = full_mark2+20
                 exam_type = 2
-              end
+                end
 
               if full_mark1 > 0 && exam_type == 3 && monthly_full_mark2 != 0
                 full_mark1 = full_mark1+20
                 exam_type = 3
-              end 
+                end 
 
               if monthly_total_mark1 > 0
                 monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20

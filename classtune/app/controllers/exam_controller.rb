@@ -5265,17 +5265,21 @@ class ExamController < ApplicationController
 
 
 
-                if full_mark1 >=100
+                if full_mark1 == 75
+                  full_mark1 = 75
+                elsif full_mark1 >=100
                   full_mark1 = 100
                 else
                   full_mark1 = 50
                 end  
 
-                if full_mark2 >=100
+                if full_mark2 == 75
+                  full_mark2 = 75
+                elsif full_mark2 >=100
                   full_mark2 = 100
                 else
                   full_mark2 = 50
-                end  
+                end   
 
                 total_mark2_no_round = total_mark2
                 full_mark2 = full_mark2

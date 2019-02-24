@@ -1500,57 +1500,59 @@ class SmsController < ApplicationController
     sms_setting = SmsSetting.new()
     student_ids.each do |s|
       fee = fees_students.select{|f| f.student_id.to_i == s.to_i}
-      #abort(fee.inspect)
-      balance = fee.map{|f|f.balance.to_f}.sum
-      #balance = fee.total_balance
-      
-      if sent_to.to_i == 2
-        std = Student.find(s.to_i)
-        balance = '%.2f' % balance 
-        full_name = std.full_name
-        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
-          tmp_message[i] = message
-          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
-          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
-          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
-          i += 1
-          @recipients.push std.sms_number
-        else
-          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+      unless fee.blank?
+        #abort(fee.inspect)
+        balance = fee.map{|f|f.balance.to_f}.sum
+        #balance = fee.total_balance
+
+        if sent_to.to_i == 2
+          std = Student.find(s.to_i)
+          balance = '%.2f' % balance 
+          full_name = std.full_name
+          unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
             tmp_message[i] = message
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
             tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
-            @recipients.push std.phone2
+            @recipients.push std.sms_number
+          else
+            unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+              tmp_message[i] = message
+              tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+              tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+              tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+              i += 1
+              @recipients.push std.phone2
+            end
           end
         end
-      end
 
-      if sent_to.to_i == 3
-        std = Student.find(s.to_i)
-        #balance = '%.2f' % fee.total_balance
-        balance = '%.2f' % balance
-        full_name = std.full_name
-        unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
-          tmp_message[i] = message
-          tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
-          tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
-          tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
-          tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
-          i += 1
-          @recipients.push std.sms_number
-        else
-          unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+        if sent_to.to_i == 3
+          std = Student.find(s.to_i)
+          #balance = '%.2f' % fee.total_balance
+          balance = '%.2f' % balance
+          full_name = std.full_name
+          unless std.sms_number.nil? or std.sms_number.empty? or std.sms_number.blank?
             tmp_message[i] = message
             tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
             tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
             tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
             tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
             i += 1
-            @recipients.push std.phone2
+            @recipients.push std.sms_number
+          else
+            unless std.phone2.nil? or std.phone2.empty? or std.phone2.blank?
+              tmp_message[i] = message
+              tmp_message[i] = tmp_message[i].gsub("#UNAME#", full_name)
+              tmp_message[i] = tmp_message[i].gsub("#UID#", std.admission_no)
+              tmp_message[i] = tmp_message[i].gsub("#AMOUNT#", balance)
+              tmp_message[i] = tmp_message[i].gsub("#DUE_DATE#", fee[0].due_date.to_date.strftime("%d-%b-%Y"))
+              i += 1
+              @recipients.push std.phone2
+            end
           end
         end
       end

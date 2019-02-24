@@ -38,7 +38,7 @@
           </tr>
           <tr class="odd">
               <td class="align-right col-pdf" width="20%">Session </td>
-              <td class="align-left"><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+              <td class="align-left"><%= @batch.course.session %></td>
               <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
           </tr>
           <tr class="even">
@@ -340,7 +340,10 @@
                               <% if full_mark.to_f >= 100 %>
                                <% full_mark_all = 100 %>
                                <td class="col-pdf">100</td>
-                              <% else %>    
+                              <% elsif full_mark.to_f == 75 %>  
+                               <% full_mark_all = 75 %>
+                               <td class="col-pdf">75</td>
+                              <% else %>  
                                 <td class="col-pdf">50</td>
                               <% end %>
                             

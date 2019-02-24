@@ -793,6 +793,7 @@ class AttendanceController extends Controller
         {
             $notification_id = implode(",", $reminder_ids);
             $user_id = implode(",", $receiptionist_ids);
+            Settings::sendNotification($notification_id, $user_id);
             //shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
            
         }

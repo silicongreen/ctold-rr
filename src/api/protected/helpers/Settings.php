@@ -2,8 +2,8 @@
 
 class Settings {
 
-    public static $sync_off = false; 
-    public static $school_card_time_zone = array(2=>"UTC",3=>"UTC",246=>"UTC");
+    public static $sync_off = false;
+    public static $school_card_time_zone = array(2 => "UTC", 3 => "UTC", 246 => "UTC");
     public static $domain_name = 'http://www.champs21.com/';
     public static $classtune_domain_name = 'http://www.classtune.com/';
     public static $image_path = 'http://www.champs21.com/';
@@ -13,7 +13,7 @@ class Settings {
     public static $paid_image_path = "../../classtune/public/";
     public static $notice_attachment_path = "../../classtune/public/uploads/news/attachments/";
     public static $acacal_attachment_path = "../../classtune/public/uploads/acacals/attachments/";
-    public static $upload_image_in_classtune = TRUE; 
+    public static $upload_image_in_classtune = TRUE;
     public static $inner_post_to_show = 15;
     public static $api_llicence_key = "fa@#25896321";
     public static $count_update_by = 3;
@@ -25,24 +25,20 @@ class Settings {
     public static $HomeworkText = "New Homework";
     public static $AssignmentText = "New Assignment";
     public static $ClassworkText = "New Classwork";
-    
     public static $education_changes_life = 59;
     public static $notification_url = "http://www.champs21.com/front/ajax/send_paid_notification";
     public static $mail_url = "http://www.champs21.com/front/ajax/send_email_to_user_api";
     public static $free_domain_string = array("free");
-    public static $card_attendence_school = [2,3,246,319,352,312];
-    public static $card_attendence_school_employee_only = [319,312];
-    
+    public static $card_attendence_school = [2, 3, 246, 319, 352, 312];
+    public static $card_attendence_school_employee_only = [319, 312];
     public static $school_sms_extra_string = array(
         319 => " GH."
     );
-    
     public static $version_update = array(
-      "version"         => 18,
-      "toast_update"    => FALSE,
-      "must_update"     => TRUE
+        "version" => 18,
+        "toast_update" => FALSE,
+        "must_update" => TRUE
     );
-    
     //spelling bee config
     public static $mobile_operator = array("17", "16", "15", "11", "18");
     public static $method = array("c", "p", "s", "m", "d");
@@ -237,15 +233,12 @@ class Settings {
         'syllabus lsubjects' => "Lessonplans Index",
         'syllabus lessonplansstd' => "Lessonplans Index"
     );
-    
-    public static $_ar_language = array( 'en' => 'ENG', 'bn' => 'BAN',);
-    
-    public static function addReminderHomeworkClasswork($subject_details,$obj,$for="Homework")
-    {
+    public static $_ar_language = array('en' => 'ENG', 'bn' => 'BAN',);
+
+    public static function addReminderHomeworkClasswork($subject_details, $obj, $for = "Homework") {
         $batchObj = new Batches();
         $batch_details = $batchObj->findByPk($subject_details->batch_id);
-        if($batch_details)
-        {
+        if ($batch_details) {
             $courseObj = new Courses();
             $course_details = $courseObj->findByPk($batch_details->course_id);
         }
@@ -255,26 +248,21 @@ class Settings {
         $empObj = new Employees();
         $emp_details = $empObj->findByPk(Yii::app()->user->profileId);
         $notification_ids = array();
-        if($admin_user && isset($course_details) && isset($emp_details) && $course_details && $emp_details)
-        {
-            foreach ($admin_user as $value)
-            {
+        if ($admin_user && isset($course_details) && isset($emp_details) && $course_details && $emp_details) {
+            foreach ($admin_user as $value) {
                 $reminder = new Reminders();
                 $reminder->sender = Yii::app()->user->id;
-                $reminder->subject = "New ".$for." '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name;
-                $reminder->body = "New ".$for."  '" . $title."' added for " . $subject_details->name . " (".$course_details->course_name." ".$course_details->section_name.") by ".$emp_details->first_name." ".$emp_details->last_name.". Please check the ".$for." For details";
+                $reminder->subject = "New " . $for . " '" . $title . "' added for " . $subject_details->name . " (" . $course_details->course_name . " " . $course_details->section_name . ") by " . $emp_details->first_name . " " . $emp_details->last_name;
+                $reminder->body = "New " . $for . "  '" . $title . "' added for " . $subject_details->name . " (" . $course_details->course_name . " " . $course_details->section_name . ") by " . $emp_details->first_name . " " . $emp_details->last_name . ". Please check the " . $for . " For details";
                 $reminder->recipient = $value;
                 $reminder->school_id = Yii::app()->user->schoolId;
                 $reminder->rid = $obj->id;
-                
-                if($for == "Homework")
-                {
+
+                if ($for == "Homework") {
                     $reminder->rtype = 4;
-                }
-                else
-                {
+                } else {
                     $reminder->rtype = 31;
-                }    
+                }
                 $reminder->batch_id = 0;
                 $reminder->student_id = 0;
                 $reminder->created_at = date("Y-m-d H:i:s");
@@ -284,12 +272,10 @@ class Settings {
             }
         }
         return $notification_ids;
-    }        
-    
-    public static function save_attt_to_log( $att_data, $attendance = 0, $is_subject=false )
-    {
-        if($is_subject == false)
-        {
+    }
+
+    public static function save_attt_to_log($att_data, $attendance = 0, $is_subject = false) {
+        if ($is_subject == false) {
             $attendance_logs = new AttendanceLogs();
             $attendance_logs->employee_id = Yii::app()->user->profileId;
             $attendance_logs->date = $att_data->month_date;
@@ -301,9 +287,7 @@ class Settings {
             $attendance_logs->created_at = date("Y-m-d H:i:s");
             $attendance_logs->updated_at = microtime(true);
             $attendance_logs->save();
-        } 
-        else
-        {
+        } else {
             $attendance_logs = new AttendanceLogs();
             $attendance_logs->employee_id = Yii::app()->user->profileId;
             $attendance_logs->date = $att_data->attendance_date;
@@ -315,57 +299,46 @@ class Settings {
             $attendance_logs->created_at = date("Y-m-d H:i:s");
             $attendance_logs->updated_at = microtime(true);
             $attendance_logs->save();
-        }    
+        }
     }
-    
-    public static function getProfileImagePaidPath($free_user_id)
-    {
+
+    public static function getProfileImagePaidPath($free_user_id) {
         $profile_image = "";
         $free = new Freeusers();
         $userinfo = $free->findByPk($free_user_id);
-        
-        if($userinfo && $userinfo->paid_id && $userinfo->paid_username && $userinfo->paid_password && self::$upload_image_in_classtune)
-        {
-            
+
+        if ($userinfo && $userinfo->paid_id && $userinfo->paid_username && $userinfo->paid_password && self::$upload_image_in_classtune) {
+
             $puser = new Users();
             $puserinfo = $puser->getUser($userinfo->paid_username);
-            if($puserinfo)
-            {
-                
-                if($puserinfo->student)
-                {
+            if ($puserinfo) {
+
+                if ($puserinfo->student) {
                     $stdObj = new Students();
                     $std_info = $stdObj->getStudentByUserId($puserinfo->id);
-                    if($std_info)
-                    {
-                         $profile_image = self::getImageUploadPath($std_info,"students");    
-                        
+                    if ($std_info) {
+                        $profile_image = self::getImageUploadPath($std_info, "students");
                     }
-                } 
-                else if($puserinfo->employee)
-                {
-                    
+                } else if ($puserinfo->employee) {
+
                     $empObj = new Employees();
                     $emp_info = $empObj->getEmployeeByUserId($puserinfo->id);
-                  
-                    if($emp_info)
-                    {
-                        $profile_image = self::getImageUploadPath($emp_info,"employees"); 
+
+                    if ($emp_info) {
+                        $profile_image = self::getImageUploadPath($emp_info, "employees");
                     }
-                }    
+                }
             }
-        }    
-       
+        }
+
         return $profile_image;
-        
     }
-    public static function getImageUploadPath($obj, $type = "students")
-    {
-        
-        $image_url = self::$paid_image_path."uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".$obj->id."/original/";
-        @mkdir($image_url, 0777,true);
+
+    public static function getImageUploadPath($obj, $type = "students") {
+
+        $image_url = self::$paid_image_path . "uploads/000/000/" . self::numberFormat($obj->school_id) . "/" . $type . "/photos/" . $obj->id . "/original/";
+        @mkdir($image_url, 0777, true);
         return $image_url;
-        
     }
 
     public static function getBingTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl) {
@@ -413,17 +386,15 @@ class Settings {
             echo "Exception-" . $e->getMessage();
         }
     }
-    
-    public static function can_play_spelling_bee($freeuserObj)
-    {
+
+    public static function can_play_spelling_bee($freeuserObj) {
         $response = 0;
-                        
-        if($freeuserObj->mobile_no && $freeuserObj->email)
-        {
+
+        if ($freeuserObj->mobile_no && $freeuserObj->email) {
             $response = 1;
         }
         return $response;
-    }        
+    }
 
     public static function download_bing_audio($strWord) {
         $sound_status = 0;
@@ -551,7 +522,7 @@ class Settings {
         } else {
             foreach ($main_array as $value) {
                 if (isset($character_array[$value])) {
-                    $return_string.=$character_array[$value];
+                    $return_string .= $character_array[$value];
                 } else {
                     return false;
                     break;
@@ -602,99 +573,80 @@ class Settings {
         }
         return false;
     }
-    public static function getProfileImagePaid($user_id)
-    {
+
+    public static function getProfileImagePaid($user_id) {
         $profile_image = "";
         $puser = new Users();
         $puserinfo = $puser->findByPk($user_id);
-        if($puserinfo)
-        {
+        if ($puserinfo) {
 
-            if($puserinfo->student)
-            {
+            if ($puserinfo->student) {
                 $stdObj = new Students();
                 $std_info = $stdObj->getStudentByUserId($puserinfo->id);
-                if($std_info && $std_info->photo_file_name)
-                {
-                     $profile_image = self::getImageUrlEmSt($std_info,"students");    
-
+                if ($std_info && $std_info->photo_file_name) {
+                    $profile_image = self::getImageUrlEmSt($std_info, "students");
                 }
-            } 
-            else if($puserinfo->employee || $puserinfo->admin)
-            {
+            } else if ($puserinfo->employee || $puserinfo->admin) {
 
                 $empObj = new Employees();
                 $emp_info = $empObj->getEmployeeByUserId($puserinfo->id);
 
-                if($emp_info && $emp_info->photo_file_name)
-                {
+                if ($emp_info && $emp_info->photo_file_name) {
 
-                    $profile_image = self::getImageUrlEmSt($emp_info,"employees"); 
+                    $profile_image = self::getImageUrlEmSt($emp_info, "employees");
                 }
-            }    
+            }
         }
-        return $profile_image;   
+        return $profile_image;
     }
-    public static function getProfileImage($free_user_id)
-    {
+
+    public static function getProfileImage($free_user_id) {
         $profile_image = "";
         $free = new Freeusers();
         $userinfo = $free->findByPk($free_user_id);
-        
-        if($userinfo && $userinfo->paid_id && $userinfo->paid_username && $userinfo->paid_password)
-        {
-            
+
+        if ($userinfo && $userinfo->paid_id && $userinfo->paid_username && $userinfo->paid_password) {
+
             $puser = new Users();
             $puserinfo = $puser->getUser($userinfo->paid_username);
-            if($puserinfo)
-            {
-                
-                if($puserinfo->student)
-                {
+            if ($puserinfo) {
+
+                if ($puserinfo->student) {
                     $stdObj = new Students();
                     $std_info = $stdObj->getStudentByUserId($puserinfo->id);
-                    if($std_info && $std_info->photo_file_name)
-                    {
-                         $profile_image = self::getImageUrlEmSt($std_info,"students");    
-                        
+                    if ($std_info && $std_info->photo_file_name) {
+                        $profile_image = self::getImageUrlEmSt($std_info, "students");
                     }
-                } 
-                else if($puserinfo->employee || $puserinfo->admin)
-                {
-                    
+                } else if ($puserinfo->employee || $puserinfo->admin) {
+
                     $empObj = new Employees();
                     $emp_info = $empObj->getEmployeeByUserId($puserinfo->id);
-                  
-                    if($emp_info && $emp_info->photo_file_name)
-                    {
-                        
-                        $profile_image = self::getImageUrlEmSt($emp_info,"employees"); 
+
+                    if ($emp_info && $emp_info->photo_file_name) {
+
+                        $profile_image = self::getImageUrlEmSt($emp_info, "employees");
                     }
-                }    
+                }
             }
-        }    
-        
-        if(!$profile_image && $userinfo && $userinfo->profile_image)
-        {
-            
-           $profile_image = $userinfo->profile_image;
-           
+        }
+
+        if (!$profile_image && $userinfo && $userinfo->profile_image) {
+
+            $profile_image = $userinfo->profile_image;
         }
         return $profile_image;
-        
     }
-    public static function getImageUrlEmSt($obj, $type = "students")
-    {
+
+    public static function getImageUrlEmSt($obj, $type = "students") {
         $profile_image = "";
         $sd = new SchoolDomains();
         $domains = $sd->getSchoolDomainBySchoolId($obj->school_id);
-        if($domains)
-        {
-            $image_url = "http://".$domains->domain."/uploads/000/000/".self::numberFormat($obj->school_id)."/".$type."/photos/".$obj->id."/original/".$obj->photo_file_name;
+        if ($domains) {
+            $image_url = "http://" . $domains->domain . "/uploads/000/000/" . self::numberFormat($obj->school_id) . "/" . $type . "/photos/" . $obj->id . "/original/" . $obj->photo_file_name;
 //            list($width, $height, $type, $attr) = getimagesize($image_url);
 //            if(isset($width) && $width)
 //            {
-                $profile_image = $image_url;
+            $profile_image = $image_url;
 //            }
 //            else
 //            {
@@ -702,26 +654,19 @@ class Settings {
 //            }    
         }
         return $profile_image;
-    }        
+    }
 
-    public static function numberFormat($i)
-    {
+    public static function numberFormat($i) {
         $formated_i = "";
-        if($i<10)
-        {
-            $formated_i = "00".$i;
-        } 
-        else if($i<100)
-        {
-            $formated_i = "0".$i;
-        }  
-        else
-        {
+        if ($i < 10) {
+            $formated_i = "00" . $i;
+        } else if ($i < 100) {
+            $formated_i = "0" . $i;
+        } else {
             $formated_i = $i;
-        }   
+        }
         return $formated_i;
-    }        
-    
+    }
 
     public static function setSpellTvCache($cache_name, $response) {
         $cachefile = new CFileCache();
@@ -884,7 +829,7 @@ class Settings {
             $randomString1 .= $characters[rand(0, $charactersLength - 1)];
         }
 
-        $encoded_method.= $randomString1 . $method_main;
+        $encoded_method .= $randomString1 . $method_main;
 
 
         $randomString2 = '';
@@ -893,7 +838,7 @@ class Settings {
         }
 
 
-        $encoded_method.=$randomString2;
+        $encoded_method .= $randomString2;
 
         return $encoded_method;
     }
@@ -991,7 +936,7 @@ class Settings {
             }
         }
 
-        
+
         if (isset($send_id_decrepted) && $send_id_decrepted == $session_id) {
             $response[$session_id][] = $send_id;
             self::setSpellTvCache($cache_name, $response);
@@ -999,16 +944,15 @@ class Settings {
         }
         return FALSE;
     }
-    public static function dateOverSpellTv()
-    {
+
+    public static function dateOverSpellTv() {
         $last_date = "2016-02-10";
         $current_date = date("Y-m-d");
-        if( $current_date>$last_date )
-        {
+        if ($current_date > $last_date) {
             return TRUE;
-        } 
+        }
         return FALSE;
-    }        
+    }
 
     public static function authorizeUserCheck($left, $right, $method, $operator, $send_id, $session_id) {
 
@@ -1111,7 +1055,7 @@ class Settings {
         }
         return FALSE;
     }
-    
+
     public static function sendCurlMail($data) {
         $url = Settings::$mail_url;
         $fields = array(
@@ -1125,7 +1069,7 @@ class Settings {
 //        }
 //
 //        rtrim($fields_string, '&');
-        
+
         $fields_string = http_build_query($fields);
         $ch = curl_init();
 
@@ -1262,68 +1206,68 @@ class Settings {
         $findvalue = false;
         if ($datediff['Years'] > 0 && $to > 0) {
             if ($datediff['Years'] > 1) {
-                $datestring.= $datediff['Years'] . " Years";
+                $datestring .= $datediff['Years'] . " Years";
             } else {
-                $datestring.= $datediff['Years'] . " Year";
+                $datestring .= $datediff['Years'] . " Year";
             }
             $findvalue = true;
         }
         if ($datediff['Months'] > 0 && ($findvalue === false || $check == false) && $to > 1) {
             if ($findvalue) {
-                $datestring.= ", ";
+                $datestring .= ", ";
             }
             if ($datediff['Months'] > 1) {
-                $datestring.= $datediff['Months'] . " Months";
+                $datestring .= $datediff['Months'] . " Months";
             } else {
-                $datestring.= $datediff['Months'] . " Month";
+                $datestring .= $datediff['Months'] . " Month";
             }
 
             $findvalue = true;
         }
         if ($datediff['Days'] > 0 && ($findvalue === false || $check == false) && $to > 2) {
             if ($findvalue) {
-                $datestring.= ", ";
+                $datestring .= ", ";
             }
             if ($datediff['Days'] > 1) {
-                $datestring.= $datediff['Days'] . " Days";
+                $datestring .= $datediff['Days'] . " Days";
             } else {
-                $datestring.= $datediff['Days'] . " Day";
+                $datestring .= $datediff['Days'] . " Day";
             }
 
             $findvalue = true;
         }
         if ($datediff['Hours'] > 0 && ($findvalue === false || $check == false) && $to > 3) {
             if ($findvalue) {
-                $datestring.= ", ";
+                $datestring .= ", ";
             }
             if ($datediff['Hours'] > 1) {
-                $datestring.= $datediff['Hours'] . " Hours";
+                $datestring .= $datediff['Hours'] . " Hours";
             } else {
-                $datestring.= $datediff['Hours'] . " Hour";
+                $datestring .= $datediff['Hours'] . " Hour";
             }
 
             $findvalue = true;
         }
         if ($datediff['Minutes'] > 0 && ($findvalue === false || $check == false) && $to > 4) {
             if ($findvalue) {
-                $datestring.= ", ";
+                $datestring .= ", ";
             }
             if ($datediff['Minutes'] > 1) {
-                $datestring.= $datediff['Minutes'] . " Minutes";
+                $datestring .= $datediff['Minutes'] . " Minutes";
             } else {
-                $datestring.= $datediff['Minutes'] . " Minute";
+                $datestring .= $datediff['Minutes'] . " Minute";
             }
 
             $findvalue = true;
         }
         if ($datediff['Seconds'] > 0 && ($findvalue === false || $check == false) && $to > 5) {
             if ($findvalue) {
-                $datestring.= ", ";
+                $datestring .= ", ";
             }
             if ($datediff['Seconds'] > 1) {
-                $datestring.= $datediff['Seconds'] . " Seconds";
+                $datestring .= $datediff['Seconds'] . " Seconds";
             } else {
-                $datestring.= $datediff['Seconds'] . " Second";
+                $datestring .= $datediff['Seconds'] . " Second";
             }
 
             $findvalue = true;
@@ -1734,7 +1678,7 @@ class Settings {
                         $post_array['add_images'][$j]['ad_image'] = Settings::get_mobile_image(Settings::$image_path . $value['material']->material_url);
                         $post_array['add_images'][$j]['ad_image_link'] = $value->source;
                         $post_array['add_images'][$j]['ad_image_caption'] = $value->caption;
-                        
+
                         $post_array['add_images'][$j]['ad_image_category'] = $value->category_id;
                         $post_array['add_images'][$j]['ad_image_subcategory'] = $value->subcategory_id;
                         if ($j == 1) {
@@ -1877,19 +1821,18 @@ class Settings {
             return false;
         }
     }
-    public static function content_single_images($content)
-    {
+
+    public static function content_single_images($content) {
         $doc = new DOMDocument();
         @$doc->loadHTML($content);
         $images = $doc->getElementsByTagName('img');
         $content_image = "";
-        foreach ($images as $image) 
-        {
+        foreach ($images as $image) {
             $content_image = $image->getAttribute('src');
             break;
         }
         return $content_image;
-    }        
+    }
 
     public static function content_images($content, $first_image = true, $lead_material = false) {
         $doc = new DOMDocument();
@@ -1966,7 +1909,173 @@ class Settings {
 
         return $ar_ids;
     }
-    
+
+    public static function sendNotification($notification_ids,$user_ids) {
+//        $servername = "localhost";
+//        $username = "champs21_school";
+//        $password = "u[QXL=OF%D,F";
+//        $dbname_source = "champs21_school";
+        
+        $servername = "localhost";
+        $username = "champs21";
+        $password = "079366";
+        $dbname_source = "champs21_school";
+
+        // Create connection
+        $conn_source = new mysqli($servername, $username, $password, $dbname_source);
+        // Check connection
+        if ($conn_source->connect_error) {
+            die("Connection failed: " . $conn_source->connect_error);
+        }
+        $user_id_array = explode("*", $user_ids);
+        $notification_id_array = explode("*", $notification_ids);
+        if (count($user_ids) > 0 && count($user_ids) == count($notification_ids)) {
+            foreach ($user_id_array as $key => $value) {
+
+                $notification_id = $notification_id_array[$key];
+                $user_id = $value;
+                $user_type = 0;
+                $total_unread = 0;
+                $notification = array();
+
+                $sql = "SELECT * FROM reminders where id = '" . $notification_id . "'";
+                $res2 = $conn_source->query($sql);
+                if ($res2->num_rows > 0) {
+                    $notification = $res2->fetch_object();
+                }
+
+                $sql = "SELECT count(id) as total_unread FROM reminders where recipient = '" . $user_id . "' and is_deleted_by_sender=0 and is_deleted_by_recipient = 0 and is_read = 0";
+                $res2 = $conn_source->query($sql);
+                if ($res2->num_rows > 0) {
+                    $notification_count = $res2->fetch_object();
+                    $total_unread = $notification_count->total_unread;
+                }
+
+                $sql = "SELECT * FROM users where id = '" . $user_id . "'";
+                $res2 = $conn_source->query($sql);
+                if ($res2->num_rows > 0) {
+                    $user = $res2->fetch_object();
+                    if ($user->admin) {
+                        $user_type = 1;
+                    }
+                    if ($user->student) {
+                        $user_type = 3;
+                    }
+                    if ($user->employee) {
+                        $user_type = 2;
+                    }
+                    if ($user->parent) {
+                        $user_type = 4;
+                    }
+                }
+
+                $all_gcm_user = array();
+                $all_fcm_user = array();
+                $sql = "SELECT tds_gcm_ids.gcm_id as gcmid,tds_gcm_ids.fcm_converted as fcm_converted FROM tds_user_gcm LEFT JOIN tds_gcm_ids on tds_gcm_ids.id = tds_user_gcm.gcm_id where tds_user_gcm.user_id = '" . $user_id . "'";
+                
+                $res2 = $conn_source->query($sql);
+                if ($res2->num_rows > 0) {
+                    while ($gcm_ids = $res2->fetch_object()) {
+                        if ($gcm_ids->fcm_converted == 0) {
+                            $all_gcm_user[] = $gcm_ids->gcmid;
+                        } else {
+                            $all_fcm_user[] = $gcm_ids->gcmid;
+                        }
+                    }
+                }
+                
+                if (count($notification) > 0 && $user->email_alert == 1) {
+                    send_smtp_mail($user->email, $user->first_name . " " . $user->last_name, $notification->subject, $notification->body);
+                }
+
+                if ($user_type && $total_unread && count($all_fcm_user) > 0 && count($notification) > 0) {
+                    // API access key from Google API's Console
+                    define('API_ACCESS_KEY', 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw');
+
+                    $messege = $notification->body;
+                    
+                    // prep the bundle
+                    $msg = array
+                        (
+                        'message' => $messege,
+                        "key" => "paid",
+                        'total_unread' => $total_unread,
+                        "user_type" => $user_type,
+                        "subject" => $notification->subject,
+                        "rtype" => $notification->rtype,
+                        "rid" => $notification->rid,
+                        "batch_id" => $notification->batch_id,
+                        "student_id" => $notification->student_id
+                    );
+                    $fields = array
+                        (
+                        'registration_ids' => $all_fcm_user,
+                        'data' => $msg
+                    );
+
+                    $headers = array
+                        (
+                        'Authorization: key=' . API_ACCESS_KEY,
+                        'Content-Type: application/json'
+                    );
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                    $result = curl_exec($ch);
+                    curl_close($ch);
+                }
+
+                if ($user_type && $total_unread && count($all_gcm_user) > 0 && count($notification) > 0) {
+                    // API access key from Google API's Console
+                    define('API_ACCESS_KEY2', 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk');
+
+                    $messege = $notification->body;
+                    
+                    // prep the bundle
+                    $msg = array
+                        (
+                        'message' => $messege,
+                        "key" => "paid",
+                        'total_unread' => $total_unread,
+                        "user_type" => $user_type,
+                        "subject" => $notification->subject,
+                        "rtype" => $notification->rtype,
+                        "rid" => $notification->rid,
+                        "batch_id" => $notification->batch_id,
+                        "student_id" => $notification->student_id
+                    );
+                    $fields = array
+                        (
+                        'registration_ids' => $all_gcm_user,
+                        'data' => $msg
+                    );
+
+                    $headers = array
+                        (
+                        'Authorization: key=' . API_ACCESS_KEY2,
+                        'Content-Type: application/json'
+                    );
+
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+                    $result = curl_exec($ch);
+                    curl_close($ch);
+                }
+            }
+           
+        }
+    }
+
     public static function getUniqueId($id = 0, $max_length = 12) {
 
         $id_len = strlen($id);

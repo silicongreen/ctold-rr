@@ -782,6 +782,7 @@ class CalenderController extends Controller
             }
             $notification_id = implode(",", $notification_ids);
             $user_id = implode(",", $reminderrecipients);
+            Settings::sendNotification($notification_id, $user_id);
             //shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
         }
         if($sms_numbers && in_array(Yii::app()->user->schoolId,Sms::$sms_attendence_school))
@@ -877,6 +878,7 @@ class CalenderController extends Controller
             }
             $notification_id = implode(",", $notification_ids);
             $user_id = implode(",", $reminderrecipients);
+            Settings::sendNotification($notification_id, $user_id);
             //shell_exec("php pushnoti.php $notification_id $user_id  > /dev/null 2>/dev/null &");
         }
     }

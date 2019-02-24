@@ -201,12 +201,13 @@ class Sms
         {
             self::send_sms_sfx($sms_numbers, $sms_msg_array, $school_id);
         } 
-        else if ($school_id == 352 or $school_id = 346)
+        else if ($school_id == 352 or $school_id == 346)
         {
             self::send_sms_sagc($sms_numbers, $sms_msg_array, $school_id);
         }
         else
         {
+           
             $sms_params = array();
             if ($sms_numbers && in_array($school_id, self::$sms_attendence_school))
             {
@@ -238,6 +239,7 @@ class Sms
                 }
                 if ($sms_params)
                 {
+                    
                     $user = "classtune";
                     $pass = "ssl@123";
                     $sid = "ClassTune";

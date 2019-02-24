@@ -194,12 +194,18 @@ class Reminders extends CActiveRecord
             $criteria->offset = $start;
             $obj_reminder = $this->findAll($criteria);
             $reminder = array();
-            
+            $rid_rtype = array();
             if($obj_reminder)
             {
                 $i = 0;
                 foreach($obj_reminder as $value)
                 {
+                   $rid_rtype_string = $value->rid."-".$value->rtype;
+                   if(in_array($rid_rtype_string, $rid_rtype))
+                   {
+                       continue;
+                   }        
+                   $rid_rtype[] = $rid_rtype_string;
                    $reminder[$i]['id'] = $value->id;
                    $reminder[$i]['subject'] = "";
                    if($value->subject)

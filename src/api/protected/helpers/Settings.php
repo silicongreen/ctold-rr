@@ -1911,15 +1911,15 @@ class Settings {
     }
 
     public static function sendNotification($notification_ids,$user_ids) {
-//        $servername = "localhost";
-//        $username = "champs21_school";
-//        $password = "u[QXL=OF%D,F";
-//        $dbname_source = "champs21_school";
-        
         $servername = "localhost";
-        $username = "champs21";
-        $password = "079366";
+        $username = "champs21_school";
+        $password = "u[QXL=OF%D,F";
         $dbname_source = "champs21_school";
+        
+//        $servername = "localhost";
+//        $username = "champs21";
+//        $password = "079366";
+//        $dbname_source = "champs21_school";
 
         // Create connection
         $conn_source = new mysqli($servername, $username, $password, $dbname_source);

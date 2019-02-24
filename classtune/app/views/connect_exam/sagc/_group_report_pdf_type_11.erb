@@ -171,7 +171,10 @@
                             <% if full_mark.to_f >= 100 %>
                              <% full_mark_all = 100 %>
                              <td class="col-pdf">100</td>
-                            <% else %>    
+                            <% elsif full_mark.to_f == 75 %>  
+                             <% full_mark_all = 75 %>
+                             <td class="col-pdf">75</td>
+                            <% else %>  
                               <td class="col-pdf">50</td>
                             <% end %>
                             

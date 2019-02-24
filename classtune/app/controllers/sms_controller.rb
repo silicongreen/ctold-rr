@@ -235,10 +235,11 @@ class SmsController < ApplicationController
           fee_collections  =  FinanceFeeCollection.find(:all, :conditions => "id IN (#{params[:fee_collection_ids]})")
           fee_collection_students = []
           unless fee_collections.nil?  
+            batch_ids = params[:batch_id].split(",")
             fee_collections.each do |fee_collection|
               fee_collection_name = fee_collection.name
               fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
-              fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+              fee_collection_students << FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and finance_fees.batch_id IN (#{batch_ids}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
               #batches_id = 
             end
             fee_collection_students = fee_collection_students.reject { |c| c.empty? }
@@ -250,7 +251,7 @@ class SmsController < ApplicationController
             fee_collection_name = fee_collection.name
             fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
             #student_ids = fee_collection.finance_fees.find_all_by_batch_id(batch_ids).collect(&:student_id).join(',')
-            fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
+            fees_students = FinanceFee.find(:all, :conditions=>"fee_collection_id IN (#{fee_collections.map(&:id).join(",")}) and finance_fees.batch_id IN (#{batch_ids}) and is_paid = #{false} and balance > 0 " ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id').map(&:student_id)
             @students = Student.find_all_by_id(fees_students,:conditions=>"is_sms_enabled=true")
           end
         end

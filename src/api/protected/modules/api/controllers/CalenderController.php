@@ -714,7 +714,8 @@ class CalenderController extends Controller
             }    
             
         }
-        if($studentdata->school_id == 352)
+       
+        if($studentdata->school_id == 352 or $studentdata->school_id == 312)
         {
             $sms_numbers = array();
             $sms_msg_array = array(); 
@@ -775,6 +776,7 @@ class CalenderController extends Controller
         }
         if($sms_numbers && in_array(Yii::app()->user->schoolId,Sms::$sms_attendence_school))
         {
+         
             Sms::send_sms_ssl($sms_numbers, $sms_msg_array,  Yii::app()->user->schoolId);
         }
     }

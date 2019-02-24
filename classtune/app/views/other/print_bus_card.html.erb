@@ -56,23 +56,23 @@
                                 end
                             %>
                               <tr>
-                                  <td colspan="2">Father Name&nbsp;:&nbsp;<%= father %></td>
+                                  <td colspan="2" style="white-space: nowrap">Father Name&nbsp;:&nbsp;<%= father %></td>
                               </tr>
                               <tr>
-                                  <td colspan="2">Issue Date&nbsp;:&nbsp;<%= Time.now.strftime("%d-%m-%Y") %></td>
+                                  <td colspan="2" style="white-space: nowrap">Issue Date&nbsp;:&nbsp;<%= Time.now.strftime("%d-%m-%Y") %></td>
                               </tr>
                               <tr>
-                                  <td colspan="2">Mobile&nbsp;:&nbsp;<%= std_info.sms_number %></td>
+                                  <td colspan="2" style="white-space: nowrap">Mobile&nbsp;:&nbsp;<%= std_info.sms_number %></td>
                                  
                               </tr>
                               <tr>
                                   <%
                                   transport = @transports.find{|v| v.receiver_id = std_info.id}
                                 %>
-                                  <td colspan="2">Departure&nbsp;:&nbsp;<%= transport.route.destination unless transport.blank? %></td>
+                                  <td colspan="2" style="white-space: nowrap">Departure&nbsp;:&nbsp;<%= transport.route.destination unless transport.blank? %></td>
                               </tr>
                               <tr>
-                                  <td colspan="2">Bus No&nbsp;:&nbsp;<%= transport.vehicle.vehicle_no unless transport.blank? %></td>
+                                  <td colspan="2" style="white-space: nowrap">Bus No&nbsp;:&nbsp;<%= transport.vehicle.vehicle_no unless transport.blank? %></td>
                               </tr>
                           </tbody> 
                       </table>       
@@ -99,7 +99,7 @@
                       </div>
                   </div>
               </div> 
-              <div class="col-xs-6" style="border: 1px solid black; margin-left: 20px;padding-top: 16px;">
+              <div class="col-xs-6" style="border: 1px solid black; margin-left: 20px;padding-top: 10px;">
                 <div class="col-xs-12">
                       <center>
                           <b><font size="2">Rules & Regulation</font></b>

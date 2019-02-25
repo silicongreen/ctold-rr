@@ -1911,6 +1911,8 @@ class Settings {
     }
 
     public static function sendNotification($notification_ids,$user_ids) {
+        $api_access_key_gcm = 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk';
+        $api_access_key_fcm = 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw';
         $servername = "localhost";
         $username = "champs21_school";
         $password = "u[QXL=OF%D,F";
@@ -1990,7 +1992,7 @@ class Settings {
 
                 if ($user_type && $total_unread && count($all_fcm_user) > 0 && count($notification) > 0) {
                     // API access key from Google API's Console
-                    define('API_ACCESS_KEY', 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw');
+                    //define('API_ACCESS_KEY', 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw');
 
                     $messege = $notification->body;
                     
@@ -2015,7 +2017,7 @@ class Settings {
 
                     $headers = array
                         (
-                        'Authorization: key=' . API_ACCESS_KEY,
+                        'Authorization: key=' . $api_access_key_fcm,
                         'Content-Type: application/json'
                     );
 
@@ -2032,7 +2034,7 @@ class Settings {
 
                 if ($user_type && $total_unread && count($all_gcm_user) > 0 && count($notification) > 0) {
                     // API access key from Google API's Console
-                    define('API_ACCESS_KEY2', 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk');
+                   
 
                     $messege = $notification->body;
                     
@@ -2057,7 +2059,7 @@ class Settings {
 
                     $headers = array
                         (
-                        'Authorization: key=' . API_ACCESS_KEY2,
+                        'Authorization: key=' . $api_access_key_gcm,
                         'Content-Type: application/json'
                     );
 

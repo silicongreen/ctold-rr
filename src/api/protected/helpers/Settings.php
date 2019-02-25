@@ -1957,6 +1957,10 @@ class Settings {
                 $res2 = $conn_source->query($sql);
                 if ($res2->num_rows > 0) {
                     $user = $res2->fetch_object();
+                    if(!$user)
+                    {
+                        continue;
+                    }
                     if ($user->admin) {
                         $user_type = 1;
                     }

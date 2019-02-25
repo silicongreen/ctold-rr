@@ -405,7 +405,7 @@ class EmployeesSubjects extends CActiveRecord
            
             $criteria->with = array(
                 'subject' => array(
-                    'select' => 'subject.id,subject.name',
+                    'select' => 'DISTINCT subject.id,subject.name',
                     'joinType' => "INNER JOIN",
                     'with' => array(
                         "Subjectbatch" => array(

@@ -443,8 +443,14 @@ class EmployeesSubjects extends CActiveRecord
                     $subject_selected = explode(",", $subject_selected_string);
                 }
             }
+            $sub_id_array = [];
             foreach ($obj_subject as $value)
             {
+                if(in_array($value['subject']->id, $sub_id_array))
+                {
+                    continue;
+                }
+                $sub_id_array[] = $value['subject']->id;
                 if($return_selcted_subject_array)
                 {
                    if(in_array($value['subject']->id, $subject_selected))

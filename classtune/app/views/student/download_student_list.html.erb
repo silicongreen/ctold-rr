@@ -8,7 +8,7 @@
                 <% if !@section_pdf.blank? && @class_name_pdf.blank? %>
                   <% 
 
-                  main_course = course.find_by_section_name(@section_pdf)
+                  main_course = Course.find_by_section_name(@section_pdf)
                   @class_name_pdf = main_course.course_name
 
                 %>

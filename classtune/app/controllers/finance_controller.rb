@@ -3085,7 +3085,7 @@ class FinanceController < ApplicationController
               else
                 collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
                 if collection_discount.present?
-                  collection_discount.destory
+                  collection_discount.destroy
                 end
                 
                 @batch   = Batch.find(@batch_id)
@@ -3118,7 +3118,7 @@ class FinanceController < ApplicationController
             else
               collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
               if collection_discount.present?
-                collection_discount.destory
+                collection_discount.destroy
               end
               
               @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
@@ -3211,7 +3211,7 @@ class FinanceController < ApplicationController
               else
                 collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
                 if collection_discount.present?
-                  collection_discount.destory
+                  collection_discount.destroy
                 end
                 
                 render :update do |page|
@@ -3221,7 +3221,7 @@ class FinanceController < ApplicationController
             else
               collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
               if collection_discount.present?
-                collection_discount.destory
+                collection_discount.destroy
               end
               
               @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
@@ -3271,7 +3271,7 @@ class FinanceController < ApplicationController
               else
                 collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
                 if collection_discount.present?
-                  collection_discount.destory
+                  collection_discount.destroy
                 end
                 
                 render :update do |page|
@@ -3281,7 +3281,7 @@ class FinanceController < ApplicationController
             else
               collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
               if collection_discount.present?
-                collection_discount.destory
+                collection_discount.destroy
               end
               
               @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
@@ -3333,7 +3333,7 @@ class FinanceController < ApplicationController
               else
                 collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
                 if collection_discount.present?
-                  collection_discount.destory
+                  collection_discount.destroy
                 end
                 
                 render :update do |page|
@@ -3343,7 +3343,7 @@ class FinanceController < ApplicationController
             else
               collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
               if collection_discount.present?
-                collection_discount.destory
+                collection_discount.destroy
               end
               
               @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
@@ -4993,7 +4993,7 @@ class FinanceController < ApplicationController
                 else
                   collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,fee_collection_id, discount.finance_fee_particular_category_id)
                   if collection_discount.present?
-                    collection_discount.destory
+                    collection_discount.destroy
                   end
 
                   if discount.is_visible == false
@@ -5003,7 +5003,7 @@ class FinanceController < ApplicationController
               else
                 collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,fee_collection_id, discount.finance_fee_particular_category_id)
                 if collection_discount.present?
-                  collection_discount.destory
+                  collection_discount.destroy
                 end
 
                 @fee_collection = FinanceFeeCollection.find(fee_collection_id)
@@ -5149,7 +5149,7 @@ class FinanceController < ApplicationController
           else
             collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
             if collection_discount.present?
-              collection_discount.destory
+              collection_discount.destroy
             end
 
             if discount.is_visible == false
@@ -5162,7 +5162,7 @@ class FinanceController < ApplicationController
         else
           collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
           if collection_discount.present?
-            collection_discount.destory
+            collection_discount.destroy
           end
 
           @fee_collection = FinanceFeeCollection.find(@fee_collection_id)

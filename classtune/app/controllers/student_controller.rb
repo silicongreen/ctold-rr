@@ -2820,13 +2820,26 @@ class StudentController < ApplicationController
         @att_image = @attendence_text['data']['profile_picture']
       end
     end
+    if MultiSchool.current_school.id == 352
     render :pdf => "profile_pdf",
+      :page_size => 'Legal',
       :margin => {    :top=> 0,
       :bottom => 0,
       :left=> 10,
       :right => 10},
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    else
+      render :pdf => "profile_pdf",
+      :margin => {    :top=> 0,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
+      
+      
     
   end
 

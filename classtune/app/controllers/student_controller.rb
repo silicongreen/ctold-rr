@@ -275,7 +275,7 @@ class StudentController < ApplicationController
     @batch_name_pdf = batch_name = params[:batch_name]
     @version_pdf = version_name = params[:version_name]
     @class_name_pdf = class_name = params[:class_name]
-    session_name = params[:session_name]
+    @session_name_pdf = session_name = params[:session_name]
     @group_name_pdf = group_name = params[:group_name]
     @section_pdf = section_name = params[:section_name]
     category_name = params[:category_name]

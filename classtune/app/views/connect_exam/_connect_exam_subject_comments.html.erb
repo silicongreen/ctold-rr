@@ -163,7 +163,7 @@
         <% time_updated = @updated_at.to_time + 6*60*60+16*60 %>
         <h3> Last Updated : <%= I18n.l(time_updated, :format=>'%A, %d %B %Y %l:%M %p') %> </h3>
         <% end %>
-        <div id="sub-button" style="float:right; clear:both;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
+        <div id="sub-button" style="margin:0 auto;width: 50px;"><%= submit_tag "", :value => "► #{t('save')}", :class => "submit_button" %></div>
       <% end %> 
         
     <% end %>
@@ -264,7 +264,6 @@
     overflow-y: auto;
     padding-bottom: 5px;
     width: 930px;
-    max-height: 500px;
 }
 
 .td-mark .date2{

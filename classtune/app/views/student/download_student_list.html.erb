@@ -25,16 +25,30 @@
 
               main_course = Course.find_by_section_name(@section_pdf)
               @class_name_pdf = main_course.course_name
+              
+              if @batch_name_pdf.blank?
+                main_batch = Course.find_by_course_id(@class_name_pdf.id)
+                batch_name_spilt = main_batch.name.split(" ")
+                @batch_name_pdf = batch_name_spilt[0]
+                unless batch_name_spilt[1].blank?
+                  if @version_pdf.blank?
+                    @version_pdf = batch_name_spilt[1]
+                  end  
+                end  
+                
+              end  
 
             %>
             <% end %>
             <tr class="table-header">
-                <td width="25%">Class</td><td width="25%"><% unless @class_name_pdf.blank? %>  <%= @class_name_pdf %><% end %></td> 
-                <td width="25%">Version</td><td width="25%"><% unless @version_pdf.blank? %><%= @version_pdf %><% end %></td>
+                <td width="16.66%">Class</td><td width="16.66%"><% unless @class_name_pdf.blank? %>  <%= @class_name_pdf %><% end %></td> 
+                <td width="16.66%">Version</td><td width="16.66%"><% unless @version_pdf.blank? %><%= @version_pdf %><% end %></td>
+                <td width="16.66%">Shift</td><td width="16.66%"><% unless @batch_name_pdf.blank? %><%= @batch_name_pdf %><% end %></td>
             </tr>
             <tr class="table-header">
-                <td width="25%">Section</td><td width="25%"><% unless @section_pdf.blank? %><%= @section_pdf %><% end %></td> 
-                <td width="25%">Group</td><td width="25%"><% unless @group_name_pdf.blank? %><%= @group_name_pdf %><% end %></td>
+                <td width="16.66%">Section</td><td width="16.66%"><% unless @section_pdf.blank? %><%= @section_pdf %><% end %></td> 
+                <td width="16.66%">Group</td><td width="16.66%"><% unless @group_name_pdf.blank? %><%= @group_name_pdf %><% end %></td>
+                <td width="16.66%">Session</td><td width="16.66%"><% unless @session_name_pdf.blank? %><%= @session_name_pdf %><% end %></td>
             </tr>
         </table>    
         <br/>

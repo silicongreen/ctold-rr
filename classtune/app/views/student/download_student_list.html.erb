@@ -18,14 +18,14 @@
                 </td>
             </tr>     
         </table>
-        <br/>
+        <p><font size="5"><b>Student Register</b><font></p>
         <table id="pdf-table" width="100%" cellspacing="0" style="font-weight:bold;">
             <% if !@section_pdf.blank? && @class_name_pdf.blank? %>
               <% 
 
               main_course = Course.find_by_section_name(@section_pdf)
               @class_name_pdf = main_course.course_name
-              
+
               if @batch_name_pdf.blank?
                 main_batch = Course.find_by_course_id(@class_name_pdf.id)
                 batch_name_spilt = main_batch.name.split(" ")
@@ -35,8 +35,8 @@
                     @version_pdf = batch_name_spilt[1]
                   end  
                 end  
-                
-              end  
+
+                end  
 
             %>
             <% end %>
@@ -87,17 +87,17 @@
                   end
 
               %>
-                
-                <% if std_count>51 %>
+
+                <% if std_count>50 %>
                   <% std_count = 1 %>
                   <% if stage == 1  %>
-                  <tr class="page-break">
-                      <td colspan="100">&nbsp;</td>
-                  </tr>
+                    <tr class="page-break">
+                        <td colspan="100">&nbsp;</td>
+                    </tr>
                   <% else %>
-                  <tr class="page-break2">
-                      <td colspan="100">&nbsp;</td>
-                  </tr>
+                    <tr class="page-break2">
+                        <td colspan="100">&nbsp;</td>
+                    </tr>
                   <% end %>
                   <% stage = 2 %>
                   <tr class="header-td">
@@ -119,17 +119,19 @@
                                   </td>
                               </tr>     
                           </table>
-                          <br/>
+                          <p style="width:86%"><font size="5"><b>Student Register</b><font></p>
                           <table width="86%" cellspacing="0" style="font-weight:bold;">
-                              
                               <tr class="table-header2">
-                                  <td width="25%">Class</td><td width="25%"><% unless @class_name_pdf.blank? %>  <%= @class_name_pdf %><% end %></td> 
-                                  <td width="25%">Version</td><td width="25%"><% unless @version_pdf.blank? %><%= @version_pdf %><% end %></td>
+                                  <td width="16.66%">Class</td><td width="16.66%"><% unless @class_name_pdf.blank? %>  <%= @class_name_pdf %><% end %></td> 
+                                  <td width="16.66%">Version</td><td width="16.66%"><% unless @version_pdf.blank? %><%= @version_pdf %><% end %></td>
+                                  <td width="16.66%">Shift</td><td width="16.66%"><% unless @batch_name_pdf.blank? %><%= @batch_name_pdf %><% end %></td>
                               </tr>
                               <tr class="table-header2">
-                                  <td width="25%">Section</td><td width="25%"><% unless @section_pdf.blank? %><%= @section_pdf %><% end %></td> 
-                                  <td width="25%">Group</td><td width="25%"><% unless @group_name_pdf.blank? %><%= @group_name_pdf %><% end %></td>
+                                  <td width="16.66%">Section</td><td width="16.66%"><% unless @section_pdf.blank? %><%= @section_pdf %><% end %></td> 
+                                  <td width="16.66%">Group</td><td width="16.66%"><% unless @group_name_pdf.blank? %><%= @group_name_pdf %><% end %></td>
+                                  <td width="16.66%">Session</td><td width="16.66%"><% unless @session_name_pdf.blank? %><%= @session_name_pdf %><% end %></td>
                               </tr>
+
                           </table>    
                           <br/>
                           <br/>
@@ -168,7 +170,7 @@
         </table>      
 
         </center>
-        <p><font size="4"><b>Total Student : <%= @students_pdf.count %></b><font> </p>
+        <p><font size="5"><b>Total Student : <%= @students_pdf.count %></b><font> </p>
     </div>
 
 
@@ -198,7 +200,7 @@
         font-size: 20px;
         text-align:center;
     }
-    
+
     .header-td > td
     {
         padding: 0px;
@@ -217,15 +219,15 @@
         white-space: nowrap;
     }
     .page-break2 td{
-        height: 95px;
+        height: 50px;
         border: 1px solid #fff;
     }
 
     .page-break td{
-        height: 115px;
+        height: 95px;
         border: 1px solid #fff;
     }
-  
+
     .table-header td.aling-left
     {
         text-align:left !important;

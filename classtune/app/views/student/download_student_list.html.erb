@@ -13,8 +13,8 @@
                 </td>
                 <td width="90%" style="vertical-align:top;">
                     <font size="6"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/><br/>
-                    <font size="5">Dhaka Cantonment, Dhaka</font><br/>
-                    <font size="5">Phone:9833306</font>
+                    <font size="5">Dhaka Cantonment, Dhaka-1216</font><br/>
+                    <font size="5">Phone:9833306 web: www.sagc.edu.bd</font>
                 </td>
             </tr>     
         </table>
@@ -57,7 +57,7 @@
         <% c = 'even' %>
         <table id="pdf-table" width="100%" cellspacing="0">
             <tr class="table-header">
-                <td class="col-pdf aling-left no-warp"><b>Student ID</b></td> 
+                <td class="col-pdf aling-left no-warp"><b>ID</b></td> 
                 <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
                 <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                 <% if @section_pdf.blank? %>
@@ -114,13 +114,13 @@
                                   </td>
                                   <td width="90%" style="vertical-align:top;">
                                       <font size="6"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/><br/>
-                                      <font size="5">Dhaka Cantonment, Dhaka</font><br/>
-                                      <font size="5">Phone:9833306</font>
+                                      <font size="5">Dhaka Cantonment, Dhaka-1216</font><br/>
+                                      <font size="5">Phone:9833306 web: www.sagc.edu.bd</font>
                                   </td>
                               </tr>     
                           </table>
                           <p style="width:86%"><font size="5"><b>Student Register</b><font></p>
-                          <table width="86%" cellspacing="0" style="font-weight:bold;">
+                          <table width="100%" cellspacing="0" style="font-weight:bold;">
                               <tr class="table-header2">
                                   <td width="16.66%">Class</td><td width="16.66%"><% unless @class_name_pdf.blank? %>  <%= @class_name_pdf %><% end %></td> 
                                   <td width="16.66%">Version</td><td width="16.66%"><% unless @version_pdf.blank? %><%= @version_pdf %><% end %></td>
@@ -139,7 +139,7 @@
                       </td>
                   </tr>
                   <tr class="table-header">
-                      <td class="col-pdf aling-left no-warp"><b>Student ID</b></td> 
+                      <td class="col-pdf aling-left no-warp"><b>ID</b></td> 
                       <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
                       <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
                       <% if @section_pdf.blank? %>
@@ -185,7 +185,7 @@
         overflow: hidden;
     }
     .table-header2 td{
-        padding: 5px 15px;
+        padding: 5px 3px;
         border: 1px solid #000000;
         color: #000000;
         background: #ffffff;
@@ -193,7 +193,7 @@
         text-align:center;
     }
     .table-header td{
-        padding: 5px 15px;
+        padding: 5px 3px;
         border: 1px solid #000000;
         color: #000000;
         background: #ffffff;
@@ -219,7 +219,7 @@
         white-space: nowrap;
     }
     .page-break2 td{
-        height: 50px;
+        height: 70px;
         border: 1px solid #fff;
     }
 

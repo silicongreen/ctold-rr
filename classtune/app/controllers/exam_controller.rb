@@ -3060,6 +3060,7 @@ class ExamController < ApplicationController
         @report_data = @student_response['data']
       end 
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
+      abort("here")
       render_connect_exam("continues",false,file_name)  
     end
   end

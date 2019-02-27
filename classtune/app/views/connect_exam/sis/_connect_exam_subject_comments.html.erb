@@ -105,6 +105,9 @@
                               </td>  
                             <% else %>
                               <td>
+                                  <% if exam.exam_group.exam_category == 7 %>
+                                    <b><%= exam.exam_group.name %></b>
+                                  <% else %>
                                   <b><%= exam.exam_group.name %></b>
 
                                   <p style="font-size: 10px;"> 
@@ -122,6 +125,7 @@
                                         <%= exam.maximum_marks.to_i %>
                                       <% end %>
                                   </p>
+                                  <% end %>
 
                               </td>
                             <% end %>
@@ -318,7 +322,11 @@
                                 <td class="col-2 td-mark">
                                     <div class="label-field-pair2">
                                         <div class="text-input-bg2">
-                                            <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %>
+                                            <% if exam.exam_group.exam_category == 7 %>
+                                              <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
+                                            <% end %>   
+                                              <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %> 
+                                            <% end %>
                                         </div>
                                     </div>
                                     <div class="date" ><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %><div> <%= exam.name %></div></span></div>

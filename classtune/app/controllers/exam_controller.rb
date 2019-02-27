@@ -784,6 +784,7 @@ class ExamController < ApplicationController
      
       unless params[:exam_remarks].blank?
         params[:exam_remarks].each_pair do |exam_id, stdetails|
+          @exam = Exam.find_by_id(exam_id)
           stdetails.each_pair do |student_id, details|
             @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
             if @exam_score.nil?
@@ -792,7 +793,7 @@ class ExamController < ApplicationController
                   score.exam_id          = @exam.id
                   score.student_id       = student_id
                   score.user_id          = current_user.id
-                  score.remarks         = details[:remarks]
+                  score.remarks          = details[:remarks]
                   score.marks            = 0
                 end
               end

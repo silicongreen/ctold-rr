@@ -782,6 +782,29 @@ class ExamController < ApplicationController
         end
       end 
      
+      unless params[:exam_remarks].blank?
+        params[:exam_remarks].each_pair do |exam_id, stdetails|
+          stdetails.each_pair do |student_id, details|
+            @exam_score = ExamScore.find(:first, :conditions => {:exam_id => @exam.id, :student_id => student_id} )
+            if @exam_score.nil?
+              unless details[:remarks].nil? 
+                ExamScore.create do |score|
+                  score.exam_id          = @exam.id
+                  score.student_id       = student_id
+                  score.user_id          = current_user.id
+                  score.remarks         = details[:remarks]
+                  score.marks            = 0
+                end
+              end
+              
+            else
+              @exam_score.update_attributes(details)
+            end  
+          end
+        end
+        
+      end
+      
       unless params[:exam_score].blank?
         params[:exam_score].each_pair do |exam_id, stdetails|
           @exam = Exam.find_by_id(exam_id)
@@ -3060,7 +3083,6 @@ class ExamController < ApplicationController
         @report_data = @student_response['data']
       end 
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-      abort("here")
       render_connect_exam("continues",false,file_name)  
     end
   end

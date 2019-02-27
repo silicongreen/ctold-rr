@@ -68,20 +68,24 @@
             <% @exams.each do |exam| %>
               <% if exam.exam_group.show_in_connect.to_i == 1 %>
               <td>
-                  <b><%= exam.exam_group.name %></b>
-                  <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
-                   <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
+                  <% if exam.exam_group.exam_category == 7 %>
+                    <b><%= exam.exam_group.name %></b>
                   <% else %>
-                  
-                   <p> 
-                       <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                          <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
-                       <% else %>
-                          <%= exam.maximum_marks.to_i %>
-                       <% end %>
-                    </p>
-                   
-                  <% end %> 
+                    <b><%= exam.exam_group.name %></b>
+                    <% if !exam.alternative_title.nil? and exam.alternative_title != "" %>  
+                     <p style="font-size: 10px;"> (<%= exam.alternative_title %>)</p>
+                    <% else %>
+
+                     <p> 
+                         <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                            <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
+                         <% else %>
+                            <%= exam.maximum_marks.to_i %>
+                         <% end %>
+                      </p>
+
+                    <% end %> 
+                  <% end %>
               </td>
               <% end %>
             <% end %>
@@ -116,12 +120,15 @@
                         <% extra_class="red_class" %>
                       <% end %>  
                         <div class="text-input-bg2">
-                          
-                          <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                            <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
-                          <% else %>
-                            <%= @exam_score.marks %>
-                          <% end %>  
+                          <% if exam.exam_group.exam_category == 7 %>
+                            <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
+                          <% end %>   
+                            <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                              <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
+                            <% else %>
+                              <%= @exam_score.marks %>
+                            <% end %> 
+                          <% end %>
                             
                         </div>
                     </div>

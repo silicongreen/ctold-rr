@@ -324,7 +324,7 @@
                                         <div class="text-input-bg2">
                                             <% if exam.exam_group.exam_category == 7 %>
                                               <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
-                                            <% end %>   
+                                            <% else %>   
                                               <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]",score_now, :size => '4', :class=>"marks-4box" %> 
                                             <% end %>
                                         </div>

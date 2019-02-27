@@ -122,7 +122,7 @@
                         <div class="text-input-bg2">
                           <% if exam.exam_group.exam_category == 7 %>
                             <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
-                          <% end %>   
+                          <% else %>   
                             <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
                               <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                             <% else %>

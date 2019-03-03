@@ -1433,6 +1433,7 @@ authorization do
       :update_student_vat_ajax,
       :update_vat_ajax,
       :student_fee_receipt_pdf,
+      :student_fee_receipt_pdf_multiple,
       :student_fee_receipt_all_pdf,
       :update_student_fine_ajax,
       :transaction_pdf,
@@ -2548,6 +2549,7 @@ authorization do
       :update_student_vat_ajax,
       :update_vat_ajax,
       :student_fee_receipt_pdf,
+      :student_fee_receipt_pdf_multiple,
       :student_fee_receipt_all_pdf,
       :update_student_fine_ajax,
       :transaction_pdf,
@@ -3499,7 +3501,7 @@ authorization do
     has_permission_on [:attendance], :to => [:student_report]
     has_permission_on [:student_attendance], :to => [:student,:month_report,:subject_report,
       :subject_report_pdf,:month_report_data,:download_attachment, :year_report,:graph_code,:new_calendar, :month, :student_report, :leaves, :leave_history,:individual_leave_applications,:own_leave_application,:cancel_application, :update_leave_history]
-    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:refund_student_view,:refund_student_view_pdf, :update_ajax]
+    has_permission_on [:finance], :to => [:student_fees_structure,:student_fee_receipt_pdf,:student_fee_receipt_pdf_multiple,:refund_student_view,:refund_student_view_pdf, :update_ajax]
     has_permission_on [:cce_reports], :to => [:student_transcript,:student_report_pdf]
     has_permission_on [:event], :to => [:event_details]
   end

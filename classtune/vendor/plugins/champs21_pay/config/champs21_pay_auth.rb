@@ -25,13 +25,15 @@ authorization do
 
   role :student do
     has_permission_on [:finance], :to => [
-      :student_fee_receipt_pdf
+      :student_fee_receipt_pdf,
+      :student_fee_receipt_pdf_multiple
     ]
   end
 
   role :parent do
     has_permission_on [:finance], :to => [
-      :student_fee_receipt_pdf
+      :student_fee_receipt_pdf,
+      :student_fee_receipt_pdf_multiple
     ]
   end
 

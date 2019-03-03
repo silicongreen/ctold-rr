@@ -6316,7 +6316,50 @@ class FinanceController < ApplicationController
       :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     end 
-
+  end
+  
+  def student_fee_receipt_pdf_multiple
+    @date = [] 
+    @fee_collection = []
+    @student_fee = []
+    
+    unless params[:fees].nil?
+      fees = params[:fees].split(",")
+      student_id = params[:id]
+      
+      @fee_collections = fees
+      @student = Student.find(student_id)
+      fees.each do |fee|
+        f = fee.to_i
+        finance_fee = FinanceFee.find(f)
+        fee_collection_id = finance_fee.fee_collection_id
+        
+        @date[f] = @fee_collection[f] = FinanceFeeCollection.find(fee_collection_id)
+        @student_fee[f] = FinanceFee.check_update_student_fee(@date[f], @student, finance_fee)
+      end
+    end
+    
+    if MultiSchool.current_school.id == 352
+      render :pdf => 'student_fee_receipt_pdf_multiple',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :page_size => 'A4',
+      :margin => {:top=> 10,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    else
+      render :pdf => 'student_fee_receipt_pdf',
+      :orientation => 'Landscape', :zoom => 1.00,
+      :page_size => 'A4',
+      :margin => {    :top=> 10,
+      :bottom => 0,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    end
   end
   
   def update_vat_ajax

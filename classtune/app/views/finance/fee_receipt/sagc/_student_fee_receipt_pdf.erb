@@ -66,6 +66,15 @@
                 else
                   trans_type = "TBL Card Payment"
                 end
+              else
+                @paid_fees.each do |p|
+                  trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
+                  trans_id += p.id.to_s + ","
+                  trans_type += p.payment_mode.to_s + ","
+                end
+                trans_data = trans_data[0...trans_data.length - 1]
+                trans_id = trans_id[0...trans_id.length - 1]
+                trans_type = trans_type[0...trans_type.length - 1]
               end
             %>
             <% end %>
@@ -149,65 +158,125 @@
             <% k = 0 %>
             <% total_fees = 0 %>
             <% @fee_particulars.each do |fee| %>
-                  <tr  class="content">
-                      <%k+=1%>
-                      <td style="text-align: center;"><%= k %></td>
-                      <td><%= fee.name %></td>
-                      <td class="amount"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
-                  </tr>
-                  <% total_fees += fee.amount %>   
+                  <% unless @paid_fees.blank? %>
+                    <% transaction_ids = @paid_fees.map(&:id) %>
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type IN ('Fee Collection', 'Advance') AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                    <% unless paidFess.blank? %>
+                      <% amount =  paidFess.map(&:amount).sum  %>
+                      <tr  class="content">
+                          <%k+=1%>
+                          <td style="text-align: center;"><%= k %></td>
+                          <td><%= fee.name %></td>
+                          <td class="amount"><% if amount.to_i > 0 %><%= "#{precision_label(amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% total_fees += amount %>   
+                    <% end %>
+                  <% else %>
+                      <tr  class="content">
+                          <%k+=1%>
+                          <td style="text-align: center;"><%= k %></td>
+                          <td><%= fee.name %></td>
+                          <td class="amount"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
+                      </tr>
+                      <% total_fees += fee.amount %>   
+                  <% end %>
             <% end %>
             <tr  class="content">
                 <td colspan="3"></td>
             </tr>      
+            <% total_discount = 0 %>
             <% unless @total_discount == 0 %>
               <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
                 <% @onetime_discounts.each do |d| %>
+                  <% amount = 0 %>
+                  <% already_paid = false %>
+                  <% unless @paid_fees.blank? %>
+                    <% transaction_ids = @paid_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                    <% already_paid = true %>
+                    <% amount =  paidFess.map(&:amount).sum  %>
+                  <% else %>  
+                    <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
+                      <% amount = @onetime_discounts_amount[d.id] %>
+                    <% else %>
+                      <% amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100) %>
+                    <% end %>
+                  <% end %>
                   <% k += 1 %>
+                  <% if amount > 0 and already_paid %>
                   <tr  class="content">
                     <td style="text-align: center;"><%= k %></td>
                     <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
                     <td><%= discount_text %></td>
                     <td class="amount">
-                        <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  
-                        <b>(-)</b>&nbsp;&nbsp;&nbsp;<%= precision_label(@onetime_discounts_amount[d.id]) %>
-                        <% else %>
-                        <b>(-)</b><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
-                        <% end %>
+                        <b>(-)</b>&nbsp;&nbsp;&nbsp;<%= precision_label(amount) %>
+                        <% total_discount += amount %>
                     </td>
                   </tr>
-
+                  <% elsif already_paid == false and amount.to_i > 0 %>
+                  <tr  class="content">
+                    <td style="text-align: center;"><%= k %></td>
+                    <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                    <td><%= discount_text %></td>
+                    <td class="amount">
+                        <b>(-)</b>&nbsp;&nbsp;&nbsp;<%= precision_label(amount) %>
+                        <% total_discount += amount %>
+                    </td>
+                  </tr>
+                  <% end %>
                 <% end %>
               <% end %> 
 
               <% unless @discounts.nil? or @discounts.empty? or @discounts.blank? %>  
                 <% @discounts.each do |d| %>
-                  <%k+=1%>
+                  <% amount = 0 %>
+                  <% already_paid = false %>
+                  <% unless @paid_fees.blank? %>
+                    <% transaction_ids = @paid_fees.map(&:id) %> 
+                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}") %>
+                    <% already_paid = true %>
+                    <% amount =  paidFess.map(&:amount).sum  %>
+                  <% else %>  
+                    <% unless @discounts[d.id].nil? or @discounts[d.id].blank? %>  
+                      <% amount = @discounts_amount[d.id] %>
+                    <% else %>
+                      <% amount = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100) %>
+                    <% end %>
+                  <% end %>
+                  <%  k += 1%>
+                  <% if amount > 0 and already_paid %>
                   <tr  class="content">
                     <td style="text-align: center;"><%= k %></td>
                     <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
                     <td><%= discount_text %></td>
                     <td class="amount">
-                        <% unless @discounts_amount[d.id].nil? or @discounts_amount[d.id].blank? %>  
-                        <b>(-)</b><%= precision_label(@discounts_amount[d.id]) %>
-                        <% else %>
-                        <b>(-)</b><%= precision_label(@total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)) %>
-                        <% end %>
+                        <b>(-)</b>&nbsp;&nbsp;&nbsp;<%= precision_label(amount) %>
+                        <% total_discount += amount %>
                     </td>
                   </tr>
-                  <% k += 1 %>
+                  <% elsif already_paid == false and amount.to_i > 0 %>
+                  <tr  class="content">
+                    <td style="text-align: center;"><%= k %></td>
+                    <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                    <td><%= discount_text %></td>
+                    <td class="amount">
+                        <b>(-)</b>&nbsp;&nbsp;&nbsp;<%= precision_label(amount) %>
+                        <% total_discount += amount %>
+                    </td>
+                  </tr>
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>      
             <tr  class="content">
                 <td colspan="3"></td>
             </tr>      
-            <% total_fees = (@total_payable-@total_discount) %>
+            
             <tr class="tfoot">
                 <% vat_amount = 0 %>
-                <% balance=@financefee.balance.to_f+@fine.to_f+@fine_amount.to_f-vat_amount %>
-                <td colspan="2"><h2 class='in-words'>in Words TK: <%= in_words(total_fees.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></h2></td>
-                <td>Total: <span><%= precision_label total_fees %></span></td>
+                <% balance=total_fees-total_discount %>
+                <td colspan="2"><h2 class='in-words'>in Words TK: <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></h2></td>
+                <td>Total: <span><%= precision_label balance %></span></td>
             </tr>
         </table>
         <p><b>This is a computer generated copy no signature is required</b></p>

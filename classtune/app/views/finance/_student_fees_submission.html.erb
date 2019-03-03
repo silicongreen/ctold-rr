@@ -1202,8 +1202,6 @@
           <tr class="<%= cycle("odd","even") %>">
             <% payment     = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>  
             <% payment_new = Payment.find_by_payment_id(@financefee.id) %>  
-              <%= debug payment.inspect %>
-              <%= debug payment_new.inspect %>
             <td class="col-1"><%= i +=1 %></td>
             <td class="col-3" style="text-align: center;"><%= f.transaction_date %></td>
             <td class="col-3" style="text-align: center;"><%= f.payment_mode %></td>

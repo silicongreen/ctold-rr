@@ -1200,6 +1200,10 @@
         <tbody>
         <% @paid_fees.each_with_index do |f , i| %>
           <tr class="<%= cycle("odd","even") %>">
+            <% payment     = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>  
+            <% payment_new = Payment.find_by_payment_id(@financefee.id) %>  
+              <%= debug payment.inspect %>
+              <%= debug payment_new.inspect %>
             <td class="col-1"><%= i +=1 %></td>
             <td class="col-3" style="text-align: center;"><%= f.transaction_date %></td>
             <td class="col-3" style="text-align: center;"><%= f.payment_mode %></td>
@@ -1207,7 +1211,7 @@
             <td class="col-3" style="text-align: right;"> 
               <%= precision_label(f.amount.to_f) %>
             </td>
-           <td class="col-3" style="width:2%;"> <div class="cancel" ><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+           <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
           </tr>
         <% end %>
         </tbody>  
@@ -1220,3 +1224,16 @@
   $('submit_button').disable();
   setTimeout(function(){$('submit_button').enable();},3000);
 </script>
+<style>
+    .cancel{
+        text-decoration: none;
+    }
+    .cancel:hover{
+        background: #49BB4B;
+    }
+    .cancel a:hover{
+        text-decoration: none !important;
+        color: #fff !important;
+        font-weight: bold !important;
+    }
+</style>

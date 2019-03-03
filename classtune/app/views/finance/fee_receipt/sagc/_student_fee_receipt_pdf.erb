@@ -59,7 +59,8 @@
             <% payment = Payment.find_by_payment_id(@financefee.id) %>
             <%
               unless payment.nil? or payment.blank?
-                trans_data = I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d-%m-%Y")
+                trans_data = I18n.l(payment.transaction_datetime.to_date,:format=>"%d-%m-%Y")
+                #trans_data = I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d-%m-%Y")
                 trans_id = payment.gateway_response[:order_id]
                 if payment.gateway_response[:payment_type] == "MB"
                   trans_type = "TBL Mobile banking"

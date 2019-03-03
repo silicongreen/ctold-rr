@@ -1457,6 +1457,11 @@ class PaymentSettingsController < ApplicationController
       else
         flash[:notice] = "Order ID can't be blank"
       end
+    else
+      @order_id = ""
+      unless params[:order_tid].nil?
+        @order_id = params[:order_tid]
+      end
     end
   end
   

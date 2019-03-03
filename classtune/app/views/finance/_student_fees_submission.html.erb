@@ -1242,6 +1242,21 @@
                   %>
                   <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
                   <p><b>Transaction Type: </b><%= trans_type %></p>
+                  <hr style="border: 1px solid #ccc;" /> 
+                  <% if payment.gateway_response[:verified].to_i == 1 %>
+                  <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+                  <% else %>
+                  <div style="width: 100%;">
+                    <div style="width: 60%; display: inline-block;">
+                      <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+                    </div>  
+                    <div style="width: 35%; display: inline-block; text-align: right;">
+                        <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+                      
+                    </div>  
+                  </div>
+                  <div style="clear: both; height: 1px;"></div>
+                  <% end %>
               </div>
             </td>
             <% else %>
@@ -1253,7 +1268,11 @@
             <td class="col-3" style="text-align: right;"> 
               <%= precision_label(f.amount.to_f) %>
             </td>
-           <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+           <% if @from_batch_fee %> 
+           <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id, :student_fees => 0, :from_admin => 1},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+           <% else %>
+           <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id, :student_fees => 1, :from_admin => 1},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
+           <% end %>
           </tr>
         <% end %>
         </tbody>  

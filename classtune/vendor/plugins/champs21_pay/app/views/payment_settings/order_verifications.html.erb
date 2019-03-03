@@ -51,7 +51,7 @@
   <% form_for :payment_settings,:url => {:action => :order_verifications} do |f| %>
       <div class="form-group col-sm-6">
           <label>(TBL) Order Id<span class="necessary-field">*</span> :</label>
-          <%= text_area_tag "order_id", "", :class=>"form-control"%>
+          <%= text_area_tag "order_id", @order_id, :class=>"form-control"%>
           <small>(Comma Seperated Value)</small>
       </div>
   

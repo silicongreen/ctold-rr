@@ -52,7 +52,7 @@
                               father = ""
                               guardians = std_info.guardians
                               unless guardians.blank?
-                                father = guardians[0].first_name+" "+guardians[0].last_name
+                                father = guardians[0].first_name.to_s+" "+guardians[0].last_name.to_s
                                 end
                             %>
                               <tr>

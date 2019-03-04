@@ -26,7 +26,9 @@ class AssignmentsController < ApplicationController
           end
         end  
       end
-    end
+    else
+      @assignments =Assignment.paginate  :conditions=>"is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]
+    end  
     respond_to do |format|
       format.js { render :action => 'get_homework_filter' }
     end
@@ -238,12 +240,7 @@ class AssignmentsController < ApplicationController
       end
       @subjects = @subjects.uniq unless @subjects.empty?
       @subjects.sort_by{|s| s.batch.course.code.to_i}
-      if current_user.employee_record.all_access.to_i == 1
-        sub_id = @subjects.map(&:id)
-        @assignments = Assignment.paginate :conditions=>["subject_id in (?)",sub_id],:order=>"duedate desc", :page=>params[:page]
-      else
-        @assignments = Assignment.paginate :conditions=>"employee_id=#{@current_user.employee.id}",:order=>"duedate desc", :page=>params[:page]
-      end  
+       
     elsif @current_user.student?
       student=current_user.student_record
       
@@ -279,7 +276,6 @@ class AssignmentsController < ApplicationController
       @course_name = ""
       @courses = []
       @batches = Batch.active
-      @assignments = Assignment.paginate :order=>"duedate desc", :page=>params[:page]
     end
   end
   

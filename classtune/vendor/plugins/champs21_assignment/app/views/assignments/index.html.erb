@@ -162,7 +162,11 @@
                         <% end %>
 
                         <% if @current_user.employee?  %>
-                          <div id="subject_assignments_list" style="clear: both"><%= render :partial=>"subject_assignments" %></div>
+                          <script type="text/javascript">
+                            var jj = jQuery.noConflict();
+                            jj("#assignment_subject").trigger("change");
+                          </script>  
+                          <div id="subject_assignments_list" style="clear: both"></div>
                         <% elsif @current_user.student? or @current_user.parent? %>
                           <div id="listing">
                               <% unless @assignments.nil? %>
@@ -311,14 +315,17 @@
                             <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
                                 <label for="student_grade"><%= t('section_label') %></label>
                                 <div class="text-input-bg"><div id="section_assingment"> <%= render :partial => 'student/sections_assignment_view', :object => @classes %></div></div>
-                            </div>             
+                            </div> 
+                            <script type="text/javascript">
+                              var jj = jQuery.noConflict();
+                              jj("#student_batch_name").trigger("change");
+                            </script>
                           <% end %><%# FORM END%>  
 
 
                           <div id="syllabus" class="news_label_field"></div>
                           <br />
                           <div id="listing">
-                            <%= render :partial=>"get_homework_filter" %>
                                   
                           </div>   
 

@@ -24,7 +24,9 @@ class ClassworksController < ApplicationController
           end
         end  
       end
-    end
+    else
+      @classworks =Classwork.paginate  :conditions=>"is_published=1",:order=>"classworks.created_at desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}] 
+    end  
     respond_to do |format|
       format.js { render :action => 'get_classwork_filter' }
     end

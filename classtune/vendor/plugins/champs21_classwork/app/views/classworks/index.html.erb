@@ -110,6 +110,10 @@
           <% end %>
 
           <% if @current_user.employee?  %>
+              <script type="text/javascript">
+                var jj = jQuery.noConflict();
+                jj("#classwork_subject").trigger("change");
+              </script>  
               <div id="subject_classworks_list" style="clear: both"></div>
           <% elsif @current_user.student? or @current_user.parent? %>
               <div id="listing">
@@ -194,7 +198,16 @@
               <div class="label-field-pair" id="sections_div" style="margin: 0px auto;">
                 <label for="student_grade"><%= t('section_label') %></label>
                 <div class="text-input-bg"><div id="section_classwork"> <%= render :partial => 'student/sections_classwork_view', :object => @classes %></div></div>
-              </div>             
+              </div>  
+              <script type="text/javascript">
+                var jj = jQuery.noConflict();
+                jj("#listing").html("");
+                jj("#syllabus").html("");
+                jj.get("classworks/get_classwork_filter", {all_batch: 1})
+                        .done(function (data) {
+
+                        });
+              </script>
             <% end %><%# FORM END%>  
 
          

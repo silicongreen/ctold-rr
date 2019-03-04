@@ -318,7 +318,12 @@
                             </div> 
                             <script type="text/javascript">
                               var jj = jQuery.noConflict();
-                              jj("#student_batch_name").trigger("change");
+                              jj("#listing").html("");
+                              jj("#syllabus").html("");
+                              jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val()})
+                                      .done(function (data) {
+
+                                      });
                             </script>
                           <% end %><%# FORM END%>  
 

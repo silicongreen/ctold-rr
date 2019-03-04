@@ -27,7 +27,7 @@ class AssignmentsController < ApplicationController
         end  
       end
     else
-      @assignments =Assignment.paginate  :conditions=>"is_published=1 ",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]
+      @assignments =Assignment.paginate  :conditions=>"is_published=1",:order=>"duedate desc", :page=>params[:page], :per_page => 20,:include=>[{:subject=>[:batch]}]
     end  
     respond_to do |format|
       format.js { render :action => 'get_homework_filter' }

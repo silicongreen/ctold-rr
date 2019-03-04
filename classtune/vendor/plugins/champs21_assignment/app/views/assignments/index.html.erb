@@ -320,7 +320,7 @@
                               var jj = jQuery.noConflict();
                               jj("#listing").html("");
                               jj("#syllabus").html("");
-                              jj.get("assignments/get_homework_filter", {batch_name: jj("#student_batch_name").val()})
+                              jj.get("assignments/get_homework_filter", {all_batch: 1})
                                       .done(function (data) {
 
                                       });

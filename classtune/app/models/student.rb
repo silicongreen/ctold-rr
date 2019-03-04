@@ -682,9 +682,9 @@ class Student < ActiveRecord::Base
   
   def student_guardian
     guardians = []
-    g_students= GuardianStudents.find_all_by_student_id(self.id,:order=>"relation ASC")
+    g_students= GuardianStudents.find_all_by_student_id(self.id,:order=>"guardians.relation ASC, guardian_students.relation ASC",:include=>[:guardian])
     g_students.each do|bs|
-      gu = Guardian.find_by_id(bs.guardian_id)
+      gu = bs.guardian
       guardians.push gu unless gu.nil?
     end
     return guardians

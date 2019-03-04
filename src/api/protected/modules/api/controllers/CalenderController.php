@@ -375,7 +375,7 @@ class CalenderController extends Controller
                                     if (!isset($msg[$dt->format("Y-m-d")]))
                                     {
                                         $card_att = true;
-                                        if(in_array($stddata->school_id,Settings::$card_attendence_school))
+                                        if(in_array($stddata->school_id,Settings::$card_attendence_school_employee_only))
                                         {
                                             $card_att = new CardAttendance();
                                             $std_att = $card_att->getEmpAttExists($stddata->user_id,$dt->format("Y-m-d"));

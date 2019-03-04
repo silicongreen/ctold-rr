@@ -705,7 +705,7 @@ class ReportController extends Controller
                             $timetableobj = new TimetableEntries();
                             $class_started = $timetableobj->classStarted($batch_id);
                             $card_att = true;
-                            if(in_array($school_id,Settings::$card_attendence_school))
+                            if(in_array($school_id,Settings::$card_attendence_school_employee_only))
                             {
                                 $card_att = new CardAttendance();
                                 $std_att = $card_att->getEmpAttExists($stddata->user_id,$date);

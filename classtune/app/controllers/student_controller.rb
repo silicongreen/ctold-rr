@@ -233,7 +233,7 @@ class StudentController < ApplicationController
         students.each do |student|
           father_name = ""
           mother_name = ""
-          guardians = student.guardians  
+          guardians = student.student_guardian  
           unless guardians.nil?
             p_loop = 0
             guardians.each do |guardian|
@@ -423,7 +423,7 @@ class StudentController < ApplicationController
         std_category = student.student_category.name
       end
       password = "";
-      guardians = student.guardians
+      guardians = student.student_guardian
       
       unless guardians.nil?
         guardians.each do |guardian|
@@ -715,7 +715,7 @@ class StudentController < ApplicationController
     
     @students = Student.active.find(:all)
     @students.each do |student|
-      guardians = student.guardians
+      guardians = student.student_guardian
       unless guardians.nil?
         guardians.each do |guardian|
           

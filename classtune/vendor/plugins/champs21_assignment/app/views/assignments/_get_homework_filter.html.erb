@@ -28,6 +28,11 @@
     </tr>
    
       <% @assignments.each_with_index do |assignment,i| %>
+        <%
+          if assignment.subject.blank?
+            next
+          end
+        %>
         <% @defaulter_registered = AssignmentDefaulterRegistration.find_by_assignment_id(assignment.id) %>
         <tr class="tr-<%= cycle('odd', 'even') %>">
           

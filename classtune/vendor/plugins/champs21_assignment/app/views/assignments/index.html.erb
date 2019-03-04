@@ -162,7 +162,7 @@
                         <% end %>
 
                         <% if @current_user.employee?  %>
-                          <div id="subject_assignments_list" style="clear: both"></div>
+                          <div id="subject_assignments_list" style="clear: both"><%= render :partial=>"subject_assignments" %></div>
                         <% elsif @current_user.student? or @current_user.parent? %>
                           <div id="listing">
                               <% unless @assignments.nil? %>
@@ -317,7 +317,10 @@
 
                           <div id="syllabus" class="news_label_field"></div>
                           <br />
-                          <div id="listing"></div>   
+                          <div id="listing">
+                            <%= render :partial=>"get_homework_filter" %>
+                                  
+                          </div>   
 
                           <script type="text/javascript">
                             var jj = jQuery.noConflict();

@@ -4,7 +4,10 @@
     <% i = 1 %>
     <% @assignments.each_with_index do |assignment,i| %>
       <%
-        unless assignment.subject.employees.nil?
+        if assignment.subject.blank?
+          next
+        end
+        unless assignment.subject.employees.blank?
           emp_name = assignment.subject.employees[0].first_name
           unless assignment.subject.employees[0].middle_name.nil?
             emp_name += ' ' + assignment.subject.employees[0].middle_name

@@ -241,7 +241,9 @@ class AssignmentsController < ApplicationController
       if current_user.employee_record.all_access.to_i == 1
         sub_id = @subjects.map(&:id)
         @assignments = Assignment.paginate :conditions=>["subject_id in (?)",sub_id],:order=>"duedate desc", :page=>params[:page]
-      end
+      else
+        @assignments = Assignment.paginate :conditions=>"employee_id=#{@current_user.employee.id}",:order=>"duedate desc", :page=>params[:page]
+      end  
     elsif @current_user.student?
       student=current_user.student_record
       
@@ -276,7 +278,8 @@ class AssignmentsController < ApplicationController
       @batch_no = 0
       @course_name = ""
       @courses = []
-      @batches = Batch.active      
+      @batches = Batch.active
+      @assignments = Assignment.paginate :order=>"duedate desc", :page=>params[:page]
     end
   end
   

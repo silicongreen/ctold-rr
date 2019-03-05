@@ -5383,6 +5383,7 @@ class StudentController < ApplicationController
     @fine_rule = []
     @fine_amount = []
     @vat = []
+    @new_fine_amount = []
     @amount_to_pay = []
 
     fees.each do |fee|

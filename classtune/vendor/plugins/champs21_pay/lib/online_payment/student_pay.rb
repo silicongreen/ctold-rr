@@ -246,8 +246,8 @@ module OnlinePayment
               @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
               #abort(@finance_order.inspect)
               request_params = @finance_order.request_params
-              multiple_param = request_params[:multiple]
               
+              multiple_param = request_params[:multiple]
               unless multiple_param.nil?
                 if multiple_param.to_s == "true"
                   @collection_fees = request_params[:fees]
@@ -262,6 +262,7 @@ module OnlinePayment
             else
               multiple_param = params[:multiple]
               unless multiple_param.nil?
+                #abort('here-1')
                 if multiple_param.to_s == "true"
                   @collection_fees = params[:fees]
                   fees = params[:fees].split(",")
@@ -270,6 +271,7 @@ module OnlinePayment
                   arrange_pay(params[:id], params[:id2], params[:submission_date])
                 end
               else
+                #abort('here')
                 arrange_pay(params[:id], params[:id2], params[:submission_date])
               end
             end
@@ -524,7 +526,7 @@ module OnlinePayment
                     fees.each do |fee|
                       f = fee.to_i
                       feenew = FinanceFee.find(f)
-                      payment = Payment.find(:first, :conditions => "order_id = #{orderId} and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                      payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
                       unless payment.nil?
                         payment_saved = true
                       else  
@@ -535,7 +537,7 @@ module OnlinePayment
                       end
                     end
                   else
-                    payment = Payment.find(:first, :conditions => "order_id = #{orderId} and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
                     unless payment.nil?
                       payment_saved = true
                     else  
@@ -546,7 +548,7 @@ module OnlinePayment
                     end
                   end
                 else
-                  payment = Payment.find(:first, :conditions => "order_id = #{orderId} and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                  payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
                   unless payment.nil?
                     payment_saved = true
                   else  
@@ -1787,6 +1789,7 @@ module OnlinePayment
       @fine_amount = []
       @vat = []
       @amount_to_pay = []
+      @new_fine_amount = []
       
       fees.each do |fee|
         f = fee.to_i

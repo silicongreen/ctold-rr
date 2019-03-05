@@ -5975,7 +5975,27 @@ class StudentController < ApplicationController
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
                     end
+                  else
+                    particular_amount = fp.amount.to_f
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = fp.id
+                    finance_transaction_particular.particular_type = 'Particular'
+                    finance_transaction_particular.transaction_type = 'Fee Collection'
+                    finance_transaction_particular.amount = particular_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
+                else
+                  particular_amount = fp.amount.to_f
+                  finance_transaction_particular = FinanceTransactionParticular.new
+                  finance_transaction_particular.finance_transaction_id = transaction.id
+                  finance_transaction_particular.particular_id = fp.id
+                  finance_transaction_particular.particular_type = 'Particular'
+                  finance_transaction_particular.transaction_type = 'Fee Collection'
+                  finance_transaction_particular.amount = particular_amount
+                  finance_transaction_particular.transaction_date = transaction.transaction_date
+                  finance_transaction_particular.save
                 end
               end
 
@@ -5992,7 +6012,27 @@ class StudentController < ApplicationController
                       finance_transaction_particular.amount = discount_amount
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
+                    else
+                      discount_amount = @onetime_discounts_amount[od.id].to_f
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = od.id
+                      finance_transaction_particular.particular_type = 'Adjustment'
+                      finance_transaction_particular.transaction_type = 'Discount'
+                      finance_transaction_particular.amount = discount_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
                     end
+                  else
+                    discount_amount = @onetime_discounts_amount[od.id].to_f
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = od.id
+                    finance_transaction_particular.particular_type = 'Adjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
@@ -6010,7 +6050,27 @@ class StudentController < ApplicationController
                       finance_transaction_particular.amount = discount_amount
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
+                    else
+                      discount_amount = @discounts_amount[od.id]
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = od.id
+                      finance_transaction_particular.particular_type = 'Adjustment'
+                      finance_transaction_particular.transaction_type = 'Discount'
+                      finance_transaction_particular.amount = discount_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
                     end
+                  else
+                    discount_amount = @discounts_amount[od.id]
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = od.id
+                    finance_transaction_particular.particular_type = 'Adjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
@@ -6026,12 +6086,60 @@ class StudentController < ApplicationController
                   finance_transaction_particular.amount = vat_amount
                   finance_transaction_particular.transaction_date = transaction.transaction_date
                   finance_transaction_particular.save
+                else
+                  if transaction.vat_included?
+                    vat_amount = transaction.vat_amount
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = 0
+                    finance_transaction_particular.particular_type = 'VAT'
+                    finance_transaction_particular.transaction_type = ''
+                    finance_transaction_particular.amount = vat_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
+                  end
+                end
+              else
+                if transaction.vat_included?
+                  vat_amount = transaction.vat_amount
+                  finance_transaction_particular = FinanceTransactionParticular.new
+                  finance_transaction_particular.finance_transaction_id = transaction.id
+                  finance_transaction_particular.particular_id = 0
+                  finance_transaction_particular.particular_type = 'VAT'
+                  finance_transaction_particular.transaction_type = ''
+                  finance_transaction_particular.amount = vat_amount
+                  finance_transaction_particular.transaction_date = transaction.transaction_date
+                  finance_transaction_particular.save
                 end
               end
 
               unless request_params[:fee_fine].nil?
                 if request_params[:fee_fine] == "on"
                   fine_amount = request_params[:fine_amount_to_pay].to_f
+                  finance_transaction_particular = FinanceTransactionParticular.new
+                  finance_transaction_particular.finance_transaction_id = transaction.id
+                  finance_transaction_particular.particular_id = 0
+                  finance_transaction_particular.particular_type = 'Fine'
+                  finance_transaction_particular.transaction_type = ''
+                  finance_transaction_particular.amount = fine_amount
+                  finance_transaction_particular.transaction_date = transaction.transaction_date
+                  finance_transaction_particular.save
+                else
+                  if total_fine_amount
+                    fine_amount = total_fine_amount
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = 0
+                    finance_transaction_particular.particular_type = 'Fine'
+                    finance_transaction_particular.transaction_type = ''
+                    finance_transaction_particular.amount = fine_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
+                  end
+                end
+              else
+                if total_fine_amount
+                  fine_amount = total_fine_amount
                   finance_transaction_particular = FinanceTransactionParticular.new
                   finance_transaction_particular.finance_transaction_id = transaction.id
                   finance_transaction_particular.particular_id = 0
@@ -6056,7 +6164,27 @@ class StudentController < ApplicationController
                       finance_transaction_particular.amount = discount_amount
                       finance_transaction_particular.transaction_date = transaction.transaction_date
                       finance_transaction_particular.save
+                    else
+                      discount_amount = @discounts_late_amount[od.id]
+                      finance_transaction_particular = FinanceTransactionParticular.new
+                      finance_transaction_particular.finance_transaction_id = transaction.id
+                      finance_transaction_particular.particular_id = fd.id
+                      finance_transaction_particular.particular_type = 'FineAdjustment'
+                      finance_transaction_particular.transaction_type = 'Discount'
+                      finance_transaction_particular.amount = discount_amount
+                      finance_transaction_particular.transaction_date = transaction.transaction_date
+                      finance_transaction_particular.save
                     end
+                  else
+                    discount_amount = @discounts_late_amount[od.id]
+                    finance_transaction_particular = FinanceTransactionParticular.new
+                    finance_transaction_particular.finance_transaction_id = transaction.id
+                    finance_transaction_particular.particular_id = fd.id
+                    finance_transaction_particular.particular_type = 'FineAdjustment'
+                    finance_transaction_particular.transaction_type = 'Discount'
+                    finance_transaction_particular.amount = discount_amount
+                    finance_transaction_particular.transaction_date = transaction.transaction_date
+                    finance_transaction_particular.save
                   end
                 end
               end
@@ -6135,7 +6263,6 @@ class StudentController < ApplicationController
               if @has_fine_discount
                 @discounts_on_lates.each do |fd|
                   discount_amount = @discounts_late_amount[od.id]
-                  discount_amount = params["fee_fine_discount_amount_" + fd.id.to_s].to_f
                   finance_transaction_particular = FinanceTransactionParticular.new
                   finance_transaction_particular.finance_transaction_id = transaction.id
                   finance_transaction_particular.particular_id = fd.id

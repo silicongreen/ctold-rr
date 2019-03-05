@@ -1205,8 +1205,10 @@
             <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>  
             <% unless payment.present? %>
             <% payment = Payment.find_by_payment_id(@financefee.id) %>  
+            <% unless payment.nil? %>
             <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
               <% transaction_payment_not_assign = true %>  
+            <% end %>
             <% end %>
             <% else %>
             <% transaction_payment = true %>  

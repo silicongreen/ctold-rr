@@ -3049,7 +3049,8 @@ class ExamController < ApplicationController
       std_loop = std_loop+1
       
     end
-    
+    sheet1.add_header("foo header")
+    sheet1.write_from_scratch
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"

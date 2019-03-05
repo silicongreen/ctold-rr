@@ -396,14 +396,7 @@ class User < ActiveRecord::Base
     return reminders
   end
   def check_reminders
-    reminders =[]
-    reminders = Reminder.find(:all , :conditions => ["recipient = '#{self.id}'"])
-    count = 0
-    reminders.each do |r|
-      unless r.is_read
-        count += 1
-      end
-    end
+    count = Reminder.count(:all , :conditions => ["recipient = '#{self.id}' and is_read= 0"])
     return count
   end
 

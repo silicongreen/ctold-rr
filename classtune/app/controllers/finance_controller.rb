@@ -5915,6 +5915,17 @@ class FinanceController < ApplicationController
   end
   
   def student_fee_receipt_all_pdf
+    online_payments = Payment.all
+    s = ""
+    online_payments.each do |op|
+      payment_id = op.payment_id
+      f = FinanceFee.find(payment_id)
+      unless f.nil?
+      else
+        s += op.id.to_s + ","
+      end
+    end
+    abort(s.inspect)
     @batch=Batch.find(params[:batch_id])
     @students = @batch.students 
     @date = @fee_collection = FinanceFeeCollection.find(params[:id])

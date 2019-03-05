@@ -5919,7 +5919,7 @@ class FinanceController < ApplicationController
     s = ""
     online_payments.each do |op|
       payment_id = op.payment_id
-      f = FinanceFee.find(payment_id)
+      f = FinanceFee.find(:first, :conditions => "id = #{payment_id}")
       unless f.nil?
       else
         s += op.id.to_s + ","

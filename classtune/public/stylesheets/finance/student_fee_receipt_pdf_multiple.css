@@ -1,0 +1,358 @@
+
+.section {
+    margin: 0 auto;
+}
+#content_top{
+
+    margin-top: -10px;
+}
+
+.sl-td{
+   width:10%;
+    min-width:10%;
+    max-width:10%;
+    word-break:break-all;
+}
+
+.date-td{
+   width:14%;
+    min-width:14%;
+    max-width:14%;
+    word-break:break-all;
+}
+
+.rec-td{
+   width:16%;
+    min-width:16%;
+    max-width:16%;
+    word-break:break-all;
+}
+.mode-td{
+   width:15%;
+    min-width:15%;
+    max-width:15%;
+    word-break:break-all;
+}
+.note-td{
+   width:25%;
+    min-width:25%;
+    max-width:25%;
+    word-break:break-all;
+}
+
+.amount-td{
+   width:20%;
+    min-width:20%;
+    max-width:20%;
+    word-break:break-all;
+}
+body
+{
+    width: 100%;
+}
+#page-yield {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    font-size:9px;
+    margin-top: -50px;
+}
+.copy
+{
+    width: 80%;
+    margin: 10px auto;
+    padding-bottom: 0px;   
+    border-bottom: 2px dashed black;
+    
+}
+.margin-top-10
+{
+     margin-top: 10px;
+}
+#page-yield div.div_number_1
+{
+    margin-left: 40px;
+    
+}
+#page-yield div.div-24
+{
+    float:left;
+    width: 23%;
+    padding-right: 2px;
+    padding-left: 8px;
+    border-right: 2px dashed black;
+    min-height: 680px
+    
+} 
+#page-yield div.div-24 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-24:last-child
+{
+    border:none;
+    padding-right: 0px;
+}
+.info1{
+    margin-top:-10px;
+    float:left;
+}
+.info-left{
+    float:left;
+}
+.info-right{
+    float:right;
+}
+.tr-blank{
+    height:  27px;
+}
+
+h2.heading{
+    text-align: center;
+    margin:5px;
+}
+
+
+#main_info h2{
+    margin-bottom: 2px;
+    font-weight: normal;
+
+}
+
+#main_info h4{
+    color: #555555;
+    margin-top: 18px;
+    font-weight: bold;
+}
+
+
+
+
+.odd{
+    height:auto;
+    background: #fff;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+
+
+}
+tr.even{
+    border: 1px solid black;
+}
+
+tr.odd{
+    border: 1px solid black;
+}
+
+.even td{
+
+    padding: 1px 1px 1px 1px;
+    border: 1px solid black;
+    border-left: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.odd td{
+    padding: 1px 1px 1px 1px;
+    border: 1px solid black;
+    border-left: 0px solid #fff;
+    border-top: 0px solid #fff;
+
+}
+
+.table-header td{
+    padding: 1px 1px 1px 1px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    font-weight: bold;
+    background: #fff;
+   
+}
+#pdf-info{
+    float:left;
+}
+table#pdf-table{
+    border: 1px solid black;
+    border-collapse:collapse;
+}
+
+
+.header-content p{
+    margin-top: 3px;
+    margin-bottom: 2px;
+}
+
+.notes{
+    float:right;
+    font-size:13px;
+}
+.note{
+    float:left;
+    font-size:13px;
+    height:60px;
+}
+.note_text{
+    float:left;
+    margin-bottom:7px;
+}
+.col-b{
+    float:right;
+}
+
+table.std_info
+{
+    margin-top: 7px;
+}
+table.std_info tr td.td-align-right
+{
+    text-align: right;
+}
+table.std_info tr td
+{
+    padding: 2px;
+    text-align: left;
+}
+
+table.std_info2 tr td.td-align-right
+{
+    text-align: right;
+}
+
+
+.front-page h1
+{
+    font-size: 28px;
+}
+.front-page h2
+{
+    font-size: 20px;
+}
+
+.front-page h2 b
+{
+    margin-top:70px;
+    font-size: 22px;
+}
+
+.front-page h3
+{
+    font-size: 16px;
+    line-height: 5px;
+}
+
+.std_info2
+{
+    width:80%;
+    padding: 10px;
+    border:2px solid black;
+    font-size: 18px;
+}
+
+
+#pdf-header-south
+{
+    padding: 0px;
+}
+#pdf-header-south h2, #pdf-header-south h3, #pdf-header-south h4, #pdf-header-south h5
+{
+    padding: 0px;
+    margin: 0px;
+    line-height: 12px;
+}
+table.vat_area tr td
+{
+    font-size: 9px;
+   
+}
+
+table.std_info
+{
+    width:100%;
+}
+table.std_info tr td.right
+{
+    
+    text-align: right;
+}
+table.std_info tr td.left
+{
+    text-align: left;
+}
+
+table.vat_area
+{
+    width:100%;
+}
+table.vat_area tr td.right
+{
+    
+    text-align: right;
+}
+table.vat_area tr td.left
+{
+    text-align: left;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:70px;
+}
+
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 5px 10px;
+    width: 30%;
+    text-align: center;
+}
+
+
+
+
+
+#page-yield div.div-50
+{
+    float:left;
+    width: 48%;
+    padding-right: 3px;
+    padding-left: 5px;
+    border-right: 2px dashed black;
+    font-size: 13px !important;
+    margin-top:10px;
+    
+} 
+#page-yield div.div-50 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-50:last-child
+{
+    border:none;
+    padding-right: 0px;
+}
+
+div.div-50 h2, div.div-50 h3,  div.div-50 h4,div.div-50 h5
+{
+    padding: 0px;
+    margin: 0px;
+    line-height: 20px !important;
+}
+
+div.div-50 table.signature
+{
+    width: 100%;
+    margin-top:60px;
+}
+
+div.div-50 #pdf-info{
+    float:left;
+    margin-top:10px;
+}
+.page-break-continues { display:block; clear:both; page-break-after:always; }

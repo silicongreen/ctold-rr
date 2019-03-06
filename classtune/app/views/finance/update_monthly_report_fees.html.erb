@@ -49,6 +49,7 @@
           <% @finance_particular_categories.each do |fees_particular| %>
             <th style="width: 250px; text-align: center; vertical-align: middle;"><%= fees_particular.id.to_s + " " + fees_particular.name %></th>
           <% end %>
+          <th style="width: 100px; text-align: center; vertical-align: middle;">Fine</th>
           <th style="width: 340px; text-align: center; vertical-align: middle;">Total Collection</th>
         </tr>
       </thead>
@@ -68,7 +69,7 @@
             </td>
             <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
             <% @finance_particular_categories.each do |fees_particular| %>
-              <%= debug @transactions_fine.inspect %>
+              <%= debug @transactions_fine.map(&:amount).sum.to_s %>
               <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
               <% apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
               <% td = @transactions_discount.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>

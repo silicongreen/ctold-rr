@@ -3049,8 +3049,11 @@ class ExamController < ApplicationController
       std_loop = std_loop+1
       
     end
-    sheet1.add_header("foo header")
-    sheet1.write_from_scratch
+   batch_split = @batch.name.split(" ")
+    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
+ Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+      ")
+    sheet1.add_footer("TIPS :: M.C = Merit in Class  ||  M.S = Merit in Section  ||  +RT = Raw Total  ||  +CT = Converted Total")
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 
     send_data spreadsheet.string, :filename => @batch.full_name + "-" + @connect_exam_obj.name + ".xls", :type =>  "application/vnd.ms-excel"

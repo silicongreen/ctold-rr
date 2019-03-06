@@ -63,6 +63,7 @@
           <% date_wise_adv = 0.00 %>
           <% date_wise_discount = 0.00 %>
           <% date_wise_total = 0.00 %>
+          <% date_wise_fine = 0.00 %>
           <tr class="tr-odd">
             <td style="white-space: nowrap; vertical-align: middle;" class="align-center">
               <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
@@ -125,7 +126,7 @@
                   <div style="width: 100%; text-align: center; padding-top: 8px;">
                       <b><%= fine_discount_amount %></b>
                   </div>
-                  <% date_wise_total += fine_discount_amount %>
+                  <% date_wise_fine += fine_discount_amount %>
               </td>
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <div style="width: 100%; ">
@@ -150,8 +151,28 @@
                           <%= precision_label date_wise_discount %>
                       </div>
                   </div>
+                  <hr />
+                  <div style="width: 100%; ">
+                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                          Amount
+                      </div>
+                      <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                          Fine
+                      </div>
+                      <div style="width: 32%; border-bottom: 2px solid #ccc; display: inline-block;">
+                          Total
+                      </div>
+                  </div>
                   <div style="width: 100%; text-align: right; padding-top: 8px;">
-                      Total:&nbsp;&nbsp;&nbsp;<b><%= date_wise_total %></b>
+                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                          <%= precision_label date_wise_total %>
+                      </div>
+                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                          <%= precision_label date_wise_fine %>
+                      </div>
+                      <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                          <%= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
+                      </div>
                   </div>
                 
               </td>

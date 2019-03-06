@@ -5920,7 +5920,11 @@ class FinanceController < ApplicationController
     online_payments.each do |op|
       o_payment = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and finance_transaction_id IS NOT NULL")
       unless o_payment.nil?
-        s << o_payment.id
+        trans_id = o_payment.finance_transaction_id
+        o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
+        unless o_payment.nil?
+          s << o_payment.id
+        end
       end
     end
     abort(s.length.inspect)

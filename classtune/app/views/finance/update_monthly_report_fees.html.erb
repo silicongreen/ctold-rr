@@ -69,7 +69,6 @@
             </td>
             <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
             <% @finance_particular_categories.each do |fees_particular| %>
-              <%= debug @transactions_fine.map(&:amount).sum.to_s %>
               <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
               <% apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
               <% td = @transactions_discount.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
@@ -120,6 +119,14 @@
                 
               </td>
             <% end %>
+              <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                  <% fine_discount = @transactions_fine.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d")} %>
+                  <% fine_discount_amount = fine_discount.map(&:amount).sum %>
+                  <div style="width: 100%; text-align: right; padding-top: 8px;">
+                      <b><%= fine_discount_amount %></b>
+                  </div>
+                
+              </td>
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <div style="width: 100%; ">
                       <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">

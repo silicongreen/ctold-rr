@@ -5920,7 +5920,7 @@ class FinanceController < ApplicationController
     p = []
     online_payments.each do |op|
       trans_id = op.finance_transaction_id
-      trans = FinanceTransaction.find(trans_id)
+      trans = FinanceTransaction.find(:first, :conditions => "id=#{trans_id}")
       unless trans.nil?
       else
         p << trans_id

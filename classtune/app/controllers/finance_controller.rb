@@ -5915,7 +5915,8 @@ class FinanceController < ApplicationController
   end
   
   def student_fee_receipt_all_pdf
-    online_payments = Payment.all
+    online_payments = Payment.find(:all, :select => "order_id,  count(order_id) as cnt", :group => "order_id", :having => "cnt > 1")
+    abort(online_payments.inspect)
     s = ""
     online_payments.each do |op|
       payment_id = op.payment_id

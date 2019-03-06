@@ -5923,19 +5923,18 @@ class FinanceController < ApplicationController
       unless o_payment.nil?
         trans_id = o_payment.finance_transaction_id
         o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
-        unless o_payment.nil?
-          s << o_payment.id
+        unless o_payment_new.nil?
+          payment_id = o_payment_new.id
+          s << payment_id
+          o_payment_new.update_attributes(:finance_transaction_id=>trans_id)
+          o_payments = Payment.find(:all, :conditions => "order_id='#{op.order_id}' and id != #{payment_id}")
+          o_payments.each do |opp|
+            opp.destroy
+          end
         end
-      else
-#        trans_id = 0
-#        o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
-#        unless o_payment.nil?
-#          s << o_payment.id
-#        end
-        p << op.order_id
       end
     end
-    abort(p.inspect)
+    abort(s.inspect)
     @batch=Batch.find(params[:batch_id])
     @students = @batch.students 
     @date = @fee_collection = FinanceFeeCollection.find(params[:id])

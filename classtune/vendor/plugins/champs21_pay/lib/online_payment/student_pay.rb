@@ -537,22 +537,22 @@ module OnlinePayment
                       end
                     end
                   else
-                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                    payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id}")
                     unless payment.nil?
                       payment_saved = true
                     else  
-                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                      payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                       if payment.save
                         payment_saved = true
                       end 
                     end
                   end
                 else
-                  payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{feenew.id}")
+                  payment = Payment.find(:first, :conditions => "order_id = '#{orderId}' and payee_id = #{@student.id} and payment_id = #{@financefee.id}")
                   unless payment.nil?
                     payment_saved = true
                   else  
-                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => feenew,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
+                    payment = Payment.new(:order_id => orderId, :payee => @student,:payment => @financefee,:gateway_response => gateway_response, :transaction_datetime => transaction_datetime)
                     if payment.save
                       payment_saved = true
                     end 

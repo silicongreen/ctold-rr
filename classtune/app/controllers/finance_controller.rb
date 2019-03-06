@@ -5918,7 +5918,7 @@ class FinanceController < ApplicationController
     online_payments = Payment.find(:all, :select => "order_id,  count(order_id) as cnt", :group => "order_id", :having => "cnt > 1")
     s = []
     online_payments.each do |op|
-      o_payment = Payment.find(:first, :conditions => "order_id=#{op.order_id} and finance_transaction_id IS NOT NULL")
+      o_payment = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and finance_transaction_id IS NOT NULL")
       unless o_payment.nil?
         s << o_payment.id
       end

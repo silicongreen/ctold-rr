@@ -5917,6 +5917,7 @@ class FinanceController < ApplicationController
   def student_fee_receipt_all_pdf
     online_payments = Payment.find(:all, :select => "order_id,  count(order_id) as cnt", :group => "order_id", :having => "cnt > 1")
     s = []
+    p = []
     online_payments.each do |op|
       o_payment = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and finance_transaction_id IS NOT NULL")
       unless o_payment.nil?
@@ -5926,14 +5927,15 @@ class FinanceController < ApplicationController
           s << o_payment.id
         end
       else
-        trans_id = 0
-        o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
-        unless o_payment.nil?
-          s << o_payment.id
-        end
+#        trans_id = 0
+#        o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
+#        unless o_payment.nil?
+#          s << o_payment.id
+#        end
+        p << op.order_id
       end
     end
-    abort(s.length.inspect)
+    abort(p.inspect)
     @batch=Batch.find(params[:batch_id])
     @students = @batch.students 
     @date = @fee_collection = FinanceFeeCollection.find(params[:id])

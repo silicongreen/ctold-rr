@@ -5925,6 +5925,12 @@ class FinanceController < ApplicationController
         unless o_payment.nil?
           s << o_payment.id
         end
+      else
+        trans_id = 0
+        o_payment_new = Payment.find(:first, :conditions => "order_id='#{op.order_id}' and gateway_response IS NOT NULL and validation_response IS NOT NULL")
+        unless o_payment.nil?
+          s << o_payment.id
+        end
       end
     end
     abort(s.length.inspect)

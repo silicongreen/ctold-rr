@@ -796,7 +796,7 @@ class FinanceController < ApplicationController
           @particular_wise_transactions.each do |pt|
             amount -= pt.amount.to_f
           end
-          abort(amount.to_s)
+          abort(pwt.id.to_s + "  " + amount.to_s)
         end
         
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value

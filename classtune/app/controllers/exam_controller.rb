@@ -5018,6 +5018,13 @@ class ExamController < ApplicationController
           @std_subject_hash_code << std_sub.student_id.to_s+"|||"+std_sub.subject.code
         end
       end
+      @batch_subject_hash_code = []
+      batch_subject = Subject.find_all_by_batch_id(@batch.id, :conditions=>"elective_group_id IS NULL and is_deleted=false")
+      unless batch_subject.blank?
+        batch_subject.each do |std_sub|
+          @batch_subject_hash_code << std_sub.code
+        end
+      end
 
       unless @tabulation_data.blank?
         connect_exam = 0

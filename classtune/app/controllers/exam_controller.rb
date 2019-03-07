@@ -5970,10 +5970,13 @@ class ExamController < ApplicationController
 
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
+              
+              
+              
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1
               end
-
+              
               if exam_type == 3
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
@@ -5995,52 +5998,98 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total'] = grand_total2
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
               end
-
+              
               @student_result[loop_std]['gp'] = grade_point_avg
-
+              
               gradeObj = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
               if !gradeObj.blank? and !gradeObj.name.blank?
                 @student_result[loop_std]['lg'] = gradeObj.name
               end
               loop_std = loop_std+1
             end
-
+            
             if u_grade == 0  
-              grand_total_new = 50000-grand_total
+              grand_total_new = 50000-grand_total_with_fraction
               grand_grade_new = 50000-grand_grade_point
-
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 3
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-
-            end
-
+            end  
+        
             if u_grade1 == 0  
-              grand_total_new = 50000-grand_total1
+              grand_total_new = 50000-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 1
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end 
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if @section_wise_position[batch_data.id].blank?
+                  @section_wise_position[batch_data.id] = []
+                end
+                @section_wise_position[batch_data.id] << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
-
-            end 
-
+            end  
+        
             if u_grade2 == 0  
-              grand_total_new = 50000-grand_total2
+              grand_total_new = 50000-grand_total2_with_fraction
               grand_grade_new = 50000-grand_grade_point2
-              if connect_exam_id.to_i == @connect_exam_obj.id
+              if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                 @student_list_second_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
+                if exam_type == 2
+                  if !gradeObj.blank? and !gradeObj.name.blank?
+                    if @grade_count[gradeObj.name].blank?
+                      @grade_count[gradeObj.name] = 1
+                    else
+                      @grade_count[gradeObj.name] = @grade_count[gradeObj.name]+1
+                    end
+                  end
+                end
               end
               if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_second_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
               end
+            end  
+            
 
-            end 
+              if total_failed_appaered > 0
+                if @failed_appeared_absent[total_failed_appaered].blank?
+                  @failed_appeared_absent[total_failed_appaered] = 1
+                else
+                  @failed_appeared_absent[total_failed_appaered] = @failed_appeared_absent[total_failed_appaered]+1
+                end
+              end
+
+              if total_failed > 0
+                if @failed_partial_absent[total_failed].blank?
+                  @failed_partial_absent[total_failed] = 1
+                else
+                  @failed_partial_absent[total_failed] = @failed_partial_absent[total_failed]+1
+                end
+              end
+
 
           end
         end
@@ -6049,11 +6098,13 @@ class ExamController < ApplicationController
       @student_position_first_term = {}
       @student_position_second_term = {}
       @student_position = {}
-
+   
       @student_position_first_term_batch = {}
       @student_position_second_term_batch = {}
       @student_position_batch = {}
-
+      
+      @section_all_position_batch = {}
+   
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort
@@ -6062,7 +6113,25 @@ class ExamController < ApplicationController
           @student_position[s[2].to_i] = position
         end 
       end
-
+    
+      
+      unless @section_wise_position.blank?
+        @section_wise_position.each do|key,value|
+          position = 0
+         
+          @sorted_students = @section_wise_position[key].sort
+          @sorted_students.each do|s|
+            position = position+1
+            if @section_all_position_batch[key].blank?
+              @section_all_position_batch[key] = {}
+            end
+            @section_all_position_batch[key][s[2].to_i] = position
+          end 
+        end
+      end
+      
+     
+      
       unless @student_list_first_term.blank?
         position = 0
         @sorted_students = @student_list_first_term.sort
@@ -6071,7 +6140,7 @@ class ExamController < ApplicationController
           @student_position_first_term[s[2].to_i] = position
         end 
       end
-
+    
       unless @student_list_second_term.blank?
         position = 0
         @sorted_students = @student_list_second_term.sort
@@ -6080,7 +6149,7 @@ class ExamController < ApplicationController
           @student_position_second_term[s[2].to_i] = position
         end 
       end
-
+    
       unless @student_list_batch.blank?
         position = 0
         @sorted_students = @student_list_batch.sort
@@ -6089,7 +6158,7 @@ class ExamController < ApplicationController
           @student_position_batch[s[2].to_i] = position
         end 
       end
-
+    
       unless @student_list_first_term_batch.blank?
         position = 0
         @sorted_students = @student_list_first_term_batch.sort
@@ -6098,7 +6167,7 @@ class ExamController < ApplicationController
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
-
+    
       unless @student_list_second_term_batch.blank?
         position = 0
         @sorted_students = @student_list_second_term_batch.sort

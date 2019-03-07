@@ -5420,16 +5420,16 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
                   
-                  if @subject_result[sub['id']].blank?
-                    @subject_result[sub['id']] = {}
-                    @subject_result[sub['id']]['id'] = sub['id']
-                    @subject_result[sub['id']]['name'] = sub['name'] 
+                  if @subject_result[sub['code']].blank?
+                    @subject_result[sub['code']] = {}
+                    @subject_result[sub['code']]['code'] = sub['code']
+                    @subject_result[sub['code']]['name'] = sub['name'] 
                   end
                   
-                  if @subject_result[sub['id']]['total'].blank?
-                    @subject_result[sub['id']]['total'] = 1
+                  if @subject_result[sub['code']]['total'].blank?
+                    @subject_result[sub['code']]['total'] = 1
                   else
-                    @subject_result[sub['id']]['total'] = @subject_result[sub['id']]['total']+1
+                    @subject_result[sub['code']]['total'] = @subject_result[sub['code']]['total']+1
                   end
                   main_mark = total_mark1+total_mark2
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -5437,23 +5437,23 @@ class ExamController < ApplicationController
                     @student_result[loop_std]['subjects'][sub['id']]['result']['lg'] = grade.name
                     if grade.credit_points.to_i == 0 or subject_failed == true
 
-                      if @subject_result[sub['id']]['failed'].blank?
-                        @subject_result[sub['id']]['failed'] = 1
+                      if @subject_result[sub['code']]['failed'].blank?
+                        @subject_result[sub['code']]['failed'] = 1
                       else
-                        @subject_result[sub['id']]['failed'] = @subject_result[sub['id']]['failed']+1
+                        @subject_result[sub['code']]['failed'] = @subject_result[sub['id']]['failed']+1
                       end
 
                       if appeared
-                        if @subject_result[sub['id']]['appeared'].blank?
-                          @subject_result[sub['id']]['appeared'] = 1
+                        if @subject_result[sub['code']]['appeared'].blank?
+                          @subject_result[sub['code']]['appeared'] = 1
                         else
-                          @subject_result[sub['id']]['appeared'] = @subject_result[sub['id']]['appeared']+1
+                          @subject_result[sub['code']]['appeared'] = @subject_result[sub['code']]['appeared']+1
                         end
                       else
-                        if @subject_result[sub['id']]['absent'].blank?
-                          @subject_result[sub['id']]['absent'] = 1
+                        if @subject_result[sub['code']]['absent'].blank?
+                          @subject_result[sub['code']]['absent'] = 1
                         else
-                          @subject_result[sub['id']]['absent'] = @subject_result[sub['id']]['absent']+1
+                          @subject_result[sub['code']]['absent'] = @subject_result[sub['code']]['absent']+1
                         end
 
                       end
@@ -5465,15 +5465,15 @@ class ExamController < ApplicationController
                         @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.to_s
                       end 
                     else
-                      if @subject_result[sub['id']].blank?
-                        @subject_result[sub['id']] = {}
-                        @subject_result[sub['id']]['id'] = sub['id']
-                        @subject_result[sub['id']]['name'] = sub['name']
+                      if @subject_result[sub['code']].blank?
+                        @subject_result[sub['code']] = {}
+                        @subject_result[sub['code']]['id'] = sub['code']
+                        @subject_result[sub['code']]['name'] = sub['name']
                       end
-                      if @subject_result[sub['id']]['passed'].blank?
-                        @subject_result[sub['id']]['passed'] = 1
+                      if @subject_result[sub['code']]['passed'].blank?
+                        @subject_result[sub['code']]['passed'] = 1
                       else
-                        @subject_result[sub['id']]['passed'] = @subject_result[sub['id']]['passed']+1
+                        @subject_result[sub['code']]['passed'] = @subject_result[sub['code']]['passed']+1
                       end
 
                     end  
@@ -5818,15 +5818,15 @@ class ExamController < ApplicationController
                     @student_result[loop_std]['subjects'][sub2['id']]['result']['pr'] = total_pr1+total_pr2
                     @student_result[loop_std]['subjects'][sub2['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                     @student_result[loop_std]['subjects'][sub2['id']]['result']['ct'] = total_mark1+total_mark2
-                    if @subject_result[sub2['id']].blank?
-                      @subject_result[sub2['id']] = {}
-                      @subject_result[sub2['id']]['id'] = sub2['id']
-                      @subject_result[sub2['id']]['name'] = sub2['name']
+                    if @subject_result[sub2['code']].blank?
+                      @subject_result[sub2['code']] = {}
+                      @subject_result[sub2['code']]['code'] = sub2['code']
+                      @subject_result[sub2['code']]['name'] = sub2['name']
                     end
-                    if @subject_result[sub2['id']]['total'].blank?
-                      @subject_result[sub2['id']]['total'] = 1
+                    if @subject_result[sub2['code']]['total'].blank?
+                      @subject_result[sub2['code']]['total'] = 1
                     else
-                      @subject_result[sub2['id']]['total'] = @subject_result[sub2['id']]['total']+1
+                      @subject_result[sub2['code']]['total'] = @subject_result[sub2['code']]['total']+1
                     end
                     main_mark = total_mark1+total_mark2
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
@@ -5834,23 +5834,23 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][sub2['id']]['result']['lg'] = grade.name
                       if grade.credit_points.to_i == 0 or subject_failed == true
 
-                        if @subject_result[sub2['id']]['failed'].blank?
-                          @subject_result[sub2['id']]['failed'] = 1
+                        if @subject_result[sub2['code']]['failed'].blank?
+                          @subject_result[sub2['code']]['failed'] = 1
                         else
-                          @subject_result[sub2['id']]['failed'] = @subject_result[sub2['id']]['failed']+1
+                          @subject_result[sub2['code']]['failed'] = @subject_result[sub2['code']]['failed']+1
                         end
 
                         if appeared
-                          if @subject_result[sub2['id']]['appeared'].blank?
-                            @subject_result[sub2['id']]['appeared'] = 1
+                          if @subject_result[sub2['code']]['appeared'].blank?
+                            @subject_result[sub2['code']]['appeared'] = 1
                           else
-                            @subject_result[sub2['id']]['appeared'] = @subject_result[sub2['id']]['appeared']+1
+                            @subject_result[sub2['code']]['appeared'] = @subject_result[sub2['id']]['appeared']+1
                           end
                         else
-                          if @subject_result[sub2['id']]['absent'].blank?
-                            @subject_result[sub2['id']]['absent'] = 1
+                          if @subject_result[sub2['code']]['absent'].blank?
+                            @subject_result[sub2['code']]['absent'] = 1
                           else
-                            @subject_result[sub2['id']]['absent'] = @subject_result[sub2['id']]['absent']+1
+                            @subject_result[sub2['code']]['absent'] = @subject_result[sub2['code']]['absent']+1
                           end
 
                         end
@@ -5862,15 +5862,15 @@ class ExamController < ApplicationController
                           @student_result[loop_std]['subject_failed'] << sub2['code']+"-"+main_mark.to_s
                         end 
                       else
-                        if @subject_result[sub2['id']].blank?
-                          @subject_result[sub2['id']] = {}
-                          @subject_result[sub2['id']]['id'] = sub2['id']
-                          @subject_result[sub2['id']]['name'] = sub2['name']
+                        if @subject_result[sub2['code']].blank?
+                          @subject_result[sub2['code']] = {}
+                          @subject_result[sub2['code']]['code'] = sub2['code']
+                          @subject_result[sub2['code']]['name'] = sub2['name']
                         end
-                        if @subject_result[sub2['id']]['passed'].blank?
-                          @subject_result[sub2['id']]['passed'] = 1
+                        if @subject_result[sub2['code']]['passed'].blank?
+                          @subject_result[sub2['code']]['passed'] = 1
                         else
-                          @subject_result[sub2['id']]['passed'] = @subject_result[sub2['id']]['passed']+1
+                          @subject_result[sub2['code']]['passed'] = @subject_result[sub2['code']]['passed']+1
                         end
 
                       end  

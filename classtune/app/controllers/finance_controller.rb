@@ -780,10 +780,23 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
+        trans_id = ""
         @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
         @transactions.each do |pwt|
+          amount = 0.00
           @particular_wise_transactions = FinanceTransactionParticular.find(:first, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.id")
-          abort(@particular_wise_transactions.amount.to_s)
+          @particular_wise_transactions.each do |pt|
+            amount += pt.amount.to_f
+          end
+          @particular_wise_transactions = FinanceTransactionParticular.find(:first, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.id")
+          @particular_wise_transactions.each do |pt|
+            amount += pt.amount.to_f
+          end
+          @particular_wise_transactions = FinanceTransactionParticular.find(:first, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.id")
+          @particular_wise_transactions.each do |pt|
+            amount -= pt.amount.to_f
+          end
+          abort(amount.to_s)
         end
         
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value

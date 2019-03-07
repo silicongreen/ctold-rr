@@ -780,7 +780,7 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        trans_id = ""
+        trans_ids = []
         @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
         @transactions.each do |pwt|
           amount = 0.00
@@ -796,9 +796,12 @@ class FinanceController < ApplicationController
           @particular_wise_transactions.each do |pt|
             amount -= pt.amount.to_f
           end
-          abort(pwt.id.to_s + "  " + amount.to_s)
+          if amount.to_f != pwt.amount.to_f
+            trans_ids << pwt.id
+          end
+          
         end
-        
+        abort(trans_ids.length.to_s)
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         

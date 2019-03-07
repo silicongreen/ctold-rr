@@ -776,9 +776,12 @@ class FinanceController < ApplicationController
   end
   
   def update_monthly_report_fees
+    
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
+        @particular_wise_transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+        abort(@particular_wise_transactions.length.inspect)
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         

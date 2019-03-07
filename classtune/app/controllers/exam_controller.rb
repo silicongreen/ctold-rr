@@ -5419,12 +5419,13 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][sub['id']]['result']['pr'] = total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][sub['id']]['result']['ct'] = total_mark1+total_mark2
+                  
                   if @subject_result[sub['id']].blank?
                     @subject_result[sub['id']] = {}
                     @subject_result[sub['id']]['id'] = sub['id']
-                    @subject_result[sub['id']]['name'] = sub['name']
-                    
+                    @subject_result[sub['id']]['name'] = sub['name'] 
                   end
+                  
                   if @subject_result[sub['id']]['total'].blank?
                     @subject_result[sub['id']]['total'] = 1
                   else
@@ -5821,11 +5822,11 @@ class ExamController < ApplicationController
                       @subject_result[sub2['id']] = {}
                       @subject_result[sub2['id']]['id'] = sub2['id']
                       @subject_result[sub2['id']]['name'] = sub2['name']
-                      if @subject_result[sub2['id']]['total'].blank?
-                        @subject_result[sub2['id']]['total'] = 1
-                      else
-                        @subject_result[sub2['id']]['total'] = @subject_result[sub2['id']]['total']+1
-                      end
+                    end
+                    if @subject_result[sub2['id']]['total'].blank?
+                      @subject_result[sub2['id']]['total'] = 1
+                    else
+                      @subject_result[sub2['id']]['total'] = @subject_result[sub2['id']]['total']+1
                     end
                     main_mark = total_mark1+total_mark2
                     grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)

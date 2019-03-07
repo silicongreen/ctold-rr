@@ -49,6 +49,8 @@
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         
@@ -88,27 +90,7 @@
       } 
     });
     
-   jj( document ).on( "click", "a", function(event) {
-      jj("#pdf_file").hide();
-      if(jj(this).attr("href").indexOf("continues")!=-1 || (jj(this).attr("href").indexOf("mert_list_sagc")!=-1 || jj(this).attr("href").indexOf("summary_report")!=-1 ) || jj(this).attr("href").indexOf("marksheet")!=-1)
-      {
-         jj("#pdf_file").show();
-         event.preventDefault();
-         var isFirefox = typeof InstallTrigger !== 'undefined';
-         if(isFirefox)
-         {
-            PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id",forcePDFJS: true,PDFJS_URL: "/javascripts/pdfjs/web/viewer.html"});
-         } 
-         else
-         {
-            PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
-         }
-         //PDFObject.embed(jj(this).attr("href"), "#pdf_file", {id: "pdf_id"});
-        
-         
-      }
-      
-    });
+   
     
     jj(".section_id").change(function(){
       if(jj(this).val())
@@ -235,7 +217,7 @@ a:hover
 }
 #page-yield .box
 {
-    width: 38%;
+    
     float:left;
     clear:both;
 }

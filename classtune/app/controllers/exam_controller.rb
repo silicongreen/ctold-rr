@@ -5968,7 +5968,7 @@ class ExamController < ApplicationController
 
 
 
-            if connect_exam_id.to_i == @connect_exam_obj.id
+            if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
               if full_absent
                 @absent_in_all_subject = @absent_in_all_subject+1

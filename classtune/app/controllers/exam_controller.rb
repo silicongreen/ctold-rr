@@ -5116,6 +5116,8 @@ class ExamController < ApplicationController
               end
               @student_result[loop_std]['id'] = std['id']
               @student_result[loop_std]['sl'] = loop_std+1
+              @student_result[loop_std]['batch_id'] = batch_data.id	
+              @student_result[loop_std]['batch_data'] = batch_data.full_name
               @student_result[loop_std]['sid'] = @student_tab.admission_no
               @student_result[loop_std]['roll'] = @student_tab.class_roll_no
               @student_result[loop_std]['name'] = @student_tab.full_name

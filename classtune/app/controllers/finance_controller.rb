@@ -802,7 +802,7 @@ class FinanceController < ApplicationController
           end
           tot_amount += amount
         end
-        abort(trans_ids.inspect)
+        abort(tot_amount.inspect)
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         

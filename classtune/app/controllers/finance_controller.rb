@@ -780,8 +780,12 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        @particular_wise_transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-        abort(@particular_wise_transactions.length.inspect)
+        @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+        @transactions.each do |pwt|
+          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transaction_particulars.transaction_date = #{pwt.id} and finance_transaction_particulars.transaction_date, finance_fee_particular_categories.name, finance_fee_particular_categories.id as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id INNER JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id INNER JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transaction_particulars.transaction_date, finance_fee_particular_categories.id")
+          abort(@particular_wise_transactions.inspect)
+        end
+        
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         

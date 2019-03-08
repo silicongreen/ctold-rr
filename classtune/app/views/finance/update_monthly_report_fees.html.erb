@@ -63,6 +63,7 @@
       <% particular_wise_total = [] %>
       <% grand_total = 0.00 %>
       <% grand_fine = 0.00 %>
+      <% total_fees_discount = 0.00 %>
       <tbody>
           <% @finance_particular_categories.each do |fees_particular| %>
               <% particular_wise_fees_amount[fees_particular.id] = 0 %>
@@ -140,6 +141,8 @@
                       <b><%= discount_total_amount %></b>
                   </div>
                   <% date_wise_discount += discount_total_amount %>
+                  <% total_fees_discount += discount_total_amount %>
+                  <% date_wise_total -= discount_total_amount %>
               </td>
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <% fine_discount = @transactions_fine.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d")} %>
@@ -237,6 +240,11 @@
             <% end %>  
             <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                 <div style="width: 100%; text-align: center; padding-top: 8px;">
+                    <b><%= total_fees_discount %></b>
+                </div>
+            </td>    
+            <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                <div style="width: 100%; text-align: center; padding-top: 8px;">
                     <b><%= grand_fine %></b>
                 </div>
             </td>    
@@ -276,7 +284,7 @@
                 </div>
                 <div style="width: 100%; text-align: center; padding-top: 8px;">
                     <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                        <% grand_total = (particular_wise_fees_amount_total + particular_wise_adv_amount_total) - particular_wise_discount_amount_total %>
+                        <% grand_total = (particular_wise_fees_amount_total + particular_wise_adv_amount_total) - (particular_wise_discount_amount_total + total_fees_discount) %>
                         <%= precision_label grand_total %>
                     </div>
                     <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">

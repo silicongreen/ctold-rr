@@ -798,9 +798,9 @@ class FinanceController < ApplicationController
             amount += pt.amount.to_f
             a_amount += pt.amount.to_f
           end
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transaction_particulars.finance_transaction_id, sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
           @particular_wise_transactions.each do |pt|
-            trans_ids << pt.id
+            trans_ids << pt.finance_transaction_id
             amount -= pt.amount.to_f
             d_amount += pt.amount.to_f
           end

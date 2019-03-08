@@ -136,6 +136,74 @@
                 
               </td>
             <% end %>
+ 
+
+                      <% discount_amount = 0 %> 
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
+                            <% discount_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %> 
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += discount_amount %>
+
+                      <td>
+                          <%= (discount_amount==0) ? "-" : "["+precision_label(discount_amount).to_s+"]" %>
+                      </td>
+
+                      <% i +=1; %>
+                      <% fine_amount = 0 %>
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Fine"   %>
+                            <% fine_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %>
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += fine_amount %>  
+                      <% total_fees += fine_amount %>
+                      <% grand_total += fine_amount %>
+
+                      <td>
+                          <%= (fine_amount==0) ? "-" : precision_label(fine_amount) %>
+                      </td>
+
+                      <% i +=1; %>
+                      <% vat_amount = 0 %> 
+
+                      <% unless @transactions_particular.blank? %>
+                        <% @transactions_particular.each do |transactions_particular| %>
+                          <% if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Vat"   %>
+                            <% vat_amount+=transactions_particular.amount %>
+                          <% end %>
+                        <% end %> 
+                      <% end %>
+
+                      <% if fee_total[i].blank? %>
+                        <% fee_total[i] = 0 %>
+                      <% end %>
+                      <% fee_total[i] += vat_amount %>  
+                      <% total_fees += vat_amount %>
+                      <% grand_total += vat_amount %>
+
+                      <td>
+                          <%= (vat_amount==0) ? "-" : precision_label(vat_amount) %>
+                      </td>
+                      <% i +=1; %>
+                      <td><%= (total_fees==0) ? "-" : precision_label(total_fees) %></td>
+                  </tr>
+                <% end %>
                 <% c= 'even' %>
                 <tr class="table-header">
                     <td style="white-space: nowrap;" class="align-center">Total Collection</td>

@@ -5381,10 +5381,19 @@ class ExamController < ApplicationController
                 else
                   main_mark1 = 0
                 end 
-                main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
-                main_mark = main_mark.round()
-
-                main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                if exam_type == 3
+                  main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                  main_mark = main_mark.round()
+                  main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                elsif  exam_type == 2
+                  main_mark = total_mark2.to_f/full_mark2.to_f*100
+                  main_mark = main_mark.round()
+                  main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
+                else
+                  main_mark = total_mark1.to_f/full_mark1.to_f*100
+                  main_mark = main_mark.round()
+                  main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
+                end  
 
                 subject_full_marks = main_mark
                 if sub['grade_subject'].to_i != 1
@@ -5796,7 +5805,22 @@ class ExamController < ApplicationController
                     if total_mark1.to_f>0 and full_mark1.to_f>0
                       main_mark1 = main_mark1+((total_mark1.to_f/full_mark1.to_f)*100)
                     end 
-                    main_mark = main_mark+((total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f))*100
+                    if exam_type == 3
+                      main_mark = main_mark+((total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100)
+                      main_mark = main_mark.round()
+                      main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
+                    elsif  exam_type == 2
+                      main_mark = main_mark+(total_mark2.to_f/full_mark2.to_f*100)
+                      main_mark = main_mark.round()
+                      main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
+                    else
+                      main_mark = main_mark+(total_mark1.to_f/full_mark1.to_f*100)
+                      main_mark = main_mark.round()
+                      main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
+                    end 
+                    
+                    
+                    
 
                     if main_mark1 > 0
                       main_mark1 = main_mark1/2.00
@@ -5810,8 +5834,6 @@ class ExamController < ApplicationController
                       main_mark2 = main_mark2/2.00
                       main_mark2 = main_mark2.round()
                     end
-
-                    main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
 
                     subject_full_marks = main_mark
                     if sub2['grade_subject'].to_i != 1

@@ -782,6 +782,9 @@ class NewsController < ApplicationController
   end
 
   def view
+    Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 5,current_user.id])
+    @total = Reminder.count(:all,:conditions=>{:rtype=>5,:rid=> params[:id]})
+    @total_read = Reminder.count(:all,:conditions=>{:rtype=>5,:rid=> params[:id],:is_read=>true})
     show_comments_associate(params[:id], params[:page])
   end
 

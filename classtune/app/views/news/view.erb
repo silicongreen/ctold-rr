@@ -94,6 +94,11 @@
     <%= sanitize @news.content , :tags => %w[b i a h1 h2 h3 u li ol strike p img font span sup sub tr td table th tbody thead strong em iframe], :attributes => %w[href src style border cellspacing cellpadding height width align]%>
   </div>
   
+  <div class="themed_text" style="padding:0px;">
+      <b>Total Send To : <%= @total.to_s %>, <b/>
+      <b>Total Read : <%= @total_read.to_s %><b/>
+  </div>
+  
   <% unless @news.attachment_file_name.nil? %>
   <div class="portlet-subcontent atachment_div" style="width:100%">
     <div style=" float: left; clear:both;  margin: 10px 0px;">

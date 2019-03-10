@@ -5298,15 +5298,20 @@ class ExamController < ApplicationController
                   end    
                 end
 
-                if full_mark2 > 0 && monthly_full_mark1 != 0
-                  full_mark2 = full_mark2+20
-                  exam_type = 2
-                end
-
-                if full_mark1 > 0 && exam_type == 3 && monthly_full_mark2 != 0
+                if full_mark1 > 0 && monthly_full_mark1 != 0
                   full_mark1 = full_mark1+20
+                end
+                if full_mark2 > 0 && monthly_full_mark2 != 0
+                  full_mark2 = full_mark2+20
+                end
+                
+                if full_mark1 > 0 && full_mark2 > 0
                   exam_type = 3
-                end 
+                else if full_mark2 > 0
+                    exam_type = 2
+                end
+                
+               
 
                 if monthly_total_mark1 > 0
                   monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
@@ -5713,15 +5718,18 @@ class ExamController < ApplicationController
                       end    
                     end
 
-                    if full_mark2 > 0 && monthly_full_mark1 != 0
+                    if full_mark1 > 0 && monthly_full_mark1 != 0
+                      full_mark1 = full_mark1+20
+                    end
+                    if full_mark2 > 0 && monthly_full_mark2 != 0
                       full_mark2 = full_mark2+20
-                      exam_type = 2
                     end
 
-                    if full_mark1 > 0 && exam_type == 3 && monthly_full_mark2 != 0
-                      full_mark1 = full_mark1+20
+                    if full_mark1 > 0 && full_mark2 > 0
                       exam_type = 3
-                    end 
+                    else if full_mark2 > 0
+                        exam_type = 2
+                    end
 
                     if monthly_total_mark1 > 0
                       monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20

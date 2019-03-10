@@ -463,11 +463,17 @@ class ExamController < ApplicationController
           available_user_ids << st.user_id
           batch_ids[st.user_id] = st.batch_id
           student_ids[st.user_id] = st.id
-          unless st.immediate_contact.nil? 
-            available_user_ids << st.immediate_contact.user_id
-            batch_ids[st.immediate_contact.user_id] = st.batch_id
-            student_ids[st.immediate_contact.user_id] = st.id
+          guardians = st.student_guardian
+          unless guardians.blank?
+            guardians.each do |guardian|
+              unless guardian.user_id.nil?
+                available_user_ids << guardian.user_id
+                batch_ids[guardian.user_id] = st.batch_id
+                student_ids[guardian.user_id] = st.id
+              end
+            end
           end
+          
           
         end
         
@@ -1097,12 +1103,16 @@ class ExamController < ApplicationController
         available_user_ids << st.user_id
         batch_ids[st.user_id] = st.batch_id
         student_ids[st.user_id] = st.id
-        unless st.immediate_contact.nil? 
-          available_user_ids << st.immediate_contact.user_id
-          batch_ids[st.immediate_contact.user_id] = st.batch_id
-          student_ids[st.immediate_contact.user_id] = st.id
+        guardians = st.student_guardian
+        unless guardians.blank?
+          guardians.each do |guardian|
+            unless guardian.user_id.nil?
+              available_user_ids << guardian.user_id
+              batch_ids[guardian.user_id] = st.batch_id
+              student_ids[guardian.user_id] = st.id
+            end
+          end
         end
-
       end
       unless available_user_ids.blank?
         Delayed::Job.enqueue(

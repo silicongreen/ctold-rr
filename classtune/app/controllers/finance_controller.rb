@@ -780,36 +780,45 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        trans_ids = []
-        p_amount = 0.00
-        a_amount = 0.00
-        d_amount = 0.00
-        #@transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-        @transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-        #abort(@transactions.map(&:id).inspect)
-        @transactions.each do |pwt|
-          amount = 0.00
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount += pt.amount.to_f
-            p_amount += pt.amount.to_f
+        online_id = []
+        online_payments = Payment.find(:all, :conditions => "finance_transaction_id IS NOT NULL")
+        online_payments.each do |o|
+          @transactions = FinanceTransaction.find(:all, :conditions => "id = #{o.finance_transaction_id}")
+          if @transactions.nil? 
+            online_id << o.id
           end
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount += pt.amount.to_f
-            a_amount += pt.amount.to_f
-          end
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount -= pt.amount.to_f
-            d_amount += pt.amount.to_f
-          end
-          if amount.to_f != pwt.amount.to_f
-            trans_ids << pwt.id
-          end
-          #tot_amount += amount
         end
-        abort(trans_ids.inspect)
+        abort(online_id.inspect)
+#        trans_ids = []
+#        p_amount = 0.00
+#        a_amount = 0.00
+#        d_amount = 0.00
+#        #@transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+#        @transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+#        #abort(@transactions.map(&:id).inspect)
+#        @transactions.each do |pwt|
+#          amount = 0.00
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount += pt.amount.to_f
+#            p_amount += pt.amount.to_f
+#          end
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount += pt.amount.to_f
+#            a_amount += pt.amount.to_f
+#          end
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount -= pt.amount.to_f
+#            d_amount += pt.amount.to_f
+#          end
+#          if amount.to_f != pwt.amount.to_f
+#            trans_ids << pwt.id
+#          end
+#          #tot_amount += amount
+#        end
+#        abort(trans_ids.inspect)
         
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value

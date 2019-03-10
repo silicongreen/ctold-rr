@@ -5887,13 +5887,13 @@ class ExamController < ApplicationController
                         @subject_result[main_sub_id] = {}
                         @subject_result[main_sub_id]['id'] = main_sub_id
                         @subject_result[main_sub_id]['name'] = sub2['name']
-                        if @subject_result[main_sub_id]['total'].blank?
-                          @subject_result[main_sub_id]['total'] = 1
-                        else
-                          @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
-                        end
+                        
                       end
-                      main_mark = total_mark1+total_mark2
+                      if @subject_result[main_sub_id]['total'].blank?
+                        @subject_result[main_sub_id]['total'] = 1
+                      else
+                        @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
+                      end
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                       if !grade.blank? && !grade.name.blank? && sub2['grade_subject'].to_i != 1
                         @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name

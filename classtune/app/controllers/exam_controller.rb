@@ -5308,7 +5308,7 @@ class ExamController < ApplicationController
                 if full_mark1 > 0 && full_mark2 > 0
                   exam_type = 3
                 elsif full_mark2 > 0
-                    exam_type = 2
+                  exam_type = 2
                 end
                 
                

@@ -783,9 +783,11 @@ class FinanceController < ApplicationController
         online_id = []
         online_payments = Payment.find(:all, :conditions => "finance_transaction_id IS NOT NULL")
         online_payments.each do |o|
-          @transactions = FinanceTransaction.find(:all, :conditions => "id = #{o.finance_transaction_id}")
-          if @transactions.nil? 
-            online_id << o.id
+          @transactions = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+          unless @transactions.nil? 
+            if @transactions.amount.to_f != o.gateway_response[:amount].to_f
+              online_id << o.id
+            end
           end
         end
         abort(online_id.inspect)

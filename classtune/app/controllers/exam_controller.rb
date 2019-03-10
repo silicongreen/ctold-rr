@@ -5029,7 +5029,7 @@ class ExamController < ApplicationController
       unless @tabulation_data.blank?
         connect_exam = 0
         batch_loop = 0
-        group_name = batchobj.group
+        group_name = courseObj.group
 #        @tabulation_data['report'].each do |tab|
 #          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
 #          connect_exam = connect_exam+1
@@ -5072,7 +5072,7 @@ class ExamController < ApplicationController
 
           exam_type = 1
           connect_exam = connect_exam+1
-          std_group_name = batch_data.group
+          std_group_name = batch_data.course.group
           if batch_data.name == "Morning English"	
             std_group_name = "Morning English"	
           end

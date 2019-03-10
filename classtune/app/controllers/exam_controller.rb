@@ -5030,27 +5030,27 @@ class ExamController < ApplicationController
         connect_exam = 0
         batch_loop = 0
         group_name = courseObj.group
-#        @tabulation_data['report'].each do |tab|
-#          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-#          connect_exam = connect_exam+1
-#          if connect_exam_id.to_i == @connect_exam_obj.id
-#            tab['students'].each do |std| 
-#              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
-#                group_name = "Science" 
-#                break
-#              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
-#                group_name = "Business Studies" 
-#                break
-#              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-#                group_name = "Humanities" 
-#                break
-#              end
-#            end
-#          end
-#          if group_name != ""
-#            break 
-#          end
-#        end
+        #        @tabulation_data['report'].each do |tab|
+        #          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+        #          connect_exam = connect_exam+1
+        #          if connect_exam_id.to_i == @connect_exam_obj.id
+        #            tab['students'].each do |std| 
+        #              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
+        #                group_name = "Science" 
+        #                break
+        #              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
+        #                group_name = "Business Studies" 
+        #                break
+        #              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+        #                group_name = "Humanities" 
+        #                break
+        #              end
+        #            end
+        #          end
+        #          if group_name != ""
+        #            break 
+        #          end
+        #        end
         @group_name_upper = group_name	
         if batchobj.name == "Morning English"	
           group_name = "Morning English"	
@@ -5083,14 +5083,14 @@ class ExamController < ApplicationController
             total_failed_appaered = 0
             full_absent = true
             failed_on_appread = false
-#            std_group_name = ""
-#            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
-#              std_group_name = "Science" 
-#            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
-#              std_group_name = "Business Studies" 
-#            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-#              std_group_name = "Humanities" 
-#            end
+            #            std_group_name = ""
+            #            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
+            #              std_group_name = "Science" 
+            #            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
+            #              std_group_name = "Business Studies" 
+            #            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+            #              std_group_name = "Humanities" 
+            #            end
             
             grand_total = 0
             grand_total_with_fraction = 0
@@ -5206,47 +5206,85 @@ class ExamController < ApplicationController
                 subject_failed = false
 
                 tab['exams'].each do |rs|
-                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank?   
-                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
-                      next
-                    end
-                    
+                  if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
                     if rs['exam_category'] == '1'
                       if rs['quarter'] == '1'
-                        monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-
                         monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
                       if rs['quarter'] == '2'
-                        monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-
                         monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end
                     elsif rs['exam_category'] == '2'
                       if rs['quarter'] == '1'
-                        at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                       end  
                       if rs['quarter'] == '2'
-                        at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '3' 
+
+                      if rs['quarter'] == '1'
+                        full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                      end  
+                      if rs['quarter'] == '2'
+                        full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                      end
+                    elsif rs['exam_category'] == '4' 
+
+                      if rs['quarter'] == '1'
+                        full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                      end  
+                      if rs['quarter'] == '2'
+                        full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    elsif rs['exam_category'] == '5' 
+                      if rs['quarter'] == '1'
+                        full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                      end
+                    end
+
+                    if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
+                      next
+                    end
+
+                    if rs['exam_category'] == '1'
+                      if rs['quarter'] == '1'
+                        monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end
+                    elsif rs['exam_category'] == '2'
+                      if rs['quarter'] == '1'
+                        at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                      end  
+                      if rs['quarter'] == '2'
+                        at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
                     elsif rs['exam_category'] == '3' 
                       appeared = true
                       full_absent = false
                       if rs['quarter'] == '1'
-                        full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade1 = u_grade1+1
                           subject_failed = true
                         end  
                       end  
                       if rs['quarter'] == '2'
-                        full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade2 = u_grade2+1
                           subject_failed = true
@@ -5256,18 +5294,14 @@ class ExamController < ApplicationController
                       appeared = true
                       full_absent = false
                       if rs['quarter'] == '1'
-                        full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade1 = u_grade1+1
                           subject_failed = true
                         end 
                       end  
                       if rs['quarter'] == '2'
-                        full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade2 = u_grade2+1
                           subject_failed = true
@@ -5277,18 +5311,14 @@ class ExamController < ApplicationController
                       appeared = true
                       full_absent = false
                       if rs['quarter'] == '1'
-                        full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade1 = u_grade1+1
                           subject_failed = true
                         end 
                       end  
                       if rs['quarter'] == '2'
-                        full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                        full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           u_grade2 = u_grade2+1
                           subject_failed = true
@@ -5638,48 +5668,86 @@ class ExamController < ApplicationController
                     subject_failed = false
 
                     tab['exams'].each do |rs|
-                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank?   
-                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
-                          next
-                        end
-                      
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
                         if rs['exam_category'] == '1'
                           if rs['quarter'] == '1'
-                            monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-
-                            monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-
-                            monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end
                         elsif rs['exam_category'] == '2'
                           if rs['quarter'] == '1'
-                            at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end
-                        elsif rs['exam_category'] == '3'  
+                        elsif rs['exam_category'] == '3' 
+
+                          if rs['quarter'] == '1'
+                            full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                          end  
+                          if rs['quarter'] == '2'
+                            full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                          end
+                        elsif rs['exam_category'] == '4' 
+
+                          if rs['quarter'] == '1'
+                            full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+
+                          end  
+                          if rs['quarter'] == '2'
+                            full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end
+                        elsif rs['exam_category'] == '5' 
+                          if rs['quarter'] == '1'
+                            full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end  
+                          if rs['quarter'] == '2'
+                            full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                          end
+                        end
+
+                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
+                          next
+                        end
+
+                        if rs['exam_category'] == '1'
+                          if rs['quarter'] == '1'
+                            monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end  
+                          if rs['quarter'] == '2'
+                            monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end
+                        elsif rs['exam_category'] == '2'
+                          if rs['quarter'] == '1'
+                            at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end  
+                          if rs['quarter'] == '2'
+                            at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                          end
+                        elsif rs['exam_category'] == '3' 
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade1 = u_grade1+1
                               subject_failed = true
                             end  
                           end  
                           if rs['quarter'] == '2'
-                            full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade2 = u_grade2+1
                               subject_failed = true
                             end 
@@ -5688,40 +5756,32 @@ class ExamController < ApplicationController
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade1 = u_grade1+1
                               subject_failed = true
                             end 
                           end  
                           if rs['quarter'] == '2'
-                            full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade2 = u_grade2+1
                               subject_failed = true
                             end 
                           end
-                        elsif rs['exam_category'] == '5'  
+                        elsif rs['exam_category'] == '5' 
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade1 = u_grade1+1
                               subject_failed = true
                             end 
                           end  
                           if rs['quarter'] == '2'
-                            full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
-                            if !rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub2['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_i != 25)
+                            total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                               u_grade2 = u_grade2+1
                               subject_failed = true
                             end 
@@ -5740,7 +5800,7 @@ class ExamController < ApplicationController
                     if full_mark1 > 0 && full_mark2 > 0
                       exam_type = 3
                     elsif full_mark2 > 0
-                        exam_type = 2
+                      exam_type = 2
                     end
 
                     if monthly_total_mark1 > 0

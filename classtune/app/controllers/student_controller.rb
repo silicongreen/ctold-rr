@@ -2083,27 +2083,27 @@ class StudentController < ApplicationController
               end
             end
 
-            if @previous_batch_id != @student.batch_id
-              @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
-              @student_fees = @finance_fees.map{|s| s.fee_collection_id}
-
-              @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
-              @fee_collection_dates.each do |date|
-                d = FinanceFeeCollection.find(date.id)
-                if @student_fees.include?(d.id)
-                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @previous_batch_id, false)
-                  fee.destroy if fee.finance_transactions.empty?
-                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
-                  unless fee.blank?
-                    s = Student.find(@student.id)
-                    FinanceFee.update_student_fee(d,s, fee)
-                  else
-                    s = Student.find(@student.id)
-                    FinanceFee.new_student_fee(d,s)
-                  end
-                end
-              end
-            end
+          #   if @previous_batch_id != @student.batch_id
+          #     @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+          #     @student_fees = @finance_fees.map{|s| s.fee_collection_id}
+          #
+          #     @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
+          #     @fee_collection_dates.each do |date|
+          #       d = FinanceFeeCollection.find(date.id)
+          #       if @student_fees.include?(d.id)
+          #         fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @previous_batch_id, false)
+          #         fee.destroy if fee.finance_transactions.empty?
+          #         fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
+          #         unless fee.blank?
+          #           s = Student.find(@student.id)
+          #           FinanceFee.update_student_fee(d,s, fee)
+          #         else
+          #           s = Student.find(@student.id)
+          #           FinanceFee.new_student_fee(d,s)
+          #         end
+          #       end
+          #     end
+          #   end
           end
           
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        

@@ -1,0 +1,132 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="content-header">
+<%= show_header_icon %>
+  <h1><%= t('fees_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= t('collection_details') %></div>
+</div>
+<div id="page-yield">
+
+  <div>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('fee_collection_name') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.name %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('fee_category_name') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.fee_category.name %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <%if @fee_collection.fine%>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('fine_name') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.fine.name %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <%end%>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('start_date') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.start_date %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('end_date') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.end_date %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <div class="name" style="font-size: 14px; font-family: verdana;"><%= t('due_date') %></div><div class="val themed_text" style="font-weight: bold; font-family: verdana;"><span>:</span><%= @fee_collection.due_date %></div>
+    <div style="clear: both; height: 4px;"></div>
+    <div class="extender"></div>
+  </div>
+
+
+  <% unless @particulars.empty? %>
+
+    <div class="particulars">
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+          <tr>
+            <th><%= t('sl_no') %></th>
+            <th><%= t('particulars') %></th>
+            <th><%= t('student_category') %></th>
+            <th><%= t('student_name') %></th>
+            <th><%= t('amount') %>( <%=currency  %> )</th>
+            <th><%= t('created_date') %></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @total_fee=0 %>
+        <% @particulars.each_with_index do |fees,i| %>
+          <tr class="<%= cycle("odd","even") %>">
+            <td class="col-5"><%= i+1 %></td>
+            <td class="col-4"><%= fees.name %></td>
+            <td class="col-3" style="text-align: center;">
+              <%if fees.receiver_type == "StudentCategory"%>
+                <%= fees.receiver.name%>
+              <% else %> - <% end %>
+            </td>
+            <td class="col-3">
+              <%if fees.receiver_type == "Student"%>
+                <%= fees.student_name %>
+              <% else %> - <% end %>
+            </td>
+            <td class="col-3" style="text-align: right;">
+              <%= precision_label(fees.amount) %>
+            </td>
+            <% @total_fee=@total_fee+fees.amount%>
+            <td class="col-3" style="text-align: center;"><%= fees.created_at.strftime("%m-%d-%Y") %></td>
+
+          </tr>
+        <% end %>
+        </tbody>  
+
+      </table>
+    </div>
+  <% end %>
+
+
+  <% unless @discounts.blank? %>
+
+    <div class="discount">
+
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+          <tr>
+            <th><%= t('name') %></th>
+            <th><%= t('student_category') %></th>
+            <th><%= t('student_name') %></th>
+            <th><%= t('discount') %></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @discounts.each do |f| %>
+          <tr class="<%= cycle('odd', 'even')%> ">
+            <td class="col-3"><%= f.name %></td>
+            <% if f.receiver_type == "StudentCategory" %>
+              <td class="col-3"><%= f.category_name   %></td>
+              <td class="col-3"></td>
+            <% elsif f.receiver_type == "Student" %>
+              <td class="col-3"></td>
+              <td class="col-3"><%#= f.student_name   %></td>
+            <% elsif f.receiver_type == "Batch" %>
+              <td class="col-3"></td>
+              <td class="col-3"></td>
+            <% end %>
+            <td class="col-3">
+             <%= precision_label(@total_payable * f.discount.to_f/ (f.is_amount?? @total_payable : 100)) %>
+            </td>
+
+          </tr>
+        <% end %>
+        </tbody>  
+      </table>
+    </div>
+  <% end %>
+
+</div>
+
+

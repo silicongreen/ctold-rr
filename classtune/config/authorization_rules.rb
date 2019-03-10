@@ -2469,6 +2469,10 @@ authorization do
       :fees_student_specific_dates,
       :update_fees_specific,
       :fees_index,
+      :regenerate_student_fees,
+      :generate_student_fees,
+      :delete_student_fees,
+      :collection_details_view_inactive,
       #new_fee-----------
       :master_fees,
       :show_master_categories_list,

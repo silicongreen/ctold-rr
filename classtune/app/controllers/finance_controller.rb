@@ -16,6 +16,7 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
+
 class FinanceController < ApplicationController
   before_filter :login_required,:configuration_settings_for_finance
   #before_filter :check_permission,:only=>[:index,:fees_index,:categories,:transactions,:donation,:automatic_transactions,:payslip_index,:asset_liability,:finance_reports]
@@ -4932,17 +4933,20 @@ class FinanceController < ApplicationController
       @student = Student.find(params[:student])
       @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{@student.id}'")
       
-      @particular_name = params[:particular]
+      @particular_id = params[:particular]
+
+      @particular_n = FinanceFeeParticularCategory.first(:select=>"name",:conditions=>"id = #{@particular_id} AND is_deleted = #{false}")
+      @particular_name = @particular_n.name
       
-      @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@particular_name, '',false)
+      # @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@particular_name, '',false)
       
-      @particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_name_and_receiver_type_and_receiver_id(@date.fee_category_id, @finance_fee_particular_category.id, @particular_name, 'Student', @student.id)
+      @particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id(@date.fee_category_id, @particular_id, 'Student', @student.id)
       if @particular.nil?
         @o_particular = {}
         @o_particular[:amount] = params[:amount]
         @o_particular[:description] = ''
         @o_particular[:finance_fee_category_id] = @date.fee_category_id
-        @o_particular[:finance_fee_particular_category_id] = @finance_fee_particular_category.id
+        @o_particular[:finance_fee_particular_category_id] = @particular_id
         @o_particular[:name] = @particular_name
         @o_particular[:receiver_type] = 'Student'
 
@@ -4958,18 +4962,32 @@ class FinanceController < ApplicationController
       end
       
       FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
-      
-      if @particular_name.downcase == 'vat'
-        if params[:no_vat].nil?
-          render :update do |page|
-            page << 'j("#fee_vat_chk").hide();'
-            page << 'j("#fee_vat_amount").attr("type","hidden");'
-            page << 'j(".assign_vat_to_user").hide();'
-            page << 'j("#fee_amount_vat").show();'
-            page << 'j("#fee_amount_vat" + " span").html(parseFloat(j("#fee_vat_amount").val()).toFixed(2));';
-            page << 'calculateTotalFees();'
-            page.replace_html "assign_vat_to_user", :text => ""
-            page.replace_html "rm_vat", :partial => "remove_tmp_particular"
+
+
+      unless @fee.is_paid
+        if @particular_name.downcase == 'vat'
+          if params[:no_vat].nil?
+            render :update do |page|
+              page << 'j("#fee_vat_chk").hide();'
+              page << 'j("#fee_vat_amount").attr("type","hidden");'
+              page << 'j(".assign_vat_to_user").hide();'
+              page << 'j("#fee_amount_vat").show();'
+              page << 'j("#fee_amount_vat" + " span").html(parseFloat(j("#fee_vat_amount").val()).toFixed(2));';
+              page << 'calculateTotalFees();'
+              page.replace_html "assign_vat_to_user", :text => ""
+              page.replace_html "rm_vat", :partial => "remove_tmp_particular"
+            end
+          else
+            render :update do |page|
+              page.replace_html "particulars_tr_id", :partial => "temp_particular"
+              page << 'j("#particulars_tr_id").addClass("particulars_tr");'
+              page << 'j("#particulars_tr_id").attr("id","particular_' + @finance_fee_particular.id.to_s + '");'
+              page << 'j("#particulars_tr_extra").remove();'
+              page << 'resetSN();'
+              page << 'calculateAmountToPay(0);'
+              page << 'calculateDiscount();'
+              page << 'calculateTotalFees() ;'
+            end
           end
         else
           render :update do |page|
@@ -4982,20 +5000,13 @@ class FinanceController < ApplicationController
             page << 'calculateDiscount();'
             page << 'calculateTotalFees() ;'
           end
+
         end
       else
-        render :update do |page|
-          page.replace_html "particulars_tr_id", :partial => "temp_particular"
-          page << 'j("#particulars_tr_id").addClass("particulars_tr");'
-          page << 'j("#particulars_tr_id").attr("id","particular_' + @finance_fee_particular.id.to_s + '");'
-          page << 'j("#particulars_tr_extra").remove();'
-          page << 'resetSN();'
-          page << 'calculateAmountToPay(0);'
-          page << 'calculateDiscount();'
-          page << 'calculateTotalFees() ;'
-        end
-        
-      end      
+        load_fees_submission_batch
+      end
+
+
     end
   end
   
@@ -5454,11 +5465,26 @@ class FinanceController < ApplicationController
             calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
           end
         end
-        
-        render :update do |page|
-          page.replace_html "student", :partial => "student_fees_submission"
-          page << "loadJS();"
+
+        fee_particulars_categories = @fee_particulars.map(&:finance_fee_particular_category_id)
+        # abort(fee_particulars_categories.inspect)
+        @finance_fee_particular_categories_all = FinanceFeeParticularCategory.active
+
+        @finance_fee_particular_categories = @finance_fee_particular_categories_all.select{|fp| !fee_particulars_categories.include?(fp.id) }
+
+
+        unless params[:option].nil?
+          render :update do |page|
+            page << "#{@finance_fee_particular_categories.map.to_json}"
+          end
+        else
+          render :update do |page|
+            page.replace_html "student", :partial => "student_fees_submission"
+            page << "loadJS();"
+          end
         end
+
+
       else
         render :update do |page|
           page.replace_html "student", :text => '<p class="flash-msg">No students have been assigned this fee.</p>'
@@ -5469,6 +5495,12 @@ class FinanceController < ApplicationController
         page.replace_html "student", :text => ''
       end
     end
+  end
+
+  def fee_particulars_ajax
+    fee_particulars_categories = @fee_particulars.map(&:finance_fee_particular_category_id)
+    @finance_fee_particular_categories_all = FinanceFeeParticularCategory.active
+    @finance_fee_particular_categories = @finance_fee_particular_categories_all.select{|fp| !fee_particulars_categories.include?(fp.id) }
   end
 
   def update_ajax
@@ -7353,14 +7385,20 @@ class FinanceController < ApplicationController
     @dates = @batch.finance_fee_collections
     render :update do |page|
       page.replace_html "fees_collection_dates", :partial => "fees_collection_dates_defaulters"
+      page << "j('#fees_defaulters_dates_id').select2();"
     end
   end
 
   def fees_defaulters_students
     @batch   = Batch.find(params[:batch_id])
-    @date = FinanceFeeCollection.find(params[:date])
-    @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and finance_fees.batch_id='#{@batch.id}'"],:order=>"students.first_name ASC").uniq
-    render :update do |page|
+    unless params[:date] == '0'
+      @date = FinanceFeeCollection.find(params[:date])
+      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.fee_collection_id='#{@date.id}' and finance_fees.balance > 0 and finance_fees.batch_id='#{@batch.id}'"],:order=>"students.first_name ASC").uniq
+    else
+      @date = 0
+      @defaulters=Student.find(:all,:joins=>"INNER JOIN finance_fees on finance_fees.student_id=students.id ",:conditions=>["finance_fees.balance > 0 and finance_fees.batch_id='#{@batch.id}'"],:order=>"students.first_name ASC").uniq
+    end
+     render :update do |page|
       page.replace_html "student", :partial => "student_defaulters"
     end
   end
@@ -8267,11 +8305,30 @@ class FinanceController < ApplicationController
 
   end
 
+  # def collection_details_view
+  #   @fee_collection = FinanceFeeCollection.find(params[:id])
+  #   @particulars = @fee_collection.finance_fee_particulars.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
+  #   @total_payable=@particulars.map{|s| s.amount}.sum.to_f
+  #   @discounts = @fee_collection.fee_discounts.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
+  #   end
   def collection_details_view
-    @fee_collection = FinanceFeeCollection.find(params[:id])
-    @particulars = @fee_collection.finance_fee_particulars.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
-    @total_payable=@particulars.map{|s| s.amount}.sum.to_f
-    @discounts = @fee_collection.fee_discounts.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
+    @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+   end
+
+  def collection_details_view_inactive
+    @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+    @option = params[:option]
+    @batch = Batch.find(params[:batch_id])
+    @students = @batch.students
+    finance_student_ids = @finance_fees.map(&:student_id)
+    student_ids = @students.map(&:id)
+    inactive_student_ids = student_ids - finance_student_ids
+    unless inactive_student_ids.blank?
+    @inactive_students = Student.find(:all, :conditions => "id In (#{inactive_student_ids.join(",")})")
+    end
+    render :update do |page|
+      page.replace_html "resultDiv", :partial => "collection_details_view_inactive"
+    end
   end
   
   def advance_collection_details_view
@@ -8964,6 +9021,45 @@ class FinanceController < ApplicationController
     end
   end
 
+  def regenerate_student_fees
+    student = params[:student_id]
+    if params[:option]
+      if params[:option].to_i == 1
+        student.each do |v|
+          fee_collection = FinanceFeeCollection.find(params[:fee_id])
+          student = Student.find_by_id(v)
+          FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
+        end
+      end
+    else
+      fee_collection = FinanceFeeCollection.find(params[:fee_id])
+      student = Student.find_by_id(params[:student_id])
+      FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
+      @amount = FinanceFee.find_by_student_id(params[:student_id])
+
+      render :update do |page|
+          page.replace_html "student_amount_#{params[:student_id]}_#{@amount.id}", :text => "#{@amount.balance}"
+          page << "update_total();"
+      end
+
+    end
+
+  end
+
+  def delete_student_fees
+    finance =  FinanceFee.find_by_id(params[:fee_id])
+    finance.destroy
+    render :update do |page|
+      page << "searchAjax(1);"
+    end
+  end
+
+  def generate_student_fees
+    fee_collection = FinanceFeeCollection.find(params[:fee_id])
+    student = Student.find_by_id(params[:student_id])
+    FinanceFee.new_student_fee(fee_collection,student)
+  end
+
   private
 
   def date_format(date)
@@ -9629,6 +9725,8 @@ class FinanceController < ApplicationController
       end
     end
   end
+
+
 
 end
 

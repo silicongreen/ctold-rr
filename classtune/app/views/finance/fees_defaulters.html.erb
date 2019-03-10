@@ -35,7 +35,7 @@
             {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates_defaulters"},
             :with => "'batch_id='+value",
             :before => "Element.show('loader')",
-            :success => "Element.hide('loader')")}", :autocomplete => "off", :style=>"width: 90% !important; float: left;"
+            :success => "Element.hide('loader');load_select();")}", :autocomplete => "off", :style=>"width: 90% !important; float: left;"
           }%>
           <%= image_tag("loader.gif",
             :align => "absmiddle",
@@ -62,3 +62,15 @@
   </div>
   <%  end %>  
 </div>
+<style>
+  .label-field-pair .label-container {
+    width: 37%;
+    padding-top: 4px;
+    float: left;
+  }
+</style>
+<script type="text/javascript" charset="utf-8">
+  j('#fees_defaulters_batch_id').select2();
+  j('#fees_defaulters_dates_id').select2();
+
+</script>

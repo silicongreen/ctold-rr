@@ -27,21 +27,35 @@
         <th><%= t('sl_no') %></th>
         <th><%= t('admission_no') %></th>
         <th><%= t('students_name') %></th>
+        <th><%= "Amount" %></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
     <%@defaulters.each_with_index do |s,i| %>
+    <% unless @date == 0 %>
+    <% fee = s.finance_fees.select{ |f| f.fee_collection_id.to_i == @date.id.to_i} %>
       <%if s.check_fee_pay(@date) == false %>
         <tr class="<%= cycle('odd', 'even')%>">
           <td class="col-5"><%= i+1 %></td>
           <td class="col-1"><%= s.admission_no %></td>
           <td class="col-7"><%= s.full_name %></td>
+          <td class="col-7"><%= precision_label fee.map(&:balance).sum %></td>
           <td class="col-1"><%= link_to "► #{t('pay_fees')}", {:action => "pay_fees_defaulters",:id => s.id,:date => @date.id, :batch_id => @batch.id } ,:class=>'submit_button'  %></td>
         </tr>
       <%end%>
+      <%else%>
+        <% fee = s.finance_fees %>
+          <tr class="<%= cycle('odd', 'even')%>">
+            <td class="col-5"><%= i+1 %></td>
+            <td class="col-1"><%= s.admission_no %></td>
+            <td class="col-7"><%= s.full_name %></td>
+            <td class="col-7"><%= precision_label fee.map(&:balance).sum %></td>
+            <td class="col-1"><%= link_to "► #{t('pay_fees')}", {:action => "fees_student_dates",:id => s.id } ,:class=>'submit_button'  %></td>
+          </tr>
+      <%end%>
     <% end %>
-    </tbody>    
+    </tbody>
   </table>
   <%= link_to " ► #{t('pdf_report')}",
     {:controller => "finance", :action => "fee_defaulters_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>

@@ -178,7 +178,6 @@ class FinanceFee < ActiveRecord::Base
     
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
     total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
-    
     total_discount = 0
     batch = Batch.find(student.batch_id)
     onetime_discount_particulars_id = []
@@ -244,7 +243,35 @@ class FinanceFee < ActiveRecord::Base
     
     balance=Champs21Precision.set_and_modify_precision(total_payable-total_discount)
     fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(student.id, date.id, student.batch_id, false)
-    fee.update_attributes(:balance=>balance)
+    unless fee.blank?
+      paid_fees = fee.finance_transactions
+      unless paid_fees.blank?
+        paid_fees_amount = paid_fees.map(&:amount).sum
+        bal = balance.to_f - paid_fees_amount.to_f
+      else
+        bal = balance.to_f
+      end
+      fee.update_attributes(:balance=>bal)
+    else
+      fee_paid = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id(student.id, date.id, student.batch_id)
+      paid_fees = fee_paid.finance_transactions
+      unless paid_fees.blank?
+        paid_fees_amount = paid_fees.map(&:amount).sum
+        bal = balance.to_f - paid_fees_amount.to_f
+      else
+        bal = balance.to_f
+      end
+      bal = 0 if bal.to_i < 0
+      # abort(paid_fees_amount)
+      # revised_balance = 0
+      # fee_particulars.each do |fv|
+      #   if fv.is_tmp
+      #     revised_balance = revised_balance.to_f + fv.amount.to_f
+      #   end
+      #
+      # end
+      fee_paid.update_attributes(:is_paid=>0,:balance=>bal)
+    end
   end
   
   def self.calculate_discount_new(total_payable, date,batch,student,is_advance_fee_collection,advance_fee,fee_has_advance_particular)

@@ -183,6 +183,7 @@ function calculateDiscount()
 function calculateTotalFees() 
 {
     var fee_amount = parseFloat(j("#fee_total_amount").val());
+    var paid_amount = parseFloat(j("#payment_done_label").html());
 
     var discount_amount = 0;
     if ( j("#discount_total_amount").length > 0 )
@@ -209,6 +210,9 @@ function calculateTotalFees()
         amount += fine_amount; 
     }*/
 
+    var total_amount = parseFloat(amount + paid_amount);
+
+    j("#total_payable_label").html(total_amount.toFixed(2));
     j("#total_amount").val(amount.toFixed(2));
     j("#total_amount_label").html(amount.toFixed(2));
 
@@ -549,7 +553,8 @@ function disableFineDiscountAlso()
     j(".fee_fine_discount_fa").removeClass("fa-check-square-o");
     j(".fee_fine_discount_fa").addClass("fa-square-o");
 }    
-    
+
+
 function loadJS()
 {    
     document.observe("dom:loaded", function() {
@@ -558,18 +563,20 @@ function loadJS()
 
         j("#fees_submission_batch_id").select2();
 
-        j(document).on('click','#add_extra_particular',function(){
-            if ( j("#particulars_tr_extra").length == 0 )
-            {
-              var html = '<tr id="particulars_tr_extra">';
-              html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-particular" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
-              html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
-              html += 'Particular Name: &nbsp;&nbsp;&nbsp;<input type="text" name="extra_particular" id="extra_particular" value="" style="border-radius: 4px; border: 1px solid #999; padding: 5px; width: 60%;" />';
-              html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
-              html += '<input type="text" name="extra_particular_amount" id="extra_particular_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'particular_extra\')" onkeydown="checkKey(event,this, \'particular_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_particular" name="extra_particular_chk" id="extra_particular_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
-              j('.particulars_tr').last().after(html);
-            }
-        });
+        /* This code section can be found in _student_fees_submission.html.erb*/
+
+        // j(document).on('click','#add_extra_particular',function(){
+        //     if ( j("#particulars_tr_extra").length == 0 )
+        //     {
+        //       var html = '<tr id="particulars_tr_extra">';
+        //       html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-particular" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';
+        //       html += '<td class="col-2" style="font-size: 14px; font-weight: bold;">';
+        //       html += 'Particular Name: &nbsp;&nbsp;&nbsp;<input type="text" name="extra_particular" id="extra_particular" value="" style="border-radius: 4px; border: 1px solid #999; padding: 5px; width: 60%;" />';
+        //       html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
+        //       html += '<input type="text" name="extra_particular_amount" id="extra_particular_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'particular_extra\')" onkeydown="checkKey(event,this, \'particular_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_particular" name="extra_particular_chk" id="extra_particular_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
+        //       j('.particulars_tr').last().after(html);
+        //     }
+        // });
 
         j(document).on('click','#add_extra_discount',function(){
             if ( j("#discount_tr_extra").length == 0 )
@@ -1048,17 +1055,22 @@ function loadJS()
         });
 
         j(document).on("click",".chk_extra_particular",function(){
-             var particular_name = j.trim(j("#extra_particular").val());
-             if ( particular_name.length == 0 )
+             var particular_name = j.trim(j("#selectParticular").val());
+             if ( particular_name == '' )
              {
-                alert("Particular Name Can't be Empty");
+                alert("Please Select a Particular Category");
                 return ;
              }
-             var particular_amount = parseFloat(j.trim(j("#extra_particular_amount").val()));
+             var particular_amount = j.trim(j("#extra_particular_amount").val());
              if ( particular_amount == 0 )
              {
                 alert("Particular amount Can't be Zero");
                 return ;
+             }else if (particular_amount == null){
+                 alert("Particular amount Can't be Empty");
+                 return ;
+             }else {
+                 particular_amount = parseFloat(particular_amount);
              }
              var html = '<tr id="particulars_tr_id"></tr>';
              j('.particulars_tr').last().after(html);

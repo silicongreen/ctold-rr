@@ -5202,6 +5202,7 @@ class ExamController < ApplicationController
                 full_pr2 = 0
                 total_pr1 = 0
                 total_pr2 = 0
+                main_mark = 0
                 subject_failed = false
 
                 tab['exams'].each do |rs|
@@ -5475,7 +5476,7 @@ class ExamController < ApplicationController
                   else
                     @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                   end
-                  main_mark = total_mark1+total_mark2
+                  
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name

@@ -5029,28 +5029,28 @@ class ExamController < ApplicationController
       unless @tabulation_data.blank?
         connect_exam = 0
         batch_loop = 0
-        group_name = ""
-        @tabulation_data['report'].each do |tab|
-          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
-          connect_exam = connect_exam+1
-          if connect_exam_id.to_i == @connect_exam_obj.id
-            tab['students'].each do |std| 
-              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
-                group_name = "Science" 
-                break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
-                group_name = "Business Studies" 
-                break
-              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-                group_name = "Humanities" 
-                break
-              end
-            end
-          end
-          if group_name != ""
-            break 
-          end
-        end
+        group_name = batchobj.group
+#        @tabulation_data['report'].each do |tab|
+#          connect_exam_id = @tabulation_data['connect_exams'][connect_exam]
+#          connect_exam = connect_exam+1
+#          if connect_exam_id.to_i == @connect_exam_obj.id
+#            tab['students'].each do |std| 
+#              if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or @batch_subject_hash_code.include?("Phy.") or @batch_subject_hash_code.include?("Chem.")
+#                group_name = "Science" 
+#                break
+#              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..") or @batch_subject_hash_code.include?("Acc.") or @batch_subject_hash_code.include?("BOM.") or @batch_subject_hash_code.include?("PMM.") or @batch_subject_hash_code.include?("Acc..") or @batch_subject_hash_code.include?("BOM..") or @batch_subject_hash_code.include?("PMM..")
+#                group_name = "Business Studies" 
+#                break
+#              elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Civics") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+#                group_name = "Humanities" 
+#                break
+#              end
+#            end
+#          end
+#          if group_name != ""
+#            break 
+#          end
+#        end
         @group_name_upper = group_name	
         if batchobj.name == "Morning English"	
           group_name = "Morning English"	
@@ -5072,8 +5072,10 @@ class ExamController < ApplicationController
 
           exam_type = 1
           connect_exam = connect_exam+1
-
-
+          std_group_name = batch_data.group
+          if batch_data.name == "Morning English"	
+            std_group_name = "Morning English"	
+          end
 
 
           tab['students'].each do |std| 
@@ -5081,17 +5083,15 @@ class ExamController < ApplicationController
             total_failed_appaered = 0
             full_absent = true
             failed_on_appread = false
-            std_group_name = ""
-            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
-              std_group_name = "Science" 
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
-              std_group_name = "Business Studies" 
-            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
-              std_group_name = "Humanities" 
-            end
-            if batch_data.name == "Morning English"	
-              std_group_name = "Morning English"	
-            end
+#            std_group_name = ""
+#            if @std_subject_hash_code.include?(std['id'].to_s+"|||Bio") or batch_subject_hash_code_main.include?("Phy.") or batch_subject_hash_code_main.include?("Chem.")
+#              std_group_name = "Science" 
+#            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||F&B") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..") or batch_subject_hash_code_main.include?("Acc.") or batch_subject_hash_code_main.include?("BOM.") or batch_subject_hash_code_main.include?("PMM.") or batch_subject_hash_code_main.include?("Acc..") or batch_subject_hash_code_main.include?("BOM..") or batch_subject_hash_code_main.include?("PMM..")
+#              std_group_name = "Business Studies" 
+#            elsif @std_subject_hash_code.include?(std['id'].to_s+"|||Eco") or @std_subject_hash_code.include?(std['id'].to_s+"|||Islam") or @std_subject_hash_code.include?(std['id'].to_s+"|||Geo")
+#              std_group_name = "Humanities" 
+#            end
+            
             grand_total = 0
             grand_total_with_fraction = 0
             grand_grade_point = 0

@@ -1,6 +1,10 @@
 authorization do
   #transport
   role :transport_admin do
+    has_permission_on [:report],
+    :to=>[
+      :csv_reports,
+    ]
     has_permission_on [:transport],
       :to=>[
       :index,

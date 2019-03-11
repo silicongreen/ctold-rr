@@ -35,6 +35,7 @@
     </div>
     <div class="sub-header-sagc">
         <div class="sub-header-sagc-left">
+          <%#=debug @paid_fees.inspect %>
             <%
               batchsplit = @student.batch.name.split(" ")
               version = ""
@@ -56,7 +57,12 @@
               trans_type = ""
             %>
             <% unless @paid_fees.blank? %>
-            <% payment = Payment.find_by_payment_id(@financefee.id) %>
+            <% unless params[:trn_id].nil? %>
+              <% payment = Payment.find_by_payment_id_and_finance_transaction_id(@financefee.id,params[:trn_id]) %>
+              <%else %>
+              <% payment = Payment.find_by_payment_id(@financefee.id) %>
+              <%end %>
+
             <%
               unless payment.nil? or payment.blank?
                 trans_data = I18n.l(payment.transaction_datetime.to_date,:format=>"%d-%m-%Y")
@@ -68,11 +74,20 @@
                   trans_type = "TBL Card Payment"
                 end
               else
-                @paid_fees.each do |p|
-                  trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
-                  trans_id += p.id.to_s + ","
-                  trans_type += p.payment_mode.to_s + ","
-                end
+                unless params[:trn_id].nil?
+                  @paid_fees.select{ |f| f.id.to_i == params[:trn_id].to_i}.each do |p|
+                    trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
+                    trans_id += p.id.to_s + ","
+                    trans_type += p.payment_mode.to_s + ","
+                  end
+                else
+                  @paid_fees.each do |p|
+                    trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
+                    trans_id += p.id.to_s + ","
+                    trans_type += p.payment_mode.to_s + ","
+                  end
+                  end
+
                 trans_data = trans_data[0...trans_data.length - 1]
                 trans_id = trans_id[0...trans_id.length - 1]
                 trans_type = trans_type[0...trans_type.length - 1]
@@ -160,8 +175,15 @@
             <% total_fees = 0 %>
             <% @fee_particulars.each do |fee| %>
                   <% unless @paid_fees.blank? %>
-                    <% transaction_ids = @paid_fees.map(&:id) %>
-                    <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type IN ('Fee Collection', 'Advance') AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+
+              <% unless params[:trn_id].nil? %>
+                <% transaction_ids = params[:trn_id] %>
+                <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type IN ('Fee Collection', 'Advance') AND finance_transaction_id IN (" + transaction_ids + ") AND particular_id = #{fee.id}") %>
+                <%else %>
+                <% transaction_ids = @paid_fees.map(&:id) %>
+                <% paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type IN ('Fee Collection', 'Advance') AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fee.id}") %>
+                <%end %>
+
                     <% unless paidFess.blank? %>
                       <% amount =  paidFess.map(&:amount).sum  %>
                       <tr  class="content">

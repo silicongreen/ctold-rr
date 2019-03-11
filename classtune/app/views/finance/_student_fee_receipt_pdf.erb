@@ -122,9 +122,6 @@
                 <% end %>
 
                 <% if @paid_fees%>
-
-
-
                   <% unless @paid_fees.blank? %>
                     <% @paid_fees.each do |trans| %>
                       <% if trans.fine_included %>

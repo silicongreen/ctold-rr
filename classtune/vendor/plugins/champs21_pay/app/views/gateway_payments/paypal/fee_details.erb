@@ -1032,57 +1032,98 @@
         <label><%= t('payment_history') %> </label>
       </div>
       <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-        <tr class="tr-head">
-          <td><%= t('sl_no') %></td>
-          <td><%= t('payment_date') %></td>
-          <td><%= t('payment_mode') %></td>
-          <td><%= t('payment_notes') %></td>
-          <td><%= t('amount') %> (<%= currency %>  )</td>
+        <thead><!-- class="thead-inverse t" -->
+        <tr>
+          <th><%= t('sl_no') %></th>
+          <th style="text-align: center;"><%= t('payment_date') %></th>
+          <th style="text-align: center;"><%= t('payment_mode') %></th>
+          <th><%= t('payment_notes') %></th>
+          <th style="text-align: right;"><%= t('amount') %> (<%= currency %>  )</th>
+          <% if MultiSchool.current_school.id == 352 %>
+            <th>Action</th>
+          <% end %>
         </tr>
-        <tr class="tr-blank"></tr>
+        <tbody>
         <% @paid_fees.each_with_index do |f , i| %>
-          <% if f.is_child_transaction %>
-            <% trans = FinanceTransaction.find(:all, :conditions => "parent_transaction_id = #{f.parent_transaction_id}")  %>
-            <% fees = FinanceFee.find(:all, :conditions => "id IN (#{trans.map(&:finance_id).join(",")})") %>
-            <% fee_collection = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fees.map(&:fee_collection_id).join(",")})") %>
-            <% fee_collection_name = "Fees payment for the Month of (" %>
-            <% m = 0 %>
-            <% fee_collection.each do |fee| %>
-              <% if m == 0 %>
-                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+          <tr class="<%= cycle("odd","even") %>">
+            <% transaction_payment = false %>
+            <% transaction_payment_not_assign = false %>
+            <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>
+            <% unless payment.present? %>
+              <% payment = Payment.find_by_payment_id(@financefee.id) %>
+              <% unless payment.nil? %>
+                <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
+                  <% transaction_payment_not_assign = true %>
+                <% end %>
               <% end %>
-              <% if m == fee_collection.length - 1 %>
-                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
-              <% end %>
-              <% m += 1 %>
+            <% else %>
+              <% transaction_payment = true %>
             <% end %>
-            <% tran = FinanceTransaction.find(f.parent_transaction_id) %>
-            <% if trans.length > 1 %>
-            <tr class="tr-<%= cycle("odd","even") %>">
-                <td colspan="5" style="font-weight: bold;"><%= fee_collection_name %></td>
-            </tr>
+
+            <% payment_mode = f.payment_mode %>
+            <% if transaction_payment %>
+              <% payment_mode = "Trust Bank Online Payment" %>
+            <% elsif transaction_payment_not_assign %>
+              <% payment_mode = "Trust Bank Online Payment" %>
+              <% payment.update_attributes(:finance_transaction_id=>f.id) %>
             <% end %>
-            <tr class="tr-<%= cycle("odd","even") %>">
-              <td class="col-1"><%= i +=1 %></td>
-              <td class="col-3"><%= tran.transaction_date %></td>
-              <td class="col-3"><%= tran.payment_mode %></td>
-              <td class="col-2"><%= tran.payment_note %></td>
-              <td class="col-3">
-                <%= precision_label(tran.amount.to_f) %>
-              </td>
-            </tr>
-          <% else %>
-          <tr class="tr-<%= cycle("odd","even") %>">
             <td class="col-1"><%= i +=1 %></td>
-            <td class="col-3"><%= f.transaction_date %></td>
-            <td class="col-3"><%= f.payment_mode %></td>
+            <% if transaction_payment || transaction_payment_not_assign %>
+              <td class="col-3" style="text-align: center;"><%= I18n.l((payment.transaction_datetime.to_time).to_datetime,:format=>"%d %b %Y<Br /> %I:%M %P") %></td>
+            <% else %>
+              <td class="col-3" style="text-align: center;"><%= f.transaction_date %></td>
+            <% end %>
+            <% if transaction_payment || transaction_payment_not_assign %>
+              <td class="col-3" style="text-align: left;">
+                <%= payment_mode %>
+                <hr style="border: 1px solid #ccc;" />
+                <div style="font-size: 12px; font-family: verdana;">
+                  <h2>Online Payment Info</h2>
+                  <p><b>Order ID: </b><%= payment.order_id %></p>
+                  <%
+                    trans_type = ""
+                    if payment.gateway_response[:payment_type] == "MB"
+                      trans_type = "TBL Mobile banking"
+                    else
+                      trans_type = "TBL Card Payment"
+                    end
+                  %>
+                  <p><b>Ref Id: </b><%= payment.gateway_response[:ref_id] %></p>
+                  <p><b>Transaction Type: </b><%= trans_type %></p>
+                  <hr style="border: 1px solid #ccc;" />
+                  <% if payment.gateway_response[:verified].to_i == 1 %>
+                    <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+                  <% else %>
+                    <div style="width: 100%;">
+                      <div style="width: 60%; display: inline-block;">
+                        <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+                      </div>
+                      <div style="width: 35%; display: inline-block; text-align: right;">
+                        <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+                      </div>
+                    </div>
+                    <div style="clear: both; height: 1px;"></div>
+                  <% end %>
+                </div>
+              </td>
+            <% else %>
+              <td class="col-3" style="text-align: center;">
+                <%= payment_mode %>
+              </td>
+            <% end %>
             <td class="col-2"><%= f.payment_note %></td>
-            <td class="col-3">
+            <td class="col-3" style="text-align: right;">
               <%= precision_label(f.amount.to_f) %>
             </td>
+            <% if MultiSchool.current_school.id == 352 %>
+              <td>
+                <%= link_to "► #{t('print_receipt')}", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id, :trn_id=>f.id},:target => '_blank', :class=> 'user_button' %>
+              </td>
+            <% end %>
           </tr>
-          <% end %>
         <% end %>
+        </tbody>
       </table>
 
     </div>

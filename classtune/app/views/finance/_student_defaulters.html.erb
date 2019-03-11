@@ -46,6 +46,7 @@
       <%end%>
       <%else%>
         <% fee = s.finance_fees %>
+        <%  %>
           <tr class="<%= cycle('odd', 'even')%>">
             <td class="col-5"><%= i+1 %></td>
             <td class="col-1"><%= s.admission_no %></td>
@@ -57,6 +58,11 @@
     <% end %>
     </tbody>
   </table>
-  <%= link_to " ► #{t('pdf_report')}",
-    {:controller => "finance", :action => "fee_defaulters_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+  <% unless @date == 0 %>
+    <%= link_to " ► #{t('pdf_report')}",
+                {:controller => "finance", :action => "fee_defaulters_pdf", :batch_id => @batch.id, :date => @date.id},:target => '_blank', :class=> 'user_button' %>
+    <% else %>
+    <%= link_to " ► #{t('pdf_report')}",
+                {:controller => "finance", :action => "fee_defaulters_pdf", :batch_id => @batch.id, :date => @date},:target => '_blank', :class=> 'user_button' %>
+  <% end %>
 <% end %>

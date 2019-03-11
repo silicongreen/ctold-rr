@@ -1157,8 +1157,11 @@
                 <% if total_fees == 0  %>  
                 <h4 class="info" style="padding: 4px 10px; margin: 18px 10px 0 !important;  border-radius: 4px;"><%= t('fees_paid') %></h4>
                 <% end %>
-                 <%= link_to "► #{t('print_receipt')}",
-                  {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
+                <% unless MultiSchool.current_school.id == 352 %>
+                  <%= link_to "► #{t('print_receipt')}",
+                              {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id,:batch_id=>@batch.id},:target => '_blank', :class=> 'user_button' %>
+          <% end %>
+
               </div>
             <% end %>
           </div>
@@ -1197,6 +1200,9 @@
             <th><%= t('payment_notes') %></th>
             <th style="text-align: right;"><%= t('amount') %> (<%= currency %>  )</th>
             <th class="col-3" style="width:2%;"></th>
+            <% if MultiSchool.current_school.id == 352 %>
+            <th>Action</th>
+            <% end %>
         </tr>
         <tbody>
         <% @paid_fees.each_with_index do |f , i| %>
@@ -1276,6 +1282,11 @@
            <% else %>
            <td class="col-3" style="width:2%; vertical-align: top;"> <div class="cancel" style="font-weight: bold; border: 1px solid #ccc; border-radius: 5px; padding: 1px 2px 1px 4px; margin-top: 0;"><%=link_to_remote ("&times"),{:url=>{:controller=>:finance,:action=>:delete_transaction_by_batch,:id=>@student.id,:date=>@date.id,:transaction_id=>f.id,:batch_id => @batch.id, :student_fees => 1, :from_admin => 1},:confirm=>"#{t('are_you_sure_want_delete_this_transaction')}"},{:class=>"themed_text"}%></div></td>
            <% end %>
+            <% if MultiSchool.current_school.id == 352 %>
+              <td>
+                <%= link_to "► #{t('print_receipt')}", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>@date.id, :trn_id=>f.id},:target => '_blank', :class=> 'user_button' %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
         </tbody>  
@@ -1286,15 +1297,17 @@
 <% end %>
 <script type="text/javascript">
   <%# unless @finance_fee_particular_categories.nil? %>
-  j(document).on('click','#add_extra_particular',function(){
+  j(document).off('click','#add_extra_particular').on('click','#add_extra_particular',function(){
       if ( j("#particulars_tr_extra").length == 0 )
       {
           j.ajax({
               url: '/finance/load_fees_submission_batch/',
               data: {batch_id : '<%= @batch.id %>',student : '<%= @student.id %>',date : <%= @date.id %> , option: 2},
               type: 'POST',
+              asynchronous: true,
               dataType: 'json',
               success: function(data){
+                  j('#particulars_tr_extra').remove();
                   particularList = data;
                   var html = '<tr id="particulars_tr_extra">';
                   html += '<td class="col-1" style=" text-align: center;"><i id="remove-extra-particular" class="fa fa-minus-circle" style="font-size: 16px; color: #990A10; cursor: pointer;" aria-hidden="true"></i></td>';

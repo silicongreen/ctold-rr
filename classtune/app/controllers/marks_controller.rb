@@ -217,6 +217,59 @@ class MarksController < ApplicationController
     
   end
   
+  def not_posted_data
+    if current_user.employee
+      @subjects = current_user.employee_record.subjects.active
+      @batches= current_user.employee_record.batches
+      unless @batches.blank?
+        @batches.each do |batch|
+          @subjects += batch.subjects
+        end
+      end
+    
+      @subjects = @subjects.uniq unless @batches.empty?
+    
+    elsif current_user.admin
+      @subjects = Subject.active
+    end  
+    @subjects.reject! {|s| !s.batch or !s.batch.is_active}
+    @exams = []
+    
+    all_sub_id = @subjects.map(&:id)
+    all_exams =  Exam.find_all_by_subject_id(all_sub_id,:include=>[{:exam_group=>[:batch]},:subject],:conditions =>["batches.is_deleted = ?",false])
+    all_exam_id = all_exams.map(&:id)
+    all_score = ExamScore.find_all_by_exam_id(all_exam_id,:select=>"exam_id",:group=>"exam_id")
+    all_posted_exam_id = all_score.map(&:exam_id)
+    all_exams.each do |exam|
+      unless all_posted_exam_id.include?(exam.id)
+        @exams.push exam unless exam.nil?
+      end
+    end 
+   
+    @exams.sort! { |a, b|  b.id <=> a.id }
+    k = 0
+    data = []
+    @exams.each do |exam|
+      @exam_group = exam.exam_group
+      unless @exam_group.blank?
+        exam_group_batch = @exam_group.batch
+        exam_subject = exam.subject
+        unless exam_subject.blank?  or exam_group_batch.blank? or @exam_group.is_deleted == true or (@exam_group.result_published == true and MultiSchool.current_school.id != 323)
+          data[k] = []
+
+          data[k][0] = @template.link_to exam_group_batch.full_name, [@exam_group, exam], :target => "_blank"
+          data[k][1] = @template.link_to @exam_group.name, [@exam_group, exam], :target => "_blank"
+          data[k][2] = @template.link_to exam_subject.name, [@exam_group, exam], :target => "_blank"
+
+          k = k+1
+        end
+      end
+    end
+    json_data = {:data => data}
+    @data = JSON.generate(json_data)
+    render :text => @data
+  end
+  
   def data
     if current_user.employee
       @subjects = current_user.employee_record.subjects.active
@@ -547,6 +600,25 @@ class MarksController < ApplicationController
     elsif current_user.admin
       @batches = Batch.active
     end 
+  end
+  def non_posted_exam
+    @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])
+    if current_user.employee
+      @batches2 = @current_user.employee_record.batches
+      @batches2 += @current_user.employee_record.subjects.collect{|b| b.batch}
+      @batches2 = @batches2.uniq unless @batches2.empty?
+      @batches = []
+      unless @batches2.blank?
+        @batches2.each do |batch|
+          if batch.is_deleted == false
+            @batches << batch
+          end
+        end
+      end
+      
+    elsif current_user.admin
+      @batches = Batch.active
+    end
   end
   def examgroup
     if params[:batch_name] == "0"

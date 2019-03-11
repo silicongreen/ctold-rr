@@ -1,0 +1,305 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+
+<%#*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>%>
+<%#*<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>%>
+<script>
+  var jj = jQuery.noConflict();
+  var oDataTable;
+  jj(document).ready(function () {
+    oDataTable = jj('#exam_data').DataTable( {
+        "ajax": "/marks/not_posted_data",
+        "deferRender": true,
+        "order": [],
+        "oSearch": { "bSmart": false },
+        columnDefs: [
+            {
+                targets: [ 0, 1, 2 ],
+                className: 'mdl-data-table__cell--non-numeric'
+            }
+        ]
+    } );
+    
+    jj(".section_id").change(function(){
+      if(jj(this).val())
+      {
+        oDataTable.column( 0 ).search( jj(this).val(),false,false).draw();
+        
+      }
+      else
+      {
+        oDataTable.column( 0 ).search(class_id_current.replace(/\_/g, ' '),false,false).draw(); 
+        
+      }   
+    });
+    
+ });
+</script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.material.min.css"/>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.material.min.js"></script>
+
+<div id="content-header">
+  <h1><%= t('exams_text') %></h1>
+<div class='header-sep'>|</div>
+<div class='sub-header'><%= "Non Posted Exam" %></div>
+
+<div class='sub-header2' style=""><%= link_to "Combined Exam Marks", :action=>'connect_exam' %></div>
+<div class='sub-header3' style=""><%= link_to "Report Card", :action=>'connect_exam_report' %></div>
+<div id="inner-tab-menu">
+</div>
+ 
+</div>
+<div id="page-yield">
+  <% unless flash[:notice].nil? %>
+    <p class="flash-msg"> <%= flash[:notice] %> </p>
+  <% end %>
+  <%= render  :partial=>"/marks/class_box" %>
+  
+  <div class="box">
+    <table id="exam_data"  class="mdl-data-table" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Exam Name</th>
+                <th>Subject</th>
+            </tr>
+        </thead>
+       
+        
+    </table>   
+    <div class="extender"></div>
+  </div>
+  <% if MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 %>
+    <div id="marks_entry" style="float: left; width:60%; margin-top:0px; margin-left: 10px;background-position: center;"></div> 
+    <div id="pdf_file" style="float: left; width:60%; margin-top:0px; margin-left: 10px;background: transparent url(/images/pdf_loading2.gif) no-repeat;background-position: center;"></div> 
+  <% end %>
+</div>
+
+<% if MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 %>
+
+<%= javascript_include_tag 'pdfobject' %>
+
+<script>
+  
+  jj( document ).on( "click", "a", function(event) {
+      
+      jj("#pdf_file").hide();
+      if(jj(this).attr("href").indexOf("exam_groups")!=-1 )
+      {
+        jj("#marks_entry").hide();
+         event.preventDefault();
+         jj("#marks_entry").html("<iframe src='"+jj(this).attr("href")+"' height='700' width='100%' ></iframe> ");
+         jj("#marks_entry").show();
+        
+         
+      }
+      
+    });
+</script>  
+<style>
+ #pdf_file
+ {
+     display:none;
+     min-height: 50px;
+ }
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+      margin-top: 0px;
+    margin-right: -18px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
+}
+.sub-header3
+{
+    float: right;
+    padding-top: 38px;
+    margin-right: 10px;
+}
+.sub-header3 a
+{
+    float: left;
+    margin-left: 0px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    width: 73px;
+    
+}
+.sub-header2
+{
+    float: right;
+    padding-top: 38px;
+    margin-left: 108px;
+    
+}
+.sub-header2 a
+{
+    float: left;
+    
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    
+}
+a:hover
+{
+  text-decoration: underline;
+}
+.mdl-data-table
+{
+   white-space: normal;
+}
+#content_wrapper
+{
+    width:96%;
+}
+.champs21_palette_container_1 #boxes
+{
+    width:100% !important;
+    display:none;
+    height: 0px;
+}
+.champs21_palette_container_1 #boxes .als-viewport
+{
+    width:100% !important
+}
+.champs21_palette_container_1 #boxes .als-next
+{
+    display:none;
+}
+.school_feed_box
+{
+    width:0px;
+    display:none;
+}
+#page-yield
+{
+    width: 97%;
+}
+#page-yield .box
+{
+    width: 38%;
+    float:left;
+    clear:both;
+}
+
+
+
+</style>
+<style>
+.pdfobject-container { height: 700px;}
+.pdfobject { border: 1px solid #666; }
+</style>
+<% else %>
+
+<style>
+  table tr td a
+  {
+     text-decoration: none;
+     cursor: pointer;
+     color: black;
+  }
+  .pagination {
+       margin-top: 0px;
+    margin-right: -18px;
+}
+.box select
+{
+    margin-left: 16px;
+    height: 27px;
+    width: 200px;
+}
+body, html
+{
+    line-height: normal;
+    font-family: initial;
+}
+.sub-header3
+{
+    float: left;
+    padding-top: 38px;
+    margin-left: 10px;
+}
+.sub-header3 a
+{
+    float: left;
+    margin-left: 0px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    width: 73px;
+    
+}
+.sub-header2
+{
+    float: left;
+    padding-top: 38px;
+    margin-left: 108px;
+}
+.sub-header2 a
+{
+    float: left;
+    margin-left: 446px;
+    text-decoration: none;
+    color: black;
+    padding: 7px;
+    border: 1px solid white;
+    background: white;
+    cursor: pointer;
+    
+}
+a:hover
+{
+  text-decoration: underline;
+}
+.mdl-data-table
+{
+   white-space: normal;
+}
+</style>
+<% end %>

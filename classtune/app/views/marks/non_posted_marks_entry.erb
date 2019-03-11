@@ -1,0 +1,114 @@
+<%
+@all_subject_id = []
+@has_exam_score = []
+@all_exam_groups = []
+@subject_exam = []
+@all_group_exams = GroupedExam.find(
+  :all,
+  :conditions => [
+    "connect_exam_id = ?",
+    @connect_exam_obj.id
+  ]
+  )
+unless @all_group_exams.blank?
+  @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq
+  @all_exam_groups = ExamGroup.find(
+    :all,
+    :conditions => ["id IN (?)", @all_exam_group_id]
+    )
+
+  @all_exams = Exam.find(
+    :all,
+    :conditions => ["exam_group_id IN (?)", @all_exam_group_id]
+    )
+
+
+  unless @all_exams.blank?
+    @all_exams.each do |exam|
+      unless @subject_exam.include?(exam.subject_id.to_s+"_"+exam.exam_group_id.to_s)
+        @subject_exam << exam.subject_id.to_s+"_"+exam.exam_group_id.to_s
+      end 
+    end 
+    @all_subject_id = @all_exams.map(&:subject_id).uniq
+    @all_subject_connect_exam = Subject.find_all_by_id(@all_subject_id)
+    @all_exam_id = @all_exams.map(&:id).uniq
+    @exam_score_all = ExamScore.find(
+      :all,
+      :conditions => ["exam_id IN (?)", @all_exam_id],
+      :include => [:exam]
+      )
+    unless @exam_score_all.blank?
+      @exam_score_all.each do |score|
+        if !score.marks.blank? and score.marks.to_i!=0 and !@has_exam_score.include?(score.exam_id)
+          exammain = score.exam
+          unless exammain.blank?
+            @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
+          end
+        end
+      end
+    end
+  end
+  end 
+%>
+
+<div id="page-yield" class="available_sections1">
+    <div class="section1 row" >
+        <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+"#{Rails.root}/"+ "public/images/school_logo/352/logo-sagc.png",:width=> '10%' %></h4>
+                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+            </div>
+            <h4 align="center">Non Posted Marks Entry, <%= @connect_exam_obj.name %></h4>
+            <br/>
+            <table width="100%" >
+                <thead>
+                    <tr>
+                        <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
+                        <td align="right"><b>Class : 
+                                <% if @batch.name == "General" %>
+                                  <%= @batch.course.full_name %>
+                                <% else %>
+                                  <%= @batch.name %> ,<%= @batch.course.full_name %>
+                                <% end %></b>
+                        </td>
+                    </tr>
+                </thead>    
+            </table>
+        </center>
+        <br/>
+        <% unless @all_subject_id.blank?  %>
+          <table id="pdf-table" width="100%" cellspacing="0">
+              <tr class="table-header">
+                  <td class="col-pdf"><%= "Sl." %></td>
+                  <td class="col-pdf">Subject</td>
+                  <% unless @all_exam_groups.blank? %>
+                    <% @all_exam_groups.each do |exam| %>
+                      <td class="col-pdf"><%= exam.name %></td>
+                    <% end %>
+                  <% end %> 
+              </tr>
+              <% i = 0 %>
+              <% @all_subject_connect_exam.each do |connect_exam_subject| %>
+                <% i = i+1 %>
+                <tr class="table-header">
+                    <td class="col-pdf"><%= i %></td>
+                    <td class="col-pdf"><%= connect_exam_subject.name %></td>
+                    <% unless @all_exam_groups.blank? %>
+                      <% @all_exam_groups.each do |exam| %>
+                        <% if @subject_exam.include?(connect_exam_subject.id.to_s+"_"+exam.id.to_s) %>
+                          <% if @has_exam_score.include?(exam.id.to_s+"_"+connect_exam_subject.id.to_s) %>
+                            <td class="col-pdf"><%= "Completed" %></td>
+                          <% else %>
+                            <td class="col-pdf"><%= "Not Completed" %></td>
+                          <% end %>
+                        <% else %>
+                          <td class="col-pdf">-</td>
+                        <% end %>  
+                      <% end %>
+                    <% end %>
+                </tr>
+              <% end %>
+          </table>    
+        <% end %>
+    </div>
+</div>    

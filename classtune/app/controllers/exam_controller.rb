@@ -1346,10 +1346,10 @@ class ExamController < ApplicationController
       end
 
       @batch = @exam_group.batch
-      @students = Student.find_all_by_id(student_list, :order=>"class_roll_no ASC")
+      @students = Student.find_all_by_id(student_list, :order=>"class_roll_no ASC",:conditions=>["is_deleted = ? and is_active = ?",false,true])
     else
       @batch = @exam_group.batch
-      @students=Student.find_all_by_batch_id(@batch.id, :order=>"class_roll_no ASC")
+      @students=Student.find_all_by_batch_id(@batch.id, :order=>"class_roll_no ASC",:conditions=>["is_deleted = ? and is_active = ?",false,true])
     end
     
     @assigned_employee=@batch.all_class_teacher
@@ -1378,7 +1378,7 @@ class ExamController < ApplicationController
     @tmp_students = []
     unless @ranked_student.blank?
       @ranked_student.each do |ras|
-        std_data = Student.find_by_id(ras.student_id)
+        std_data = Student.find_by_id(ras.student_id,:conditions=>["is_deleted = ? and is_active = ?",false,true])
         if !std_data.blank? && !@tmp_students.include?(std_data)
           @tmp_students << std_data
         end
@@ -1427,7 +1427,7 @@ class ExamController < ApplicationController
       end
 
       @batch = @exam_group.batch
-      @students = Student.find_all_by_id(student_list)
+      @students = Student.find_all_by_id(student_list,:conditions=>["is_deleted = ? and is_active = ?",false,true])
     else
       @batch = @exam_group.batch
       @students=@batch.students.by_first_name
@@ -1623,7 +1623,7 @@ class ExamController < ApplicationController
         end
         
         @batch = @exam_group.batch
-        @students = Student.find_all_by_id(student_list)
+        @students = Student.find_all_by_id(student_list,:conditions=>["is_deleted = ? and is_active = ?",false,true])
         @student = @students.first  unless @students.empty?
       else
         @batch = @exam_group.batch

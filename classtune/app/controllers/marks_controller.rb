@@ -538,7 +538,8 @@ class MarksController < ApplicationController
                 data[k][5] = "<a href='/exam/summary_report/#{exam_connect.id.to_s}?class=1' target='_blank'>Summary Report (All)</a>"
                 data[k][6] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}' target='_blank'>Subject Pass Fail</a>"
                 data[k][7] = "<a href='/exam/subject_wise_pass_failed/#{exam_connect.id.to_s}?class=1' target='_blank'>Subject Pass Fail (All)</a>"
-                data[k][8] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][8] = "<a href='/marks/non_posted_marks_entry/#{exam_connect.id.to_s}' target='_blank'>Non Posted Marks</a>"
+                data[k][9] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
                 c_exam_array << exam_connect.id.to_i
                 k = k+1
               end
@@ -600,6 +601,18 @@ class MarksController < ApplicationController
     elsif current_user.admin
       @batches = Batch.active
     end 
+  end
+  def non_posted_marks_entry
+    @connect_exam_obj = ExamConnect.active.find(params[:id])
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    render :pdf => 'non_posted_marks_entry',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   def non_posted_exam
     @exams_data = ExamConnect.active.find(:all,:group=>"name",:conditions =>["school_id = ?",MultiSchool.current_school.id])

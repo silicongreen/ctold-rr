@@ -780,15 +780,15 @@ class FinanceController < ApplicationController
     fixed_category_name
     if date_format_check
       unless @start_date > @end_date
-        online_id = []
-        online_payments = Payment.find(:all, :conditions => "finance_transaction_id IS NOT NULL")
-        online_payments.each do |o|
-          finance_fees = FinanceFee.find(:first, :conditions => "id = #{o.payment_id}")
-          if finance_fees.nil? 
-            online_id << o.id
-          end
-        end
-        abort(online_id.inspect)
+#        online_id = []
+#        online_payments = Payment.find(:all, :conditions => "finance_transaction_id IS NOT NULL")
+#        online_payments.each do |o|
+#          finance_fees = FinanceFee.find(:first, :conditions => "id = #{o.payment_id}")
+#          if finance_fees.nil? 
+#            online_id << o.id
+#          end
+#        end
+#        abort(online_id.inspect)
 #        trans_ids = []
 #        p_amount = 0.00
 #        a_amount = 0.00

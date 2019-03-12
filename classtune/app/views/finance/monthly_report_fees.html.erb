@@ -34,18 +34,26 @@
  <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-  <div class="box">
+  <div class="box" style="border: 1px solid #ccc; width: 100%; border-radius: 10px; float: left; padding-top: 20px;">
     <% form_for :report, :url => {:action => 'update_monthly_report_fees'},:html=>{:id=>"form_id"} do |form| %>
-      <div class="label-field-pair">
-        <div class="label-container"><label><%= t('select_start_date') %>:</label></div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+      <div class="label-field-pair" style="width: 70%; display: block; float: left;">
+        <div class="label-container" style="width: 15%; display: inline-block; padding-top: 6px;"><label><%= "Date Range" %>:</label></div>
+        <div class="input-container calendar-input" style="width: 39%; display: inline-block; "><%= calendar_date_select_tag 'start_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+        <div class="input-container calendar-input" style="width: 39%; display: inline-block; padding-left: 10px; "><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
       </div>
-      <div class="label-field-pair">
-        <div class="label-container"><label><%= t('select_end_date') %>: </label></div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'end_date', I18n.l(Date.today,:format=>"%d %b %Y") ,:popup=>:force%></div>
+      
+      <div class="label-field-pair" style="width: 29%; display: block; float: left; margin-top: 6px;">
+        <select name="discount_on_tmp" id="discount_on_tmp">
+            <option value="0">All Batches</option>
+            <option value="1">School</option>
+            <option value="2">College</option>
+        </select>
+        
       </div>
-
-    <div class="submit-btn" ><%=  link_to_function "► #{t('monthly_report')}","submit_form();",{:class=>'user_button'} %></div>
+      
+      <div style="clear: both; height: 5px;"></div>
+      <div style="width: 100%; text-align: center; padding-left: 44%; margin: 0 auto;"><%=  link_to_function "► #{t('monthly_report')}","submit_form();",{:class=>'user_button'} %></div>
+      <div style="clear: both; height: 20px;"></div>
     <%end%>
   </div>
 </div>
@@ -56,4 +64,15 @@ function submit_form(){
 }
   
 </script>
+<style>
+    .text-input-bg select, .label-field-pair input, .label-field-pair textarea {
+      width: 90%;
+    }
+    .calendar_date_select_popup_icon {
+      right: -8px;
+    }
+    .user_button {
+      margin-top: 20px;
+    }
+</style>
 

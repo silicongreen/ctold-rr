@@ -710,10 +710,10 @@ class PaymentSettingsController < ApplicationController
       extra_query += ' and gateway_response like \'%:status: "' + payment_status.to_s + '%\''
     end
     unless params[:order_id].nil? or params[:order_id].empty? or params[:order_id].blank?
-      extra_query += ' and gateway_response like \'%:order_id: "' + params[:order_id].to_s + '%\''
+      extra_query += ' and gateway_response like \'%' + params[:order_id].to_s + '%\''
     end
     unless params[:ref_no].nil? or params[:ref_no].empty? or params[:ref_no].blank?
-      extra_query += ' and gateway_response like \'%:ref_id: ' + params[:ref_no].to_s + '%\''
+      extra_query += ' and gateway_response like \'%' + params[:ref_no].to_s + '%\''
     end
     unless params[:payment_type].nil? or params[:payment_type].empty? or params[:payment_type].blank?
       extra_query += ' and gateway_response like \'%:payment_type: ' + params[:payment_type].to_s + '%\''

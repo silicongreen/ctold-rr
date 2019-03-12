@@ -43,7 +43,7 @@
       </div>
       
       <div class="label-field-pair" style="width: 29%; display: block; float: left; margin-top: 6px;">
-        <select name="discount_on_tmp" id="discount_on_tmp">
+        <select name="filter_by_course" id="filter_by_course">
             <option value="0">All Batches</option>
             <option value="1">School</option>
             <option value="2">College</option>
@@ -59,7 +59,7 @@
 </div>
 <script type="text/javascript">
 function submit_form(){
-  url="/finance/update_monthly_report_fees?start_date="+j('#start_date')[0].value+"&end_date="+j('#end_date')[0].value
+  url="/finance/update_monthly_report_fees?start_date="+j('#start_date')[0].value+"&end_date="+j('#end_date')[0].value+"&filter_by_course="+j('#filter_by_course')[0].value
   window.location.href=url   
 }
   

@@ -976,7 +976,7 @@
       <% if MultiSchool.current_school.id == 352 %>
       <% @student_has_due = false %>
       <% end %>
-      <% if @student_has_due == false %>
+      <% if @student_has_due == false and @financefee.batch_id == @student.batch_id %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
             <tr>
@@ -1011,12 +1011,19 @@
             </tr>
         <% end %>
       <% else %>
+            <% if @financefee.batch_id != @student.batch_id %>
+            <tr>
+                <td colspan="5">
+                  <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
+                </td>
+            </tr>    
+            <% else %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Student Has Previous Due***</font></center> 
                 </td>
-            </tr>    
-          
+            </tr> 
+            <% end %>
       <% end %>    
     </table>
     <% if @student.has_dues %>

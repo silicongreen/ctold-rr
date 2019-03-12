@@ -1067,7 +1067,7 @@
       </tr>
       
       <% if has_dues == false %>
-        <% if total_fees > 0  %>
+        <% if total_fees > 0 and  @financefee.batch_id == @student.batch_id %>
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
@@ -1100,11 +1100,19 @@
             </tr>
         <% end %>
       <% else %>
+            <% if @financefee.batch_id != @student.batch_id %>
+            <tr>
+                <td colspan="5">
+                  <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
+                </td>
+            </tr>    
+            <% else %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Student Has Previous Due***</font></center> 
                 </td>
-            </tr>    
+            </tr> 
+            <% end %>    
           
       <% end %>
     </table>

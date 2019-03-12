@@ -468,7 +468,7 @@ class ExamsController < ApplicationController
       assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(exam_subject.id,exam_subject.batch_id)
       @students = []
       assigned_students.each do |s|
-        student = Student.find_by_id(s.student_id)
+        student = Student.active.find_by_id(s.student_id)
         unless student.nil?
           if student.batch_id.to_i == s.batch_id
             if MultiSchool.current_school.id == 319

@@ -23,7 +23,7 @@ class Batch < ActiveRecord::Base
   belongs_to :weekday_set
   belongs_to :class_timing_set
 
-  has_many :students
+  has_many :students, :conditions => { :is_deleted => false,:is_active => true }
   has_many :grouped_exam_reports
   has_many :grouped_batches
   has_many :archived_students

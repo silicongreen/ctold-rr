@@ -52,7 +52,7 @@
           <% total_full_mark = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] != "5" %>
-            <% if rs['exam_category'] == "5" %>
+            <% if rs['exam_category'] == "7" %>
               <td><%=  rs['name'] %> (Grade)</td>
             <% else %>
               <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>

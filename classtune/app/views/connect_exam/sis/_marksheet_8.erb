@@ -50,8 +50,12 @@
           <td>Name</td>
           <% total_full_mark = 0 %>
           <% @report_data['result']['ALL'].each do |rs| %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
-            <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
+            <% if rs['exam_category'] == "7" %>
+              <td><%=  rs['name'] %> (Grade)</td>
+            <% else %>
+              <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+              <% total_full_mark = total_full_mark+rs['maximum_marks'].to_i %>
+            <% end %>
             <% colspan = colspan+1 %>
           <% end %>  
           

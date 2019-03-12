@@ -17,7 +17,7 @@
 #limitations under the License.
 
 class StudentsSubject < ActiveRecord::Base
-  belongs_to :student
+  belongs_to :student, :conditions => { :is_deleted => false,:is_active => true }
   belongs_to :subject
   validates_uniqueness_of :student_id,:scope=>[:subject_id]
 

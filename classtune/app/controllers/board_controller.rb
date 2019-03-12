@@ -30,6 +30,11 @@ class BoardController < ApplicationController
     @std_guardians = @std_info.student_guardian
     render :layout => false
   end
+  def testimonial_section
+    @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
+    @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
+    render :layout => false
+  end
   def subject_result
     @subject = BoardExamSubject.find_by_id(params[:id])
     @board_exam_marks = BoardExamMark.find_all_by_board_exam_subject_id(@subject.id)

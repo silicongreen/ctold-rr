@@ -79,7 +79,8 @@
                     <% end %>   
                     <% unless student.board_grading_level_id.blank? %> 
                       <br/><%= link_to "<i class='fa fa-print'></i> Sign Testimonial", {:action => "testimonial", :id=>@board_exam.id,:id2=>student.id,:sign=>"Yes"} %><br/>
-                          <%= link_to "<i class='fa fa-print'></i> Testimonial", {:action => "testimonial", :id=>@board_exam.id,:id2=>student.id} %>
+                          <%= link_to "<i class='fa fa-print'></i> Testimonial", {:action => "testimonial", :id=>@board_exam.id,:id2=>student.id} %><br/><%= link_to "<i class='fa fa-print'></i> Section Sign Testimonial", {:action => "testimonial_section", :id=>@board_exam.id,:id2=>student.batch_id,:sign=>"Yes"} %><br/>
+                          <%= link_to "<i class='fa fa-print'></i> Section Testimonial", {:action => "testimonial_section", :id=>@board_exam.id,:id2=>student.exam_students} %>
                     <% end %>  
                 </td>
 

@@ -10,7 +10,7 @@
               @std_guardians = @std_info.student_guardian
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
-          <div style="page-break-after: always;" >
+          <div  style="position: relative;" >
             <p class="left-font" id="left-position-0"><%= @std_info.admission_no %></p>
             <p class="left-font" id="left-position-1"><%= @std_info.full_name %></p>
             <p class="left-font" id="left-position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
@@ -37,6 +37,7 @@
             <p id="position-10"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
             <% end %>
           </div>  
+          <p style="page-break-after: always;"></p>
           <% end %>
         <% end %>
     </body>
@@ -54,122 +55,122 @@
     
     #left-position-0
     {
-        position: static;
+        position: absulate;
         left: 50;
         top: 165;
     }
     #left-position-1
     {
-        position: static;
+        position: absulate;
         left: 60;
         top: 240;
     }
     #left-position-2
     {
-        position: static;
+        position: absulate;
         left: 115;
         top: 282;
     }
     #left-position-3
     {
-        position: static;
+        position: absulate;
         left: 85;
         top: 333;
     }
     #left-position-4
     {
-        position: static;
+        position: absulate;
         left: 143;
         top: 333;
     }
     #left-position-5
     {
-        position: static;
+        position: absulate;
         left: 90;
         top: 422;
     }
     #left-position-6
     {
-        position: static;
+        position: absulate;
         left: 115;
         top: 464;
     }
     #left-position-7
     {
-        position: static;
+        position: absulate;
         left: 115;
         top: 511;
     }
     #left-position-8
     {
-        position: static;
+        position: absulate;
         left: 185;
         top: 623;
     }
     
     #position-0
     {
-        position: static;
+        position: absulate;
         left: 430;
         top: 135;
     }
     #position-1
     {
-        position: static;
+        position: absulate;
         left: 560;
         top: 172;
     }
     #position-2
     {
-        position: static;
+        position: absulate;
         left: 500;
         top: 205;
     }
     #position-3
     {
-        position: static;
+        position: absulate;
         left: 785;
         top: 205;
     }
     #position-4
     {
-        position: static;
+        position: absulate;
         left: 560;
         top: 246;
     }
     #position-5
     {
-        position: static;
+        position: absulate;
         left: 750;
         top: 246;
     }
     #position-6
     {
-        position: static;
+        position: absulate;
         left: 960;
         top: 282;
     }
     #position-7
     {
-        position: static;
+        position: absulate;
         left: 830;
         top: 353;
     }
     #position-8
     {
-        position: static;
+        position: absulate;
         left: 560;
         top: 392;
     }
     #position-9
     {
-        position: static;
+        position: absulate;
         left: 591;
         top: 427;
     }
     #position-10
     {
-        position: static;
+        position: absulate;
         left: 910;
         top: 625;
     }

@@ -73,12 +73,14 @@
                           <% iloop = 0 %>
                           <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
                               <% subject_groups.each do |group_name| %>
+                                <% mloop+=1 %>
                                 <% subject_subgroup = get_subject_sub_group(group_name.id,@connect_exam_obj.quarter_number) %>
                                 <% unless subject_subgroup.blank? %>
                                    <tr class="odd">
                                     <td class="col-pdf no-warp align-left"  colspan="2"><b><%= group_name.name %></b></td>
                                    </tr>
                                     <% subject_subgroup.each do |sub_group_name| %>
+                                      <% mloop+=1 %>
                                        <% @report_data['report']['exams'].each do |report| %>
                                         <% if report['exam_category'] == '7' %>
                                             <% next %>
@@ -165,7 +167,7 @@
 .sis table tr.odd td, .sis table tr.even td
 {
     font-size: 25px !important;
-    padding: 14px !important;
+    padding: 12px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {
@@ -188,7 +190,7 @@
 }
 .sis table tr.odd td, .sis table tr.even td
 {
-    font-size: 23px !important;
+    font-size: 20px !important;
     padding: 6px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
@@ -206,7 +208,7 @@
 .sis table tr.odd td, .sis table tr.even td
 {
     font-size: 20px !important;
-    padding: 8px 15px !important;
+    padding: 4px 15px !important;
 }
 .sis table tr.odd table.std_info_table tr td
 {

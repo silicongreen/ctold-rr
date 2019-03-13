@@ -5603,17 +5603,17 @@ class ExamController < ApplicationController
                   @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
                 end
 
-                if @subject_highest_2nd_term[main_sub_id.to_i].blank?
-                  @subject_highest_2nd_term[main_sub_id.to_i] = total_mark2
-                elsif total_mark2.to_f > @subject_highest_2nd_term[main_sub_id.to_i].to_f
-                  @subject_highest_2nd_term[main_sub_id.to_i] = total_mark2.to_f
+                if @subject_highest_2nd_term[sub['id'].to_i].blank?
+                  @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
+                elsif total_mark2.to_f > @subject_highest_2nd_term[sub['id'].to_i].to_f
+                  @subject_highest_2nd_term[sub['id'].to_i] = total_mark2.to_f
                 end
 
 
-                if @subject_highest[main_sub_id.to_i].blank?
-                  @subject_highest[main_sub_id.to_i] = subject_full_marks
-                elsif subject_full_marks.to_f > @subject_highest[main_sub_id.to_i].to_f
-                  @subject_highest[main_sub_id.to_i] = subject_full_marks.to_f
+                if @subject_highest[sub['id'].to_i].blank?
+                  @subject_highest[sub['id'].to_i] = subject_full_marks
+                elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+                  @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
                 end
 
                
@@ -6073,22 +6073,21 @@ class ExamController < ApplicationController
 
                     if @subject_highest_1st_term[sub['id'].to_i].blank?
                       @subject_highest_1st_term[sub['id'].to_i] = total_mark1
-                    elsif total_mark1.to_f > @subject_highest_1st_term[main_sub_id.to_i].to_f
+                    elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f
                       @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
                     end
-                    
 
-                    if @subject_highest_2nd_term[main_sub_id.to_i].blank?
-                      @subject_highest_2nd_term[main_sub_id.to_i] = total_mark2
-                    elsif total_mark2.to_f > @subject_highest_2nd_term[main_sub_id.to_i].to_f
-                      @subject_highest_2nd_term[main_sub_id.to_i] = total_mark2.to_f
+                    if @subject_highest_2nd_term[sub['id'].to_i].blank?
+                      @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
+                    elsif total_mark2.to_f > @subject_highest_2nd_term[sub['id'].to_i].to_f
+                      @subject_highest_2nd_term[sub['id'].to_i] = total_mark2.to_f
                     end
 
 
-                    if @subject_highest[main_sub_id.to_i].blank?
-                      @subject_highest[main_sub_id.to_i] = subject_full_marks
-                    elsif subject_full_marks.to_f > @subject_highest[main_sub_id.to_i].to_f
-                      @subject_highest[main_sub_id.to_i] = subject_full_marks.to_f
+                    if @subject_highest[sub['id'].to_i].blank?
+                      @subject_highest[sub['id'].to_i] = subject_full_marks
+                    elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
+                      @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
                     end
 
                   end

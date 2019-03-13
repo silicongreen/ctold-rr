@@ -386,8 +386,15 @@ class FinanceController < ApplicationController
               finance_transaction = FinanceTransaction.find(:first, :conditions => "finance_id = #{o.payment_id} and payee_id = #{o.payee_id}")
               if finance_transaction.nil? 
                 finance_transaction = FinanceTransaction.find(:all, :conditions => "payee_id = #{o.payee_id} and amount = #{o.gateway_response[:amount]}")
-                abort(finance_transaction.length.to_s)
-                online_id << o.id
+                if finance_transaction.length == 1
+                  finance_transaction.each do |f|
+                    finance_transaction_id = f.id
+                    finance_fee_id = f.finance_id
+                    o.update_attributes(:finance_transaction_id => finance_transaction.id, :payment_id => finance_fee_id)
+                  end
+                else
+                  online_id << o.id
+                end
               else
                 o.update_attributes(:finance_transaction_id => finance_transaction.id)
               end

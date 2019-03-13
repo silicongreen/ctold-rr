@@ -385,6 +385,8 @@ class FinanceController < ApplicationController
             if finance_transaction.nil? 
               online_id << o.id
             end
+          else
+            online_id << o.id
           end
         end
         abort(online_id.inspect)
@@ -3361,8 +3363,8 @@ class FinanceController < ApplicationController
         elsif params[:type_discount] == "categoy"
           receiver_id = discount.receiver_id
           if receiver_id.to_i == params[:receiver_id].to_i
-            #fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_idာ @batch_id])
-            #f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id}")
+            fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_idာ @batch_id])
+            f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id}")
             unless f.nil?
               f.destroy
               

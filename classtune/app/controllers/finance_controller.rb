@@ -380,8 +380,12 @@ class FinanceController < ApplicationController
         online_id = []
         online_payments = Payment.find(:all, :conditions => "transaction_datetime LIKE '%2019-01-09%'")
         online_payments.each do |o|
-          finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
-          if finance_transaction.nil? 
+          unless o.finance_transaction_id.nil?
+            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+            if finance_transaction.nil? 
+              online_id << o.id
+            end
+          else
             online_id << o.id
           end
         end
@@ -3359,7 +3363,7 @@ class FinanceController < ApplicationController
         elsif params[:type_discount] == "categoy"
           receiver_id = discount.receiver_id
           if receiver_id.to_i == params[:receiver_id].to_i
-            fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_id, @batch_id])
+            fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_idာ @batch_id])
             f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id}")
             unless f.nil?
               f.destroy

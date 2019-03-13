@@ -378,48 +378,44 @@ class FinanceController < ApplicationController
   def date_wise_transaction
     fixed_category_name
         online_id = []
-        online_payments = Payment.find(:all, :conditions => "transaction_datetime LIKE '%2019-01-09%'")
+        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-09%'")
         online_payments.each do |o|
-#          unless o.finance_transaction_id.nil?
-#            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
-#            if finance_transaction.nil? 
-#              online_id << o.id
-#            end
-##          else
-##            online_id << o.id
-#          end
+          finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+          if finance_transaction.nil? 
+            online_id << o.id
+          end
         end
         abort(online_id.inspect)
-#        trans_ids = []
-#        p_amount = 0.00
-#        a_amount = 0.00
-#        d_amount = 0.00
-#        #@transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-#        @transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-#        #abort(@transactions.map(&:id).inspect)
-#        @transactions.each do |pwt|
-#          amount = 0.00
-#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-#          @particular_wise_transactions.each do |pt|
-#            amount += pt.amount.to_f
-#            p_amount += pt.amount.to_f
-#          end
-#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-#          @particular_wise_transactions.each do |pt|
-#            amount += pt.amount.to_f
-#            a_amount += pt.amount.to_f
-#          end
-#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-#          @particular_wise_transactions.each do |pt|
-#            amount -= pt.amount.to_f
-#            d_amount += pt.amount.to_f
-#          end
-#          if amount.to_f != pwt.amount.to_f
-#            trans_ids << pwt.id
-#          end
-#          #tot_amount += amount
-#        end
-#        abort(trans_ids.inspect)
+        trans_ids = []
+        p_amount = 0.00
+        a_amount = 0.00
+        d_amount = 0.00
+        #@transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+        @transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+        #abort(@transactions.map(&:id).inspect)
+        @transactions.each do |pwt|
+          amount = 0.00
+          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          @particular_wise_transactions.each do |pt|
+            amount += pt.amount.to_f
+            p_amount += pt.amount.to_f
+          end
+          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          @particular_wise_transactions.each do |pt|
+            amount += pt.amount.to_f
+            a_amount += pt.amount.to_f
+          end
+          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          @particular_wise_transactions.each do |pt|
+            amount -= pt.amount.to_f
+            d_amount += pt.amount.to_f
+          end
+          if amount.to_f != pwt.amount.to_f
+            trans_ids << pwt.id
+          end
+          #tot_amount += amount
+        end
+        abort(trans_ids.inspect)
     if date_format_check
       unless @start_date > @end_date
         abort('here')
@@ -3363,7 +3359,7 @@ class FinanceController < ApplicationController
         elsif params[:type_discount] == "categoy"
           receiver_id = discount.receiver_id
           if receiver_id.to_i == params[:receiver_id].to_i
-            fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_idာ @batch_id])
+            fee_discount_collection = FeeDiscountCollection.find(:first, :conditions => ["finance_fee_collection_id = ? and fee_discount_id = ? and batch_id = ?", @fee_collection_id, @discount_id, @batch_id])
             f = FeeDiscountCollection.find(:first, :conditions => "finance_fee_collection_id = #{@fee_collection_id} and fee_discount_id = #{@discount_id} and batch_id = #{@batch_id}")
             unless f.nil?
               f.destroy
@@ -4731,7 +4727,7 @@ class FinanceController < ApplicationController
             if @fee_collection_advances.particular_id == 0
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             else
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+              fee_particulars = @date.finance_fee_particuၬars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             end
           else
             fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }

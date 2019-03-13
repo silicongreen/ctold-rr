@@ -6050,6 +6050,7 @@ class ExamController < ApplicationController
                     elsif total_mark1.to_f > @subject_highest_1st_term[main_sub_id.to_i].to_f
                       @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
                     end
+                    
 
                     if @subject_highest_2nd_term[main_sub_id.to_i].blank?
                       @subject_highest_2nd_term[main_sub_id.to_i] = total_mark2

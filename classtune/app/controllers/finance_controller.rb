@@ -383,7 +383,12 @@ class FinanceController < ApplicationController
           unless o.finance_transaction_id.nil?
             finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
             if finance_transaction.nil? 
-              online_id << o.id
+              finance_transaction = FinanceTransaction.find(:first, :conditions => "finance_id = #{o.payment_id} and payee_id = #{o.payee_id}")
+              if finance_transaction.nil? 
+                online_id << o.id
+              else
+                o.update_attributes(:finance_transaction_id => finance_transaction.id)
+              end
             end
           else
             online_id << o.id

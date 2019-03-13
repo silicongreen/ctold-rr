@@ -378,7 +378,23 @@ class FinanceController < ApplicationController
   def date_wise_transaction
     fixed_category_name
         online_id = []
-        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-%'")
+        
+        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-29%'")
+        online_payments.each do |o|
+          unless o.finance_transaction_id.nil?
+            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+            unless finance_transaction.nil?
+              if finance_transaction.amount.to_f != 0.gateway_response[:amount].to_f
+                online_id << o.id
+              end
+            end
+          else
+            online_id << o.id
+          end
+        end
+        abort(online_id.inspect)
+    
+        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-29%'")
         online_payments.each do |o|
           unless o.finance_transaction_id.nil?
             finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")

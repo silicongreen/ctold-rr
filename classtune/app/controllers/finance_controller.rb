@@ -380,8 +380,12 @@ class FinanceController < ApplicationController
         online_id = []
         online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-09%'")
         online_payments.each do |o|
-          finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
-          if finance_transaction.nil? 
+          unless o.finance_transaction_id.nil?
+            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+            if finance_transaction.nil? 
+              online_id << o.id
+            end
+          else
             online_id << o.id
           end
         end
@@ -4725,9 +4729,9 @@ class FinanceController < ApplicationController
           
           if advance_fee_collection
             if @fee_collection_advances.particular_id == 0
-              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.studၥnt_category or par.receiver==@batch) }
             else
-              fee_particulars = @date.finance_fee_particuၬars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
+              fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id = #{@fee_collection_advances.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             end
           else
             fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }

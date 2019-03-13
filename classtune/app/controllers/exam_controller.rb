@@ -5675,6 +5675,21 @@ class ExamController < ApplicationController
                     monthly_total_mark1 = 0
                     monthly_total_mark2 = 0
                     appeared = false
+                    
+                    full_sb12 = 0
+                    full_sb22 = 0
+                    total_sb12 = 0
+                    total_sb22 = 0
+
+                    full_ob12 = 0
+                    full_ob22 = 0
+                    total_ob12 = 0
+                    total_ob22 = 0
+
+                    full_pr12 = 0
+                    full_pr22 = 0
+                    total_pr12 = 0
+                    total_pr22 = 0
 
                     
                     subject_failed = false
@@ -5699,11 +5714,13 @@ class ExamController < ApplicationController
 
                           if rs['quarter'] == '1'
                             full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_sb12= full_sb12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
 
                           end  
                           if rs['quarter'] == '2'
                             full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_sb22 = full_sb22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
 
                           end
@@ -5711,20 +5728,24 @@ class ExamController < ApplicationController
 
                           if rs['quarter'] == '1'
                             full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_ob12 = full_ob12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
 
                           end  
                           if rs['quarter'] == '2'
                             full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_ob22 = full_ob22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end
                         elsif rs['exam_category'] == '5' 
                           if rs['quarter'] == '1'
                             full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_pr12 = full_pr12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
                             full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_pr22 = full_pr22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                             full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
                           end
                         end
@@ -5752,6 +5773,7 @@ class ExamController < ApplicationController
                           full_absent = false
                           if rs['quarter'] == '1'
                             total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5763,6 +5785,7 @@ class ExamController < ApplicationController
                           end  
                           if rs['quarter'] == '2'
                             total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5777,6 +5800,7 @@ class ExamController < ApplicationController
                           full_absent = false
                           if rs['quarter'] == '1'
                             total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_ob12 = total_ob12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5788,6 +5812,7 @@ class ExamController < ApplicationController
                           end  
                           if rs['quarter'] == '2'
                             total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_ob22 = total_ob22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5802,6 +5827,7 @@ class ExamController < ApplicationController
                           full_absent = false
                           if rs['quarter'] == '1'
                             total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_pr12 = total_pr12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr1.to_f/full_pr1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5813,6 +5839,7 @@ class ExamController < ApplicationController
                           end  
                           if rs['quarter'] == '2'
                             total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_pr22 = total_pr22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr2.to_f/full_pr2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5850,7 +5877,7 @@ class ExamController < ApplicationController
 
 
 
-                    total_mark2 = total_ob2+total_sb2+total_pr2
+                    total_mark2 = total_ob22+total_sb22+total_pr22
                     total_mark2_80 = total_mark2.to_f
                     if full_mark2 > 100
                       total_mark2_80 = total_mark2.to_f*0.75
@@ -5858,7 +5885,7 @@ class ExamController < ApplicationController
 
                     total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
 
-                    total_mark1 = total_ob1+total_sb1+total_pr1
+                    total_mark1 = total_ob12+total_sb12+total_pr12
                     total_mark1_80 = total_mark1.to_f
                     if full_mark1 > 100
                       total_mark1_80 = total_mark1.to_f*0.75
@@ -6071,23 +6098,23 @@ class ExamController < ApplicationController
                       end
                     end
 
-                    if @subject_highest_1st_term[sub['id'].to_i].blank?
-                      @subject_highest_1st_term[sub['id'].to_i] = total_mark1
-                    elsif total_mark1.to_f > @subject_highest_1st_term[sub['id'].to_i].to_f
-                      @subject_highest_1st_term[sub['id'].to_i] = total_mark1.to_f
+                    if @subject_highest_1st_term[sub2['id'].to_i].blank?
+                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1
+                    elsif total_mark1.to_f > @subject_highest_1st_term[sub2['id'].to_i].to_f
+                      @subject_highest_1st_term[sub2['id'].to_i] = total_mark1.to_f
                     end
 
-                    if @subject_highest_2nd_term[sub['id'].to_i].blank?
-                      @subject_highest_2nd_term[sub['id'].to_i] = total_mark2
-                    elsif total_mark2.to_f > @subject_highest_2nd_term[sub['id'].to_i].to_f
-                      @subject_highest_2nd_term[sub['id'].to_i] = total_mark2.to_f
+                    if @subject_highest_2nd_term[sub2['id'].to_i].blank?
+                      @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2
+                    elsif total_mark2.to_f > @subject_highest_2nd_term[sub2['id'].to_i].to_f
+                      @subject_highest_2nd_term[sub2['id'].to_i] = total_mark2.to_f
                     end
 
 
-                    if @subject_highest[sub['id'].to_i].blank?
-                      @subject_highest[sub['id'].to_i] = subject_full_marks
-                    elsif subject_full_marks.to_f > @subject_highest[sub['id'].to_i].to_f
-                      @subject_highest[sub['id'].to_i] = subject_full_marks.to_f
+                    if @subject_highest[sub2['id'].to_i].blank?
+                      @subject_highest[sub2['id'].to_i] = subject_full_marks
+                    elsif subject_full_marks.to_f > @subject_highest[sub2['id'].to_i].to_f
+                      @subject_highest[sub2['id'].to_i] = subject_full_marks.to_f
                     end
 
                   end

@@ -1,0 +1,97 @@
+#page-yield 
+{
+    width:1250px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.section2
+{
+    margin-top:120px;
+}
+.result_main_table
+{
+    margin-top: 40px;
+}
+h2{font-size: 28px;}
+h4{margin: 5px; font-size: 22px;}
+.current_batch
+{
+    margin-top: 10px;
+}
+
+
+
+/*MPSC COMBINE REPORT CARD STYLE*/
+.header_address
+{
+    margin-left: 220px;
+}
+
+
+
+.odd{
+    height:auto;
+    background: #fff;
+    font-size: 11px;
+
+}
+
+.even{
+
+    height:auto;
+    background: #fff;
+    font-size: 11px;
+
+
+}
+tr.even{
+    border: 1px solid #000000;
+}
+
+tr.odd{
+    border: 1px solid #000000;
+}
+
+.even td{
+
+    padding: 5px 5px 5px 8px;
+    border: 1px solid #000000;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+
+.odd td{
+    padding: 5px 5px 5px 8px;
+    border: 1px solid #000000;
+    border-top: 0px solid #fff;
+    text-align: center;
+
+}
+.table-header td{
+    padding: 10px;
+    border: 1px solid #000000;
+    color: #000000;
+    background: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+}
+table td
+{
+    font-size: 20px;
+}
+
+table#pdf-table{
+    border-top: 1px solid #000000;
+    border-collapse:collapse
+}
+
+#pdf-header-south{
+    width:1000px;
+}
+
+
+
+

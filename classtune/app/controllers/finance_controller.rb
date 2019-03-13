@@ -385,8 +385,8 @@ class FinanceController < ApplicationController
             if finance_transaction.nil? 
               online_id << o.id
             end
-          else
-            online_id << o.id
+#          else
+#            online_id << o.id
           end
         end
         abort(online_id.inspect)

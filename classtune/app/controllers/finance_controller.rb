@@ -380,14 +380,14 @@ class FinanceController < ApplicationController
         online_id = []
         online_payments = Payment.find(:all, :conditions => "transaction_datetime LIKE '%2019-01-09%'")
         online_payments.each do |o|
-          unless o.finance_transaction_id.nil?
-            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
-            if finance_transaction.nil? 
-              online_id << o.id
-            end
-#          else
-#            online_id << o.id
-          end
+#          unless o.finance_transaction_id.nil?
+#            finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
+#            if finance_transaction.nil? 
+#              online_id << o.id
+#            end
+##          else
+##            online_id << o.id
+#          end
         end
         abort(online_id.inspect)
 #        trans_ids = []

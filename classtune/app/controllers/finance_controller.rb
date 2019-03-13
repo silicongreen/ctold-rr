@@ -379,7 +379,7 @@ class FinanceController < ApplicationController
     fixed_category_name
         online_id = []
         
-        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-29%'")
+        online_payments = Payment.find(:all, :conditions => "`transaction_datetime` LIKE '%2019-01-24%'")
         online_payments.each do |o|
           unless o.finance_transaction_id.nil?
             finance_transaction = FinanceTransaction.find(:first, :conditions => "id = #{o.finance_transaction_id}")
@@ -387,7 +387,7 @@ class FinanceController < ApplicationController
               if finance_transaction.amount.to_f != o.gateway_response[:amount].to_f
                 online_id << o.id
               end
-            end
+            end 
           else
             online_id << o.id
           end

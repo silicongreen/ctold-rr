@@ -390,7 +390,7 @@ class FinanceController < ApplicationController
                   finance_transaction.each do |f|
                     finance_transaction_id = f.id
                     finance_fee_id = f.finance_id
-                    o.update_attributes(:finance_transaction_id => finance_transaction.id, :payment_id => finance_fee_id)
+                    o.update_attributes(:finance_transaction_id => finance_transaction_id, :payment_id => finance_fee_id)
                   end
                 else
                   online_id << o.id

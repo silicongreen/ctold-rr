@@ -228,7 +228,7 @@
                                                           <option value="2" <% if exam_group_remarks.to_i == 2 %> selected="selected" <% end %> >Good</option>
                                                           <option value="3" <% if exam_group_remarks.to_i == 3 %> selected="selected" <% end %>  >Satisfactory</option>
                                                           <option value="4" <% if exam_group_remarks.to_i == 4 %> selected="selected" <% end %>  >Needs Improvement</option>
-                                                          <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern1</option>
+                                                          <option value="5" <% if exam_group_remarks.to_i == 5 %> selected="selected" <% end %>  >Causing Concern</option>
                                                       </select>
                                                     <% elsif @exam_connect.result_type > 2 && @exam_connect.result_type < 7 %>
                                                       <% @batch = @exam_subject.batch %>
@@ -246,10 +246,14 @@
                                                         <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                             <option value="NA" >Select</option>
                                                             <option value="A+" <% if exam_group_remarks.to_s == 'A+' %> selected="selected" <% end %> >Excellent</option>
-                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Good</option>
-                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Satisfactory</option>
-                                                            <option value="C" <% if exam_group_remarks.to_s == 'C' %> selected="selected" <% end %>  >Needs Improvement</option>
-                                                            <option value="D" <% if exam_group_remarks.to_s == 'D' %> selected="selected" <% end %>  >Causing Concern2</option>
+                                                            <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Very Good</option>
+                                                            <option value="B+" <% if exam_group_remarks.to_s == 'B+' %> selected="selected" <% end %>  >Good</option>
+                                                            <option value="B" <% if exam_group_remarks.to_s == 'B' %> selected="selected" <% end %>  >Fair</option>
+                                                            <option value="C" <% if exam_group_remarks.to_s == 'C' %> selected="selected" <% end %>  >Satisfactory</option>
+                                                            <option value="D" <% if exam_group_remarks.to_s == 'D' %> selected="selected" <% end %>  >Unsatisfactory</option>
+                                                            <option value="NI" <% if exam_group_remarks.to_s == 'NI' %> selected="selected" <% end %>  >Needs Improvement</option>
+                                                            <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
+                                                            <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
                                                           </select>
                                                         
                                                       

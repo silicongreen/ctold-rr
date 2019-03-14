@@ -1011,13 +1011,13 @@
             </tr>
         <% end %>
       <% else %>
-            <% if @financefee.batch_id != @student.batch_id %>
+            <% if @financefee.batch_id != @student.batch_id and total_fees > 0 %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
                 </td>
             </tr>    
-            <% else %>
+            <% elsif total_fees > 0 %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Student Has Previous Due***</font></center> 

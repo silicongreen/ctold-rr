@@ -1065,9 +1065,16 @@
             <input type="hidden" name="remaining_amount" id="remaining_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
         </td>  
       </tr>
-      
+      <%
+        found = true
+        @fees_collections.reverse.each do |fee|
+          if @financefee[f].batch_id != @student.batch_id
+            found = false
+          end
+        end
+      %>
       <% if has_dues == false %>
-        <% if total_fees > 0 and  @financefee.batch_id == @student.batch_id %>
+        <% if total_fees > 0 and found %>
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
@@ -1100,13 +1107,13 @@
             </tr>
         <% end %>
       <% else %>
-            <% if @financefee.batch_id != @student.batch_id %>
+        <% if found == false and total_fees > 0 %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Your class or Section has been changes, Please contact admin to update your payment info***</font></center> 
                 </td>
             </tr>    
-            <% else %>
+            <% elsif total_fees > 0 %>
             <tr>
                 <td colspan="5">
                   <center><font color="red">***Student Has Previous Due***</font></center> 

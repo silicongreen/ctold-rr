@@ -9128,6 +9128,14 @@ class FinanceController < ApplicationController
 
   def regenerate_student_fees
     student = params[:student_id]
+    if params[:delete]
+      if params[:delete].to_i == 1
+        finance =  FinanceFee.find_by_id(params[:finance_fee_id])
+        unless finance.blank?
+          finance.destroy
+        end
+      end
+    end
     if params[:option]
       if params[:option].to_i == 1
         student.each do |v|
@@ -9135,6 +9143,10 @@ class FinanceController < ApplicationController
           student = Student.find_by_id(v)
           FinanceFee.new_student_fee_with_tmp_particular(fee_collection,student)
         end
+      elsif params[:option].to_i == 2
+        fee_collection = FinanceFeeCollection.find(params[:fee_id])
+        stu = Student.find_by_id(student)
+        FinanceFee.new_student_fee(fee_collection,stu)
       end
     else
       fee_collection = FinanceFeeCollection.find(params[:fee_id])

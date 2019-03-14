@@ -1,15 +1,12 @@
 <table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
   <thead><!-- class="thead-inverse" -->
   <tr>
-    <th>Slr</th>
-    <th>Student Name</th>
-    <th>Admission No</th>
-    <th>Batch Name</th>
-    <th>Transaction Date</th>
-    <th>Payment Mode</th>
-    <th>Order Info:</th>
-    <th>Fee Amount</th>
-    <th>Pay Status</th>
+    <th style="vertical-align: middle">Sl.</th>
+    <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
+    <th style="vertical-align: middle">Trn. Date</th>
+    <th style="vertical-align: middle">Pay Type<br>Order Id<br>Ref. ID</th>
+    <th style="vertical-align: middle">Amount</th>
+    <th style="vertical-align: middle">Status</th>
   </tr>
   </thead>
 
@@ -27,22 +24,12 @@
     <td class="col-3">
       <%= fees.batch.full_name %>
     </td>
-    <td>
-      -
-    </td>
-    <td>
-      -
-    </td>
-    <td>
-      -
-    </td>
-
     <td class="col-3" style="text-align: right;">
       -
     </td>
 
     <td class="col-3" style="text-align: center;">
-      <%= link_to_remote '<i class="fa fa-plus"></i>',:before => "Element.show('gen-loader-#{i}');", :success => "Element.hide('gen-loader-#{i}');searchAjax(2);",:url => {:action => 'generate_student_fees',:fee_id=> params[:id], :student_id => fees.id,:confirm => "Are You sure to Generate?"  }%>
+      <%= link_to_remote '<i class="fa fa-plus"></i>',:before => "Element.show('gen-loader-#{i}');", :success => "Element.hide('gen-loader-#{i}');searchAjax(2);",:url => {:action => 'generate_student_fees',:fee_id=> params[:id], :student_id => fees.id},:confirm => "Are You sure to Generate?" %>
       <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "gen-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
     </td>
 
@@ -51,7 +38,7 @@
     </tbody>
     <thead>
     <tr>
-      <td colspan="6"></td>
+      <td colspan="3"></td>
       <td><b>Total Amount:</b></td>
       <td style="text-align: right;">-</td>
       <td></td>
@@ -60,7 +47,7 @@
     </table>
   <% else %>
     <tr>
-    <td colspan="9" style="text-align: center;">
+    <td colspan="6" style="text-align: center;">
       No Student Found
     </td>
 
@@ -78,7 +65,7 @@
 <% end %>
 
 <% else %>
-    <% unless @finance_fees.blank? %>
+  <% unless @finance_fees.blank?%>
     <% @total_fee = 0 %>
     <% i = 0 %>
     <% @finance_fees.each do |fees| %>
@@ -100,20 +87,20 @@
 
                 if opc === 0
                  if op.gateway_response[:payment_type] === "MB"
-                @op_type += "<b>Order Type:</b> TBL Mobile Banking"
+                @op_type += "MB"
                  elsif op.gateway_response[:payment_type] == "ITCL"
-                @op_type += "<b>Order Type:</b> TBL Card Payment"
+                @op_type += "ITCL"
                  else
-                @op_type += "<b>Order Type:</b> #{op.gateway_response[:payment_type] }"
+                @op_type += "#{op.gateway_response[:payment_type] }"
                  end
 
-                @op_ref_id += "<b>Ref ID:</b>#{op.gateway_response[:ref_id] }"
-                @op_order_id += "<b>Order ID:</b> #{op.order_id.to_s}"
+                @op_ref_id += "#{op.gateway_response[:ref_id] }"
+                @op_order_id += "#{op.order_id.to_s}"
                 else
                  if op.gateway_response[:payment_type] === "MB"
-                 @op_type += ", TBL Mobile Banking"
+                 @op_type += ", MB"
                  elsif op.gateway_response[:payment_type] == "ITCL"
-                 @op_type += ", TBL Card Payment"
+                 @op_type += ", ITCL"
                  else
                 @op_type += ", #{op.gateway_response[:payment_type] }"
                 end
@@ -145,43 +132,24 @@
          end
       %>
       <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
-        <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>><%= i = i + 1 %></td>
-        <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>><%= fees.student.full_name %><%= fees.student.id %></td>
-        <td class="col-3" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%> background-color: #ffe6e6; <% end %>" >
-          <%= fees.student.admission_no %>
-        </td>
-        <td class="col-3" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>>
-          <%= fees.student.batch.full_name %>
-        </td>
-        <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>>
+        <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;"<% end %>><%= i = i + 1 %></td>
+        <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>><small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br><small><%= fees.student.admission_no %></small><br><small><%= fees.student.batch.full_name %></small></td>
+        <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
           <% unless @transaction_date.blank? %>
             <% @transaction_date.each do |date| %>
-              <%= date + "<br>" %>
+              <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
             <% end %>
           <% else %>
             <%= "-" %>
           <% end %>
         </td>
-        <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>>
-          <% unless @payment_mode.blank?
-               @payment_mode.each do |pm|
-          %>
-              <%= pm %>
-              <%= "<br>" %>
-            <% end %>
-          <% else %>
-            <%= "-" %>
-          <% end %>
-        </td>
-        <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %>>
+        <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
           <%= @op_type + "<br>" %>
-          <br>
           <%= @op_order_id + "<br>" %>
-          <br>
           <%= @op_ref_id + "<br>" %>
         </td>
 
-        <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%> background-color: #ffe6e6; <% end %>" >
+        <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %> vertical-align: middle; <% end %>" >
           <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
             <% if fees.is_paid %>
               <%= precision_label @paid_amount %>
@@ -193,15 +161,25 @@
           </div>
         </td>
 
-        <td class="col-3" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%> background-color: #ffe6e6; <% end %>" >
+        <td class="col-3" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %>vertical-align: middle; <% end %>" >
           <% if fees.is_paid %>
             <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
           <% else %>
             <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
-            <%= link_to_remote '<i class="fa fa-refresh"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id,:confirm => "Are You sure to Regenerate?"  }%>
+            <% unless params[:batch_id].to_i == fees.student.batch.id %>
+              <% fee_batch =  FeeCollectionBatch.find_by_batch_id(fees.student.batch.id) %>
+              <% unless fee_batch.blank? %>
+                <% if fee_batch.finance_fee_collection_id.to_i == params[:id].to_i %>
+                  <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id , :delete=> 1, :option=>2,:finance_fee_id=>fees.id},:confirm => "Are You sure to Regenerate?"%>
+                  <br>
+                <% end %>
+              <% end %>
+            <% else %>
+              <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
+              <br>
+            <% end %>
+            <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are You sure to Delete?"%>
             <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
-            <br>
-            <%= link_to_remote '<i class="fa fa-minus-circle"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id,:confirm => "Are You sure to Delete?"  }%>
           <% end %>
         </td>
 
@@ -210,7 +188,7 @@
     </tbody>
     <tfoot>
     <tr>
-      <td colspan="6"></td>
+      <td colspan="3"></td>
       <td><b>Total Amount:</b></td>
       <td style="text-align: right;"><%= precision_label @total_fee %></td>
       <td></td>
@@ -220,7 +198,7 @@
   </table>
   <% else %>
     <tr>
-      <td colspan="9" style="text-align: center;">
+      <td colspan="6" style="text-align: center;">
         No Student Found
       </td>
 
@@ -228,7 +206,7 @@
     </tbody>
     <tfoot>
     <tr>
-      <td colspan="6"></td>
+      <td colspan="3"></td>
       <td><b>Total Amount:</b></td>
       <td style="text-align: right;">-</td>
       <td></td>

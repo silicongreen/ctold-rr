@@ -1762,9 +1762,9 @@ module OnlinePayment
       @order_id_saved = false
       @student = Student.find(student_id)
       @batch = @student.batch
-      
+
       @fees_collections = fees
-      
+
       @self_advance_fee = [] 
       @fee_has_advance_particular = []
       @date = [] 
@@ -1790,7 +1790,7 @@ module OnlinePayment
       @vat = []
       @amount_to_pay = []
       @new_fine_amount = []
-      
+
       fees.each do |fee|
         f = fee.to_i
         finance_fee = FinanceFee.find(f)
@@ -1818,22 +1818,22 @@ module OnlinePayment
         end
 
         @due_date = @fee_collection[f].due_date
-        
+
         flash[:warning]=nil
         #flash[:notice]=nil
-        
+
         @trans_id_ssl_commerce = "tran"+student_id.to_s+fee_collection_id.to_s
         @paid_fees[f] = @financefee[f].finance_transactions
 
         if advance_fee_collection
           fee_collection_advances_particular = @fee_collection_advances[f].map(&:particular_id)
           if fee_collection_advances_particular.include?(0)
-            @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+            @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee[f].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[f].batch) }
           else
-            @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+            @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee[f].batch_id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[f].batch) }
           end
         else
-          @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
+          @fee_particulars[f] = @date[f].finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee[f].batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee[f].batch) }
         end
 
         if advance_fee_collection
@@ -1859,12 +1859,12 @@ module OnlinePayment
         @actual_discount[f] = 1
 
         if advance_fee_collection
-          calculate_discount_index(@date[f],@financefee.batch,@student,f,true,@fee_collection_advances[f],@fee_has_advance_particular[f])
+          calculate_discount_index(@date[f],@financefee[f].batch,@student,f,true,@fee_collection_advances[f],@fee_has_advance_particular[f])
         else
           if @fee_has_advance_particular[f]
-            calculate_discount_index(@date[f], @financefee.batch, @student,f, false, @fee_collection_advances[f], @fee_has_advance_particular[f])
+            calculate_discount_index(@date[f], @financefee[f].batch, @student,f, false, @fee_collection_advances[f], @fee_has_advance_particular[f])
           else
-            calculate_discount_index(@date[f], @financefee.batch, @student,f, false, nil, @fee_has_advance_particular[f])
+            calculate_discount_index(@date[f], @financefee[f].batch, @student,f, false, nil, @fee_has_advance_particular[f])
           end
         end
 
@@ -1890,10 +1890,10 @@ module OnlinePayment
           @fine_rule[f]=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date[f].created_at}'"],:order=>'fine_days ASC')
           @fine_amount[f]=@fine_rule[f].is_amount ? @fine_rule[f].fine_amount : (bal*@fine_rule[f].fine_amount)/100 if @fine_rule[f]
 
-          calculate_extra_fine_index(@date[f], @financefee.batch, @student, @fine_rule[f],f)
+          calculate_extra_fine_index(@date[f], @financefee[f].batch, @student, @fine_rule[f],f)
 
           @new_fine_amount[f] = @fine_amount[f]
-          get_fine_discount_index(@date[f], @financefee.batch, @student, f)
+          get_fine_discount_index(@date[f], @financefee[f].batch, @student, f)
           if @fine_amount[f] < 0
              @fine_amount[f] = 0
           end
@@ -1905,7 +1905,7 @@ module OnlinePayment
           if @total_discount[f] == 0
             @adv_fee_discount[f] = true
             @actual_discount[f] = 0
-            calculate_discount_index(@date[f], @financefee.batch, @student, f,false, nil, @fee_has_advance_particular[f])
+            calculate_discount_index(@date[f], @financefee[f].batch, @student, f,false, nil, @fee_has_advance_particular[f])
           end
         end
 

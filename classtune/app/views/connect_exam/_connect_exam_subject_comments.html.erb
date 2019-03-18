@@ -65,7 +65,17 @@
             <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
             
             <% unless @exams.blank? %>
-           
+            <% 
+              exam_ids = @exams.map(&:id).uniq
+              @exam_score_all = ExamScore.find(
+              :all,
+              :conditions => ["exam_id IN (?)", exam_ids]
+              )
+              @all_exam_absent = ExamAbsent.find(
+              :all,
+              :conditions => ["exam_id IN (?)", exam_ids]
+              )
+            %>
             <% @exams.each do |exam| %>
               <% if exam.exam_group.show_in_connect.to_i == 1 %>
               <td>
@@ -106,8 +116,23 @@
               
               <% unless @exams.blank? %>
               <% @exams.each do |exam| %>
+                <% @exam_score = @exam_score_all.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
+                <% @exam_absent = @all_exam_absent.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
+                <% 
+                  unless @exam_score.blank?
+                    @exam_score = @exam_score[0]
+                  else
+                    @exam_score = exam.score_for(student)
+                  end
+                %>
+                <% 
+                  unless @exam_absent.blank?
+                     @exam_absent = @exam_absent[0]
+                  end
+                %>
+              
+               
                 
-                <% @exam_score = exam.score_for(student) %>
                 <% if @updated_at.blank? %>
                   <% @updated_at = @exam_score.updated_at.to_s %>
                 <% elsif @updated_at < @exam_score.updated_at.to_s %>
@@ -121,15 +146,20 @@
                       <% if !@exam_score.marks.blank? and @exam_score.marks >  exam.maximum_marks.to_f %>
                         <% extra_class="red_class" %>
                       <% end %> 
-                        
+                        <%
+                            mark = @exam_score.marks
+                            unless @exam_absent.blank?
+                              mark = @exam_absent.remarks
+                            end
+                        %>
                         <div class="text-input-bg2">
                           <% if exam.exam_group.exam_category == 7 %>
                             <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
                           <% else %>   
                             <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                              <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", @exam_score.marks, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
+                              <%= text_field_tag "exam_score[#{exam.id}][#{student.id}][marks]", mark, :onkeyup => "checkValueMax(#{exam.maximum_marks.to_i},this)",:onkeydown => "checkValueMax(#{exam.maximum_marks.to_i},this)", :size => '4', :class=>"marks-box #{extra_class}" %>
                             <% else %>
-                              <%= @exam_score.marks %>
+                              <%= mark %>
                             <% end %> 
                           <% end %>
                             

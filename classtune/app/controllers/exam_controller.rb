@@ -5181,7 +5181,7 @@ class ExamController < ApplicationController
               end 
 
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false
+                if fourth_subject == false && sub['subject_group_id'].to_i == 0
                   total_subject = total_subject+1
                 end
                 total_mark1 = 0
@@ -5638,7 +5638,7 @@ class ExamController < ApplicationController
                   end 	
                   if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
-                    @student_result[loop_std]['subjects'][main_sub_id.to_s]['name'] = sub['name']	
+                    @student_result[loop_std]['subjects'][main_sub_id.to_s]['name'] = sub2['name']	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s]['id'] = main_sub_id	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s]['result'] = {}	
                   end

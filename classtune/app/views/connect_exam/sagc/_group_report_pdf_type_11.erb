@@ -21,16 +21,20 @@
      
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">
           <tr class="even">
-              <td class="align-right col-pdf" width="20%">Student ID </td><td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
+              <td class="align-right col-pdf" width="20%">Student ID </td>
+              <td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>
           </tr>
           <tr class="odd">
-              <td class="align-right col-pdf col-pdf" width="20%">Name </td><td colspan="3" class="align-left"><%= @student.full_name.upcase %></td>
+              <td class="align-right col-pdf col-pdf" width="20%">Name </td>
+              <td colspan="3" class="align-left"><%= @student.full_name.upcase %></td>
           </tr>
           <tr class="even">
-              <td class="align-right" width="20%">Roll </td><td colspan="3" class="align-left"><%= @student.class_roll_no %></td>
+              <td class="align-right" width="20%">Roll </td>
+              <td colspan="3" class="align-left"><%= @student.class_roll_no %></td>
           </tr>
           <tr class="odd">
-              <td class="align-right col-pdf" width="20%">Class/Program </td><td colspan="3" class="align-left"><b><%= @batch.course.course_name %></b></td>
+              <td class="align-right col-pdf" width="20%">Class/Program </td>
+              <td colspan="3" class="align-left"><b><%= @batch.course.course_name %></b></td>
           </tr>
            
           <tr class="even">
@@ -41,10 +45,14 @@
           <tr class="odd">
               <td class="align-right col-pdf" width="20%">Session </td>
               <td class="align-left"><%= @batch.course.session %></td>
-              <td class="align-right col-pdf" width="20%" >Version </td><td class="align-left"><%= batch_split[1] %></td> 
+              <td class="align-right col-pdf" width="20%" >Version </td>
+              <td class="align-left"><%= batch_split[1] %></td> 
           </tr>
           <tr class="even">
-              <td class="align-right col-pdf" width="20%">Category</td><td colspan="3" class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
+              <td class="align-right col-pdf" width="20%">Group </td>
+              <td class="align-left"><%= @batch.course.group %></td>
+              <td class="align-right col-pdf" width="20%" >Category </td>
+              <td class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>
       </table>
       
@@ -187,7 +195,11 @@
                               <% if report['exam_category'] != '1' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                  <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                    <td class="col-pdf">AB</td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>
                                 <% end %>
@@ -359,7 +371,11 @@
                                 <% if report['exam_category'] != '1' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <td class="col-pdf">AB</td>
+                                    <% else %>
+                                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% end %>
                                   <% else %>
                                     <td class="col-pdf">-</td>
                                   <% end %>

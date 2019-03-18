@@ -70,14 +70,16 @@
 
                   <% std_count = 0 %>
                   <% srl = 0 %>
+                    <% onebreak = 0 %>
                   <% @student_result.each do |std_result| %>
                     <%  std_count = std_count+1 %>
                     <%  srl = srl+1 %>
                     <% if std_count>27 %>
                       <% std_count = 0 %>
-                      <tr class="page-break">
+                      <tr class="<%  if onebreak == 0 %>page-break<% else %>page-break2<% end %>">
                           <td colspan="100">&nbsp;</td>
                       </tr>
+                      <% onebreak = 1 %>
                       <% if @class.blank? %>
                         <tr class="table-header">
                             <td class="col-pdf no-warp" rowspan="2" >Srl</td>

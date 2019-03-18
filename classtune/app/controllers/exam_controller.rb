@@ -5446,7 +5446,7 @@ class ExamController < ApplicationController
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100
-                
+                  
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
                 end  
 
@@ -5783,7 +5783,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end
@@ -5795,7 +5795,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end
@@ -5812,7 +5812,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end
@@ -5824,7 +5824,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end
@@ -5841,7 +5841,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_pr1.to_f/full_pr1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end
@@ -5853,7 +5853,7 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_pr2.to_f/full_pr2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0
+                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 u_grade1 = u_grade1+1
                                 subject_failed = true
                               end

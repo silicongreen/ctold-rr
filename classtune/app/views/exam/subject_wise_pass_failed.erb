@@ -28,7 +28,7 @@
               <tr class="table-header">
                       <td class="col-pdf">Program : <%= @batch.course.course_name %></td>
                       <td class="col-pdf">Group : <% unless @group_name_upper.blank? %><%= @group_name_upper %><% end %></td>
-                      <td class="col-pdf">Section : <%= @batch.course.section_name %></td>
+                      <td class="col-pdf">Section : <% if @class.blank? %> <%= @batch.course.section_name %><% end %></td>
               </tr>
               <% batch_split = @batch.name.split(" ") %>
               <tr class="table-header">

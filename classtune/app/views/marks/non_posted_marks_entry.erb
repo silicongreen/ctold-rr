@@ -123,7 +123,7 @@ unless @all_group_exams.blank?
                         <% if @subject_exam.include?(connect_exam_subject.id.to_s+"_"+exam.id.to_s) %>
                           <% if @has_exam_score.include?(exam.id.to_s+"_"+connect_exam_subject.id.to_s) %>
                             <% if !@total_scores[exam.id.to_s].blank? && !@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].blank? && !@total_scores_given[exam.id.to_s].blank? && !@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].blank? %>
-                              <td class="col-pdf"><%= @total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" of "+@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" Completed" %></td>
+                              <td class="col-pdf"><%= @total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" of "+@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" Completed" %></td>
                             <% else %>
                               <td class="col-pdf"><%= "-" %></td>
                             <% end %>

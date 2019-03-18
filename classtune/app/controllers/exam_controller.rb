@@ -5582,7 +5582,7 @@ class ExamController < ApplicationController
                         if @student_result[loop_std]['subject_failed'].blank?
                           @student_result[loop_std]['subject_failed'] = []
                         end
-                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.to_s
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.round().to_s
                       end 
                     else
                       if @subject_result[main_sub_id].blank?
@@ -6091,7 +6091,7 @@ class ExamController < ApplicationController
                             if @student_result[loop_std]['subject_failed'].blank?
                               @student_result[loop_std]['subject_failed'] = []
                             end
-                            @student_result[loop_std]['subject_failed'] << sub2['code']+"-"+main_mark.to_s
+                            @student_result[loop_std]['subject_failed'] << sub2['code']+"-"+main_mark.round().to_s
                           end 
                         else
                           if @subject_result[main_sub_id].blank?

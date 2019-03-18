@@ -34,7 +34,7 @@
               <tr class="table-header">
                       <td class="col-pdf">Shift : <%= batch_split[0] %></td>
                       <td class="col-pdf">Version : <%= batch_split[1] %></td>
-                      <td class="col-pdf">Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
+                      <td class="col-pdf">Session : <%= @batch.course.session %></td>
               </tr>
             </table>
             <h3>&nbsp;</h3>

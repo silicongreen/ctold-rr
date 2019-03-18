@@ -5426,27 +5426,27 @@ class ExamController < ApplicationController
 
                 if total_mark2.to_f>0 and full_mark2.to_f>0
                   main_mark2 = (total_mark2.to_f/full_mark2.to_f)*100
-                  main_mark2 = main_mark2.round()
+                 
                 else
                   main_mark2 = 0
                 end 
                 if total_mark1.to_f>0 and full_mark1.to_f>0
                   main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100
-                  main_mark1 = main_mark1.round()
+               
                 else
                   main_mark1 = 0
                 end 
                 if exam_type == 3
                   main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
-                  main_mark = main_mark.round()
+             
                   main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
                 elsif  exam_type == 2
                   main_mark = total_mark2.to_f/full_mark2.to_f*100
-                  main_mark = main_mark.round()
+                 
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100
-                  main_mark = main_mark.round()
+                
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
                 end  
 
@@ -5902,6 +5902,7 @@ class ExamController < ApplicationController
                     end
 
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+                    
 
 
 

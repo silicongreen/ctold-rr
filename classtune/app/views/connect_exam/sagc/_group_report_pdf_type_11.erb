@@ -215,7 +215,6 @@
                             </td>
                             <%
                               main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
-                              main_mark = main_mark.round()
                             %>
                             <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
@@ -261,9 +260,8 @@
                                 <% avg_mark = main_exam_mark.to_f %>
                                 <% tota_mark_with_monthly = avg_mark %>
                                 <%
-                                  main_mark2 = (tota_mark_with_monthly.to_f.round()/full_mark_all.to_f)*100
+                                  main_mark2 = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
                                   main_mark = (main_mark.to_f+main_mark2.to_f)/2.00
-                                  main_mark = main_mark.round()
                                 %>
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>

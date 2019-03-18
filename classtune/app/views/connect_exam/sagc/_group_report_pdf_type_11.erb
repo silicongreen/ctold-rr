@@ -125,17 +125,19 @@
                   <% grade_point_avg = 0 %>
                   <% failed = false %>
                   <% already_done = false %>
+                  <% subjects_done  = [] %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
                         <% next %>
                       <% end %>
-                      <% if already_done %>
+                      
+                      <% if subjects_done.include?(subjects['id'].to_i) %>
                           <%
-                            already_done = false
                             next
                           %>
                       <% end %>
+                      <% subjects_done << subjects['id'].to_i %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -312,10 +314,17 @@
                       </tr> 
                       <% if subjects['subject_group_id'].to_i > 0 %>
                           <% @report_data['report']['subjects'].each do |subjects2| %>
+                      
+                          
+                          <% if subjects_done.include?(subjects2['id'].to_i) %>
+                              <%
+                                next
+                              %>
+                          <% end %>
                           <% if subjects2['subject_group_id'].to_i != subjects['subject_group_id'].to_i || subjects2['id'].to_i == subjects['id'].to_i  %>
                             <% next %>
                           <% end %>
-                          <% already_done = true %>
+                          <% subjects_done << subjects2['id'].to_i %>
                           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                             <% total_mark = 0 %>
                             <% full_mark = 0 %>

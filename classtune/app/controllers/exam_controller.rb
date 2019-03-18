@@ -5626,7 +5626,7 @@ class ExamController < ApplicationController
                 #Start of 2nd subject
               
                 tab['subjects'].each do |sub2|
-                  if subject_array.include?(sub2['id'].to_i) or subject_array.include?(sub['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                  if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
                     next
                   end
                   subject_array << sub2['id'].to_i
@@ -5649,6 +5649,9 @@ class ExamController < ApplicationController
                       fourth_subject = true
                     end  
                   end 
+                  if fourth_subject == false
+                    total_subject = total_subject+1
+                  end
 
 
 

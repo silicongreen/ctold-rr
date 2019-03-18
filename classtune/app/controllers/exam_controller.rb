@@ -5623,7 +5623,7 @@ class ExamController < ApplicationController
                 #Start of 2nd subject
               
                 tab['subjects'].each do |sub2|
-                  if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                  if subject_array.include?(sub2['id'].to_i) or subject_array.include?(sub['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
                     next
                   end
                   subject_array << sub2['id'].to_i
@@ -5695,85 +5695,85 @@ class ExamController < ApplicationController
                     subject_failed = false
 
                     tab['exams'].each do |rs|
-                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? 
+                      if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub2['id']].blank? and !rs['result'][rs['exam_id']][sub2['id']][std['id']].blank? 
                         if rs['exam_category'] == '1'
                           if rs['quarter'] == '1'
-                            monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            monthly_full_mark1 = monthly_full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            monthly_full_mark2 = monthly_full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end
                         elsif rs['exam_category'] == '2'
                           if rs['quarter'] == '1'
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end
                         elsif rs['exam_category'] == '3' 
 
                           if rs['quarter'] == '1'
-                            full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_sb12= full_sb12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_sb1 = full_sb1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_sb12= full_sb12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
 
                           end  
                           if rs['quarter'] == '2'
-                            full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_sb22 = full_sb22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_sb2 = full_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_sb22 = full_sb22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
 
                           end
                         elsif rs['exam_category'] == '4' 
 
                           if rs['quarter'] == '1'
-                            full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_ob12 = full_ob12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_ob1 = full_ob1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_ob12 = full_ob12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
 
                           end  
                           if rs['quarter'] == '2'
-                            full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_ob22 = full_ob22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_ob2 = full_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_ob22 = full_ob22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end
                         elsif rs['exam_category'] == '5' 
                           if rs['quarter'] == '1'
-                            full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_pr12 = full_pr12+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_pr1 = full_pr1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_pr12 = full_pr12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark1 = full_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_pr22 = full_pr22+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
-                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f
+                            full_pr2 = full_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_pr22 = full_pr22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
+                            full_mark2 = full_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['full_mark'].to_f
                           end
                         end
 
-                        if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s == "AB"
+                        if rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_s == "AB"
                           next
                         end
 
                         if rs['exam_category'] == '1'
                           if rs['quarter'] == '1'
-                            monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           end
                         elsif rs['exam_category'] == '2'
                           if rs['quarter'] == '1'
-                            at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           end  
                           if rs['quarter'] == '2'
-                            at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            at_total_mark2 = at_total_mark2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                           end
                         elsif rs['exam_category'] == '3' 
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5784,8 +5784,8 @@ class ExamController < ApplicationController
                             end 
                           end  
                           if rs['quarter'] == '2'
-                            total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5799,8 +5799,8 @@ class ExamController < ApplicationController
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_ob12 = total_ob12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_ob12 = total_ob12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5811,8 +5811,8 @@ class ExamController < ApplicationController
                             end 
                           end  
                           if rs['quarter'] == '2'
-                            total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_ob22 = total_ob22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_ob22 = total_ob22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5826,8 +5826,8 @@ class ExamController < ApplicationController
                           appeared = true
                           full_absent = false
                           if rs['quarter'] == '1'
-                            total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_pr12 = total_pr12+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_pr12 = total_pr12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr1.to_f/full_pr1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -5838,8 +5838,8 @@ class ExamController < ApplicationController
                             end  
                           end  
                           if rs['quarter'] == '2'
-                            total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                            total_pr22 = total_pr22+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                            total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
+                            total_pr22 = total_pr22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_pr2.to_f/full_pr2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
@@ -6034,10 +6034,10 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
 
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr1+total_pr2
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob12+total_ob22
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb12+total_sb22
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr12+total_pr22
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob12+total_ob22+total_sb12+total_sb22+total_pr12+total_pr22
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
                       if @subject_result[main_sub_id].blank?
                         @subject_result[main_sub_id] = {}
@@ -6335,7 +6335,6 @@ class ExamController < ApplicationController
         end 
       end
     end
-  end
   
   
 end

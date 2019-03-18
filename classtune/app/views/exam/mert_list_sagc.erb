@@ -147,7 +147,7 @@
                             <td class="col-pdf no-warp center-class"><%= @student_position_first_term_batch[std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" colspan="2">
+                            <td class="col-pdf no-warp subject-list" colspan="2">
                                 <%
                                 iloop = 0
                                 unless std_result['subject_failed'].blank?
@@ -157,7 +157,7 @@
                                     %>, <%
                                       end 
                                   %><%= sub_failed %><%
-                                    if iloop>4
+                                    if iloop>5
                                        iloop = 0
                                        %><%= "<br/>"  %><%
                                     end
@@ -183,7 +183,7 @@
                             <td class="col-pdf no-warp center-class"><%= @section_all_position_batch[std_result['batch_id'].to_i][std_result['id'].to_i] %></td>
 
                           <% else %>
-                            <td class="col-pdf no-warp" colspan="2">
+                            <td class="col-pdf no-warp subject-list" colspan="2">
                                 <%
                                 iloop = 0
                                 
@@ -194,7 +194,7 @@
                                     %>, <%
                                     end 
                                   %><%= sub_failed %><%
-                                    if iloop>4
+                                    if iloop>5
                                        iloop = 0
                                        %><%= "<br/>"  %><%
                                     end  
@@ -252,5 +252,10 @@
     h4.line-height-10
     {
         line-height: 10px !important;
+    }
+    table tr.table-header td.subject-list
+    {
+        font-size: 13px;
+        padding: 5px 2px 5px 4px;
     }
 </style>    

@@ -31,17 +31,19 @@ unless @all_group_exams.blank?
         
       end 
       exam_subject = Subject.find_by_id(exam.subject_id)
-        is_elective = exam_subject.elective_group_id
-        total_exam = 0
-        if is_elective == nil
-          total_exam = Student.count(:all, :conditions =>["is_deleted = ? and batch_id = ?",false,exam_subject.batch_id])
-        else
-          total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ?",exam_subject.id,exam_subject.batch_id])
-        end
-      if @total_scores[exam.exam_group_id.to_s].nil?
-        @total_scores[exam.exam_group_id.to_s] = total_exam
+      is_elective = exam_subject.elective_group_id
+      total_exam = 0
+      if is_elective == nil
+        total_exam = Student.count(:all, :conditions =>["is_deleted = ? and batch_id = ?",false,exam_subject.batch_id])
       else
-        @total_scores[exam.exam_group_id.to_s] = @total_scores[exam.exam_group_id.to_s].to_i+total_exam
+        total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ?",exam_subject.id,exam_subject.batch_id])
+      end
+      if @total_scores[exam.exam_group_id.to_s].nil?
+        @total_scores[exam.exam_group_id.to_s] = {}
+        @total_scores[exam.exam_group_id.to_s][exam_subject.id.to_s] = total_exam
+       
+      else
+        @total_scores[exam.exam_group_id.to_s][exam_subject.id.to_s] = @total_scores[exam.exam_group_id.to_s][exam_subject.id.to_s].to_i+total_exam
       end  
     end 
     @all_subject_id = @all_exams.map(&:subject_id).uniq
@@ -61,9 +63,10 @@ unless @all_group_exams.blank?
             @has_exam_score << exammain.exam_group_id.to_s+"_"+exammain.subject_id.to_s
           end
           if @total_scores_given[exammain.exam_group_id.to_s].nil?
-            @total_scores_given[exammain.exam_group_id.to_s] = 1
+            @total_scores_given[exammain.exam_group_id.to_s] = {}
+            @total_scores_given[exammain.exam_group_id.to_s][exammain.subject_id.to_s] = 1
           else
-            @total_scores_given[exammain.exam_group_id.to_s] = @total_scores_given[exammain.exam_group_id.to_s].to_i+1
+            @total_scores_given[exammain.exam_group_id.to_s][exammain.subject_id.to_s] = @total_scores_given[exammain.exam_group_id.to_s][exammain.subject_id.to_s].to_i+1
           end
           
         end  
@@ -119,8 +122,8 @@ unless @all_group_exams.blank?
                       <% @all_exam_groups.each do |exam| %>
                         <% if @subject_exam.include?(connect_exam_subject.id.to_s+"_"+exam.id.to_s) %>
                           <% if @has_exam_score.include?(exam.id.to_s+"_"+connect_exam_subject.id.to_s) %>
-                            <% if !@total_scores[exam.id.to_s].blank? && !@total_scores_given[exam.id.to_s].blank? %>
-                              <td class="col-pdf"><%= @total_scores_given[exam.id.to_s].to_s+" of "+@total_scores[exam.id.to_s].to_s+" Completed" %></td>
+                            <% if !@total_scores[exam.id.to_s].blank? && !@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].blank? && !@total_scores_given[exam.id.to_s].blank? && !@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].blank? %>
+                              <td class="col-pdf"><%= @total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" of "+@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_s+" Completed" %></td>
                             <% else %>
                               <td class="col-pdf"><%= "-" %></td>
                             <% end %>

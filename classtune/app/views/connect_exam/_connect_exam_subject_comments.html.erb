@@ -66,15 +66,15 @@
             
             <% unless @exams.blank? %>
             <% 
-            exam_ids = @exams.map(&:id).uniq
-            @exam_score_all = ExamScore.find(
-            :all,
-            :conditions => ["exam_id IN (?)", exam_ids]
-            )
-            @all_exam_absent = ExamAbsent.find(
-            :all,
-            :conditions => ["exam_id IN (?)", exam_ids]
-            )
+            #exam_ids = @exams.map(&:id).uniq
+            #@exam_score_all = ExamScore.find(
+            #:all,
+            #:conditions => ["exam_id IN (?)", exam_ids]
+            #)
+            #@all_exam_absent = ExamAbsent.find(
+            #:all,
+            #:conditions => ["exam_id IN (?)", exam_ids]
+            #)
             %>
             <% @exams.each do |exam| %>
               <% if exam.exam_group.show_in_connect.to_i == 1 %>
@@ -116,9 +116,9 @@
               
               <% unless @exams.blank? %>
               <% @exams.each do |exam| %>
-                <% @exam_score = @exam_score_all.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
-                <% @exam_absent = @all_exam_absent.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
-                <%# @exam_score = exam.score_for(student) %>
+                <%# @exam_score = @exam_score_all.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
+                <%# @exam_absent = @all_exam_absent.select{|val| val.exam_id == exam.id && val.student_id == student.id } %>
+                <% @exam_score = exam.score_for(student) %>
                 <% if @updated_at.blank? %>
                   <% @updated_at = @exam_score.updated_at.to_s %>
                 <% elsif @updated_at < @exam_score.updated_at.to_s %>
@@ -133,11 +133,11 @@
                         <% extra_class="red_class" %>
                       <% end %>  
                         <div class="text-input-bg2">
-                          <% 
+                          <%# 
                             unless @exam_absent.blank?
                               @exam_score.marks = @exam_absent.remarks
                             end
-                          %>
+                          %>#
                           <% if exam.exam_group.exam_category == 7 %>
                             <%= text_field_tag "exam_remarks[#{exam.id}][#{student.id}][remarks]", @exam_score.remarks %>
                           <% end %>   

@@ -194,7 +194,7 @@ if @total_std.blank?
               end 
 
               if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)
-                if fourth_subject == false
+                if fourth_subject == false && sub['subject_group_id'].to_i == 0
                   total_subject = total_subject+1
                 end
                 total_mark1 = 0
@@ -439,27 +439,27 @@ if @total_std.blank?
 
                 if total_mark2.to_f>0 and full_mark2.to_f>0
                   main_mark2 = (total_mark2.to_f/full_mark2.to_f)*100
-                  main_mark2 = main_mark2.round()
+                 
                 else
                   main_mark2 = 0
                 end 
                 if total_mark1.to_f>0 and full_mark1.to_f>0
                   main_mark1 = (total_mark1.to_f/full_mark1.to_f)*100
-                  main_mark1 = main_mark1.round()
+               
                 else
                   main_mark1 = 0
                 end 
                 if exam_type == 3
                   main_mark = (total_mark1.to_f+total_mark2.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
-                  main_mark = main_mark.round()
+             
                   main_mark_no_round = (total_mark1_no_round.to_f+total_mark2_no_round.to_f)/(full_mark1.to_f+full_mark2.to_f)*100
                 elsif  exam_type == 2
                   main_mark = total_mark2.to_f/full_mark2.to_f*100
-                  main_mark = main_mark.round()
+                 
                   main_mark_no_round = total_mark2_no_round.to_f/full_mark2.to_f*100
                 else
                   main_mark = total_mark1.to_f/full_mark1.to_f*100
-                  main_mark = main_mark.round()
+                
                   main_mark_no_round = total_mark1_no_round.to_f/full_mark1.to_f*100
                 end  
 
@@ -639,7 +639,7 @@ if @total_std.blank?
                 #Start of 2nd subject
               
                 tab['subjects'].each do |sub2|
-                  if subject_array.include?(sub2['id'].to_i) or subject_array.include?(sub['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
+                  if subject_array.include?(sub2['id'].to_i) or sub['subject_group_id'].to_i != sub2['subject_group_id'].to_i
                     next
                   end
                   subject_array << sub2['id'].to_i
@@ -651,7 +651,7 @@ if @total_std.blank?
                   end 	
                   if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
-                    @student_result[loop_std]['subjects'][main_sub_id.to_s]['name'] = sub['name']	
+                    @student_result[loop_std]['subjects'][main_sub_id.to_s]['name'] = sub2['name']	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s]['id'] = main_sub_id	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s]['result'] = {}	
                   end
@@ -662,6 +662,9 @@ if @total_std.blank?
                       fourth_subject = true
                     end  
                   end 
+                  if fourth_subject == false
+                    total_subject = total_subject+1
+                  end
 
 
 
@@ -912,6 +915,7 @@ if @total_std.blank?
                     end
 
                     total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+                    
 
 
 

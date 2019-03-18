@@ -34,7 +34,7 @@ unless @all_group_exams.blank?
       
       @all_exam_absent = ExamAbsent.find(
       :all,
-      :conditions => ["exam_id = ? ", exam.id]
+      :conditions => ["exam_id = ? and (remarks = 'ab' or remarks = 'AB')", exam.id]
       )
       @all_exam_absent_student_id = @all_exam_absent.map(&:student_id).uniq
       exam_subject = Subject.find_by_id(exam.subject_id)

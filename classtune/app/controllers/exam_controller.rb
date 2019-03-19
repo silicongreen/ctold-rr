@@ -2948,7 +2948,13 @@ class ExamController < ApplicationController
     
     row_first = ['Srl','S. ID','Roll','Student Name','Total','GPA & GP','LG','M.C','M.S','WD','PD']
     starting_row = 11
-    @subject_result.each do |key,sub_result|
+    sub_id_array = []
+    @subject_result.each do |key,sub_res|
+      sub_id_array << key
+    end
+    @all_subject_connect_exam = Subject.find_all_by_id(sub_id_array,:order=>"priority asc")
+    @all_subject_connect_exam.each do |value|
+      key = value.id.to_s
       end_row = starting_row+7
       (starting_row..end_row).each do |i|
         sheet1.row(i).default_format = center_align_format
@@ -2979,7 +2985,7 @@ class ExamController < ApplicationController
     new_book.worksheet(0).merge_cells(0,10,1,10)
     
     row_first = ['','','','','','','','','','','']
-    @subject_result.each do |sub_result|
+    @all_subject_connect_exam.each do |sub_result|
       row_first << "AT"
       row_first << "CW"
       row_first << "OB"
@@ -3029,7 +3035,8 @@ class ExamController < ApplicationController
       tmp_row << ""
       tmp_row << ""
       unless std_result['subjects'].blank?
-        @subject_result.each do |key,sub_result|
+        @all_subject_connect_exam.each do |value|
+          key = value.id.to_s
           unless std_result['subjects'][key].blank?
             
             tmp_row << std_result['subjects'][key]['result']['at'].to_s

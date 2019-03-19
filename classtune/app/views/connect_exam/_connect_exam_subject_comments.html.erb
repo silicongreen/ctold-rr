@@ -51,7 +51,28 @@
   </div>
     
  
- 
+  <%
+    version = 
+    batch_split = @exam_subject.batch.name.split(" ");
+    shift = batch_split[0]
+    unless batch_split[1].blank?
+      version = batch_split[1]
+    end
+  
+  %>
+  <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
+      <tr class="tr-head">
+          <td>Class : <%= @exam_subject.batch.course.course_name %></td>
+          <td>Version : <%= version %></td>
+          <td>Shift : <%= shift %></td>
+      </tr>
+      <tr class="tr-head">
+          <td>Section : <%= @exam_subject.batch.course.section_name %></td>
+          <td>Group : <%= @exam_subject.batch.course.group %></td>
+          <td>Session : <%= @exam_subject.batch.course.session %></td>
+      </tr>
+  </table>
+  
   <h3><%= @exam_subject.name %></h3>
 
   <% unless @students.empty? %>

@@ -171,10 +171,16 @@
                               </tr>
                           </table>
                       </div>
+                      <% if MultiSchool.current_school.id != 352 %>  
                       <div class="fee_bottom">
                           <div><%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"fee_link" %></div>
                           <div><%= link_to "Pay Fees", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></div>
                       </div>
+                      <% else %>
+                      <div class="fee_bottom">
+                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></span>
+                      </div>
+                      <% end %>
                   </div>
                   <div style="float: left; width: 3%; height: 300px;"></div>
                 <% end %>
@@ -235,10 +241,16 @@
                               </tr>
                           </table>
                       </div>
+                      <% if MultiSchool.current_school.id != 352 %> 
                       <div class="fee_bottom">
                           <div><%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"fee_link" %></div>
                           <div><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></div>
                       </div>
+                      <% else %>
+                      <div class="fee_bottom">
+                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></span>
+                      </div>
+                      <% end %>
                   </div>
                   <div style="float: left; width: 3%; height: 300px;"></div>
                 <% end %>  
@@ -266,7 +278,11 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
-
+<style>
+    .fee_bottom span a{
+      color: #fff;
+    }
+</style>
 
 <script>
   j(document).ready(function(){

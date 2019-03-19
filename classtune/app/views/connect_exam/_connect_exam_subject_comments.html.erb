@@ -77,12 +77,11 @@
 
   <% unless @students.empty? %>
       <% form_for :exams do |f| %>
-        <div class="zui-wrapper">
-    <div class="zui-scroller">
-        <table class="zui-table">
+        
+        <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
        
           <tr class="tr-head fixed-position">
-            <td  class="zui-sticky-col"><b><%= "Roll" %></b></td>
+            <td  class="zui-sticky-col" style="width:18%;"><b><%= "Roll" %></b></td>
             <td  class="zui-sticky-col2"><b><%= t('name') %></b></td>
             
             <% unless @exams.blank? %>
@@ -122,17 +121,13 @@
               <% end %>
             <% end %>
             <% end %> 
-            <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1)   && !@exams.blank? %>
-              <td><b><%= "Class Participation" %></b></td>
-            <% else %>  
-              <td><b><%= t('remarks') %>/<%= t('grade') %></b></td>
-            <% end %>
+        
             
           </tr>
           <% @students.each do |student| %>
             <tr class="tr-<%= cycle('odd', 'even') %>">
-              <td class="col-2 zui-sticky-col" style="padding: 13px 10px"><%= student.class_roll_no %> </td>
-              <td class="col-2 zui-sticky-col2"  style="padding: 13px 10px"><%= student.full_name %> </td>
+              <td class="col-2 zui-sticky-col" style="width: 18%;" ><%= student.class_roll_no %> </td>
+              <td class="col-2 zui-sticky-col2" ><%= student.full_name %> </td>
              
               
               <% unless @exams.blank? %>
@@ -198,27 +193,12 @@
                   exam_comment = @exam_comments.comments
                 end
               %>
-              <td class="col-2 td-mark">
-                  
-                  <div class="label-field-pair2">
-                  
-                  <div class="text-input-bg2">
-                    <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1) && !@exams.blank? %>
-                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '4', :onkeyup => "checkValueMax(#{50},this)",:onkeydown => "checkValueMax(#{50},this)" %>
-                    <% else %>  
-                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %>
-                    <% end %>
-                  
-                  </div>
-                  </div>
-                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
-              </td>
+             
               
             <tr>
           <% end %>      
         </table>
-        </div> 
-        </div>    
+            
         <br/>
         <% unless @updated_at.blank? %>
         <% time_updated = @updated_at.to_time + 6*60*60+16*60 %>
@@ -292,6 +272,13 @@
     padding: 0px;
     width: 100%;
     overflow-x: auto;
+}
+.marks-box 
+{
+   width: 200px;
+   height: 30px;
+   border: 1px solid black;
+   text-align: center;
 }
 .zui-table {
     border: none;

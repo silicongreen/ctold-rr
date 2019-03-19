@@ -1101,8 +1101,10 @@
                   <% end %>      
                   <%#= trustbank_pay_button(@merchant_id,total_fees,@student.admission_no, email, "http://#{request.host_with_port}/student/fee_details/#{params[:id]}/#{params[:id2]}?create_transaction=1", SecureRandom.random_number(1000000)) %>
                 <% end %>
+                <% if MultiSchool.current_school.id != 352 %>    
                 <%= link_to "► #{t('print_receipt')}",
                   {:controller => "finance", :action => "student_fee_receipt_pdf_multiple", :id => @student.id, :fees=> @collection_fees, :multiple => true},:target => '_blank', :class=> 'user_button' %>
+                <% end %>  
                 </div></div>  
               </td>
             </tr>

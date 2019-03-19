@@ -54,7 +54,16 @@
                     </tr>
                     <% srl = 0 %>
                     <% if !@subject_result.blank? %>
-                      <% @subject_result.each do |key,sub_res| %>
+                      <%
+                        sub_id_array = []
+                        @subject_result.each do |key,sub_res|
+                          sub_id_array << key
+                        end
+                        @all_subject_connect_exam = Subject.find_all_by_id(sub_id_array,:order=>"priority asc")
+                      %>
+                    
+                      <% @all_subject_connect_exam.each do |val| %>
+                        <% key = val.id.to_s %>
                         <% srl = srl+1 %> 
                         <% total_passed = 0 %>
                         <% total_passed = @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %>

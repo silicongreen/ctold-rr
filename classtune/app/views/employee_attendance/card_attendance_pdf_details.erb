@@ -249,25 +249,25 @@
                                 <% if em[8] == 'yes' %>
                                 <span class="tick_sign"></span> 
                                 <% else %>
+                                <% if em[5].index("-") != nil && em[6].index("-") != nil %>
+                                A
+                                <% else %>
                                 - 
+                                <% end %> 
                                 <% end %>
                               <% end %>  
                             </td>
                             <% if j % 4 == 0 %>
                             <td class="col-pdf">
                                 <% if events.include?(em[2].to_date) %> 
-                                  -1 
+                                  - 
                                 <% elsif weekdate.include?(em[2].to_date) %>
-                                  -2 
+                                  - 
                                 <% else %>   
                                   <% if em[9] == 'yes' %>
                                   <span class="tick_sign"></span> 
                                   <% else %>
-                                    <% if em[5].strip == '-' && em[6].strip == '-' %>
-                                    A
-                                    <% else %>
-                                    -3 
-                                    <% end %>
+                                    - 
                                   <% end %>
                                 <% end %>   
                             </td>

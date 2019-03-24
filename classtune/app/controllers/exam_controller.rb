@@ -834,7 +834,7 @@ class ExamController < ApplicationController
             end
             if @exam_score.nil?
               
-              unless details[:marks].nil? 
+              if !details[:marks].nil? && details[:marks] >= 0
                 if details[:marks].to_f <= @exam.maximum_marks.to_f
                   
                   
@@ -872,7 +872,7 @@ class ExamController < ApplicationController
                     details[:remarks] = remarks_details
                   end
                 end 
-                if details[:marks]!= 0 && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a")
+                if details[:marks]!= 0  && (details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a" or details[:marks] < 0)
                   @exam_score.destroy
                 else
                   unless details[:marks].nil? 

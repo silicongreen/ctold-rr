@@ -633,7 +633,7 @@ class ExamsController < ApplicationController
         end  
       end
       if @exam_score.nil?
-        unless details[:marks].nil? 
+        if !details[:marks].nil? && details[:marks] >= 0 
           if details[:marks].to_f <= @exam.maximum_marks.to_f
             if details[:remarks].kind_of?(Array)
                 remarks_details = details[:remarks].join("|")
@@ -664,7 +664,7 @@ class ExamsController < ApplicationController
           if details[:remarks].kind_of?(Array)
             details[:remarks] = details[:remarks].join("|")
           end 
-          if details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a"
+          if details[:marks].downcase == "ab" or details[:marks].downcase == "na" or details[:marks].downcase == "n/a" or details[:marks] < 0
             @exam_score.destroy
           else
             unless details[:marks].nil? 

@@ -487,167 +487,105 @@ class FinanceController < ApplicationController
     if date_format_check
       unless @start_date > @end_date
         
+        extra_params = ""
+        unless params[:filter_by_course].nil?
+          if params[:filter_by_course].to_i == 1
+            
+          elsif params[:filter_by_course].to_i == 2
+            courses_id = Course.find(:all, :conditions => "course_name LIKE '%Eleven%' or course_name LIKE '%eleven%'").map(&:id)
+            #abort(courses_id.inspect)
+          end
+          #abort(params.inspect)
+        end
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         
-        @finance_fee_category = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ?", false])
-        @all_fees_extra_particulers = []
-        @all_fees_extra_particulers << "Discount"
-        @all_fees_extra_particulers << "Fine"
-        @all_fees_extra_particulers << "VAT"
-        @transactions_particular = FinanceTransactionParticular.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
+        @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "transaction_date, finance_fee_particular_categories.id")
+        
+        @transactions_advances = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "transaction_date, finance_fee_particular_categories.id")
+        @transactions_discount = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = fee_discounts.finance_fee_particular_category_id", :group => "transaction_date, finance_fee_particular_categories.id")
+        @transactions_discount_total_fees = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, 'Total Fee Discount' as  name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id = 0 and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id ", :group => "transaction_date")
+        @transactions_fine = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, 'Fine' as name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Fine' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "transaction_date")
+        
+        unless @particular_wise_transactions.blank?
+          @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
+          @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
+        end
   
     
+      end
+    end
+    
+    particular_wise_fees_amount = []
+    particular_wise_adv_amount = []
+    particular_wise_discount_amount = []
+    particular_wise_fees_amount_total = 0.00
+    particular_wise_adv_amount_total = 0.00
+    particular_wise_discount_amount_total = 0.00
+    particular_wise_total = []
+    grand_total = 0.00
+    grand_fine = 0.00
+    total_fees_discount = 0.00
+
+    @finance_particular_categories.each do |fees_particular|
+      particular_wise_fees_amount[fees_particular.id] = 0
+      particular_wise_adv_amount[fees_particular.id] = 0
+      particular_wise_discount_amount[fees_particular.id] = 0
+    end
+    
+    (@start_date.to_date..@end_date.to_date).each do |day|
+      date_wise_fees = 0.00
+      date_wise_adv = 0.00
+      date_wise_discount = 0.00
+      date_wise_total = 0.00
+      date_wise_fine = 0.00
+      
+      pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") }
+      @finance_particular_categories.each do |fees_particular|
+          ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i }
+          apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i }
+          td = @transactions_discount.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i }
+          amt = 0
+          adv_amt = 0
+          td_amt = 0
+          ptd.each do |pp|
+            amt += pp.amount.to_f
+          end
+          apwfc.each do |pp|
+            adv_amt += pp.amount.to_f
+          end
+          td.each do |pp|
+            td_amt += pp.amount.to_f
+          end
+          date_wise_fees += amt
+          date_wise_adv += adv_amt
+          date_wise_discount += td_amt
+          particular_wise_fees_amount[fees_particular.id] += amt
+          particular_wise_adv_amount[fees_particular.id] += adv_amt
+          particular_wise_discount_amount[fees_particular.id] += td_amt
       end
     end
     
    
     csv = FasterCSV.generate do |csv|
       cols = []
-      cols << "Month"
-      @finance_fee_category.each do |fees_particuler|
-        cols << fees_particuler.name
-      end
-      @all_fees_extra_particulers.each do |fees_extra_particuler|
-        cols << fees_extra_particuler
-      end
-      cols << "Total Collection"
+      cols << "Sl No"
+      cols << "Particular Name"
+      cols << "Amount"
+      
       csv << cols
-      fee_total = {}
-      grand_total = 0.0
-      (@start_date.to_date..@end_date.to_date).each do |day|
-        total_fees = 0.0
+      @finance_particular_categories.each_with_index do |fees_particular, i| 
         cols = []
-        cols << I18n.l(day.to_date,:format=>"%d %b %Y")
-        i = 0
-        @finance_fee_category.each do |fees_particuler|
-          fee_amount = 0.0
-          
-          unless @transactions_particular.blank?
-            @transactions_particular.each do |transactions_particular|
-              if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory"
-                fee_amount+=transactions_particular.amount  
-              end
-            end
-          end
-          total_fees = total_fees.to_f+fee_amount.to_f
-          if fee_amount!=0
-            cols << fee_amount.to_s
-          else
-            cols << "-"
-          end  
-          if fee_total[i].blank?
-            fee_total[i] = 0
-          end
-          fee_total[i] = fee_total[i]+fee_amount 
-          grand_total = grand_total.to_f+fee_amount.to_f
-          i = i+1
-        end
-        
-        discount_amount = 0
-        unless @transactions_particular.blank?
-          @transactions_particular.each do |transactions_particular|
-            if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")
-              discount_amount+=transactions_particular.amount
-            end
-          end
-        end
-        
-        if discount_amount!=0
-          cols << "["+discount_amount.to_s+"]"
-        else
-          cols << "-"
-        end 
-        
-        if fee_total[i].blank?
-           fee_total[i] = 0
-        end
-        fee_total[i] += discount_amount
-        i = i+1
-        
-        fine_amount = 0
-        unless @transactions_particular.blank?
-          @transactions_particular.each do |transactions_particular|
-            if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Fine" 
-              fine_amount+=transactions_particular.amount
-            end
-          end
-        end
-        
-        if fine_amount!=0
-          cols << fine_amount.to_s
-        else
-          cols << "-"
-        end 
-        
-        if fee_total[i].blank?
-           fee_total[i] = 0
-        end
-        fee_total[i] += fine_amount
-        total_fees += fine_amount
-        grand_total += fine_amount
-        i = i+1
-        
-        vat_amount = 0
-        unless @transactions_particular.blank?
-          @transactions_particular.each do |transactions_particular|
-            if transactions_particular.transaction_date.to_date == day.to_date and transactions_particular.particular_type == "Vat"
-              vat_amount+=transactions_particular.amount
-            end
-          end
-        end
-        
-        if vat_amount!=0
-          cols << vat_amount.to_s
-        else
-          cols << "-"
-        end 
-        
-        if fee_total[i].blank?
-           fee_total[i] = 0
-        end
-        fee_total[i] += vat_amount
-        total_fees += vat_amount
-        grand_total += vat_amount
-        i = i+1
-        
-        
-        if total_fees!=0
-            cols << total_fees.to_s
-        else
-          cols << "-"
-        end
+        cols << i + 1
+        cols << fees_particular.name
+        amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
+        cols << amt
         
         csv << cols
       end
-      cols = []
-      cols << "Total Collection"
-      i = 0
-      @finance_fee_category.each do |fees_particuler|
-        if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
-        else
-          cols << fee_total[i].to_s
-        end
-        i = i+1
-      end
+    end   
       
-      @all_fees_extra_particulers.each do |fees_particuler|
-        if fee_total[i].blank? or fee_total[i] == 0
-            cols << "-"
-        else
-          cols << fee_total[i].to_s
-        end
-        i = i+1
-      end
       
-      if grand_total!=0
-        cols << grand_total.to_s
-      else
-        cols << "-"
-      end
-      csv << cols
-    end
     filename = "monthly-report-#{Time.now.to_date.to_s}.csv"
     send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   end

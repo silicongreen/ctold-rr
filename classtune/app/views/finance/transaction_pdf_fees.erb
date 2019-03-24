@@ -22,122 +22,120 @@
 </div>
 <div id="page-yield">
 
-    <div class="hor_line"></div>
-    <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
-    <div class="hor_line"></div>
+    <div class="header-sagc">
+        <div class="header-sagc-left">
+            <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
+            <div class="school-name-left">
+                <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                <span>Dhaka Cantonment</span>
+                <span>Dhaka-1206</span>
+                <span>Phone: 9833306, Web: sagc.edu.bd</span>
+            </div>
+        </div>
+        <div class="header-sagc-right">
+            <span><%=  Time.now %></span>
+            <span>Page 1 of 1</span>
+        </div>
+    </div>
 
 
     <div class="extender"> </div>
     <div class="report">
         <div id ="main_info">
-            <h4> <%= "#{t('from')} ( #{@start_date}) #{t('to')} ( #{@end_date})" %>&nbsp;&nbsp; Date Wise Collection Report</h4>
+            <h4>Date Wise Collection Report <%= "For  #{@start_date.to_date.strftime("%B %d, %Y")} #{t('to')}  #{@end_date.to_date.strftime("%B %d, %Y")}" %></h4>
         </div>
+        
+        
+        <% particular_wise_fees_amount = [] %>
+        <% particular_wise_adv_amount = [] %>
+        <% particular_wise_discount_amount = [] %>
+        <% particular_wise_fees_amount_total = 0.00 %>
+        <% particular_wise_adv_amount_total = 0.00 %>
+        <% particular_wise_discount_amount_total = 0.00 %>
+        <% particular_wise_total = [] %>
+        <% grand_total = 0.00 %>
+        <% grand_fine = 0.00 %>
+        <% total_fees_discount = 0.00 %>
+
+        <% @finance_particular_categories.each do |fees_particular| %>
+            <% particular_wise_fees_amount[fees_particular.id] = 0 %>
+            <% particular_wise_adv_amount[fees_particular.id] = 0 %>
+            <% particular_wise_discount_amount[fees_particular.id] = 0 %>
+        <% end %>
+        <% (@start_date.to_date..@end_date.to_date).each do |day| %>
+        <% date_wise_fees = 0.00 %>
+        <% date_wise_adv = 0.00 %>
+        <% date_wise_discount = 0.00 %>
+        <% date_wise_total = 0.00 %>
+        <% date_wise_fine = 0.00 %>
+      
+        <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
+        <% @finance_particular_categories.each do |fees_particular| %>
+          <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
+          <% apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
+          <% td = @transactions_discount.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
+          <% amt = 0 %>
+          <% adv_amt = 0 %>
+          <% td_amt = 0 %>
+          <% ptd.each do |pp| %>
+            <% amt += pp.amount.to_f %>
+          <% end %>
+          <% apwfc.each do |pp| %>
+            <% adv_amt += pp.amount.to_f %>
+          <% end %>
+          <% td.each do |pp| %>
+            <% td_amt += pp.amount.to_f %>
+          <% end %>
+          <% date_wise_fees += amt %>
+          <% date_wise_adv += adv_amt %>
+          <% date_wise_discount += td_amt %>
+          <% particular_wise_fees_amount[fees_particular.id] += amt %>
+          <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
+          <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
+        <% end %>
+      <% end %>
+        <% tot_amount = 0 %>
+        <% j = 1 %>
+        <% pg = 1 %>
         <div id="pdf-info">
             <table id="pdf-table" width="100%" cellspacing="0">
                 <tr class="table-header">
-                    <td style="width: 120px; text-align: center; vertical-align: middle;">Date</td>
-                    <% @finance_particular_categories.each do |fees_particular| %>
-                      <td style="width: 250px; text-align: center; vertical-align: middle;"><%= fees_particular.name %></td>
-                    <% end %>
-                    <td style="width: 100px; text-align: center; vertical-align: middle;">Discount On Total Fees</td>
-                    <td style="width: 100px; text-align: center; vertical-align: middle;">Fine</td>
-                    <td style="width: 340px; text-align: center; vertical-align: middle;">Total Collection</td>
+                    <td style="width: 20px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Sl No</td>
+                    <td style="width: 100px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Particular Name</td>
+                    <td style="width: 100px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                 </tr>
-                <% particular_wise_fees_amount = [] %>
-                <% particular_wise_adv_amount = [] %>
-                <% particular_wise_discount_amount = [] %>
-                <% particular_wise_fees_amount_total = 0.00 %>
-                <% particular_wise_adv_amount_total = 0.00 %>
-                <% particular_wise_discount_amount_total = 0.00 %>
-                <% particular_wise_total = [] %>
-                <% grand_total = 0.00 %>
-                <% grand_fine = 0.00 %>
-                <% total_fees_discount = 0.00 %>
-                <% c= 'even' %>
-                <% date_count = 0 %>
-                <% @finance_particular_categories.each do |fees_particular| %>
-                    <% particular_wise_fees_amount[fees_particular.id] = 0 %>
-                    <% particular_wise_adv_amount[fees_particular.id] = 0 %>
-                    <% particular_wise_discount_amount[fees_particular.id] = 0 %>
-                <% end %>
-                <% (@start_date.to_date..@end_date.to_date).each do |day| %>
-                  <% date_wise_fees = 0.00 %>
-                  <% date_wise_adv = 0.00 %>
-                  <% date_wise_discount = 0.00 %>
-                  <% date_wise_total = 0.00 %>
-                  <% date_wise_fine = 0.00 %>
-                  <% date_count = date_count+1 %>
-                  <% if date_count > 24 %>
-                    <% date_count  = 1 %>
-                    <tr class="page-break">
-                        <td colspan="100"></td>
-                    </tr> 
-                    <tr class="table-header">
-                        <td style="text-align: center; vertical-align: middle;">Date</td>
-                        <% @finance_particular_categories.each do |fees_particular| %>
-                          <td style="text-align: center; vertical-align: middle;"><%= fees_particular.name %></td>
-                        <% end %>
-                        <td style="text-align: center; vertical-align: middle;">Discount On Total Fees</td>
-                        <td style="text-align: center; vertical-align: middle;">Fine</td>
-                        <td style="text-align: center; vertical-align: middle;">Total Collection</td>
-                    </tr>
+                <% @finance_particular_categories.each_with_index do |fees_particular, i| %>
+                <% if pg == 1 %>
+                  <% if j == 14 %>
+                    <tr><td colspan="3" style="height: 45px;"></td></tr>
+                    <% j = 1 %>
+                    <% pg += 1 %>
                   <% end %>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td style="white-space: nowrap;" class="align-center"><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></td>
-                      <% total_fees = 0.0 %>
-                      <% i = 0 %>
-
-                      <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
-                      <% @finance_particular_categories.each do |fees_particular| %>
-                        <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
-                        <% apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
-                        <% td = @transactions_discount.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
-                        <% amt = 0 %>
-                        <% adv_amt = 0 %>
-                        <% td_amt = 0 %>
-                        <% ptd.each do |pp| %>
-                          <% amt += pp.amount.to_f %>
-                        <% end %>
-                        <% apwfc.each do |pp| %>
-                          <% adv_amt += pp.amount.to_f %>
-                        <% end %>
-                        <% td.each do |pp| %>
-                          <% td_amt += pp.amount.to_f %>
-                        <% end %>
-                        <% date_wise_fees += amt %>
-                        <% date_wise_adv += adv_amt %>
-                        <% date_wise_discount += td_amt %>
-                        <% particular_wise_fees_amount[fees_particular.id] += amt %>
-                        <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
-                        <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
-                        <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
-                            <div style="width: 100%; text-align: right; padding-top: 8px;">
-                                <% total = (amt + adv_amt) - td_amt %>
-                                <% date_wise_total += total %>
-                                <b><%= total %></b>
-                            </div>
-
-                        </td>
-                      <% end %>
- 
-
-                      <% discount_amount = 0 %> 
-
-                      <% unless @transactions_particular.blank? %>
-                        <% @transactions_particular.each do |transactions_particular| %>
-                          <% if transactions_particular.transaction_date.to_date == day.to_date and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
-                            <% discount_amount+=transactions_particular.amount %>
-                          <% end %>
-                        <% end %> 
-                      <% end %> 
-
-                      
-                  </tr>
+                <% else %>
+                    <% if j == 21 %>
+                      <tr><td colspan="3" style="height: 25px;"></td></tr>
+                      <% j = 1 %>
+                      <% pg += 1 %>
+                    <% end %>
                 <% end %>
-                <% c= 'even' %>
-                
-
-
+                <tr class="even">
+                    <td style="text-align: center; padding: 10px;"><%= i + 1 %></td>
+                    <td style="text-align: left; padding-left: 20px;"><%= fees_particular.name %></td>
+                    <td style="text-align: right; padding-right: 20px;">
+                      <% amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id] %>
+                      <% tot_amount += amt %> 
+                      <%= precision_label amt %>  
+                    </td>
+                </tr>    
+                <% j += 1 %>
+                <% end %>
+                <tr class="even">
+                    <td style="text-align: center; padding: 10px;">&nbsp;</td>
+                    <td style="text-align: left; padding-left: 20px;">Total Amount</td>
+                    <td style="text-align: right; padding-right: 20px;">
+                      <%= precision_label tot_amount %> 
+                    </td>
+                </tr>    
             </table>
         </div>
 
@@ -182,4 +180,357 @@
     }
  
     
+</style>   
+<style>
+    .header-sagc{
+        width: 99%;
+        padding-bottom: 20px;
+    }
+    .sub-header-sagc{
+        width: 99%;
+        height: 200px;
+    }
+    .content-area{
+        width: 99%;
+    }
+    .content-area table{
+        width: 100%;
+    }
+    .content-area table tr.thead, .content-area table tr.tfoot{
+        width: 100%;
+        background: #A5A5A5;
+        height: 40px;
+        border: none;
+    }
+    .content-area table tr.content{
+        width: 100%;
+        background: #E5E5E5;
+        height: 20px;
+        border: none;
+    }
+    .content-area table tr.content td{
+        padding: 2px 20px;
+    }
+    .content-area table tr.content td.amount{
+        text-align: right;
+    }
+    .content-area table tr.thead td{
+        height: 20px;
+        text-align: center;
+    }
+    .content-area table tr.thead td.sri{
+        width: 5%;
+    }
+    .content-area table tr.tfoot td{
+        height: 20px;
+        text-align: left;
+        padding: 2px 20px;
+    }
+    .content-area table tr.tfoot td span{
+        float: right;
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .content-area table tr.tfoot td h2{
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .header-sagc-left{
+        width: 80%;
+        vertical-align: top;
+        display: inline-table;
+    }
+    .sub-header-sagc-left{
+        width: 60%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-right{
+        width: 39%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-left .std-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 130px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        padding: 10px;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-left .std-items{
+        width: 50%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items-full{
+        width: 100%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items .label{
+        width: 70%;
+        padding-right: 5%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items-full .label{
+        width: 35%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items .text{
+        width: 24%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-left .std-items-full .text{
+        width: 62%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-right .receipt-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 176px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-right .receipt-area .money_receipt{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 50px;
+        border-radius: 8px;
+        background: #A5A5A5;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 0 auto;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full{
+        width: 100%;
+        padding-bottom: 10px;
+        display: inline-table;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .label{
+        width: 50%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .text{
+        width: 48%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .header-sagc-left .logo-left{
+        width: 15%;
+        display: inline-block;
+    }
+    .header-sagc-left .school-name-left{
+        width: 84%;
+        display: inline-table;
+        vertical-align: top;
+    }
+    .header-sagc-left .school-name-left h2{
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        text-align: left !important;
+    }
+    .header-sagc-left .school-name-left span:first-child{
+        padding-top: 10px;
+    }
+    .header-sagc-left .school-name-left span{
+        font-size: 11px;
+        display: block;
+        vertical-align: top;
+        padding-bottom: 4px;
+    }
+    .header-sagc-right span{
+        font-size: 11px;
+        display: block;
+        vertical-align: top;
+        padding-bottom: 10px;
+    }
+    .header-sagc-right{
+        width: 19%;
+        vertical-align: top;
+        display: inline-table;
+        text-align: center;
+        margin-top: 5px;
+    }
+</style>
+
+<style>
+
+ #page-yield div.div-33
+{
+    float:left;
+    width: 32%;
+    margin-right: 15px;
+    border: 1px solid black;
+    min-height: 680px
+    
+} 
+#page-yield div.div-33 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-33:last-child
+{
+    margin-right: 0px;
+}
+table.vat_area tr td
+{
+    font-size: 10px;
+   
+}
+.registration_numer
+{
+  font-size: 10px;
+}
+.logo-left-div
+{
+  float:left;
+  width: 16%;
+  margin-left: 10px;
+}
+.school-left-div
+{
+  float: left;
+  width: 70%;
+  margin-left: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left-clear
+{
+  float:left;
+  clear:both;
+}
+center.due
+{
+  clear:both;
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+center
+{
+  clear:both;
+  margin-top: 1px;
+  font-size: 11px;
+}
+center.small
+{
+    font-size: 9px;
+    margin-top:10px;
+    margin-bottom: -15px;
+}
+.std_info .table-header td{
+    padding: 3px !important;
+    border-top: 1px solid black !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    font-weight: normal;
+    background: #fff;
+    font-size: 11px;
+   
+}
+.std_info tr.table-header td.border-left-none
+{
+    border-left: none !important;
+}
+.std_info tr.table-header td.border-right-none
+{
+    border-right: none !important;
+}
+table#pdf-table{
+    border: none;
+    border-bottom: 1px solid black;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+table.std_info
+{
+    width:99.6%;
+    margin-left: 1px;
+}
+table.std_info tr td
+{
+    font-size: 8px !important;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:80px;
+}
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 3px 10px;
+    width: 30%;
+    text-align: center;
+    font-size: 11px;
+    
+}
+.in-words
+{
+  float:left;
+  clear:both;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 11px;
+  letter-spacing:normal !important;
+  
+}
+div.no-padding-no-margin
+{
+    padding: 0px 5px !important;
+    font-size: 11px;
+    margin-top: 5px !important;
+    margin-bottom: -15px !important;
+    font-weight: bold;
+}
+tr.table-header td.align-right
+{
+    text-align: right !important;
+}
+tr.table-header td.align-center
+{
+    text-align: center;
+}
+.no-warp
+{
+    white-space: nowrap;
+}
 </style>   

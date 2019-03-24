@@ -238,7 +238,7 @@
    }); 
    function checkValueMax(maxvalue,th_is)
    {
-     if(jj(th_is).val()>maxvalue)
+     if(jj(th_is).val()>maxvalue || jj(th_is).val() < 0)
      {
        jj(th_is).css( "color", "red" );
      }

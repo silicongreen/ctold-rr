@@ -84,7 +84,8 @@
         jq(".category-list").hide();
         jq( ".category-list" ).each(function( index ) {
           var name = jq(this).attr("data-name");
-          var n = name.includes(value);
+          var regex = new RegExp( name, "i");
+          var n = regex.test(value);
           if( n == true )
           {
               jq(this).show();

@@ -39,7 +39,7 @@
           <% if r.transport.nil?%>
             <%= link_to "#{t('assign')}", :controller => "transport", :action => "add_transport", :id => r.id ,:user=>'student'%><br/>
           <%else%>
-            <%= link_to "#{t('assign')}", :controller => "transport", :action => "edit_transport", :id => r.transport.id %><br/>
+            <%= link_to "#{t('edit')}", :controller => "transport", :action => "edit_transport", :id => r.transport.id %><br/>
           <%end%></td>
       </tr>
     <% end %>

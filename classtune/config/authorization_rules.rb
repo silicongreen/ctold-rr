@@ -1067,7 +1067,8 @@ authorization do
       :timetable,
       :timetable_pdf,
       :student_timetable_pdf,
-      :work_allotment
+      :work_allotment,
+      :work_allotment_sagc
     ]
     has_permission_on [:timetable_entries],
       :to => [
@@ -2919,7 +2920,8 @@ authorization do
       :timetable,
       :timetable_pdf,
       :student_timetable_pdf,
-      :work_allotment
+      :work_allotment,
+      :work_allotment_sagc
     ]
     has_permission_on [:timetable_entries],
       :to => [

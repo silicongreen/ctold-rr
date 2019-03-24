@@ -840,8 +840,66 @@ class TimetableController < ApplicationController
       :left=> 10,
       :right => 10}
   end
+  
+  def work_allotment_sagc
+    @employees = Employee.all(:include=>[:employee_grade,:employees_subjects, :user])
+    @batches = Batch.active.find(:all,:order=>"courses.id ASC ,batches.name ASC, courses.course_name ASC, courses.section_name ASC",:include=>[{:subjects=>:employees},:course])
+    
+    sub_amployee = {}
+    @batches.each do |batch|
+      batch.subjects.each do |subj|
+        employees = ""
+        amp_array = []
+        unless subj.employees.blank?
+          subj.employees.each do |emp|
+            emp_number = emp.employee_number
+            emp_number.sub! 'sagc-', ''
+            amp_array << emp_number
+          end
+          employees = amp_array.join(',')
+          sub_amployee[subj.id.to_s] = employees
+        end
+      end
+    end
+    
+    
+    if request.post?
+      if params[:employee_subjects].present?
+        params[:employee_subjects].each do |subj_id,emp_id|
+          
+          if !sub_amployee[subj_id.to_s].blank? && sub_amployee[subj_id.to_s] == emp_id
+            next
+          end
+          
+          EmployeesSubject.destroy_all(:subject_id=>subj_id)
+          unless emp_id.blank?
+            emp_ids = emp_id.split(",")
+            emp_ids.each do |employee_number|
+                employee_number.gsub!(/\s+/, "")
+                employee_number = "sagc-"+employee_number.to_s
+                emp_data = Employee.find_by_employee_number(employee_number)
+                unless emp_data.blank?
+                  empsub = EmployeesSubject.new
+                  empsub.employee_id = emp_data.id
+                  empsub.subject_id = subj_id
+                  empsub.save
+                end
+                
+            end
+          end
+        end
+        flash[:notice] = t('work_allotment_success')
+        @batches = Batch.active.find(:all,:order=>"courses.id ASC ,batches.name ASC, courses.course_name ASC, courses.section_name ASC",:include=>[{:subjects=>:employees},:course])
+      end
+    end
+    
+    
+  end
 
   def work_allotment
+    if MultiSchool.current_school.id == 352
+      redirect_to :controller => "timetable", :action => "work_allotment_sagc"
+    end
     @employees = Employee.all(:include=>[:employee_grade,:employees_subjects, :user])
     @employees.reject!{|e| (e.user.nil? or e.user.admin?)}
     @emp_subs = []

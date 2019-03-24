@@ -13,14 +13,9 @@
 
                           </div>
                           <%
-                                    unless classwork.subject.employees.nil?
-                                      emp_name = classwork.subject.employees[0].first_name
-                                      unless classwork.subject.employees[0].middle_name.nil?
-                                        emp_name += ' ' + classwork.subject.employees[0].middle_name
-                                      end
-                                      unless classwork.subject.employees[0].last_name.nil?
-                                        emp_name += ' ' + classwork.subject.employees[0].last_name
-                                      end
+                                    emp_name = ""
+                                    unless classwork.employee.blank?
+                                      emp_name = classwork.employee.full_name
                                     end
                                   %>
                           <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">

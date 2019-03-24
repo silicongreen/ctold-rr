@@ -4,14 +4,9 @@
     <% i = 1 %>
     <% @classworks.each_with_index do |classwork,i| %>
       <%
-        unless classwork.subject.employees.nil?
-          emp_name = classwork.subject.employees[0].first_name
-          unless classwork.subject.employees[0].middle_name.nil?
-            emp_name += ' ' + classwork.subject.employees[0].middle_name
-          end
-          unless classwork.subject.employees[0].last_name.nil?
-            emp_name += ' ' + classwork.subject.employees[0].last_name
-          end
+        emp_name = ""
+        unless classwork.employee.blank?
+          emp_name = classwork.employee.full_name
         end
       %>
       <div class="portlet-subcontent" style="width:100%">     

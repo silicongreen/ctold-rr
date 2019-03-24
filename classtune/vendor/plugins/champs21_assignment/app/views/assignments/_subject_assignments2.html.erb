@@ -13,16 +13,11 @@
 
                           </div>
                           <%
-                                    unless assignment.subject.employees.nil?
-                                      emp_name = assignment.subject.employees[0].first_name
-                                      unless assignment.subject.employees[0].middle_name.nil?
-                                        emp_name += ' ' + assignment.subject.employees[0].middle_name
-                                      end
-                                      unless assignment.subject.employees[0].last_name.nil?
-                                        emp_name += ' ' + assignment.subject.employees[0].last_name
-                                      end
-                                    end
-                                  %>
+                              emp_name = ""
+                              unless assignment.employee.blank?
+                                 emp_name = assignment.employee.full_name
+                              end   
+                          %>
                           <div class="timetable_right"  style="float:left;height: 70px;width: 40%;padding: 10px 0;">
                             <div class="subcontent-header themed_text">
                                 <%=  link_to assignment.subject.name.to_s+' - '+assignment.title, assignment%>

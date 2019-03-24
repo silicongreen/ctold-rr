@@ -50,10 +50,20 @@
                               </tr>
                               <%
                               father = ""
-                              guardians = std_info.guardians
-                              unless guardians.blank?
-                                father = guardians[0].first_name.to_s+" "+guardians[0].last_name.to_s
+                              guardians = std_info.student_guardian  
+                              unless guardians.nil?
+                                p_loop = 0
+                                guardians.each do |guardian|
+                                    if p_loop == 0
+                                      father = guardian.first_name.to_s+" "+guardian.last_name.to_s
+                                    else
+                                      mother_name = guardian.first_name.to_s+" "+guardian.last_name.to_s
+                                      break
+                                    end
+                                    p_loop = p_loop+1
                                 end
+                              end
+                              
                             %>
                               <tr>
                                   <td colspan="2" style="white-space: nowrap">Father Name&nbsp;:&nbsp;<%= father %></td>

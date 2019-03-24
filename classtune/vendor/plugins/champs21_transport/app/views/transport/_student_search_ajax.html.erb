@@ -27,9 +27,9 @@
         <td class="col-2"><%= "#{r.batch.full_name}" %></td>
         <td class="col-3"><%= r.admission_no %></td>
         <% if r.transport.nil?%>
-          <td class="col-3"></td>
-          <td class="col-3"></td>
-          <td class="col-3"></td>
+          <td class="col-3">-</td>
+          <td class="col-3">-</td>
+          <td class="col-3">-</td>
         <% else %>
           <td class="col-3"><%= r.transport.route.destination %></td>
           <td class="col-3"><%= r.transport.vehicle.vehicle_no %></td>

@@ -49,13 +49,32 @@
     <div class="input-container">
       <div style="width: 100%; padding:0px 0px 48px 0px; text-align: center;">
         <button type="button" class="button submit_button" id="regenerateAll" >Regenerate All</button>
+        <button type="button" class="button submit_button" id="add_absent_fine" >Add Absent Fine</button>
         <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
       </div>
     </div>
 
   </div>
   <br>
-
+  <div style="border: 1px solid #ccc; border-radius: 8px; display: inline-block; padding: 10px; margin: 0 auto;">
+    <div class="label-field-pair">
+        <div class="label-container">
+          <label for="">Fine Name:</label>
+        </div>
+        <div class="input-container">
+          <input type="text" class="MB_focusable" id="fine_name" placeholder="Fine Name" title="Fine Name">
+        </div>
+    </div>
+    <div class="label-field-pair">
+        <div class="label-container">
+          <label for="">Fine Amount:</label>
+        </div>
+        <div class="input-container">
+          <input type="text" class="MB_focusable" id="fine_amount"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="Fine Amount">
+        </div>
+    </div>
+  </div>
+  <div style="clear: both; height: 20px;"></div>
   <%#= debug @finance_fees_inactive.inspect %>
 
   <% unless @finance_fees.empty? %>
@@ -65,7 +84,10 @@
       <table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
         <thead><!-- class="thead-inverse" -->
         <tr>
-          <th style="vertical-align: middle">Sl.</th>
+          <th style="vertical-align: middle">
+              <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
+              <div style="display: inline-block; padding-right: 5px;">Sl.</div>
+          </th>
           <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
           <th style="vertical-align: middle">Trn. Date</th>
           <th style="vertical-align: middle">Pay Type<br>Order Id<br>Ref. ID</th>
@@ -141,8 +163,24 @@
                end
             %>
             <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
-            <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;"<% end %>><%= i = i + 1 %></td>
-              <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>><small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br><small><%= fees.student.admission_no %></small><br><small><%= fees.student.batch.full_name %></small></td>
+            <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
+                <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+                <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
+            </td>
+            <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+                <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                <small><%= fees.student.admission_no %></small><br>
+                <small><%= fees.student.batch.full_name %></small>
+                <hr style="border: 1px solid #ccc;" />
+                <div class="label-field-pair" style="width: 100px;">
+                  <div class="label-container" style="display: block;">
+                    <label for="">Fine Amount:</label>
+                  </div>
+                  <div class="input-container">
+                    <input type="text" class="MB_focusable" id="fine_amount"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="Fine Amount">
+                  </div>
+              </div>
+            </td>
             <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
               <% unless @transaction_date.blank? %>
                 <% @transaction_date.each do |date| %>
@@ -279,6 +317,35 @@
             }
         });
     }
+    
+    function isNumberKey(evt, obj) 
+    {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        var value = obj.value;
+        var dotcontains = value.indexOf(".") != -1;
+        if (dotcontains)
+            if (charCode == 46) return false;
+        if (charCode == 46) return true;
+        if (charCode == 37) return true;
+        if (charCode == 39) return true;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    function checkKey(evt, obj) 
+    {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if ( charCode == 37 )
+        {
+            return true;
+        }
+        else if ( charCode == 39 )
+        {
+            return true;
+        }
+    }
+    
     j(document).on("click",".show_inactive_fa",function(){
         var a_id = this.id.split('_');
         var id = a_id[2];

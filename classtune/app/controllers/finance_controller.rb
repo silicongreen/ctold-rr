@@ -2533,7 +2533,7 @@ class FinanceController < ApplicationController
   end
   
   def fee_collections
-    @finance_fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_advance_fee_collection = #{false} and finance_fee_collections.is_deleted = '#{false}'")
+    @finance_fee_collections = FinanceFeeCollection.find(:all, :conditions => "is_advance_fee_collection = #{false} and finance_fee_collections.is_deleted = '#{false}'", :group => "name")
   end
   
   def advance_fee_collection
@@ -8355,8 +8355,17 @@ class FinanceController < ApplicationController
   #   @discounts = @fee_collection.fee_discounts.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
   #   end
   def collection_details_view
-    @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
-   end
+    unless params[:batch_id].nil?
+      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+    else
+      fee_collection  =  FinanceFeeCollection.find(:first, :conditions => "id IN (#{params[:id]})")
+      unless fee_collection.nil?  
+        fee_collection_name = fee_collection.name
+        fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
+        @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id IN (#{fee_collections.map(&:id).join(",")})")
+      end
+    end
+  end
 
   def collection_details_view_inactive
     @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")

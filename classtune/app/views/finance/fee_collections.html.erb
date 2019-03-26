@@ -46,7 +46,7 @@
         <tbody>
         <% @finance_fee_collections.each do |f| %>
           <tr class="<%= cycle('odd', 'even')%> ">
-            <td class="col-2"><%= link_to "#{f.name}" ,:action=>:fee_collections_details_view, :id=>f.id,:batch_id=>@batch.id %></td>
+            <td class="col-2"><%= link_to "#{f.name}" ,:action=>:collection_details_view, :id=>f.id %></td>
             <td class="col-3"><%= f.start_date %></td>
             <td class="col-3"><%= f.end_date %></td>
             <td class="col-3"><%= f.due_date %></td>

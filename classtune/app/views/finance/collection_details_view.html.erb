@@ -177,7 +177,7 @@
                     <label for="">No of Absent Days:</label>
                   </div>
                   <div class="input-container" style="clear: both; width: 100%;">
-                    <input type="text" class="MB_focusable absent_days_cls" id="absent_days" name="absent_days_<%= fees.student.id %>"  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
+                      <input type="text" class="MB_focusable absent_days_cls" id="absent_days_<%= fees.student.id %>" name="absent_days_<%= fees.student.id %>" disabled=""  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
                   </div>
               </div>
             </td>
@@ -356,6 +356,21 @@
         {
             j(".student_ids").removeAttr('checked');
             j(".absent_days_cls").attr('disabled', true);
+
+        }
+    });
+    
+    j(document).on("click",".student_ids",function(){
+        var val = this.value;
+        if (j(this).prop("checked"))
+        {
+            j(this).prop('checked', true);
+            j("#absent_days_" + val).removeAttr('disabled');
+        }
+        else
+        {
+            j(this).removeAttr('checked');
+            j("#absent_days_"  + val).attr('disabled', true);
 
         }
     });

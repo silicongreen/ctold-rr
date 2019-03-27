@@ -70,7 +70,7 @@
         <% unless @report_data['result']['al_students'].blank? %>
         <% @report_data['result']['al_students'].each do |std| %>
           <%  std_count = std_count+1; %>
-          <% if std_count>15 && extender ==0 %>
+          <% if std_count>14 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">

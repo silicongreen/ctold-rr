@@ -336,7 +336,11 @@ class MarksController < ApplicationController
     
     @today = @local_tzone_time.to_date
     school_id = MultiSchool.current_school.id
-    @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ? and is_published = ?",MultiSchool.current_school.id, false, false, false])
+    unless @current_user.admin?
+      @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ? and is_published = ?",MultiSchool.current_school.id, false, false, false])
+    else
+      @exam_connect =ExamConnect.active.find(:all,:select => "exam_connects.id,exam_connects.result_type,exam_connects.result_type,exam_connects.name,batches.name as batch_name,batches.is_deleted,courses.course_name,courses.section_name,exam_connects.batch_id",:joins=>[{:batch=>[:course]}],:conditions =>["exam_connects.school_id = ? and batches.is_deleted = ? and courses.is_deleted = ?",MultiSchool.current_school.id, false, false])
+    end  
     k = 0
     data = []
     @exam_connect.each do |exam_connect|

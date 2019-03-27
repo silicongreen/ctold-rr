@@ -53,14 +53,12 @@
           <td>First Term (40/20)</td>
           <td>Full Mark</td>
           <td>Total Obtain</td>
-          <% @report_data['result']['ALL'].each do |report|  %>
-             <% if report['exam_category'] == '6'  %>
-                  <td class="col-pdf">
-                    <%= report['exam_name'] %>
-                  </td>
-                  
+          <% @report_data['result']['ALL'].each do |rs| %>
+            <% if rs['exam_category'] == '6'  %>
+            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
             <% end %>
-         <% end %>
+          <% end %>
+         
           <td>Total</td>
           <td>Grade</td>
         

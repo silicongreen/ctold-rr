@@ -5047,6 +5047,64 @@ class FinanceController < ApplicationController
     end
   end
   
+  def create_absent_fine_particular_multiple
+    unless params[:date].nil? or params[:date].empty? or params[:date].blank?
+      @batch   = Batch.find(params[:batch_id])
+      @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
+      
+      @fine_amount = params[:fine_amount]
+      @fine_name = params[:fine_name]
+      
+      @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@fine_name, '',false)
+      @particular_category_id = @finance_fee_particular_category.id
+      
+      @student_ids_n_amounts = params[:students].split(",")
+      @student_ids_n_amounts.each do |student_ids_n_amount|
+        a_student_id_n_days = student_ids_n_amount.split("-")
+        s_id = a_student_id_n_days[0].to_i
+        days = a_student_id_n_days[1].to_i
+        
+        amt = @fine_amount.to_f * days.to_f
+        
+        @student = Student.find(s_id)
+        
+        @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{@student.id}'")
+        
+        @particular_id = @particular_category_id
+        @particular_name = @finance_fee_particular_category.name
+        @particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id_and_amount(@date.fee_category_id, @particular_id, 'Student', @student.id, amt)
+        
+        if @particular.nil?
+          @o_particular = {}
+          @o_particular[:amount] = amt
+          @o_particular[:description] = ''
+          @o_particular[:finance_fee_category_id] = @date.fee_category_id
+          @o_particular[:finance_fee_particular_category_id] = @particular_id
+          @o_particular[:name] = @particular_name
+          @o_particular[:receiver_type] = 'Student'
+
+          @finance_fee_particular = @batch.finance_fee_particulars.new(@o_particular)
+          @finance_fee_particular.receiver_id = @student.id
+          @finance_fee_particular.is_tmp = true
+          @error = true unless @finance_fee_particular.save
+
+          @collection_particulars = CollectionParticular.find_or_create_by_finance_fee_collection_id_and_finance_fee_particular_id(@date.id, @finance_fee_particular.id)
+        else 
+          @finance_fee_particular = @particular
+          @collection_particulars = CollectionParticular.find_or_create_by_finance_fee_collection_id_and_finance_fee_particular_id(@date.id, @finance_fee_particular.id)
+        end
+        
+        FinanceFee.new_student_fee_with_tmp_particular(@date,@student)
+      end
+
+      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:date]} AND finance_fees.batch_id = #{params[:batch_id]}")
+      render :update do |page|
+        page.replace_html "resultDiv", :partial => "collection_details_view"
+      end
+      
+    end
+  end
+  
   def create_fees_with_tmp_discount
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
       @batch   = Batch.find(params[:batch_id])

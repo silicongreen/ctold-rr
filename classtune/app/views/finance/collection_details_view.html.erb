@@ -56,7 +56,7 @@
 
   </div>
   <br>
-  <div style="border: 1px solid #ccc; border-radius: 8px; display: inline-block; padding: 10px; margin: 0 auto;">
+  <div id="absent_fine_panel" style="border: 1px solid #ccc; border-radius: 8px; display: none; padding: 10px; margin: 0 auto;">
     <div class="label-field-pair">
         <div class="label-container">
           <label for="">Fine Name:</label>
@@ -85,7 +85,7 @@
         <thead><!-- class="thead-inverse" -->
         <tr>
           <th style="vertical-align: middle">
-              <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
+              <div id="chkbox_all_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
               <div style="display: inline-block; padding-right: 5px;">Sl.</div>
           </th>
           <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
@@ -164,15 +164,15 @@
             %>
             <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
             <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
-                <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+                <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
                 <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
             </td>
             <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
                 <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
                 <small><%= fees.student.admission_no %></small><br>
                 <small><%= fees.student.batch.full_name %></small>
-                <hr style="border: 1px solid #ccc;" />
-                <div class="label-field-pair" style="width: 100px;">
+                <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />
+                <div class="label-field-pair absent_days_panel" style="width: 100px; display: none;">
                   <div class="label-container" style="display: block;">
                     <label for="">No of Absent Days:</label>
                   </div>
@@ -255,8 +255,8 @@
     </div>
     </div>
   <% end %>
-  <div style="width:100%; text-align: center; border: 1px solid #ccc;">
-      <button type="button" class="button submit_button" id="add_absent_fine" style="float: none;">Save Absent Fine</button>
+  <div id="save_absent_fine_panel" style="width:100%; text-align: center; padding-top: 10px; display: none;">
+      <button type="button" class="button submit_button" id="save_absent_fine" style="float: none;">Save Absent Fine</button>
   </div>
 </div>
 <style>
@@ -348,6 +348,88 @@
         }
     }
     
+    
+    j(document).on("click","#save_absent_fine",function(){
+        var student_cnt = 0;
+        var student_amt_empty_or_null = 0;
+        var student_ids_n_amount = "";
+        
+        var found = false;
+        j(".student_ids").each(function(){
+            if (j(this).prop("checked"))
+            {
+                found = false;
+                var std_id = this.value;
+                var amt = j("#absent_days_" + std_id).val();
+                if ( j.trim(amt).length == 0 )
+                {
+                      student_amt_empty_or_null++;
+                      found = true;
+                }
+                else
+                {
+                  if ( parseInt(amt) == 0 )
+                  {
+                      student_amt_empty_or_null++;
+                      found = true;
+                  }
+                }
+                if ( !found )
+                {
+                  student_cnt++;
+                  student_ids_n_amount +=  std_id + "-" + amt + ",";
+                }
+            }
+        });
+        
+        if ( student_cnt == 0 )
+        {
+            alert("No Student Selected");
+            return ;
+        }
+        /*if ( student_amt_empty_or_null > 0 )
+        {
+            alert("some Student Absent days is empty or Zero,Please correct this before continue");
+            return ;
+        }*/
+    
+        var fine_amount = j.trim(j("#fine_amount").val());
+        
+        var fine_name = j.trim(j("#fine_name").val());
+        
+        var batch_id = '<%= params[:batch_id] %>';
+        
+        var fee_id = '<%= params[:id] %>';
+        
+        if ( j.trim(fine_amount).length == 0 )
+        {
+              alert("Please enter fine amount before continue");
+              return ;
+        }
+        else
+        {
+          if ( parseInt(fine_amount) == 0 )
+          {
+              alert("Fine Amount is zero or empty, Please correct this before continue");
+              return ;
+          }
+        }
+        if ( j.trim(fine_name).length == 0 )
+        {
+              alert("Please enter fine Name before continue");
+              return ;
+        }
+        
+        new Ajax.Request('/finance/create_absent_fine_particular_multiple', 
+              {
+                asynchronous:true, 
+                evalScripts:true, 
+                parameters:'batch_id='+batch_id+'&date='+fee_id+'&students='+student_ids_n_amount+'&fine_amount='+fine_amount+'&fine_name='+fine_name
+              }
+        )
+        alert("Confirm " + student_ids_n_amount + "  " + batch_id + "  " + fee_id) 
+    });
+    
     j(document).on("click",".check_all",function(){
         if (j(this).prop("checked"))
         {
@@ -360,6 +442,31 @@
             j(".absent_days_cls").attr('disabled', true);
 
         }
+    });
+    
+    j(document).on("click","#add_absent_fine",function(){
+        var html = j(this).html();
+        if ( j.trim(html) == "Add Absent Fine" )
+        {
+            j(this).html("Cancel Absent Fine");
+            j("#absent_fine_panel").css('display', 'inline-block');
+            j("#save_absent_fine_panel").css('display', 'inline-block');
+            j("#chkbox_all_panel").css('display', 'inline-block');
+            j(".student_chkbox_panel").css('display', 'inline-block');
+            j(".absent_hr_panel").show();
+            j(".absent_days_panel").show();
+        }
+        else
+        {
+            j(this).html("Add Absent Fine");
+            j("#absent_fine_panel").css('display', 'none');
+            j("#save_absent_fine_panel").css('display', 'none');
+            j("#chkbox_all_panel").css('display', 'none');
+            j(".student_chkbox_panel").css('display', 'none');
+            j(".absent_hr_panel").hide();
+            j(".absent_days_panel").hide();
+        }
+        
     });
     
     j(document).on("click",".student_ids",function(){

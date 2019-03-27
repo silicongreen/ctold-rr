@@ -121,7 +121,9 @@
               <% end %>
             <% end %>
             <% end %> 
-        
+            <% if MultiSchool.current_school.id != 352 %>
+              <td> Remarks/Grade </td>
+            <% end %>
             
           </tr>
           <% @students.each do |student| %>
@@ -193,7 +195,23 @@
                   exam_comment = @exam_comments.comments
                 end
               %>
-             
+                <% if MultiSchool.current_school.id != 352 %>
+             <td class="col-2 td-mark">
+                  
+                  <div class="label-field-pair2">
+                  
+                  <div class="text-input-bg2">
+                    <% if MultiSchool.current_school.id == 312 && (@exam_connect.result_type == 2 || @exam_connect.result_type == 1) && !@exams.blank? %>
+                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '4', :onkeyup => "checkValueMax(#{50},this)",:onkeydown => "checkValueMax(#{50},this)" %>
+                    <% else %>  
+                      <%= text_field_tag "exam[#{student.id}][comments]", exam_comment, :size => '30' %>
+                    <% end %>
+                  
+                  </div>
+                  </div>
+                  <div class="date2"><span class="themed_text"><%=  student.class_roll_no.to_s+" : "+student.full_name %></span></div>
+              </td>
+              <% end %>
               
             <tr>
           <% end %>      

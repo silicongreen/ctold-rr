@@ -48,18 +48,18 @@
         <tr class="table-header">
           <td class="name">Roll NO.</td>
           <td class="name">Name</td>
-          <td>1<sup>st</sup> Quarter (30/15)</td>
-          <td>2<sup>nd</sup> Quarter (30/15)</td>
-          <td>First Term (40/20)</td>
+          <td>1<sup>st</sup> Quarter</td>
+          <td>2<sup>nd</sup> Quarter</td>
+          <td>First Term</td>
           <td>Full Mark</td>
-          <td>Total</td>
+          <td>Total First Term</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == '6'  %>
-            <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+            <td><%=  rs['name'] %></td>
             <% end %>
           <% end %>
          
-          <td>Total</td>
+          <td>Total Mock</td>
           <td>Combine</td>
           <td>Grade</td>
         

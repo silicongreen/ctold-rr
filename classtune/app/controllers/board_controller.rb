@@ -280,7 +280,9 @@ class BoardController < ApplicationController
   end
   
   def new_student
-    @student = BoardExamStudent.new
+    @board_exam_student = BoardExamStudent.new
+    @board_exam = BoardExam.find(params[:id])
+    @board_exam_student.session = @board_exam.board_session.name
     respond_to do |format|
       format.js { render :action => 'new_student' }
     end
@@ -288,6 +290,10 @@ class BoardController < ApplicationController
   
   def edit_student
     @board_exam_student = BoardExamStudent.find(params[:id])
+    @board_exam = @board_exam_student.board_exam
+    if @board_exam_student.session.blank?
+      @board_exam_student.session = @board_exam.board_session.name
+    end
     respond_to do |format|
       format.js { render :action => 'edit_student' }
     end

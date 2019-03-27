@@ -3,7 +3,12 @@
         <title>Testimonial</title>
     </head>
     <body>
-        
+        <%
+          if @board_exam_student.session.blank?
+            @board_exam_student.session = @board_exam.board_session.name
+          end
+      
+        %>
         <p class="left-font" id="left-position-0"><%= @std_info.admission_no %></p>
         <p class="left-font" id="left-position-1"><%= @std_info.full_name %></p>
         <p class="left-font" id="left-position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
@@ -11,7 +16,7 @@
         <p class="left-font" id="left-position-4"><%= @board_exam_student.roll %></p>
         <p class="left-font" id="left-position-5"><%= @board_exam_student.avg_credit_points %></p>
         <p class="left-font" id="left-position-6"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-        <p class="left-font" id="left-position-7"><%= @board_exam_student.registration %>/<%= @board_exam.board_session.name %></p>
+        <p class="left-font" id="left-position-7"><%= @board_exam_student.registration %>/<%= @board_exam_student.session %></p>
         <% unless params[:sign].blank? %>
         <p class="left-font" id="left-position-8"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
         <% end %>
@@ -25,7 +30,7 @@
         <p id="position-6"><%= @board_exam_student.avg_credit_points %></p>
         <p id="position-7"><%= @board_exam.passing_year %></p>
         <p id="position-8"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-        <p id="position-9"><%= @board_exam_student.registration %>/<%= @board_exam.board_session.name %></p>
+        <p id="position-9"><%= @board_exam_student.registration %>/<%= @board_exam_student.session %></p>
         <% unless params[:sign].blank? %>
         <p id="position-10"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
         <% end %>

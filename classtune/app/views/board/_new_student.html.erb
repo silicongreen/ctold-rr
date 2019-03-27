@@ -50,7 +50,12 @@
         <div class="label-container">  <label><%= "GPA" %></label></div>
         <div class="input-container"><%= f.text_field :avg_credit_points %></div>
       </div>
+      <div class="label-field-pair">
+        <div class="label-container">  <label><%= "Session" %></label></div>
+        <div class="input-container"><%= f.text_field :session %></div>
+      </div>
 
+      
 
       <%= f.submit  "", :value => "► #{t('save')}", :class => "submit_button", :id => "submit_button" %>
 

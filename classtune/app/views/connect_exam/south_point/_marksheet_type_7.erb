@@ -52,7 +52,7 @@
           <td>2<sup>nd</sup> Quarter (30/15)</td>
           <td>First Term (40/20)</td>
           <td>Full Mark</td>
-          <td>Total Obtain</td>
+          <td>Total</td>
           <% @report_data['result']['ALL'].each do |rs| %>
             <% if rs['exam_category'] == '6'  %>
             <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
@@ -60,6 +60,7 @@
           <% end %>
          
           <td>Total</td>
+          <td>Combine</td>
           <td>Grade</td>
         
         </tr>
@@ -300,6 +301,7 @@
               <% end %>
              <% end %>
             <td><%= main_mark_final_term.round().to_s %></td>
+            <td><%= main_mark.round().to_s %></td>
             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
             <% if !grade.blank? and !grade.name.blank? %>
                 <td><b><%= grade.name %></b></td>

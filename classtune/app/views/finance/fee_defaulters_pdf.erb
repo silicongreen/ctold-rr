@@ -95,10 +95,11 @@
               <td class="col-pdf" style="text-align: center;"><%= s.class_roll_no %></td>
               <td class="col-pdf" style="text-align: center;"><%= b.course.section_name %></td>
               <td class="col-pdf" style="text-align: center;"><%= sc.name %></td>
-            <% unless params[:date] == '0' %>
+              <% unless params[:date] == '0' %>
               <td class="col-pdf" style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
               <% else %>
-              <td class="col-pdf" style="text-align: right;"><%= precision_label(s.balance.to_f) %></td>
+              <% fee = s.finance_fees %>
+              <td class="col-pdf" style="text-align: right;"><%= precision_label fee.map(&:balance).sum %></td>
               <% end %>
 
               <td class="col-pdf" style="text-align: center;"><%= s.sms_number %></td>

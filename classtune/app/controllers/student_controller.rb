@@ -265,7 +265,7 @@ class StudentController < ApplicationController
         unless course_data.blank? 
           @batch = Batch.find_by_course_id(course_data.id)
           batch_split = @batch.name.split(" ")
-          sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Family)
+          sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Student List Family)
      Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
           ")
         end
@@ -370,7 +370,7 @@ class StudentController < ApplicationController
         unless course_data.blank? 
           @batch = Batch.find_by_course_id(course_data.id)
           batch_split = @batch.name.split(" ")
-          sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Family)
+          sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Student List)
      Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
           ")
         end

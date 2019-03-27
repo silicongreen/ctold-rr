@@ -256,6 +256,7 @@
     </div>
   <% end %>
   <div id="save_absent_fine_panel" style="width:100%; text-align: center; padding-top: 10px; display: none;">
+      <i id="absent_fine_clicked" class="fa fa-spin fa-spinner" style="display: none;"></i>
       <button type="button" class="button submit_button" id="save_absent_fine" style="float: none;">Save Absent Fine</button>
   </div>
 </div>
@@ -420,6 +421,7 @@
               return ;
         }
         
+        j("#absent_fine_clicked").show();
         new Ajax.Request('/finance/create_absent_fine_particular_multiple', 
               {
                 asynchronous:true, 
@@ -427,7 +429,6 @@
                 parameters:'batch_id='+batch_id+'&date='+fee_id+'&students='+student_ids_n_amount+'&fine_amount='+fine_amount+'&fine_name='+fine_name
               }
         )
-        alert("Confirm " + student_ids_n_amount + "  " + batch_id + "  " + fee_id) 
     });
     
     j(document).on("click",".check_all",function(){

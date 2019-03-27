@@ -21,7 +21,7 @@
   <thead><!-- class="thead-inverse" -->
   <tr>
     <th style="vertical-align: middle">
-        <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
+        <div id="chkbox_all_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
         <div style="display: inline-block; padding-right: 5px;">Sl.</div>
     </th>
     <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
@@ -100,15 +100,15 @@
       %>
       <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
       <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
-          <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+          <div class="student_chkbox_panel" style="display: none; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
           <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
       </td>
       <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
           <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
           <small><%= fees.student.admission_no %></small><br>
           <small><%= fees.student.batch.full_name %></small>
-          <hr style="border: 1px solid #ccc;" />
-          <div class="label-field-pair" style="width: 100px;">
+          <hr style="border: 1px solid #ccc; display: none;" class="absent_hr_panel" />
+          <div class="label-field-pair absent_days_panel" style="width: 100px; display: none;">
             <div class="label-container" style="display: block;">
               <label for="">No of Absent Days:</label>
             </div>

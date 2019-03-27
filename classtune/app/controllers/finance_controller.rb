@@ -5100,6 +5100,8 @@ class FinanceController < ApplicationController
       @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:date]} AND finance_fees.batch_id = #{params[:batch_id]}")
       render :update do |page|
         page.replace_html "resultDiv", :partial => "collection_details_view"
+        page << "j('#absent_fine_clicked').hide();"
+        page << "j('#save_absent_fine_panel').hide();"
       end
       
     end

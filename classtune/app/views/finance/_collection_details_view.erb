@@ -1,0 +1,190 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<table class="table table-striped table-bordered" id="myTable" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+  <thead><!-- class="thead-inverse" -->
+  <tr>
+    <th style="vertical-align: middle">
+        <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="check_all" id="check_all" class="check_all" /></div>
+        <div style="display: inline-block; padding-right: 5px;">Sl.</div>
+    </th>
+    <th style="vertical-align: middle">Name<br>Admission No<br>Batch</th>
+    <th style="vertical-align: middle">Trn. Date</th>
+    <th style="vertical-align: middle">Pay Type<br>Order Id<br>Ref. ID</th>
+    <th style="vertical-align: middle">Amount</th>
+    <th style="vertical-align: middle">Status</th>
+  </tr>
+  </thead>
+    <tbody>
+    <% unless @finance_fees.blank?%>
+    <% @total_fee = 0 %>
+    <% i = 0 %>
+    <% @finance_fees.each do |fees| %>
+      <% if fees.is_paid
+           @transaction_date = []
+           @payment_mode = []
+           @online_payment = []
+           @paid_amount = 0
+           @op_type = '';
+           @op_order_id = '';
+           @op_ref_id = '';
+           unless fees.finance_transactions.blank?
+             fees.finance_transactions.each do |pf|
+               @online_payment = Payment.find(:all, :conditions=>"finance_transaction_id = #{pf.id}")
+               unless @online_payment.blank?
+               opc = 0
+               @online_payment.each do |op|
+                @transaction_date << op.transaction_datetime.to_date.strftime('%Y-%m-%d')
+
+                if opc === 0
+                 if op.gateway_response[:payment_type] === "MB"
+                @op_type += "MB"
+                 elsif op.gateway_response[:payment_type] == "ITCL"
+                @op_type += "ITCL"
+                 else
+                @op_type += "#{op.gateway_response[:payment_type] }"
+                 end
+
+                @op_ref_id += "#{op.gateway_response[:ref_id] }"
+                @op_order_id += "#{op.order_id.to_s}"
+                else
+                 if op.gateway_response[:payment_type] === "MB"
+                 @op_type += ", MB"
+                 elsif op.gateway_response[:payment_type] == "ITCL"
+                 @op_type += ", ITCL"
+                 else
+                @op_type += ", #{op.gateway_response[:payment_type] }"
+                end
+                @op_ref_id += ", #{op.gateway_response[:ref_id] }"
+                @op_order_id += ",#{op.order_id.to_s}"
+                end
+                opc += 1
+
+               end
+
+               else
+               @transaction_date << pf.transaction_date.to_date.strftime('%Y-%m-%d')
+               @op_type = '-';
+               @op_order_id = '-';
+               @op_ref_id = '-';
+               end
+
+               @payment_mode << pf.payment_mode
+               @paid_amount += pf.amount
+             end
+           end
+         else
+           @transaction_date = []
+           @payment_mode = []
+           @online_payment = []
+           @op_type = '-';
+           @op_order_id = '-';
+           @op_ref_id = '-';
+         end
+      %>
+      <tr class="<%= cycle("odd", "even") %>" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="background-color: #ffe6e6" <% end %> >
+      <td class="col-5" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="text-align: center; vertical-align: middle; background-color: #ffe6e6"<% else %>style="text-align: center; vertical-align: middle;"<% end %>>
+          <div style="display: inline-block; padding-right: 5px;"><input type="checkbox" name="student_ids[]" id="student_ids" class="student_ids" value="<%= fees.student.id %>" /></div>
+          <div style="display: inline-block; padding-right: 5px;"><%= i = i + 1 %></div>
+      </td>
+      <td class="col-4" <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle; background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+          <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+          <small><%= fees.student.admission_no %></small><br>
+          <small><%= fees.student.batch.full_name %></small>
+          <hr style="border: 1px solid #ccc;" />
+          <div class="label-field-pair" style="width: 100px;">
+            <div class="label-container" style="display: block;">
+              <label for="">No of Absent Days:</label>
+            </div>
+            <div class="input-container" style="clear: both; width: 100%;">
+                <input type="text" class="MB_focusable absent_days_cls" id="absent_days_<%= fees.student.id %>" name="absent_days_<%= fees.student.id %>" disabled=""  onkeypress="return isNumberKey(event,this)" onkeydown="checkKey(event,this)" placeholder="No of Absent Days">
+            </div>
+        </div>
+      </td>
+      <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6;text-align: center;"<% else %>style="vertical-align: middle; text-align: center;" <% end %>>
+        <% unless @transaction_date.blank? %>
+          <% @transaction_date.each do |date| %>
+            <%= date.to_date.strftime('%d-%m-%Y') + "<br>" %>
+          <% end %>
+        <% else %>
+          <%= "-" %>
+        <% end %>
+      </td>
+      <td <% unless params[:batch_id].to_i == fees.student.batch.id {}%> style="vertical-align: middle;background-color: #ffe6e6"<% else %>style="vertical-align: middle;" <% end %>>
+        <%= @op_type + "<br>" %>
+        <%= @op_order_id + "<br>" %>
+        <%= @op_ref_id + "<br>" %>
+      </td>
+
+      <td class="col-3" style="text-align: right; <% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %> vertical-align: middle; <% end %>" >
+        <div id="student_amount_<%= fees.student_id %>_<%= fees.id %>" class="student_amount">
+          <% if fees.is_paid %>
+            <%= precision_label @paid_amount %>
+            <% @total_fee = @total_fee + @paid_amount %>
+          <% else %>
+            <%= precision_label fees.balance %>
+            <% @total_fee = @total_fee + fees.balance %>
+          <% end %>
+        </div>
+      </td>
+
+      <td class="col-3" style="text-align: center;<% unless params[:batch_id].to_i == fees.student.batch.id {}%>vertical-align: middle; background-color: #ffe6e6;<% else %>vertical-align: middle; <% end %>" >
+        <% if fees.is_paid %>
+          <i class="fa fa-check" style="color: #49BB4B; font-size: 14px;"></i><br/>
+        <% else %>
+          <input type="hidden" class="notPaid" name="not_paid[]" value="<%= fees.student.id %>">
+          <% unless params[:batch_id].to_i == fees.student.batch.id %>
+            <% fee_batch =  FeeCollectionBatch.find_by_batch_id(fees.student.batch.id) %>
+            <% unless fee_batch.blank? %>
+                <% if fee_batch.finance_fee_collection_id.to_i == params[:id].to_i %>
+                <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id , :delete=> 1, :option=>2,:finance_fee_id=>fees.id},:confirm => "Are You sure to Regenerate?"%>
+                <br>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to_remote '<i class="fa fa-refresh" style="color: #49BB4B;"></i>',:before => "Element.show('add-loader-#{i}')", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'regenerate_student_fees',:fee_id=> params[:id], :student_id => fees.student.id},:confirm => "Are You sure to Regenerate?"%>
+            <br>
+          <% end %>
+          <%= link_to_remote '<i class="fa fa-minus-circle" id="deleteFin" style="color:red;"></i>',:before => "Element.show('add-loader-#{i}');", :success => "Element.hide('add-loader-#{i}');",:url => {:action => 'delete_student_fees',:fee_id=> fees.id},:confirm => "Are You sure to Delete?"%>
+          <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader-#{i}", :class=>"add-palette-loader", :style =>"display: none;" ) %>
+        <% end %>
+      </td>
+
+    </tr>
+    <% end %>
+    <% else %>
+      <tr>
+        <td colspan="6" style="text-align: center;vertical-align: middle;">
+          No Student Found
+        </td>
+
+      </tr>
+      </tbody>
+    <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="3" style="vertical-align: middle;"></td>
+      <td style="vertical-align: middle;"><b>Total Amount:</b></td>
+      <td style="text-align: right;vertical-align: middle;"><div id="totalAmount"><%= precision_label @total_fee %></div></td>
+      <td></td>
+    </tr>
+    </tfoot>
+
+</table>

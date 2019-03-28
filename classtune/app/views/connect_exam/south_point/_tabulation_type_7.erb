@@ -347,9 +347,7 @@
 
                           main_mark_only_final_term = (final_term_mark.round().to_f/final_term_full_mark.to_f)*100
 
-                          full_mark = full_mark_first_term.round()+final_term_full_mark.round()
-                          obtained_mark = obtained_mark_first_term.round()+final_term_mark.round()
-                          main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
+                          main_mark = (main_mark_first_term.to_f+main_mark_only_final_term.to_f)/2
 
                           grade_name1 = "-"
                           grade_name2 = "-"
@@ -430,7 +428,6 @@
                           <%= first_term_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name4+"<hr/>" %>
                           <%= final_term_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
                           <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
-                          <%= full_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+obtained_mark.to_s %>
 
                         </td> 
                     <% end %>    

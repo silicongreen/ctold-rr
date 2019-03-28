@@ -20,10 +20,7 @@
   <div class="page1"> </div>
   <div class="section1 row" >
     <center>
-      <div id="pdf-header-south" class="general-header">
-        <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
-        <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
-      </div>
+     
       <h4 align="center">Tabulation Sheet, <%= @connect_exam_obj.name %></h4>
       <%= render  :partial=>"/connect_exam/south_point/tabulation_top" %>
      
@@ -572,10 +569,10 @@
               
            
         </tr>
-        <% end %>
+        <% @std_info = std %>
         <% @std_id_comment = std['id'] %>
-          <%= render  :partial=>"/connect_exam/comment_text" %>
-      
+        <% @std_id_comment = std['id'] %>
+        <%= render  :partial=>"/connect_exam/comment_input" %>
         <% end %>
       </table>
       <% end %>
@@ -584,15 +581,3 @@
   
   
 </div>
-
-<style>
-    #page-yield #pdf-table tr.table-header td,#pdf-table tr.odd td,#pdf-table tr.even td
-    {
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-    }
-    .no-warp 
-    {
-        white-space: nowrap;
-    } 
-</style> 

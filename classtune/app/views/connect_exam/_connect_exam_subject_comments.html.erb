@@ -61,12 +61,12 @@
   
   %>
   <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head">
+      <tr class="tr-head" style="background:#fdfff0">
           <td>Class : <%= @exam_subject.batch.course.course_name %></td>
           <td>Version : <%= version %></td>
           <td>Shift : <%= shift %></td>
       </tr>
-      <tr class="tr-head">
+      <tr class="tr-head" style="background:#fdfff0">
           <td>Section : <%= @exam_subject.batch.course.section_name %></td>
           <td>Group : <%= @exam_subject.batch.course.group %></td>
           <td>Session : <%= @exam_subject.batch.course.session %></td>
@@ -108,7 +108,7 @@
                     <% else %>
 
                      <p> 
-                         <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                         <% if (exam_marks_entry_allowed(exam.exam_group) or @current_user.admin?) and MultiSchool.current_school.id != 352 %>
                             <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
                          <% else %>
                             <%= exam.maximum_marks.to_i %>

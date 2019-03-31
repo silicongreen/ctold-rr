@@ -46,11 +46,11 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
     
-    <% unless @batches.blank? %>
+    <% if !@batches.blank? && (MultiSchool.current_school.id != 352 or @current_user.admin?) %>
         <%= render  :partial=>"/marks/class_box" %>
        
     <% end %>
-    <% unless @exams_data.blank? %>
+    <% if !@exams_data.blank? && (MultiSchool.current_school.id != 352 or @current_user.admin?) %>
         <div class="box" id="examgroup" style="margin-top:10px;">
             <%= select :exam, :exam_id,@exams_data.map {|b| [b.name, b.name] },{:prompt => "Select a Exam"} %>
         </div>     

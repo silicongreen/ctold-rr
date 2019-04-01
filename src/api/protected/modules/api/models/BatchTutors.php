@@ -199,7 +199,7 @@ class BatchTutors extends CActiveRecord
         public function get_employee_batches()
         {
             $criteria=new CDbCriteria;
-            $criteria->compare('t.employee_id',Yii::app()->user->profileId);
+            $criteria->select = 't.*';
             $criteria->with = array(
                 "batch" => array(
                     "select" => "batch.id,batch.name",
@@ -212,13 +212,15 @@ class BatchTutors extends CActiveRecord
                     )
                 )
             );
+            $criteria->compare('t.employee_id',Yii::app()->user->profileId);
             $criteria->compare("batch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
-            $criteria->group = "batch.id";
+            $criteria->group = "t.batch_id";
             
             $all_batch = $this->findAll($criteria);
             $subject = array();
             $i = 0; 
+            if($all_batch)
             foreach ($all_batch as $value)
             {
                

@@ -207,6 +207,38 @@ class Batches extends CActiveRecord
             return FALSE;
         }
         
+        public function getBatcheByIds($batch_id)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->addInCondition("t.id", $batch_id);
+            $criteria->with = array(
+                'courseDetails' => array(
+                    'select' => 'courseDetails.id,courseDetails.course_name,courseDetails.section_name,courseDetails.no_call',
+                    'joinType' => "INNER JOIN"
+                )
+            );
+            $criteria->compare("t.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            $batches = $this->findAll($criteria);
+            
+            $subject = array();
+            $i = 0; 
+            foreach ($batches as $value)
+            {
+               
+                    $subject[$i]['id'] = $value->id;
+                    $subject[$i]['no_call'] = (int)$value['courseDetails']->no_call;
+                    $subject[$i]['name'] = $value->name." ".$value['courseDetails']->course_name." ".$value['courseDetails']->section_name;
+                    $i++; 
+           
+            }
+
+            return $subject;
+            
+            
+            
+        } 
+     
         public function getSchoolBatches($school_id)
         {
             $criteria = new CDbCriteria();

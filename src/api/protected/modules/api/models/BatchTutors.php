@@ -198,38 +198,28 @@ class BatchTutors extends CActiveRecord
         
         public function get_employee_batches()
         {
-            $criteria=new CDbCriteria;
-            $criteria->select = 't.*';
-            $criteria->with = array(
-                "batch" => array(
-                    "select" => "batch.id,batch.name",
-                    'joinType' => "INNER JOIN",
-                    'with' => array(
-                        "courseDetails" => array(
-                            "select" => "courseDetails.id,courseDetails.course_name,courseDetails.section_name,courseDetails.no_call",
-                            'joinType' => "INNER JOIN",
-                        )
-                    )
-                )
-            );
-            $criteria->compare('t.employee_id',Yii::app()->user->profileId);
-            $criteria->compare("batch.is_deleted", 0);
-            $criteria->compare("courseDetails.is_deleted", 0);
-            $criteria->group = "t.batch_id";
             
+            $criteria=new CDbCriteria;
+            $criteria->compare('employee_id',Yii::app()->user->profileId);
             $all_batch = $this->findAll($criteria);
-            $subject = array();
-            $i = 0; 
+            $batch_ids = array();
             if($all_batch)
-            foreach ($all_batch as $value)
-            {
+            { 
+                foreach($all_batch as $value)
+                {
+                    
+                    $batch_ids[] = $value->batch_id;
+                }
                
-                    $subject[$i]['id'] = $value['batch']->id;
-                    $subject[$i]['no_call'] = (int)$value['batch']['courseDetails']->no_call;
-                    $subject[$i]['name'] = $value['batch']->name." ".$value['batch']['courseDetails']->course_name." ".$value['batch']['courseDetails']->section_name;
-                    $i++; 
-           
             }
+            $batchObj = new Batches();
+            $subject = array();
+            if($batch_ids)
+            {
+                $subject = $batchObj->getBatcheByIds($batch_ids);
+            }
+            
+            
             return $subject;
             
         }  

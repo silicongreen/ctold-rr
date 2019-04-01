@@ -238,17 +238,36 @@ class EmployeesSubjects extends CActiveRecord
 
             
             $obj_subject = $this->findAll($criteria);
+            
+            
+            
         
             $subject = array();
+            $batch_id = array();
             $i = 0; 
             foreach ($obj_subject as $value)
             {
-               
+                
+                    $batch_id[] = $value['subject']['Subjectbatch']->id;
                     $subject[$i]['id'] = $value['subject']['Subjectbatch']->id;
                     $subject[$i]['no_call'] = (int)$value['subject']['Subjectbatch']['courseDetails']->no_call;
                     $subject[$i]['name'] = $value['subject']['Subjectbatch']->name." ".$value['subject']['Subjectbatch']['courseDetails']->course_name." ".$value['subject']['Subjectbatch']['courseDetails']->section_name;
                     $i++; 
            
+            }
+            
+            $btobj = new BatchTutors();
+            $batches = $btobj->get_employee_batches();
+            if($batches)
+            {
+                foreach($batches as $value)
+                {
+                    if(!in_array($value['id'], $batch_id))
+                    {
+                        $subject[$i] = $value;
+                        $i++;
+                    }
+                }
             }
 
             return $subject;

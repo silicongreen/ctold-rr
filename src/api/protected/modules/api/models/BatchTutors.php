@@ -40,6 +40,7 @@ class BatchTutors extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'batch' => array(self::BELONGS_TO, 'Batches', 'batch_id')
                 );
 	}
 
@@ -193,5 +194,41 @@ class BatchTutors extends CActiveRecord
             {
                 return $batch_ids;
             }
-        }        
+        }  
+        
+        public function get_employee_batches()
+        {
+            $criteria=new CDbCriteria;
+            $criteria->compare('employee_id',Yii::app()->user->profileId);
+            $criteria->with = array(
+                "batch" => array(
+                    "select" => "batch.id,batch.name",
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "courseDetails" => array(
+                            "select" => "courseDetails.id,courseDetails.course_name,courseDetails.section_name,courseDetails.no_call",
+                            'joinType' => "INNER JOIN",
+                        )
+                    )
+                )
+            );
+            $criteria->compare("batch.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            $criteria->group = "batch.id";
+            
+            $all_batch = $this->findAll($criteria);
+            $subject = array();
+            $i = 0; 
+            foreach ($all_batch as $value)
+            {
+               
+                    $subject[$i]['id'] = $value['batch']->id;
+                    $subject[$i]['no_call'] = (int)$value['batch']['courseDetails']->no_call;
+                    $subject[$i]['name'] = $value['batch']->name." ".$value['batch']['courseDetails']->course_name." ".$value['batch']['courseDetails']->section_name;
+                    $i++; 
+           
+            }
+            return $subject;
+            
+        }  
 }

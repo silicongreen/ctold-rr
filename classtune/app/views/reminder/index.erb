@@ -70,14 +70,15 @@
 
               <% @reminders.each do |ur| %>
                 <% if ur.rid>0 && (ur.rtype==4 or ur.rtype==31) %>
-                    <% if ur.is_read %>
                     <%
                       controller_name = "classworks"
-                      if @new_reminder.rtype==4 
+                      if ur.rtype==4 
                         controller_name = "assignments"
                       end
                   
                     %>
+                    <% if ur.is_read %>
+                    
                     <% sender_user = ur.user  %>
                     <tr class="tr-read-<%= cycle('odd', 'even') %>">
                         <td class="col-8"><%= check_box_tag "message_ids[]", ur.id, false, {:class=>'message_check' } %></td>

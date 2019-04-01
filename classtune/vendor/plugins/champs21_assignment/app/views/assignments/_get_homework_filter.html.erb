@@ -22,6 +22,9 @@
         <%= "#{t('due_date')}"%>
       </th>
       <th>
+        <%= "Assign Date"%>
+      </th>
+      <th>
         <%= "#{t('defaulter')}"%>
       </th>
   </thead>
@@ -54,6 +57,11 @@
           <td class="col-4">
             <%= I18n.l(assignment.duedate,:format=>"%d-%m-%Y") %>
           </td>
+          <td class="col-4">
+            <%= I18n.l(assignment.created_at,:format=>"%d-%m-%Y") %>
+          </td>
+          
+          
           <td class="col-4" style="color:red">
               <% unless @defaulter_registered.blank? %>
                    <%= link_to @defaulter_registered.assignment_not_given, { :action => 'defaulter_students', :id =>assignment.id} %>

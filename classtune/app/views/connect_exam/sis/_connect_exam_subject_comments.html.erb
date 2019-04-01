@@ -119,11 +119,7 @@
                                   </p>
 
                                   <p> 
-                                      <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
-                                        <%= text_field_tag "exam_marks[#{exam.id}][maximum_marks]", exam.maximum_marks.to_i, :size => '4', :class=>"marks-box" %>
-                                      <% else %>
-                                        <%= exam.maximum_marks.to_i %>
-                                      <% end %>
+                                    <%= exam.maximum_marks.to_i %>
                                   </p>
                                   <% end %>
 
@@ -204,7 +200,14 @@
                                                         <% exam_group_remarks = exam_score_split[@group_loop.to_i] %>
                                                       <% end %>
                                                     <% end %>
-                                                    <% if @exam_connect.result_type == 8 %>
+                                                    
+                                                    <% if group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK" %>
+                                                      <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
+                                                        <option value="NA" >Select</option>
+                                                        <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>
+                                                        <option value="IR" <% if exam_group_remarks.to_s == 'IR' %> selected="selected" <% end %>  >Irregular</option>
+                                                      </select>
+                                                    <% elsif @exam_connect.result_type == 8 %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                           <option value="0" >Select</option>
                                                           <option value="1" <% if exam_group_remarks.to_i == 1 %> selected="selected" <% end %> >Excellent</option>

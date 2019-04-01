@@ -27,7 +27,7 @@
               @class_name_pdf = main_course.course_name
 
               if @batch_name_pdf.blank?
-                main_batch = Batch.find_by_course_id(@class_name_pdf.id)
+                main_batch = Batch.find_by_course_id(main_course.id)
                 batch_name_spilt = main_batch.name.split(" ")
                 @batch_name_pdf = batch_name_spilt[0]
                 unless batch_name_spilt[1].blank?

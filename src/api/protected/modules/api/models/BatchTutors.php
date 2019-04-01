@@ -199,7 +199,7 @@ class BatchTutors extends CActiveRecord
         public function get_employee_batches()
         {
             $criteria=new CDbCriteria;
-            $criteria->compare('employee_id',Yii::app()->user->profileId);
+            $criteria->compare('t.employee_id',Yii::app()->user->profileId);
             $criteria->with = array(
                 "batch" => array(
                     "select" => "batch.id,batch.name",

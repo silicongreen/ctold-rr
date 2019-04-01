@@ -8417,13 +8417,13 @@ class FinanceController < ApplicationController
   #   end
   def collection_details_view
     unless params[:batch_id].nil?
-      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
+      @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
     else
       fee_collection  =  FinanceFeeCollection.find(:first, :conditions => "id IN (#{params[:id]})")
       unless fee_collection.nil?  
         fee_collection_name = fee_collection.name
         fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
-        @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id", :conditions=>"finance_fees.fee_collection_id IN (#{fee_collections.map(&:id).join(",")})")
+        @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id IN (#{fee_collections.map(&:id).join(",")})")
       end
     end
   end

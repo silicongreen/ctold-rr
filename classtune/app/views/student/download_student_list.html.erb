@@ -27,7 +27,7 @@
               @class_name_pdf = main_course.course_name
 
               if @batch_name_pdf.blank?
-                main_batch = Course.find_by_course_id(@class_name_pdf.id)
+                main_batch = Batch.find_by_course_id(@class_name_pdf.id)
                 batch_name_spilt = main_batch.name.split(" ")
                 @batch_name_pdf = batch_name_spilt[0]
                 unless batch_name_spilt[1].blank?
@@ -81,10 +81,10 @@
                   std_category = student.student_category.name
                   end
                 fee_particular = FinanceFeeParticular.find(:all,:conditions=>"is_deleted=#{false} and finance_fee_particular_category_id=54 and batch_id=#{student.batch.id}",:order=>"FIELD(receiver_type,'Student','StudentCategory','Batch'), id DESC").find{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-                monthly_fee = 0
+                monthly_fee = ""
                 unless fee_particular.blank?
                   monthly_fee = fee_particular.amount
-                  end
+                end
 
               %>
 

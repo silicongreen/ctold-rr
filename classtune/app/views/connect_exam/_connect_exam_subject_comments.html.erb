@@ -60,13 +60,14 @@
     end
   
   %>
+  <p class="flash-msg" style="text-align:center; padding-left:20px; font-size: 20px; font-weight: bold;">Please Input 0 for 0 & Absent for ab</p>  
   <table id="listing" align="center" width="100%" cellpadding="1" cellspacing="1">
-      <tr class="tr-head" style="background:#fdfff0">
+      <tr class="tr-head" style="background:#49BB4B; color:white;">
           <td>Class : <%= @exam_subject.batch.course.course_name %></td>
           <td>Version : <%= version %></td>
           <td>Shift : <%= shift %></td>
       </tr>
-      <tr class="tr-head" style="background:#fdfff0">
+      <tr class="tr-head" style="background:#49BB4B; color:white;">
           <td>Section : <%= @exam_subject.batch.course.section_name %></td>
           <td>Group : <%= @exam_subject.batch.course.group %></td>
           <td>Session : <%= @exam_subject.batch.course.session %></td>

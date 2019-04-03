@@ -171,7 +171,9 @@
                         <%
                             mark = @exam_score.marks
                             unless @exam_absent.blank?
-                              mark = @exam_absent.remarks
+                              if @exam_absent.remarks.upcase != "NA" and @exam_absent.remarks.upcase != "N/A"
+                                mark = @exam_absent.remarks
+                              end
                             end
                         %>
                         <div class="text-input-bg2">

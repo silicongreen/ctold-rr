@@ -256,6 +256,20 @@
           jj(this).closest('tr').prev().prev().find('td:nth-child('+child_number+')').find('input').focus();
           
         }
+        jj('input').each(function(){
+          if(jj(this).hasClass("input-blocked"))
+          {  
+            jj(this).focus();
+          }
+        });
+     });
+     jj('input').click(function (e) {
+       jj('input').each(function(){
+          if(jj(this).hasClass("input-blocked"))
+          {  
+            jj(this).focus();
+          }
+        });
      });
    }); 
    function checkValueMax(maxvalue,th_is)
@@ -263,10 +277,12 @@
      if(jj(th_is).val()>maxvalue || jj(th_is).val() < 0)
      {
        jj(th_is).css( "color", "red" );
+       jj(th_is).addClass( "input-blocked" );
      }
      else
      {
        jj(th_is).css( "color", "black" );
+       jj(th_is).removeClass( "input-blocked" );
      }  
      
      

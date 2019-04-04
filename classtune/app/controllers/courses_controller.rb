@@ -854,8 +854,10 @@ class CoursesController < ApplicationController
           @shifts_data = []
           @subject_data = []
           @batches.each do |b|
-            unless params[:batches_selection].include?(b.name)
-              next  
+            unless params[:batches_selection].blank?
+              unless params[:batches_selection].include?(b.name)
+                next  
+              end
             end
             @subject_data = []
             @subjects = Subject.find(:all, :conditions => ["batch_id = ?", b.id])

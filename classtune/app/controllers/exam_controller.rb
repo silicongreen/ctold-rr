@@ -5375,44 +5375,49 @@ class ExamController < ApplicationController
                 
                
 
-                if monthly_total_mark1 > 0
-                  monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
-                  monthly_total_mark1 = monthly_total_mark1.round()
-                end 
-                if monthly_total_mark2 > 0
-                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*20
-                  monthly_total_mark2 = monthly_total_mark2.round()
+                term_mark_multiplier = 0.75
+
+                if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
+                   term_mark_multiplier = 0.80
                 end
-
-
 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
-                if full_mark2 > 100
-                  total_mark2_80 = total_mark2.to_f*0.75
+                if full_mark2 > 100 or term_mark_multiplier == 0.80
+                  total_mark2_80 = total_mark2.to_f*term_mark_multiplier
                 end  
 
-                total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
+                
 
                 total_mark1 = total_ob1+total_sb1+total_pr1
                 total_mark1_80 = total_mark1.to_f
-                if full_mark1 > 100
-                  total_mark1_80 = total_mark1.to_f*0.75
+                if full_mark1 > 100 or term_mark_multiplier == 0.80
+                  total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                 end
-
-                total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
-
-
-
-
-
+                
+                monthly_mark_multiply = 20
                 if full_mark1 == 75
                   full_mark1 = 75
                 elsif full_mark1 >=100
                   full_mark1 = 100
                 else
                   full_mark1 = 50
-                end  
+                  monthly_mark_multiply = 10
+                end
+                
+                
+                if monthly_total_mark1 > 0
+                  monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
+                  monthly_total_mark1 = monthly_total_mark1.round()
+                end 
+                if monthly_total_mark2 > 0
+                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply
+                  monthly_total_mark2 = monthly_total_mark2.round()
+                end
+                
+                total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
+
+                total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
 
                 if full_mark2 == 75
                   full_mark2 = 75

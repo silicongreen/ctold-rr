@@ -6148,7 +6148,7 @@ class ExamController < ApplicationController
               end
             end 
     
-            @exam_comment = ExamConnectComment.find_by_exam_connect_id_and_student_id(connect_exam_id,std['id'].to_i)
+            
 
 
 

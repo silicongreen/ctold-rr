@@ -410,6 +410,15 @@ if @total_std.blank?
                   full_mark1 = 50
                   monthly_mark_multiply = 10
                 end
+                monthly_mark_multiply2 = 20
+                if full_mark2 == 75
+                  full_mark2 = 75
+                elsif full_mark2 >=100
+                  full_mark2 = 100
+                else
+                  full_mark2 = 50
+                  monthly_mark_multiply2 = 10
+                end 
                 
                 
                 if monthly_total_mark1 > 0
@@ -417,7 +426,7 @@ if @total_std.blank?
                   monthly_total_mark1 = monthly_total_mark1.round()
                 end 
                 if monthly_total_mark2 > 0
-                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply
+                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
                   monthly_total_mark2 = monthly_total_mark2.round()
                 end
                 
@@ -425,13 +434,7 @@ if @total_std.blank?
 
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
 
-                if full_mark2 == 75
-                  full_mark2 = 75
-                elsif full_mark2 >=100
-                  full_mark2 = 100
-                else
-                  full_mark2 = 50
-                end   
+                  
 
                 total_mark2_no_round = total_mark2
                 full_mark2 = full_mark2

@@ -465,9 +465,9 @@
                           <td class="col-pdf" width="25%">
                               <br/><br/><br/>
                           </td>
-                          <% logo_name = batch_split[0].downcase+".png" %>
+                          
                           <td class="col-pdf" width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+logo_name)), :width=>"60%" %>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"60%" %>
                           </td> 
                           <td class="col-pdf " width="25%">
                               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"60%" %>

@@ -6346,7 +6346,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position[s[2].to_i] = position
         end 
       end
@@ -6364,7 +6364,7 @@ class ExamController < ApplicationController
               position = position+1
             end
             last_grade = s[0]
-            last_grade = s[1]
+            last_total = s[1]
             if @section_all_position_batch[key].blank?
               @section_all_position_batch[key] = {}
             end
@@ -6384,7 +6384,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position_first_term[s[2].to_i] = position
         end 
       end
@@ -6399,7 +6399,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position_second_term[s[2].to_i] = position
         end 
       end
@@ -6414,7 +6414,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position_batch[s[2].to_i] = position
         end 
       end
@@ -6429,7 +6429,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
@@ -6444,7 +6444,7 @@ class ExamController < ApplicationController
             position = position+1
           end
           last_grade = s[0]
-          last_grade = s[1]
+          last_total = s[1]
           @student_position_second_term_batch[s[2].to_i] = position
         end 
       end

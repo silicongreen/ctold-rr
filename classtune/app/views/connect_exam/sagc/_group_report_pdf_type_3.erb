@@ -441,7 +441,7 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="100%" >
                   <tr class="even remarks-tr">
                     <td>
-                        <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
+                        <b>Remarks : </b> 
                             <% if failed == true %>
                               Failed
                            <% else %>
@@ -450,7 +450,6 @@
                             <% else %>
                                 
                             <% end %>
-                           <% end %>
                         <% end %>
                     </td>
                   </tr>

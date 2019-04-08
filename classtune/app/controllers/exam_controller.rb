@@ -5203,6 +5203,8 @@ class ExamController < ApplicationController
                 monthly_full_mark2 = 0
                 monthly_total_mark1 = 0
                 monthly_total_mark2 = 0
+                monthly_total_main_mark1 = 0
+                monthly_total_main_mark2 = 0
                 appeared = false
 
                 full_sb1 = 0
@@ -5380,6 +5382,11 @@ class ExamController < ApplicationController
                 if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
                    term_mark_multiplier = 0.80
                 end
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                   term_mark_multiplier = 0.90
+                end
+                
+                
 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
@@ -5414,19 +5421,40 @@ class ExamController < ApplicationController
                   monthly_mark_multiply2 = 10
                 end 
                 
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                  monthly_mark_multiply = monthly_mark_multiply/2
+                  monthly_mark_multiply2 = monthly_mark_multiply2/2
+                end
                 
-                if monthly_total_mark1 > 0
-                  monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
-                  monthly_total_mark1 = monthly_total_mark1.round()
-                end 
-                if monthly_total_mark2 > 0
-                  monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
-                  monthly_total_mark2 = monthly_total_mark2.round()
+                monthly_total_main_mark1 = monthly_total_mark1
+                monthly_total_main_mark2 = monthly_total_mark2
+                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
+                  if monthly_total_mark1 > 0
+                    monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
+                    monthly_total_mark1 = monthly_total_mark1.round()
+                  end 
+                  if monthly_total_mark2 > 0
+                    monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
+                    monthly_total_mark2 = monthly_total_mark2.round()
+                  end
                 end
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
 
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+                
+                if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_total_mark1
+                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_total_mark2
+                   if total_sb1 > 0
+                     total_sb1 = (total_sb1.to_f/full_sb1.to_f)*full_mark_sb1_converted.to_f
+                   end
+                   if total_sb2 > 0
+                     total_sb2 = (total_sb2.to_f/full_sb2.to_f)*full_mark_sb2_converted.to_f
+                   end
+                   total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1
+                   total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
+                end
 
                   
 
@@ -5548,7 +5576,7 @@ class ExamController < ApplicationController
                 end
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
 
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
@@ -5695,6 +5723,10 @@ class ExamController < ApplicationController
                     monthly_full_mark2 = 0
                     monthly_total_mark1 = 0
                     monthly_total_mark2 = 0
+                    
+                    monthly_total_main_mark1 = 0
+                    monthly_total_main_mark2 = 0
+                    
                     appeared = false
                     
                     full_sb12 = 0
@@ -5891,53 +5923,68 @@ class ExamController < ApplicationController
                       exam_type = 2
                     end
 
-                    if monthly_total_mark1 > 0
-                      monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*20
-                      monthly_total_mark1 = monthly_total_mark1.round()
-                    end 
-                    if monthly_total_mark2 > 0
-                      monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*20
-                      monthly_total_mark2 = monthly_total_mark2.round()
-                    end
-
-
-
-                    total_mark2 = total_ob22+total_sb22+total_pr22
-                    total_mark2_80 = total_mark2.to_f
-                    if full_mark2 > 100
-                      total_mark2_80 = total_mark2.to_f*0.75
-                    end  
-
-                    total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
-
-                    total_mark1 = total_ob12+total_sb12+total_pr12
-                    total_mark1_80 = total_mark1.to_f
-                    if full_mark1 > 100
-                      total_mark1_80 = total_mark1.to_f*0.75
-                    end
-
-                    total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                     
 
 
 
+                    term_mark_multiplier = 0.75
+                    if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
+                       term_mark_multiplier = 0.80
+                    end
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                       term_mark_multiplier = 0.90
+                    end
 
 
+
+                    total_mark2 = total_ob2+total_sb2+total_pr2
+                    total_mark2_80 = total_mark2.to_f
+                    if full_mark2 > 100 or term_mark_multiplier == 0.80
+                      total_mark2_80 = total_mark2.to_f*term_mark_multiplier
+                    end  
+                    total_mark1 = total_ob1+total_sb1+total_pr1
+                    total_mark1_80 = total_mark1.to_f
+                    if full_mark1 > 100 or term_mark_multiplier == 0.80
+                      total_mark1_80 = total_mark1.to_f*term_mark_multiplier
+                    end
+
+
+                    monthly_mark_multiply = 20
                     if full_mark1 == 75
                       full_mark1 = 75
                     elsif full_mark1 >=100
                       full_mark1 = 100
                     else
                       full_mark1 = 50
-                    end  
-
+                      monthly_mark_multiply = 10
+                    end
+                    monthly_mark_multiply2 = 20
                     if full_mark2 == 75
                       full_mark2 = 75
                     elsif full_mark2 >=100
                       full_mark2 = 100
                     else
                       full_mark2 = 50
-                    end  
+                      monthly_mark_multiply2 = 10
+                    end 
+
+                    if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                      monthly_mark_multiply = monthly_mark_multiply/2
+                      monthly_mark_multiply2 = monthly_mark_multiply2/2
+                    end
+
+                    monthly_total_main_mark1 = monthly_total_mark1
+                    monthly_total_main_mark2 = monthly_total_mark2
+                    if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
+                      if monthly_total_mark1 > 0
+                        monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
+                        monthly_total_mark1 = monthly_total_mark1.round()
+                      end 
+                      if monthly_total_mark2 > 0
+                        monthly_total_mark2 = (monthly_total_mark2/monthly_full_mark2)*monthly_mark_multiply2
+                        monthly_total_mark2 = monthly_total_mark2.round()
+                      end
+                    end
 
                     total_mark2_no_round = total_mark2
                     full_mark2 = full_mark2
@@ -6058,7 +6105,7 @@ class ExamController < ApplicationController
                     end
                     if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_mark1+monthly_total_mark2
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
 
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob12+total_ob22
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb12+total_sb22
@@ -6288,24 +6335,36 @@ class ExamController < ApplicationController
       @student_position_batch = {}
       
       @section_all_position_batch = {}
-   
+      last_grade = 0.0
+      last_total = 0.0
+      
       unless @student_list.blank?
         position = 0
         @sorted_students = @student_list.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position[s[2].to_i] = position
         end 
       end
     
-      
+      last_grade = 0.0
+      last_total = 0.0
       unless @section_wise_position.blank?
         @section_wise_position.each do|key,value|
           position = 0
          
           @sorted_students = @section_wise_position[key].sort
           @sorted_students.each do|s|
-            position = position+1
+            
+            if last_grade != s[0] or last_total != s[1]
+              position = position+1
+            end
+            last_grade = s[0]
+            last_grade = s[1]
             if @section_all_position_batch[key].blank?
               @section_all_position_batch[key] = {}
             end
@@ -6315,48 +6374,77 @@ class ExamController < ApplicationController
       end
       
      
-      
+      last_grade = 0.0
+      last_total = 0.0
       unless @student_list_first_term.blank?
         position = 0
         @sorted_students = @student_list_first_term.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position_first_term[s[2].to_i] = position
         end 
       end
     
+      last_grade = 0.0
+      last_total = 0.0
       unless @student_list_second_term.blank?
         position = 0
         @sorted_students = @student_list_second_term.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position_second_term[s[2].to_i] = position
         end 
       end
     
+      last_grade = 0.0
+      last_total = 0.0
       unless @student_list_batch.blank?
         position = 0
         @sorted_students = @student_list_batch.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position_batch[s[2].to_i] = position
         end 
       end
     
+      last_grade = 0.0
+      last_total = 0.0
       unless @student_list_first_term_batch.blank?
         position = 0
         @sorted_students = @student_list_first_term_batch.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position_first_term_batch[s[2].to_i] = position
         end 
       end
     
+      last_grade = 0.0
+      last_total = 0.0
       unless @student_list_second_term_batch.blank?
         position = 0
         @sorted_students = @student_list_second_term_batch.sort
         @sorted_students.each do|s|
-          position = position+1
+          if last_grade != s[0] or last_total != s[1]
+            position = position+1
+          end
+          last_grade = s[0]
+          last_grade = s[1]
           @student_position_second_term_batch[s[2].to_i] = position
         end 
       end

@@ -92,8 +92,12 @@
       <td <%= styletextall %>><%= t('start_time') %></td>
       <td <%= styletextall %>><%= t('end_time') %></td>
       <td <%= styletextall %>><%= "Converted Mark" %></td>
-      <td><%= t('do_not_create') %></td>
-      <td <%= styletextall %>>No Schedule</td>
+      <td><%= t('do_not_create') %><br/>
+          <%= link_to_function "#{t('all')}", "$$('input.delete_exam').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+          <%= link_to_function "#{t('none')}", "$$('input.delete_exam').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %></td>
+      <td <%= styletextall %>>No Schedule<br/>
+          <%= link_to_function "#{t('all')}", "$$('input.no_date_exam').each(function(checkbox) { checkbox.checked = true; });" ,:class=>"themed_text"%>,
+          <%= link_to_function "#{t('none')}", "$$('input.no_date_exam').each(function(checkbox) { checkbox.checked = false; });" ,:class=>"themed_text" %></td>
     </tr>
 
     <% f.fields_for :exams do |exam_form| %>    
@@ -103,7 +107,7 @@
         <% if @is_class_exam %>
           <% s_message = exam_form.object.subject.other_batches( @batches, false ) %>
         <% end %>  
-          <td class="col-2" <% if no_exam %> colspan="5" <% end %>>
+          <td class="col-2" <% if no_exam %> colspan="6" <% end %>>
           
           <%= exam_form.object.subject.name %><%= exam_form.hidden_field :subject_id %>
           <% if @is_class_exam %>  
@@ -169,14 +173,14 @@
         <td class="col-1">
           <div class="label-field-pair2">
             <div class="text-input-bg2">
-              <%= exam_form.check_box :_delete %>
+              <%= exam_form.check_box :_delete, :class => 'delete_exam' %>
             </div>
           </div>
         </td>
         <td class="col-1">
           <div class="label-field-pair2">
             <div class="text-input-bg2">
-              <%= exam_form.check_box :no_date %>
+              <%= exam_form.check_box :no_date, :class => 'no_date_exam' %>
             </div>
           </div>
         </td>

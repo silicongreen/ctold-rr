@@ -781,7 +781,7 @@ class ExamController < ApplicationController
              
             if @exam.maximum_marks.to_f != max_mark[:maximum_marks].to_f and (max_score.blank? or max_score.marks.to_f < max_mark[:maximum_marks].to_f)
               @exam.update_attribute(:maximum_marks,max_mark[:maximum_marks])
-            elsif !max_score.blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
+            elsif !max_score.blank? and !max_mark[:maximum_marks].blank? and max_score.marks.to_f > max_mark[:maximum_marks].to_f  
               @exam_marks_error = true
             end 
           end

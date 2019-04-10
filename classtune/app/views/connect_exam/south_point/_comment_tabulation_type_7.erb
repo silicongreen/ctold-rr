@@ -51,54 +51,6 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>4 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break1">
-                  <td colspan="100">&nbsp;</td>
-              </tr>  
-              <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
-                <td class="col-pdf">Roll</td>
-                <td class="col-pdf">Students Name</td>
-                <td class="col-pdf">Term</td>
-                <% @report_data['report']['subjects'].each do |sub| %>
-                  <td><%=  sub['code'] %><hr/>Marks&nbsp;&nbsp;|&nbsp;&nbsp;Grd</td>
-                <% end %> 
-                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                  <td><%=  sub['code'] %></td>
-                <% end %> 
-
-                <td>Total</td>
-                <td>Grade Count</td>
-
-              </tr>
-          <% elsif std_count>4 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break2">
-                  <td colspan="100">&nbsp;</td>
-              </tr>
-              <tr class="table-header">
-                <td class="col-pdf">Sl.</td>
-                <td class="col-pdf">Roll</td>
-                <td class="col-pdf">Students Name</td>
-                <td class="col-pdf">Term</td>
-                <% @report_data['report']['subjects'].each do |sub| %>
-                  <td><%=  sub['code'] %><hr/>Marks&nbsp;&nbsp;|&nbsp;&nbsp;Grd</td>
-                <% end %> 
-                <% @report_data['report']['no_exam_subject_resutl'].each do |sub| %>
-                  <td><%=  sub['code'] %></td>
-                <% end %> 
-
-                <td>Total</td>
-                <td>Grade Count</td>
-
-              </tr>
-          <% end %>    
-        
-          
-          
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>

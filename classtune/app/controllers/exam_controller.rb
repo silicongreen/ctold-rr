@@ -5587,21 +5587,21 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
 
-                  if full_ob1 > 0 && full_ob2 > 0
+                  if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
                   end
-                  if full_sb1 > 0 && full_sb2 > 0
+                  if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  
                   end
-                  if full_pr1 > 0 && full_pr2 > 0
+                  if full_pr1 > 0 || full_pr2 > 0
                     if appeared_pr
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr1+total_pr2
                     else

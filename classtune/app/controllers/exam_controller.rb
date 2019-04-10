@@ -5206,6 +5206,12 @@ class ExamController < ApplicationController
                 monthly_total_main_mark1 = 0
                 monthly_total_main_mark2 = 0
                 appeared = false
+                
+                appeared_sb = false
+                appeared_ob = false
+                appeared_pr = false
+                
+                
 
                 full_sb1 = 0
                 full_sb2 = 0
@@ -5293,6 +5299,7 @@ class ExamController < ApplicationController
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                         appeared = true
                         full_absent = false
+                        appeared_sb = true
                       end
                       if rs['quarter'] == '1'
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5316,6 +5323,7 @@ class ExamController < ApplicationController
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                         appeared = true
                         full_absent = false
+                        appeared_ob = true
                       end
                       if rs['quarter'] == '1'
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5339,6 +5347,7 @@ class ExamController < ApplicationController
                       if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
                         appeared = true
                         full_absent = false
+                        appeared_pr = true
                       end
                       if rs['quarter'] == '1'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5578,9 +5587,27 @@ class ExamController < ApplicationController
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
 
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr1+total_pr2
+                  if full_ob1 > 0 && full_ob2 > 0
+                    if appeared_ob
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
+                    end  
+                  end
+                  if full_sb1 > 0 && full_sb2 > 0
+                    if appeared_sb
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
+                    end  
+                  end
+                  if full_pr1 > 0 && full_pr2 > 0
+                    if appeared_pr
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = total_pr1+total_pr2
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
+                    end  
+                  end
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
                   if @subject_result[main_sub_id].blank?

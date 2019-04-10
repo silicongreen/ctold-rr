@@ -5207,6 +5207,7 @@ class ExamController < ApplicationController
                 monthly_total_main_mark2 = 0
                 appeared = false
                 
+                appeared_ct = false
                 appeared_sb = false
                 appeared_ob = false
                 appeared_pr = false
@@ -5282,6 +5283,9 @@ class ExamController < ApplicationController
 
 
                     if rs['exam_category'] == '1'
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_s != "AB"
+                        appeared_ct = true
+                      end
                       if rs['quarter'] == '1'
                         monthly_total_mark1 = monthly_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end  
@@ -5585,7 +5589,15 @@ class ExamController < ApplicationController
                 end
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
+                  
+                  
+                  if monthly_full_mark1 > 0 || monthly_full_mark2 > 0
+                    if appeared_ct
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = monthly_total_main_mark1+monthly_total_main_mark2
+                    else
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['cw'] = "AB"
+                    end  
+                  end
 
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob

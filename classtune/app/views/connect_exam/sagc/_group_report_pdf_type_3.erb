@@ -138,6 +138,7 @@
                               <td class="col-pdf">50</td>
                             <% end %>
                             <% class_test_mark = 0 %>
+                              <% class_test_ab = true %>
                             <% class_test_mark_full_mark = 0 %>
                             <% full_mark_subjective = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
@@ -148,6 +149,9 @@
                                 <% end %> 
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  class_test_mark = class_test_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s != "AB" %>
+                                    <% class_test_ab = false %>
+                                  <% end %>
                                 <% end %>
                               <% end %>
                             <% end %>
@@ -172,7 +176,11 @@
                             <% class_test_mark = (class_test_mark.to_f/class_test_mark_full_mark.to_f)*class_test_converted_mark %>
                             <% class_test_mark = class_test_mark.round() %>
                             <td class="col-pdf no-warp">
-                               <%= class_test_mark.to_i %>
+                               <% if class_test_ab == true %>
+                                AB
+                               <% else %> 
+                                <%= class_test_mark.to_i %>
+                               <% end %>
                             </td>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   

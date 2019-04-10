@@ -61,7 +61,7 @@
                   <td colspan="100">&nbsp;</td>
               </tr> 
               
-          <% elsif std_count>4 && extender ==1 %>
+          <% elsif std_count>3 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break2">
@@ -69,9 +69,6 @@
               </tr> 
               
           <% end %>    
-        
-          
-          
           <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
@@ -676,4 +673,9 @@
     {
         white-space: nowrap;
     } 
+    .page-break1 td{
+        height: 140px;
+        border: 1px solid #fff;
+        border-bottom: 1px solid #ADACAB;
+    }
 </style> 

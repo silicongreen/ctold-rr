@@ -194,9 +194,9 @@ no<%-# Champs21
                 <td class="col-1" <%= styletext %> ><%= I18n.l(exam.start_time,:format=>"%I:%M %p") %></td>
                 <td class="col-1" <%= styletext %> ><%= I18n.l(exam.end_time,:format=>"%I:%M %p") %></td>
               <% else %>
-                <td class="col-2">N/A</td>
-                <td class="col-1">N/A</td>
-                <td class="col-1">N/A</td>
+                <td class="col-2" <%= styletext %>>N/A</td>
+                <td class="col-1" <%= styletext %>>N/A</td>
+                <td class="col-1" <%= styletext %>>N/A</td>
               <% end %>
 
               <% if permitted_to? :edit, :exams %>

@@ -61,10 +61,10 @@
                   <td colspan="100">&nbsp;</td>
               </tr> 
               
-          <% elsif std_count>4 && extender ==1 %>
+          <% elsif std_count>3 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break2">
+              <tr class="page-break1">
                   <td colspan="100">&nbsp;</td>
               </tr> 
               
@@ -563,4 +563,9 @@
     {
         white-space: nowrap;
     } 
+    .page-break1 td{
+        height: 150px;
+        border: 1px solid #fff;
+        border-bottom: 1px solid #ADACAB;
+    }
 </style> 

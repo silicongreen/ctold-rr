@@ -77,7 +77,7 @@
                               </tr>
                               <tr>
                                   <%
-                                  transport = @transports.find{|v| v.receiver_id = std_info.id}
+                                  transport = @transports.find{|v| v.receiver_id == std_info.id}
                                 %>
                                   <td colspan="2" style="white-space: nowrap">Departure&nbsp;:&nbsp;<%= transport.route.destination unless transport.blank? %></td>
                               </tr>

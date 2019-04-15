@@ -227,8 +227,8 @@
             <% main_count = main_count+1 %>  
             <tr  class="sjws-table-header">
               <td class="sl"><%= main_count %></td>
-              <td class="st_name"><%= std[0]['name'] %></td>
-              <td class="name"><%= std[1].join(", ") %></td>
+              <td class="st_name"><%= std[0]['first_name'].to_s+" "+std[0]['last_name'].to_s %></td>
+              <td class="name" width="50%"><%= std[1].join(", ") %></td>
             </tr>
           <% end %>
         <% else %>

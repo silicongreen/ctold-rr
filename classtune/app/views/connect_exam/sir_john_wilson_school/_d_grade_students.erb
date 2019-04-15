@@ -1,0 +1,209 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<div id="page-yield" class="available_sections1">
+  <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %> 
+  <div class="page1 sjws"> 
+        <div class="logo_left">&nbsp;</div>
+        <div class="exam_title_left">
+            <p>SIR JOHN WILSON SCHOOL</p><br/>
+            <p><%= @connect_exam_obj.name.upcase %> - D GRADE STUDENTS - 
+            <% if month_number.to_i>6 %>
+              <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>/<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %>        
+            <% else %>
+              <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>/<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>
+            <% end %>
+            </p>
+        </div>
+        <div class="grad_list_right">
+            <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/340/sjws_logo.png")),:width=> '100%' %>
+        </div>
+    </div>
+  <div class="section1 row" >
+    <center>     
+      
+      <div id ="main_info" class="sjws">
+            
+       
+      </div>
+      <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+      <% c = 'even' %>
+      <% full_mark = 0 %>
+      <% colspan = 0 %>
+      <table class="sjws_table_intro" width="100%" cellspacing="0">
+        <tr>
+          <td colspan="2">
+              <p>&nbsp;</p>
+              <p><b>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %>&nbsp;<%= @batch.course.section_name %></b></p>
+              <p>&nbsp;</p>
+          </td>
+          
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          
+          <td colspan="2" align="right">
+            <p>&nbsp;</p>
+            <p><b>TERM: 
+              <% if @connect_exam_obj.name.upcase.include? ("FIRST") or @connect_exam_obj.name.upcase.include? ("1ST") %>
+                  <%=  "FIRST TERM"%>
+              <% elsif @connect_exam_obj.name.upcase.include? ("SECOND") or @connect_exam_obj.name.upcase.include? ("2ND") or @connect_exam_obj.name.upcase.include? ("HALF") %>
+                  <%=  "SECOND TERM"%>
+              <% elsif @connect_exam_obj.name.upcase.include? ("FINAL") %>
+                  <%=  "FINAL TERM"%>
+              <% end %>
+            </b></p>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+        
+      </table>
+      <table id="pdf-table" class="sjws_table_head" width="99%" cellspacing="0">
+        
+        
+        
+        
+        <tr class="sjws-table-header">
+          <td class="sl"><b>SL.</b></td>
+          <td class="st_name"><b>NAME</b></td>
+          <td class="name"><center><b><%= "M. Obt." %><hr><%="T. Marks"%></b></center></td>
+          <td class="name"><center><b><%= "%" %></b></center></td>
+          <td class="name"><center><b><%= "Grade" %></b></center></td>
+          <td class="name"><center><b><%= "H.W." %></b></center></td>
+          <td class="name"><center><b><%= "Effort" %></b></center></td>
+          <td class="st_name"><b><%= "Comment" %></b></td>
+        
+        </tr>
+        
+        <% extender = 0 %>
+        <% std_count = 0 %>
+        <% main_count = 0 %>
+        <% unless @report_data['result']['al_students'].blank? %>
+        <% @report_data['result']['al_students'].each do |std| %>
+          <%  std_count = std_count+1; %>
+          <%  main_count = main_count+1; %>
+          <% colspan = colspan+4 %>
+          <% if std_count>15 && extender ==0 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break-new">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr>    
+          <% elsif std_count>20 && extender ==1 %>
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break-new">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr> 
+          <% end %>    
+        
+        
+          <% total_mark = 0 %>
+          <% full_mark = 0 %>
+          <% @report_data['result']['ALL'].each do |rs| %>            
+           
+            <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
+              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
+              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+            <% else %>
+              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
+            <% end %>    
+           
+          <% end %>     
+          <tr  class="sjws-table-header">
+            <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
+            <td class="st_name"><%= std['name'] %></td>
+            
+            <% if total_mark > 0 %>
+              <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
+            <% else %>
+              <td class="name"><center>-</center></td>
+            <% end %>
+            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
+            <% if total_mark.to_i > 0 %>
+            <%
+                extra_class = "underline_red"
+                if main_mark.round >= 50
+                  extra_class = ""
+                end
+          
+            %>
+            <td class="name <%= extra_class %>"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
+            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+            <% if !grade.blank? and !grade.name.blank? %>
+            <td class="name"><center><%= grade.name %></center></td>
+            <% else %>
+              <td class="name"><center>-</center></td>
+            <% end %> 
+            <% else %>
+              <td class="name"><center>-</center></td> 
+              <td class="name"><center>-</center></td>
+            <% end %>
+            
+            <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
+            <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,std['id'].to_i],:include=>[:assignment]) %>
+            <%
+              extra_class = ""
+              if assignmentCount > 0
+                extra_class = "underline_red"
+                if assignmentDone > 0
+                  diff = assignmentDone.to_f/assignmentDone.to_f
+                  diff = diff.round
+                  if diff >= 80
+                    extra_class = ""
+                  end
+                end
+              end
+          
+            %>
+            <td class="name <%= extra_class %>"> <center><%= assignmentDone %><hr><%= assignmentCount %></center></td>
+            <%
+              exam_comment = ""
+              exam_effort = ""
+              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
+              if !@exam_comments.blank?
+                exam_comment = @exam_comments['comments']
+                exam_effort = @exam_comments['effort']
+              end
+            %>
+            
+            <td class="name"><center><%= exam_effort %></center></td>
+            <td class="st_name"><%= exam_comment %></td>
+          </tr>
+         
+        <% end %>
+        <% end %>
+        <tr class="tr-bottom">
+          <td colspan="100">&nbsp;</td>
+        </tr>
+      </table>
+      <% end %>
+    </center>
+  </div>
+  
+  
+</div>
+<style>
+  td.underline_red
+    {
+        text-decoration: underline !important;
+        color:red !important;
+    }
+</style>

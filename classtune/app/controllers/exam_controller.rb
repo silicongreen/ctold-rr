@@ -3154,6 +3154,17 @@ class ExamController < ApplicationController
     
   end
   
+  def d_grade_students
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    get_tabulation(@id,@batch.id)
+    @report_data = []
+    if @student_response['status']['code'].to_i == 200
+      @report_data = @student_response['data']
+    end
+  end
+  
   def comment_tabulation
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)

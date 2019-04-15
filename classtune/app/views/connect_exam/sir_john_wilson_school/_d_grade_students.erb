@@ -177,8 +177,7 @@
           end
           unless subject_failed.blank?
              @failed_students << [std,subject_failed]
-          end
-        end 
+          end 
       end
     %>  
 
@@ -229,12 +228,8 @@
             <tr  class="sjws-table-header">
               <td class="sl"><%= main_count %></td>
               <td class="st_name"><%= std[0]['name'] %></td>
-
-
-
               <td class="name"><%= std[1].join(", ") %></td>
             </tr>
-
           <% end %>
         <% else %>
         <tr class="tr-bottom">

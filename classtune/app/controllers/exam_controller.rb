@@ -3163,6 +3163,14 @@ class ExamController < ApplicationController
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
     end
+    render :pdf => 'd_grade_students',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
   def comment_tabulation

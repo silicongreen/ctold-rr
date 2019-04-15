@@ -44,37 +44,144 @@
       </div>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       
-      <% @failed_students = [] %>
-      <% @report_data['report']['students'].each do |std| %>
-        <% @report_data['report']['subjects'].each do |sub| %>
-          <% subjectdata = Subject.find(sub['id'].to_i) %>
-          <% check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i) %>
-          <% if check_std_subject.blank? and !subjectdata.elective_group_id.blank? %>
-            <% next %>
-          <% end %>
-          <%
-            full_mark = 0
-            obtain_mark = 0
+      <% 
+        @failed_students = [] 
+        @report_data['report']['students'].each do |std| 
+          subject_failed = []
+          @report_data['report']['subjects'].each do |sub| 
+            subjectdata = Subject.find(sub['id'].to_i)
+            check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i)
+            if check_std_subject.blank? and !subjectdata.elective_group_id.blank?
+              next 
+            end 
+
+            full_mark1 = 0
+            obtain_mark1 = 0
+            full_mark2 = 0
+            obtain_mark2 = 0
+            full_mark3 = 0
+            obtain_mark3 = 0
+            full_mark4 = 0
+            obtain_mark4 = 0
             unless @report_data['report']['exams'].blank?  
               @report_data['report']['exams'].each do |report|
                 if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank? and !report['result'][report['exam_id']][sub['id']][std['id']].blank?
-                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                    full_mark = full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                  if (report['quarter'].to_i == 1 or report['quarter'].to_i == 4) and report['exam_category'].to_i == 1
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                      full_mark1 = full_mark1+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                    end
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                      obtain_mark1 = obtain_mark1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end
                   end
-                  if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                    obtain_mark = obtain_mark+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                  if report['quarter'].to_i == 3 and report['exam_category'].to_i != 1
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                      full_mark2 = full_mark2+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                    end
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                      obtain_mark2 = obtain_mark2+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end
+                  end
+                  if (report['quarter'].to_i == 2 or report['quarter'].to_i == 5) and report['exam_category'].to_i == 1
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                      full_mark3 = full_mark3+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                    end
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                      obtain_mark3 = obtain_mark3+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end
+                  end
+                  if report['quarter'].to_i == 6 and report['exam_category'].to_i != 1
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                      full_mark4 = full_mark4+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                    end
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                      obtain_mark4 = obtain_mark4+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                    end
                   end
                 end
               end
             end
-        
-          %>
+            if full_mark4 > 0
+              if obtain_mark1.to_f>0 and full_mark1.to_f>0
+                main_mark1 = (obtain_mark1.to_f/full_mark1.to_f)*40 
+              else
+                main_mark1 = 0
+              end
+              if obtain_mark2.to_f>0 and full_mark2.to_f>0
+                main_mark2 = (obtain_mark2.to_f/full_mark2.to_f)*60 
+              else
+                main_mark2 = 0
+              end
+              if obtain_mark3.to_f>0 and full_mark3.to_f>0
+                main_mark3 = (obtain_mark3.to_f/full_mark3.to_f)*40 
+              else
+                main_mark3 = 0
+              end
+              if obtain_mark4.to_f>0 and full_mark4.to_f>0
+                main_mark4 = (obtain_mark4.to_f/full_mark4.to_f)*60 
+              else
+                main_mark4 = 0
+              end
+              
+              firstterm = main_mark1+main_mark2
+              if firstterm > 0
+                firstterm = (firstterm.to_f/100)*40
+              end
+              finalterm = main_mark3+main_mark4
+              if firstterm > 0
+                finalterm = (finalterm.to_f/100)*60
+              end
+              marktotal = firstterm+finalterm
+              grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
+              if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
+                subject_failed << sub['name']
+              end
+            elsif full_mark3 > 0
+              if obtain_mark3.to_f>0 and full_mark3.to_f>0
+                marktotal = (obtain_mark3.to_f/full_mark3.to_f)*100 
+              else
+                marktotal = 0
+              end
+              grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
+              if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
+                subject_failed << sub['name']
+              end
+            elsif full_mark2 > 0
+              if obtain_mark1.to_f>0 and full_mark1.to_f>0
+                main_mark1 = (obtain_mark1.to_f/full_mark1.to_f)*40 
+              else
+                main_mark1 = 0
+              end
+              if obtain_mark2.to_f>0 and full_mark2.to_f>0
+                main_mark2 = (obtain_mark2.to_f/full_mark2.to_f)*60 
+              else
+                main_mark2 = 0
+              end
+              marktotal = main_mark1+main_mark2
+              grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
+              if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
+                subject_failed << sub['name']
+              end
+            else
+              if obtain_mark1.to_f>0 and full_mark1.to_f>0
+                marktotal = (obtain_mark1.to_f/full_mark1.to_f)*100 
+              else
+                marktotal = 0
+              end
+              grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
+              if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
+                subject_failed << sub['name']
+              end
+            end
           
-        <% end %>
-      <% end %>  
-      <% c = 'even' %>
-      <% full_mark = 0 %>
-      <% colspan = 0 %>
+          end
+          unless subject_failed.blank?
+             @failed_students << [std,subject_failed]
+          end
+        end 
+      end
+    %>  
+
       <table class="sjws_table_intro" width="100%" cellspacing="0">
         <tr>
           <td colspan="2">
@@ -114,108 +221,26 @@
           <td class="st_name"><b>NAME</b></td>
           <td class="name"><center><b><%= "D Grade Subjects" %></b></center></td>
         </tr>
-        
-        <% extender = 0 %>
-        <% std_count = 0 %>
-        <% main_count = 0 %>
-        <% unless @report_data['result']['al_students'].blank? %>
-        <% @report_data['result']['al_students'].each do |std| %>
-          <%  std_count = std_count+1; %>
-          <%  main_count = main_count+1; %>
-          <% colspan = colspan+4 %>
-          <% if std_count>15 && extender ==0 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break-new">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
-          <% elsif std_count>20 && extender ==1 %>
-              <% std_count = 0 %>
-              <% extender = 1 %>
-              <tr class="page-break-new">
-                  <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr> 
-          <% end %>    
-        
-        
-          <% total_mark = 0 %>
-          <% full_mark = 0 %>
-          <% @report_data['result']['ALL'].each do |rs| %>            
-           
-            <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>              
-              <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
-              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
-            <% else %>
-              <% full_mark = full_mark+rs['maximum_marks'].to_i %>
-            <% end %>    
-           
-          <% end %>     
-          <tr  class="sjws-table-header">
-            <td class="sl"><%#= std['class_roll_no'] %><%= main_count %></td>
-            <td class="st_name"><%= std['name'] %></td>
-            
-            <% if total_mark > 0 %>
-              <td class="name"><center><%=total_mark.to_i%><hr><%=  full_mark.to_i %></center></td>
-            <% else %>
-              <td class="name"><center>-</center></td>
-            <% end %>
-            <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>
-            <% if total_mark.to_i > 0 %>
-            <%
-                extra_class = "underline_red"
-                if main_mark.round >= 50
-                  extra_class = ""
-                end
-          
-            %>
-            <td class="name <%= extra_class %>"><center><%= sprintf( "%0.02f", main_mark) %> %</center></td>  
-            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
-            <% if !grade.blank? and !grade.name.blank? %>
-            <td class="name"><center><%= grade.name %></center></td>
-            <% else %>
-              <td class="name"><center>-</center></td>
-            <% end %> 
-            <% else %>
-              <td class="name"><center>-</center></td> 
-              <td class="name"><center>-</center></td>
-            <% end %>
-            
-            <% assignmentCount = AssignmentDefaulterRegistration.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date],:include=>[:assignment]) %>
-            <% assignmentDone = AssignmentDefaulterList.count(:all, :conditions =>["assignments.subject_id = ? and assignments.is_published = '?' and assignments.duedate between ? and ? and student_id = ?",@subject_id,1,@connect_exam_obj.attandence_start_date.to_date,@connect_exam_obj.attandence_end_date.to_date,std['id'].to_i],:include=>[:assignment]) %>
-            <%
-              extra_class = ""
-              if assignmentCount > 0
-                extra_class = "underline_red"
-                if assignmentDone > 0
-                  diff = assignmentDone.to_f/assignmentDone.to_f
-                  diff = diff.round
-                  if diff >= 80
-                    extra_class = ""
-                  end
-                end
-              end
-          
-            %>
-            <td class="name <%= extra_class %>"> <center><%= assignmentDone %><hr><%= assignmentCount %></center></td>
-            <%
-              exam_comment = ""
-              exam_effort = ""
-              @exam_comments = ExamConnectSubjectComment.find(:first, :conditions => {:exam_connect_id=>@connect_exam_obj.id,:subject_id => @subject_id, :student_id => std['id']} )
-              if !@exam_comments.blank?
-                exam_comment = @exam_comments['comments']
-                exam_effort = @exam_comments['effort']
-              end
-            %>
-            
-            <td class="name"><center><%= exam_effort %></center></td>
-            <td class="st_name"><%= exam_comment %></td>
-          </tr>
-         
-        <% end %>
-        <% end %>
+       
+        <% unless @failed_students.blank? %>
+          <% main_count = 0 %>
+          <% @failed_students.each do |std| %>
+            <% main_count = main_count+1 %>  
+            <tr  class="sjws-table-header">
+              <td class="sl"><%= main_count %></td>
+              <td class="st_name"><%= std[0]['name'] %></td>
+
+
+
+              <td class="name"><%= std[1].join(", ") %></td>
+            </tr>
+
+          <% end %>
+        <% else %>
         <tr class="tr-bottom">
-          <td colspan="100">&nbsp;</td>
+          <td colspan="100">No Failed Student Found</td>
         </tr>
+        <% end %>
       </table>
       <% end %>
     </center>
@@ -223,10 +248,3 @@
   
   
 </div>
-<style>
-  td.underline_red
-    {
-        text-decoration: underline !important;
-        color:red !important;
-    }
-</style>

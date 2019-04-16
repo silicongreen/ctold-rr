@@ -52,7 +52,9 @@
               elective_group_ids = []
               @report_data['report']['subjects'].each do |subjects_main| 
                 
-                 
+                if subjects_main['elective_group_id'].to_i == 0
+                  next
+                end
                 if elective_group_ids.include?(subjects_main['elective_group_id'].to_i)
                    next
                 end
@@ -68,7 +70,7 @@
                 obtain_mark = 0
                 subject_elective.each do |sub|
                   subjectdata = Subject.find(sub['id'].to_i) %>
-                  <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                  <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>sub['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
                   <%
                   if @has_exam_student == false
                     next
@@ -92,10 +94,6 @@
                   else
                     marktotal = 0
                   end
-                  %>
-                  <%= debug subjects_main['elective_group_id']  %>
-                  <%
-                  
                   grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
                   if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
                    

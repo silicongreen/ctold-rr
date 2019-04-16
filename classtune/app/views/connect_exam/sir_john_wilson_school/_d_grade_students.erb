@@ -67,6 +67,12 @@
                 full_mark = 0
                 obtain_mark = 0
                 subject_elective.each do |sub|
+                  subjectdata = Subject.find(sub['id'].to_i) %>
+                  <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>@student.id.to_s,:subject_id=>subjects['id'].to_s,:elective_group_id=>subjectdata.elective_group_id.to_i} %>
+                  <%
+                  if @has_exam_student == false
+                    next
+                  end
                   unless @report_data['report']['exams'].blank?  
                     @report_data['report']['exams'].each do |report|
                       if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank? and !report['result'][report['exam_id']][sub['id']][std['id']].blank? 

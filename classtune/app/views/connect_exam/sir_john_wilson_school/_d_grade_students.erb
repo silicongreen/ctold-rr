@@ -52,9 +52,7 @@
               elective_group_ids = []
               @report_data['report']['subjects'].each do |subjects_main| 
                 
-                  %>
-                  <%= debug subjects_main['elective_group_id']  %>
-                  <%
+                 
                 if elective_group_ids.include?(subjects_main['elective_group_id'].to_i)
                    next
                 end
@@ -94,6 +92,9 @@
                   else
                     marktotal = 0
                   end
+                  %>
+                  <%= debug subjects_main['elective_group_name']  %>
+                  <%
                   
                   grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
                   if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"

@@ -107,8 +107,8 @@
                  @failed_students << [std,subject_failed]
               end 
           end
-        else
-            @report_data['report']['students'].each do |std| 
+        elsif @connect_exam_obj.result_type != 6 && @connect_exam_obj.result_type != 11
+        @report_data['report']['students'].each do |std| 
               subject_failed = []
               @report_data['report']['subjects'].each do |sub| 
                 subjectdata = Subject.find(sub['id'].to_i)
@@ -235,6 +235,55 @@
                     subject_failed << sub['name']
                   end
                 end
+
+              end
+              unless subject_failed.blank?
+                 @failed_students << [std,subject_failed]
+              end 
+          end
+        else
+            @report_data['report']['students'].each do |std| 
+              subject_failed = []
+              @report_data['report']['subjects'].each do |sub| 
+                subjectdata = Subject.find(sub['id'].to_i)
+                check_std_subject = StudentsSubject.find_by_student_id_and_subject_id(std['id'],sub['id'].to_i)
+                if check_std_subject.blank? and !subjectdata.elective_group_id.blank?
+                  next 
+                end 
+
+                full_mark1 = 0
+                obtain_mark1 = 0
+                full_mark2 = 0
+                obtain_mark2 = 0
+                full_mark3 = 0
+                obtain_mark3 = 0
+                full_mark4 = 0
+                obtain_mark4 = 0
+                unless @report_data['report']['exams'].blank?  
+                  @report_data['report']['exams'].each do |report|
+                    if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank? and !report['result'][report['exam_id']][sub['id']][std['id']].blank?
+                      
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                          full_mark1 = full_mark1+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                        end
+                        if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                          obtain_mark1 = obtain_mark1+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                        end
+                      
+                    end
+                  end
+                end
+                
+                if obtain_mark1.to_f>0 and full_mark1.to_f>0
+                  marktotal = (obtain_mark1.to_f/full_mark1.to_f)*100 
+                else
+                  marktotal = 0
+                end
+                grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
+                if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
+                  subject_failed << sub['name']
+                end
+               
 
               end
               unless subject_failed.blank?

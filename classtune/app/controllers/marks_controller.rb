@@ -430,84 +430,98 @@ class MarksController < ApplicationController
                 data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Pupil Progress Report</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 2
                 data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"
                 data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s}</a>"
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Pupil Progress Report</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 3
                 data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
                 data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                 data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 4
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s
                 data[k][2] = exam.subject_name.to_s
                 data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 7
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s
                 data[k][2] = exam.subject_name.to_s
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/score_sheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Score Sheet</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 5
                 data[k][0] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s} (All Result)</a>"
                 data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                 data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 6
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s+"("+exam.subject_name.to_s+")" 
                 data[k][2] = exam.subject_name.to_s
                 data[k][3] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 9
                 data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"
                 data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s}</a>"
                 data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Report Card</a>"
                 data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 10
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s
                 data[k][2] = exam.subject_name.to_s
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 11
                 data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"
                 data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s}</a>"
                 data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Report Card</a>"
                 data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 12
                 data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"
                 data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s}</a>"
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 13
                 data[k][0] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"
                 data[k][2] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s}</a>"
                 data[k][3] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Report Card</a>"
                 data[k][4] = "<a href='/exam/generated_report5?connect_exam=#{exam_connect.id.to_s}&batch_id=#{exam_connect.batch_id.to_s}#view=FitH' target='_blank'>Results</a>"
+                data[k][5] = "-"
               elsif exam_connect.result_type == 14
                 data[k][0] = exam_connect_batch.to_s 
                 data[k][1] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD ("+exam_connect.name.to_s+")</a>"
                 data[k][2] = "<a href='/exam/continues/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>REPORT CARD ("+exam.subject_name.to_s+")</a>"
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}&evaluation=1' target='_blank'>EVALUATION REPORT</a>"
                 data[k][4] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Pupil Progress Report</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 15
                 data[k][0] = exam_connect_batch.to_s
                 data[k][1] = exam_connect.name.to_s
                 data[k][2] = exam.subject_name.to_s
                 data[k][3] = "-"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               end  
               k = k+1
             elsif school_id == 348

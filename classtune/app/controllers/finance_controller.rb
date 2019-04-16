@@ -894,14 +894,14 @@ class FinanceController < ApplicationController
           else
             batches = Batch.active.map(&:id)
             extra_params = " and batches.id IN (#{batches.join(",")})"
-            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id and batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.active.map(&:id)
           extra_params = " and batches.id IN (#{batches.join(",")})"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
+          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id and batches.id = archived_students.batch_id" 
           #abort(params.inspect)
         end
         

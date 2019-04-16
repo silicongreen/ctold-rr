@@ -890,14 +890,14 @@ class FinanceController < ApplicationController
             extra_params = " and batches.id IN (#{batches.join(",")})"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id"
           else
-            batches = Batch.active.map(&:id)
-            extra_params = " and batches.id IN (#{batches.join(",")})"
-            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+#            batches = Batch.active.map(&:id)
+#            extra_params = " and batches.id IN (#{batches.join(",")})"
+#            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           end
         else
-          batches = Batch.active.map(&:id)
-          extra_params = " and batches.id IN (#{batches.join(",")})"
-          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+#          batches = Batch.active.map(&:id)
+#          extra_params = " and batches.id IN (#{batches.join(",")})"
+#          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           #abort(params.inspect)
         end
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value

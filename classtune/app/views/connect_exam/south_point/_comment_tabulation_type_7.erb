@@ -55,7 +55,7 @@
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <td class="name-std">M1<hr/>M2<hr/>AVG<hr/>TTL<hr/>CMB</td>
+            <td class="name-std">M1<hr/>M2<hr/>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>
             <% q2_mark = 0 %>
@@ -402,8 +402,8 @@
                           <%= mock1.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name1+"<hr/>" %>
                           <%= mock2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
                           <%= main_mark_only_final_term.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
-                          <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name+"<hr/>" %>
-                          <%= "&nbsp;" %>
+                          <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name %>
+                          
                           
 
                         </td> 
@@ -480,9 +480,7 @@
                           <%=  sub['subject_comment'][std['id']] %>
                         <% else %>
                           &nbsp;
-                        <% end %> 
-                         <hr/>
-                         &nbsp;
+                        <% end %>
                      </td>
                     
               <% end %>
@@ -492,8 +490,7 @@
                   <%= q2_mark.round().to_s+"<hr/>" %> 
                   
                   <%= tf_mark.round().to_s+"<hr/>" %> 
-                  <%= cmb_mark.round().to_s+"<hr/>" %> 
-                  <%= "&nbsp;" %> 
+                  <%= cmb_mark.round().to_s %> 
                   
               </td>
               <td class="no-warp">
@@ -537,8 +534,6 @@
                       <% end %>
                       <% i = i+1 %>
                   <% end %>
-                  <hr/>
-                  &nbsp;
               </td>
               
            

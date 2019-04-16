@@ -54,10 +54,10 @@
         <% @report_data['report']['students'].each do |std| %>
           <% j = j+1 %>
           <%  std_count = std_count+1; %>
-          <% if std_count>4 && extender ==0 %>
+          <% if std_count>6 && extender ==0 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break1">
+              <tr class="page-break3">
                   <td colspan="100">&nbsp;</td>
               </tr>  
               <tr class="table-header">
@@ -79,7 +79,7 @@
           <% elsif std_count>4 && extender ==1 %>
               <% std_count = 0 %>
               <% extender = 1 %>
-              <tr class="page-break2">
+              <tr class="page-break65">
                   <td colspan="100">&nbsp;</td>
               </tr>
               <tr class="table-header">
@@ -106,7 +106,7 @@
             <td class="col-pdf"><%= j %></td>
             <td class="name"><%= std['class_roll_no'] %></td>
             <td class="name-std"><%= std['first_name'].to_s+" "+std['last_name'].to_s %></td>
-            <td class="name-std">M1<hr/>M2<hr/>AVG<hr/>TTL<hr/>CMB</td>
+            <td class="name-std">M1<hr/>M2<hr/>AVG<hr/>CMB</td>
             <% total_mark = 0 %>
             <% q1_mark = 0 %>
             <% q2_mark = 0 %>
@@ -454,7 +454,7 @@
                           <%= mock2.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name2+"<hr/>" %>
                           <%= main_mark_only_final_term.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name3+"<hr/>" %>
                           <%= main_mark.round().to_s+"&nbsp;&nbsp;|&nbsp;&nbsp;"+grade_name+"<hr/>" %>
-                          <%= "&nbsp;" %>
+                          
                           
 
                         </td> 
@@ -531,9 +531,7 @@
                           <%=  sub['subject_comment'][std['id']] %>
                         <% else %>
                           &nbsp;
-                        <% end %> 
-                         <hr/>
-                         &nbsp;
+                        <% end %>
                      </td>
                     
               <% end %>
@@ -544,7 +542,6 @@
                   
                   <%= tf_mark.round().to_s+"<hr/>" %> 
                   <%= cmb_mark.round().to_s+"<hr/>" %> 
-                  <%= "&nbsp;" %> 
                   
               </td>
               <td class="no-warp">
@@ -588,8 +585,6 @@
                       <% end %>
                       <% i = i+1 %>
                   <% end %>
-                  <hr/>
-                  &nbsp;
               </td>
               
            

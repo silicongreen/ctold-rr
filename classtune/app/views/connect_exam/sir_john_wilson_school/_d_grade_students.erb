@@ -51,7 +51,7 @@
               subject_failed = []
               elective_group_ids = []
               @report_data['report']['subjects'].each do |subjects_main| 
-                subjectdata = Subject.find(subjects_main['id'].to_i)
+                subjectdata = Subject.find(subjects_main['id'].to_i,:include=>[:elective_group])
                  
                 if elective_group_ids.include?(subjects_main['elective_group_id'].to_i)
                    next
@@ -88,14 +88,14 @@
                 end
                 if full_mark > 0
                   if obtain_mark.to_f>0 and full_mark.to_f>0
-                    marktotal = (obtain_mark.to_f/full_mark.to_f)*40 
+                    marktotal = (obtain_mark.to_f/full_mark.to_f)*100 
                   else
                     marktotal = 0
                   end
                   
                   grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
                   if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
-                    subject_failed << subjects_main['elective_group_name']
+                    subject_failed << subjectdata.elective_group.name
                   end
                 end
 

@@ -25,9 +25,9 @@
 <div id="inner-tab-menu">
   <ul>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('pdf_report')}",
-        {:controller => "finance", :action => "transaction_pdf_fees", :start_date => @start_date, :end_date=>@end_date},:target => '_blank' %></li>
+        {:controller => "finance", :action => "transaction_pdf_fees", :start_date => @start_date, :end_date=>@end_date, :filter_by_course => @filter_by_course},:target => '_blank' %></li>
     <li class='themed_bg themed-dark-hover-background'><%= link_to "CSV REPORT",
-        {:controller => "finance", :action => "transaction_pdf_fees_csv", :start_date => @start_date, :end_date=>@end_date} %></li>
+        {:controller => "finance", :action => "transaction_pdf_fees_csv", :start_date => @start_date, :end_date=>@end_date, :filter_by_course => @filter_by_course} %></li>
   </ul>
 </div>
 </div>

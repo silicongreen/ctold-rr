@@ -1017,7 +1017,7 @@ class FinanceController < ApplicationController
         :bottom => 10,
         :left=> 10,
         :right => 10},
-        :orientation => 'Landscape',
+        :orientation => 'Portrait',
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
         end

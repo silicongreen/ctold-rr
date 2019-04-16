@@ -52,7 +52,9 @@
               elective_group_ids = []
               @report_data['report']['subjects'].each do |subjects_main| 
                 
-                 
+                  %>
+                  <%= debug subjects_main.inspect  %>
+                  <%
                 if elective_group_ids.include?(subjects_main['elective_group_id'].to_i)
                    next
                 end

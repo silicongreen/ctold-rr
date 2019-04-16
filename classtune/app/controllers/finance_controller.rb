@@ -881,6 +881,7 @@ class FinanceController < ApplicationController
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
             extra_params = " and batches.id IN (#{batches.join(",")})"
             extra_joins = " LEFT  JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id"
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
           elsif params[:filter_by_course].to_i == 2
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
@@ -889,15 +890,18 @@ class FinanceController < ApplicationController
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
             extra_params = " and batches.id IN (#{batches.join(",")})"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id"
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
           else
-#            batches = Batch.active.map(&:id)
-#            extra_params = " and batches.id IN (#{batches.join(",")})"
-#            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            batches = Batch.active.map(&:id)
+            extra_params = " and batches.id IN (#{batches.join(",")})"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
           end
         else
-#          batches = Batch.active.map(&:id)
-#          extra_params = " and batches.id IN (#{batches.join(",")})"
-#          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+          batches = Batch.active.map(&:id)
+          extra_params = " and batches.id IN (#{batches.join(",")})"
+          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = archived_students.batch_id" 
           #abort(params.inspect)
         end
         batches = Batch.active.map(&:id)

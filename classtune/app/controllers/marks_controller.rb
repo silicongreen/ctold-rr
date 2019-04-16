@@ -430,7 +430,7 @@ class MarksController < ApplicationController
                 data[k][2] = "<a href='/exam/effot_gradesheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Effort/Grade Sheet</a>"
                 data[k][3] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>Pupil Progress Report</a>"
                 data[k][4] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
-                data[k][5] = "-"
+                data[k][5] = "<a href='/exam/d_grade_students/#{exam_connect.id.to_s}#view=FitH' target='_blank'>D Grade Students</a>"
               elsif exam_connect.result_type == 2
                 data[k][0] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect_batch.to_s}</a>"
                 data[k][1] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s}</a>"

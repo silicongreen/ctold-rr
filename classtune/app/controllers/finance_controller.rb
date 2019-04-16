@@ -900,6 +900,8 @@ class FinanceController < ApplicationController
 #          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           #abort(params.inspect)
         end
+        batches = Batch.active.map(&:id)
+        abort(batches.inspect)
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         

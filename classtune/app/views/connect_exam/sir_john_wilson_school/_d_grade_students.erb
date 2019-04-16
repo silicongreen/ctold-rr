@@ -95,7 +95,9 @@
                   
                   grade = GradingLevel.percentage_to_grade(marktotal, @batch.id)
                   if !grade.blank? and !grade.name.blank? and grade.name.upcase == "D"
-                    subject_failed << subjectdata.elective_group.name
+                    unless subjectdata.elective_group.blank?
+                      subject_failed << subjectdata.elective_group.name
+                    end
                   end
                 end
 

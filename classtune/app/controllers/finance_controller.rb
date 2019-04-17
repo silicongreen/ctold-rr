@@ -882,7 +882,7 @@ class FinanceController < ApplicationController
           end
           tot_amount += amount
         end
-        abort(p_amount.to_s)
+        abort(p_amount.to_s + "  " + a_amount.to_s + "  " + d_amount.to_s)
         extra_params = ""
         extra_joins = ""
         @filter_by_course = params[:filter_by_course]

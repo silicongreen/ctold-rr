@@ -1280,6 +1280,25 @@ class HomeworkController extends Controller
         }
         return $uploads_dir;
     }
+    public function actionDelete()
+    {
+        $id = Yii::app()->request->getPost('id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
+        {
+            $assignments = new Assignments();
+            $assignments_data = $assignments->findByPk($paid_user_id);
+            $assignments_data->delete();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESS";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }        
 
     public function actionAddHomework()
     {

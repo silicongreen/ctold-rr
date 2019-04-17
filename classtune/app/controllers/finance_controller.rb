@@ -847,6 +847,7 @@ class FinanceController < ApplicationController
         p_amount = 0.00
         a_amount = 0.00
         d_amount = 0.00
+        amount = 0.00
         s = []
         i = 0
         tot_amount = 0.00

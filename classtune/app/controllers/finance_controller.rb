@@ -856,7 +856,7 @@ class FinanceController < ApplicationController
         extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
         extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
         extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-        
+         
         @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' " + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins)
         abort("payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'")
         #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")

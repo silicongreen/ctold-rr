@@ -131,13 +131,42 @@ class ReportController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
+        $all_section = Yii::app()->request->getPost('all_section');
         $id = Yii::app()->request->getPost('id');
         if($id && $subject_id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             $examcon = new ExamConnect();
-            $result = $examcon->getConnectExamReportAll($id,$subject_id);
+            $subject_ids = [];
+            
+            if(isset($all_section) && $all_section == "1")
+            {
+                $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name);
+                $new_connect_exam_id = array(); 
+                $new_subject_id = array();
+                $subjectObj = new Subject();
+                $subject_data = $subjectObj->findByPk($subject_id);
+                if($find_all_batches)
+                {
+                    foreach($find_all_batches as $value)
+                    {
+                        $new_exam = $connectexmObj->getConnectExamByBatch($value->id,$data->result_type,$data->name);
+                        $subject_id = $subjectObj->getSubjectByBatchCode($subject_data,$value->id);
+                        if($new_exam && $subject_id)
+                        {
+                            $result[] = $examcon->getConnectExamReportAll($new_exam,$subject_id);
+                            $subject_ids[] = $subject_id;
+                        }
+                    }    
+                }
+                
+            }
+            else
+            {    
+                $result = $examcon->getConnectExamReportAll($id,$subject_id);
+            }
            
             $response['data']['result']       = $result;
+            $response['data']['subject_ids']  = $subject_ids;
             $response['status']['code']       = 200;
             $response['status']['msg']        = "Data Found"; 
         }
@@ -327,7 +356,7 @@ class ReportController extends Controller
                     }
                     else
                     {
-                       $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name); 
+                        $find_all_batches = $batchData->getBatchsByName(false,$courseData->course_name); 
                     }    
                     
                     $new_connect_exam_id = array(); 

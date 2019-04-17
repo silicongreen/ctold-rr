@@ -3173,6 +3173,24 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
+  def section_wise_subject_comparisam
+    @id = params[:id]
+    @subject_id = params[:subject_id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id) 
+    @subject = Subject.find(@subject_id)
+    @student_response = get_tabulation_connect_exam(@id,@batch.id,true)
+    @graph_data = []
+    @grading_levels = GradingLevel.for_batch(@batch.id)
+    if @grading_levels.blank?
+      @grading_levels = GradingLevel.default
+    end
+    if @student_response['status']['code'].to_i == 200
+      @tabulation_data = @student_response['data']
+    end
+    render :layout => false
+  end
+  
   def comment_tabulation
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
@@ -5006,6 +5024,21 @@ class ExamController < ApplicationController
     http = Net::HTTP.new(api_uri.host, api_uri.port)
     request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
     request.set_form_data({"id"=>connect_exam_id,"subject_id"=>subject_id,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+    response = http.request(request)
+    @student_response = JSON::parse(response.body)
+
+  end
+  def get_subject_mark_sheet_all(connect_exam_id,subject_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+
+    api_uri = URI(api_endpoint + "api/report/groupexamsubject")
+    http = Net::HTTP.new(api_uri.host, api_uri.port)
+    request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    request.set_form_data({"id"=>connect_exam_id,"subject_id"=>subject_id,"all_section"=>"1","call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
     response = http.request(request)
     @student_response = JSON::parse(response.body)
 

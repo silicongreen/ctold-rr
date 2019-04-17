@@ -48,6 +48,7 @@
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         
@@ -106,8 +107,15 @@
         
          
       }
+      if(jj(this).attr("href").indexOf("section_wise_subject_comparisam") != -1)
+      {
+          event.preventDefault();
+          jj("#pdf_file").html("<iframe src='"+jj(this).attr("href")+"' height='700' width='100%' ></iframe> ");
+          jj("#pdf_file").show();
+      }
       
     });
+      
     
     jj(".section_id").change(function(){
       if(jj(this).val())

@@ -848,8 +848,12 @@ class FinanceController < ApplicationController
 #        a_amount = 0.00
 #        d_amount = 0.00
         @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+        @transactions.each do |pwt|
+          online_payments = Payment.find(:first, :conditions => "finance_transaction_id = #{pwt.id}")
+          abort(online_payments.inspect)
+        end
         #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-        abort(@transactions.length.to_s)
+        #abort(@transactions.length.to_s)
 #        @transactions.each do |pwt|
 #          amount = 0.00
 #          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")

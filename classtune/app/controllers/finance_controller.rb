@@ -847,11 +847,17 @@ class FinanceController < ApplicationController
 #        p_amount = 0.00
 #        a_amount = 0.00
 #        d_amount = 0.00
+        s = []
+        i = 0
         @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
         @transactions.each do |pwt|
           online_payments = Payment.find(:first, :conditions => "finance_transaction_id = #{pwt.id}")
-          abort(online_payments.inspect)
+          if online_payments.gateway_response[:amount].to_f != pwt.amount.to_f
+            s[i] = pwt.id.to_s
+            i += 1
+          end
         end
+        abort(s.inspect)
         #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
         #abort(@transactions.length.to_s)
 #        @transactions.each do |pwt|

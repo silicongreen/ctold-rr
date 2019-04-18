@@ -816,6 +816,7 @@ class AttendanceReportsController < ApplicationController
           @leaves[student.id]['percent'] = 0.0
           @leaves[student.id]['percent'] = (@leaves[student.id]['total'].to_f/@academic_days)*100 unless @academic_days == 0
         end
+        @academic_days =  @batch.find_working_days(@start_date_main,@end_date).select{|v| v<=@end_date}.count
 #        leaves_forenoon=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>true,:afternoon=>false,:month_date => @start_date..@end_date},:group=>:student_id)
 #        leaves_afternoon=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>false,:afternoon=>true,:month_date => @start_date..@end_date},:group=>:student_id)
 #        leaves_full=Attendance.count(:all,:conditions=>{:batch_id=>@batch.id,:is_leave=>0,:forenoon=>true,:afternoon=>true,:month_date => @start_date..@end_date},:group=>:student_id)

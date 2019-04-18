@@ -23,7 +23,7 @@ class ClassworkController extends Controller
     {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','intelligence','teacherintelligence','subjects','publishclasswork','singleteacher','singleclasswork', 'getsubject', 'addclasswork', 'teacherclasswork'),
+                'actions' => array('index','intelligence','delete','teacherintelligence','subjects','publishclasswork','singleteacher','singleclasswork', 'getsubject', 'addclasswork', 'teacherclasswork'),
                 'users' => array('*'),
             ),
             array('deny', // deny all users
@@ -31,6 +31,26 @@ class ClassworkController extends Controller
             ),
         );
     }
+     public function actionDelete()
+    {
+        $user_secret = Yii::app()->request->getPost('user_secret');
+        $id = Yii::app()->request->getPost('id');
+        if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
+        {
+            $classworks = new Classworks();
+            $classworks_data = $classworks->findByPk($id);
+            $classworks_data->delete();
+            $response['status']['code'] = 200;
+            $response['status']['msg'] = "SUCCESS";
+        } 
+        else
+        {
+            $response['status']['code'] = 400;
+            $response['status']['msg'] = "Bad Request";
+        }
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    } 
     
     public function actionTeacherIntelligence()
     {

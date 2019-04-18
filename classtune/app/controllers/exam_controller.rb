@@ -5455,7 +5455,7 @@ class ExamController < ApplicationController
 
                 total_mark2 = total_ob2+total_sb2+total_pr2
                 total_mark2_80 = total_mark2.to_f
-                if full_mark2 > 100 or term_mark_multiplier == 0.80
+                if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                   total_mark2_80 = total_mark2.to_f*term_mark_multiplier
                 end  
 
@@ -5463,7 +5463,7 @@ class ExamController < ApplicationController
 
                 total_mark1 = total_ob1+total_sb1+total_pr1
                 total_mark1_80 = total_mark1.to_f
-                if full_mark1 > 100 or term_mark_multiplier == 0.80
+                if full_mark1 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                   total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                 end
                 

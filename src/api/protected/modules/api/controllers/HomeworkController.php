@@ -1287,7 +1287,7 @@ class HomeworkController extends Controller
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
         {
             $assignments = new Assignments();
-            $assignments_data = $assignments->findByPk($paid_user_id);
+            $assignments_data = $assignments->findByPk($id);
             $assignments_data->delete();
             $response['status']['code'] = 200;
             $response['status']['msg'] = "SUCCESS";

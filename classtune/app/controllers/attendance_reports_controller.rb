@@ -757,28 +757,25 @@ class AttendanceReportsController < ApplicationController
 #          #@academic_days=  working_days.select{|v| v<=@end_date}.count
 #        end
 #        @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @start_date..@end_date})
-        @start_date_main = @start_date
-        @students.each do |student|
-          @start_date = @start_date_main
-          if @mode=='Overall'
-            @start_date = @batch.start_date.to_date
-            @end_date = @local_tzone_time.to_date
-          end
-          unless student.admission_date.blank?
-            if @start_date < student.admission_date.to_date
-              @start_date = student.admission_date.to_date
+          @start_date_main = @start_date
+#          @academic_days=  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+          #working_days.select{|v| v<=@end_date}.count
+          
+#          @student_leaves = Attendance.find(:all,:conditions =>{:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+          @students.each do |student|
+            @start_date = @start_date_main
+            unless student.admission_date.blank?
+              if student.admission_date.to_date > @start_date
+                @start_date = student.admission_date.to_date
+              end
             end
-          end
 
-          @academic_days = 0
-          @student_leaves = []
-          if @end_date >= @start_date
-            @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
-            @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
-          end
-
-          @academic_days=  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
-          @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+            @academic_days = 0
+            @student_leaves = []
+            if @end_date >= @start_date
+              @academic_days =  @batch.find_working_days(@start_date,@end_date).select{|v| v<=@end_date}.count
+              @student_leaves = Attendance.find(:all,:conditions =>{:student_id=>student.id,:batch_id=>@batch.id,:month_date => @start_date..@end_date})
+            end
 #          if @mode=='Overall'
 #              @start_date = @batch.start_date.to_date
 #              @end_date = @local_tzone_time.to_date

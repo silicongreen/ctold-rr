@@ -191,12 +191,12 @@ class PaymentSettingsController < ApplicationController
           
         end
         
-        dt = order_datetime.split(".")
+        dt = trans_date.split(".")
         transaction_datetime = dt[0]
         
         if verified.to_i == 0
           if transaction_datetime.nil?
-            dt = trans_date.split(".")
+            dt = order_datetime.split(".")
             transaction_datetime = dt[0]
           end
         end
@@ -1005,12 +1005,12 @@ class PaymentSettingsController < ApplicationController
               :pan=>pan
             }
 
-            dt = order_datetime.split(".")
+            dt = trans_date.split(".")
             transaction_datetime = dt[0]
 
             if verified.to_i == 0
               if transaction_datetime.nil?
-                dt = trans_date.split(".")
+                dt = order_datetime.split(".")
                 transaction_datetime = dt[0]
               end
             end

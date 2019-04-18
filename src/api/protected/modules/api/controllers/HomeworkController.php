@@ -1282,6 +1282,7 @@ class HomeworkController extends Controller
     }
     public function actionDelete()
     {
+        $user_secret = Yii::app()->request->getPost('user_secret');
         $id = Yii::app()->request->getPost('id');
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher && $id)
         {

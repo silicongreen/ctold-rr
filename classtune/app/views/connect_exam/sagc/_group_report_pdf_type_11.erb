@@ -545,17 +545,17 @@
                   <tr class="even remarks-tr">
                       <td>
 
-                          <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
+                          <b>Remarks : </b> 
                             <% if failed == true %>
                               Failed
+                           <% else %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <%= grade.description %>
                             <% else %>
-                              <% if !grade.blank? and !grade.name.blank? %>
-                                <%= grade.description %>
-                              <% else %>
-
-                              <% end %>
+                                
+                              
                             <% end %>
-                          <% end %>
+                        <% end %>
 
                       </td>
                   </tr>

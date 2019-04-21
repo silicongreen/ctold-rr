@@ -121,6 +121,7 @@ class StudentsSubjects extends CActiveRecord
             if($batch_id)
             {
                 $criteria->compare('t.batch_id', $batch_id);
+                $criteria->compare('Subjectstudent.batch_id', $batch_id);
             }
             if(Yii::app()->user->schoolId == 319)
             {

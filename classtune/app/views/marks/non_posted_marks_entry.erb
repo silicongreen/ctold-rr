@@ -140,7 +140,14 @@ unless @all_group_exams.blank?
                         <% if @subject_exam.include?(connect_exam_subject.id.to_s+"_"+exam.id.to_s) %>
                           <% if @has_exam_score.include?(exam.id.to_s+"_"+connect_exam_subject.id.to_s) %>
                             <% if !@total_scores[exam.id.to_s].blank? && !@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].blank? && !@total_scores_given[exam.id.to_s].blank? && !@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].blank? %>
-                              <td class="col-pdf"><%= @total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_i-@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].to_i %></td>
+                              
+                              <% score_given = @total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_i-@total_scores_given[exam.id.to_s][connect_exam_subject.id.to_s].to_i %>
+                              <% 
+                              if score_given < 0
+                                score_given = 0
+                              end  
+                              %>
+                              <td class="col-pdf"><%= score_given %></td>
                             <% elsif !@total_scores[exam.id.to_s].blank? && !@total_scores[exam.id.to_s][connect_exam_subject.id.to_s].blank? %>
                               <td class="col-pdf"><%= @total_scores[exam.id.to_s][connect_exam_subject.id.to_s].to_s %></td>
                             <% else %>

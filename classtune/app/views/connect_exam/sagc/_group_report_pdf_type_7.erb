@@ -548,9 +548,7 @@
                             </td>
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
-                              <% if grade.credit_points.to_i == 0 %>
-                                <% failed = true %>
-                              <% end %>
+                              
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
                             <% else %>
@@ -629,6 +627,20 @@
                   </tr>
                   
               </table>
+              <% 
+                total_att = ""
+                absent = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_att = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      absent = all_comments_array[1]
+                    end
+                  end
+                end
+              %>
               <div class="grade_information">
                 <table id="pdf-table" class="evaluation top-margin-20" width="100%" >
                         <tr class="odd">
@@ -639,7 +651,7 @@
                                 Working Days
                             </td> 
                             <td class="col-pdf align-center" width="50%">
-                                <%= @report_data['total'] %>
+                                <%= total_att %>
                             </td>
                         </tr>
                         <tr class="odd">
@@ -647,7 +659,7 @@
                                 Attendance
                             </td> 
                             <td class="col-pdf align-center " width="50%">
-                                <b><%= @report_data['present'] %></b>
+                                <b><%= absent %></b>
                             </td>
                         </tr>    
                 </table>
@@ -681,10 +693,10 @@
                               <br/><br/><br/>
                           </td>
                           <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
                           </td> 
                           <td class="col-pdf " width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"60%" %>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"70%" %>
                           </td>
                       </tr>
                       <tr class="even">

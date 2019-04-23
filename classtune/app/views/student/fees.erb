@@ -186,6 +186,7 @@
                 <% end %>
                 <%- @dates_paid.each do |d| -%>
                   <%  finance_fee = @student.finance_fee_by_date(d) %>
+                  
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0

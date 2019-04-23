@@ -920,9 +920,25 @@ class FinanceController < ApplicationController
           #abort(params.inspect)
         end
         
+        @filter_by_payment_type = params[:filter_by_payment_type]
+        unless params[:filter_by_payment_type].nil?
+          if params[:filter_by_payment_type].to_i != 0
+            filter_by_payment_type = "MB"
+            if params[:filter_by_payment_type].to_i == 1
+              filter_by_payment_type = "MB"
+            elsif params[:filter_by_payment_type].to_i == 2
+              filter_by_payment_type = "ITCL"
+            end 
+            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
+          end
+        end
+        
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         
+        #abort("finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params)
         @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
         
         @transactions_advances = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")

@@ -5687,12 +5687,14 @@ class ExamController < ApplicationController
                   end
                   
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                  if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
+                  if !grade.blank? && !grade.name.blank?
                     if subject_failed == true
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
                     end
+                  end
+                  if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     if grade.credit_points.to_i == 0 or subject_failed == true
 
                       if @subject_result[main_sub_id]['failed'].blank?

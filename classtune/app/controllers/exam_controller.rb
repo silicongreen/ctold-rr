@@ -5121,9 +5121,7 @@ class ExamController < ApplicationController
         #          end
         #        end
         @group_name_upper = group_name	
-        if batchobj.name == "Morning English"	
-          group_name = "Morning English"	
-        end
+     
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
@@ -5142,9 +5140,7 @@ class ExamController < ApplicationController
           exam_type = 1
           connect_exam = connect_exam+1
           std_group_name = batch_data.course.group
-          if batch_data.name == "Morning English"	
-            std_group_name = "Morning English"	
-          end
+        
 
 
           tab['students'].each do |std| 

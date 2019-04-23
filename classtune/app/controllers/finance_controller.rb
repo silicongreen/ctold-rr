@@ -919,7 +919,7 @@ class FinanceController < ApplicationController
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           #abort(params.inspect)
         end
-        abort(extra_params.inspect)
+        #abort(extra_params.inspect)
         @filter_by_payment_type = params[:filter_by_payment_type]
         unless params[:filter_by_payment_type].nil?
           if params[:filter_by_payment_type].to_i != 0

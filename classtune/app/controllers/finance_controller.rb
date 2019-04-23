@@ -5530,7 +5530,7 @@ class FinanceController < ApplicationController
       #@batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       @batch   = @date.batch
-      abort(@batch.inspect)
+      abort(@date.batch_id.inspect)
       student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
       
       

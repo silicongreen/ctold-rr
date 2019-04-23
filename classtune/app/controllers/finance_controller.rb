@@ -5527,7 +5527,9 @@ class FinanceController < ApplicationController
   
   def load_fees_submission_batch
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
-      #@batch   = Batch.find(params[:batch_id])
+      fees = FinanceFee.first(:conditions=>"fee_collection_id = #{params[:date]} and student_id = #{params[:student]}" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')
+      abort(fees.inspect)
+      @batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       @batch   = @date.batch
       abort(@date.batch_id.inspect)

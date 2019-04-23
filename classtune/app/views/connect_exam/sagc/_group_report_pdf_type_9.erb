@@ -474,13 +474,8 @@
                       <td class="align-left no-warp">Class/Group</td>
                       <td class="no-warp">
                           <b>
-                              <% if @batch.name == "Morning English" %>
-                                <% if !@student_position_first_term_batch[@student.id.to_i].blank? %> 
-                                  <%= @student_position_first_term_batch[@student.id.to_i] %> out of <%= @total_std_batch %>
-                                <% else %>
-                                  -
-                                <% end %>
-                              <% elsif !@student_position_first_term[@student.id.to_i].blank? %> 
+                             
+                              <% if !@student_position_first_term[@student.id.to_i].blank? %> 
                                 <%= @student_position_first_term[@student.id.to_i] %> out of <%= @total_std %>
                               <% else %>
                                 -

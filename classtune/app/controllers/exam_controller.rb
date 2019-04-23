@@ -6316,7 +6316,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grand_grade_point.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
-                  grade_point_avg = 5
+                  grade_point_avg = 5.00
                   grand_grade_point = total_subject*5
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point
@@ -6327,7 +6327,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
-                  grade_point_avg = 5
+                  grade_point_avg = 5.00
                   grand_grade_point1 = total_subject*5
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point1
@@ -6338,7 +6338,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
-                  grade_point_avg = 5
+                  grade_point_avg = 5.00
                   grand_grade_point2 = total_subject*5
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point2

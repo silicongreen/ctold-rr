@@ -49,8 +49,9 @@
               <td class="align-left"><%= batch_split[1] %></td> 
           </tr>
           <tr class="even">
+              <% group_split = @batch.course.group.split(" ") %>
               <td class="align-right col-pdf" width="20%">Group </td>
-              <td class="align-left"><%= @batch.course.group %></td>
+              <td class="align-left"><%= group_split[0] %></td>
               <td class="align-right col-pdf" width="20%" >Category </td>
               <td class="align-left"><%= @student.student_category.name unless @student.student_category.blank? %></td>
           </tr>

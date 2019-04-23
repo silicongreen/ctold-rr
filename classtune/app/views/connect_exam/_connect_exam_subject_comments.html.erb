@@ -69,7 +69,8 @@
       </tr>
       <tr class="tr-head" style="background:#49BB4B; color:white;">
           <td>Section : <%= @exam_subject.batch.course.section_name %></td>
-          <td>Group : <%= @exam_subject.batch.course.group %></td>
+          <% group_split = @exam_subject.batch.course.group.split(" ") %>
+          <td>Group : <%= group_split[0] %></td>
           <td>Session : <%= @exam_subject.batch.course.session %></td>
       </tr>
   </table>

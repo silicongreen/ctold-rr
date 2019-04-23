@@ -467,8 +467,8 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
-                          <% total_subject = total_subject+1 %>
-                          <td class="col-pdf"><%= total_subject %></td>
+                          <% total_subject_main = total_subject_main+1 %>
+                          <td class="col-pdf"><%= total_subject_main %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
@@ -866,6 +866,7 @@
         height: 0px;
         border: 1px solid #fff;
         border-top: 1px solid Black;
+        border-bottom: 1px solid Black;
     }
     
 

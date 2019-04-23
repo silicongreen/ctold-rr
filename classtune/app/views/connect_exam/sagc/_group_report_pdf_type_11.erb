@@ -463,6 +463,7 @@
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
+                      <% failed_subject = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -509,8 +510,7 @@
                                   <% else %>
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
-                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? %>
-                                    
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
                                     <% failed_subject = true %>
                                    <% end %>
                                 <% else %>
@@ -536,7 +536,11 @@
                             <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 %>
-                                <% failed = true %>
+                                <% failed_subject == true %>
+                              <% end %>
+                              <% if  failed_subject == true %>
+                                <% grade.credit_points = 0.0 %>
+                                <% grade.name = "F" %>
                               <% end %>
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>

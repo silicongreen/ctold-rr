@@ -455,6 +455,103 @@
                       <td class="col-pdf no-warp" colspan="2"></b></td>
                       <td class="col-pdf"><b><%= total_grade %></b></td>
                   </tr> 
+                  <tr class="page-break-grade">
+                     <td colspan="100"></td>
+                  </tr> 
+                  <% unless @report_data['report']['subjects'].blank? %> 
+                    <% @report_data['report']['subjects'].each do |subjects| %>
+                      <% if subjects['grade_subject'].to_i != 1 %>
+                        <% next %>
+                      <% end %>
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_mark = 0 %>
+                          <% full_mark = 0 %>
+                          <% total_subject = total_subject+1 %>
+                          <td class="col-pdf"><%= total_subject %></td>
+                          <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
+                          <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>   
+
+                              <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                              <% end %> 
+                            <% end %>
+                          <% end %>
+
+
+                          <% 
+                          highest_mark = 0
+                          if !@subject_highest_1st_term.blank? and !@subject_highest_1st_term[subjects['id'].to_i].blank?
+                            highest_mark = @subject_highest_1st_term[subjects['id'].to_i].to_f
+                            end
+
+                        %>
+
+                          <% if full_mark.to_f > 0 %>
+                            <% full_mark_all = 50 %>
+                            <% if full_mark.to_f >= 100 %>
+                             <% full_mark_all = 100 %>
+                             <td class="col-pdf">100</td>
+                            <% elsif full_mark.to_f == 75 %>  
+                             <% full_mark_all = 75 %>
+                             <td class="col-pdf">75</td>
+                            <% else %>  
+                              <td class="col-pdf">50</td>
+                            <% end %> 
+                            <% main_exam_mark = 0 %>
+                            <% unless @report_data['report']['exams'].blank? %>  
+                            <% @report_data['report']['exams'].each do |report| %>   
+                              <% if report['exam_category'] != '1' %>
+                                <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
+                                  <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                    <td class="col-pdf">AB</td>
+                                  <% else %>
+                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  <% end %>
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? %>
+                                    
+                                    <% failed_subject = true %>
+                                   <% end %>
+                                <% else %>
+                                  <td class="col-pdf">-</td>
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                            <% end %>  
+                            <% avg_mark = main_exam_mark.to_f %>
+                                  
+                            
+                            <% tota_mark_with_monthly = avg_mark %>
+                            <td class="col-pdf no-warp">
+                                <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
+                            </td>
+                            <%
+                              main_mark = (tota_mark_with_monthly.to_f.round/full_mark_all.to_f)*100
+                            %>
+                            <% grand_total_fraction = grand_total_fraction+tota_mark_with_monthly.to_f %>
+                            <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
+                            <td class="col-pdf no-warp">
+                               <%= highest_mark.to_f.round.to_i %>
+                            </td>
+                            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <% if grade.credit_points.to_i == 0 %>
+                                <% failed = true %>
+                              <% end %>
+                              <td class="col-pdf"><%= grade.name %></td>
+                              <td class="col-pdf"><%= grade.credit_points %></td>
+                            <% else %>
+                              <td class="col-pdf">-</td>
+                              <td class="col-pdf">-</td>
+                            <% end %>
+                          <% else  %>
+                            <td class="col-pdf" colspan="100">-</td>
+                          <% end %>      
+
+                      </tr> 
+                    <% end %>  
+                  <% end %>
                 
                     
                   
@@ -767,6 +864,7 @@
         border: 1px solid #fff;
         border-top: 1px solid Black;
     }
+    
 
 
 </style>     

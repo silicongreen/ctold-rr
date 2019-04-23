@@ -5527,10 +5527,12 @@ class FinanceController < ApplicationController
   
   def load_fees_submission_batch
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
-      @batch   = Batch.find(params[:batch_id])
+      #@batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       student_ids=@date.finance_fees.find(:all,:conditions=>"batch_id='#{@batch.id}'").collect(&:student_id).join(',')
-
+      
+      @batch   = @date.batch
+      
       @dates   = @batch.finance_fee_collections
       
       @from_batch_fee = true

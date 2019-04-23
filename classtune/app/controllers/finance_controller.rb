@@ -843,47 +843,47 @@ class FinanceController < ApplicationController
 #          end
 #        end
 #        abort(online_id.inspect)
-        trans_ids = []
-        p_amount = 0.00
-        a_amount = 0.00
-        d_amount = 0.00
-        amount = 0.00
-        s = []
-        i = 0
-        tot_amount = 0.00
-        
-        batches = Batch.active.map(&:id)
-        extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
-        extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-        extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-         
-        @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' " + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins)
-        #abort("payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'")
-        #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
-        #abort(@transactions.length.to_s)
-        @transactions.each do |pwt|
-          amount = 0.00
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount += pt.amount.to_f
-            p_amount += pt.amount.to_f
-          end
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount += pt.amount.to_f
-            a_amount += pt.amount.to_f
-          end
-          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-          @particular_wise_transactions.each do |pt|
-            amount -= pt.amount.to_f
-            d_amount += pt.amount.to_f
-          end
-          if amount.to_f != pwt.amount.to_f
-            trans_ids << pwt.id
-          end
-          tot_amount += amount
-        end
-        abort(trans_ids.inspect)
+#        trans_ids = []
+#        p_amount = 0.00
+#        a_amount = 0.00
+#        d_amount = 0.00
+#        amount = 0.00
+#        s = []
+#        i = 0
+#        tot_amount = 0.00
+#        
+#        batches = Batch.active.map(&:id)
+#        extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+#        extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+#        extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+#         
+#        @transactions = FinanceTransaction.find(:all, :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' " + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins)
+#        #abort("payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'")
+#        #@transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
+#        #abort(@transactions.length.to_s)
+#        @transactions.each do |pwt|
+#          amount = 0.00
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount += pt.amount.to_f
+#            p_amount += pt.amount.to_f
+#          end
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount += pt.amount.to_f
+#            a_amount += pt.amount.to_f
+#          end
+#          @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+#          @particular_wise_transactions.each do |pt|
+#            amount -= pt.amount.to_f
+#            d_amount += pt.amount.to_f
+#          end
+#          if amount.to_f != pwt.amount.to_f
+#            trans_ids << pwt.id
+#          end
+#          tot_amount += amount
+#        end
+#        abort(trans_ids.inspect)
         extra_params = ""
         extra_joins = ""
         @filter_by_course = params[:filter_by_course]

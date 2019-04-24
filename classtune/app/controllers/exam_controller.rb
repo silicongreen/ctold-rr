@@ -5447,6 +5447,10 @@ class ExamController < ApplicationController
                    term_mark_multiplier = 0.90
                 end
                 
+                if sub['grade_subject'].to_i == 1
+                  term_mark_multiplier = 1.00
+                end
+                
                 
 
                 total_mark2 = total_ob2+total_sb2+total_pr2
@@ -6022,10 +6026,14 @@ class ExamController < ApplicationController
 
                     term_mark_multiplier = 0.75
                     if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
-                       term_mark_multiplier = 0.80
+                      term_mark_multiplier = 0.80
                     end
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                       term_mark_multiplier = 0.90
+                      term_mark_multiplier = 0.90
+                    end
+                    
+                    if sub['grade_subject'].to_i == 1
+                      term_mark_multiplier = 1.00
                     end
 
 

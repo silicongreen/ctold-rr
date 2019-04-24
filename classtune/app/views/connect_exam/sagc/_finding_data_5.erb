@@ -400,6 +400,10 @@ if @total_std.blank?
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                    term_mark_multiplier = 0.90
                 end
+              
+                if sub['grade_subject'].to_i == 1
+                  term_mark_multiplier = 1.00
+                end
                 
                 
 
@@ -978,6 +982,9 @@ if @total_std.blank?
                     end
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                        term_mark_multiplier = 0.90
+                    end
+                    if sub['grade_subject'].to_i == 1
+                      term_mark_multiplier = 1.00
                     end
 
 

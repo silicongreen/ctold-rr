@@ -2883,6 +2883,7 @@ class ExamController < ApplicationController
     end
     @class = params[:class]
     finding_data5()
+    abort(@student_position_first_term.inspect)
  
     @std_resutl = []
    
@@ -6588,7 +6589,7 @@ class ExamController < ApplicationController
       end
     end
     
-    abort(@student_position_first_term.inspect)
+    
   end  
   
   

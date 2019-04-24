@@ -2883,12 +2883,7 @@ class ExamController < ApplicationController
     end
     @class = params[:class]
     finding_data5()
-    
-    if @student_position_first_term.blank?
-      @subject_highest_1st_term = @subject_highest_2nd_term
-      @student_position_first_term = @student_position_second_term
-      @student_position_first_term_batch = @student_position_second_term_batch
-    end
+ 
     @std_resutl = []
    
     iloop = 0
@@ -2908,7 +2903,6 @@ class ExamController < ApplicationController
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
-    
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,
       :margin => {    :top=> 32,
@@ -6415,7 +6409,7 @@ class ExamController < ApplicationController
                   end
                 end
               end 
-              if std_group_name == group_name
+              if std_group_name == group_name || connect_exam_id.to_i == @connect_exam_obj.id
                 @student_list_first_term << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]
                 if @section_wise_position[batch_data.id].blank?
                   @section_wise_position[batch_data.id] = []
@@ -6528,8 +6522,6 @@ class ExamController < ApplicationController
           @student_position_first_term[s[2].to_i] = position
         end 
       end
-      
-      mert_list_sagc
       
       
     

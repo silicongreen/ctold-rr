@@ -2883,7 +2883,7 @@ class ExamController < ApplicationController
     end
     @class = params[:class]
     finding_data5()
-    abort(@student_position_first_term.inspect)
+    
  
     @std_resutl = []
    
@@ -6397,7 +6397,7 @@ class ExamController < ApplicationController
             end  
         
             if u_grade1 == 0  
-              grand_total_new = 50000-grand_total1_with_fraction
+              grand_total_new = 55500-grand_total1_with_fraction
               grand_grade_new = 50000-grand_grade_point1
               if connect_exam_id.to_i == @connect_exam_obj.id || (std_group_name == group_name && !@class.blank?)
                 @student_list_first_term_batch << [grand_grade_new.to_f,grand_total_new.to_f,std['id'].to_i]

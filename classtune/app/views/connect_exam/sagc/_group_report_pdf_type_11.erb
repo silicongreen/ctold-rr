@@ -206,8 +206,10 @@
                                     <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? %>
-                                    <% failed = true %>
-                                    <% failed_subject = true %>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'] != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'] != 25 %>
+                                      <% failed = true %>
+                                      <% failed_subject = true %>
+                                    <% end %>
                                    <% end %>
                                 <% else %>
                                   <td class="col-pdf">-</td>

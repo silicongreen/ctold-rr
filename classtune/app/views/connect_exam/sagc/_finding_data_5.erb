@@ -1,5 +1,5 @@
 <%
-if @total_std.blank?
+ if @total_std.blank?
       if @grading_levels.blank?
         @grading_levels = GradingLevel.for_batch(@batch.id)
         if @grading_levels.blank?
@@ -75,7 +75,7 @@ if @total_std.blank?
         #          end
         #        end
         @group_name_upper = group_name	
-      
+     
         connect_exam = 0
         batch_loop = 0
         @tabulation_data['report'].each do |tab|
@@ -335,8 +335,10 @@ if @total_std.blank?
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
+                           if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                           end
                           end
                         end 
                       end  
@@ -344,8 +346,10 @@ if @total_std.blank?
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
+                           if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade2 = u_grade2+1
+                              subject_failed = true
+                           end 
                           end
                         end 
                       end
@@ -359,8 +363,10 @@ if @total_std.blank?
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
+                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                            end
                           end
                         end 
                       end  
@@ -368,8 +374,10 @@ if @total_std.blank?
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
+                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade2 = u_grade2+1
+                              subject_failed = true
+                            end
                           end
                         end 
                       end
@@ -400,7 +408,7 @@ if @total_std.blank?
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
                    term_mark_multiplier = 0.90
                 end
-              
+                
                 if sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
@@ -641,12 +649,14 @@ if @total_std.blank?
                   end
                   
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-                  if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
+                  if !grade.blank? && !grade.name.blank?
                     if subject_failed == true
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
                     end
+                  end
+                  if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
                     if grade.credit_points.to_i == 0 or subject_failed == true
 
                       if @subject_result[main_sub_id]['failed'].blank?
@@ -880,8 +890,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end  
@@ -892,8 +904,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                               if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11 
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                               end
                               end
                             end 
                           end
@@ -909,8 +923,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end  
@@ -921,8 +937,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end
@@ -938,8 +956,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end  
                           end  
@@ -950,8 +970,10 @@ if @total_std.blank?
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end
                           end
@@ -978,11 +1000,12 @@ if @total_std.blank?
 
                     term_mark_multiplier = 0.75
                     if @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4
-                       term_mark_multiplier = 0.80
+                      term_mark_multiplier = 0.80
                     end
                     if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                       term_mark_multiplier = 0.90
+                      term_mark_multiplier = 0.90
                     end
+                    
                     if sub['grade_subject'].to_i == 1
                       term_mark_multiplier = 1.00
                     end
@@ -1176,8 +1199,15 @@ if @total_std.blank?
                         @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                       end
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
+                      if !grade.blank? && !grade.name.blank?
+                        if subject_failed == true
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
+                        else
+                          @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
+                        end
+                      end
                       if !grade.blank? && !grade.name.blank? && sub2['grade_subject'].to_i != 1
-                        @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
+                        
                         if grade.credit_points.to_i == 0 or subject_failed == true
 
                           if @subject_result[main_sub_id]['failed'].blank?
@@ -1513,4 +1543,5 @@ if @total_std.blank?
         end 
       end
     end
+  end
   %>

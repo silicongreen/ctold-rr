@@ -5381,8 +5381,10 @@ class ExamController < ApplicationController
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
+                           if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                           end
                           end
                         end 
                       end  
@@ -5390,8 +5392,10 @@ class ExamController < ApplicationController
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
+                           if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade2 = u_grade2+1
+                              subject_failed = true
+                           end 
                           end
                         end 
                       end
@@ -5405,8 +5409,10 @@ class ExamController < ApplicationController
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade1 = u_grade1+1
-                            subject_failed = true
+                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade1 = u_grade1+1
+                              subject_failed = true
+                            end
                           end
                         end 
                       end  
@@ -5414,8 +5420,10 @@ class ExamController < ApplicationController
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
                           unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
-                            u_grade2 = u_grade2+1
-                            subject_failed = true
+                            if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                              u_grade2 = u_grade2+1
+                              subject_failed = true
+                            end
                           end
                         end 
                       end
@@ -5928,8 +5936,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end  
@@ -5940,8 +5950,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                               if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11 
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                               end
                               end
                             end 
                           end
@@ -5957,8 +5969,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end  
@@ -5969,8 +5983,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end 
                           end
@@ -5986,8 +6002,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end  
                           end  
@@ -5998,8 +6016,10 @@ class ExamController < ApplicationController
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                u_grade1 = u_grade1+1
-                                subject_failed = true
+                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'] != 11
+                                  u_grade1 = u_grade1+1
+                                  subject_failed = true
+                                end
                               end
                             end
                           end

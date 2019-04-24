@@ -2887,7 +2887,7 @@ class ExamController < ApplicationController
     @std_resutl = []
    
     iloop = 0
-    abort(@student_position_first_term.inspect)
+    
     if !@student_result.blank?
       @student_result.each do |std_result|
         
@@ -6587,6 +6587,8 @@ class ExamController < ApplicationController
         end 
       end
     end
+    
+    abort(@student_position_first_term.inspect)
   end  
   
   

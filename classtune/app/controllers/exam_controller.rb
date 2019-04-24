@@ -6527,7 +6527,7 @@ class ExamController < ApplicationController
         end 
       end
       
-      abort(@student_list_first_term.inspect)
+      abort(@student_position_first_term.inspect)
       
       
     

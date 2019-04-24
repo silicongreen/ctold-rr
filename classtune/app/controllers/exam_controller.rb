@@ -6526,6 +6526,8 @@ class ExamController < ApplicationController
           @student_position_first_term[s[2].to_i] = position
         end 
       end
+      
+      @student_position_first_term = @section_all_position_batch[@batch.id]
     
       last_grade = 0.0
       last_total = 0.0

@@ -186,8 +186,8 @@
                                 <% if report['exam_category'] == '4' %>
                                   <% full_ob = full_ob+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
-                                <% if report['exam_category'] == '3' %>
-                                  <% full_pr = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                <% if report['exam_category'] == '5' %>
+                                  <% full_pr = full_pr+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                 <% end %>
                               <% end %> 
                             <% end %>
@@ -227,7 +227,7 @@
                                   <% if report['exam_category'] == '4' %>
                                     <% total_ob = total_ob+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
-                                  <% if report['exam_category'] == '3' %>
+                                  <% if report['exam_category'] == '5' %>
                                     <% total_pr = total_pr+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% end %>
                                   <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
@@ -280,8 +280,8 @@
                                       <% if report['exam_category'] == '4' %>
                                         <% full_ob = full_ob+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
-                                      <% if report['exam_category'] == '3' %>
-                                        <% full_pr = full_mark+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
+                                      <% if report['exam_category'] == '5' %>
+                                        <% full_pr = full_pr+report['result'][report['exam_id']][subjects2['id']]['full_mark'].to_i %>
                                       <% end %>
                                     <% end %> 
                                   <% end %>
@@ -309,7 +309,7 @@
                                         <% if report['exam_category'] == '4' %>
                                           <% total_ob = total_ob+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
-                                        <% if report['exam_category'] == '3' %>
+                                        <% if report['exam_category'] == '5' %>
                                           <% total_pr = total_pr+report['result'][report['exam_id']][subjects2['id']]['marks_obtained'].to_f %>
                                         <% end %>
                                       <% end %>

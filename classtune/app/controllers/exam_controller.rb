@@ -2883,7 +2883,7 @@ class ExamController < ApplicationController
     end
     @class = params[:class]
     finding_data5()
-    abort(@student_position_first_term.inspect)
+    
     if @student_position_first_term.blank?
       @subject_highest_1st_term = @subject_highest_2nd_term
       @student_position_first_term = @student_position_second_term

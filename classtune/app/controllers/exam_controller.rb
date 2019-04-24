@@ -3012,19 +3012,13 @@ class ExamController < ApplicationController
         tmp_row << "F"
       end 
       
-      if @batch.name == "Morning English" 
-        if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
-          tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
-        else
-          tmp_row << ""
-        end  
+      
+      if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
+        tmp_row <<  @student_position_first_term[std_result['id'].to_i]
       else
-        if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
-          tmp_row <<  @student_position_first_term[std_result['id'].to_i]
-        else
-          tmp_row << ""
-        end 
-      end
+        tmp_row << ""
+      end 
+      
       
       if !@student_position_first_term_batch.blank? && !@student_position_first_term_batch[std_result['id'].to_i].blank?
         tmp_row << @student_position_first_term_batch[std_result['id'].to_i]
@@ -5938,7 +5932,7 @@ class ExamController < ApplicationController
                             total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
-                            if !grade.blank? and !grade.credit_points.blank? && total_sb1.to_i != 62
+                            if !grade.blank? and !grade.credit_points.blank? and total_sb1.to_i != 62
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                   u_grade1 = u_grade1+1
@@ -5952,7 +5946,7 @@ class ExamController < ApplicationController
                             total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
-                            if !grade.blank? and !grade.credit_points.blank? && total_sb2.to_i != 62
+                            if !grade.blank? and !grade.credit_points.blank? and total_sb2.to_i != 62
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11 
                                   u_grade1 = u_grade1+1

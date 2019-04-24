@@ -2907,6 +2907,7 @@ class ExamController < ApplicationController
       end
       @student_result.sort! { |x, y| x["position"] <=> y["position"] }
     end
+    abort(@student_position_first_term.inspect)
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,
       :margin => {    :top=> 32,
@@ -6527,7 +6528,7 @@ class ExamController < ApplicationController
         end 
       end
       
-      abort(@student_position_first_term.inspect)
+      mert_list_sagc
       
       
     

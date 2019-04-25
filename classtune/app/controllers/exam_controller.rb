@@ -6321,7 +6321,30 @@ class ExamController < ApplicationController
     
             
 
-
+              if exam_type == 3
+                grade_point_avg = grand_grade_point.to_f/total_subject.to_f
+                grade_point_avg = grade_point_avg.round(2)
+                if grade_point_avg > 5
+                  grade_point_avg = 5.00
+                  grand_grade_point = total_subject*5
+                end
+              end
+              if exam_type == 1
+                grade_point_avg = grand_grade_point1.to_f/total_subject.to_f
+                grade_point_avg = grade_point_avg.round(2)
+                if grade_point_avg > 5
+                  grade_point_avg = 5.00
+                  grand_grade_point1 = total_subject*5
+                end
+              end
+              if exam_type == 2
+                grade_point_avg = grand_grade_point2.to_f/total_subject.to_f
+                grade_point_avg = grade_point_avg.round(2)
+                if grade_point_avg > 5
+                  grade_point_avg = 5.00
+                  grand_grade_point2 = total_subject*5
+                end
+              end
 
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               @total_std_batch = @total_std_batch+1
@@ -6525,7 +6548,7 @@ class ExamController < ApplicationController
         end 
       end
       
-      abort(@student_list_first_term.inspect)
+     
       
       
     

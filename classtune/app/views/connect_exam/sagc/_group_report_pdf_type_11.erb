@@ -390,6 +390,7 @@
                                     <% grade.name = "F" %>
                                   <% end %>
                             
+                                  <% failed_subject = false %>
                                   <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                                   <% else %>

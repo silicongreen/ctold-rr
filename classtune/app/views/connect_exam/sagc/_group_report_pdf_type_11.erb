@@ -130,21 +130,22 @@
                   <% failed = false %>
                   <% already_done = false %>
                   <% subjects_done  = [] %>
-                  <%
-                    total_sb = 0
-                    total_ob = 0
-                    total_pr = 0
-                    
-                    full_sb = 0
-                    full_ob = 0
-                    full_pr = 0
-                  %>
+                  
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i == 1 %>
                         <% next %>
                       <% end %>
                       <% failed_subject = false %>
+                      <%
+                        total_sb = 0
+                        total_ob = 0
+                        total_pr = 0
+                    
+                        full_sb = 0
+                        full_ob = 0
+                        full_pr = 0
+                      %>              
                   
                       
                       <% if subjects_done.include?(subjects['id'].to_i) %>
@@ -275,6 +276,7 @@
                                 <% end %>
                                 <% total_mark = 0 %>
                                 <% full_mark = 0 %>
+                                
                                 <% unless @report_data['report']['exams'].blank? %>  
                                   <% @report_data['report']['exams'].each do |report| %>   
                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects2['id']].blank?  and !report['result'][report['exam_id']][subjects2['id']]['full_mark'].blank? %>
@@ -390,7 +392,7 @@
                                     <% grade.name = "F" %>
                                   <% end %>
                             
-                                  <% failed_subject = false %>
+                                  
                                   <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                                   <% else %>
@@ -418,7 +420,7 @@
                                 <% grade.credit_points = 0.0 %>
                                 <% grade.name = "F" %>
                               <% end %>
-                              <% failed_subject = false %>
+                              
                                 <% if fourth_subject.blank? %>
                                     <% total_grade = total_grade.to_f+grade.credit_points.to_f %>
                                 <% else %>

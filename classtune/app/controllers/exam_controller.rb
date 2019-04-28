@@ -3059,8 +3059,17 @@ class ExamController < ApplicationController
       
     end
     batch_split = @batch.name.split(" ")
+    
+    group_name = ""
+    unless @batch.course.group.blank?
+      group_split = @batch.course.group.split(" ")
+      unless group_split[2].blank?
+        group_split[0] = group_split[0]+" "+group_split[1]
+      end
+      group_name = group_split[0]
+    end
     sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Tabulation Sheet : "+@connect_exam_obj.name.to_s+")
- Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+ Program :"+@batch.course.course_name.to_s+" || Group :"+group_name.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
       ")
     sheet1.add_footer("TIPS :: M.C = Merit in Class  ||  M.S = Merit in Section  ||  +RT = Raw Total  ||  +CT = Converted Total")
     spreadsheet = StringIO.new 

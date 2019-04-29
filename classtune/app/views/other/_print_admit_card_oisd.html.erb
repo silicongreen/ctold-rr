@@ -56,22 +56,22 @@
                           <td><font size="2">Name:</font></td>
                           <td><b><font size="2">&nbsp;:&nbsp;<%= std_info.full_name %></font></b></td>
                           <td></td>
-                          <td><font size="2">Roll No:</td>
-                        <td><font size="2">&nbsp;:&nbsp;<%= std_info.class_roll_no %></font></td>
+                          <td style="text-align:right;"><font size="2">Roll No:</td>
+                          <td><font size="2">&nbsp;:&nbsp;<%= std_info.class_roll_no %></font></td>
                           
                       </tr>
                       <tr>
-                        <td style="text-align:right;"><font size="2">Student Id</font></td>
+                        <td ><font size="2">Student Id</font></td>
                         <td><font size="2">&nbsp;:&nbsp;<%= std_info.admission_no %></font></td>
                         <td></td>
-                        <td><font size="2">Session:</td>
+                        <td style="text-align:right;"><font size="2">Session:</td>
                         <td><font size="2">&nbsp;:&nbsp;<%= @term_year %></font></td>
                         
                         
                         
                       </tr>
                       <tr>
-                        <td style="text-align:right;"><font size="2">Class</font></td>
+                        <td><font size="2">Class</font></td>
                         <td><font size="2">&nbsp;:&nbsp;<%= std_info.batch.course.course_name %></font></td>
                         <td></td>
                         <td style="text-align:right;"><font size="2">Exam</font></td>

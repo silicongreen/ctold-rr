@@ -56,7 +56,7 @@
                           <td><font size="2">Name:</font></td>
                           <td><b><font size="2">&nbsp;:&nbsp;<%= std_info.full_name %></font></b></td>
                           <td></td>
-                          <td style="text-align:right;"><font size="2">Roll No:</td>
+                          <td><font size="2">Roll No</td>
                           <td><font size="2">&nbsp;:&nbsp;<%= std_info.class_roll_no %></font></td>
                           
                       </tr>
@@ -64,7 +64,7 @@
                         <td ><font size="2">Student Id</font></td>
                         <td><font size="2">&nbsp;:&nbsp;<%= std_info.admission_no %></font></td>
                         <td></td>
-                        <td style="text-align:right;"><font size="2">Session:</td>
+                        <td><font size="2">Session</td>
                         <td><font size="2">&nbsp;:&nbsp;<%= @term_year %></font></td>
                         
                         
@@ -74,7 +74,7 @@
                         <td><font size="2">Class</font></td>
                         <td><font size="2">&nbsp;:&nbsp;<%= std_info.batch.course.course_name %></font></td>
                         <td></td>
-                        <td style="text-align:right;"><font size="2">Exam</font></td>
+                        <td><font size="2">Exam</font></td>
                         <td><font size="2">&nbsp;:&nbsp;<%= @exam_name %></font></td>
                       </tr>
                       
@@ -82,7 +82,7 @@
               </table>       
             </div>
             <div class="col-xs-12" style="margin-top:0px; font-size:10px; text-align: right; padding: 0px 20px; ">
-                <p><img src="/images/school_logo/oisd/sign.png" width="40" /></p>
+                <p style="margin-right: 10px;"><img src="/images/school_logo/oisd/sign-new.png" width="40" /></p>
                 <p><font size="2">Principal</font></p>
             </div>
             
@@ -102,7 +102,7 @@
         <% if i % 3 == 0 %>
           <div style="float:left;clear:both; width:100%; height:5mm;"></div>
         <% else %>
-          <div style="float:left;clear:both; width:100%; height:4mm;"></div>
+          <div style="float:left;clear:both; width:100%; height:6mm;"></div>
         <% end %>
       <% end %>
     </body>

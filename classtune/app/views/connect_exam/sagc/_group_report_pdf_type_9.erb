@@ -14,7 +14,7 @@
     %> 
       <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
-      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></h2>
+      <h2 align="center" class="font-24"><%= @connect_exam_obj.name %> <%= @batch.course.session %></h2>
 
 
       <table id="pdf-table" class="tbl-lign-left" width="52%" cellspacing="0">

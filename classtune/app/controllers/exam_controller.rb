@@ -5981,10 +5981,12 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if (grade.credit_points.to_i == 0 and fourth_subject.blank?) and (total_ob1 != )
-                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
+                              if grade.credit_points.to_i == 0 && fourth_subject.blank?
+                                if total_ob1 != 26 || full_ob1 != 60 || !fourth_subject.blank?
+                                  if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
+                                    u_grade1 = u_grade1+1
+                                    subject_failed = true
+                                  end
                                 end
                               end
                             end 
@@ -5995,10 +5997,12 @@ class ExamController < ApplicationController
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
-                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
-                                  u_grade1 = u_grade1+1
-                                  subject_failed = true
+                              if grade.credit_points.to_i == 0 && fourth_subject.blank?
+                                if total_ob2 != 26 || full_ob2 != 60 || !fourth_subject.blank?
+                                  if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
+                                    u_grade1 = u_grade1+1
+                                    subject_failed = true
+                                  end
                                 end
                               end
                             end 

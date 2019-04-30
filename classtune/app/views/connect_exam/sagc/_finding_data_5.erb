@@ -900,8 +900,8 @@
                             total_sb12 = total_sb12+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb1.to_f/full_sb1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
-                            if !grade.blank? and !grade.credit_points.blank? and total_sb1.to_i != 62
-                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
+                            if !grade.blank? and !grade.credit_points.blank?
+                              if (grade.credit_points.to_i == 0 and fourth_subject.blank?) or (total_sb1 < 64 and full_sb1 == 140 and fourth_subject.blank?)
                                 if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
@@ -914,8 +914,8 @@
                             total_sb22 = total_sb22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_sb2.to_f/full_sb2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
-                            if !grade.blank? and !grade.credit_points.blank? and total_sb2.to_i != 62
-                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
+                            if !grade.blank? and !grade.credit_points.blank?
+                              if (grade.credit_points.to_i == 0 and fourth_subject.blank?) or (total_sb2 < 64 and full_sb2 == 140 and fourth_subject.blank?)
                                if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11 
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
@@ -934,7 +934,7 @@
                             main_sub_grade = (total_ob1.to_f/full_ob1.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
                             if !grade.blank? and !grade.credit_points.blank?
-                              if grade.credit_points.to_i == 0 and fourth_subject.blank?
+                              if (grade.credit_points.to_i == 0 and fourth_subject.blank?) and (total_ob1 != 26 or full_ob1 != 60 or !fourth_subject.blank?)
                                 if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                   u_grade1 = u_grade1+1
                                   subject_failed = true
@@ -947,7 +947,7 @@
                             total_ob22 = total_ob22+rs['result'][rs['exam_id']][sub2['id']][std['id']]['marks_obtained'].to_f
                             main_sub_grade = (total_ob2.to_f/full_ob2.to_f)*100
                             grade = GradingLevel.percentage_to_grade(main_sub_grade, @batch.id)
-                            if !grade.blank? and !grade.credit_points.blank?
+                            if (!grade.blank? and !grade.credit_points.blank?) and (total_ob2 != 26 or full_ob2 != 60 or !fourth_subject.blank?)
                               if grade.credit_points.to_i == 0 and fourth_subject.blank?
                                 if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                                   u_grade1 = u_grade1+1
@@ -1296,7 +1296,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point = total_subject*5
+                  grand_grade_point = total_subject*5.00
                 end
               end
               if exam_type == 1
@@ -1304,7 +1304,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point1 = total_subject*5
+                  grand_grade_point1 = total_subject*5.00
                 end
               end
               if exam_type == 2
@@ -1312,7 +1312,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point2 = total_subject*5
+                  grand_grade_point2 = total_subject*5.00
                 end
               end
 
@@ -1330,7 +1330,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point = total_subject*5
+                  grand_grade_point = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
@@ -1341,7 +1341,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point1 = total_subject*5
+                  grand_grade_point1 = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
@@ -1352,7 +1352,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point2 = total_subject*5
+                  grand_grade_point2 = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point2
                 @student_result[loop_std]['grand_total'] = grand_total2

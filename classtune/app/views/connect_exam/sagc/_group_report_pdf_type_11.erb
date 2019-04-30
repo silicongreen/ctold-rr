@@ -347,7 +347,7 @@
                                       sb_main = (total_sb.to_f/full_sb.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(sb_main, @batch.id)
                                       if !grade.blank? and !grade.name.blank?
-                                        if grade.credit_points.to_i == 0 && fourth_subject.blank? && total_sb.to_i != 62
+                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?) or (total_sb.to_i < 64 && full_sb.to_i == 140 && fourth_subject.blank?)
                                           failed_subject = true
                                         end
                                       end   
@@ -364,7 +364,7 @@
                                       ob_main = (total_ob.to_f/full_ob.to_f)*100
                                       grade = GradingLevel.percentage_to_grade(ob_main, @batch.id)
                                       if !grade.blank? and !grade.name.blank? && (total_ob != 22 || full_ob != 25)
-                                        if grade.credit_points.to_i == 0 && fourth_subject.blank?
+                                        if (grade.credit_points.to_i == 0 && fourth_subject.blank?) && (total_ob != 26 || full_ob != 60)
                                           failed_subject = true
                                         end
                                       end   

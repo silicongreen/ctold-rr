@@ -304,7 +304,9 @@
                     </tr>
                   <% elsif !params[:show_one].blank? %>
                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-
+                        <% date_one = @date.due_date.to_date+1.days %>
+                        <% date_two = date_one+1.months %>
+                        <% date_two = date_two-1.days %>
                         <td colspan="2" class="col-8"><b>Payable amount with fine of 1000 Tk( if paid after <b><%= date_two.to_date.strftime("%d-%m-%Y").to_s %></b> )</td>
                         <%
                           

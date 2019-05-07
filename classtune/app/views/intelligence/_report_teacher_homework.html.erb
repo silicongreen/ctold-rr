@@ -55,7 +55,7 @@
                               ballon_text = ""; 
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank?
                                 employee['homework_given_data'].each do |hw|
-                                  ballon_text = ballon_text+"<p>"+hw['subjects']+" "+hw['course']+" "+hw['section']+"</p>"
+                                  ballon_text = ballon_text+"\n"+hw['subjects']+" "+hw['course']+" "+hw['section']
                                 end
                               end
                           
@@ -134,7 +134,7 @@
    .CSSTableGenerator table tr td 
   {
      font-weight: bold;
-     overflow: hidden;
+     overflow: visible;
   }
   .checkmark {
     display:inline-block;

@@ -451,8 +451,9 @@
                 of next session (<%= @date.due_date.to_date.strftime("%Y").to_s %>-<%= @date.due_date.to_date.strftime("%Y").to_i+1 %>) Last date of enrolment is <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>.</h3>
               <% end %>
               <% if !params[:show_one].blank? && !@promoted_to.blank? && @promoted_to == "Grade 9" %>
-                <h3 align="center">N.B. Laboratory fees will be taken after subject selecting within one month of regular classes.</h3>
+                <h3 align="center">N.B. Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
               <% end %>
+              <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result.</h3>
               <h3>&nbsp;</h3>
               <h3>&nbsp;</h3>
               <table class="signature">

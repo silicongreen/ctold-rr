@@ -55,14 +55,14 @@
                               ballon_text = ""; 
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank?
                                 employee['homework_given_data'].each do |hw|
-                                  ballon_text = ballon_text+"\n"+hw['subjects']+" "+hw['course']+" "+hw['section']
+                                  ballon_text = ballon_text+hw['subjects']+" "+hw['course']+" "+hw['section']+" &#10;"
                                 end
                               end
                           
                             %>
                             <td class="col-2"><b>
                                     <% unless ballon_text.blank?  %>
-                                      <button data-balloon="<%= ballon_text %>" data-balloon-pos="up"><%= employee['homework_given'] %></button>
+                                      <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= employee['homework_given'] %></button>
                                     <% else %>
                                       <%= employee['homework_given'] %>
                                     <% end %>  

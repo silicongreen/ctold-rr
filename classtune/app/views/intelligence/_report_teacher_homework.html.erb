@@ -52,10 +52,12 @@
                             <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
                             <td class="col-2"><b><%= employee['total_class'] %></b></td>
                             <%
+                              hw_given_id = []
                               ballon_text = ""; 
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank?
                                 employee['homework_given_data'].each do |hw|
                                   ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+") &#10;"
+                                  hw_given_id << hw['subjects_id'].to_i
                                 end
                               end
                           
@@ -74,7 +76,23 @@
                                 home_not_given = 0
                               end
                             %>
-                            <td class="col-2"><b><%= home_not_given %></b></td>
+                            <%
+                              ballon_text = ""; 
+                              if home_not_given.to_i > 0 && !employee['class_details'].blank?
+                                employee['class_details'].each do |hw|
+                                  unless hw_given_id.include?(hw['id'].to_i)
+                                    ballon_text = ballon_text+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+") &#10;"
+                                  end
+                                end
+                              end
+                          
+                            %>
+                            <td class="col-2"><b>
+                            <% unless ballon_text.blank?  %>
+                              <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= home_not_given %></button>
+                            <% else %>
+                              <%= home_not_given %>
+                            <% end %></b></td>
                             <td class="col-2"><b><%= employee['frequency'] %></b></td>
 
                           </tr> 

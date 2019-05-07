@@ -487,7 +487,55 @@ class Assignments extends CActiveRecord
                 )
             );
             $data = $this->findAll($criteria);
-            return $data;
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                $marge = array();
+                if(isset($all_batchs) && $all_batchs)
+                {
+                    $marge['subject_ids_used'] = implode(",", $all_batchs);
+                }    
+              
+                $marge['subjects'] = $value["subjectDetails"]->name;
+                $marge['batch'] = $value["subjectDetails"]['Subjectbatch']->name;
+                
+                $marge['attachment_file_name'] = ""; 
+                if($value->attachment_file_name)
+                {
+                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                }
+                
+                $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
+                $marge['section'] = "";
+                if($value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name)
+                {
+                    $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                }
+                $marge['defaulter_registration'] = 0;
+                $assingmentRegistrationObj = new AssignmentDefaulterRegistrations();
+                $asregData = $assingmentRegistrationObj->findByAssignmentId($value->id);
+                if($asregData)
+                {
+                   $marge['defaulter_registration'] = 1; 
+                }
+                
+                $marge['subjects_id'] = $value["subjectDetails"]->id;
+                $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
+                $marge['name'] = $value->title;
+                $marge['content'] = $value->content;
+                $marge['type'] = $value->assignment_type;
+                $marge['id'] = $value->id;
+                $marge['is_editable'] = $this->checkHtmlTag($value->content);
+                $marge['is_published'] = $value->is_published;
+                $assignment_answer = new AssignmentAnswers();
+                $marge['done'] = $assignment_answer->doneTotal($value->id);
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
         }        
         
         public function getAssignmentTotalTeacherDate($employee_id,$start_date,$end_date)

@@ -102,10 +102,11 @@ class Assignments extends CActiveRecord
                       }
                       
                       $emp_homework_data[$i]['homework_given'] = $assignment->getAssignmentTotalTeacherDate($value->id,$start_date,$date);
-                      $emp_homework_data[$i]['homework_given_data'] = $assignment->getAssignmentTotalList($value->id,$start_date,$date);
+                      
                       
                       if( $time_range == "day" )
                       {
+                        $emp_homework_data[$i]['homework_given_data'] = $assignment->getAssignmentTotalList($value->id,$start_date,$date);
                         $emp_homework_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
                         $emp_homework_data[$i]['total_class'] = count($emp_homework_data[$i]['class_details']);
                       }

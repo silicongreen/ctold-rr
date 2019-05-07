@@ -485,7 +485,7 @@ class Assignments extends CActiveRecord
                     )
                 )
             );
-            $data = $this->find($criteria);
+            $data = $this->findAll($criteria);
             return $data;
         }        
         

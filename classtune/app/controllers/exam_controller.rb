@@ -5143,7 +5143,7 @@ class ExamController < ApplicationController
           std_group_name = batch_data.course.group
         
 
-          if tab['students'].blank?
+          if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
             next
           end
           tab['students'].each do |std| 

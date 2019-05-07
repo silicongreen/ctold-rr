@@ -126,7 +126,8 @@ class Classworks extends CActiveRecord
                       
                       if($time_range=="day")
                       {
-                        $emp_classwork_data[$i]['total_class'] = $timetable->getTotalClassTeacher($date,$value->id);
+                            $emp_classwork_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
+                            $emp_classwork_data[$i]['total_class'] = count($emp_classwork_data[$i]['class_details']);
                       }
                       else
                       {

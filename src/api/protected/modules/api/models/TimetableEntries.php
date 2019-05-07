@@ -536,11 +536,11 @@ class TimetableEntries extends CActiveRecord {
                             return $a['class_start_time'] - $b['class_start_time'];
             });
           
-            return count($time_table);
+            return $time_table;
         }
         else
         {
-            return 0;
+            return array();
         } 
     }
     public function getTotalClass($date,$batch_name=false,$class_name=false,$batch_id=false)

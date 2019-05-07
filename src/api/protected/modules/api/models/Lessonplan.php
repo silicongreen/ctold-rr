@@ -122,7 +122,8 @@ class Lessonplan extends CActiveRecord
                       
                       if($time_range=="day")
                       {
-                        $emp_lessonplan_data[$i]['total_class'] = $timetable->getTotalClassTeacher($date,$value->id);
+                            $emp_lessonplan_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
+                            $emp_lessonplan_data[$i]['total_class'] = count($emp_lessonplan_data[$i]['class_details']);
                       }
                       else
                       {

@@ -16,6 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/balloon-css/0.5.0/balloon.min.css">
 <% unless @report_data.blank? %>
 <div class="clearfix"></div>
   <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
@@ -32,7 +33,8 @@
                         <td><b>Teacher Name</b></td> 
                         <td><b>Department</b></td> 
                         <td><b>Total Class</b></td> 
-                        <td><b>Homework Given</b></td> 
+                        <td><b>Homework Given</b></td>
+                        <td><b>Homework Not Given</b></td>
                         <td><b>Frequency</b></td> 
                     </tr>    
                     <% unless @report_data['employee_data'].blank? %>  
@@ -49,7 +51,30 @@
                             <td class="col-2"><b><%= employee['emp_name'] %></b></td>
                             <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
                             <td class="col-2"><b><%= employee['total_class'] %></b></td>
-                            <td class="col-2"><b><%= employee['homework_given'] %></b></td>
+                            <%
+                              ballon_text = ""; 
+                              if employee['homework_given'].to_i > 0 && @time_range=="days" && !employee['homework_given_data'].blank?
+                                employee['homework_given_data'].each do |hw|
+                                  ballon_text = ballon_text+"<p>"+hw['subjectDetails']['name']+" "+hw['subjectDetails']['Subjectbatch']['courseDetails']['course_name']+" "+hw['subjectDetails']['Subjectbatch']['courseDetails']['section_name']+"</p>"
+                                end
+                              end
+                          
+                            %>
+                            <td class="col-2"><b>
+                                    <% unless ballon_text.blank?  %>
+                                      <button data-balloon="<%= ballon_text %>" data-balloon-pos="up"><%= employee['homework_given'] %></button>
+                                    <% else %>
+                                      <%= employee['homework_given'] %>
+                                    <% end %>  
+                                      
+                                </b></td>
+                            <% 
+                              home_not_given = employee['total_class'].to_i-employee['homework_given'].to_i
+                              if home_not_given < 0
+                                home_not_given = 0
+                              end
+                            %>
+                            <td class="col-2"><b><%= home_not_given %></b></td>
                             <td class="col-2"><b><%= employee['frequency'] %></b></td>
 
                           </tr> 

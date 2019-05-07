@@ -102,10 +102,12 @@ class Assignments extends CActiveRecord
                       }
                       
                       $emp_homework_data[$i]['homework_given'] = $assignment->getAssignmentTotalTeacherDate($value->id,$start_date,$date);
+                      $emp_homework_data[$i]['homework_given_data'] = $assignment->getAssignmentTotalList($value->id,$start_date,$date);
                       
-                      if($time_range=="day")
+                      if( $time_range == "day" )
                       {
-                        $emp_homework_data[$i]['total_class'] = $timetable->getTotalClassTeacher($date,$value->id);
+                        $emp_homework_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
+                        $emp_homework_data[$i]['total_class'] = count($emp_homework_data[$i]['class_details']);
                       }
                       else
                       {
@@ -454,6 +456,39 @@ class Assignments extends CActiveRecord
                 return 0;
             }
         }
+        public function getAssignmentTotalList($employee_id,$start_date,$end_date)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->together = true;
+           
+            $criteria->compare('t.is_published', 1);
+            
+            $criteria->compare('t.employee_id', $employee_id);
+            
+            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."'");
+            $criteria->with = array(
+                'subjectDetails' => array(
+                    'select' => 'subjectDetails.id,subjectDetails.name,subjectDetails.icon_number',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name,courseDetails.section_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            $data = $this->find($criteria);
+            return $data;
+        }        
+        
         public function getAssignmentTotalTeacherDate($employee_id,$start_date,$end_date)
         {
             

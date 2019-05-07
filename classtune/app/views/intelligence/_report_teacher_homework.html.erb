@@ -55,7 +55,7 @@
                               ballon_text = ""; 
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank?
                                 employee['homework_given_data'].each do |hw|
-                                  ballon_text = ballon_text+hw['subjects']+" "+hw['course']+" "+hw['section']+" &#10;"
+                                  ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+") &#10;"
                                 end
                               end
                           

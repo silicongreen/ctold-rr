@@ -79,7 +79,7 @@
                                       
                                 </b></td>
                             <% 
-                              home_not_given = employee['total_class'].to_i-employee['homework_given'].to_i
+                              home_not_given = employee['total_class'].to_i-hw_given_id.count
                               if home_not_given < 0
                                 home_not_given = 0
                               end

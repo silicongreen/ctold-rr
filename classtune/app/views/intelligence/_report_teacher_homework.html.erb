@@ -52,21 +52,29 @@
                             <td class="col-2"><b><%= employee['emp_dep'] %></b></td>
                             <td class="col-2"><b><%= employee['total_class'] %></b></td>
                             <%
+                              class_sub_id = []
+                              if !employee['class_details'].blank?
+                                employee['class_details'].each do |hw|
+                                    class_sub_id << hw['id'].to_i
+                                end
+                              end
                               hw_given_id = []
                               ballon_text = ""; 
-                              if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank?
+                              if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank? 
                                 employee['homework_given_data'].each do |hw|
-                                  ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+") &#10;"
-                                  hw_given_id << hw['subjects_id'].to_i
+                                  if class_sub_id.include?(hw['subjects_id'].to_i)
+                                    ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+") &#10;"
+                                    hw_given_id << hw['subjects_id'].to_i
+                                  end
                                 end
                               end
                           
                             %>
                             <td class="col-2"><b>
                                     <% unless ballon_text.blank?  %>
-                                      <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= employee['homework_given'] %></button>
+                                      <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id.count %></button>
                                     <% else %>
-                                      <%= employee['homework_given'] %>
+                                      <%= hw_given_id.count %>
                                     <% end %>  
                                       
                                 </b></td>

@@ -5143,7 +5143,9 @@ class ExamController < ApplicationController
           std_group_name = batch_data.course.group
         
 
-
+          if tab['students'].blank?
+            next
+          end
           tab['students'].each do |std| 
             total_failed = 0	
             total_failed_appaered = 0
@@ -6347,7 +6349,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point = total_subject*5.00
+                  
                 end
               end
               if exam_type == 1
@@ -6355,7 +6357,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point1 = total_subject*5.00
+                  
                 end
               end
               if exam_type == 2
@@ -6363,7 +6365,7 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point2 = total_subject*5.00
+                  
                 end
               end
 
@@ -6381,7 +6383,6 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point
                 @student_result[loop_std]['grand_total'] = grand_total
@@ -6392,7 +6393,6 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point1 = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point1
                 @student_result[loop_std]['grand_total'] = grand_total1
@@ -6403,7 +6403,6 @@ class ExamController < ApplicationController
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
-                  grand_grade_point2 = total_subject*5.00
                 end
                 @student_result[loop_std]['gpa'] = grand_grade_point2
                 @student_result[loop_std]['grand_total'] = grand_total2

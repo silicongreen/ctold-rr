@@ -106,7 +106,7 @@
                     -
                   <% end %>
               <% else %>
-              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? %>
+              <% if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank? && rs['students'][std['id']]['score'].to_i != 0 %>
                   <%= rs['students'][std['id']]['score'] %>
                   <% total_mark = total_mark.to_f+rs['students'][std['id']]['score'].to_f %>
                   
@@ -129,7 +129,11 @@
             <% total_mark_2 = half_mark.round()*2 %>
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %> 
-           <td><%= total_mark.round() %></td>
+           <% if total_mark > 0 %>   
+              <td><%= total_mark.round() %></td>
+           <% else %>
+              <td><%= "-" %></td>
+           <% end %>
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>
             <td class="col-2"><b><%= grade.name %></b></td>

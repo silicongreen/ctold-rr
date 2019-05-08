@@ -305,9 +305,17 @@
                             <% end %>
                           <% end %>
                           <% if quarter %>
-                            <td><%= sprintf( "%0.02f", term_mark) %></td>
+                            <% if term_mark > 0 %>   
+                              <td><%= sprintf( "%0.02f", term_mark) %></td>
+                           <% else %>
+                              <td><%= "-" %></td>
+                           <% end %>
                           <% end %>
-                          <td><%= total_mark.round() %></td>
+                           <% if total_mark > 0 %>   
+                              <td><%= total_mark.round() %></td>
+                           <% else %>
+                              <td><%= "-" %></td>
+                           <% end %>
 
                           <% if !grade.blank? and !grade.name.blank? %>
                             <td class="col-2"><b><%= grade.name %></b></td>

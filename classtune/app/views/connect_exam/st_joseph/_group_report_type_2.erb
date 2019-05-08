@@ -167,6 +167,28 @@
                                           grade_name_single = "D"
                                         end
                                       end
+                                      sub_fullmark = 0
+                                      obj_fullmark = 0
+                                      prac_fullmark = 0
+
+                                      if count_sub > 0
+                                        sub_fullmark = sub.to_f/count_sub.to_f
+                                        sub_fullmark = sub_fullmark.round()
+                                      end
+                                      if count_obj > 0
+                                        obj_fullmark = obj.to_f/count_obj.to_f
+                                        obj_fullmark = obj_fullmark.round()
+                                      end
+                                      if count_prac > 0
+                                        prac_fullmark = prac.to_f/count_prac.to_f
+                                        prac_fullmark = prac_fullmark.round()
+                                      end
+
+
+                                      if ((sub_fullmark >= 22 && sub_full_mark == 50) || (sub_fullmark >= 31 && sub_full_mark == 70) || count_sub == 0) && (obj_fullmark >= 12 || count_obj==0) && (prac_fullmark >= 11 || count_prac == 0)
+                                        fail_grade = false
+                                        grade_name_single = "D"
+                                      end
                                     
                                     %>
                                     [<%= grade_name_single  %>]
@@ -187,27 +209,7 @@
 
                             <% end %>
                             <%
-                                sub_fullmark = 0
-                                obj_fullmark = 0
-                                prac_fullmark = 0
-
-                                if count_sub > 0
-                                  sub_fullmark = sub.to_f/count_sub.to_f
-                                  sub_fullmark = sub_fullmark.round()
-                                end
-                                if count_obj > 0
-                                  obj_fullmark = obj.to_f/count_obj.to_f
-                                  obj_fullmark = obj_fullmark.round()
-                                end
-                                if count_prac > 0
-                                  prac_fullmark = prac.to_f/count_prac.to_f
-                                  prac_fullmark = prac_fullmark.round()
-                                end
-                              
-                               
-                                if ((sub_fullmark >= 22 && sub_full_mark == 50) || (sub_fullmark >= 31 && sub_full_mark == 70) || count_sub == 0) && (obj_fullmark >= 12 || count_obj==0) && (prac_fullmark >= 11 || count_prac == 0)
-                                  fail_grade = false
-                                end
+                                
 
                                 
                           

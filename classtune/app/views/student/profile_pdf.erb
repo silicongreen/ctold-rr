@@ -117,7 +117,18 @@
         </tr>
         <tr>
           <td class="col-pdf" colspan="1"><%= "Group" %></td>
-           <% group_split = @student.batch.course.group.split(" ") %>
+          <% unless @student.batch.course.group.nil? %>
+            <% group_split = @student.batch.course.group.split(" ") %>
+            <% unless group_split[2].blank? %>
+              <% group_split[0] = group_split[0]+" "+group_split[1] %>
+            <% end %>
+            <% 
+            if !@student.batch.course.group.blank? && !@student.batch.course.group.index("--").nil? 
+              group_split[0] = ""
+            end 
+
+            %>
+          <% end %>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;<%= group_split[0] unless @student.batch.course.group.nil? %></td>
           <td class="col-pdf" colspan="1"><%= "Admission Type" %></td>
           <td class="col-pdf" colspan="1">:&nbsp;&nbsp;&nbsp;</td>

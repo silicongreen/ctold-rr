@@ -75,6 +75,11 @@
             <% group_split = @exam_subject.batch.course.group.split(" ") %>
             <%= group_split[0] %>
           <% end %>
+          <% 
+            if !@exam_subject.batch.course.group.blank? && !@exam_subject.batch.course.group.index("--").nil? 
+              group_split[0] = ""
+            end 
+          %>
           </td>
           <td>Session : <%= @exam_subject.batch.course.session %></td>
       </tr>

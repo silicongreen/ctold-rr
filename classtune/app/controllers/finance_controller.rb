@@ -5549,7 +5549,7 @@ class FinanceController < ApplicationController
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
       if params[:student]
         fees = FinanceFee.first(:conditions=>"fee_collection_id = #{params[:date]} and student_id = #{params[:student]}" ,:joins=>'INNER JOIN students ON finance_fees.student_id = students.id')  
-      else
+      end
       unless fees.nil?
         batch_id = fees.batch_id
       else

@@ -315,6 +315,7 @@
                               end  
                               %>
                               <td <%= class_name %>>
+                                  <% if main_mark > 0 %>
                                   <% total_mark = total_mark+main_mark.to_f %>
                                   <%= main_mark.round() %><hr/>
                                   <%  grade = SubjectGradingLevel.percentage_to_grade(main_mark, @batch.id, sub['id'].to_i) %>
@@ -328,6 +329,9 @@
                                       end  
                                   %>
                                     <%= grade.name %>  
+                                  <% else %>
+                                    -
+                                  <% end %>
                                   <% else %>
                                     -  
                                   <% end %>

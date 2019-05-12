@@ -345,17 +345,18 @@
                         <% balance = balance+vat_amount.round() %>
                       <% end %>
                   <% end %>
-
+                  <% if params[:hide_vat].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td colspan="2" class="col-8"><b>Total Payable Amount Including VAT</b></td>
                       <td class="col-pdf"><%= "#{precision_label(balance.round())}" %></td>
                   </tr>
+                  <% end %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <td colspan="3">Amount in words :<b><%= in_words(balance.round().to_i).titleize  %></b></td>
                   </tr>
 
-
+                   <% if params[:hide_vat].blank? %>
                   <% if params[:show_two].blank? && params[:show_one].blank? %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <% date_one = @date.due_date.to_date+1.days %>
@@ -437,6 +438,7 @@
                       <td class="col-pdf"><%= "#{precision_label(balance2.round())}" %></td>
                   </tr>
                 <% end %>
+                <% end %>  
                 <% end %>
                 <% end %>
                 <% if ((k+1)%1)==0 %>

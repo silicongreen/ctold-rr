@@ -237,10 +237,10 @@
                   end  
                   end
 
-                if report['exam_category'] == '6'
+                if @connect_exam_obj.result_type.to_i == 5
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                     mock_test_full_mark = mock_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
-                    end
+                  end
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                     mock_test_total = mock_test_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                   end
@@ -329,7 +329,7 @@
           if mock_test_total > 0
             mock_test_mark = (mock_test_total.to_f/mock_test_full_mark.to_f)*100
             mock_test_mark = mock_test_mark.round()
-            end  
+          end  
 
           obtained_mark4 = avg_mark_ct4.to_f+avg_mark_st4.to_f
           full_mark4 = ct_full_mark4.to_i+st_full_mark4.to_i
@@ -348,8 +348,12 @@
 
           full_mark = full_mark_first_term+full_mark_final_term
           obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-          main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
-          main_mark = main_mark.round()
+          if @connect_exam_obj.result_type.to_i == 5
+            main_mark = mock_test_mark
+          else  
+            main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
+            main_mark = main_mark.round()
+          end
 
 
           first_term_round = obtained_mark_first_term.round()

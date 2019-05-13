@@ -234,7 +234,7 @@
 
                           <td>Total</td>
                           <td>Grade Count</td>
-                          <% unless @student_position.blank? %>
+                          <% unless @ranked_positions.blank? %>
                               <td>Position</td>
                            <% end %>
 
@@ -348,9 +348,9 @@
                             <% end %>
                         </td> 
                         
-                        <% unless @student_position.blank? %>
-                           <% unless @student_position[std['id'].to_i].blank? %>
-                              <td><%= @student_position[std['id'].to_i] %></td>
+                        <% unless @ranked_positions.blank? %>
+                           <% unless @ranked_positions[std['id'].to_i].blank? %>
+                              <td><%= @ranked_positions[std['id'].to_i] %></td>
                            <% else %>
                               <td>-</td>
                            <% end %>

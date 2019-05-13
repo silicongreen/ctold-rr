@@ -364,13 +364,9 @@
             elsif obtained_mark4>0
             quarter_mark = obtained_mark4.round()
           end
-          if @connect_exam_obj.result_type.to_i == 1 or @connect_exam_obj.result_type.to_i == 7
-            grand_total = grand_total+final_term_round
-          elsif @connect_exam_obj.result_type.to_i == 2
-            grand_total = grand_total+first_term_round
-          elsif @connect_exam_obj.result_type.to_i == 4
-            grand_total = grand_total+mock_test_mark
-          end  
+         
+          grand_total = grand_total+main_mark
+           
         end
         grand_total_new = 500000-grand_total
         @student_list << [grand_total_new.to_f,std['id'].to_i]

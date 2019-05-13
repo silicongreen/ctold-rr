@@ -5,11 +5,11 @@
     connect_exam = 0
     batch_loop = 0
     @tabulation_data['report'].each do |tab|
-      grand_total = 0
       if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
         next
       end
       tab['students'].each do |std| 
+        grand_total = 0
         tab['subjects'].each do |sub|
           obtained_mark = 0
           full_mark = 0

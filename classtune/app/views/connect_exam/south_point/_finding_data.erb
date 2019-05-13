@@ -237,7 +237,7 @@
                   end  
                   end
 
-                if @connect_exam_obj.result_type.to_i == 5
+                if @connect_exam_obj.result_type.to_i == 6
                   if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
                     mock_test_full_mark = mock_test_full_mark+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                   end
@@ -348,7 +348,7 @@
 
           full_mark = full_mark_first_term+full_mark_final_term
           obtained_mark = obtained_mark_first_term.round()+obtained_mark_final_term.round()
-          if @connect_exam_obj.result_type.to_i == 5
+          if @connect_exam_obj.result_type.to_i == 6
             main_mark = mock_test_mark
           else  
             main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100

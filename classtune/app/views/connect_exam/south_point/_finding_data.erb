@@ -368,7 +368,7 @@
           grand_total = grand_total+mock_test_mark+first_term_round+final_term_round
         end
         grand_total_new = 500000-grand_total
-        @student_list << grand_total_new.to_f
+        @student_list << [grand_total_new.to_f,std['id'].to_i]
       end
     end
     end

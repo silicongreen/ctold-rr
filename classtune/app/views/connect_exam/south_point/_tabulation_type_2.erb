@@ -44,6 +44,9 @@
           
           <td>Total</td>
           <td>Grade Count</td>
+          <% unless @student_position.blank? %>
+              <td>Position</td>
+           <% end %>
         
         </tr>
         
@@ -75,6 +78,9 @@
 
                 <td>Total</td>
                 <td>Grade Count</td>
+                <% unless @student_position.blank? %>
+                  <td>Position</td>
+                <% end %>
 
               </tr>
           <% elsif std_count>6 && extender ==1 %>
@@ -98,7 +104,9 @@
 
                 <td>Total</td>
                 <td>Grade Count</td>
-
+                <% unless @student_position.blank? %>
+                  <td>Position</td>
+                <% end %>
               </tr>
           
           <% end %>    
@@ -494,6 +502,13 @@
                       <% i = i+1 %>
                   <% end %>
               </td>
+              <% unless @student_position.blank? %>
+                  <% unless @student_position[std['id'].to_i].blank? %>
+                     <td><%= @student_position[std['id'].to_i] %></td>
+                  <% else %>
+                     <td>-</td>
+                  <% end %>
+               <% end %>
               
            
         </tr>

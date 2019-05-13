@@ -369,10 +369,10 @@
             quarter_mark = obtained_mark4.round()
           end
          
-          grand_total = grand_total+main_mark
+          grand_total = grand_total.to_f+main_mark.to_f
            
         end
-        grand_total_new = 500000-grand_total
+        grand_total_new = 500000.00-grand_total.to_f
         @student_list << [grand_total_new.to_f,std['id'].to_i]
       end
     end

@@ -351,6 +351,7 @@
             main_mark = mock_test_mark
           else  
             main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
+            main_mark = (main_mark.to_f/100)*final_term_full_mark
             main_mark = main_mark.round()
           end
 

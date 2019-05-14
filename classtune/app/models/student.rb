@@ -305,6 +305,14 @@ class Student < ActiveRecord::Base
         self.user.email = self.email if check_changes.include?('email')
         self.user.password = ("123456") if check_changes.include?('admission_no')
         self.user.save if check_user_errors(self.user)
+        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+        api_endpoint = champs21_api_config['api_url']
+        uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"paid_id" => self.user.id, "paid_username" => self.user.username, "paid_school_id" => self.school_id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => self.first_name, "middle_name" => self.middle_name, "last_name" => self.last_name, "gender" => (if self.gender == 'm' then '1' else '0' end), "country" => self.nationality_id, "dob" => self.date_of_birth, "email" => self.user.username})
+        auth_res = http.request(auth_req)
+        @auth_response = JSON::parse(auth_res.body)
       end
       
       if check_changes.include?('immediate_contact_id') or check_changes.include?('admission_no')

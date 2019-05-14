@@ -214,6 +214,20 @@
 <% end %>
 
 <% unless @elective_groups.nil? %>
+    <div class="add_sub">
+      <% if @batch_only %>  
+       <%= link_to "Download Students 4th Subject",
+         {:action => "student_excell", :id => @batch.id, :batch_only => "1", :type => "4"},:target => '_blank' %><br/>
+       <%= link_to "Download Students 3rd Subject",
+         {:action => "student_excell", :id => @batch.id, :batch_only => "1", :type => "3"},:target => '_blank' %>
+     <% else %>
+       <%= link_to "Download Students 4th Subject",
+         {:action => "student_excell", :id => @batch.id, :type => "4"},:target => '_blank' %><br/>
+       <%= link_to "Download Students 3rd Subject",
+         {:action => "student_excell", :id => @batch.id,:type => "3"},:target => '_blank' %>
+
+     <% end %>
+    </div>    
   <% @elective_groups.each do |e| %>
     <% s_message = ""  %>
     <% if @show_batch_subject %>

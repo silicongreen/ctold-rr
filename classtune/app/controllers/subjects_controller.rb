@@ -819,6 +819,17 @@ class SubjectsController < ApplicationController
     end
   end
   
+  def student_excell
+    @batch = Batch.find(params[:id])
+    @subject_type = params[:type]
+    unless params[:batch_only].blank?
+      @courses = Course.find_all_by_name(@batch.course.course_name)
+      ccourse_ids = @courses.map(&:id)
+      batches = Batch.find_all_by_course_id(ccourse_ids)
+    end
+    
+  end
+  
   
   def show
     @show_batch_subject = true

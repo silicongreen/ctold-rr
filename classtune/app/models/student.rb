@@ -303,7 +303,7 @@ class Student < ActiveRecord::Base
         self.user.first_name = self.first_name if check_changes.include?('first_name')
         self.user.last_name = self.last_name if check_changes.include?('last_name')
         self.user.email = self.email if check_changes.include?('email')
-        self.user.password = ("123456") if check_changes.include?('admission_no')
+#        self.user.password = ("123456") if check_changes.include?('admission_no')
         self.user.save if check_user_errors(self.user)
         
         tds_freeuser = TdsFreeUser.find_by_paid_id(self.user.id)

@@ -84,7 +84,7 @@
             if subject_full_mark>0
               main_mark = (subject_obtain_mark.to_f/subject_full_mark.to_f)*100
               grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
-              if !grade.blank? and !grade.name.blank? and grade.name == "F"
+              if !grade.blank? and !grade.name.blank? and grade.name == "U"
                 ranked_std = false
                 break
               end

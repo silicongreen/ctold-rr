@@ -159,7 +159,7 @@
                             end 
                           end 
                         
-                          if first_term_fullmark > 0
+                          if first_term_fullmark > 0 or q1_fullmark > 0 or q2_fullmark > 0
                             q1_mark_20 = 0
                             q2_mark_20 = 0
                             first_term_mark_60 = 0 
@@ -175,9 +175,13 @@
                               first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*50
                               first_term_mark_60 = first_term_mark_60.round()
                             end
+                            
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
+                            unless first_term_fullmark > 0
+                              total_mark = total_mark*2
+                            end  
                           end 
-                          if final_term_fullmark > 0
+                          if final_term_fullmark > 0 or q3_fullmark > 0 or q4_fullmark > 0
                             q3_mark_20 = 0
                             q4_mark_20 = 0
                             final_term_mark_60 = 0 
@@ -194,6 +198,9 @@
                               final_term_mark_60 = final_term_mark_60.round()
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                            unless final_term_fullmark > 0
+                              total_mark = total_mark*2
+                            end
                           end
                           total_mark = total_mark.round()
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)

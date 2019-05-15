@@ -112,7 +112,10 @@ class ExamConnect extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
-        //$criteria->compare('t.quarter_number', $quarter_number);
+        if(Yii::app()->user->schoolId != 312)
+        {
+          $criteria->compare('t.quarter_number', $quarter_number); 
+        }
         
         $criteria->addInCondition('t.result_type',$res_type);
         $criteria->select = 't.id';

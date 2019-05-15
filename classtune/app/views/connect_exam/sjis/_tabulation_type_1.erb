@@ -162,7 +162,8 @@
                   <% extender = 0 %>
                   <% std_count = 0 %>
                   <% j = 0 %>
-
+                  <% rank_minus = 0 %>
+                  <% last_mark = 0 %>
                   <% @report_data['report']['students'].each do |std| %>
                     <% unless @ranked_positions.blank? %>
                       <% if @ranked_positions[std['id'].to_i].blank? %>
@@ -353,7 +354,11 @@
                         <% end %>       
 
                         <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
+                            <%= sprintf( "%0.02f", total_mark) %>  
+                            <% if last_mark == total_mark %>
+                              <% rank_minus = rank_minus+1 %>
+                            <% end %>
+                            <% last_mark = total_mark %>
                         </td>
                         <td>
                             <% i = 1 %>
@@ -368,7 +373,7 @@
                         </td> 
                         <% unless @ranked_positions.blank? %>
                            <% unless @ranked_positions[std['id'].to_i].blank? %>
-                              <td><%= @ranked_positions[std['id'].to_i] %></td>
+                              <td><%= @ranked_positions[std['id'].to_i].to_i - rank_minus %></td>
                            <% else %>
                               <td>-</td>
                            <% end %>

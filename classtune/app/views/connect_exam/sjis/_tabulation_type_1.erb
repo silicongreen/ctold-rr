@@ -379,10 +379,11 @@
 
                     </tr>
                     <% end %>
+                    <% end %>
                     
                     <% @report_data['report']['students'].each do |std| %>
-                    <% if @ranked_positions.blank? %>
-                      <% if @ranked_positions[std['id'].to_i].blank? %>
+                    <% unless @ranked_positions.blank? %>
+                      <% unless @ranked_positions[std['id'].to_i].blank? %>
                          <% next %>
                       <% end %>
                     <% end %>

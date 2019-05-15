@@ -1,0 +1,242 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<div id="page-yield" class="available_sections1">
+    <div class="page1"> </div>
+    <div class="section1 row" >
+        <center>
+            <h3 align="center">Mark Sheet</h3>
+            <div class="hor_line"></div>
+            <h4 align="center">For Subject Teacher</h4>
+
+            <div id ="main_info">
+                <table>
+                    <tr>
+                        <% if !@employee.nil? %> 
+                          <td align='left'><h4>Teacher's Name : <%=  @employee.full_name %></h4></td>
+                          <td align='center'><h4>Subject : <%= @subject.name %></h4></td>
+                        <% else %>
+                          <td align='left'><h4>Subject : <%= @subject.name %></h4></td>
+                        <% end %> 
+
+                        <td align='center'><h4>Class : <%= (@batch.name=="General")?"":@batch.name+" " %><%= @batch.course.course_name %></h4></td>
+                        <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
+                    </tr>    
+                </table>    
+
+            </div>
+            <% unless @report_data.blank?  or  @report_data['result'].blank? %>
+              <% c = 'even' %>
+              <% full_mark = 0 %>
+              <% colspan = 0 %>
+              <table id="pdf-table" width="98%" cellspacing="0">
+                  <tr class="table-header">
+                      <td>Roll NO.</td>
+                      <td>Name</td>
+                      <td>Quarter (50)</td>
+                      <% total_full_mark = 0 %>
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
+                          <td><%=  rs['name'] %> (50)</td>
+                        <% end %>
+                      <% end %> 
+                      <td>Total (100)</td>
+                      <td>Grade</td>
+
+                  </tr>
+
+                  <% extender = 0 %>
+                  <% std_count = 0 %>
+                  <% unless @report_data['result']['al_students'].blank? %>
+                    <% @report_data['result']['al_students'].each do |std| %>
+                      <%= render  :partial=>"/connect_exam/check_student_subject", :locals=>{:student_id=>std['id'].to_s,:subject_id=>@subject.id.to_s,:elective_group_id=>@subject.elective_group_id.to_i} %>
+                      <% if @has_exam_student == false %>
+                        <% next %>
+                      <% end %>          
+
+
+                      <%  std_count = std_count+1; %>
+                      <% colspan = colspan+4 %>
+                      <% if std_count>18 && extender ==0 %>
+                        <% std_count = 0 %>
+                        <% extender = 1 %>
+                        <tr class="page-break">
+                            <td colspan="<%= colspan %>">&nbsp;</td>
+                        </tr>    
+                      <% elsif std_count>22 && extender ==1 %>
+                        <% std_count = 0 %>
+                        <% extender = 1 %>
+                        <tr class="page-break">
+                            <td colspan="<%= colspan %>">&nbsp;</td>
+                        </tr> 
+                      <% end %>     
+
+
+                      <% q1_mark = 0 %>
+                      <% q2_mark = 0 %>
+                      <% q3_mark = 0 %>
+                      <% q4_mark = 0 %>
+                      <% first_term_mark = 0 %>
+                      <% final_term_mark = 0 %>
+                      <% q1_fullmark = 0 %>
+                      <% q2_fullmark = 0 %>
+                      <% q3_fullmark = 0 %>
+                      <% q4_fullmark = 0 %>
+                      <% first_term_fullmark = 0 %>
+                      <% final_term_fullmark = 0 %>
+
+                      <% subject_full_mark = 0 %>
+                      <% subject_obtain_mark = 0 %>
+                      <% total_mark = 0 %>
+                      <% full_mark = 0 %>
+
+                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <td><%= std['class_roll_no'] %></td>
+                          <td><%= std['name'] %></td>
+                          <% @report_data['result']['ALL'].each do |rs| %>
+                            <% 
+                            if rs['exam_category'] == '7'
+                              next
+                            end  
+                            if rs['quarter'] == '1'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                q1_mark = q1_mark.to_f+rs['students'][std['id']]['score'].to_f
+                                end
+                              if !rs['maximum_marks'].blank?
+                                q1_fullmark = q1_fullmark+rs['maximum_marks'].to_i
+                              end
+                              end
+
+                            if rs['quarter'] == '2'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                q2_mark = q2_mark.to_f+rs['students'][std['id']]['score'].to_f
+
+                                end
+                              if !rs['maximum_marks'].blank?
+                                q2_fullmark = q2_fullmark+rs['maximum_marks'].to_i
+                              end
+                              end
+                            if rs['quarter'] == '3'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                q3_mark = q3_mark.to_f+rs['students'][std['id']]['score'].to_f
+
+                                end
+                              if !rs['maximum_marks'].blank?
+                                q3_fullmark = q3_fullmark+rs['maximum_marks'].to_i
+                              end
+                              end
+                            if rs['quarter'] == '4'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                q4_mark = q4_mark.to_f+rs['students'][std['id']]['score'].to_f
+
+                                end
+                              if !rs['maximum_marks'].blank?
+                                q4_fullmark = q4_fullmark+rs['maximum_marks'].to_i
+                              end
+                              end
+                            if rs['quarter'] == '5'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                first_term_mark = first_term_mark.to_f+rs['students'][std['id']]['score'].to_f
+
+                                end
+                              if !rs['maximum_marks'].blank?
+                                first_term_fullmark = first_term_fullmark+rs['maximum_marks'].to_i
+                              end
+                            end
+                            if rs['quarter'] == '6'
+                              if !rs['students'].blank? && !rs['students'][std['id']].blank? && !rs['students'][std['id']]['score'].blank?
+                                final_term_mark = final_term_mark.to_f+rs['students'][std['id']]['score'].to_f
+
+                                end
+                              if !rs['maximum_marks'].blank?
+                                final_term_fullmark = final_term_fullmark+rs['maximum_marks'].to_i
+                              end
+                            end
+                          %>
+
+
+
+                          <% end %> 
+                          <%
+                          quarter_mark = 0
+                          q1_mark_20 = 0
+                          q2_mark_20 = 0
+                          q3_mark_20 = 0
+                          q4_mark_20 = 0
+                          final_term_mark_60 = 0 
+                          first_term_mark_60 = 0 
+                          if first_term_fullmark > 0
+
+
+                            if q1_fullmark > 0 && q1_mark > 0
+                              q1_mark_20 = (q1_mark.to_f/q1_fullmark.to_f)*25
+                              q1_mark_20 = q1_mark_20.round()
+                              end 
+                            if q2_fullmark > 0 && q2_mark > 0
+                              q2_mark_20 = (q2_mark.to_f/q2_fullmark.to_f)*25
+                              q2_mark_20 = q2_mark_20.round()
+                              end 
+                            if first_term_fullmark > 0 && first_term_mark > 0
+                              first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*50
+                              first_term_mark_60 = first_term_mark_60.round()
+                              end
+                            total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
+                            end 
+                          if final_term_fullmark > 0
+
+
+                            if q3_fullmark > 0 && q3_mark > 0
+                              q3_mark_20 = (q3_mark.to_f/q3_fullmark.to_f)*25
+                              q3_mark_20 = q3_mark_20.round()
+                              end 
+                            if q4_fullmark > 0 && q4_mark > 0
+                              q4_mark_20 = (q4_mark.to_f/q4_fullmark.to_f)*25
+                              q4_mark_20 = q4_mark_20.round()
+                              end 
+
+                            if final_term_fullmark > 0 && final_term_mark > 0
+                              final_term_mark_60 = (final_term_mark.to_f/final_term_fullmark.to_f)*50
+                              final_term_mark_60 = final_term_mark_60.round()
+                              end
+                            total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
+                            end
+                          quarter_mark = q1_mark_20+q2_mark_20+q3_mark_20+q4_mark_20
+                          term_mark = final_term_mark_60+first_term_mark_60
+                          total_mark = total_mark.round()
+                          grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
+
+                        %>
+                          <td><%= sprintf( "%0.02f", quarter_mark) %></td>
+                          <td><%= sprintf( "%0.02f", term_mark) %></td>
+                          <td><%= total_mark.round() %></td>
+
+                          <% if !grade.blank? and !grade.name.blank? %>
+                            <td class="col-2"><b><%= grade.name %></b></td>
+                          <% else %>
+                            <td class="col-2"><b>-</b></td>
+                          <% end %>
+                      </tr>
+                    <% end %>
+                  <% end %>
+              </table>
+            <% end %>
+        </center>
+    </div>
+
+
+</div>

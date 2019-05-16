@@ -143,11 +143,8 @@
                         <td><%=  sub['code'] %></td>
                       <% end %>
 
-                      <td>Total</td>
+                      <td>Total<hr/>Avg Grade</td>
                       <td>Grade Count</td>
-                      <% unless @ranked_positions.blank? %>
-                        <td>Position</td>
-                      <% end %>
 
                   </tr>
 
@@ -182,11 +179,8 @@
                             <td><%=  sub['code'] %></td>
                           <% end %>
 
-                          <td>Total</td>
+                          <td>Total<hr/>Avg Grade</td>
                           <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                            <td>Position</td>
-                          <% end %>
                          
 
                       </tr>
@@ -213,11 +207,8 @@
                             <td><%=  sub['code'] %></td>
                           <% end %>
 
-                          <td>Total</td>
+                          <td>Total<hr/>Avg Grade</td>
                           <td>Grade Count</td>
-                          <% unless @ranked_positions.blank? %>
-                            <td>Position</td>
-                          <% end %>
                         
 
                       </tr>
@@ -236,6 +227,7 @@
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
                         <% total_mark = 0 %>
+                        <% full_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
                         <% @report_data['report']['subjects'].each do |sub| %>
@@ -299,6 +291,7 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
+                                  <% full_mark = full_mark+subject_full_mark.to_f %>
                                   <%= subject_obtain_mark %><hr/>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
@@ -337,10 +330,20 @@
                               <% end %> 
                           </td>     
 
-                        <% end %>       
+                        <% end %> 
+                        <% main_mark = 0 %>
+                        <% if total_mark.to_i > 0 and full_mark.to_i > 0 %>
+                          <% main_mark = (total_mark.to_f/full_mark.to_f)*100 %>  
+                        <% end %>
+                        <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                         <td>
-                            <%= sprintf( "%0.02f", total_mark) %>    
+                            <%= sprintf( "%0.02f", total_mark) %><hr/> 
+                            <% if !grade.blank? and !grade.name.blank? %>
+                              <%= grade.name %>  
+                            <% else %>
+                              -  
+                            <% end %>
                         </td>
                         <td>
                             <% i = 1 %>

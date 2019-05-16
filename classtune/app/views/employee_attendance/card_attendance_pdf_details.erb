@@ -26,16 +26,16 @@
 </div>
 <div id="page-yield" style="<%= styles  %>; ">
 
-    <p id="ss_name" style="padding-left: 10px; font-size: 16px; font-weight: bold;"><%= MultiSchool.current_school.name %></p>
+    <p id="ss_name" style="padding-left: 10px; font-size: 14px; font-weight: bold;"><%= MultiSchool.current_school.name %></p>
     <% if @summary.to_i == 1 %>
-    <p style="padding-left: 10px; font-size: 14px;"><%= "Report for Late, Absent and Leave" %></p>
+    <p style="padding-left: 10px; font-size: 12px;"><%= "Report for Late, Absent and Leave" %></p>
     <% else %>
-    <p style="padding-left: 10px; font-size: 14px;"><%= "Attendance Report" %></p>
+    <p style="padding-left: 10px; font-size: 12px;"><%= "Attendance Report" %></p>
     <% end %>
     <% if MultiSchool.current_school.id == 312 %>
-      <p style="padding-left: 10px; font-size: 14px;"><%= "Report Date: #{@report_date_from} - #{@report_date_to}" %></p>
+      <p style="padding-left: 10px; font-size: 12px;"><%= "Report Date: #{@report_date_from} - #{@report_date_to}" %></p>
     <% else %>
-      <p style="padding-left: 10px; font-size: 14px;"><%= "Report Date: #{@report_date}" %></p>
+      <p style="padding-left: 10px; font-size: 12px;"><%= "Report Date: #{@report_date}" %></p>
     <% end %>
     
 

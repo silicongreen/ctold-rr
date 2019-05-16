@@ -111,6 +111,9 @@
       end
     end
   end
+  if @batch.course.course_name == "Level -X"
+    @ranked_positions = {}
+  end  
   
 %>
 <%= render  :partial=>"/connect_exam/mirpur_english/group_report_pdf_type_"+@connect_exam_obj.result_type.to_s %>

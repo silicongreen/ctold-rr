@@ -356,13 +356,6 @@
                               <% i = i+1 %>
                             <% end %>
                         </td> 
-                        <% unless @ranked_positions.blank? %>
-                           <% unless @ranked_positions[std['id'].to_i].blank? %>
-                              <td><%= @ranked_positions[std['id'].to_i] %></td>
-                           <% else %>
-                              <td>-</td>
-                           <% end %>
-                        <% end %>
                         
                       
 

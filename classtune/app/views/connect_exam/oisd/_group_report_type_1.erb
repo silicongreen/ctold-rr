@@ -21,13 +21,13 @@
 
       <table id="pdf-table" class="margin-top-bottom-10" width="99.8%" cellspacing="0">
           <tr class="table-header">
-              <td class="align-left" colspan="2">Name of the Student: <b><%= @student.full_name %></b></td>
-              <td class="align-left">ID NO: <b><%= @student.admission_no %></b></td>
+              <td class="align-left" colspan="2">Name of the Student : <b><%= @student.full_name %></b></td>
+              <td class="align-left">ID NO : <b><%= @student.admission_no %></b></td>
           </tr>
           <tr class="table-header">
-              <td class="align-left">Section: <b><%= @batch.course.section_name %></b></td>
-              <td class="align-left">Roll No: <b><%= @student.class_roll_no %></b></td>
-              <td class="align-left">Date Of Birth: <b><%= @student.date_of_birth.strftime("%Y/%m/%d") %></b></td>
+              <td class="align-left">Section : <b><%= @batch.course.section_name %></b></td>
+              <td class="align-left">Roll No : <b><%= @student.class_roll_no %></b></td>
+              <td class="align-left">Date Of Birth : <b><%= @student.date_of_birth.strftime("%Y/%m/%d") %></b></td>
           </tr>
       </table>
       <div class ="current_batch" style="margin-left:0px;">

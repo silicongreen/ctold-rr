@@ -1,25 +1,30 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
-  <div id="page-yield"  class="available_sections1 st_joseph_bg">
-
+  <div id="page-yield"  class="available_sections1  sis sis-final">
+      <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '4%' %></h4>
+                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+            </div>
+      </center>    
       <p>&nbsp;<p>
       <table id="pdf-table" class="margin-top-bottom-10" width="100%" cellspacing="0">
-        <tr class="even">
+        <tr class="table-header">
             <td><h4 align="center"><%= @connect_exam_obj.name.upcase+" REPORT CARD" %></h4></td>
         </tr>
-        <tr class="odd">
+        <tr class="table-header">
           <td><h4 align="center">ACADEMIC SESSION : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4></td>
         </tr>
-        <tr class="odd">
+        <tr class="table-header">
             <td><h4 align="center">CLASS - <%= @batch.course.course_name.upcase %></h4></td>
         </tr>    
       </table>
 
       <table id="pdf-table" class="margin-top-bottom-10" width="100%" cellspacing="0">
-          <tr class="even">
-              <td>Name of the Student: <b><%= @student.full_name %></b></td>
+          <tr class="table-header">
+              <td colspan="2">Name of the Student: <b><%= @student.full_name %></b></td>
               <td>ID NO: <b><%= @student.admission_no %></b></td>
           </tr>
-          <tr class="odd">
+          <tr class="table-header">
               <td>Section: <b><%= @batch.course.section_name %></b></td>
               <td>Roll No: <b><%= @student.class_roll_no %></b></td>
               <td>Date Of Birth: <b><%= @student.date_of_birth.strftime("%Y/%m/%d") %></b></td>
@@ -67,12 +72,12 @@
                                         <% end %>
                                         <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                         <% if !grade.blank? and !grade.name.blank? %>
-                                          <td class="col-pdf"><b><%= grade.name %></b></td>
+                                          <b><%= grade.name %></b>
                                         <% else %>
-                                          <td class="col-pdf"><b>-</b></td>
+                                          <b>-</b>
                                         <% end %>
                                       <% else %>
-                                        -
+                                       <b>-</b>
                                       <% end %> 
                                        
 
@@ -91,69 +96,103 @@
 
               </table>
               <table id="pdf-table"  width="100%" class="margin-top-bottom-10" cellspacing="0" >
-                  <tr class="odd">
-                      <td class="col-pdf"><%= "Personal, Emotional and Social Development" %></td>
+                  <tr class="table-header">
+                      <td class="col-pdf"><b>Personal, Emotional and Social Development</b></td>
                       <td class="col-pdf width-18">Sometimes</td>
                       <td class="col-pdf width-18">Usually</td>
                       <td class="col-pdf width-18">Mostly</td>
                   </tr>
-                  <% unless @report_data['report']['subjects'].blank? %> 
-                    <% @report_data['report']['subjects'].each do |subjects| %>
-                      <% if subjects['no_exams_sjws'].to_i == 0  or !has_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
-                        <% next %>
+                  <tr class="table-header">
+                      <td class="col-pdf">Works cooperatively with peers</td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Expresses Positive activities and good behaviour</td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Demonstrate discipline and organization</td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Expresses feelings and emotions constructively</td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Respects feelings and achievements of others</td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Works independently with confidence </td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <td class="col-pdf">Shows curiosity with creativity </td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                      <td class="col-pdf width-18"><span class="tickbox_uncheck2"></span></td>
+                  </tr>
+                  <tr class="table-header">
+                      <% unless @present_total.blank? %>
+                        <td class="col-pdf">Number of working days : <%= @total_day %></td>
+                        <td colspan="3">Attendance : <%= @present_total %></td>
+                      <% else %>
+                        <% @comment_from_split = @total_day  %>
+                        <td class="col-pdf">Number of working days : <%= @report_data['total'] %></td>
+                        <td colspan="3">Attendance : <%= @report_data['present'] %></td>
                       <% end %>
-                      <% wordString_main = "" %>
+                  </tr>
                   
-                      <% @report_data['report']['exams'].each do |report| %>
-                         
-                         <% if !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['remarks'].blank?  %>
-                          <% if @connect_exam_obj.quarter_number.to_i == report['quarter'].to_i %>
-                            <% wordString_main = report['result'][report['exam_id']][subjects['id']]['remarks'] %>
-                            <% break %>
-                          <% end %>
-                         <% end %>
-                      <% end %> 
-                      <% wordString = wordString_main.split("|") %>
-                      
-                        <% subject_groups = get_subject_group(subjects['id'].to_i,@connect_exam_obj.quarter_number) %>
-                        <% iloop = 0 %>
-                        <% subject_groups.each do |group_name| %>
-                            <% if !wordString.blank? and !wordString[iloop].blank? %>
-                            <tr class="odd">
-                               <td class="col-pdf align-left"><%= group_name.name %></td>
-                               <td class="col-pdf"><%  if wordString[iloop].to_i == 1 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf"><%  if wordString[iloop].to_i == 2 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               <td class="col-pdf"><%  if wordString[iloop].to_i == 3 %><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/tick.png")) %><% end %></td>
-                               
-                           </tr>
-                           <% else %>
-                           <tr class="even">
-                               <td class="col-pdf align-left"><%= group_name.name %></td>
-                               <td class="col-pdf"></td>
-                               <td class="col-pdf"></td>
-                               <td class="col-pdf"></td>
-                           </tr>
-                           <% end %>
-                          <% iloop = iloop+1 %> 
-                        <% end %> 
-                      
-                    <% end %>
-                  <% end %>
               </table>
 
              
               <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
                  
                       <tr class="table-header">
-
-                          <td class="col-pdf">Working Days : <%= @report_data['total'] %></td>
-
-                          <td class="col-pdf">Days Present : <%= @report_data['present'] %> </td>
-                          <td class="col-pdf">Days Absent : <%= @report_data['total']-@report_data['present'] %> </td>
+                          <td class="col-pdf" style="text-align:left;">
+                            <b>Comments: <b/>
+                            <%= @comment_from_split %>
+                            <br/><br/><br/><br/><br/>  
+                          </td>
                       </tr> 
                   
 
               </table>
+              <table id="pdf-table" class="margin-top-bottom-10 font-size-20" width="100%" >
+                    <tr  class="table-header">
+                      <td class="col-pdf no-warp align-left"><b><span class="tickbox_uncheck2"></span> Promoted to </b></td>
+                      <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.promoted_to %></td>
+                     </tr>
+                     <tr class="table-header">
+                      <td class="col-pdf no-warp align-left"><b><span class="tickbox_uncheck2"></span> Next session begins on </b></td>
+                      <td class="col-pdf no-warp align-left width-60"><%= @connect_exam_obj.next_session_begins.blank?  ? "" : I18n.l(@connect_exam_obj.next_session_begins,:format=>"%d %B %Y") %></td>
+                     </tr>
+              </table>
+              
+               <table id="pdf-table" width="100%" class="left-table even-table signature" cellspacing="0">
+                  <tr class="even">
+                      <td class="small-height"><b>Class Teacher's Signature</b></td>
+                      <td class="small-height"><b>Principal Signature</b></td>
+                      <td class="small-height"><b>Parent's Signature</b></td>
+                  </tr> 
+                  <tr class="even">
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr> 
+               </table>
               
 
 

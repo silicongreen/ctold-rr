@@ -1,1 +1,21 @@
 <%= render  :partial=>"/connect_exam/oisd/group_report_type_"+@connect_exam_obj.result_type.to_s %>
+
+<% 
+    @total_day = ""
+    @present_total = ""
+    @comment_from_split = ""
+    if !@exam_comment.blank?
+      all_comments = @exam_comment.comments
+      if !all_comments.blank?
+        all_comments_array = all_comments.split("|")
+        @total_day = all_comments_array[0]
+        if !all_comments_array[1].nil?
+          @present_total = all_comments_array[1]
+          if !all_comments_array[2].nil?
+            @comment_from_split = all_comments_array[2]
+          end
+
+        end
+      end
+    end
+  %>

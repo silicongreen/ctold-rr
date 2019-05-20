@@ -2915,6 +2915,31 @@ class ExamController < ApplicationController
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
+  def subject_wise_fourty_percent
+    @id = params[:id]
+    @connect_exam_obj = ExamConnect.active.find(@id)
+    @subject = Subject.find_by_id(@id)
+    @batch = Batch.find(@connect_exam_obj.batch_id)
+    
+    if @tabulation_data.nil?
+      student_response = get_tabulation_connect_exam(@connect_exam_obj.id,@batch.id,true)
+      @tabulation_data = []
+      if student_response['status']['code'].to_i == 200
+        @tabulation_data = student_response['data']
+      end
+    end
+    @class = params[:class]
+    finding_data5()
+    render :pdf => 'subject_wise_pass_failed',
+      :orientation => 'Portrait', :zoom => 1.00,
+      :margin => {    :top=> 28,
+      :bottom => 30,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
+  end
+  
   def tabulation_excell
     require 'spreadsheet'
     Spreadsheet.client_encoding = 'UTF-8'
@@ -5173,6 +5198,7 @@ class ExamController < ApplicationController
             
             grand_total = 0
             grand_total_with_fraction = 0
+           
             grand_grade_point = 0
 
             grand_total1 = 0
@@ -5219,8 +5245,8 @@ class ExamController < ApplicationController
               if !@subject_code.blank? && !@subject_code[sub['code']].blank?	
                 main_sub_id = @subject_code[sub['code']]
               else	
-                @subject_code[sub['code'].to_s] = sub['id']	
-                main_sub_id = sub['id']	
+                @subject_code[sub['code'].to_s] = sub['code']	
+                main_sub_id = sub['code']	
               end 	
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                 @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
@@ -5608,7 +5634,7 @@ class ExamController < ApplicationController
                   grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-
+                  
 
 
                   if fourth_subject.blank? && subject_failed == false
@@ -5720,6 +5746,10 @@ class ExamController < ApplicationController
                     @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                   end
                   
+                  if main_mark >= 40
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
+                  end
+                  
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank?
                     if subject_failed == true
@@ -5807,8 +5837,8 @@ class ExamController < ApplicationController
                   if !@subject_code.blank? && !@subject_code[sub2['code']].blank?	
                     main_sub_id = @subject_code[sub2['code']]
                   else	
-                    @subject_code[sub2['code'].to_s] = sub2['id']	
-                    main_sub_id = sub2['id']	
+                    @subject_code[sub2['code'].to_s] = sub2['code']	
+                    main_sub_id = sub2['code']	
                   end 	
                   if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
@@ -6198,7 +6228,7 @@ class ExamController < ApplicationController
                       grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-
+                      
 
 
                       if fourth_subject.blank?
@@ -6273,6 +6303,9 @@ class ExamController < ApplicationController
                         @subject_result[main_sub_id]['total'] = 1
                       else
                         @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
+                      end
+                      if main_mark >= 40
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
                       end
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                       if !grade.blank? && !grade.name.blank?
@@ -6419,6 +6452,9 @@ class ExamController < ApplicationController
                 @student_result[loop_std]['grand_total'] = grand_total2
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
               end
+              
+              
+             
               
               @student_result[loop_std]['gp'] = grade_point_avg
               

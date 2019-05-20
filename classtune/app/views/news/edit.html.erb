@@ -114,9 +114,10 @@
       
       <% end %>
       <div class="news_label_field hidden_field_class_department" style="float: left;<% if @news.is_common!=0 %> display:none;<% end %>clear: both;width: 100%;margin: 10px 0px;" >
+          <%= render  :partial=>"/news/class_box" %>
           <label >Select Class</label>
           <% @batches.each do |batch| %>
-            <div style="float:left; width:33%;">
+            <div style="float:left; width:33%;" class="all-batch" data-batch="<%= batch.full_name %>">
                 <%
                 selected = false
                 if @batches_ids.include?(batch.id.to_i) 

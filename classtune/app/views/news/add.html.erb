@@ -121,9 +121,10 @@
       
       
       <div class="news_label_field hidden_field_class_department" style="float: left; display:none;clear: both;width: 100%;margin: 10px 0px;" >
+          <%= render  :partial=>"/news/class_box" %>
           <label >Select Class</label>
           <% @batches.each do |batch| %>
-            <div style="float:left; width:33%;">
+            <div style="float:left; width:33%;" class="all-batch" data-batch="<%= batch.full_name %>">
                 <%= check_box_tag "select_options[batch_id][]",batch.id %>&nbsp;&nbsp;<%= batch.full_name %> 
             </div>    
           <% end %>
@@ -139,9 +140,10 @@
           </div>
       </div>
       <div class="news_label_field hidden_field_class_department" style="float: left;clear: both;width: 100%;margin: 10px 0px;" >
+          <%= render  :partial=>"/news/class_box" %>
           <label >Select Class</label>
           <% @batches.each do |batch| %>
-            <div style="float:left; width:33%;">
+          <div style="float:left; width:33%;" class="all-batch" data-batch="<%= batch.full_name %>">
                 <%= check_box_tag "select_options[batch_id][]",batch.id %>&nbsp;&nbsp;<%= batch.full_name %> 
             </div>    
           <% end %>

@@ -77,7 +77,7 @@
                         <thead>
                           <% extra_string = "" %>
                           <% @report_data['report']['exams'].each do |report| %>
-                            <% if report['exam_category'] != '1' %>
+                            <% if report['exam_category'] == '1' %>
                               <%
                                 if report['exam_name'].upcase.include? ("FIRST")
                                   extra_string = "First Term"

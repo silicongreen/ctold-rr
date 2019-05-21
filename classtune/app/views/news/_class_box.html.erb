@@ -1,0 +1,224 @@
+<%
+batch_class_section = []
+%>
+<div class="box">
+      <% batch_names = [] %>
+       <% @batches.each do |batch| %>
+          <% unless batch_names.include?(batch.name) %>
+            <% batch_names << batch.name %>
+          <% end %>
+      <% end %>
+      
+      <% if batch_names.count > 1 %>
+      <select name="batch_id" id="batch_id" />
+        <option value="" />Select Shift</option>
+        <% batch_names.each do |batch| %>
+            
+            <option value="<%= batch.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= batch %></option>
+          
+        <% end %>
+      </select>
+      <% end %>
+      <% if batch_names.count == 1 %>
+        <% class_names = [] %>
+         <% @batches.each do |batch| %>
+            <% unless class_names.include?(batch.course.course_name) %>
+              
+                <% class_names << batch.course.course_name %>
+            <% end %>
+        <% end %>
+        <select name="class_id" class="class_id" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_class" />
+        <option value="" />Select Class</option>
+          <% class_names.each do |class_name| %>
+              
+              <option value="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= class_name %></option>
+          <% end %>
+        </select>
+        <% class_names.each do |class_name| %>
+          <% section_names = [] %>
+            <% @batches.each do |batch| %>
+               <% if batch.course.course_name == class_name %>
+                 <% section_names << batch.course.section_name %>
+               <% end %>
+           <% end %>
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_names[0].gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_section" />
+            <option value="" />Select Section</option>
+            <% section_names.each do |section| %>
+                <% b_c_s = batch_names[0]+" "+class_name+" "+section %>
+                <% unless batch_class_section.include?(b_c_s)  %>
+                  <% batch_class_section << b_c_s %>
+                  <option value="<%= batch_names[0] %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% end %>
+            <% end %>
+          </select>
+      
+        <% end %>
+        
+      <% else %>
+       
+        <% batch_names.each do |batch_name| %>
+          <% class_names = [] %>
+          <% batch_class_names = [] %>
+            <% @batches.each do |batch| %>
+               <% unless class_names.include?(batch.course.course_name) %>
+                 <% if batch_name == batch.name %>
+                  <% class_names << batch.course.course_name %>
+                  <% batch_class_names << batch.name+"-"+batch.course.course_name %>
+                 <% end %>
+               <% end %>
+           <% end %>
+          <select name="class_id"  class="class_id" style="display:none;" class="" id="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_class" />
+            <option value="" />Select Class</option>
+            <% class_names.each do |class_name| %>
+                
+                <option value="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>" /><%= class_name %></option>
+            <% end %>
+          </select>
+      
+          <% iloop = 0 %>
+          <% class_names.each do |class_name| %>
+          <% section_names = [] %>
+            <% @batches.each do |batch| %>
+               <% if batch.name+"-"+batch.course.course_name == batch_class_names[iloop] %>
+                 <% section_names << batch.course.section_name %>
+               <% end %>
+           <% end %>
+           <% iloop = iloop+1 %>
+          <select name="section_id"  class="section_id" style="display:none;" id="<%= batch_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_<%= class_name.gsub(" ", "_").gsub("(", "aaa").gsub(")", "bbb") %>_section" />
+            <option value="" />Select Section</option>
+            <% section_names.each do |section| %>
+                <% b_c_s = batch_name+" "+class_name+" "+section %>
+                <% unless batch_class_section.include?(b_c_s)  %>
+                  <% batch_class_section << b_c_s %>
+                  <option value="<%= batch_name %> <%= class_name %> <%= section %>" /><%= section %></option>
+                <% end %>
+            <% end %>
+          </select>
+      
+        <% end %>
+      
+        <% end %>
+      
+      
+      <% end %>
+      
+  </div>
+
+<script>
+  var jj = jQuery.noConflict();
+  var search_value_main = ""
+  jj(document).ready(function () {
+    batch_id_current = "";
+    
+    jj("#batch_id").change(function(){
+      if(jj("#batch_id").val())
+      {
+        batch_id_current = jj("#batch_id").val();
+        var search_value = jj("#batch_id").val().replace(/\_/g, ' ');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
+        search_value3 = search_value3+" ";
+        search_value_main = search_value3
+        jj(".class_id").val("");
+        jj(".class_id").hide();
+        jj(".section_id").val("");
+        jj(".section_id").hide();
+        jj("#"+jj("#batch_id").val()+"_class").show();
+      }
+      else
+      {
+        search_value_main = ""
+        batch_id_current = "";
+        jj(".class_id").val("");
+        jj(".class_id").hide();
+        jj(".section_id").val("");
+        jj(".section_id").hide();
+        //oDataTable.column( 0 ).search("").val(),false,false).draw();
+      }  
+      search_and_show();
+    });
+    
+    
+    class_id_current = "";
+    jj(".class_id").change(function(){
+     
+      if(jj(this).val())
+      {
+        class_id_current = jj(this).val();
+        var search_value = jj(this).val().replace(/\_/g, ' ');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
+        search_value3 = search_value3+" ";
+        search_value_main = search_value3
+        jj(".section_id").val("");
+        jj(".section_id").hide();
+        
+        jj("#"+jj(this).val()+"_section").show();
+      }
+      else
+      {
+        class_id_current = batch_id_current
+        var search_value = batch_id_current.replace(/\_/g, ' ');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
+        search_value3 = search_value3+" "; 
+        search_value_main = search_value3
+        jj(".section_id").val("");
+        jj(".section_id").hide();
+      } 
+       search_and_show();
+    });
+    jj(".section_id").change(function(){
+      if(jj(this).val())
+      {
+        search_value_main = jj(this).val();
+      }
+      else
+      {
+        var search_value = class_id_current.replace(/\_/g, ' ');
+        var search_value2 = search_value.replace("aaa", '(');
+        var search_value3 = search_value2.replace("bbb", ')');
+        search_value_main = search_value3
+      }   
+        
+      search_and_show();
+    });
+    
+    
+  
+  });
+  
+  function search_and_show()
+  {
+      jj(".all-batch").show();
+      if(search_value_main)
+      {
+        jj(".all-batch").hide();
+        jj(".all-batch").each(function(){
+          var data_batch = jj(this).attr("data-batch");
+          if(data_batch.indexOf(search_value_main) != -1)
+          {
+            jj(this).show();
+          }
+        });
+      }
+  }
+</script>
+<style>
+    .box
+    {
+       padding: 15px 0px;
+    }
+    .box select
+    {
+       background-color: #eee;
+      border: 1px solid #c6c6c6;
+    
+      width: 215px;
+      height: 30px;
+      padding: 5px 10px;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+    }
+    
+</style>    

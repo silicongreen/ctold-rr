@@ -3,7 +3,7 @@
       <center>
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '7%' %></h4>
-                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
+                <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
             </div>
       </center>    
       <p>&nbsp;<p>
@@ -21,11 +21,10 @@
 
       <table id="pdf-table" class="margin-top-bottom-10" width="99.8%" cellspacing="0">
           <tr class="table-header">
-              <td class="align-left" colspan="2">Name of the Student : <b><%= @student.full_name %></b></td>
+              <td class="align-left">Name of the Student : <b><%= @student.full_name %></b></td>
               <td class="align-left">ID NO : <b><%= @student.admission_no %></b></td>
           </tr>
           <tr class="table-header">
-              <td class="align-left">Section : <b><%= @batch.course.section_name %></b></td>
               <td class="align-left">Roll No : <b><%= @student.class_roll_no %></b></td>
               <td class="align-left">Date Of Birth : <b><%= @student.date_of_birth.strftime("%Y/%m/%d") %></b></td>
           </tr>
@@ -109,7 +108,7 @@
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
                   </tr>
                   <tr class="table-header">
-                      <td class="col-pdf align-left" >Expresses Positive activities and good behaviour</td>
+                      <td class="col-pdf align-left" >Expresses positive activities and good behaviour</td>
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
                       <td class="col-pdf width-18 sjws_table_intro"><span class="tickbox_uncheck2"></span></td>
@@ -249,6 +248,10 @@
   <style>
    .sis-final .table-header td{
         padding: 8px !important;
+    }
+    #page-yield #pdf-header-south h2
+    {
+       font-size: 24px !important;
     }
   </style>
       

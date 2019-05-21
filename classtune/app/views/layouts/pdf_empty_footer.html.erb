@@ -16,6 +16,7 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+<% if MultiSchool.current_school.code != "oisd" %>
 <div class="powered-text">
     <font size='1'>Print Date: <%= Time.now.strftime("%Y/%m/%d") %></font>
 </div>
@@ -30,5 +31,6 @@
     {
        font-size: 10px !important;
     }
-</style>    
+</style> 
+<% end %>
 

@@ -217,7 +217,7 @@
 
                             <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 
-                                <td class="col-pdf"><%= sprintf( "%0.02f", total_term) %></td>
+                                <td class="col-pdf"><%= total_term.round() %></td>
                             <% end %>  
                           <% end %>    
 

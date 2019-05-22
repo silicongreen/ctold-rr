@@ -131,7 +131,7 @@
                               <% if group_count > 1 %>
                               <% if !top_exam_first.blank? and top_exam_first!="" %>
                                 <% if report['exam_name'].index(top_exam_first).nil? %>
-                                    <td class="col-pdf"><%= sprintf( "%0.02f", total_term)%></td>
+                                    <td class="col-pdf"><%= total_term.round() %></td>
                                     <%
                                         exam_no = 2
                                         total_term = 0

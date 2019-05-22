@@ -11,9 +11,9 @@
         <div class="academia_box">
          
           <div class="academia_middle_box">
-            <h5 align="center">(House: 5, Road: 2, Block: C, Section: 2, Mirpur, Dhaka)</h5>
-            <h5 align="center">(www.orchidintschool.com, Contact : 01625905083, 01712665157, Email : oisd.edu@yahoo.com)</h5>
-            <h5 align="center"><%= @connect_exam_obj.name %></h5>
+            <h3 align="center">(House: 5, Road: 2, Block: C, Section: 2, Mirpur, Dhaka)</h3>
+            <h3 align="center">(www.orchidintschool.com, Contact : 01625905083, 01712665157, Email : oisd.edu@yahoo.com)</h3>
+            <h3 align="center"><%= @connect_exam_obj.name %></h5>
            
               <%#= debug @student %>
             <div class="academia_exam_details_box">              
@@ -392,18 +392,19 @@
         
       .cherry_blossoms  table tr td
 {
-    font-size:20px;
+    font-size:22px;
     text-align: center;
 }
 
 .cherry_blossoms  table tr td.avg_mark
 {
+    font-size:22px;
     text-align: right;
-    padding: 5px 20px; 
+    padding: 10px 20px; 
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
-    font-size:20px;
+    font-size:22px;
     font-weight: bold;
     text-align: center;
 }
@@ -441,13 +442,17 @@
 .academia_right_box
 {
     float:right;
-    width:270px;                
+    width:250px;                
 }
 .cherry_blossoms  .academia_middle_box
 {
     float:left;
-    width:800px;
+    width:820px;
     margin-left:180px;
 
 }
+#page-yield #pdf-header-south h2 b
+    {
+       font-size: 28px !important;
+    }
     </style>

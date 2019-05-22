@@ -71,7 +71,7 @@
         <div class ="current_batch">
             <div id="grouped_exam_report">
                 <div class="CSSTableGenerator">
-                    <table id="pdf-table" class='score' width="100%">
+                    <table id="pdf-table" class='score' width="98%">
                         <thead>
                           <% extra_string = "" %>
                           <% @report_data['report']['exams'].each do |report| %>
@@ -111,9 +111,9 @@
                               
                               <% end %>
 
-                              <td class="totalmark">Total Marks</td>
+                              <td>Total Marks</td>
                          
-                              <td class="totalmark">Letter Grade</td>
+                              <td>Letter Grade</td>
                           </tr>
                         </thead>
                         <% total_parcent = 0 %>
@@ -169,14 +169,14 @@
                                     <% w = 30/count%>
                                     <% if report['exam_category'] != '1' %>
                                     <td>
-
+                                                    <% full_mark = false %>
                                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                                     
+                                                      <% full_mark = true %>
                                                       <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                                    
                                                     <% end %>  
                                                 
-                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                                    <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? and full_mark == true %>
                                                       <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
                                                       <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                                     <% else %>
@@ -211,16 +211,16 @@
                                %>
 
                                   <% if full_mark.to_f > 0 %>
-                                      <td class="totalmark"><b><%= sprintf( "%0.02f", total_mark) %></b></td>
-                                      <!--td class="totalmark"><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
+                                      <td><b><%= sprintf( "%0.02f", total_mark) %></b></td>
+                                      <!--td><b><%= sprintf( "%0.02f", main_mark) %> %</b></td-->
                                       
                                       <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
 
                                       <% if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank? %>
-                                        <td class="totalmark"><b><%= grade.name %></b></td>
+                                        <td><b><%= grade.name %></b></td>
                                         <!--td width="5%"><b><%= grade.credit_points %></b></td-->
                                       <% else %>
-                                        <td class="totalmark"><b>-</b></td>
+                                        <td><b>-</b></td>
                                         <!--td width="5%"><b>-</b></td-->
                                       <% end %>
 
@@ -228,10 +228,10 @@
                                       <% total_parcent= total_parcent+main_mark %>
                                       <% total_subject = total_subject+1 %>
                                   <% else  %>
-                                      <td class="totalmark"><b>-</b></td>
-                                      <!--td class="totalmark"><b>-</b></td-->
-                                      <td class="totalmark"><b>-</b></td>
-                                      <td class="totalmark"><b>-</b></td>
+                                      <td><b>-</b></td>
+                                      <!--td><b>-</b></td-->
+                                      <td><b>-</b></td>
+                                      <td><b>-</b></td>
                                       <!--td width="5%"><b>-</b></td-->
                                   <% end %>      
 
@@ -403,7 +403,7 @@
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
-    font-size:10px;
+    font-size:20px;
     font-weight: bold;
     text-align: center;
 }
@@ -435,6 +435,19 @@
     border: 1px solid #000;
     width:40%;
     margin: 10px auto;
+
+}
+
+.academia_right_box
+{
+    float:right;
+    width:270px;                
+}
+.cherry_blossoms  .academia_middle_box
+{
+    float:left;
+    width:800px;
+    margin-left:180px;
 
 }
     </style>

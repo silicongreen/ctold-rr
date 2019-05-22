@@ -340,7 +340,7 @@
                           <b>Absent</b> 
                       </td>
                       <td width="50%">
-                          <%= @report_data['total'] - @report_data['present'] %>
+                          <%= @report_data['total'].to_i - @report_data['present'].to_i %>
                       </td>
                   </tr>
               </table>

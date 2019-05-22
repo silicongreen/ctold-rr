@@ -25,7 +25,7 @@
                     </td>
                     <td class="middle">                      
                       Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %><br />
-                      Date Of Birth : <%= @student.date_of_birth.strftime("%Y/%m/%d") %>  
+                      DOB : <%= @student.date_of_birth.strftime("%Y/%m/%d") %>  
                     </td>
                     <td width="28%">
                        Class : <%= @batch.course.full_name %><br />       

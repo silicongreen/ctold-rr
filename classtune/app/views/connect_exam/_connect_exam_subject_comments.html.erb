@@ -182,7 +182,7 @@
                         <%
                             mark = @exam_score.marks
                             unless @exam_absent.blank?
-                              if @exam_absent.remarks.upcase != "NA" and @exam_absent.remarks.upcase != "N/A"
+                              if @exam_absent.remarks.upcase != "NA" and @exam_absent.remarks.upcase != "N/A" and mark.to_i == 0
                                 mark = @exam_absent.remarks
                               end
                             end

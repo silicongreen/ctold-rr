@@ -71,7 +71,7 @@
         <div class ="current_batch">
             <div id="grouped_exam_report">
                 <div class="CSSTableGenerator">
-                    <table id="pdf-table" class='score' width="98%">
+                    <table id="pdf-table"  width="99.8%">
                         <thead>
                           <% extra_string = "" %>
                           <% @report_data['report']['exams'].each do |report| %>
@@ -454,5 +454,8 @@
 #page-yield #pdf-header-south h2 b
     {
        font-size: 28px !important;
+    }
+    .sis-final .table-header td{
+        padding: 14px !important;
     }
     </style>

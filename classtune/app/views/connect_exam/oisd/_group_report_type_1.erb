@@ -9,7 +9,7 @@
       <p>&nbsp;<p>
       <table id="pdf-table" class="margin-top-bottom-10" width="99.8%" cellspacing="0">
         <tr class="table-header">
-            <td><h4 align="center"><%= @connect_exam_obj.name.upcase+" REPORT CARD" %></h4></td>
+            <td><h4 align="center"><%= @connect_exam_obj.name.upcase %></h4></td>
         </tr>
         <tr class="table-header">
           <td><h4 align="center">ACADEMIC SESSION : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B, %Y"):@connect_exam_obj.published_date.strftime("%B, %Y") %></h4></td>

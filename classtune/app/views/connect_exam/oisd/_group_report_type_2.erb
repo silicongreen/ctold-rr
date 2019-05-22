@@ -25,7 +25,7 @@
                       Student ID : <%= @student.admission_no %>
                     </td>
                     <td class="middle">                      
-                      Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %><br />
+                      Session : <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %><br />
                       DOB : <%= @student.date_of_birth.strftime("%Y/%m/%d") %>  
                     </td>
                     <td width="28%">
@@ -456,12 +456,12 @@
 .academia_right_box
 {
     float:right;
-    width:250px;                
+    width:220px;                
 }
 .cherry_blossoms  .academia_middle_box
 {
     float:left;
-    width:820px;
+    width:850px;
     margin-left:180px;
 
 }

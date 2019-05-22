@@ -1,6 +1,6 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
 
-    <div id="page-yield"  class="available_sections1 academia cherry_blossoms sis sis-final">
+    <div id="page-yield"  class="available_sections1 cherry_blossoms sis sis-final">
        <p>&nbsp;<p>
        <center>
             <div id="pdf-header-south" class="general-header">
@@ -289,7 +289,7 @@
 
             </div>
         </div>
-       <% unless @present_total.blank? %>
+       <% if @present_total.blank? %>
         <% @comment_from_split = @total_day  %>
        <% end %>
         <div class="academia_box">

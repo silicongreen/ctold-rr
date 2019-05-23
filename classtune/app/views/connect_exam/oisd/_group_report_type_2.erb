@@ -11,9 +11,8 @@
         <div class="academia_box"  style="margin-bottom:20px;">
          
           <div class="academia_middle_box">
-            <h3 align="center">(House: 5, Road: 2, Block: C, Section: 2, Mirpur, Dhaka)</h3>
-            <h3 align="center">(www.orchidintschool.com, Contact : 01625905083, 01712665157,<br/> Email : oisd.edu@yahoo.com)</h3>
-            <h3 align="center"><%= @connect_exam_obj.name %></h3>
+            
+            <h2 align="center"><%= @connect_exam_obj.name %></h2>
             <br/>
            
               <%#= debug @student %>
@@ -359,7 +358,7 @@
           <table id="pdf-table" width="99.8%" class="left-table even-table signature" cellspacing="0">
                   <tr class="even">
                       <td class="small-height"><b>Class Teacher's Signature</b></td>
-                      <td class="small-height"><b>Principal Signature</b></td>
+                      <td class="small-height"><b>Principal's Signature</b></td>
                       <td class="small-height"><b>Parent's Signature</b></td>
                   </tr> 
                   <tr class="even">
@@ -367,8 +366,12 @@
                      <td><br/><br/><br/></td>
                      <td><br/><br/><br/></td>
                   </tr> 
-               </table>
+           </table>
         </div>
+       <div class="academia_box"  style="margin-top:50px;">
+         <h3 align="center">(House: 5, Road: 2, Block: C, Section: 2, Mirpur, Dhaka)</h3>
+         <h3 align="center">(www.orchidintschool.com, Contact : 01625905083, 01712665157,<br/> Email : oisd.edu@yahoo.com)</h3>
+       </div>
     </div>
 
   <% end %>

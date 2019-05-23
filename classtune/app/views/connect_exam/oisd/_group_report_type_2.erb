@@ -152,7 +152,7 @@
                                   <% 
                                     ct_mark_array.sort! {|x,y| y <=> x }
                                     ct_mark =  ct_mark_array[0]
-                                    ct_mark = ct_mark.round
+                                    ct_mark = ct_mark.to_f.round
                                   %>
                                 <% end %>
                                 <td >
@@ -186,8 +186,8 @@
                                                     <% end %>  
                                                 
                                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? and full_mark_main == true %>
-                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].round %>
-                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].round.to_f %>
+                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round %>
+                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round %>
                                                     <% else %>
                                                       -
                                                     <% end %>  

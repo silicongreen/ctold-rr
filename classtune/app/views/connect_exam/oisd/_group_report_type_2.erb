@@ -95,7 +95,7 @@
                           <% end %>  
                           <tr class="table-header">
                               <td class='subjects'>Subject Name </td>
-                              <td><%= extra_string %>Class Test 2018-19</td>
+                              <td>Class Test (30%)</td>
                                     
                               <% count = 0 %>
                               <% unless @report_data['report']['exams'].blank? %>  
@@ -110,14 +110,14 @@
                                   <% if report['exam_category'] != '1' %>
                                   <% w = 30/count%>
                                   <td>
-                                    <%= report['exam_name'] %>
+                                    <%= report['exam_name'] %> (70%)
                                   </td> 
                                   <% end %>
                                 <% end %>
                               
                               <% end %>
 
-                              <td>Total Marks</td>
+                              <td>Total Marks (100%)</td>
                          
                               <td>Letter Grade</td>
                           </tr>
@@ -367,10 +367,7 @@
                   </tr> 
            </table>
         </div>
-       <div class="academia_box"  style="margin-top:70px;">
-         <h3 align="center">(House: 5, Road: 2, Block: C, Section: 2, Mirpur, Dhaka)</h3>
-         <h3 align="center">(www.orchidintschool.com, Contact : 01625905083, 01712665157,<br/> Email : oisd.edu@yahoo.com)</h3>
-       </div>
+      
     </div>
 
   <% end %>

@@ -152,6 +152,7 @@
                                   <% 
                                     ct_mark_array.sort! {|x,y| y <=> x }
                                     ct_mark =  ct_mark_array[0]
+                                    ct_mark = ct_mark.round
                                   %>
                                 <% end %>
                                 <td >
@@ -162,7 +163,7 @@
                                         <% full_mark = ct_full_mark %>
 
                                       <% end %> 
-                                      <% if !ct_mark.blank? %>
+                                      <% if !ct_mark.blank? && full_mark != 0 %>
                                         <%= ct_mark %>
                                         <% total_mark = ct_mark.to_f %>
                                       <% else %>
@@ -185,8 +186,8 @@
                                                     <% end %>  
                                                 
                                                     <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? and full_mark_main == true %>
-                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'] %>
-                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                                      <%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].round %>
+                                                      <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].round.to_f %>
                                                     <% else %>
                                                       -
                                                     <% end %>  
@@ -213,6 +214,7 @@
 
                                   if total_mark.to_f>0 and full_mark.to_f>0
                                     main_mark = (total_mark.to_f/full_mark.to_f)*100 
+                                    main_mark = main_mark.round
                                   else
                                     main_mark = 0
                                   end  

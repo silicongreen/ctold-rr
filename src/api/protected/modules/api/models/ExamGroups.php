@@ -710,7 +710,7 @@ class ExamGroups extends CActiveRecord
     public function getExamGroupResultSubjectAllStudentContinues($exam_group_id,$students)
     {
         $criteria = new CDbCriteria();
-        $criteria->together = true;
+        //$criteria->together = true;
         $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         $criteria->compare('t.is_deleted', 0);
@@ -748,7 +748,7 @@ class ExamGroups extends CActiveRecord
         
         
         $criteria = new CDbCriteria();
-        $criteria->together = true;
+        //$criteria->together = true;
         $criteria->select = "t.name,t.id,t.sba,t.exam_category,t.quarter"; 
         $criteria->addIncondition('t.id', $exam_group_id);
         //$criteria->compare('t.result_published', 1);

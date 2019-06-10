@@ -360,8 +360,11 @@
                       <% e_sub = @student_electives.find{|es| es.subject_id == subject.id } %>
                       <% t = "C" %>
                       <% unless e_sub.blank? %>
-                        <% if e_sub.elective_type == 4 or e_sub.elective_type == 3 %>
-                        <% t = "O" %>
+                        <% if e_sub.elective_type == 3 %>
+                          <% t = "O" %>
+                        <% end %>
+                        <% if e_sub.elective_type == 4 %>
+                          <% t = "F" %>
                         <% end %>
                       <% end %>
                       <td class="col-pdf"><%= t %></td>

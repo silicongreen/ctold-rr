@@ -30,6 +30,47 @@ class BoardController < ApplicationController
     @std_guardians = @std_info.student_guardian
     render :layout => false
   end
+  def testimonial_excel
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'student_list_exam'
+    row_first = ['SL','ID','Class Roll','Name','Exam Reg. No.','Exam Roll No','Session','GPA']
+    new_book.worksheet(0).insert_row(0, row_first)
+    @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
+    @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
+    @batch = Batch.find(params[:id2])
+    batch_split = @batch.name.split(" ")
+    std_loop = 1
+    @board_exam_students.each do |exam_std|
+      @board_exam_student = BoardExamStudent.find(exam_std.id)
+      @std_info = get_student_all_type(@board_exam_student.student_id)
+      @std_guardians = @std_info.student_guardian
+      if @board_exam_student.session.blank?
+        @board_exam_student.session = @board_exam.board_session.name
+      end
+      unless @board_exam_student.board_grading_level_id.blank?
+        tmp_row = []
+        tmp_row << std_loop
+        tmp_row << @std_info.admission_no
+        tmp_row << @std_info.class_roll_no
+        tmp_row << @std_info.full_name
+        tmp_row << @board_exam_student.registration
+        tmp_row << @board_exam_student.roll
+        tmp_row << @board_exam_student.session
+        tmp_row << sprintf( "%0.02f", @board_exam_student.avg_credit_points) unless @board_exam_student.avg_credit_points.blank?
+        new_book.worksheet(0).insert_row(std_loop, tmp_row)
+        std_loop = std_loop+1
+      end
+    end
+    
+    sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE ("+@board_exam.board_exam_name.name+")
+     Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+          ")
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "testimonial.xls", :type =>  "application/vnd.ms-excel"
+  end
   def testimonial_section
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
     @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])

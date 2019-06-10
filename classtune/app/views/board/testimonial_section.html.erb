@@ -13,34 +13,10 @@
               end
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
-          <div  style="position: relative;" >
-            <p class="left-font" id="left-position-0"><%= @std_info.admission_no %></p>
-            <p class="left-font" id="left-position-1"><%= @std_info.full_name %></p>
-            <p class="left-font" id="left-position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
-            <p class="left-font" id="left-position-3"><%= @board_exam.center %></p>
-            <p class="left-font" id="left-position-4"><%= @board_exam_student.roll %></p>
-            <p class="left-font" id="left-position-5"><%= @board_exam_student.avg_credit_points %></p>
-            <p class="left-font" id="left-position-6"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-            <p class="left-font" id="left-position-7"><%= @board_exam_student.registration %>/<%= @board_exam_student.session %></p>
-            <% unless params[:sign].blank? %>
-            <p class="left-font" id="left-position-8"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
-            <% end %>
-
-            <p id="position-0"><%= @std_info.admission_no %></p>
-            <p id="position-1"><%= @std_info.full_name %></p>
-            <p id="position-2"><%= @std_guardians[0].full_name unless @std_guardians.blank? or @std_guardians[0].blank? %></p>
-            <p id="position-3"><%= @std_guardians[1].full_name unless @std_guardians.blank? or @std_guardians[1].blank? %></p>
-            <p id="position-4"><%= @board_exam.center %></p>
-            <p id="position-5"><%= @board_exam_student.roll %></p>
-            <p id="position-6"><%= @board_exam_student.avg_credit_points %></p>
-            <p id="position-7"><%= @board_exam.passing_year %></p>
-            <p id="position-8"><%= I18n.l(@std_info.date_of_birth,:format=>"%d %b %Y") unless @std_info.date_of_birth.nil? %></p>
-            <p id="position-9"><%= @board_exam_student.registration %>/<%= @board_exam_student.session %></p>
-            <% unless params[:sign].blank? %>
-            <p id="position-10"><img src="/images/school_logo/352/principal-sir-signature-2019.jpg" width="100"></p>
-            <% end %>
-          </div>  
-          <p style="page-break-after: always;"></p>
+            <div class="break" >
+             &nbsp;
+             <%= render  :partial=>"/board/testimonial" %> 
+            </div>   
           <% end %>
         <% end %>
     </body>
@@ -55,7 +31,12 @@
         font-style: italic;
         font-family: 'Cookie', cursive;
     }
-    
+    .break
+    {
+      page-break-after: always !important;
+      page-break-before: always !important;
+      position: relative;
+    }
     #left-position-0
     {
         position: absolute;

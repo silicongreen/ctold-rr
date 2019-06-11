@@ -46,7 +46,8 @@ class DelayedBatchTranfer
 
   def perform
     saved_batch = PdfSave.find_by_batch_id_and_status(@from,true)
-    if !@students.blank? and !saved_batch.blank?
+    un_saved_batch = PdfSave.find_by_batch_id_and_status(@from,false)
+    if !@students.blank? and (!saved_batch.blank? or un_saved_batch.blank?)
       
       if @transfer_all == "Yes"
         batch_saved = PdfSave.find(saved_batch.id)

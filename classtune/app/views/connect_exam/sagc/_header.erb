@@ -1,5 +1,5 @@
 <% unless params[:header].blank? %>
-<table id="pdf-table" class="top-left-center" width="80%" cellspacing="0">
+<table id="pdf-table" class="top-left-center" width="90%" cellspacing="0">
     <tr><td width="10%">
             <% if MultiSchool.current_school.id == 352 %>
               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>

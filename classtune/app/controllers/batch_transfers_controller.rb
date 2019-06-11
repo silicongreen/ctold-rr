@@ -153,11 +153,21 @@ class BatchTransfersController < ApplicationController
       @course_ids = @courses_data.map{|c| c.id} 
       @batche_ids = []
       pdf_saved = PdfSave.find(:all,:conditions => ["status = ?",true])
+      pdf_not_saved = PdfSave.find(:all,:conditions => ["status = ?",false])
       unless pdf_saved.blank?
         @batche_ids = pdf_saved.map(&:batch_id)
       end
-      @batches = Batch.find(:all, :conditions => ["course_id IN (?) and id IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_ids])
-      @batches_name = Batch.find(:all, :conditions => ["course_id IN (?) and id IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_ids], :group => "name").map{|bn| bn.name}
+      unless pdf_not_saved.blank?
+        @batche_id_not_in = pdf_not_saved.map(&:batch_id)
+      end
+      if @batche_id_not_in.blank?
+        @batches = Batch.find(:all, :conditions => ["course_id IN (?)  and is_deleted = 0 and is_active = 1", @course_ids])
+        @batches_name = Batch.find(:all, :conditions => ["course_id IN (?) and is_deleted = 0 and is_active = 1", @course_ids], :group => "name").map{|bn| bn.name}
+      else
+        @batches = Batch.find(:all, :conditions => ["course_id IN (?) and id NOT IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_id_not_in])
+        @batches_name = Batch.find(:all, :conditions => ["course_id IN (?) and id NOT IN (?) and is_deleted = 0 and is_active = 1", @course_ids,@batche_id_not_in], :group => "name").map{|bn| bn.name}
+      end 
+      
       
       render(:update) do |page|
         page.replace_html 'update_batch', :partial=>'list_courses'

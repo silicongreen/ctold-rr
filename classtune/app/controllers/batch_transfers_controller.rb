@@ -22,12 +22,20 @@ class BatchTransfersController < ApplicationController
    
   def index
     @batche_ids = []
+    @batche_id_not_in = []
     pdf_saved = PdfSave.find(:all,:conditions => ["status = ?",true])
+    pdf_not_saved = PdfSave.find(:all,:conditions => ["status = ?",false])
     unless pdf_saved.blank?
       @batche_ids = pdf_saved.map(&:batch_id)
     end
-    @batches = Batch.find(:all,:select=>"courses.course_name as course_name_batch",:conditions=>["batches.id IN (?) and batches.is_deleted = ? and courses.is_deleted = ?",@batche_ids,false,false],:group=>"courses.course_name",:joins=>[:course]) 
-    
+    unless pdf_not_saved.blank?
+      @batche_id_not_in = pdf_not_saved.map(&:batch_id)
+    end
+    if @batche_id_not_in.blank?
+      @batches = Batch.find(:all,:select=>"courses.course_name as course_name_batch",:conditions=>["batches.is_deleted = ? and courses.is_deleted = ?",false,false],:group=>"courses.course_name",:joins=>[:course]) 
+    else
+      @batches = Batch.find(:all,:select=>"courses.course_name as course_name_batch",:conditions=>["batches.id NOT IN (?) and batches.is_deleted = ? and courses.is_deleted = ?",@batche_id_not_in,false,false],:group=>"courses.course_name",:joins=>[:course])
+    end  
     saved_batch = PdfSave.find(:all)
     @show_pdf_save_button = true
     unless saved_batch.blank?

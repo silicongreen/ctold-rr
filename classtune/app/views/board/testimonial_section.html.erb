@@ -14,11 +14,9 @@
               end
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
-            <div class="break" >
-              <% if iloop > 0 %>
-               &nbsp;
-              <% end %>
-             <%= render  :partial=>"/board/testimonial" %> 
+            <div class="break" <% if iloop > 0 %> style="padding-top:-10px !important;"<% end %>  >
+              &nbsp;
+              <%= render  :partial=>"/board/testimonial" %> 
             </div> 
             <% iloop = iloop+1 %>
           <% end %>

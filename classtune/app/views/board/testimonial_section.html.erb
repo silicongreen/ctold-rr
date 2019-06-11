@@ -3,6 +3,7 @@
         <title>Testimonial</title>
     </head>
     <body>
+        <% iloop = 0 %>
         <% @board_exam_students.each do |exam_std| %>
           <%
               @board_exam_student = BoardExamStudent.find(exam_std.id)
@@ -14,9 +15,12 @@
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
             <div class="break" >
-             <p>&nbsp;</p>
+              <% if iloop > 0 %>
+               &nbsp;
+              <% end %>
              <%= render  :partial=>"/board/testimonial" %> 
-            </div>   
+            </div> 
+            <% iloop = iloop+1 %>
           <% end %>
         <% end %>
     </body>

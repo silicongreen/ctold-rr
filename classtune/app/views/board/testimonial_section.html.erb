@@ -13,9 +13,10 @@
               end
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
+            <div class="break" >
              &nbsp;
              <%= render  :partial=>"/board/testimonial" %> 
-             <p class="break"></p>   
+            </div>   
           <% end %>
         <% end %>
     </body>
@@ -37,6 +38,7 @@
       position: relative;
       padding: 0px !important;
       margin: 0px !important;
+      height:0px !important;
     }
     #left-position-0
     {

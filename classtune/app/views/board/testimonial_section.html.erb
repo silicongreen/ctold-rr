@@ -13,10 +13,9 @@
               end
           %>
           <% unless @board_exam_student.board_grading_level_id.blank? %>
-            <div class="break" >
              &nbsp;
              <%= render  :partial=>"/board/testimonial" %> 
-            </div>   
+             <p class="break"></p>   
           <% end %>
         <% end %>
     </body>

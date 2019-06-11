@@ -1,7 +1,8 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
- <%= render  :partial=>"/connect_exam/sagc/header" %>
+ 
  <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
+      <%= render  :partial=>"/connect_exam/sagc/header" %>
       <table id="pdf-table" class="tbl-lign-left first_table" width="38%" cellspacing="0">
           <tr class="even">
               <td class="align-right col-pdf" width="20%">Student ID </td><td colspan="3" class="align-left"><b><%= @student.admission_no %></b></td>

@@ -76,6 +76,10 @@ end
                     
                       <% @all_subject_connect_exam.each do |val| %>
                         <% key = val.code.to_s %>
+                        <% if @subject_result[key].blank?  %>
+                          <% next %>
+                        <% end %>
+                        <% key2 = val.id.to_s %>
                         <% srl = srl+1 %> 
                         <% total_passed = 0 %>
                         <% total_passed = @subject_result[key]['total'] unless @subject_result[key]['total'].blank? %>

@@ -256,7 +256,9 @@ copy << "Bank Copy"
                           Authorised Signature<br/>(Account)<br/>Prepared By
                       
                       </td>
+                      <td class="gap"></td>
                       <td>Class Teacher<br/>&nbsp;<br/>&nbsp;</td>
+                      <td class="gap"></td>
                       <td class="width-38">Authorised Signature<br/>(Bank)<br/>Received By</td>
                   </tr>
               </table>
@@ -270,6 +272,11 @@ copy << "Bank Copy"
 </div>
 
 <style>
+    table.signature tr td.gap
+    {
+      border-top:none !important;
+      width: 2%;
+    }
     table.signature tr td.width-38
     {
       width: 35%;
@@ -277,7 +284,7 @@ copy << "Bank Copy"
     }
     table.signature tr td
     {
-        border-top: 1px solid #ccc;
+        border-top: 1px solid black;
         padding: 3px 0px;
         width: 20%;
         text-align: center;

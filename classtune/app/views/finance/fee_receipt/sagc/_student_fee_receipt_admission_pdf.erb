@@ -34,7 +34,7 @@ copy << "Bank Copy"
               <div class="header-sagc-left">
                   <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '88%',:style=>" margin-top: 10%;" %></div>
                   <div class="school-name-left">
-                      <h4><font size="2"><%=Configuration.get_config_value('InstitutionName').upcase; %></font></h4>
+                      <h4><font size="1"><%=Configuration.get_config_value('InstitutionName').upcase; %></font></h4>
                       <span><center>Dhaka Cantonment</cener></span>
                       <span><center><b>Payment Slip (<%= cp %>)</b></cener></span>
                   </div>

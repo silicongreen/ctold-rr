@@ -2183,6 +2183,21 @@ class StudentController < ApplicationController
     @user = current_user
     @student = Student.find(params[:id])
     
+    guardians = @student.student_guardian
+    unless guardians.blank?
+      iloop = 0
+      guardians.each do |duardian|
+        if iloop == 0
+          @guardian_father = duardian 
+        end
+        if iloop == 1
+          @guardian_mother = duardian
+        end
+        iloop = iloop+1
+      end
+    end
+   
+    
     @previous_batch_id = @student.batch_id
     @previous_category_id = @student.student_category_id
     
@@ -2229,6 +2244,14 @@ class StudentController < ApplicationController
     end
 
     if request.post?
+      if !params[:f_first_name].blank? && !@guardian_father.blank?
+          @guardian_father.first_name = params[:f_first_name]
+          @guardian_father.save
+      end
+      if !params[:m_first_name].blank? && !@guardian_mother.blank?
+          @guardian_mother.first_name = params[:m_first_name]
+          @guardian_mother.save
+      end
       params[:student].delete "pass"
       if params[:student][:student_category_id] != "433"
         params[:student][:staff_id] = 0

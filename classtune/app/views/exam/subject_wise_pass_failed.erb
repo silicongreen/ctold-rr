@@ -71,7 +71,7 @@ end
                         @subject_result.each do |key,sub_res|
                           sub_id_array << key
                         end
-                        @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:order=>"priority asc")
+                        @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:consitions=>["batch_id = ?",@batch.id],:order=>"priority asc")
                       %>
                     
                       <% @all_subject_connect_exam.each do |val| %>

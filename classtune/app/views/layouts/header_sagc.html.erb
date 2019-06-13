@@ -1,26 +1,36 @@
+<div id="pdf-header-south" class="sfx-header">
+    <table id="pdf-table" class="center-header" width="100%" cellspacing="0">
+        <tr><td width="20%">
+                <% if MultiSchool.current_school.id == 352 %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
 
-<table id="pdf-table" class="center-header" width="100%" cellspacing="0">
-    <tr><td width="20%">
-            <% if MultiSchool.current_school.id == 352 %>
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
-
-            <% else %>
-              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ current_school_detail.logo.url),:width=> '85%' %>
-            <% end %>
-        </td>
-        <td width="80%" style="vertical-align:top;">
-            <font size="3"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/>
-            <font size="2">Dhaka Cantonment, Dhaka-1206</font><br/>
-            <font size="2">Phone:9833306 web: www.sagc.edu.bd</font>
-        </td>
-    </tr>     
-</table>
-<h4 align="center"><%= @connect_exam_obj.name %> - Merit List</h4>
-<h4 class="line-height-10" align="center">
-<% if @class.blank? %>
-  <%= @batch.course.course_name %> <%= @batch.course.section_name %>
-<% else %>
-  <%= @batch.course.course_name %>
-<% end %>    
-</h4>
+                <% else %>
+                  <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ current_school_detail.logo.url),:width=> '85%' %>
+                <% end %>
+            </td>
+            <td width="80%" style="vertical-align:top;">
+                <font size="3"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/>
+                <font size="2">Dhaka Cantonment, Dhaka-1206</font><br/>
+                <font size="2">Phone:9833306 web: www.sagc.edu.bd</font>
+            </td>
+        </tr>     
+    </table>
+    <h5 align="center"><%= @connect_exam_obj.name %> - Merit List</h5>
+    <center>
+      <table id="pdf-table" width="100%" cellspacing="0">
+        <tr class="table-header">
+                <td class="col-pdf">Program : <%= @batch.course.course_name %></td>
+                <td class="col-pdf">Group : <% unless @group_name_upper.blank? %><%= @group_name_upper %><% end %></td>
+                <td class="col-pdf">Section :<% if @class.blank? %> <%= @batch.course.section_name %><% end %></td>
+        </tr>
+        <% batch_split = @batch.name.split(" ") %>
+        <tr class="table-header">
+                <td class="col-pdf">Shift : <%= batch_split[0] %></td>
+                <td class="col-pdf">Version : <%= batch_split[1] %></td>
+                <td class="col-pdf">Session : <%= @batch.course.session %></td>
+        </tr>
+      </table>
+    <center>
+    
+</div>
    

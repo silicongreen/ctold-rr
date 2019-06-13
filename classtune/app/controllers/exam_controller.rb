@@ -2907,7 +2907,7 @@ class ExamController < ApplicationController
     end
     render :pdf => 'merit_list_sagc',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 32,
+      :margin => {    :top=> 52,
       :bottom => 30,
       :left=> 10,
       :right => 10},

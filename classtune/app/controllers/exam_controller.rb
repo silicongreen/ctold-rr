@@ -2837,11 +2837,11 @@ class ExamController < ApplicationController
     finding_data5()
     render :pdf => 'subject_wise_pass_failed',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 28,
+      :margin => {    :top=> 10,
       :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   def summary_report
@@ -2861,7 +2861,7 @@ class ExamController < ApplicationController
     finding_data5()
     render :pdf => 'summary_report',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 32,
+      :margin => {    :top=> 10,
       :bottom => 30,
       :left=> 10,
       :right => 10},

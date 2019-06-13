@@ -2861,11 +2861,11 @@ class ExamController < ApplicationController
     finding_data5()
     render :pdf => 'summary_report',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 28,
+      :margin => {    :top=> 32,
       :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :header => {:html => { :template=> 'layouts/header_sagc.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   def mert_list_sagc
@@ -2911,7 +2911,7 @@ class ExamController < ApplicationController
       :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_sagc.html'}},
+      :header => {:html => { :template=> 'layouts/header_sagc.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
   end
   
@@ -2932,11 +2932,11 @@ class ExamController < ApplicationController
     finding_data5()
     render :pdf => 'subject_wise_pass_failed',
       :orientation => 'Portrait', :zoom => 1.00,
-      :margin => {    :top=> 28,
+      :margin => {    :top=> 32,
       :bottom => 30,
       :left=> 10,
       :right => 10},
-      :header => {:html => { :template=> 'layouts/pdf_header_summary.html'}},
+      :header => {:html => { :template=> 'layouts/header_sagc.html'}},
       :footer => {:html => { :template=> 'layouts/pdf_footer_sagc.html'}}
   end
   

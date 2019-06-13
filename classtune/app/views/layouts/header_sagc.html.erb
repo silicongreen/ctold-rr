@@ -15,4 +15,12 @@
         </td>
     </tr>     
 </table>
+<h4 align="center"><%= @connect_exam_obj.name %> - Merit List</h4>
+<h4 class="line-height-10" align="center">
+<% if @class.blank? %>
+  <%= @batch.course.course_name %> <%= @batch.course.section_name %>
+<% else %>
+  <%= @batch.course.course_name %>
+<% end %>    
+</h4>
    

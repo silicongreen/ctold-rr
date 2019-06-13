@@ -99,20 +99,20 @@ unless @all_group_exams.blank?
             <%= render  :partial=>"/layouts/header_sagc" %>
             <h4 align="center">Non Posted Marks Entry, <%= @connect_exam_obj.name %></h4>
             <br/>
-            <table width="100%" >
-                <thead>
-                    <tr>
-                        <td><b>Year: <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%B-%Y"):@connect_exam_obj.published_date.strftime("%B-%Y") %> </b></td>
-                        <td align="right"><b>Class : 
-                                <% if @batch.name == "General" %>
-                                  <%= @batch.course.full_name %>
-                                <% else %>
-                                  <%= @batch.name %> ,<%= @batch.course.full_name %>
-                                <% end %></b>
-                        </td>
-                    </tr>
-                </thead>    
+            <table id="pdf-table" width="100%" cellspacing="0">
+              <tr class="table-header">
+                      <td class="col-pdf">Program : <%= @batch.course.course_name %></td>
+                      <td class="col-pdf">Group : <% unless @group_name_upper.blank? %><%= @group_name_upper %><% end %></td>
+                      <td class="col-pdf">Section :<% if @class.blank? %> <%= @batch.course.section_name %><% end %></td>
+              </tr>
+              <% batch_split = @batch.name.split(" ") %>
+              <tr class="table-header">
+                      <td class="col-pdf">Shift : <%= batch_split[0] %></td>
+                      <td class="col-pdf">Version : <%= batch_split[1] %></td>
+                      <td class="col-pdf">Session : <%= @batch.course.session %></td>
+              </tr>
             </table>
+            
         </center>
         <br/>
         <% unless @all_subject_id.blank?  %>

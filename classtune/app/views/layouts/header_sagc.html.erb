@@ -1,5 +1,5 @@
 <%
-@group_name_upper = @batch.course.group.upcase unless @batch.course.group.blank?
+@group_name_upper = @batch.course.group unless @batch.course.group.blank?
 unless @group_name_upper.blank?
   group_split = @group_name_upper.split(" ")
   unless group_split[2].blank?

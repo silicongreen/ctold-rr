@@ -92,6 +92,19 @@ unless @all_group_exams.blank?
   end
   end 
 %>
+<%
+@group_name_upper = @batch.course.group.upcase unless @batch.course.group.blank?
+unless @group_name_upper.blank?
+  group_split = @group_name_upper.split(" ")
+  unless group_split[2].blank?
+    group_split[0] = group_split[0]+" "+group_split[1]
+  end  
+  if !@group_name_upper.blank? && !@group_name_upper.index("--").nil? 
+    group_split[0] = ""
+  end 
+  @group_name_upper = group_split[0]
+end
+%>
 
 <div id="page-yield" class="available_sections1">
     <div class="section1 row" >

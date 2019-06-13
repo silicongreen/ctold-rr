@@ -1,3 +1,16 @@
+<%
+@group_name_upper = @batch.course.group.upcase unless @batch.course.group.blank?
+unless @group_name_upper.blank?
+  group_split = @group_name_upper.split(" ")
+  unless group_split[2].blank?
+    group_split[0] = group_split[0]+" "+group_split[1]
+  end 
+  if !@group_name_upper.blank? && !@group_name_upper.index("--").nil? 
+    group_split[0] = ""
+  end 
+  @group_name_upper = group_split[0]
+end
+%>
 <div id="pdf-header-south" class="sfx-header">
     <table id="pdf-table" class="center-header" width="100%" cellspacing="0">
         <tr><td width="10%">

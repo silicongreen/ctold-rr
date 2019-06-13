@@ -96,10 +96,7 @@ unless @all_group_exams.blank?
 <div id="page-yield" class="available_sections1">
     <div class="section1 row" >
         <center>
-            <div id="pdf-header-south" class="general-header">
-                <h4 align="center"><%= wicked_pdf_image_tag "/"+"#{Rails.root}/"+ "public/images/school_logo/352/logo-sagc.png",:width=> '10%' %></h4>
-                <h2 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h2>
-            </div>
+            <%= render  :partial=>"/layouts/header_sagc" %>
             <h4 align="center">Non Posted Marks Entry, <%= @connect_exam_obj.name %></h4>
             <br/>
             <table width="100%" >

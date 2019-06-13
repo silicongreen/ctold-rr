@@ -1,6 +1,6 @@
 
 <table id="pdf-table" class="center-header" width="100%" cellspacing="0">
-    <tr><td width="10%">
+    <tr><td width="20%">
             <% if MultiSchool.current_school.id == 352 %>
               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
 
@@ -8,10 +8,10 @@
               <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ current_school_detail.logo.url),:width=> '85%' %>
             <% end %>
         </td>
-        <td width="90%" style="vertical-align:top;">
-            <font size="6"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/><br/>
-            <font size="5">Dhaka Cantonment, Dhaka-1206</font><br/>
-            <font size="5">Phone:9833306 web: www.sagc.edu.bd</font>
+        <td width="80%" style="vertical-align:top;">
+            <font size="3"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/>
+            <font size="2">Dhaka Cantonment, Dhaka-1206</font><br/>
+            <font size="2">Phone:9833306 web: www.sagc.edu.bd</font>
         </td>
     </tr>     
 </table>

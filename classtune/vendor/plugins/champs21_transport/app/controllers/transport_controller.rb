@@ -92,9 +92,9 @@ class TransportController < ApplicationController
                 end
               end
               
-              picup_msg = "Ignore last notification "+std_data.full_name+" has not been picked"
+              picup_msg = "Ignore last notification, "+std_data.full_name+" has not been picked yet"
               if transport_pickup == 2
-                picup_msg = "Ignore last notification "+std_data.full_name+" has not been droped from bus"
+                picup_msg = "Ignore last notification, "+std_data.full_name+" has not been droped yet"
               end
               Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
                 :recipient_ids => reminder_recipient_ids,
@@ -133,9 +133,9 @@ class TransportController < ApplicationController
               end
             end
             
-            picup_msg = std_data.full_name+" has been picked"
+            picup_msg = std_data.full_name+" has been picked(Bus)"
             if transport_pickup == 2
-              picup_msg = std_data.full_name+" has been droped from bus"
+              picup_msg = std_data.full_name+" has been droped(Bus)"
             end
             
             Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,

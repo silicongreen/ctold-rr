@@ -209,7 +209,7 @@ employee_id = @current_user.employee_record.id
         <%=  link_to "<img src='/images/dashpallete/big_icon/ci-green.png' style='width:100%; margin-top:5px;'>", :controller => 'intelligence', :action => 'index' %><br/>
       <% end %>
         
-      <% if can_access_request? :transport,:transport_attendance %>
+      <% if can_access_request? :transport_attendance,:transport %>
           <%=  link_to "<div class='sms-link' style='width:100%; margin-top:5px; padding: 10px 0px;  font-size:18px; background:#000000; color:white;'><span style='text-align:center;width:80%; float:left;'>Transport Attendance</span><span style='text-align:right;width:20%;float:left;'> &#x25BA;</span></div>", :controller => 'transport', :action => 'transport_attendance' %>
          
       <% end %>

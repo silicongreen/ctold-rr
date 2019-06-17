@@ -44,6 +44,147 @@ class TransportController < ApplicationController
   def transport_details
     @vehicles = Vehicle.all
   end
+  
+  def transport_attendance
+    @date_today = @local_tzone_time.to_date
+    @vehicles = Vehicle.all
+  end
+  
+  def save_attendance
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      if params[:attandence_date].nil? || params[:attandence_date].empty?
+        @date_to_use = @local_tzone_time.to_date
+      else
+        @date_to_use = params[:attandence_date].to_date
+      end
+      @vehicle_id = params[:id]
+      transport_pickup = 1
+      unless params[:transport_pickup].blank?
+        transport_pickup = params[:transport_pickup].to_i
+      end
+      @transport = Transport.find_all_by_vehicle_id_and_receiver_type(params[:id],"Student")
+      @std_ids =  @transport.map(&:receiver_id)
+      @student_attendance = AttendanceVehicle.find_all_by_student_id(@std_ids,:conditions=>["attendance_date = ? and pickup_or_drop = ? and vehicle_id = ?",@date_to_use,transport_pickup,params[:id]])
+      @present_stds = @student_attendance.select{|at| at.is_absent == 0 }.map(&:student_id)
+      AttendanceVehicle.destroy_all(:vehicle_id => @vehicle_id,:attendance_date => @date_to_use,:pickup_or_drop=>transport_pickup)
+    
+      
+      unless params[:student_id].blank?
+        std_ids = params[:student_id].split(",")
+        
+        unless @present_stds.blank?
+          @student_attendance.each do |attendance_vehicle|
+            std_id = attendance_vehicle.student_id
+            unless std_ids.include?(std_id.to_s)
+              reminder_recipient_ids = []
+              batch_ids = {}
+              student_ids = {}
+              std_data = Student.find_by_id(std_id.to_i)
+              reminder_recipient_ids << std_data.user_id
+              batch_ids[std_data.user_id] = std_data.batch_id
+              student_ids[std_data.user_id] = std_data.id
+              guardians = std_data.student_guardian
+              guardians.each do |guardian|
+                unless guardian.user_id.nil?
+                  reminder_recipient_ids << guardian.user_id
+                  batch_ids[guardian.user_id] = std_data.batch_id
+                  student_ids[guardian.user_id] = std_data.id
+                end
+              end
+              
+              picup_msg = "Ignore last notification "+std_data.full_name+" has not been picked"
+              if transport_pickup == 2
+                picup_msg = "Ignore last notification "+std_data.full_name+" has not been droped from bus"
+              end
+              Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+                :recipient_ids => reminder_recipient_ids,
+                :subject=>picup_msg,
+                :rtype=>275,
+                :rid=>attendance_vehicle.id,
+                :student_id => student_ids,
+                :batch_id => batch_ids,
+                :body=>picup_msg ))
+              
+            end
+          end
+        end
+      
+        std_ids.each do |std_id|
+          attendance_vehicle = AttendanceVehicle.new
+          attendance_vehicle.student_id = std_id
+          attendance_vehicle.vehicle_id = @vehicle_id
+          attendance_vehicle.attendance_date = @date_to_use
+          attendance_vehicle.pickup_or_drop = transport_pickup
+          attendance_vehicle.save
+          unless @present_stds.include?(std_id.to_i)
+            reminder_recipient_ids = []
+            batch_ids = {}
+            student_ids = {}
+            std_data = Student.find_by_id(std_id.to_i)
+            reminder_recipient_ids << std_data.user_id
+            batch_ids[std_data.user_id] = std_data.batch_id
+            student_ids[std_data.user_id] = std_data.id
+            guardians = std_data.student_guardian
+            guardians.each do |guardian|
+              unless guardian.user_id.nil?
+                reminder_recipient_ids << guardian.user_id
+                batch_ids[guardian.user_id] = std_data.batch_id
+                student_ids[guardian.user_id] = std_data.id
+              end
+            end
+            
+            picup_msg = std_data.full_name+" has been picked"
+            if transport_pickup == 2
+              picup_msg = std_data.full_name+" has been droped from bus"
+            end
+            
+            Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => current_user.id,
+              :recipient_ids => reminder_recipient_ids,
+              :subject=>picup_msg,
+              :rtype=>275,
+              :rid=>attendance_vehicle.id,
+              :student_id => student_ids,
+              :batch_id => batch_ids,
+              :body=>picup_msg ))
+          
+          end
+          
+        end
+      end
+      render :text=>"success"
+  end
+  
+  def ajax_transport_attendance
+    unless params[:id].blank?
+      @vehicle_id = params[:id]
+      transport_pickup = 1
+      unless params[:transport_pickup].blank?
+        transport_pickup = params[:transport_pickup].to_i
+      end
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      if params[:attandence_date].nil? || params[:attandence_date].empty?
+        @date_to_use = @local_tzone_time.to_date
+      else
+        @date_to_use = params[:attandence_date].to_date
+      end
+      @transport = Transport.find_all_by_vehicle_id_and_receiver_type(params[:id],"Student")
+      @std_ids =  @transport.map(&:receiver_id)
+     
+      unless @std_ids.blank?
+        @student_attendance = AttendanceVehicle.find_all_by_student_id(@std_ids,:conditions=>["attendance_date = ? and pickup_or_drop = ? and vehicle_id = ?",@date_to_use,transport_pickup,params[:id]])
+        @present_stds = @student_attendance.select{|at| at.is_absent == 0 }.map(&:student_id)
+      end  
+      @vehicle = Vehicle.find_by_id(params[:id])
+      
+      render(:update) do |page|
+        page.replace_html 'transport_attendance', :partial=>'ajax_transport_attendance'
+      end
+    else
+      render(:update) do |page|
+        page.replace_html 'transport_attendance', :text=>''
+      end
+    end
+  end
 
   def pdf_report
     @transport = Transport.find_all_by_vehicle_id(params[:id])
@@ -214,7 +355,6 @@ class TransportController < ApplicationController
       @route = @transport.route
     end
   end
-  
   def vehicle_report
     @sort_order=params[:sort_order]
     if @sort_order.nil?
@@ -228,7 +368,6 @@ class TransportController < ApplicationController
       end
     end
   end
-  
   def vehicle_report_csv
     sort_order=params[:sort_order]
     if sort_order.nil?

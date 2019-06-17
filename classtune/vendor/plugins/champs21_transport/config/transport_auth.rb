@@ -25,7 +25,10 @@ authorization do
       :vehicle_report_csv,
       :single_vehicle_details,
       :add_transport_all,
-      :single_vehicle_details_csv
+      :single_vehicle_details_csv,
+      :transport_attendance,
+      :save_attendance,
+      :ajax_transport_attendance
     ]
     has_permission_on [:transport_fee],
       :to=>[

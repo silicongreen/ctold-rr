@@ -1,0 +1,101 @@
+<% if !@std_ids.empty? %>
+  <% if @present_stds.blank? %><h4 style="color:red" id="att_not_taken">Attendance Not Taken Yet</h4><% end %>
+  <div class="students-table">
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead>
+        <tr>
+          <td> <%= t('sl_no') %></td><td> <%= t('admission_no') %></td><td><%= t('name') %></td><td> </td>
+        </tr>
+      </thead>
+      <tbody>
+      <% @transport.each_with_index do |t, i| %>
+        <% unless t.receiver.nil? %>
+        <tr>
+          <td class="col-1">
+            <%= i+1 %>
+          </td>
+          <td class="col-2">
+            <%=  t.receiver.admission_no unless t.receiver.nil?%>
+          </td>
+          <td class="col-2">
+            <%=  t.receiver.full_name unless t.receiver.nil?%>
+          </td>
+
+          <td class="col-4" style="text-align:center;">
+            <%  checked = "" %>
+            <% if !@present_stds.blank? and @present_stds.include?(t.receiver.id) %>
+               <%  checked = "checked='checked'" %>
+            <% end %>   
+            <input type='checkbox' <%= checked %> id="<%= t.receiver.id %>" class="present_student" value='<%= t.receiver.id %>' name='student_id[]' />   
+          </td>
+         
+        </tr>
+        <% end %>
+      <% end %>
+      </tbody>  
+     
+    </table>
+    <br/>
+    <input type="button" name="save" id="attendance_save_all" value="Save Attendance" class="submit_button"  style=" cursor: pointer; border-radius: 5px; padding: 12px;"  />
+    <br/>
+    <h4 style="color:green; display:none;" id="att_taken">Attendance Successfully Saved</h4>
+    <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading-att", :style =>"display: none;" ) %>
+    
+  </div>
+<% else %>
+  <div class= "msg"><p class= "flash-msg"><%= t('no_users') %></p></div>
+<% end %>
+  
+  
+  <script>
+  var jj = jQuery.noConflict();
+  jj(document).ready(function () {
+  
+      jj('#attendance_save_all').click(function () {
+      
+          var student_ids = new Array;
+          jj('input.present_student').each(function (checkbox)
+          {
+         
+              console.log(jj(this).val())
+              if (jj(this).is(":checked") && jj(this).val() != 1)
+              {
+                  Array.prototype.push.call(student_ids, this.id);
+              }
+          });
+          jj("#loading-att").show();
+          new Ajax.Request('/transport/save_attendance', {
+              method: 'post',
+              onSuccess: function (request) {
+             
+                jj("#loading-att").hide();
+                jj("#att_taken").show();
+                setTimeout(function(){ jj("#att_taken").hide(); }, 3000);
+                jj("#att_not_taken").hide();
+                
+              },
+              parameters: {
+                  student_id: student_ids.toString(),
+                  attandence_date: jj('#attandence_date').val(),
+                  transport_pickup: jj('#transport_pickup').val(),
+                  id: <%= @vehicle_id %>
+              }
+          });
+
+
+
+      });
+  });
+</script> 
+
+<style>
+    .present_student
+    {
+       width: 50px;
+       height: 50px;
+    }
+    table.table-striped tr td
+    {
+       font-size: 28px;
+    }
+</style>    

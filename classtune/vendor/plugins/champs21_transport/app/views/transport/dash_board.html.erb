@@ -37,6 +37,11 @@
       <div class="link-heading"><%= link_to "#{t('report')}",:controller=>'transport'  ,:action=>'vehicle_report' %></div>
       <div class="link-descr"><%= "#{t('generate')} #{t('report')}" %></div>
     </div>
+      
+    <div class="link-box">
+      <div class="link-heading"><%= link_to "Attendance" ,:controller=>'transport' , :action=>'transport_attendance' %></div>
+      <div class="link-descr"><%= "Bus Attendance" %></div>
+    </div>
 
     <div class="extender"></div>
   </div>

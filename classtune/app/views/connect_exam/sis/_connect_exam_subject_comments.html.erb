@@ -198,7 +198,7 @@
                                                       <% end %>
                                                     <% end %>
                                                     
-                                                    <% if group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK" %>
+                                                    <% if (group_name.name.upcase == "ATTENDANCE" or group_name.name.upcase == "HOMEWORK") and @exam_connect.result_type < 8 %>
                                                       <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                         <option value="NA" >Select</option>
                                                         <option value="R" <% if exam_group_remarks.to_s == 'R' %> selected="selected" <% end %>  >Regular</option>

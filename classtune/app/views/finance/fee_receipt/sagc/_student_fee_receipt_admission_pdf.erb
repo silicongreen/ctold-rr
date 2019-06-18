@@ -24,7 +24,7 @@ copy << "Office Copy"
 copy << "Bank Copy"
 
 %>
-
+<div class="main-pdf-div-wrapper"> 
 <% @jloop = 0 %>
 <div id="page-yield" class="available_sections">
     <% copy.each do |cp| %>
@@ -34,97 +34,95 @@ copy << "Bank Copy"
               <div class="header-sagc-left">
                   <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '88%',:style=>" margin-top: 10%;" %></div>
                   <div class="school-name-left">
-                      <h4><font size="1"><%=Configuration.get_config_value('InstitutionName').upcase; %></font></h4>
-                      <span><center>Dhaka Cantonment</cener></span>
-                      <span><center><b>Payment Slip (<%= cp %>)</b></cener></span>
+                      <h4 class="school-heading"><%=Configuration.get_config_value('InstitutionName') %></h4>
+                      <strong class="dhaka-cant">Dhaka Cantonment</strong>
+                      <strong class="pay-slip">Payment Slip (<%= cp %>)</strong>
                   </div>
               </div>
           </div>
 
           <% total_fees = 0 %>    
-         
-            <%
-              batchsplit = @student.batch.name.split(" ")
-              version = ""
-              batch = batchsplit[0]
-              unless batchsplit[1].blank?
-                version = batchsplit[1]
-              end
-              unless batchsplit[2].blank?
-                version = version+" "+batchsplit[2]
-              end
-              std_category = ""
-              unless @student.student_category.blank?
-                std_category = @student.student_category.name
-              end
-            %>
-            <%
-              trans_data = ""
-              trans_id = ""
-              trans_type = ""
-            %>
-            <% unless @paid_fees.blank? %>
+
+          <%
+          batchsplit = @student.batch.name.split(" ")
+          version = ""
+          batch = batchsplit[0]
+          unless batchsplit[1].blank?
+            version = batchsplit[1]
+            end
+          unless batchsplit[2].blank?
+            version = version+" "+batchsplit[2]
+            end
+          std_category = ""
+          unless @student.student_category.blank?
+            std_category = @student.student_category.name
+            end
+        %>
+          <%
+          trans_data = ""
+          trans_id = ""
+          trans_type = ""
+        %>
+          <% unless @paid_fees.blank? %>
             <% payment = Payment.find_by_payment_id(@financefee.id) %>
             <%
-              unless payment.nil? or payment.blank?
-                trans_data = I18n.l(payment.transaction_datetime.to_date,:format=>"%d-%m-%Y")
-                #trans_data = I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d-%m-%Y")
-                trans_id = payment.gateway_response[:order_id]
-                if payment.gateway_response[:payment_type] == "MB"
-                  trans_type = "TBL Mobile banking"
+            unless payment.nil? or payment.blank?
+              trans_data = I18n.l(payment.transaction_datetime.to_date,:format=>"%d-%m-%Y")
+              #trans_data = I18n.l((payment.created_at.to_time + 6.hours).to_datetime,:format=>"%d-%m-%Y")
+              trans_id = payment.gateway_response[:order_id]
+              if payment.gateway_response[:payment_type] == "MB"
+                trans_type = "TBL Mobile banking"
                 else
-                  trans_type = "TBL Card Payment"
-                end
-              else
-                @paid_fees.each do |p|
-                  trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
-                  trans_id += p.id.to_s + ","
-                  trans_type += p.payment_mode.to_s + ","
-                end
-                trans_data = trans_data[0...trans_data.length - 1]
-                trans_id = trans_id[0...trans_id.length - 1]
-                trans_type = trans_type[0...trans_type.length - 1]
+                trans_type = "TBL Card Payment"
               end
-            %>
-            <% end %>
-            <table class="std_info" id="pdf-table">
-                <tr class="table-header">
-                    <td>ID No: </div>
-                    <td><%=  "#{@student.admission_no}" %></td>
-                    <td>Category:: </div>
-                    <td><%=  std_category %></td>
-                </tr>
-                <tr class="table-header">
-                    <td colspan="2">Student Name:</div>
-                    <td colspan="2"></td>
-                </tr>
-                <tr class="table-header">
-                    <td>Class: </div>
-                    <td><%= @student.batch.course.course_name %></td>
-                    <td>Group: </div>
-                    <td><%= @student.batch.course.group %></td>
-                </tr>
-                <tr class="table-header">
-                    <td>Section: </div>
-                    <td></td>
-                    <td>Roll: </div>
-                    <td></td>
-                </tr>
-                <tr class="table-header">
-                    <td>Version: </div>
-                    <td><%= version %></td>
-                    <td>Shift: </div>
-                    <td><%=  batch %></td>
-                </tr>
-            </table>
-        
-
-
-
+              else
+              @paid_fees.each do |p|
+                trans_data += I18n.l(p.transaction_date.to_date,:format=>"%d-%m-%Y") + ","
+                trans_id += p.id.to_s + ","
+                trans_type += p.payment_mode.to_s + ","
+                end
+              trans_data = trans_data[0...trans_data.length - 1]
+              trans_id = trans_id[0...trans_id.length - 1]
+              trans_type = trans_type[0...trans_type.length - 1]
+              end
+          %>
+          <% end %>
+          <div class="std-info_div">
+             <table class="std_info" id="pdf-table">
+              <tr class="table-header">
+                  <td>ID No: </div>
+                  <td><%=  "#{@student.admission_no}" %></td>
+                  <td>Category:: </div>
+                  <td><%=  std_category %></td>
+              </tr>
+              <tr class="table-header">
+                  <td colspan="2">Student Name:</div>
+                  <td colspan="2"></td>
+              </tr>
+              <tr class="table-header">
+                  <td>Class: </div>
+                  <td><%= @student.batch.course.course_name %></td>
+                  <td>Group: </div>
+                  <td><%= @student.batch.course.group %></td>
+              </tr>
+              <tr class="table-header">
+                  <td>Section: </div>
+                  <td></td>
+                  <td>Roll: </div>
+                  <td></td>
+              </tr>
+              <tr class="table-header">
+                  <td>Version: </div>
+                  <td><%= version %></td>
+                  <td>Shift: </div>
+                  <td><%=  batch %></td>
+              </tr>
+          </table>
+          </div>
+         
           <div class="content-area">
               <table class="std_info" id="pdf-table">
                   <tr class="table-header-main">
-
                       <td class="desc">Description</td>
                       <td class="amt">Amount</td>
                   </tr>
@@ -147,7 +145,6 @@ copy << "Bank Copy"
                     <% else %>
                       <tr class="table-header">
                           <%k+=1%>
-
                           <td><%= fee.name %></td>
                           <td class="amount"><% if fee.amount.to_i > 0 %><%= "#{precision_label(fee.amount.to_s)}" %><% else %>-<% end %></td>
                       </tr>
@@ -196,7 +193,6 @@ copy << "Bank Copy"
                         <% end %>
                       <% end %>
                     <% end %> 
-
                     <% unless @discounts.nil? or @discounts.empty? or @discounts.blank? %>  
                       <% @discounts.each do |d| %>
                         <% amount = 0 %>
@@ -242,71 +238,62 @@ copy << "Bank Copy"
                   <tr class="table-header">
                       <% vat_amount = 0 %>
                       <% balance=total_fees-total_discount %>
-                      <td>Total </td><td class="amount"><%= precision_label balance %></td>
+                      <td style="text-align: right;">Total</td>
+                      <td class="amount"><%= precision_label balance %></td>
                   </tr>
               </table>
-              <p><b>(in Words) <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
-              <p><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
-                      
-              <h3>&nbsp;</h3>
-              <h3>&nbsp;</h3>
-              <table class="signature">
-                  <tr>
-                      <td class="width-38">
-                          Authorised Signature<br/>(Account)<br/>Prepared By
-                      
-                      </td>
-                      <td class="gap"></td>
-                      <td>Class Teacher<br/>&nbsp;<br/>&nbsp;</td>
-                      <td class="gap"></td>
-                      <td class="width-38">Authorised Signature<br/>(Bank)<br/>Received By</td>
-                  </tr>
-              </table>
+              <p style="margin-left:10px;"><b>(in Words) <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
+              <p style="margin-left:10px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
+
+                      <h3>&nbsp;</h3>
+                      <h3>&nbsp;</h3>
+                      <table class="signature">
+                          <tr>
+                              <td class="width-38">
+                                  Authorised Signature<br/>(Account)<br/>Prepared By
+
+                              </td>
+                              <td class="gap"></td>
+                              <td>Class Teacher<br/>&nbsp;<br/>&nbsp;</td>
+                              <td class="gap"></td>
+                              <td class="width-38">Authorised Signature<br/>(Bank)<br/>Received By</td>
+                          </tr>
+                      </table>
           </div>
-
-
       </div>
     <% end %>
 
 
 </div>
-
+</div>
 <style>
     table.signature tr td.gap
     {
-      border-top:none !important;
-      width: 2%;
+        border-top:none !important;
+        width: 2%;
     }
     table.signature tr td.width-38
     {
-      width: 35%;
-      
+        width: 30%;
     }
     table.signature tr td
     {
         border-top: 1px solid black;
         padding: 3px 0px;
-        width: 25%;
+        width: 20%;
         text-align: center;
         font-size: 8px;
-
     }
     #page-yield .div_number_1
     {
-      padding-left: 0px !important;
-      margin-left: 20px !important;
+        padding-left: 0px !important;
+        margin-left: 20px !important;
     }
     #page-yield div.div-24
     {
-        
-        padding-right: 0px;
-        padding-left: 12px;
-        
-    }
-    #page-yield div.div-24
-    {
-      width: 23.5% !important;
-      border:none !important;
+        width: 22% !important;
+        border:none !important;
+        padding-left: 15px;
     }
     #page-yield div.div-33
     {
@@ -315,7 +302,6 @@ copy << "Bank Copy"
         margin-right: 15px;
         border: 1px solid black;
         min-height: 680px
-
     } 
     #page-yield div.div-33 .section .general-header
     {
@@ -328,7 +314,6 @@ copy << "Bank Copy"
     table.vat_area tr td
     {
         font-size: 10px;
-
     }
     .registration_numer
     {
@@ -337,8 +322,8 @@ copy << "Bank Copy"
     .logo-left-div
     {
         float:left;
-        width: 30%;
-        margin-left: 10px;
+        width: 25%;
+        margin-left: 5px;
     }
     .school-left-div
     {
@@ -391,9 +376,8 @@ copy << "Bank Copy"
         border-right: 1px solid #ccc !important;
         border-left: 1px solid #ccc !important;
         background: #fff;
-        font-size: 11px;
+        font-size: 9px;
         text-align: center;
-
     }
     .std_info tr.table-header td.border-left-none
     {
@@ -411,15 +395,14 @@ copy << "Bank Copy"
     }
     table.std_info
     {
-        width:99.6%;
-        margin-left: 1px;
+        width:90%;
     }
     table.signature
     {
         width: 100%;
         margin-top:5px;
     }
-    
+
     .in-words
     {
         float:left;
@@ -457,15 +440,16 @@ copy << "Bank Copy"
         text-align: right;
     }
     .header-sagc{
-        width: 99%;
+        width: 95%;
         padding-bottom: 0px;
+        margin-left: 10px;
     }
     .sub-header-sagc{
-        width: 99%;
+        width: 95%;
         height: 200px;
     }
     .content-area{
-        width: 99%;
+        width: 95%;
     }
     .content-area table{
         width: 100%;
@@ -503,11 +487,11 @@ copy << "Bank Copy"
     .content-area table tr.tfoot td span{
         float: right;
         font-weight: bold;
-        font-size: 9px;
+        font-size: 7px;
     }
     .content-area table tr.tfoot td h2{
         font-weight: bold;
-        font-size: 9px;
+        font-size: 7px;
     }
     .header-sagc-left{
         width: 100%;
@@ -594,7 +578,7 @@ copy << "Bank Copy"
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         padding: 0 auto;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         padding: 10px 20px;
         text-align: center;
@@ -635,7 +619,7 @@ copy << "Bank Copy"
         margin-top: 5px;
     }
     #page-yield .header-sagc .header-sagc-left .school-name-left span:first-child{
-      margin-top: 0px; 
+        margin-top: 0px; 
     }
     #page-yield .header-sagc .header-sagc-left .school-name-left span{
         font-size: 15px !important;
@@ -656,5 +640,28 @@ copy << "Bank Copy"
         text-align: center;
         margin-top: 5px;
     }
+    .school-heading{
+        font-size:9px;
+        text-align: center;
+        font-family: serif;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+    .dhaka-cant{
+        text-align: center;
+        font-family: sans-serif;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .pay-slip{
+        text-align: center;
+        font-family: sans-serif;
+        display: block;
+    }
+    .main-pdf-div-wrapper{
+        width:94%;
+        margin-left: 6%;
+    }
+
 </style>
 

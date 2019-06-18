@@ -404,7 +404,7 @@
                   <tr class="even">    
                       <td class="align-left">Position In Class</td>
                       <td>
-                      <% unless @student_position[@student.id.to_i].blank? %>
+                      <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank? %>
                           <%= @student_position[@student.id.to_i] %>
                       <% end %>
                       </td>

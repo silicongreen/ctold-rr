@@ -5,7 +5,7 @@
 <div class='sub-header'><%= t('view_details') %></div>
 <div id="inner-tab-menu">
   <ul>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "Transport Attendance Report", :controller => "transport",:action =>"transport_attendance_report"  %></li>
+    <li class='themed_bg themed-dark-hover-background'><%= link_to "Transport Attendance", :controller => "transport",:action =>"transport_attendance"  %></li>
   </ul>
 </div>
 </div>
@@ -16,9 +16,17 @@
   <% end %>
 
   <div class="label-field-pair" style="position: relative;margin-bottom:5px;">
-    <label for="duedate">Select date</label>
+    <label for="duedate">Start Date</label>
     <div  class="text-input-bg">
       <%= calendar_date_select_tag "attandence_date",I18n.l(@date_today,:format=>"%d %b %Y"),
+        :class=>"text-input-bg",:onchange =>"j('#transport_attendance').html( '' );j('#transport_vehicle_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
+    </div>
+   
+  </div>
+  <div class="label-field-pair" style="position: relative;margin-bottom:5px;">
+    <label for="duedate">End Date</label>
+    <div  class="text-input-bg">
+      <%= calendar_date_select_tag "attandence_date_end",I18n.l(@date_today,:format=>"%d %b %Y"),
         :class=>"text-input-bg",:onchange =>"j('#transport_attendance').html( '' );j('#transport_vehicle_id').trigger('change');" ,:readonly=>true,:popup=>:force%>
     </div>
    
@@ -36,8 +44,8 @@
     <div class="text-input-bg"><%= select :transport , :vehicle_id,
         @vehicles.map{|r| [r.vehicle_no,r.id]},
         {:prompt => "#{t('select_vehicle')}"},
-        {:onChange => "#{remote_function(:url => {:action => "ajax_transport_attendance"},
-        :with => "'id='+ value+'&attandence_date='+$('attandence_date').value+'&transport_pickup='+$('transport_pickup').value",
+        {:onChange => "#{remote_function(:url => {:action => "ajax_transport_attendance_report"},
+        :with => "'id='+ value+'&attandence_date='+$('attandence_date').value+'&attandence_date_end='+$('attandence_date_end').value+'&transport_pickup='+$('transport_pickup').value",
         :before => "Element.show('loader')",
         :success => "Element.hide('loader')"
         )}"} %>

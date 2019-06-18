@@ -55,6 +55,16 @@ class TransportController < ApplicationController
     end  
   end
   
+  def transport_attendance_report
+    @date_today = @local_tzone_time.to_date
+    if current_user.admin?
+      @vehicles = Vehicle.all
+    else
+      employee = Employee.find_by_user_id(current_user.id)
+      @vehicles = Vehicle.find(:all,:conditions=>["bus_mother is null or bus_mother = 0 or bus_mother = ?",employee.id])
+    end  
+  end
+  
   def save_attendance
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
       if params[:attandence_date].nil? || params[:attandence_date].empty?
@@ -157,6 +167,45 @@ class TransportController < ApplicationController
         end
       end
       render :text=>"success"
+  end
+  
+  def ajax_transport_attendance_report
+    unless params[:id].blank?
+      @vehicle_id = params[:id]
+      transport_pickup = 1
+      unless params[:transport_pickup].blank?
+        transport_pickup = params[:transport_pickup].to_i
+      end
+      now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
+      if params[:attandence_date].nil? || params[:attandence_date].empty?
+        @start_date = @local_tzone_time.to_date
+      else
+        @start_date = params[:attandence_date].to_date
+      end
+      
+      if params[:attandence_date_end].nil? || params[:attandence_date_end].empty?
+        @end_date = @local_tzone_time.to_date
+      else
+        @end_date = params[:attandence_date_end].to_date
+      end
+      
+      @transport = Transport.find_all_by_vehicle_id_and_receiver_type(params[:id],"Student")
+      @std_ids =  @transport.map(&:receiver_id)
+     
+      unless @std_ids.blank?
+        @student_attendance = AttendanceVehicle.find_all_by_student_id(@std_ids,:select=>"count(id) as total,student_id",:group=>:student_id,:conditions=>["attendance_date between ? and ? and pickup_or_drop = ? and vehicle_id = ?",@start_date,@end_date,transport_pickup,params[:id]])
+        @total_att = AttendanceVehicle.find(:first,:select=>"count(DISTINCT attendance_date) as total",:conditions=>["attendance_date between ? and ? and pickup_or_drop = ? and vehicle_id = ?",@start_date,@end_date,transport_pickup,params[:id]]) 
+      end  
+      @vehicle = Vehicle.find_by_id(params[:id])
+      
+      render(:update) do |page|
+        page.replace_html 'transport_attendance', :partial=>'ajax_transport_attendance_report'
+      end
+    else
+      render(:update) do |page|
+        page.replace_html 'transport_attendance', :text=>''
+      end
+    end
   end
   
   def ajax_transport_attendance

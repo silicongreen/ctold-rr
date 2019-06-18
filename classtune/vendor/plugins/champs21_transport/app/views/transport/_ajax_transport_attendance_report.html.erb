@@ -1,0 +1,48 @@
+<% if !@std_ids.empty? %>
+  <% if @total_att.blank? %>
+      <h4 style="color:red" id="att_not_taken">Attendance Not Taken Yet</h4>
+  <% else %>
+      <h4 style="color:red" id="att_not_taken">Total Day <%= @total_att.total %></h4>  
+  <% end %>    
+  <div class="students-table">
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+      <thead>
+        <tr>
+          <td> <%= t('sl_no') %></td><td> <%= t('admission_no') %></td><td><%= t('name') %></td><td>Total</td>
+        </tr>
+      </thead>
+      <tbody>
+      <% @transport.each_with_index do |t, i| %>
+        <% unless t.receiver.nil? %>
+        <tr>
+          <td class="col-1">
+            <%= i+1 %>
+          </td>
+          <td class="col-2">
+            <%=  t.receiver.admission_no unless t.receiver.nil?%>
+          </td>
+          <td class="col-2">
+            <%=  t.receiver.full_name unless t.receiver.nil?%>
+          </td>
+
+          <td class="col-4" style="text-align:center;">
+            <% std_att = @student_attendance.find{|at| at.student_id == t.receiver.id } %>
+            <% unless std_att.blank? %>
+              <%= std_att.total %>
+            <% else %>
+              0
+            <% end %> 
+          </td>
+         
+        </tr>
+        <% end %>
+      <% end %>
+      </tbody>  
+     
+    </table>
+    
+    
+  </div>
+<% else %>
+  <div class= "msg"><p class= "flash-msg"><%= t('no_users') %></p></div>
+<% end %>   

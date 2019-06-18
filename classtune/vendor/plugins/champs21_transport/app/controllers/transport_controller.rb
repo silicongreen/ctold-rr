@@ -47,7 +47,12 @@ class TransportController < ApplicationController
   
   def transport_attendance
     @date_today = @local_tzone_time.to_date
-    @vehicles = Vehicle.all
+    if current_user.admin?
+      @vehicles = Vehicle.all
+    else
+      employee = Employee.find_by_user_id(current_user.id)
+      @vehicles = Vehicle.find(:all,:conditions=>["bus_mother is null or bus_mother = 0 or bus_mother = ?",employee.id])
+    end  
   end
   
   def save_attendance

@@ -71,4 +71,23 @@ div.text-input-bg {
     height: 28px;
     width: 66% !important;
 }
+.present_student
+    {
+       width: 50px;
+       height: 50px;
+    }
+    table.table-striped tr td
+    {
+       font-size: 28px;
+    }
 </style>
+
+<% if @vehicles.size == 1 %>
+  <script>
+   var jj = jQuery.noConflict();
+   jj(document).ready(function () {
+      jj('#transport_vehicle_id option:nth-child(2)').attr("selected", "selected");
+      j('#transport_vehicle_id').trigger('change');
+   });
+  </script>
+<% end %>

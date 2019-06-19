@@ -214,7 +214,7 @@
                     <% end %> 
                     </table>
                   <% end %> 
-                
+               
                 <div class='line'></div>
                 <table id="pdf-table" width="24%" class="left-table even-table" cellspacing="0">
                       <% class_grade = "height-55" %>
@@ -222,7 +222,7 @@
                       <% class_grade = "height-40" %>
                     <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>A</b></td>
+                      <td class="col-pdf no-warp align-left"><b>A <%= group_one_loop %> | <%= group_two_loop %></b></td>
                       <td class="col-pdf no-warp align-left <%= class_grade %>"><b>Excellent</b></td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -288,8 +288,7 @@
   </div>
 
 <% end %>
-<% group_one_padding = 29 %>
-<% group_two_padding = 29 %>
+
 <% 
 if group_one_loop > group_two_loop
   diff = group_one_loop-group_two_loop

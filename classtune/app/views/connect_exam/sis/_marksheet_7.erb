@@ -60,8 +60,6 @@
           <% end %>  
           
           <td>Total(<%= total_full_mark.to_i %>)</td>
-          <% half_total = (total_full_mark.to_f/2.00) %>
-          <td>AVG(<%= half_total.to_i %>)</td>
           <td>Grade</td>
         
         </tr>
@@ -118,8 +116,8 @@
               <% end %>
               <% if !rs['maximum_marks'].blank? %>    
                 <% full_mark = full_mark+rs['maximum_marks'].to_i %> 
-              <% end %>
-              <% end %>
+              <% end %> 
+                  <% end %>
               </td>
               
             <% end %> 
@@ -131,16 +129,11 @@
             <% total_mark_2 = half_mark.round()*2 %>
             <% main_mark = (total_mark_2.round().to_f/full_mark.to_f)*100 %>
            <% end %> 
-          
-           <% if total_mark > 0 %>
-                <td><%= total_mark.round() %></td>
-                <td><%= half_mark.round() %></td>
+           <% if total_mark > 0 %>   
+              <td><%= total_mark.round() %></td>
            <% else %>
-                <td><%= "-" %></td>
               <td><%= "-" %></td>
-           
            <% end %>
-
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? and total_mark > 0 %>
             <td class="col-2"><b><%= grade.name %></b></td>

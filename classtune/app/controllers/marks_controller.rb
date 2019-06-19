@@ -539,7 +539,7 @@ class MarksController < ApplicationController
               end  
               k = k+1
             elsif school_id == 348
-              if exam_connect.result_type == 1 or exam_connect.result_type == 2  or exam_connect.result_type == 7 
+              if exam_connect.result_type == 1 or exam_connect.result_type == 2
                 unless c_exam_array.include?(exam_connect.id.to_i)
                   data[k] = []
                   data[k][0] = exam_connect_batch.to_s

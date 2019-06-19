@@ -294,34 +294,34 @@
 if group_one_loop > group_two_loop
   diff = group_one_loop-group_two_loop
   if diff > 2
-    group_one_padding = 26
+    group_one_padding = 24
     if diff > 4
-      group_one_padding = 23
-    elsif diff > 6 
       group_one_padding = 20
-    elsif diff > 8 
-      group_one_padding = 18
-    elsif diff > 10 
+    elsif diff > 6 
       group_one_padding = 16
+    elsif diff > 8 
+      group_one_padding = 10
+    elsif diff > 10 
+      group_one_padding = 8
     else 
-      group_one_padding = 12
+      group_one_padding = 4
     end
   end  
  end 
 if group_two_loop > group_one_loop
   diff = group_two_loop-group_one_loop
   if diff > 2
-    group_two_padding = 26
+    group_two_padding = 24
     if diff > 4
-      group_two_padding = 23
-    elsif diff > 6 
       group_two_padding = 20
-    elsif diff > 8 
-      group_two_padding = 18
-    elsif diff > 10 
+    elsif diff > 6 
       group_two_padding = 16
-    else 
+    elsif diff > 8 
       group_two_padding = 12
+    elsif diff > 10 
+      group_two_padding = 8
+    else 
+      group_two_padding = 4
     end
   end  
  end

@@ -295,15 +295,15 @@ if group_one_loop > group_two_loop
   if diff > 2
     group_one_padding = 20
     if diff > 4
-      group_one_padding = 17
+      group_one_padding = 16
     elsif diff > 6 
-      group_one_padding = 13
+      group_one_padding = 12
     elsif diff > 8 
-      group_one_padding = 10
+      group_one_padding = 8
     elsif diff > 10 
-      group_one_padding = 7
-    else 
       group_one_padding = 4
+    else 
+      group_one_padding = 2
     end
   end  
  end 
@@ -312,15 +312,15 @@ if group_two_loop > group_one_loop
   if diff > 2
     group_two_padding = 20
     if diff > 4
-      group_two_padding = 17
+      group_two_padding = 16
     elsif diff > 6 
-      group_two_padding = 13
+      group_two_padding = 12
     elsif diff > 8 
-      group_two_padding = 10
+      group_two_padding = 8
     elsif diff > 10 
-      group_two_padding = 7
-    else 
       group_two_padding = 4
+    else 
+      group_two_padding = 2
     end
   end  
  end

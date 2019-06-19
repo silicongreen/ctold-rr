@@ -19,6 +19,7 @@
 class StudentsSubject < ActiveRecord::Base
   belongs_to :student, :conditions => { :is_deleted => false,:is_active => true }
   belongs_to :subject
+  belongs_to :batch
   validates_uniqueness_of :student_id,:scope=>[:subject_id]
 
   def student_assigned(student,subject)

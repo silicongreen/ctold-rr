@@ -1,0 +1,60 @@
+<div id="page-yield" class="available_sections1">
+    <div class="heading-section" >
+        <div class="box info" >
+            <span>Course: <strong> <%= @batch.course.course_name  %> </strong> </span><br>
+            <span>Batch: <strong> <%= @batch.full_name  %> </strong> </span><br>
+            <span>Elective Subject: <strong> <%= @elective_subject.name  %> </strong> </span><br>
+        </div>
+        <h3>Assigned Student List</h3>
+    </div>
+    <div class="content-section" >
+        <table id="pdf-table" class="custom-table">
+            <tr class="table-header">
+                <th class="col-pdf sl">Serial</th>
+                <th class="col-pdf name">Student Name</th>
+                <th class="col-pdf admn_no">Admission No</th>
+                <th class="col-pdf elective_type">Elective Type</th>
+            </tr>
+            <% page = 0 %>
+            <% std_count = 0 %>
+            <% j = 0 %>
+            <% @subject_students.each do |sub_std| %>
+              <% if sub_std.student.blank? %>
+                <% next %>
+              <% end %>
+              <% j = j+1 %>
+              <%  std_count = std_count+1; %>
+              <% if std_count > 23 && page ==0 %>
+                <% std_count = 0 %>
+                <% page = 1 %>
+                <tr class="page-break">
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+              <% end %>
+                
+              <% if std_count > 26 && page == 1 %>
+                <% std_count = 0 %>
+                <% page = 1 %>
+                <tr class="page-break">
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+              <% end %>
+              <tr>
+                  <td class="col-pdf sl"><%= j %></td>
+                  <td class="col-pdf name"><%= sub_std.student.full_name %></td>
+                  <td class="col-pdf admn_no"><%= sub_std.student.admission_no %></td>
+                  <td class="col-pdf elective_type">
+                      <% if sub_std.elective_type == 3 %>
+                        <%= 'Third Subject'  %>
+                      <% elsif sub_std.elective_type == 4 %>
+                        <%= 'Fourth Subject'  %>
+                      <% else %>
+                        <%= 'NA'  %>
+                      <%  end %>
+                  </td>
+              </tr>
+            <% end %>
+        </table>
+    </div>
+</div>
+

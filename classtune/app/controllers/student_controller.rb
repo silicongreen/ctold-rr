@@ -4048,6 +4048,27 @@ class StudentController < ApplicationController
     flash[:notice] = nil
   end
 
+  def assigned_student_list
+    @batch = Batch.find(params[:id])
+    @elective_subject = Subject.find(params[:id2])
+    
+    @courses = Course.find_all_by_course_name(@batch.course.course_name) 
+    course_ids = @courses.map(&:id)
+    @batches = Batch.find_all_by_course_id(course_ids)
+    batch_ids = @batches.map(&:id)
+    @subjects = Subject.find_all_by_batch_id_and_code(batch_ids,@elective_subject.code)
+    subject_ids = @subjects.map(&:id)
+    @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
+    render :pdf => 'assigned_student_list',
+      :orientation => 'portrait', :zoom => 1.00,
+      :margin => {    :top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
   def assign_students
     @student = Student.find(params[:id])
     

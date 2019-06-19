@@ -550,7 +550,7 @@ class MarksController < ApplicationController
                   k = k+1
                 end
               else
-                if exam.no_exams_sis.to_i == 0
+                if exam.no_exams_sis.to_i == 0 or exam_connect.result_type == 7
                   data[k] = []
                   data[k][0] = exam_connect_batch.to_s
                   data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"

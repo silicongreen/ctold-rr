@@ -10,7 +10,7 @@
           </center>
       </div>
       <div class="student_information">
-        <table class="std_info_table" width="100%" cellspacing="0">
+        <table class="std_info_table" width="99.5%" cellspacing="0">
           <tr>
               <td>NAME </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @student.full_name %></td>
               <td>SHIFT </td><td colspan="3" class="font-dark">:&nbsp;&nbsp;<%= @batch.name %></td>
@@ -125,7 +125,7 @@
                     </table>
                     <% sub_loop = 0 %>
                     <% group_two_loop = 0 %>
-                    <table id="pdf-table" width="48%" class="left-table odd-table" cellspacing="0">
+                    <table id="pdf-table" width="47.5%" class="left-table odd-table" cellspacing="0">
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       
                       <% sub_loop +=1  %>
@@ -216,13 +216,13 @@
                   <% end %> 
                
                 <div class='line'></div>
-                <table id="pdf-table" width="24%" class="left-table even-table" cellspacing="0">
+                <table id="pdf-table" width="23.5%" class="left-table even-table" cellspacing="0">
                       <% class_grade = "height-55" %>
                     <% if @connect_exam_obj.quarter_number == 5 %>
                       <% class_grade = "height-40" %>
                     <% end %>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td class="col-pdf no-warp align-left"><b>A <%= group_one_loop %> | <%= group_two_loop %></b></td>
+                      <td class="col-pdf no-warp align-left"><b>A</b></td>
                       <td class="col-pdf no-warp align-left <%= class_grade %>"><b>Excellent</b></td>
                      </tr>
                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
@@ -343,7 +343,7 @@ if group_two_loop > group_one_loop
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {
-    padding: 29px !important;
+    padding: 27px !important;
 }
 </style>
 <% else %>
@@ -354,7 +354,7 @@ if group_two_loop > group_one_loop
 }
 .sis-final table.signature_table tr.odd td, .sis-final table.signature_table tr.even td
 {
-    padding: 28px !important;
+    padding: 27px !important;
 }
 .sis-final table.left-table-nursery tr.odd td, .sis-final table.left-table-nursery tr.even td
 {

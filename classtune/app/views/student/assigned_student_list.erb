@@ -25,7 +25,7 @@
               <% end %>
               <% j = j+1 %>
               <%  std_count = std_count+1; %>
-              <% if std_count > 23 && page ==0 %>
+              <% if std_count > 24 && page ==0 %>
                 <% std_count = 0 %>
                 <% page = 1 %>
                 <tr class="page-break">
@@ -33,7 +33,7 @@
                 </tr>
               <% end %>
                 
-              <% if std_count > 26 && page == 1 %>
+              <% if std_count > 30 && page == 1 %>
                 <% std_count = 0 %>
                 <% page = 1 %>
                 <tr class="page-break">

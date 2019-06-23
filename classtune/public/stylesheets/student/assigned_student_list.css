@@ -7,18 +7,15 @@
 
 .custom-table td, #custom th {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 6px;
 }
 
 .custom-table tr:nth-child(even){background-color: #f2f2f2;}
 
-.custom-table tr:hover {background-color: #ddd;}
-
 .custom-table th {
-  padding: 7px 7px;
+  padding: 6px 7px;
   text-align: center;
   background-color: #4CAF50;
-  color: white;
 }
 .heading-section{width:700px; text-align: center;}
 .box {

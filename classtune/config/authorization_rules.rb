@@ -1162,7 +1162,7 @@ authorization do
     has_permission_on [:subjects], :to => [:index, :new, :create,:destroy,:edit,:update, :show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group,:grading_level,:new_grading_level,:create_grading_level,:edit_grading_level,:update_grading_level,:delete_grading_level]
     has_permission_on [:elective_groups],  :to => [:index,:new,:create,:destroy,:edit, :update,:show,:new_elective_subject,:create_elective_subject, :edit_elective_subject, :update_elective_subject]
     has_permission_on [:subject_groups],  :to => [:index,:new,:create,:destroy,:edit, :update]
-    has_permission_on [:student], :to => [:electives, :assign_students,:assigned_student_list, :unassign_students, :assign_all_students, :unassign_all_students, :profile, :guardians, :show_previous_details]
+    has_permission_on [:student], :to => [:electives, :assign_students,:assigned_student_list, :assigned_excel_list, :unassign_students, :assign_all_students, :unassign_all_students, :profile, :guardians, :show_previous_details]
     has_permission_on [:batch_transfers],
       :to => [
       :index,
@@ -1181,7 +1181,7 @@ authorization do
 
   role :subject_master do
     has_permission_on [:configuration], :to => [:index]
-    has_permission_on [:student], :to => [:electives, :assign_students, :assigned_student_list, :assigned_student_list, :assigned_student_list, :assigned_student_list, :unassign_students, :assign_all_students, :unassign_all_students]
+    has_permission_on [:student], :to => [:electives, :assign_students, :assigned_student_list, :assigned_excel_list, :unassign_students, :assign_all_students, :unassign_all_students]
     has_permission_on [:subjects],        :to => [:index,:new,:create,:destroy,:edit, :update,:show, :assign, :assign_elective_group,:subgroups,:new_subgroup,:delete_subgroup,:create_group,:edit_subgroup,:update_group,:grading_level,:new_grading_level,:create_grading_level,:edit_grading_level,:update_grading_level,:delete_grading_level]
     has_permission_on [:elective_groups],  :to => [:index,:new,:create,:destroy,:edit, :update,:show]
     has_permission_on [:subject_groups],  :to => [:index,:new,:create,:destroy,:edit, :update]
@@ -2840,6 +2840,7 @@ authorization do
       :electives,
       :assign_students,
       :assigned_student_list,
+      :assigned_excel_list,
       :unassign_students,
       :list_doa_year,
       :doa_equal_to_update,

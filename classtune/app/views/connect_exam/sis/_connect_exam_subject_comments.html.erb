@@ -188,7 +188,7 @@
                                                     </table>
                                                 </td>    
                                               <% else %>
-                                                <td  class="col-2 td-mark" style="text-align:center; width:60px;">
+                                                <td  class="col-2 td-mark here" style="text-align:center; width:60px;">
                                                     <% exam_group_remarks = "" %>
                                                     <% unless @exam_score.blank? or @exam_score.remarks.blank?  %>
 
@@ -293,7 +293,7 @@
                                                       <% end %>
                                                  
                                                     <% else %>
-                                                    h
+                                                    
                                                       <%= text_field_tag "exam_score[#{exam.id}][#{student.id}]][remarks][]", exam_group_remarks, :size => '10' %>
                                                     <% end %>
                                                     

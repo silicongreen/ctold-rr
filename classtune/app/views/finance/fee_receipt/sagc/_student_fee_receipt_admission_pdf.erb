@@ -87,8 +87,7 @@ copy << "Bank Copy"
               end
           %>
           <% end %>
-          <div class="std-info_div">
-             <table class="std_info" id="pdf-table">
+             <table class="std_info" id="pdf-table" width="100%">
               <tr class="table-header">
                   <td>ID No: </div>
                   <td><%=  "#{@student.admission_no}" %></td>
@@ -118,7 +117,6 @@ copy << "Bank Copy"
                   <td><%=  batch %></td>
               </tr>
           </table>
-          </div>
          
           <div class="content-area">
               <table class="std_info" id="pdf-table">
@@ -375,7 +373,7 @@ copy << "Bank Copy"
         border-right: 1px solid #ccc !important;
         border-left: 1px solid #ccc !important;
         background: #fff;
-        font-size: 9px;
+        font-size: 11px;
         text-align: center;
     }
     .std_info tr.table-header td.border-left-none

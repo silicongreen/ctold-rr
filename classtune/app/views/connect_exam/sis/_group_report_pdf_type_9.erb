@@ -312,7 +312,7 @@
               </table>
               <% 
                 not_promoted = "false"
-                marks_from_string = ""
+                marks_from_string = total_marks_obtain.to_s
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments
                   if !all_comments.blank?

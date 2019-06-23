@@ -43,7 +43,7 @@
                       <% end %>
                   </tr>
 
-                 
+                 <% total_marks_obtain = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['no_exams_sjws'].to_i == 1  %>
@@ -185,6 +185,7 @@
                           end
                         
                           grade = GradingLevel.percentage_to_grade(total_mark.round(), @batch.id)
+                          total_marks_obtain = total_marks_obtain+total_mark.round()
 
                           if has_mark == true
                           %>
@@ -291,7 +292,7 @@
               </table>
               <% 
                 not_promoted = "false"
-                marks_from_string = ""
+                marks_from_string = total_marks_obtain.to_s
                 @report_data['total'] = ""
                 @report_data['present'] = ""
                 if !@exam_comment.blank?

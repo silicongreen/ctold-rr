@@ -17,101 +17,101 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <%  if @dates_array.count == 1 %>
-<% if MultiSchool.current_school.id == 325 %>
-  <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>
-<% elsif MultiSchool.current_school.id == 312 %>
-  <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
-<% elsif MultiSchool.current_school.id == 3 %>
-  <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_pdf" %>
-<% elsif MultiSchool.current_school.id == 352 %>
-  <% unless params[:admission].blank? %>
-    <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_admission_pdf" %>
+  <% if MultiSchool.current_school.id == 325 %>
+    <%= render  :partial=>"/finance/fee_receipt/student_fee_receipt_pdf" %>
+  <% elsif MultiSchool.current_school.id == 312 %>
+    <%= render  :partial=>"/finance/fee_receipt/south/student_fee_receipt_pdf" %>
+  <% elsif MultiSchool.current_school.id == 3 %>
+    <%= render  :partial=>"/finance/fee_receipt/kinderland/student_fee_receipt_pdf" %>
+  <% elsif MultiSchool.current_school.id == 352 %>
+    <% unless params[:admission].blank? %>
+      <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_admission_pdf" %>
+    <% else %>
+      <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_pdf" %>
+    <% end %>
   <% else %>
-    <%= render  :partial=>"/finance/fee_receipt/sagc/student_fee_receipt_pdf" %>
+    <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
   <% end %>
 <% else %>
-  <%= render  :partial=>"/finance/fee_receipt/sjws/student_fee_receipt_pdf" %>
-<% end %>
-<% else %>
 
-<%-# Champs21
-#Copyright 2010 teamCreative Private Limited
-#
-#This product includes software developed at
-#Project Champs21 - http://www.champs21.com/
-#
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-#Unless required by applicable law or agreed to in writing,
-#software distributed under the License is distributed on an
-#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-#KIND, either express or implied.  See the License for the
-#specific language governing permissions and limitations
-#under the License. -%>
-<%
+  <%-# Champs21
+  #Copyright 2010 teamCreative Private Limited
+  #
+  #This product includes software developed at
+  #Project Champs21 - http://www.champs21.com/
+  #
+  #Licensed under the Apache License, Version 2.0 (the "License");
+  #you may not use this file except in compliance with the License.
+  #You may obtain a copy of the License at
+  #
+  #  http://www.apache.org/licenses/LICENSE-2.0
+  #
+  #Unless required by applicable law or agreed to in writing,
+  #software distributed under the License is distributed on an
+  #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  #KIND, either express or implied.  See the License for the
+  #specific language governing permissions and limitations
+  #under the License. -%>
+  <%
   copy = []
   copy << "Office Copy"
   copy << "Student Copy"
 %>
 
-<div id="page-yield" class="available_sections">
-    <% copy.each do |cp| %>
-    <div class="div-50" >
-            
-               <table class="vat_area">
-                   <tr>
-                       <td class="mark-td"class="left">&nbsp;</td>
-                       <td class="mark-td"class="right"><%= cp %></td>
-                   </tr>
-               </table>
-          
-       
+  <div id="page-yield" class="available_sections">
+      <% copy.each do |cp| %>
+        <div class="div-50" >
+
+            <table class="vat_area">
+                <tr>
+                    <td class="mark-td"class="left">&nbsp;</td>
+                    <td class="mark-td"class="right"><%= cp %></td>
+                </tr>
+            </table>
+
+
             <center>
                 <div id="pdf-header-south" class="general-header">
-                  <% if MultiSchool.current_school.id == 325 %>  
-                    
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/325/mev-logo.png")),:width=> '12%' %></h4>
-                  <% else %>
-                  <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '12%' %></h4>
-                  <% end %>
-                  
-                  <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
-                  <% if MultiSchool.current_school.id == 325 %>
-                    <h5 align="center">House#08, Road# 11/2, Block #B, Section #10, Mirpur, Dhaka-1216</h5>
-                    <h5 align="center">Phone : 9030096, Mobile : 01811-655022, 01678-850500</h5>
-                  <% end %>
+                    <% if MultiSchool.current_school.id == 325 %>  
+
+                      <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/325/mev-logo.png")),:width=> '12%' %></h4>
+                    <% else %>
+                      <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '12%' %></h4>
+                    <% end %>
+
+                    <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
+                    <% if MultiSchool.current_school.id == 325 %>
+                      <h5 align="center">House#08, Road# 11/2, Block #B, Section #10, Mirpur, Dhaka-1216</h5>
+                      <h5 align="center">Phone : 9030096, Mobile : 01811-655022, 01678-850500</h5>
+                    <% end %>
                 </div>
             </center>
             <% total_fees = 0 %>
             <table class="std_info">
                 <tr>  
-                     <td class="mark-td"class="left">For Month</td> <td>:<% @date.each do |date| %>
+                    <td class="mark-td"class="left">For Month</td> <td>:<% @date.each do |date| %>
                           <% unless date.blank?  %>
                             <%= date.name.capitalize %>&nbsp;&nbsp;
                           <% end %>
-                      <% end %>
-                     </td>
-                     <td class="mark-td"class="right">Date</td> <td>:&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
+                        <% end %>
+                    </td>
+                    <td class="mark-td"class="right">Date</td> <td>:&nbsp;<%=  Time.now.strftime("%d/%m/%Y") %></td>
                 </tr>
             </table>     
             <table class="std_info">
-               
+
                 <tr>
                     <td class="mark-td"colspan="1"><%= "Name of Student" %></td> <td class="mark-td"colspan="3">:&nbsp; <%=  "#{@student.full_name}" %></td>
                 </tr>
-                   <tr> <td><%= "Class" %></td> <td>:&nbsp;  <%=  "#{@student.batch.course.course_name}" %></td> <td><%= "Roll" %></td> <td>:&nbsp;  <%=  "#{@student.class_roll_no}" %></td>
+                <tr> <td><%= "Class" %></td> <td>:&nbsp;  <%=  "#{@student.batch.course.course_name}" %></td> <td><%= "Roll" %></td> <td>:&nbsp;  <%=  "#{@student.class_roll_no}" %></td>
                 </tr> 
                 <tr>
                     <td><%= "Section" %> </td><td>:&nbsp;  <%=  "#{@student.batch.course.section_name}" %></td><td><%= "Shift" %> </td><td>:&nbsp;  <%=  "#{@student.batch.name}" %></td>
                 </tr>  
             </table>
-          
-       
-       
+
+
+
             <table id="pdf-table" width="98%" cellspacing="0">
                 <tr class="table-header">
                     <td class="mark-td"class="name-td"  colspan="2"><%= "Details" %></td>
@@ -132,38 +132,38 @@
                     <% end %>
                   <% end %>
                 <% end %>
-                
+
                 <% particulers.each do |key,value| %>
-                      <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <%k+=1%>
-                          <td class="mark-td"class="name-td" colspan="2"><%= key %></td>
-                          <td  class="mark-td"><% if value.to_i > 0 %><%= "#{precision_label(value.to_s)}" %><% else %>-<% end %></td>
-                      </tr>
-                      <% total_fees += value %>
-                    
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <%k+=1%>
+                      <td class="mark-td"class="name-td" colspan="2"><%= key %></td>
+                      <td  class="mark-td"><% if value.to_i > 0 %><%= "#{precision_label(value.to_s)}" %><% else %>-<% end %></td>
+                  </tr>
+                  <% total_fees += value %>
+
                 <% end %>
-                
+
                 <% total_discount = 0 %>
-                  <% @total_discount.each do |total_dis| %>
-                    <% unless total_dis.blank? %>
-                      <% total_discount = total_discount+total_dis %>
-                    <% end %>
-                  <% end %> 
-                  <% total_payable = 0 %>
-                  <% @total_payable.each do |total_pay| %>
-                    <% unless total_pay.blank? %>
-                      <% total_payable = total_payable+total_pay %>
-                    <% end %>
+                <% @total_discount.each do |total_dis| %>
+                  <% unless total_dis.blank? %>
+                    <% total_discount = total_discount+total_dis %>
                   <% end %>
+                <% end %> 
+                <% total_payable = 0 %>
+                <% @total_payable.each do |total_pay| %>
+                  <% unless total_pay.blank? %>
+                    <% total_payable = total_payable+total_pay %>
+                  <% end %>
+                <% end %>
 
                 <% unless total_discount == 0 %>
                   <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                       <%k+=1%>
                       <td class="mark-td"class="col-1" colspan="3"><span class="space"><%= t('discount') %></span></td>
                   </tr>
-                  
+
                   <% discounts_array = {} %>
-                    <% unless @discounts.nil? or @discounts.empty? %>
+                  <% unless @discounts.nil? or @discounts.empty? %>
                     <% @discounts.each_with_index do |discounts, key| %>
                       <% discounts.each do |d| %>
                         <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
@@ -173,22 +173,22 @@
                         <% discounts_array[discount_text] = discounts_array[discount_text]+@discounts_amount[key][d.id] %>
                       <% end %>
                     <% end %>
-                    <% end %>
+                  <% end %>
 
-                    <% onetime_discounts_array = {} %>
-                    <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
-                      <% @onetime_discounts.each_with_index do |discounts, key| %>
-                        <% unless discounts.nil? or discounts.empty? or discounts.blank? %>
-                          <% discounts.each do |d| %>
-                            <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
-                            <% if onetime_discounts_array[discount_text].nil? %>
-                              <% onetime_discounts_array[discount_text] = 0 %>
-                            <% end %>
-                            <%  onetime_discounts_array[discount_text] = onetime_discounts_array[discount_text]+@onetime_discounts_amount[key][d.id] %>
+                  <% onetime_discounts_array = {} %>
+                  <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
+                    <% @onetime_discounts.each_with_index do |discounts, key| %>
+                      <% unless discounts.nil? or discounts.empty? or discounts.blank? %>
+                        <% discounts.each do |d| %>
+                          <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                          <% if onetime_discounts_array[discount_text].nil? %>
+                            <% onetime_discounts_array[discount_text] = 0 %>
                           <% end %>
+                          <%  onetime_discounts_array[discount_text] = onetime_discounts_array[discount_text]+@onetime_discounts_amount[key][d.id] %>
                         <% end %>
                       <% end %>
                     <% end %>
+                  <% end %>
 
                   <% onetime_discounts_array.each do |key,value| %>
                     <%k+=1%>
@@ -222,7 +222,7 @@
 
                 <% end %>
 
-               
+
                 <% fine_tran = 0 %>
                 <% vat_tran = 0 %>
                 <% @paid_fees.each do |paid_fees| %>
@@ -232,45 +232,45 @@
                     <% unless paid_fees.blank? %>
                       <% paid_fees.each do |trans| %>
                         <% if trans.fine_included %>
-                           <% fine_tran = fine_tran+trans.fine_amount %>
-                            
+                          <% fine_tran = fine_tran+trans.fine_amount %>
+
                           <% total_fees += trans.fine_amount.to_f %>
                         <% end %>
                         <% if trans.vat_included %>
-                              <% vat_tran = vat_tran+trans.vat_amount %>
-                          
+                          <% vat_tran = vat_tran+trans.vat_amount %>
+
                           <% total_fees += trans.vat_amount.to_f %>
                         <% end %>
                       <% end %>
                     <% end %>
                   <% end %>
                 <% end %>
-                
+
                 <% if fine_tran.to_i > 0 %>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Fine" %></span></td>
-                        <td class="mark-td"class="col-6">
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Fine" %></span></td>
+                      <td class="mark-td"class="col-6">
                           <%= precision_label(fine_tran) %>
-                        </td>
-                      </tr>     
+                      </td>
+                  </tr>     
                 <% end %>
                 <% if vat_tran.to_i > 0 %>
-                     <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                        <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Vat" %></span></td>
-                        <td class="mark-td"class="col-6">
+                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                      <td class="mark-td"class="col-8" colspan="2"><span class="themed_text"><%= "Vat" %></span></td>
+                      <td class="mark-td"class="col-6">
                           <%= precision_label(vat_tran) %>
-                        </td>
-                      </tr>     
+                      </td>
+                  </tr>     
                 <% end %> 
-                          
+
                 <% key = 0 %>         
-                  <% @financefee.each do |financefee| %>
+                <% @financefee.each do |financefee| %>
                   <% unless financefee.blank? %>
                     <%unless financefee.is_paid%>
                       <%if @fine_rule[key] %>
                         <tr class="<%= cycle("odd","even") %>">
-                          <td class="mark-td"class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
-                          <td class="mark-td"class="col-6"><%=  precision_label(@new_fine_amount[key]) %></td>
+                            <td class="mark-td"class="col-8" colspan="2" ><%= t('fine_on') %><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></span></td>
+                            <td class="mark-td"class="col-6"><%=  precision_label(@new_fine_amount[key]) %></td>
                         </tr>
                       <%end%>
                     <%end%>
@@ -279,26 +279,26 @@
                         <% @discounts_on_lates[key].each do |d| %>
                           <% if @discounts_late_amount[key][d.id] > 0 %>
                             <tr class="<%= cycle("odd","even") %>">
-                              <td class="col-1"><%= i+=1 %></td>
-                              <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
-                              <td class="col-2"><%= discount_text %></td>
-                              <td class="col-6" style="text-align: right;">
-                                <%= precision_label(@discounts_late_amount[key][d.id]) %>
-                              </td>
+                                <td class="col-1"><%= i+=1 %></td>
+                                <% discount_text = d.is_amount == true ? "#{d.name}" : "#{d.name}&#x200E; (#{d.discount})% &#x200E;" %>
+                                <td class="col-2"><%= discount_text %></td>
+                                <td class="col-6" style="text-align: right;">
+                                    <%= precision_label(@discounts_late_amount[key][d.id]) %>
+                                </td>
                             </tr>
                           <% end %>
                         <% end %>
                       <% end %>
                       <tr class="<%= cycle("odd","even") %>">
-                        <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></td>
-                        <td class="col-6"  style="text-align: right;"><%=  precision_label(@fine_amount[key]) %></td>
+                          <td class="col-8" colspan="2"  style="text-align: right; font-weight: bold;"><%= t('fine_on') %> <%= @date[key].due_date.to_date+@fine_rule[key].fine_days.days %><%= discount_text = @fine_rule[key].is_amount ? "" :  " (#{@fine_rule[key].fine_amount}&#x200E;%)" %></td>
+                          <td class="col-6"  style="text-align: right;"><%=  precision_label(@fine_amount[key]) %></td>
                       </tr>      
                     <% end %>  
                   <% end %>
                   <% key = key+1 %>      
                 <% end %>
-                        
-               <% total_paid_fees = 0 %>    
+
+                <% total_paid_fees = 0 %>    
                 <% @paid_fees.each do |paid_fees| %>
                   <% unless paid_fees.blank? %>
                     <% paid=0 %>
@@ -310,10 +310,10 @@
 
                 <% if total_paid_fees > 0 %>
                   <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-                    <td class="mark-td"class="col-8" colspan="2" ><%= t('payment_done') %></td>
-                    <td class="mark-td"class="col-6" >
-                      <%= precision_label(total_paid_fees) %>
-                    </td>
+                      <td class="mark-td"class="col-8" colspan="2" ><%= t('payment_done') %></td>
+                      <td class="mark-td"class="col-6" >
+                          <%= precision_label(total_paid_fees) %>
+                      </td>
                   </tr>
                 <% end %>
                 <% total_fine_amount = 0 %>
@@ -334,40 +334,40 @@
                 <% end %> 
 
                 <tr class="<%= cycle("odd","even") %>" cellpadding="1" cellspacing="1">
-                  <td class="mark-td"class="col-8" colspan="2"><%= "Total" %></td>
-                  <td class="mark-td"class="col-6" >
-                    <% unless precision_label(balance+total_fine_amount.to_f).to_f == 0 %>
-                      <%= precision_label(balance+total_fine_amount.to_f) %>
-                    <% else %>
-                      <%= precision_label(0) %>
-                    <% end %>
-                  </td>
+                    <td class="mark-td"class="col-8" colspan="2"><%= "Total" %></td>
+                    <td class="mark-td"class="col-6" >
+                        <% unless precision_label(balance+total_fine_amount.to_f).to_f == 0 %>
+                          <%= precision_label(balance+total_fine_amount.to_f) %>
+                        <% else %>
+                          <%= precision_label(0) %>
+                        <% end %>
+                    </td>
                 </tr>
                 <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                     <td class="mark-td"colspan="3">Amount in Word : <b><%= in_words(balance.to_i+total_fine_amount.to_i).split.map(&:capitalize).join(' ') %></b></td>
                 </tr>
-              
-              <% if ((k+1)%1)==0 %>
+
+                <% if ((k+1)%1)==0 %>
               </table>
               </center>
 
-              <% end %>
-            
-              <table class="signature">
-                  <tr>
-                      <td>Signature of Guardian</td>
-                      <td>Signature of Receiver</td>
-                  </tr>
-              </table>
-              
-                   
-              
-    </div>
-    
-    <% end %>
-    
-    
-</div>
+            <% end %>
+
+            <table class="signature">
+                <tr>
+                    <td>Signature of Guardian</td>
+                    <td>Signature of Receiver</td>
+                </tr>
+            </table>
+
+
+
+        </div>
+
+      <% end %>
+
+
+  </div>
 
 
 <% end %>

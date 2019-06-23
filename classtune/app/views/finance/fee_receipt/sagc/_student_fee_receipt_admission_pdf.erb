@@ -92,7 +92,7 @@ copy << "Bank Copy"
               <tr class="table-header">
                   <td>ID No: </div>
                   <td><%=  "#{@student.admission_no}" %></td>
-                  <td>Category:: </div>
+                  <td>Category: </td>
                   <td><%=  std_category %></td>
               </tr>
               <tr class="table-header">
@@ -242,8 +242,8 @@ copy << "Bank Copy"
                       <td class="amount"><%= precision_label balance %></td>
                   </tr>
               </table>
-              <p style="margin-left:10px;"><b>(in Words) <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
-              <p style="margin-left:10px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
+              <p style="margin-left:9px; font-size:9px;"><b>(In words): <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
+              <p style="margin-left:9px; font-size:8px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
 
                       <h3>&nbsp;</h3>
                       <h3>&nbsp;</h3>
@@ -322,13 +322,13 @@ copy << "Bank Copy"
     .logo-left-div
     {
         float:left;
-        width: 25%;
-        margin-left: 5px;
+        width: 20%;
+        margin-left: 1px;
     }
     .school-left-div
     {
         float: left;
-        width: 68%;
+        width: 75%;
         margin-left: 3px;
         font-size: 14px;
         font-weight: bold;
@@ -360,14 +360,13 @@ copy << "Bank Copy"
         margin-bottom: -15px;
     }
     .std_info .table-header td{
-        padding: 2px 10px !important;
+        padding: 1px 10px !important;
         border-top: 1px solid #DADADA !important;
         border-right: 1px solid #DADADA !important;
         border-left: 1px solid #DADADA !important;
         font-weight: normal;
         background: #fff;
         font-size: 11px;
-
     }
     .std_info .table-header-main td{
         padding: 5px !important;
@@ -449,7 +448,7 @@ copy << "Bank Copy"
         height: 200px;
     }
     .content-area{
-        width: 95%;
+        width: 100%;
     }
     .content-area table{
         width: 100%;
@@ -651,17 +650,23 @@ copy << "Bank Copy"
         text-align: center;
         font-family: sans-serif;
         display: block;
+        font-size: 8px;
         margin-bottom: 5px;
     }
     .pay-slip{
         text-align: center;
         font-family: sans-serif;
         display: block;
+        font-size: 8px;
     }
     .main-pdf-div-wrapper{
         width:94%;
         margin-left: 6%;
     }
+    
+    .std-info_div{width:100%;}
+    .desc{font-size:11px;}
+    .amt{font-size:11px;}
 
 </style>
 

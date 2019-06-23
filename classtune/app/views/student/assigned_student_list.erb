@@ -12,6 +12,7 @@
             <tr class="table-header">
                 <th class="col-pdf sl">Serial</th>
                 <th class="col-pdf name">Student Name</th>
+                <th class="col-pdf name">Roll</th>
                 <th class="col-pdf admn_no">Admission No</th>
                 <th class="col-pdf elective_type">Elective Type</th>
             </tr>
@@ -42,6 +43,7 @@
               <tr>
                   <td class="col-pdf sl"><%= j %></td>
                   <td class="col-pdf name"><%= sub_std.student.full_name %></td>
+                  <td class="col-pdf name"><%= sub_std.student.class_roll_no %></td>
                   <td class="col-pdf admn_no"><%= sub_std.student.admission_no %></td>
                   <td class="col-pdf elective_type">
                       <% if sub_std.elective_type == 3 %>

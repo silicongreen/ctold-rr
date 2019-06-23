@@ -4074,7 +4074,7 @@ class StudentController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'Assigned-Students'
-    row_1 = ['Serial','Student Name','Admission No','Elective Type']
+    row_1 = ['Serial','Student Name','Student Roll','Admission No','Elective Type']
 
     # Add row_1
     new_book.worksheet(0).insert_row(0, row_1)  
@@ -4102,7 +4102,7 @@ class StudentController < ApplicationController
         etype = 'NA'   
       end 
       
-      row_new = [sl, std.student.full_name, std.student.admission_no, etype ]
+      row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype ]
       new_book.worksheet(0).insert_row(sl, row_new)
       sl += 1
     end

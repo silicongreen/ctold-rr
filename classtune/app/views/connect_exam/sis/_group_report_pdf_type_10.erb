@@ -423,11 +423,12 @@
               <% if @connect_exam_obj.quarter_number == 6 %>
               <% if total_marks_obtain > 0 %>
                 <% total_marks_obtain = (total_marks_obtain.to_f/2.00) %>
+                <% total_marks_obtain = total_marks_obtain.round() %>
               <% end %>
               <table id="pdf-table"  width="25%" class="left-table  odd-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Marks Obtained</td>
-                      <td><%= sprintf( "%0.02f", total_marks_obtain)%></td>
+                      <td><%= total_marks_obtain %></td>
                   </tr>    
                   <tr class="even">    
                       <td class="align-left">Position In Class</td>

@@ -317,6 +317,7 @@
                 not_promoted = "false"
                 if total_marks_obtain > 0 
                   total_marks_obtain = (total_marks_obtain.to_f/2.00)
+                  total_marks_obtain = total_marks_obtain.round()
                 end
                 marks_from_string = total_marks_obtain.to_s
                 if !@exam_comment.blank?

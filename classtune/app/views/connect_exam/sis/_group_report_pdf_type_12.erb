@@ -80,6 +80,7 @@
                         <% first_term_fullmark = 0 %>
                         <% final_term_fullmark = 0 %>
                         <% total_mark = 0 %>
+                        <% total_mark_all = 0 %>
                         <% has_mark = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
@@ -179,7 +180,8 @@
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
                             unless first_term_fullmark > 0
                               total_mark = total_mark*2
-                            end  
+                            end
+                            total_mark_all = total_mark_all+total_mark.round()
                           end 
                           if final_term_fullmark > 0 or q3_fullmark > 0 or q4_fullmark > 0
                             q3_mark_20 = 0
@@ -201,10 +203,11 @@
                             unless final_term_fullmark > 0
                               total_mark = total_mark*2
                             end
+                            total_mark_all = total_mark_all+total_mark.round()
                           end
                           total_mark = total_mark.round()
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
-                          total_marks_obtain = total_marks_obtain+total_mark
+                          total_marks_obtain = total_marks_obtain+total_mark_all
                            
                           if has_mark == true
                           %>
@@ -319,6 +322,9 @@
               </table>
               <% 
                 not_promoted = "false"
+                if total_marks_obtain > 0 
+                  total_marks_obtain = (total_marks_obtain.to_f/2.00)
+                end
                 marks_from_string = total_marks_obtain.to_s
                 if !@exam_comment.blank?
                   all_comments = @exam_comment.comments

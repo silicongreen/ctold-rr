@@ -295,6 +295,7 @@ unless @ranked_student.blank?
                               <% subject_full_mark = 0 %>
                               <% subject_obtain_mark = 0 %>
                               <% total_mark = 0 %>
+                              <% total_mark_all = 0 %>
                               <% has_mark = false %>
                               <% has_exam = false %>
                               <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -399,6 +400,7 @@ unless @ranked_student.blank?
                                   unless first_term_fullmark > 0
                                     total_mark = total_mark*2
                                   end
+                                total_mark_all = total_mark_all+total_mark.round()
                               end 
                               if final_term_fullmark > 0 or q3_fullmark > 0 or q4_fullmark > 0
                                 q3_mark_20 = 0
@@ -420,10 +422,11 @@ unless @ranked_student.blank?
                                   unless final_term_fullmark > 0
                                     total_mark = total_mark*2
                                   end
+                                  total_mark_all = total_mark_all+total_mark.round()
                                 end
                                 total_mark = total_mark.round()
                                 grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
-                                total_marks_obtain = total_marks_obtain+total_mark
+                                total_marks_obtain = total_marks_obtain+total_mark_all
                             %>
 
                               
@@ -474,6 +477,11 @@ unless @ranked_student.blank?
                           <% end %>       
 
                           <td>
+                               <% if @connect_exam_obj.quarter_number == 6 %>
+                                <% if total_marks_obtain > 0 %>
+                                  <% total_marks_obtain = (total_marks_obtain.to_f/2.00) %>
+                                <% end %>
+                              <% end %>
                               <% if total_marks_obtain > 0 %>
                                 <%= sprintf( "%0.02f", total_marks_obtain) %>    
                               <% else %>

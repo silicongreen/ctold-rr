@@ -238,20 +238,20 @@
                               <% gpa_fraction = total_gpa.to_f/i/to_f %>
                             <% end %>
                             <tr class="table-header">
-                                <td clospan="2" style="text-align:center">
+                                <td colspan="2" style="text-align:center">
                                     <b>Total Marks</b>
                                 </td>
-                                <td clospan="3" style="text-align:center">
-                                    <b><%= total_mark %></b> [<%= total_full_mark %>]
+                                <td colspan="3" style="text-align:center">
+                                    <b><%= sprintf( "%0.02f", total_mark) %></b> [<%= sprintf( "%0.02f", total_full_mark) %>]
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= total_mark_result %></b>
+                                    <b><%= sprintf( "%0.02f", total_mark_result) %></b>
                                 </td>
                                 <td style="text-align:center">
                                     &nbsp;
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= total_gpa %></b>
+                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
                                 </td>
                                 <td style="text-align:center">
                                     &nbsp;
@@ -259,7 +259,7 @@
                             </tr>
                             
                             <tr class="table-header">
-                                <td clospan="100" style="text-align:right">
+                                <td colspan="100" style="text-align:right">
                                     <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
                                 </td>
                             </tr>

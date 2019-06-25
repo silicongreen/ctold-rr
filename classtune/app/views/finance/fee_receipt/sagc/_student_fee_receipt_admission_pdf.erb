@@ -120,7 +120,7 @@ copy << "Bank Copy"
                           <td><%=  batch %></td>
                       </tr>
                   </table>
-                  <table class="std_info" id="pdf-table">
+                  <table class="std_info_payments" id="pdf-table">
                       <tr class="table-header-main">
                           <td class="desc">Description</td>
                           <td class="amt">Amount</td>
@@ -291,7 +291,7 @@ copy << "Bank Copy"
     {
         width: 22% !important;
         border:none !important;
-        padding-left: 15px;
+        margin-left: 20PX;
     }
     #page-yield div.div-33
     {
@@ -357,33 +357,6 @@ copy << "Bank Copy"
         margin-top:10px;
         margin-bottom: -15px;
     }
-    .std_info .table-header td{
-        padding: 1px 10px !important;
-        border-top: 1px solid #DADADA !important;
-        border-right: 1px solid #DADADA !important;
-        border-left: 1px solid #DADADA !important;
-        font-weight: normal;
-        background: #fff;
-        font-size: 10px;
-    }
-    .std_info .table-header-main td{
-        padding: 5px !important;
-        font-weight: bold;
-        border-top: 1px solid #ccc !important;
-        border-right: 1px solid #ccc !important;
-        border-left: 1px solid #ccc !important;
-        background: #fff;
-        font-size: 10px;
-        text-align: center;
-    }
-    .std_info tr.table-header td.border-left-none
-    {
-        border-left: none !important;
-    }
-    .std_info tr.table-header td.border-right-none
-    {
-        border-right: none !important;
-    }
     table#pdf-table{
         border: none;
         border-bottom: 1px solid #ccc;
@@ -447,6 +420,7 @@ copy << "Bank Copy"
     }
     .content-area{
         width: 100%;
+        margin-top: 20px;
     }
     .content-area table{
         width: 100%;
@@ -658,11 +632,60 @@ copy << "Bank Copy"
         font-size: 8px;
     }
     .main-pdf-div-wrapper{
-        width:94%;
-        margin-left: 6%;
+        width:100%;
     }
     .desc{font-size:10px;}
     .amt{font-size:10px;}
+    
+    
+    .std_info .table-header td{
+        border: 1px solid #DADADA !important;
+        font-weight: bold;
+        background: #fff;
+        font-size: 10px;
+    }
+    .std_info .table-header-main td{
+        padding: 5px !important;
+        font-weight: bold;
+        border-top: 1px solid #ccc !important;
+        border-right: 1px solid #ccc !important;
+        border-left: 1px solid #ccc !important;
+        background: #fff;
+        font-size: 10px;
+        text-align: center;
+    }
+    .std_info tr.table-header td.border-left-none
+    {
+        border-left: none !important;
+    }
+    .std_info tr.table-header td.border-right-none
+    {
+        border-right: none !important;
+    }
+    
+    .std_info_payments .table-header td{
+        padding: 1px 10px !important;
+        border: 1px solid #DADADA !important;
+        font-weight: normal;
+        background: #fff;
+        font-size: 10px;
+    }
+    .std_info_payments .table-header-main td{
+        padding: 5px !important;
+        font-weight: bold;
+        border: 1px solid #ccc !important;
+        background: #fff;
+        font-size: 10px;
+        text-align: center;
+    }
+    .std_info_payments tr.table-header td.border-left-none
+    {
+        border-left: none !important;
+    }
+    .std_info_payments tr.table-header td.border-right-none
+    {
+        border-right: none !important;
+    }
 
 </style>
 

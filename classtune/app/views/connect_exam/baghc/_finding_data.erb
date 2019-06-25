@@ -7,6 +7,9 @@
   @student_list = []
   unless @tabulation_data.blank?
     @tabulation_data['report'].each do |tab|
+      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+        next
+      end
       unless tab['students'].blank?
       tab['students'].each do |std| 
         @total_std = @total_std+1

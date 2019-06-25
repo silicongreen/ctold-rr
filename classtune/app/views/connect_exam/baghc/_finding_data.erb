@@ -9,6 +9,7 @@
     @tabulation_data['report'].each do |tab|
       unless tab['students'].blank?
       tab['students'].each do |std| 
+        @total_std = @total_std+1
         total_mark_result = 0
         total_gpa = 0
         total_mark = 0

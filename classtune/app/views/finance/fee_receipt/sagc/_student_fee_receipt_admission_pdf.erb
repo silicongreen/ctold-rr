@@ -241,8 +241,8 @@ copy << "Bank Copy"
                           <td class="amount"><%= precision_label balance %></td>
                       </tr>
                   </table>
-                  <p style="margin-left:9px; font-size:9px;"><b>(In words): <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
-                  <p style="margin-left:9px; font-size:8px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
+                  <p style="margin-left:9px; font-size:10px;"><b>(In words): <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
+                  <p style="margin-left:9px; font-size:10px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
 
                           <h3>&nbsp;</h3>
                           <h3>&nbsp;</h3>
@@ -250,7 +250,6 @@ copy << "Bank Copy"
                               <tr>
                                   <td class="width-38">
                                       Authorised Signature<br/>(Account)<br/>Prepared By
-
                                   </td>
                                   <td class="gap"></td>
                                   <td>Class Teacher<br/>&nbsp;<br/>&nbsp;</td>
@@ -611,7 +610,7 @@ copy << "Bank Copy"
         margin-top: 5px;
     }
     .school-heading{
-        font-size:10px;
+        font-size:12px;
         text-align: center;
         font-family: serif;
         font-weight: bold;

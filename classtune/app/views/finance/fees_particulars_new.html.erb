@@ -255,4 +255,9 @@
           }
       });
   });
-</script>    
+</script>
+<%if @finance_fee_particular.errors.present?%>
+<script>
+j("#right-side-inputs").load(location.href + " #right-side-inputs");
+</script>
+<%  end %>

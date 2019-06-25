@@ -1757,7 +1757,6 @@ class FinanceController < ApplicationController
   end
 
   def fees_particulars_create
-#    abort(params[:particular[batch_ids]].inspect)
     if request.get?
       redirect_to :action => "fees_particulars_new"
     else

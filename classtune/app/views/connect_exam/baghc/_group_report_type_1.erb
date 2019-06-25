@@ -298,7 +298,7 @@
                                 <p style="text-align:center;">
                                     <% if @report_data['total'].to_i > 0 %>
                                       <% if @report_data['present'].to_i > 0  %>
-                                        <% percent = @report_data['present'].to_f/@report_data['total'].to_f %>
+                                        <% percent = (@report_data['present'].to_f/@report_data['total'].to_f)*100 %>
                                         <%= sprintf( "%0.02f", percent) %>
                                       <% else %>
                                         0.00

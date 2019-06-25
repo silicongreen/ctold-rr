@@ -7,7 +7,9 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/logo.jpg")),:width=> '50%' %></td>
+                  <td width="20%" style="vertical-align: top;">
+                    <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/logo.jpg")),:width=> '70%' %>
+                  </td>
                   <td>
                     <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
                     <h3 align="center"><b>(EIIN : 108214)</b></h3>

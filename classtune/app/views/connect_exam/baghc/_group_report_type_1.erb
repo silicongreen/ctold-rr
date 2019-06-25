@@ -1,17 +1,14 @@
 <% unless @report_data.blank?  or  @report_data['report'].blank? %>
 
     <div id="page-yield"  class="available_sections1 academia cherry_blossoms sis sis-final">
-       <p>&nbsp;<p>
-       <center>
+      
+        <div class="academia_box"  style="margin-bottom:20px;">
+         
+          <div class="academia_middle_box">
             <div id="pdf-header-south" class="general-header">
                 <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '10%' %></h4>
                 <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
             </div>
-        </center>
-        <div class="academia_box"  style="margin-bottom:20px;">
-         
-          <div class="academia_middle_box">
-            
             <h2 align="center"><%= @connect_exam_obj.name %></h2>
             <p>&nbsp;<p>
               <%#= debug @student %>

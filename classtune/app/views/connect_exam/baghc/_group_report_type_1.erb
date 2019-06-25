@@ -14,6 +14,7 @@
                     <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
                     <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
+                    <br/><br/>
                     <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
                   </td>
                 </tr>
@@ -64,7 +65,7 @@
                 Section : <%= @student.batch.section_name %>
               </td>
               <td class="left">
-                Section : <%= @student.class_roll_no %>
+                Roll : <%= @student.class_roll_no %>
               </td>
           </tr>  
           <tr class="table-header">

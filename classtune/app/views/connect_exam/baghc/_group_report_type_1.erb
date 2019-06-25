@@ -235,7 +235,7 @@
                         <% end %> 
                             <% gpa_fraction = 0 %>
                             <% if total_gpa > 0 && i > 0 %>
-                              <% gpa_fraction = total_gpa.to_f/i/to_f %>
+                              <% gpa_fraction = total_gpa.to_f/i.to_f %>
                             <% end %>
                             <tr class="table-header">
                                 <td colspan="2" style="text-align:center">

@@ -7,7 +7,7 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '60%' %></td>
+                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '30%' %></td>
                   <td>
                     <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
                     <h3 align="center"><b>(EIIN : 108214)</b></h3>
@@ -16,50 +16,6 @@
                 </tr>
             </table>
             <h2 align="center"><%= @connect_exam_obj.name %></h2>
-            <div class="academia_exam_details_box">              
-              <table id="pdf-table" class="margin-top-10"  width="99.8%">
-                <tr class="table-header">
-                    <td>
-                      Name : <%= @student.full_name %>
-                    </td>
-                    <td>
-                      Class : <%= @student.batch.course_name %>
-                    </td>
-                    <td>
-                      Section : <%= @student.batch.section_name %>
-                    </td>
-                    <td>
-                      Section : <%= @student.class_roll_no %>
-                    </td>
-                </tr>  
-                <tr class="table-header">
-                    <%
-                      shift = "Morning"
-                      medium = "Bangla"
-                      unless @batch.name.upcase.index("DAY").nil?
-                        shift = "Day"
-                      end
-                      unless @batch.name.upcase.index("ENGLISH").nil?
-                        medium = "English"
-                      end
-                  
-                    %>
-                    <td>
-                      Shift : <%= shift %>
-                    </td>
-                    <td>
-                      Medium : <%= medium %>
-                    </td>
-                    <td>
-                      Group : <%= @batch.course.group %>
-                    </td>
-                    <td>
-                      ID : <%= @student.admission_no %>
-                    </td>
-                </tr>
-              </table>
-            </div>
-            
           </div>
           <div class="academia_right_box">
             <br/>
@@ -93,8 +49,48 @@
             <% end %>
           </div>
         </div>
-       <br/>
-       
+ 
+       <table id="pdf-table" class="margin-top-10"  width="99.8%">
+          <tr class="table-header">
+              <td>
+                Name : <%= @student.full_name %>
+              </td>
+              <td>
+                Class : <%= @student.batch.course_name %>
+              </td>
+              <td>
+                Section : <%= @student.batch.section_name %>
+              </td>
+              <td>
+                Section : <%= @student.class_roll_no %>
+              </td>
+          </tr>  
+          <tr class="table-header">
+              <%
+                shift = "Morning"
+                medium = "Bangla"
+                unless @batch.name.upcase.index("DAY").nil?
+                  shift = "Day"
+                end
+                unless @batch.name.upcase.index("ENGLISH").nil?
+                  medium = "English"
+                end
+
+              %>
+              <td>
+                Shift : <%= shift %>
+              </td>
+              <td>
+                Medium : <%= medium %>
+              </td>
+              <td>
+                Group : <%= @batch.course.group %>
+              </td>
+              <td>
+                ID : <%= @student.admission_no %>
+              </td>
+          </tr>
+        </table>
         <div class ="current_batch">
             <div id="grouped_exam_report">
                 <div class="CSSTableGenerator">

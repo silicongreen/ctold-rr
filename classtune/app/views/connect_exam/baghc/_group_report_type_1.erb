@@ -11,9 +11,9 @@
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/logo.jpg")),:width=> '100%' %>
                   </td>
                   <td>
-                    <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
-                    <h3 align="center"><b>(EIIN : 108214)</b></h3>
-                    <h3 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h3>
+                    <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
+                    <h4 align="center"><b>(EIIN : 108214)</b></h4>
+                    <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
                     <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
                   </td>
                 </tr>

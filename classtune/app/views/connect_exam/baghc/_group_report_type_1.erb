@@ -7,15 +7,15 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '30%' %></td>
+                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/logo.jpg")),:width=> '50%' %></td>
                   <td>
                     <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
                     <h3 align="center"><b>(EIIN : 108214)</b></h3>
                     <h3 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h3>
+                    <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
                   </td>
                 </tr>
             </table>
-            <h2 align="center"><%= @connect_exam_obj.name %></h2>
           </div>
           <div class="academia_right_box">
             <br/>

@@ -190,21 +190,21 @@
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>
-                                    <%= cq %> [<%= cq_total %>]
+                                    <%= cq %> <font class="soft">[<%= cq_total %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
                                   <% if mcq_total > 0 %>
-                                    <%= mcq %> [<%= mcq_total %>]
+                                    <%= mcq %> <font class="soft">[<%= mcq_total %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
                                   <% if full_20 > 0 %>
-                                    <%= total_20 %> [<%= full_20 %>]
+                                    <%= total_20 %> <font class="soft">[<%= full_20 %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
@@ -363,6 +363,10 @@
   <% end %>
     
     <style>
+    .cherry_blossoms font.soft
+    {
+        font-weight: lighter !important;
+    }
   .cherry_blossoms  table tr td.left
   {
       text-align: left !important;

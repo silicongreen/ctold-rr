@@ -1,0 +1,433 @@
+<% unless @report_data.blank?  or  @report_data['report'].blank? %>
+
+    <div id="page-yield"  class="available_sections1 academia cherry_blossoms sis sis-final">
+       <p>&nbsp;<p>
+       <center>
+            <div id="pdf-header-south" class="general-header">
+                <h4 align="center"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '10%' %></h4>
+                <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
+            </div>
+        </center>
+        <div class="academia_box"  style="margin-bottom:20px;">
+         
+          <div class="academia_middle_box">
+            
+            <h2 align="center"><%= @connect_exam_obj.name %></h2>
+            <p>&nbsp;<p>
+              <%#= debug @student %>
+            <div class="academia_exam_details_box">              
+              <table id="pdf-table" class="margin-top-10"  width="99.8%">
+                <tr class="table-header">
+                    <td>
+                      Name : <%= @student.full_name %>
+                    </td>
+                    <td>
+                      Class : <%= @student.batch.course_name %>
+                    </td>
+                    <td>
+                      Section : <%= @student.batch.section_name %>
+                    </td>
+                    <td>
+                      Section : <%= @student.class_roll_no %>
+                    </td>
+                </tr>  
+                <tr class="table-header">
+                    <%
+                      shift = "Morning"
+                      medium = "Bangla"
+                      unless @batch.name.upcase.index("DAY").nil?
+                        shift = "Day"
+                      end
+                      unless @batch.name.upcase.index("ENGLISH").nil?
+                        medium = "English"
+                      end
+                  
+                    %>
+                    <td>
+                      Shift : <%= shift %>
+                    </td>
+                    <td>
+                      Medium : <%= medium %>
+                    </td>
+                    <td>
+                      Group : <%= @batch.course.group %>
+                    </td>
+                    <td>
+                      ID : <%= @student.admission_no %>
+                    </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="academia_right_box">
+            <br/>
+            <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
+            <% if @grading_levels.blank? %>
+            <% @grading_levels = GradingLevel.default %>
+            <% end %>
+            <%  unless @grading_levels.empty? %>
+              <table class="">
+                  <tr>
+                    <td>Marks</td>
+                    <td>Grade</td>
+                    <td>GPA</td>
+                  </tr>
+                  <% @grading_levels.each do |grade| %>
+                  <tr>
+                    <td>
+                      <% if grade.max_score.nil? %>  
+                      <%= '%i%' % grade.min_score %>
+                      <% else %>  
+                      <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+                      <% end %>
+                    </td>
+                    <td><%= grade.name %></td>
+                    <td><%= grade.credit_points %></td>
+                  </tr>                  
+                  <% end %>
+              </table>  
+            <% else %>
+              <h4><%= t('set_in_common') %></h4>
+            <% end %>
+          </div>
+        </div>
+       <br/>
+       
+        <div class ="current_batch">
+            <div id="grouped_exam_report">
+                <div class="CSSTableGenerator">
+                    <table id="pdf-table" class="margin-top-10"  width="99.8%">
+                        <thead> 
+                          <tr class="table-header">
+                              <td rowspan="2">SL</td>
+                              <td rowspan="2">Subjects</td>
+                              <td colspan="3">Marks Obtained</td>
+                              <td colspan="4">Result</td>  
+                          </tr>
+                          <tr class="table-header">
+                              <td>CQ/SQ</td>
+                              <td>MCQ</td>
+                              <td>MTT/Prac</td>
+                              <td>Total(%)</td> 
+                              <td>Highest Mark(%)</td>
+                              <td>GP</td>
+                              <td>LG</td>
+                          </tr>
+                        </thead>
+                        <% total_parcent = 0 %>
+                        <% total_mark = 0 %>
+                        <% total_full_mark = 0 %>
+                        <% total_mark_result = 0 %>
+                        <% total_gpa = 0 %>
+                        <% total_subject = 0 %>
+                        <% unless @report_data['report']['subjects'].blank? %> 
+                          <% i = 0 %>   
+                          <% @report_data['report']['subjects'].each do |subjects| %>
+                            <% total_80 = 0 %>
+                            <% full_80 = 0 %>
+                            <% total_20 = 0 %>
+                            <% full_20 = 0 %>
+                            <% cq = 0 %>
+                            <% mcq = 0 %>
+                            <% cq_total = 0 %>
+                            <% mcq_total = 0 %>
+                            
+                            <% i = i+1 %> 
+                            <tr class="table-header">
+                                <td class='subjects'><b><%= i %></b></td>
+                                <td class='subjects'><b><%= subjects['name'] %></b></td>
+                                <% @report_data['report']['exams'].each do |report| %>
+                                  <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
+                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                          <% full_80 = full_80+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% if report['exam_category'] == '1' %>
+                                            <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% else %>
+                                            <% mcq_total = mcq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% end %>
+                                        <% end %> 
+                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                            <% total_80 = total_80+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% if report['exam_category'] == '1' %>
+                                              <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% else %>
+                                              <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% end %>
+                                           
+                                        <% end %>
+                                  <% end %>
+                                   <% if report['exam_category'] == '3' %>
+                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
+                                          <% full_20 = full_20+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                        <% end %> 
+                                        <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
+                                            <% total_20 = total_20+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                        <% end %>
+                                  <% end %>
+                                <% end %>
+                                <%
+                                  total_mark = total_mark+total_80+total_20
+                                  total_full_mark = total_full_mark+full_80+full_20
+                                  converted_80 = 0
+                                  converted_20 = 0
+                                  if total_80 > 0
+                                    converted_80 = (total_80.to_f/full_80.to_f)*80
+                                  end
+                                  if total_20 > 0
+                                    converted_20 = (total_20.to_f/full_20.to_f)*20
+                                  end
+                                  coverted_100 = converted_80+converted_20
+                                  total_mark_result = total_mark_result+coverted_100
+                                  gp_point =0
+                                  lg = "-"
+                                  grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
+                                  if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                    gp_point = grade.credit_points
+                                    lg = grade.name
+                                  end
+                                  total_gpa = total_gpa+gp_point
+                                %>
+                                <td>
+                                  <% if cq_total > 0 %>
+                                    <b><%= cq %></b> [<%= cq_total %>]
+                                  <% else %>
+                                    <b>-</b>
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if mcq_total > 0 %>
+                                    <b><%= mcq %></b> [<%= mcq_total %>]
+                                  <% else %>
+                                    <b>-</b>
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if full_20 > 0 %>
+                                    <b><%= total_20 %></b> [<%= full_20 %>]
+                                  <% else %>
+                                    <b>-</b>
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <b><%= sprintf( "%0.02f", coverted_100) %> </b>  
+                                </td>
+                                <%
+                                    highest_mark = 0
+                                    if !@subject_highest.blank? and !@subject_highest[subjects['id'].to_i].blank?
+                                      highest_mark = @subject_highest[subjects['id'].to_i].to_f
+                                    end
+                                %>
+                                <td>
+                                   <b><%= sprintf( "%0.02f", highest_mark) %></b> 
+                                </td>
+                                <td>
+                                   <b><%= gp_point %></b> 
+                                </td>
+                                <td>
+                                   <b><%= lg %></b> 
+                                </td>
+                                
+                              
+                                    
+
+                            </tr> 
+                          <% end %>  
+                        <% end %> 
+                            <% gpa_fraction = 0 %>
+                            <% if total_gpa > 0 && i > 0 %>
+                              <% gpa_fraction = total_gpa.to_f/i/to_f %>
+                            <% end %>
+                            <tr class="table-header">
+                                <td clospan="2" style="text-align:center">
+                                    <b>Total Marks</b>
+                                </td>
+                                <td clospan="3" style="text-align:center">
+                                    <b><%= total_mark %></b> [<%= total_full_mark %>]
+                                </td>
+                                <td style="text-align:center">
+                                    <b><%= total_mark_result %></b>
+                                </td>
+                                <td style="text-align:center">
+                                    &nbsp;
+                                </td>
+                                <td style="text-align:center">
+                                    <b><%= total_gpa %></b>
+                                </td>
+                                <td style="text-align:center">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            
+                            <tr class="table-header">
+                                <td clospan="100" style="text-align:right">
+                                    <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
+                                </td>
+                            </tr>
+
+                    </table>
+                    
+                    <table id="pdf-table" class="margin-top-10"  width="99.8%">
+                        <tr class="table-header">
+                            <td colspan="2" style="text-align:center;" >Meritocracy</td>
+                        </tr>
+                        <tr class="table-header">
+                            <td>Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% end %></td>
+                            <td>Total Student: <%= @total_std unless @total_std.blank? %></td>
+                        </tr>
+                    </table>
+                    <table id="pdf-table" class="margin-top-10"  width="99.8%">
+                        <tr class="table-header">
+                            <td colspan="4" style="text-align:center;" >Attendance Report duration: <%= @connect_exam_obj.attandence_start_date.blank? ? '-':@connect_exam_obj.attandence_start_date.strftime("%Y-%m-%d") %> to <%= @connect_exam_obj.attandence_end_date.blank? ? '-':@connect_exam_obj.attandence_end_date.strftime("%Y-%m-%d") %></td>
+                        </tr>
+                        <tr class="table-header">
+                            <td style="text-align:center;">
+                                <p style="text-align:center;">Total working days</p>
+                                <p style="text-align:center;"><%= @report_data['total'] %></p>
+                            </td>
+                            <td style="text-align:center;">
+                                <p style="text-align:center;">Present days</p>
+                                <p style="text-align:center;"><%= @report_data['present'] %></p>
+                            </td>
+                            <td style="text-align:center;">
+                                <p style="text-align:center;">Absent days</p>
+                                <p style="text-align:center;"><%= @report_data['total'].to_i-@report_data['present'].to_i %></p>
+                            </td>
+                            <td style="text-align:center;">
+                                <p style="text-align:center;">Attendance (%)</p>
+                                <p style="text-align:center;">
+                                    <% if @report_data['total'].to_i > 0 %>
+                                      <% if @report_data['present'].to_i > 0  %>
+                                        <% percent = @report_data['present'].to_f/@report_data['total'].to_f %>
+                                        <%= sprintf( "%0.02f", percent) %>
+                                      <% else %>
+                                        0.00
+                                      <% end %>
+                                    <% else %>
+                                        -
+                                    <% end %> 
+                            </td>
+                        </tr>
+                        <tr class="table-header">
+                            <td colspan="4" style="text-align:right;" ><% if !@exam_comment.blank? %><b>&nbsp;&nbsp;&nbsp;<%= @exam_comment.comments %></b><% end %></td>
+                        </tr>
+                    </table>
+                   
+
+                </div>
+
+            </div>
+        </div>
+       
+      
+    </div>
+
+  <% end %>
+  <%= stylesheet_link_tag 'list_table' %>
+
+  <% if params[:page_height] %>
+    <script type="text/javascript">
+      var body = document.body,
+              html = document.documentElement;
+      var pg_height = parseInt(<%= params[:page_height] %>)
+      var page = new Element('div', {'class': 'page1'});
+      var pageBreak = new Element('div', {'class': 'page-break1'});
+      var insertPageBreak = function () {
+          body.appendChild(pageBreak.cloneNode(true))
+      };
+      var insertPage = function () {
+          body.appendChild(page.cloneNode(true));
+      };
+      var currPage = function () {
+          return $$('.page1').last()
+      };
+      var current_page_height = 0
+      var i = 0
+      $$('.available_sections1 .section1').each(function (el) {
+          a = parseInt(el.getHeight());
+          c = current_page_height + a;
+          current_page_height = c;
+          if (c > pg_height) {
+              current_page_height = a
+              body.appendChild(new Element('div', {'id': 'page-blank_' + i, 'class': 'page-blank'}))
+              document.getElementById('page-blank_' + i).style.height = (c - pg_height) + 'px';
+              document.getElementById('page-blank_' + i).innerHTML = "&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
+              i += 1
+              el.style.marginTop = "50px"; /* for this border-top is coming, top section of each page */
+              insertPageBreak();
+              insertPage();
+          }
+          currPage().appendChild(el);
+      });
+    </script>
+  <% end %>
+    
+    <style>
+        
+      .cherry_blossoms  table tr td
+{
+    font-size:20px;
+    text-align: center;
+}
+
+.cherry_blossoms  table tr td.avg_mark
+{
+    font-size:20px !important;
+    text-align: right;
+    padding: 10px 20px; 
+}
+.cherry_blossoms  .CSSTableGenerator table thead tr th
+{
+    font-size:20px;
+    text-align: left;
+}
+
+.cherry_blossoms  .academia_sign_left
+{
+    float:left;
+    width:48%;
+
+}
+
+.cherry_blossoms  .academia_middle_box
+{
+    float:left;
+    width:900px;
+    margin-left:180px;
+
+}
+
+.cherry_blossoms   .academia_sign_right
+{
+    margin-left:24px ;
+    float:left;
+    width:50%;
+
+}
+.cherry_blossoms  .academia_exam_title_box
+{
+    border: 1px solid #000;
+    width:40%;
+    margin: 10px auto;
+
+}
+
+.academia_right_box
+{
+    float:right;
+    width:230px;                
+}
+.cherry_blossoms  .academia_middle_box
+{
+    float:left;
+    width:840px;
+    margin-left:180px;
+
+}
+    #page-yield #pdf-header-south h2 b
+    {
+       font-size: 38px !important;
+    }
+    .sis-final .table-header td{
+        padding: 8px !important;
+    }
+    </style>

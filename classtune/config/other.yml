@@ -1,7 +1,8 @@
 resulttype:
- numbers: "323,2,325,340,312,348,3,352,346,355"
+ numbers: "323,2,325,340,312,348,3,352,346,355,356"
  type_323: "Mid Term,Final Term,Class 10 Mid Term,Class 10 Final Term,Class Test,Final Term Legal"
  type_325: "Summer,Spring,Fall,Test,Final"
+ type_356: "Type1"
  type_2: "Final Term,First Term,Mock Test,Quarter,KG First Term,KG Final Term"
  type_3: "Term Exam"
  type_346: "Term(N-KG),AR(N-KG),Term(class 1-class 5),AR(class 1-class 5),Term(class 6-class 7),AR(class 6-class 7),Term(class 8-class 10),AR(class 8-class 10),Term(class 11-class 12),AR(class 11-class 12),Pre Test(class 5 8 10 12)"
@@ -12,13 +13,14 @@ resulttype:
  type_355: "Junior Section,Senior Section"
  default: "Type 1,Type 2,Type 3,Type 4,Type 5,Type 6,Type 7,Type 8"
 resulttype2:
- numbers: "323,2,325,340,342,352,348"
+ numbers: "323,2,325,340,342,352,348,356"
  type_340: "1_Class Test,2_Term Test,3_Written,4_Assesment,5_Mock Test"
  type_325: "1_Class Test,2_Project,3_Term,4_Attendance"
  type_323: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_342: "1_Class Test,2_Project,3_Term,5_Mock Test"
  type_348: "1_Class Test,2_Project,3_Term,4_Practical,5_Assessment,6_N/A,7_Group Project"
  type_352: "1_ME/CW/SBA,2_AT,3_SB,4_OB,5_PR"
+ type_356: "1_CQ/SQ,2_MCQ,3_MTT/Prac"
  type_2: "1_Class Test,2_Project,3_Term,4_Surprise Test,5_Mock Test" 
  default: "6_N/A,5_Practical,4_Surprise Test,3_Term,2_Project,1_Class Test"
 quarter:

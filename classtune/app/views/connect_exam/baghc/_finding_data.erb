@@ -1,0 +1,87 @@
+
+<% if @total_std.blank? %>
+  
+  <%
+  @subject_highest = {}
+  @total_std = 0
+  @student_list = []
+  unless @tabulation_data.blank?
+    @tabulation_data['report'].each do |tab|
+      unless tab['students'].blank?
+      tab['students'].each do |std| 
+        total_mark_result = 0
+        total_gpa = 0
+        tab['subjects'].each do |sub|
+          total_80 = 0
+          full_80 = 0
+          total_20 = 0
+          full_20 = 0
+          cq = 0
+          mcq = 0
+          cq_total = 0
+          mcq_total = 0 
+          tab['exams'].each do |report|
+            if report['quarter'] == '1' or report['quarter'] == '2'
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                total_80 = total_80.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                full_80 = full_80+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end
+            if report['quarter'] == '3'
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                total_20 = total_20.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+              end
+              if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
+                full_20 = full_20+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+              end
+            end
+            
+          end
+          total_mark = total_mark+total_80+total_20
+          total_full_mark = total_full_mark+full_80+full_20
+          converted_80 = 0
+          converted_20 = 0
+          if total_80 > 0
+            converted_80 = (total_80.to_f/full_80.to_f)*80
+          end
+          if total_20 > 0
+            converted_20 = (total_20.to_f/full_20.to_f)*20
+          end
+          coverted_100 = converted_80+converted_20
+          total_mark_result = total_mark_result+coverted_100
+          gp_point =0
+          grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
+          if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+            gp_point = grade.credit_points
+          end
+          total_gpa = total_gpa+gp_point
+          if @subject_highest[sub['id'].to_i].blank?
+            @subject_highest[sub['id'].to_i] = coverted_100
+          elsif coverted_100.to_f > @subject_highest[sub['id'].to_i].to_f
+             @subject_highest[sub['id'].to_i] = coverted_100.to_f
+          end
+       
+        end
+        mark_less_obtain = 100000-total_mark_result.to_f
+        grade_less_obtain = 100000-total_gpa.to_f
+        @student_list << [grade_less_obtain.to_f,mark_less_obtain.to_f,std['first_name']+" "+std['last_name'],std['id'].to_i]
+        
+
+      end
+      end
+    end
+   end
+    @student_position = {}
+    unless @student_list.blank?
+      @sorted_students = @student_list.sort
+      position = 0
+      @sorted_students.each do|s|
+          position = position+1
+          @student_position[s[3].to_i] = position
+      end
+    end
+  end
+
+%> 

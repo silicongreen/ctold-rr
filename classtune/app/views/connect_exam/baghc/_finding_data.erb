@@ -25,7 +25,7 @@
           mcq_total = 0 
           
           @tabulation_data['exams'].each do |report|
-            if report['quarter'] == '1' or report['quarter'] == '2'
+            if report['category'] == '1' or report['category'] == '2'
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                 total_80 = total_80.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
               end
@@ -33,7 +33,7 @@
                 full_80 = full_80+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
               end
             end
-            if report['quarter'] == '3'
+            if report['category'] == '3'
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
                 total_20 = total_20.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
               end

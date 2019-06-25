@@ -7,7 +7,7 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '100%' %></td>
+                  <td width="30%"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (current_school_detail.logo.path||"public/images/application/c.png")),:width=> '60%' %></td>
                   <td>
                     <h2 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h2>
                     <h3 align="center"><b>(EIIN : 108214)</b></h3>
@@ -422,13 +422,7 @@
     float:right;
     width:230px;                
 }
-.cherry_blossoms  .academia_middle_box
-{
-    float:left;
-    width:840px;
-    margin-left:180px;
 
-}
     #page-yield #pdf-header-south h2 b
     {
        font-size: 38px !important;

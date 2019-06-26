@@ -472,7 +472,7 @@ class ClassworksController < ApplicationController
         @classworks_list =Classwork.paginate  :conditions=>"FIND_IN_SET(#{student.id},student_list) and is_published=1",:order=>"created_at desc", :page=>params[:page]
       end
       
-      Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 4,current_user.id])
+      Reminder.update_all("is_read='1'",  ["rid = ? and rtype = ? and recipient= ?", params[:id], 31,current_user.id])
     else
       flash[:notice]=t('flash_msg4')
       redirect_to :controller=>:user ,:action=>:dashboard

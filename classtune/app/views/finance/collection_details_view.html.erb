@@ -175,7 +175,7 @@
                 <small><strong><%= link_to fees.student.full_name, :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
                 <% else %>
                 
-                <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
+                <small><strong><%= link_to fees.student.full_name + " (Roll No: " + fees.student.class_roll_no.to_s + ")", :controller => 'finance' ,:action => 'fees_student_dates',:id => fees.student.id%></strong></small><br>
                 <% end %>
                 <small><%= fees.student.admission_no %></small><br>
                 <small><%= fees.student.batch.full_name %></small>

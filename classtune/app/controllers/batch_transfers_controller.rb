@@ -38,8 +38,12 @@ class BatchTransfersController < ApplicationController
     end  
     saved_batch = PdfSave.find(:all)
     @show_pdf_save_button = true
-    if !saved_batch.blank? && !pdf_saved.blank?
+    unless saved_batch.blank?
       @show_pdf_save_button = false
+    end
+    
+    if  pdf_saved.blank?
+      @show_pdf_save_button = true
     end
   end
 

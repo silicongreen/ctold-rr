@@ -131,8 +131,14 @@
       </div>
       <hr class="label-underline"></hr>
       <div class="label-field-pair">
-        <label for="dob"><%= t('date_of_birth') %><span class="necessary-field">*</span></label>
+        <label for="dob"><%= t('date_of_birth') %> (certificate) <span class="necessary-field">*</span></label>
         <div class="text-input-bg"><%= calendar_date_select_tag 'employee[date_of_birth]', I18n.l(Date.today-10.years,:format=>"%d %b %Y"),
+            :year_range => 83.years.ago..4.years.ago, :popup=>"force" %></div>
+      </div>
+      <hr class="label-underline"></hr>
+      <div class="label-field-pair">
+        <label for="dob">Date of Birth</label>
+        <div class="text-input-bg"><%= calendar_date_select_tag 'employee[real_birthdate]', I18n.l(Date.today-10.years,:format=>"%d %b %Y"),
             :year_range => 83.years.ago..4.years.ago, :popup=>"force" %></div>
       </div>
       <hr class="label-underline"></hr>

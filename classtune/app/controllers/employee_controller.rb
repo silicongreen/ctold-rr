@@ -17,6 +17,7 @@
 #limitations under the License.
 
 class EmployeeController < ApplicationController
+  require 'date'
   before_filter :login_required,:configuration_settings_for_hr
   filter_access_to :all
   before_filter :set_precision
@@ -2635,6 +2636,28 @@ ORDER BY emp.first_name ASC"
     redirect_to :action => "hr"
 
   end
+  
+  def birthday_calender
+  end
+  
+  def monthly_birthday_calender
+    @employees= Employee.all
+    @birthdays= []
+    @employees.each do |emp|
+      hash = {}
+      real_birth_date = emp.real_birthdate
+      year_birthdate = real_birth_date.change(:year => Time.now.year)
+      hash['title'] = emp.full_name
+      hash['url'] = "profile/" + emp.id.to_s
+      hash['start'] = year_birthdate
+      hash['description'] = "Department: " + emp.employee_department.name
+      @birthdays << hash
+    end
+    respond_to do |fmt|
+      fmt.json {render :json=>{'birthdays' => @birthdays}}
+    end
+  end
+  
 private
   def get_attendence_text
     require 'net/http'

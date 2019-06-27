@@ -120,6 +120,7 @@ copy << "Bank Copy"
                           <td><%=  batch %></td>
                       </tr>
                   </table>
+                  <div class="std_info_wrapper">
                   <table class="std_info_payments" id="pdf-table">
                       <tr class="table-header-main">
                           <td class="desc">Description</td>
@@ -241,6 +242,7 @@ copy << "Bank Copy"
                           <td class="amount"><%= precision_label balance %></td>
                       </tr>
                   </table>
+                      </div>
                   <p style="margin-left:9px; font-size:10px;"><b>(In words): <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
                   <p style="margin-left:9px; font-size:10px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
 
@@ -419,7 +421,6 @@ copy << "Bank Copy"
     .content-area{
         width: 100%;
         margin-top: 20px;
-        height: 900px;
     }
     .content-area table{
         width: 100%;
@@ -662,7 +663,7 @@ copy << "Bank Copy"
     {
         border-right: none !important;
     }
-    
+    .std_info_payments{min-height:300px;}
     .std_info_payments .table-header td{
         padding: 1px 10px !important;
         border: 1px solid #DADADA !important;

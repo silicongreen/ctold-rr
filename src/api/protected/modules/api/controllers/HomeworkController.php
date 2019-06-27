@@ -304,11 +304,11 @@ class HomeworkController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $date = Yii::app()->request->getPost('date');
+        $start_date = Yii::app()->request->getPost('start_date');
         $department_id = Yii::app()->request->getPost('department_id');
 
         $sort_by = Yii::app()->request->getPost('sort_by');
         $sort_type = Yii::app()->request->getPost('sort_type');
-        $time_range = Yii::app()->request->getPost('time_range');
 
         if (!$sort_by)
         {
@@ -319,10 +319,7 @@ class HomeworkController extends Controller
             $sort_type = "1";
         }
 
-        if (!$time_range)
-        {
-            $time_range = "day";
-        }
+        
 
 
 
@@ -332,6 +329,10 @@ class HomeworkController extends Controller
             if (!$date)
             {
                 $date = date("Y-m-d");
+            }
+            if (!$start_date)
+            {
+                $start_date = $date;
             }
 
             if (!$department_id)
@@ -347,7 +348,7 @@ class HomeworkController extends Controller
 
 
 
-            $employee_data = $assignments->getAssignmentEmployee($date, $sort_by, $sort_type, $time_range, $department_id,true);
+            $employee_data = $assignments->getAssignmentEmployee($date, $sort_by, $sort_type, $start_date, $department_id,true);
 
             $response['data']['day_type'] = $day_type;
             $response['data']['employee_data'] = $employee_data;

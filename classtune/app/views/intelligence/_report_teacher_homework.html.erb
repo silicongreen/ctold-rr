@@ -21,7 +21,7 @@
 <div class="clearfix"></div>
   <div class="CSSTableGenerator" style="width: 97%;margin-top: 20px;">
         
-      <% if @report_data['day_type']!="1" && @time_range=="days" %>
+      <% if @report_data['day_type']!="1" && @date==@start_date %>
         <h2><%=@report_data['day_type']%></h2>
       <% end %>
       <% unless @report_data.blank? %>
@@ -34,13 +34,13 @@
                         <td><b>Department</b></td> 
                         <td><b>Total Class</b></td> 
                         <td><b>Homework Given</b></td>
-                        <td><b>Homework Not Given</b></td>
+                        <td><b>Homework Given Before 3pm</b></td>
                         <td><b>Frequency</b></td> 
                     </tr>    
                     <% unless @report_data['employee_data'].blank? %>  
                       <% @report_data['employee_data'].each do |employee| %>
                         <% 
-                          if @report_data['day_type']!="1" && @time_range=="days"
+                          if @report_data['day_type']!="1" && @date==@start_date
                             employee['homework_given'] = "N/A"
                             employee['total_class'] = "N/A"
                             employee['frequency'] = "N/A"
@@ -63,45 +63,60 @@
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank? 
                                 employee['homework_given_data'].each do |hw|
                                   if class_sub_id.include?(hw['subjects_id'].to_i)
-                                    ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+") &#10;"
+                                    ballon_text = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
                                     hw_given_id << hw['subjects_id'].to_i
                                   end
                                 end
                               end
+                            
+                              hw_given_id_3pm = []
+                              ballon_text_3pm = ""; 
+                              if employee['homework_given'].to_i > 0 && !employee['homework_given_data_3pm'].blank? 
+                                employee['homework_given_data_3pm'].each do |hw|
+                                  if class_sub_id.include?(hw['subjects_id'].to_i)
+                                    ballon_text_3pm = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
+                                    hw_given_id_3pm << hw['subjects_id'].to_i
+                                  end
+                                end
+                              end
+                            
+                              
                           
                             %>
                             <td class="col-2"><b>
                                     <% unless ballon_text.blank?  %>
                                       <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id.count %></button>
+                                      <% employee['homework_given'] = hw_given_id.count %>
                                     <% else %>
-                                      <%= hw_given_id.count %>
+                                      <%= employee['homework_given'].to_i %>
                                     <% end %>  
                                       
-                                </b></td>
-                            <% 
-                              home_not_given = employee['total_class'].to_i-hw_given_id.count
-                              if home_not_given < 0
-                                home_not_given = 0
-                              end
-                            %>
-                            <%
-                              ballon_text = ""; 
-                              if home_not_given.to_i > 0 && !employee['class_details'].blank?
-                                employee['class_details'].each do |hw|
-                                  unless hw_given_id.include?(hw['id'].to_i)
-                                    ballon_text = ballon_text+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+") &#10;"
-                                  end
-                                end
-                              end
-                          
-                            %>
+                             </b></td>
+                            
+                           
                             <td class="col-2"><b>
-                            <% unless ballon_text.blank?  %>
-                              <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= home_not_given %></button>
-                            <% else %>
-                              <%= home_not_given %>
-                            <% end %></b></td>
-                            <td class="col-2"><b><%= employee['frequency'] %></b></td>
+                                  <% unless ballon_text_3pm.blank?  %>
+                                      <button data-balloon="<%= ballon_text_3pm %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id_3pm.count %></button>
+                                      <% employee['homework_given_before_3pm'] = hw_given_id_3pm.count %>
+                                    <% else %>
+                                      <%= employee['homework_given_before_3pm'].to_i %>
+                                    <% end %> 
+                                      
+                             </b></td>
+                            <% 
+                            if employee['total_class'].to_i < employee['homework_given'] .to_i
+                              employee['frequency'] = 100
+                            elsif employee['total_class'].to_i > 0 && employee['homework_given'].to_i > 0
+                              employee['frequency'] = (employee['homework_given'].to_f/employee['total_class'].to_f)*100
+                            elsif employee['total_class'].to_i == 0
+                              employee['frequency'] = 100
+                            else
+                              employee['frequency'] = 0
+                            end  
+                            
+                            %>
+                             
+                            <td class="col-2"><b><%= sprintf( "%0.02f", employee['frequency'].to_f)%></b></td>
 
                           </tr> 
                         <% end %>
@@ -110,7 +125,9 @@
               </table>
 
           </div>
-          <%= submit_tag "", :value => "►PDF", :class => "submit_button" %>
+          <% if @date!=@start_date %>
+            <%= submit_tag "", :value => "►PDF", :class => "submit_button" %>
+          <% end %>
         <% end %>
          
   </div>

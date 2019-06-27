@@ -68,7 +68,7 @@ class Assignments extends CActiveRecord
                     ),
 		);
 	}
-        public function getAssignmentEmployee($date,$sort_by,$sort_type,$time_range,$department_id=false,$only_employee =false)
+        public function getAssignmentEmployee($date,$sort_by,$sort_type,$start_date,$department_id=false,$only_employee =false)
         {
             $employee = new Employees();
             $all_employee = $employee->getEmployee($department_id,$only_employee);
@@ -88,25 +88,15 @@ class Assignments extends CActiveRecord
                       
                       $assignment = new Assignments();
                       $timetable = new TimetableEntries();
-                      
-                      if($time_range=="day")
-                      {
-                        $start_date = $date;
-                      }
-                      else 
-                      {
-                          $time_val = " -1 ".$time_range;
-                          
-                          $start_date = date("Y-m-d", strtotime($date . $time_val));
-                           
-                      }
-                      
                       $emp_homework_data[$i]['homework_given'] = $assignment->getAssignmentTotalTeacherDate($value->id,$start_date,$date);
+                      $emp_homework_data[$i]['homework_given_before_3pm'] = $assignment->getAssignmentTotalTeacherDateTime($value->id,$start_date,$date);
                       
-                      
-                      if( $time_range == "day" )
+                      $start_date = date("Y-m-d", strtotime($start_date));
+                      $date = date("Y-m-d", strtotime($date));
+                      if( $start_date == $date )
                       {
                         $emp_homework_data[$i]['homework_given_data'] = $assignment->getAssignmentTotalList($value->id,$start_date,$date);
+                        $emp_homework_data[$i]['homework_given_data_3pm'] = $assignment->getAssignmentTotalList($value->id,$start_date,$date,true);
                         $emp_homework_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
                         $emp_homework_data[$i]['total_class'] = count($emp_homework_data[$i]['class_details']);
                       }
@@ -160,9 +150,9 @@ class Assignments extends CActiveRecord
                       
                        
                       $emp_homework_data[$i]['frequency'] = "N/A";
-                      if($emp_homework_data[$i]['homework_given']>0)
+                      if($emp_homework_data[$i]['homework_given']>0 && $emp_homework_data[$i]['total_class']>0)
                       {
-                          $emp_homework_data[$i]['frequency'] = round($emp_homework_data[$i]['total_class']/$emp_homework_data[$i]['homework_given']);
+                          $emp_homework_data[$i]['frequency'] = $emp_homework_data[$i]['homework_given']/$emp_homework_data[$i]['total_class']*100;
                       }
                       $i++;
                       
@@ -457,7 +447,7 @@ class Assignments extends CActiveRecord
                 return 0;
             }
         }
-        public function getAssignmentTotalList($employee_id,$start_date,$end_date)
+        public function getAssignmentTotalList($employee_id,$start_date,$end_date,$before_3pm = false)
         {
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
@@ -467,7 +457,17 @@ class Assignments extends CActiveRecord
             
             $criteria->compare('t.employee_id', $employee_id);
             
-            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."'");
+            
+            
+            if($before_3pm)
+            {
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+            }
+            else
+            {
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."'");
+            }    
+            
             $criteria->with = array(
                 'subjectDetails' => array(
                     'select' => 'subjectDetails.id,subjectDetails.name,subjectDetails.icon_number',
@@ -523,6 +523,11 @@ class Assignments extends CActiveRecord
                 $marge['subjects_id'] = $value["subjectDetails"]->id;
                 $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
                 $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                if (date("H:i:s", strtotime($value->created_at)) == "00:00:00")
+                {
+                    $value->created_at = $value->updated_at;
+                }        
+                $marge['assign_time'] = date("h:i a", strtotime("+6 hour", strtotime($value->created_at)));
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = $value->title;
                 $marge['content'] = $value->content;
@@ -536,7 +541,27 @@ class Assignments extends CActiveRecord
                 
             }
             return $response_array;
-        }        
+        }  
+        
+        public function getAssignmentTotalTeacherDateTime($employee_id,$start_date,$end_date)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->together = true;
+           
+            $criteria->compare('t.is_published', 1);
+            
+            $criteria->compare('t.employee_id', $employee_id);
+            
+            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+           
+             
+                
+            
+            $data = $this->find($criteria);
+            return $data->total;
+        }
         
         public function getAssignmentTotalTeacherDate($employee_id,$start_date,$end_date)
         {

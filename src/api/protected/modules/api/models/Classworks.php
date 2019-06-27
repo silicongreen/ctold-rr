@@ -68,6 +68,27 @@ class Classworks extends CActiveRecord
                     ),
 		);
 	}
+       
+    
+        public function getClassworkTotalTeacherDateTime($employee_id,$start_date,$end_date)
+        {
+            
+            $criteria = new CDbCriteria();
+            $criteria->select = 'count(t.id) as total';
+            $criteria->together = true;
+           
+            $criteria->compare('t.is_published', 1);
+            
+            $criteria->compare('t.employee_id', $employee_id);
+            
+            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+           // $criteria->compare('DATE(t.created_at)', $date);
+             
+                
+            
+            $data = $this->find($criteria);
+            return $data->total;
+        }
         
         public function getClassworkTotalTeacherDate($employee_id,$start_date,$end_date)
         {
@@ -89,7 +110,90 @@ class Classworks extends CActiveRecord
             return $data->total;
         }
         
-        public function getClassworkEmployee($date,$sort_by,$sort_type,$time_range,$department_id=false)
+        public function getClassworktTotalList($employee_id,$start_date,$end_date,$before_3pm = false)
+        {
+            $criteria = new CDbCriteria();
+            $criteria->select = 't.*';
+            $criteria->together = true;
+            
+            $criteria->compare('t.employee_id', $employee_id);
+            
+            
+            
+            if($before_3pm)
+            {
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+            }
+            else
+            {
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."'");
+            }    
+            
+            $criteria->with = array(
+                'subjectDetails' => array(
+                    'select' => 'subjectDetails.id,subjectDetails.name,subjectDetails.icon_number',
+                    'joinType' => "INNER JOIN",
+                    'with' => array(
+                        "Subjectbatch" => array(
+                            "select" => "Subjectbatch.name",
+                            'joinType' => "INNER JOIN",
+                            'with' => array(
+                                "courseDetails" => array(
+                                    "select" => "courseDetails.course_name,courseDetails.section_name",
+                                    'joinType' => "INNER JOIN",
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            $data = $this->findAll($criteria);
+            $response_array = array();
+            if($data != NULL)
+            foreach($data as $value)
+            {
+                $marge = array();
+                if(isset($all_batchs) && $all_batchs)
+                {
+                    $marge['subject_ids_used'] = implode(",", $all_batchs);
+                }    
+              
+                $marge['subjects'] = $value["subjectDetails"]->name;
+                $marge['batch'] = $value["subjectDetails"]['Subjectbatch']->name;
+                
+                $marge['attachment_file_name'] = ""; 
+                if($value->attachment_file_name)
+                {
+                    $marge['attachment_file_name'] = $value->attachment_file_name;
+                }
+                
+                $marge['course'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->course_name;
+                $marge['section'] = "";
+                if($value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name)
+                {
+                    $marge['section'] = $value["subjectDetails"]['Subjectbatch']['courseDetails']->section_name;
+                }
+                
+                
+                $marge['subjects_id'] = $value["subjectDetails"]->id;
+                $marge['subjects_icon'] = $value["subjectDetails"]->icon_number;
+                $marge['assign_date'] = date("Y-m-d", strtotime($value->created_at));
+                if (date("H:i:s", strtotime($value->created_at)) == "00:00:00")
+                {
+                    $value->created_at = $value->updated_at;
+                }        
+                $marge['assign_time'] = date("h:i a", strtotime("+6 hour", strtotime($value->created_at)));
+                $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
+                $marge['name'] = $value->title;
+                $marge['id'] = $value->id;
+                
+                $response_array[] = $marge;     
+                
+            }
+            return $response_array;
+        } 
+        
+        public function getClassworkEmployee($date,$sort_by,$sort_type,$start_date,$department_id=false)
         {
             $employee = new Employees();
             $all_employee = $employee->getEmployee($department_id);
@@ -110,22 +214,17 @@ class Classworks extends CActiveRecord
                       $classwork = new Classworks();
                       $timetable = new TimetableEntries();
                       
-                      if($time_range=="day")
-                      {
-                        $start_date = $date;
-                      }
-                      else 
-                      {
-                          $time_val = " -1 ".$time_range;
-                          
-                          $start_date = date("Y-m-d", strtotime($date . $time_val));
-                           
-                      }
+                      
                       
                       $emp_classwork_data[$i]['classwork_given'] = $classwork->getClassworkTotalTeacherDate($value->id,$start_date,$date);
-                      
-                      if($time_range=="day")
+                      $emp_classwork_data[$i]['classwork_given_before_3pm'] = $classwork->getClassworkTotalTeacherDateTime($value->id,$start_date,$date);
+                       
+                      $start_date = date("Y-m-d", strtotime($start_date));
+                      $date = date("Y-m-d", strtotime($date));
+                      if($start_date==$date)
                       {
+                            $emp_classwork_data[$i]['classwork_given_data'] = $classwork->getClassworktTotalList($value->id,$start_date,$date);
+                            $emp_classwork_data[$i]['classwork_given_data_3pm'] = $classwork->getClassworktTotalList($value->id,$start_date,$date,true);
                             $emp_classwork_data[$i]['class_details'] = $timetable->getTotalClassTeacher($date,$value->id);
                             $emp_classwork_data[$i]['total_class'] = count($emp_classwork_data[$i]['class_details']);
                       }
@@ -179,9 +278,9 @@ class Classworks extends CActiveRecord
                       
                        
                       $emp_classwork_data[$i]['frequency'] = "N/A";
-                      if($emp_classwork_data[$i]['classwork_given']>0)
+                      if($emp_classwork_data[$i]['classwork_given']>0 && $emp_classwork_data[$i]['classwork_given']>0)
                       {
-                          $emp_classwork_data[$i]['frequency'] = round($emp_classwork_data[$i]['total_class']/$emp_classwork_data[$i]['classwork_given']);
+                          $emp_classwork_data[$i]['frequency'] = $emp_classwork_data[$i]['classwork_given']/$emp_classwork_data[$i]['total_class']*100;
                       }
                       $i++;
                       

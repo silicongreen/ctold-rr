@@ -273,9 +273,8 @@ class IntelligenceController < ApplicationController
     @department_id = 0
     @sort_by = "classwork_given";
     @sort_type = 1;
-    @time_range = "day";
     @date = @local_tzone_time.to_date
-    
+    @start_date = @local_tzone_time.to_date
     if !params[:student][:department].blank?
       @department_id = params[:student][:department]
     end
@@ -285,14 +284,15 @@ class IntelligenceController < ApplicationController
     if !params[:student][:sort_type].blank?
       @sort_type = params[:student][:sort_type]
     end
-    if !params[:student][:timerange].blank?
-      @time_range = params[:student][:timerange]
+    if !params[:start_date].blank?
+      @start_date = params[:start_date]
     end
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
     
-    get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    
+    get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
@@ -313,9 +313,8 @@ class IntelligenceController < ApplicationController
     @department_id = 0
     @sort_by = "classwork_given";
     @sort_type = 1;
-    @time_range = "day";
     @date = @local_tzone_time.to_date
-    
+    @start_date = @local_tzone_time.to_date
     if !params[:student][:department].blank?
       @department_id = params[:student][:department]
     end
@@ -325,14 +324,14 @@ class IntelligenceController < ApplicationController
     if !params[:student][:sort_type].blank?
       @sort_type = params[:student][:sort_type]
     end
-    if !params[:student][:timerange].blank?
-      @time_range = params[:student][:timerange]
+    if !params[:start_date].blank?
+      @start_date = params[:start_date]
     end
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
     
-    get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
@@ -595,9 +594,8 @@ class IntelligenceController < ApplicationController
     @department_id = 0
     @sort_by = "homework_given";
     @sort_type = 1;
-    @time_range = "day";
     @date = @local_tzone_time.to_date
-    
+    @start_date = @local_tzone_time.to_date
     if !params[:student][:department].blank?
       @department_id = params[:student][:department]
     end
@@ -607,14 +605,14 @@ class IntelligenceController < ApplicationController
     if !params[:student][:sort_type].blank?
       @sort_type = params[:student][:sort_type]
     end
-    if !params[:student][:timerange].blank?
-      @time_range = params[:student][:timerange]
+    if !params[:start_date].blank?
+      @start_date = params[:start_date]
     end
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
     
-    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
@@ -635,9 +633,9 @@ class IntelligenceController < ApplicationController
     @department_id = 0
     @sort_by = "homework_given";
     @sort_type = 1;
-    @time_range = "day";
     @date = @local_tzone_time.to_date
     
+    @start_date = @local_tzone_time.to_date
     if !params[:student][:department].blank?
       @department_id = params[:student][:department]
     end
@@ -647,14 +645,14 @@ class IntelligenceController < ApplicationController
     if !params[:student][:sort_type].blank?
       @sort_type = params[:student][:sort_type]
     end
-    if !params[:student][:timerange].blank?
-      @time_range = params[:student][:timerange]
+    if !params[:start_date].blank?
+      @start_date = params[:start_date]
     end
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
     
-    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@time_range,@date)
+    get_homework_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
@@ -1744,7 +1742,7 @@ class IntelligenceController < ApplicationController
   
   
   
-  def get_homework_report_full_teacher(department_id,sort_by,sort_type,time_range,date)
+  def get_homework_report_full_teacher(department_id,sort_by,sort_type,start_date,date)
     require 'net/http'
     require 'uri'
     require "yaml"
@@ -1755,7 +1753,7 @@ class IntelligenceController < ApplicationController
       api_uri = URI(api_endpoint + "api/homework/teacherintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })    
-      request.set_form_data({"department_id"=>department_id,"sort_by"=>sort_by,"sort_type"=>sort_type,"time_range"=>time_range,"date"=>date,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+      request.set_form_data({"department_id"=>department_id,"sort_by"=>sort_by,"sort_type"=>sort_type,"start_date"=>start_date,"date"=>date,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
       response = http.request(request)
       @student_response = JSON::parse(response.body)
     end
@@ -1805,7 +1803,7 @@ class IntelligenceController < ApplicationController
     @student_response
   end
   
-  def get_classwork_report_full_teacher(department_id,sort_by,sort_type,time_range,date)
+  def get_classwork_report_full_teacher(department_id,sort_by,sort_type,start_date,date)
     require 'net/http'
     require 'uri'
     require "yaml"
@@ -1816,7 +1814,7 @@ class IntelligenceController < ApplicationController
       api_uri = URI(api_endpoint + "api/classwork/teacherintelligence")
       http = Net::HTTP.new(api_uri.host, api_uri.port)
       request = Net::HTTP::Post.new(api_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })    
-      request.set_form_data({"department_id"=>department_id,"sort_by"=>sort_by,"sort_type"=>sort_type,"time_range"=>time_range,"date"=>date,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
+      request.set_form_data({"department_id"=>department_id,"sort_by"=>sort_by,"sort_type"=>sort_type,"start_date"=>start_date,"date"=>date,"call_from_web"=>1,"user_secret" =>session[:api_info][0]['user_secret']})
       response = http.request(request)
       @student_response = JSON::parse(response.body)
     end 

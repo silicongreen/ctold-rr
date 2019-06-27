@@ -60,7 +60,7 @@ class ClassworkController extends Controller
 
         $sort_by = Yii::app()->request->getPost('sort_by');
         $sort_type = Yii::app()->request->getPost('sort_type');
-        $time_range = Yii::app()->request->getPost('time_range');
+        $start_date = Yii::app()->request->getPost('start_date');
 
         if (!$sort_by)
         {
@@ -71,16 +71,16 @@ class ClassworkController extends Controller
             $sort_type = "1";
         }
 
-        if (!$time_range)
-        {
-            $time_range = "day";
-        }
 
         if (Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
             if (!$date)
             {
                 $date = date("Y-m-d");
+            }
+            if (!$start_date || $start_date > $date)
+            {
+                $start_date = $date;
             }
 
             if (!$department_id)
@@ -92,7 +92,7 @@ class ClassworkController extends Controller
             $day_type = $attendence->check_date($date);
             $classworks = new Classworks();
 
-            $employee_data = $classworks->getClassworkEmployee($date, $sort_by, $sort_type, $time_range, $department_id);
+            $employee_data = $classworks->getClassworkEmployee($date, $sort_by, $sort_type, $start_date, $department_id);
 
             $response['data']['day_type'] = $day_type;
             $response['data']['employee_data'] = $employee_data;

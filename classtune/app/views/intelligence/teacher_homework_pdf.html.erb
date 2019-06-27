@@ -17,6 +17,7 @@
           <td class="col-pdf aling-left"><b>Department</b></td> 
           <td class="col-pdf"><b>Total Class</b></td> 
           <td class="col-pdf"><b>Homework Given</b></td> 
+          <td class="col-pdf"><b>Before 3pm</b></td>
           <td class="col-pdf"><b>Frequency</b></td>     
         </tr>
         <% std_count = 0 %>
@@ -37,13 +38,25 @@
                   <td colspan="100">&nbsp;</td>
               </tr> 
             <% end %>
-            
+              <% 
+              if employee['total_class'].to_i < employee['homework_given'] .to_i
+                employee['frequency'] = 100
+              elsif employee['total_class'].to_i > 0 && employee['homework_given'].to_i > 0
+                employee['frequency'] = (employee['homework_given'].to_f/employee['total_class'].to_f)*100
+              elsif employee['total_class'].to_i == 0
+                employee['frequency'] = 100
+              else
+                employee['frequency'] = 0
+              end  
+
+              %>
               <tr class="table-header">
                 <td class="col-pdf aling-left"><%= employee['emp_name'] %></td>
                 <td class="col-pdf aling-left"><%= employee['emp_dep'] %></td>
                 <td class="col-pdf"><%= employee['total_class'] %></td>
                 <td class="col-pdf"><%= employee['homework_given'] %></td>
-                <td class="col-pdf"><%= employee['frequency'] %></td>
+                <td class="col-pdf"><%= employee['homework_given_before_3pm'] %></td>
+                <td class="col-pdf"><%= sprintf( "%0.02f", employee['frequency'].to_f)%></td>
               </tr>
             <% end %>  
           <% end %>  

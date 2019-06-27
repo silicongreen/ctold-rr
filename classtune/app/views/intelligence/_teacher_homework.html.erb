@@ -3,29 +3,28 @@
 <% form_for :intelligence, :url => {:action=> 'teacher_homework_pdf'}, :html=> {:id=>'new_student',:target=>'_blank'} do |s| %>
   <div id="page-yield" style="margin-top:0px;">  
       
-      <div class="row">  
-        <div class="row_label">
-          <div>
-            Department
+      
+      <div class="row" style="width:48%; margin-right:8px;">
+          <div class="row_label" >
+            <div>
+              Start date
+            </div>
           </div>
-        </div>
-        <div class="row_data">
-          <div>
-            <div class="custom_drop_wrapper">
-             <%= select :student, :department, options_for_select(@departments.map { |s| [s.name, s.id] }), 
-              {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
-              :success => "$('loading_3').hide();")}"} %>
-              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3", :style =>"display: none;" ) %>
+          <div class="row_data">
+            <div>
+              <%= calendar_date_select_tag "start_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"},
+            :with => "$('new_student').serialize()",
+            :before => "$('loading_6').show();",
+            :success => "$('loading_6').hide();"  )}", :popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
+             <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_6", :style =>"display: none;" ) %>
             </div>
           </div>
         </div>
-      </div>
        
-        <div class="row" style="width:50%">
+        <div class="row" style="width:48%; margin-right:8px;">
           <div class="row_label" >
             <div>
-              Select date
+              End date
             </div>
           </div>
           <div class="row_data">
@@ -44,24 +43,22 @@
       <div class="row">  
         <div class="row_label">
           <div>
-            Time Range
+            Department
           </div>
         </div>
         <div class="row_data">
           <div>
             <div class="custom_drop_wrapper">
-               <%
-              typehash = [["days", "one day"], ["week", "within one weeks from date"], ["months", "within one month from date"]]
-              %>
-             <%= select :student,:timerange, typehash.map{|role| [ role[1], role[0] ]}, 
+             <%= select :student, :department, options_for_select(@departments.map { |s| [s.name, s.id] }), 
               {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_2').show();",
-              :success => "$('loading_2').hide();")}"} %>
-              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2", :style =>"display: none;" ) %>
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
+              :success => "$('loading_3').hide();")}"} %>
+              <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3", :style =>"display: none;" ) %>
             </div>
           </div>
         </div>
       </div>
+      
       
      
 

@@ -120,7 +120,7 @@ copy << "Bank Copy"
                           <td><%=  batch %></td>
                       </tr>
                   </table>
-                  <div class="std_info_wrapper">
+
                   <table class="std_info_payments" id="pdf-table">
                       <tr class="table-header-main">
                           <td class="desc">Description</td>
@@ -234,7 +234,22 @@ copy << "Bank Copy"
                           <% end %>
                         <% end %>
                       <% end %>      
+                      <%
+                      record_needed = 24
+                      record_diff = 0
+                      if k < record_needed
+                        record_diff = record_needed - k
+                        end
+                    %>
+                      <% if record_diff > 0 %>
+                        <% (1..record_diff).each do |i| %>  
+                          <tr class="table-header">
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                          </tr>
+                        <% end %>   
 
+                      <% end %>        
                       <tr class="table-header">
                           <% vat_amount = 0 %>
                           <% balance=total_fees-total_discount %>
@@ -242,7 +257,6 @@ copy << "Bank Copy"
                           <td class="amount"><%= precision_label balance %></td>
                       </tr>
                   </table>
-                      </div>
                   <p style="margin-left:9px; font-size:10px;"><b>(In words): <%= in_words(balance.to_i).split.map(&:capitalize).join(' ') if total_fees.to_i > 0 %></b></p>
                   <p style="margin-left:9px; font-size:10px;"><b>Deposit these fees at Fees Counter within <%= @date.due_date.to_date.strftime("%d-%m-%Y").to_s %>
 
@@ -637,8 +651,8 @@ copy << "Bank Copy"
     }
     .desc{font-size:10px;}
     .amt{font-size:10px;}
-    
-    
+
+
     .std_info .table-header td{
         border: 1px solid #DADADA !important;
         font-weight: bold;
@@ -663,7 +677,6 @@ copy << "Bank Copy"
     {
         border-right: none !important;
     }
-    .std_info_payments{min-height:300px;}
     .std_info_payments .table-header td{
         padding: 1px 10px !important;
         border: 1px solid #DADADA !important;

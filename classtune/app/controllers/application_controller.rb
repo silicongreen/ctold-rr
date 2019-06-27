@@ -86,6 +86,7 @@ class ApplicationController < ActionController::Base
     end
     return false
   end
+  
   def in_words(int)
     set1 = ["","one","two","three","four","five","six","seven",
       "eight","nine","ten","eleven","twelve","thirteen",
@@ -102,7 +103,7 @@ class ApplicationController < ActionController::Base
       "one hundred","one hundred one","one hundred two","one hundred three","one hundred four","one hundred five","one hundred six","one hundred seven","one hundred eight","one hundred nine",
       "one hundred ten","one hundred eleven","one hundred twelve","one hundred thirteen","one hundred fourteen","one hundred fifteen","one hundred sixteen","one hundred seventeen","one hundred eighteen","one hundred nineteen",
       "one hundred twenty"
-      ]
+    ]
 
     set2 = ["","","twenty","thirty","forty","fifty","sixty",
       "seventy","eighty","ninety"]
@@ -117,7 +118,11 @@ class ApplicationController < ActionController::Base
 
     string += set1[thousands] + " thousand " if thousands != 0 if thousands > 0
     string += set1[hundreds] + " hundred" if hundreds != 0
-    string +=" and " if tens != 0 || ones != 0 
+    if string == ""
+      string += " " if tens != 0 || ones != 0 
+    else
+      string +=" and " if tens != 0 || ones != 0 
+    end
     string = string + set1[tens*10+ones] if tens < 2
     string += set2[tens]
     string = string + " " + set1[ones] if ones != 0 and tens > 1    
@@ -390,15 +395,15 @@ class ApplicationController < ActionController::Base
   
   def check_free_school?
     free = false
-#    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
-#    if !school_subscription_info.nil?
-#      date_to_check = Date.today
-#      if date_to_check>school_subscription_info.end_date.to_date
-#        free = true 
-#      end
-#    else
-#      free = true
-#    end  
+    #    school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
+    #    if !school_subscription_info.nil?
+    #      date_to_check = Date.today
+    #      if date_to_check>school_subscription_info.end_date.to_date
+    #        free = true 
+    #      end
+    #    else
+    #      free = true
+    #    end  
     return free
   end 
   

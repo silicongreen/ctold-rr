@@ -270,7 +270,6 @@ class IntelligenceController < ApplicationController
   end
   
   def teacher_classwork_pdf
-    require 'json'
     
     @department_id = 0
     @sort_by = "classwork_given";
@@ -292,12 +291,12 @@ class IntelligenceController < ApplicationController
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
+    abort(params[:student].inspect)
     
     get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []
     if @student_response['status']['code'].to_i == 200
       @report_data = @student_response['data']
-      abort(@report_data.inspects)
     end
     render :pdf => "teacher_classwork_pdf",
     :orientation => 'Portrait',

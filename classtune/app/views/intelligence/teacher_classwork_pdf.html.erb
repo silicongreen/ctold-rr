@@ -56,7 +56,7 @@
                 <td class="col-pdf"><%= employee['total_class'] %></td>
                 <td class="col-pdf"><%= employee['classwork_given'] %></td>
                 <td class="col-pdf"><%= employee['classwork_given_before_3pm'] %></td>
-                <td class="col-pdf"><%= employee['frequency'] %></td>
+                <td class="col-pdf"><%= sprintf( "%0.02f", employee['frequency'].to_f)%></td>
               </tr> 
             <% end %>
           <% end %>  

@@ -270,6 +270,7 @@ class IntelligenceController < ApplicationController
   end
   
   def teacher_classwork_pdf
+    require 'json'
     @department_id = 0
     @sort_by = "classwork_given";
     @sort_type = 1;
@@ -285,10 +286,10 @@ class IntelligenceController < ApplicationController
       @sort_type = params[:student][:sort_type]
     end
     if !params[:start_date].blank?
-      @start_date = params[:start_date]
+      @start_date = params[:start_date].to_date
     end
     if !params[:select_date].blank?
-      @date = params[:select_date]
+      @date = params[:select_date].to_date
     end
     
     

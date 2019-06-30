@@ -271,6 +271,7 @@ class IntelligenceController < ApplicationController
   
   def teacher_classwork_pdf
     require 'json'
+    
     @department_id = 0
     @sort_by = "classwork_given";
     @sort_type = 1;
@@ -286,12 +287,11 @@ class IntelligenceController < ApplicationController
       @sort_type = params[:student][:sort_type]
     end
     if !params[:start_date].blank?
-      @start_date = params[:start_date].to_date
+      @start_date = params[:start_date]
     end
     if !params[:select_date].blank?
-      @date = params[:select_date].to_date
+      @date = params[:select_date]
     end
-    
     
     get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []

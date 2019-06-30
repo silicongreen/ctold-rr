@@ -291,7 +291,7 @@ class IntelligenceController < ApplicationController
     if !params[:select_date].blank?
       @date = params[:select_date]
     end
-    abort(params[:student].inspect)
+    
     
     get_classwork_report_full_teacher(@department_id,@sort_by,@sort_type,@start_date,@date)
     @report_data = []

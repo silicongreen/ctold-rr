@@ -278,7 +278,7 @@ class Classworks extends CActiveRecord
                       
                        
                       $emp_classwork_data[$i]['frequency'] = "N/A";
-                      if($emp_classwork_data[$i]['classwork_given']>0 && $emp_classwork_data[$i]['classwork_given']>0)
+                      if($emp_classwork_data[$i]['total_class']>0 && $emp_classwork_data[$i]['classwork_given']>0)
                       {
                           $emp_classwork_data[$i]['frequency'] = $emp_classwork_data[$i]['classwork_given']/$emp_classwork_data[$i]['total_class']*100;
                       }

@@ -53,8 +53,13 @@
             <hr class="label-underline"></hr>
             <div class="label-field-pair">
               <label for="dob">Date of Birth</label>
+              <% unless @employee.real_birthdate.blank? %>
               <div class="text-input-bg"><%= calendar_date_select_tag 'employee[real_birthdate]', I18n.l(@employee.real_birthdate,:format=>"%d %b %Y"),
                   :year_range => 83.years.ago..4.years.ago, :popup=>"force" %></div>
+              <% else %>
+              <div class="text-input-bg"><%= calendar_date_select_tag 'employee[real_birthdate]', I18n.l(@employee.date_of_birth,:format=>"%d %b %Y"),
+                  :year_range => 83.years.ago..4.years.ago, :popup=>"force" %></div>
+              <% end %>
             </div>
             <% end %>
             

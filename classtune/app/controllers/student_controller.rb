@@ -4104,6 +4104,7 @@ class StudentController < ApplicationController
       @subject_students.each do |std|
         unless @main_batch.blank?
           @main_batch = std.student.batch
+          break
         end
       end
     end

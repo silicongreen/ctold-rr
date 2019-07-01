@@ -1,5 +1,5 @@
 
-<% unless @main_batch.course.group.nil? %>
+<% if !@main_batch.nil? && !@main_batch.course.group.nil? %>
   <% group_split = @main_batch.course.group.split(" ") %>
   <% unless group_split[2].blank? %>
     <% group_split[0] = group_split[0]+" "+group_split[1] %>

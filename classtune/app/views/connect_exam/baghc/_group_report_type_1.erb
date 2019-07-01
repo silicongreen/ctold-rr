@@ -302,7 +302,7 @@
                             <td colspan="2" style="text-align:center;" >Meritocracy</td>
                         </tr>
                         <tr class="table-header">
-                            <td>Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% end %></td>
+                            <td>Position: <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank?  %><%= @student_position[@student.id.to_i] %><% else %>N/A<% end %></td>
                             <td>Total Student: <%= @total_std unless @total_std.blank? %></td>
                         </tr>
                     </table>

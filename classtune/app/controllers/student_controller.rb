@@ -2254,9 +2254,11 @@ class StudentController < ApplicationController
       end
       
       if !params[:f_first_name].blank? && @guardian_father.blank?
-          params[:guardian][:first_name] = params[:f_first_name]
-          params[:guardian][:relation] = "Father"
-          @guardian = @student.guardians.build(params[:guardian])
+          hash_guar = {}
+          hash_guar[:guardian] = {}
+          hash_guar[:guardian][:first_name] = params[:f_first_name]
+          hash_guar[:guardian][:relation] = "Father"
+          @guardian = @student.guardians.build(hash_guar[:guardian])
           @guardian.set_immediate_contact = @student.admission_no
           @guardian.save_to_free = true
           if @guardian.save
@@ -2275,9 +2277,11 @@ class StudentController < ApplicationController
        
 
       if !params[:m_first_name].blank? && @guardian_mother.blank?
-        params[:guardian][:first_name] = params[:m_first_name]
-        params[:guardian][:relation] = "Mother"
-        @guardian = @student.guardians.build(params[:guardian])
+        hash_guar = {}
+        hash_guar[:guardian] = {}
+        hash_guar[:guardian][:first_name] = params[:m_first_name]
+        hash_guar[:guardian][:relation] = "Mother"
+        @guardian = @student.guardians.build(hash_guar[:guardian])
         if @guardian.save
           check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
           if check_guardian.nil?

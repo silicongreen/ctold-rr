@@ -15,7 +15,9 @@
     <div class="heading-section" >
         <div class="box info" >
             <span>Course: <strong> <%= @batch.course.course_name  %> </strong> </span><br>
-            <span>Group: <strong> <%= group_split[0] unless @main_batch.course.group.nil?  %> </strong> </span><br>
+            <% unless @main_batch.blank? %>
+              <span>Group: <strong> <%= group_split[0] unless @main_batch.course.group.nil?  %> </strong> </span><br>
+            <% end %>
             <span>Elective Subject: <strong> <%= @elective_subject.name  %> </strong> </span><br>
         </div>
         <h3>Assigned Student List</h3>

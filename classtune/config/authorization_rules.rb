@@ -716,6 +716,9 @@ authorization do
       :generate_tc_pdf,
       :edit_admission4,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :fee_details,
       :destroy
     ]
@@ -780,6 +783,9 @@ authorization do
       :list_batches,
       :find_student,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :fee_details,
       :admission3_1,
       :admission3_2,
@@ -948,6 +954,9 @@ authorization do
       :list_batches,
       :find_student,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :fee_details,
       :admission3_1,
       :admission3_2,
@@ -2871,6 +2880,9 @@ authorization do
       :admission3_2,
       :show_previous_details,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :fee_details
     ]
     has_permission_on [:archived_student],
@@ -3347,6 +3359,9 @@ authorization do
       :graph_for_academic_report,
       :show_previous_details,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :fee_details,
       :update_is_promoted
     ]
@@ -3459,6 +3474,9 @@ authorization do
       :graph_for_academic_report,
       :show_previous_details,
       :fees,
+      :student_security,
+      :edit_student_security,
+      :create_student_security,
       :generate_ssl_url,
       :fee_details
     ]

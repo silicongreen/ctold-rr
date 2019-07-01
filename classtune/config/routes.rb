@@ -58,7 +58,7 @@ ActionController::Routing::Routes.draw do |map|
     api.resources :courses
     api.resources :batches
     api.resources :schools
-    api.resources :students,:member => {:fee_dues => :get,:upload_photo => [:post]},:collection => {:fee_dues_profile => :get,:attendance_profile => :get,:exam_report_profile => :get,:student_structure => :get}
+    api.resources :students,:member => {:fee_dues => :get,:upload_photo => [:post],:create_student_security => [:post]},:collection => {:fee_dues_profile => :get,:attendance_profile => :get,:exam_report_profile => :get,:student_structure => :get}
     api.resources :employees,:member => {:upload_photo => [:post]},:collection => {:leave_profile => :get,:employee_structure => :get}
     api.resources :employee_departments
     api.resources :finance_transactions

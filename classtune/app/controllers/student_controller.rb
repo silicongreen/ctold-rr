@@ -3119,6 +3119,36 @@ class StudentController < ApplicationController
     
   end
   
+  def student_security
+    @student = Student.find(params[:id])
+    @student_security = StudentSecurity.find_by_student_id(params[:id])
+    if @student_security.nil?
+      @student_security = StudentSecurity.new
+    end
+  end
+  
+  def edit_student_security
+    @student = Student.find(params[:id])
+    @student_security = StudentSecurity.find_by_student_id(params[:id])
+    if @student_security.nil?
+      @student_security = StudentSecurity.new
+    end
+  end
+  
+  def create_student_security
+    @student = Student.find(params[:id])
+    @student_security = StudentSecurity.find_by_student_id(@student.id)
+    if @student_security.nil?
+      @student_security = StudentSecurity.new(params[:student_security])
+      @student_security.student_id = @student.id
+      @student_security.save
+    else
+      @student_security.update_attributes(params[:student_security])
+    end 
+    flash[:notice] = "Saved Successfully"
+    redirect_to :controller => "student", :action => "student_security",:id=>@student.id
+  end
+  
   def profile_pdf
     @student = Student.find(params[:id])
     @current_user = current_user

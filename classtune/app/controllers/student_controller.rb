@@ -4150,7 +4150,7 @@ class StudentController < ApplicationController
       else 
         etype = 'NA'   
       end 
-      unless @main_batch.blank?
+      if @main_batch.blank?
         @main_batch = std.student.batch
       end
       

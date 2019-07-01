@@ -5183,7 +5183,9 @@ class FinanceController < ApplicationController
       
       # @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@particular_name, '',false)
       
-      @particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id(@date.fee_category_id, @particular_id, 'Student', @student.id)
+      #@particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id(@date.fee_category_id, @particular_id, 'Student', @student.id)
+      @particular = nil
+      
       if @particular.nil?
         @o_particular = {}
         @o_particular[:amount] = params[:amount]

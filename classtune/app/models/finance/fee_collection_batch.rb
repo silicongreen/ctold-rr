@@ -23,7 +23,7 @@ class FeeCollectionBatch < ActiveRecord::Base
       end
     end
     
-    particlulars = FinanceFeeParticular.find_all_by_finance_fee_category_id_and_batch_id(finance_fee_collection.fee_category_id,batch_id,:conditions=>"is_deleted=0")
+    particlulars = FinanceFeeParticular.find_all_by_finance_fee_category_id_and_batch_id(finance_fee_collection.fee_category_id,batch_id,:conditions=>"is_deleted=0 and is_tmp=0")
     particlulars.each do |particular|
       CollectionParticular.create(:finance_fee_particular_id=>particular.id,:finance_fee_collection_id=>finance_fee_collection_id)
     end

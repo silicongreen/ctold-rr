@@ -232,7 +232,7 @@
                                    <%= sprintf( "%0.02f", highest_mark) %>
                                 </td>
                                 <% if failed_grade %>
-                                <% main_failed_grade = true %>
+                                  <% main_failed_grade = true %>
                                 <td>
                                    0.00
                                 </td>
@@ -276,11 +276,7 @@
                                     &nbsp;
                                 </td>
                                 <td style="text-align:center">
-                                    <% if main_failed_grade %>
-                                      <b><%= "0.00" %></b>
-                                    <% else %>
-                                      <b><%= sprintf( "%0.02f", total_gpa) %></b>
-                                    <% end %>
+                                    <b><%= sprintf( "%0.02f", total_gpa) %></b>
                                 </td>
                                 <td style="text-align:center">
                                     &nbsp;
@@ -289,7 +285,13 @@
                             
                             <tr class="table-header">
                                 <td colspan="100" style="text-align:right">
-                                    <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
+                                    <% if main_failed_grade %>
+                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
+                                      <b><%= "0.00" %></b>
+                                    <% else %>
+                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
+                                    <% end %>
+                                    
                                 </td>
                             </tr>
 

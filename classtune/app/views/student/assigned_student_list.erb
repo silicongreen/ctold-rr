@@ -1,8 +1,21 @@
+
+<% unless @main_batch.course.group.nil? %>
+  <% group_split = @main_batch.course.group.split(" ") %>
+  <% unless group_split[2].blank? %>
+    <% group_split[0] = group_split[0]+" "+group_split[1] %>
+  <% end %>
+  <% 
+  if !@main_batch.course.group.blank? && !@main_batch.course.group.index("--").nil? 
+    group_split[0] = ""
+  end 
+
+  %>
+<% end %>
 <div id="page-yield" class="available_sections1">
     <div class="heading-section" >
         <div class="box info" >
             <span>Course: <strong> <%= @batch.course.course_name  %> </strong> </span><br>
-            <span>Batch: <strong> <%= @batch.full_name  %> </strong> </span><br>
+            <span>Group: <strong> <%= group_split[0] unless @main_batch.course.group.nil?  %> </strong> </span><br>
             <span>Elective Subject: <strong> <%= @elective_subject.name  %> </strong> </span><br>
         </div>
         <h3>Assigned Student List</h3>

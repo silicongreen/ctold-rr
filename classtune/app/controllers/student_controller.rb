@@ -2252,6 +2252,47 @@ class StudentController < ApplicationController
         @guardian_mother.first_name = params[:m_first_name]
         @guardian_mother.save
       end
+      
+      if !params[:f_first_name].blank? && @guardian_father.blank?
+          params[:guardian][:first_name] = params[:f_first_name]
+          params[:guardian][:relation] = "Father"
+          @guardian = @student.guardians.build(params[:guardian])
+          @guardian.set_immediate_contact = @student.admission_no
+          @guardian.save_to_free = true
+          if @guardian.save
+            check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+            if check_guardian.nil?
+              stdgu = GuardianStudents.new
+              stdgu.student_id = @student.id
+              stdgu.guardian_id = @guardian.id
+              stdgu.save
+            end
+            Student.update(@student.id, :immediate_contact_id => @guardian.id)
+          else
+            @error=true
+          end 
+       end
+       
+
+      if !params[:m_first_name].blank? && @guardian_mother.blank?
+        params[:guardian][:first_name] = params[:m_first_name]
+        params[:guardian][:relation] = "Mother"
+        @guardian = @student.guardians.build(params[:guardian])
+        if @guardian.save
+          check_guardian = GuardianStudents.find_by_student_id_and_guardian_id(@student.id,@guardian.id)
+          if check_guardian.nil?
+            stdgu = GuardianStudents.new
+            stdgu.student_id = @student.id
+            stdgu.guardian_id = @guardian.id
+            stdgu.save
+          end
+          @guardian.save_to_free = true
+          @guardian.create_guardian_user(@student,false)
+        else
+          @error=true
+        end  
+      end
+      
       params[:student].delete "pass"
       if params[:student][:student_category_id] != "433"
         params[:student][:staff_id] = 0
@@ -4059,6 +4100,13 @@ class StudentController < ApplicationController
     @subjects = Subject.find_all_by_batch_id_and_code(batch_ids,@elective_subject.code)
     subject_ids = @subjects.map(&:id)
     @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
+    unless @subject_students.blank?
+      @subject_students.each do |std|
+        unless @main_batch.blank?
+          @main_batch = std.batch
+        end
+      end
+    end
     render :pdf => 'assigned_student_list',
       :orientation => 'portrait', :zoom => 1.00,
       :margin => {    :top=> 10,
@@ -4101,14 +4149,20 @@ class StudentController < ApplicationController
       else 
         etype = 'NA'   
       end 
+      unless @main_batch.blank?
+        @main_batch = std.batch
+      end
       
       row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype ]
       new_book.worksheet(0).insert_row(sl, row_new)
       sl += 1
     end
+    unless @main_batch.blank?
+      @batch = @main_batch
+    end
     batch_split = @batch.name.split(" ")
     sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE STUDENT LIST("+@elective_subject.name.to_s+")
-     Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Section :"+@batch.course.section_name.to_s+" || Shift :"+batch_split[0]+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
+     Program :"+@batch.course.course_name.to_s+" || Group :"+@batch.course.group.to_s+" || Session :"+@batch.course.session.to_s+" || Version :"+batch_split[1]+"
             ")
     
     spreadsheet = StringIO.new 

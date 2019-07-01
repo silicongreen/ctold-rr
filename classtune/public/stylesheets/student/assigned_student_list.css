@@ -32,4 +32,9 @@
   background-color: #ddd;
   border-color: #aaa; 
 }
-.page-break{height:50px;}
+.page-break{
+    height: 120px;
+    border: 1px solid #fff;
+    border-top: 1px solid Black;
+    border-bottom: 1px solid Black;
+}

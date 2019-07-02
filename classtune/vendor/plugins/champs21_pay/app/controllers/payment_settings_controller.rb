@@ -1203,6 +1203,7 @@ class PaymentSettingsController < ApplicationController
                 end
                 
                 payment = Payment.find_by_order_id(orderId)
+                abort(payment.inspect)
                 if payment.nil?
                   payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                   payment.save
@@ -1220,11 +1221,11 @@ class PaymentSettingsController < ApplicationController
                   @batch = @student.batch
 
                   finance_fee_id = payment.payment_id
-
+                  
                   unless archived
                     fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
                   end
-                  abort(fee.inspect)
+                  
                   unless fee.nil?
                     unless fee.is_paid
                       

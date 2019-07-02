@@ -1315,7 +1315,7 @@ class PaymentSettingsController < ApplicationController
                           calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
                         end
                       end
-
+                      abort(@financefee.balance.to_s)
                       total_fees = @financefee.balance.to_f+@fine_amount.to_f
                       
                       if amount.to_f > 0

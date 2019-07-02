@@ -1140,7 +1140,7 @@
 
 </div>
 <div style="display: none;">
-    <%= debug @financefee.inspect %>
+    <%= @financefee.balance.to_s + "  " + total_fees.to_s %>
 </div>
 <style>
 .name{

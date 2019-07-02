@@ -1045,7 +1045,7 @@ class PaymentSettingsController < ApplicationController
                   end
                 end
               end
-              abort(finance_order.inspect)
+              #abort(finance_order.inspect)
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
 
@@ -1211,6 +1211,10 @@ class PaymentSettingsController < ApplicationController
                   payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
 
+                if finance_order.finance_fee_id.to_i != payment.payment_id.to_i
+                  abort("kkaa")
+                end
+            abort("kkaa--------")
                 if verify_order
                   payee_id = payment.payee_id
                   unless archived 

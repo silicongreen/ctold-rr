@@ -1209,7 +1209,7 @@ class PaymentSettingsController < ApplicationController
                 else
                   payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
-abort(payment.inspect)
+abort(verify_order.inspect)
                 if verify_order
                   payee_id = payment.payee_id
                   unless archived 

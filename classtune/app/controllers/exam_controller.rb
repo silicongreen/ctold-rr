@@ -3106,6 +3106,7 @@ class ExamController < ApplicationController
   
   def continues
     @id = params[:id]
+    @transcript = params[:transscript]
     
     @connect_exam_obj = ExamConnect.active.find(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
@@ -3131,7 +3132,7 @@ class ExamController < ApplicationController
         @report_data = @student_response['data']
       end 
       @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
-      render_connect_exam("continues",false,file_name)  
+      render_connect_exam("continues",false,file_name)
     end
   end
   

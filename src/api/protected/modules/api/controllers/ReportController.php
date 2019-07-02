@@ -132,9 +132,29 @@ class ReportController extends Controller
         $user_secret = Yii::app()->request->getPost('user_secret');
         $subject_id = Yii::app()->request->getPost('subject_id');
         $all_section = Yii::app()->request->getPost('all_section');
+        $data_type = 4;
+        if(isset($all_section) && $all_section == "1")
+        {
+           $data_type = 5;
+        }
+        $is_finished = Yii::app()->request->getPost('is_finished');
+        if(!$is_finished)
+        {
+            $is_finished = 0;
+        }
+        
         $id = Yii::app()->request->getPost('id');
         if($id && $subject_id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin))
         {
+            $objPreviousExam = new PreviousExams();
+            $finish_exam = $objPreviousExam->getFinishExam($id,$data_type,$subject_id);
+            if($finish_exam)
+            {
+                echo $finish_exam;
+                Yii::app()->end();
+                exit;
+            }
+            
             $examcon = new ExamConnect();
             $subject_ids = [];
             
@@ -169,6 +189,8 @@ class ReportController extends Controller
             $response['data']['subject_ids']  = $subject_ids;
             $response['status']['code']       = 200;
             $response['status']['msg']        = "Data Found"; 
+            
+            $objPreviousExam->saveExam($id,CJSON::encode($response),$is_finished,$data_type,$subject_id);
         }
         else
         {
@@ -252,10 +274,23 @@ class ReportController extends Controller
        
         $user_secret = Yii::app()->request->getPost('user_secret');
         $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
+        $is_finished = Yii::app()->request->getPost('is_finished');
+        if(!$is_finished)
+        {
+            $is_finished = 0;
+        }
         $batch_id = Yii::app()->request->getPost('batch_id');
         $response = array();
         if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
         {
+            $objPreviousExam = new PreviousExams();
+            $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id);
+            if($finish_exam)
+            {
+                echo $finish_exam;
+                Yii::app()->end();
+                exit;
+            }
             $cont_exam = new ExamConnect();
             $first_term_id = $cont_exam->getConnectExamFirstTerm($batch_id);
             $this_term = $cont_exam->findByPk($connect_exam_id);
@@ -311,6 +346,7 @@ class ReportController extends Controller
                 }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "EXAM_REPORT_FOUND";
+                $objPreviousExam->saveExam($connect_exam_id,CJSON::encode($response),$is_finished);
             } else {
                 $response['data']['report'] = array();
                 $response['status']['code'] = 200;
@@ -333,13 +369,32 @@ class ReportController extends Controller
         {
             $user_secret = Yii::app()->request->getPost('user_secret');
             $connect_exam_id = Yii::app()->request->getPost('connect_exam_id');
+            
             $batch_id = Yii::app()->request->getPost('batch_id');
             $all_class_report = Yii::app()->request->getPost('all_class_report');
             $failed_list = Yii::app()->request->getPost('failed_list');
+            $data_type = 2;
+            if($all_class_report)
+            {
+               $data_type = 3;
+            }
+            $is_finished = Yii::app()->request->getPost('is_finished');
+            if(!$is_finished)
+            {
+               $is_finished = 0;
+            }
             $response = array();
             $new_connect_exam_id = array();
             if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin || Yii::app()->user->isStudent || Yii::app()->user->isParent ))
             {
+                $objPreviousExam = new PreviousExams();
+                $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id,$data_type);
+                if($finish_exam)
+                {
+                    echo $finish_exam;
+                    Yii::app()->end();
+                    exit;
+                }
                 if($all_class_report)
                 {
                     $connectexmObj = new ExamConnect();
@@ -403,6 +458,8 @@ class ReportController extends Controller
                     $response['data']['connect_exams'] = $new_connect_exam_id;
                     $response['status']['code'] = 200;
                     $response['status']['msg'] = "EXAM_REPORT_FOUND";
+                    $objPreviousExam->saveExam($connect_exam_id,CJSON::encode($response),$is_finished,$data_type);
+                    
                 } else {
                     $response['data']['report'] = array();
                     $response['status']['code'] = 200;

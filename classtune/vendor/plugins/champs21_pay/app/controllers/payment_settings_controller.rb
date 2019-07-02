@@ -1224,7 +1224,7 @@ class PaymentSettingsController < ApplicationController
                   unless archived
                     fee = FinanceFee.find(:first, :conditions => "id = #{finance_fee_id} and student_id = #{payee_id} and batch_id = #{@student.batch_id}")
                   end
-
+                  abort(fee.inspect)
                   unless fee.nil?
                     unless fee.is_paid
                       

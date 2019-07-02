@@ -1209,7 +1209,7 @@ class PaymentSettingsController < ApplicationController
                 else
                   payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
-abort(verify_order.inspect)
+
                 if verify_order
                   payee_id = payment.payee_id
                   unless archived 
@@ -1227,6 +1227,7 @@ abort(verify_order.inspect)
 
                   unless fee.nil?
                     unless fee.is_paid
+                      abort(verify_order.inspect)
                       fee_collection_id = fee.fee_collection_id
                       advance_fee_collection = false
                       @self_advance_fee = false
@@ -1316,7 +1317,7 @@ abort(verify_order.inspect)
                       end
 
                       total_fees = @financefee.balance.to_f+@fine_amount.to_f
-
+                      abort(amount.to_s)
                       if amount.to_f > 0
                         if amount.to_f == Champs21Precision.set_and_modify_precision(total_fees).to_f
                           transaction = FinanceTransaction.new

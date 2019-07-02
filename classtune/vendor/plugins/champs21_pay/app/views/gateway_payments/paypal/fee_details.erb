@@ -1140,7 +1140,9 @@
 
 </div>
 <div style="display: none;">
-    <%= @financefee.balance.to_s + "  " + total_fees.to_s %>
+    <% if @financefee.balance.to_f != total_fees.to_f %>
+      <%= @financefee.id.to_s %>
+    <% end %>
 </div>
 <style>
 .name{

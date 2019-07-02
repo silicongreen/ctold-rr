@@ -1295,6 +1295,10 @@
     </div>
   <% end %>
 <% end %>
+<% if @financefee.balance.to_f != total_fees.to_f %>
+  <% ffee = FinanceFee.find(@financefee.id) %>
+  <% ffee.update_attributes(:balance => total_fees) %>
+<% end %>  
 <script type="text/javascript">
   <%# unless @finance_fee_particular_categories.nil? %>
   j(document).off('click','#add_extra_particular').on('click','#add_extra_particular',function(){

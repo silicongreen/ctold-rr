@@ -1227,7 +1227,7 @@ class PaymentSettingsController < ApplicationController
 
                   unless fee.nil?
                     unless fee.is_paid
-                      abort(verify_order.inspect)
+                      
                       fee_collection_id = fee.fee_collection_id
                       advance_fee_collection = false
                       @self_advance_fee = false

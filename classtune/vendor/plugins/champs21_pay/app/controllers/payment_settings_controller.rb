@@ -1319,8 +1319,9 @@ class PaymentSettingsController < ApplicationController
                       total_fees = @financefee.balance.to_f+@fine_amount.to_f
                       
                       if amount.to_f > 0
+                        abort(amount.to_s + "  " + total_fees.to_s)
                         if amount.to_f == Champs21Precision.set_and_modify_precision(total_fees).to_f
-                          abort("HERE")
+                          
                           transaction = FinanceTransaction.new
                           transaction.title = "#{t('receipt_no')}. F#{@financefee.id}"
                           transaction.category = FinanceTransactionCategory.find_by_name("Fee")

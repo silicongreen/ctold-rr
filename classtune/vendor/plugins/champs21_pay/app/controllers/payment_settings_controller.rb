@@ -1320,11 +1320,11 @@ class PaymentSettingsController < ApplicationController
                           calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
                         end
                       end
-                      abort(@financefee.inspect)
+                      #abort(@financefee.inspect)
                       total_fees = @financefee.balance.to_f+@fine_amount.to_f
                       
                       if amount.to_f > 0
-                        abort(amount.to_s + "  " + total_fees.to_s)
+                        #abort(amount.to_s + "  " + total_fees.to_s)
                         if amount.to_f == Champs21Precision.set_and_modify_precision(total_fees).to_f
                           
                           transaction = FinanceTransaction.new
@@ -1497,7 +1497,7 @@ class PaymentSettingsController < ApplicationController
         end
       end
     end
-    abort("here")
+    #abort("here")
     #    online_payments = Payment.all
 #    online_payments.each do |op|
 #      op.order_id = op.gateway_response[:order_id]

@@ -1212,9 +1212,9 @@ class PaymentSettingsController < ApplicationController
                 end
 
                 if finance_order.finance_fee_id.to_i != payment.payment_id.to_i
-                  abort("kkaa")
+                  payment.update_attributes(:payment_id => finance_order.finance_fee_id)
                 end
-            abort("kkaa--------")
+            
                 if verify_order
                   payee_id = payment.payee_id
                   unless archived 

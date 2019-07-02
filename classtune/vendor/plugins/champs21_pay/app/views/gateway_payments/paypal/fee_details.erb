@@ -1141,7 +1141,8 @@
 </div>
 <div style="display: none;">
     <% if @financefee.balance.to_f != total_fees.to_f %>
-      <%= @financefee.id.to_s %>
+      <% ffee = FinanceFee.find(@financefee.id) %>
+      <% ffee.update_attributes(:balance => total_fees) %>
     <% end %>
 </div>
 <style>

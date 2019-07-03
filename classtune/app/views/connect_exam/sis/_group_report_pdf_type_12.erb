@@ -82,25 +82,6 @@
                         <% total_mark = 0 %>
                         <% total_mark_all = 0 %>
                         <% has_mark = false %>
-                        <% show_subject = false %>
-                        <%
-                          unless @report_data['report']['exams'].blank?   
-                            @report_data['report']['exams'].each do |report|
-                              if report['quarter'] == '5' or report['quarter'] == '6'
-                                if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank?
-                                  show_subject = true
-                                end
-                                 
-                              end
-                              
-                            end
-                          end
-                      
-                        %>
-                        <% unless show_subject == true %>
-                          <% next %>
-                        <% end %>  
-                          
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
@@ -179,7 +160,7 @@
                             end 
                           end 
                         
-                          if first_term_fullmark > 0 or q1_fullmark > 0 or q2_fullmark > 0
+                          if first_term_fullmark > 0
                             q1_mark_20 = 0
                             q2_mark_20 = 0
                             first_term_mark_60 = 0 
@@ -195,14 +176,10 @@
                               first_term_mark_60 = (first_term_mark.to_f/first_term_fullmark.to_f)*50
                               first_term_mark_60 = first_term_mark_60.round()
                             end
-                            
                             total_mark = q1_mark_20+q2_mark_20+first_term_mark_60
-                            unless first_term_fullmark > 0
-                              total_mark = total_mark*2
-                            end
                             total_mark_all = total_mark_all+total_mark.round()
                           end 
-                          if final_term_fullmark > 0 or q3_fullmark > 0 or q4_fullmark > 0
+                          if final_term_fullmark > 0
                             q3_mark_20 = 0
                             q4_mark_20 = 0
                             final_term_mark_60 = 0 
@@ -219,9 +196,6 @@
                               final_term_mark_60 = final_term_mark_60.round()
                             end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
-                            unless final_term_fullmark > 0
-                              total_mark = total_mark*2
-                            end
                             total_mark_all = total_mark_all+total_mark.round()
                           end
                           total_mark = total_mark.round()
@@ -437,7 +411,7 @@
                   <tr class="even">    
                       <td class="align-left">Position In Class</td>
                       <td>
-                      <% unless @student_position[@student.id.to_i].blank? %>
+                      <% if !@student_position.blank? && !@student_position[@student.id.to_i].blank? %>
                           <%= @student_position[@student.id.to_i] %>
                       <% end %>
                       </td>

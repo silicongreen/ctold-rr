@@ -1139,10 +1139,12 @@
   <% end %>
 
 </div>
-<% if @financefee.balance.to_f != total_fees.to_f %>
-  <% ffee = FinanceFee.find(@financefee.id) %>
-  <% ffee.update_attributes(:balance => total_fees) %>
-<% end %>
+<% if @financefee.is_paid == false %>
+  <% if @financefee.balance.to_f != total_fees.to_f %>
+    <% ffee = FinanceFee.find(@financefee.id) %>
+    <% ffee.update_attributes(:balance => total_fees) %>
+  <% end %>  
+<% end %>  
 <style>
 .name{
     color: #999999;

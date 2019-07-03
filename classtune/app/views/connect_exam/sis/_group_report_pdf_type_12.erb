@@ -82,6 +82,22 @@
                         <% total_mark = 0 %>
                         <% total_mark_all = 0 %>
                         <% has_mark = false %>
+                        <% show_subject = false %>
+                        <%
+                          unless @report_data['report']['exams'].blank?   
+                            @report_data['report']['exams'].each do |report|
+                              if report['quarter'] == '5' or report['quarter'] == '6'
+                               show_subject = true  
+                              end
+                              
+                            end
+                          end
+                      
+                        %>
+                        <% unless show_subject == true %>
+                          <% next %>
+                        <% end %>  
+                          
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>

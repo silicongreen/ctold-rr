@@ -42,6 +42,7 @@
             </div>
             <% unless @report_data.blank?  or  @report_data['result'].blank? %>
               <% c = 'even' %>
+              <% exam_type = 1 %>
               <% full_mark = 0 %>
               <% colspan = 0 %>
               <table id="pdf-table" width="98%" cellspacing="0">
@@ -51,7 +52,12 @@
                       <td>Quarter (40)</td>
                       <% total_full_mark = 0 %>
                       <% @report_data['result']['ALL'].each do |rs| %>
-                        <%  if rs['quarter'] == '5' or rs['quarter'] == '6' %>  
+                        <%  if rs['quarter'] == '6' %>  
+                          <% exam_type = 2 %>
+                        <% end %>
+                      <% end %> 
+                      <% @report_data['result']['ALL'].each do |rs| %>
+                        <%  if (exam_type == 1 and rs['quarter'] == '5') or (rs['quarter'] == '6' && exam_type == 2) %>  
                           <td><%=  rs['name'] %> (60)</td>
                         <% end %>
                       <% end %> 
@@ -215,9 +221,17 @@
                               end
                             total_mark = q3_mark_20+q4_mark_20+final_term_mark_60
                             end
-                          quarter_mark = q1_mark_20+q2_mark_20+q3_mark_20+q4_mark_20
-                          term_mark = final_term_mark_60+first_term_mark_60
-                          total_mark = total_mark.round()
+                          if (exam_type == 1)
+                            quarter_mark = q1_mark_20+q2_mark_20
+                            term_mark = first_term_mark_60
+                          end 
+                          if (exam_type == 2)
+                            quarter_mark = q3_mark_20+q4_mark_20
+                            term_mark = final_term_mark_60
+                            
+                          end 
+                          
+                          total_mark = term_mark+quarter_mark
                           grade = GradingLevel.percentage_to_grade(total_mark, @batch.id)
 
                         %>

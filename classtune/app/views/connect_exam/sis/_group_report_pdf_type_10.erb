@@ -412,7 +412,7 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i<3 %>
+                        <% if i<4 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
@@ -430,7 +430,7 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>=3 && i<6 %>
+                        <% if i>=4 && i<7 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>
@@ -445,12 +445,10 @@
                       <% end %>
                   </tr>
                   
+                  
               </table>
               <% if @connect_exam_obj.quarter_number == 6 %>
-              <% if total_marks_obtain > 0 %>
-                <% total_marks_obtain = (total_marks_obtain.to_f/2.00) %>
-                <% total_marks_obtain = total_marks_obtain.round() %>
-              <% end %>
+             
               <table id="pdf-table"  width="20%" class="left-table  odd-table signature" cellspacing="0" >
                   <tr class="even">
                       <td class="align-left">Total Marks Obtained</td>

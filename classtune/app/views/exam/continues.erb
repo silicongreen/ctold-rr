@@ -39,6 +39,11 @@
       end
       end
     @report_data['report']['subjects'] = subjects_new
+    unless @student_main_id.blank?
+      if @student_main_id.to_i != std['id'].to_i
+        next
+      end  
+    end  
     @student = Student.find_by_id(std['id'].to_i)
 
     unless @student.blank?

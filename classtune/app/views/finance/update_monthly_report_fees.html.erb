@@ -126,13 +126,13 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <div id="particular_fees_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_fees_<%= particular_id %>_<%= dt %>_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label amt %>
                       </div>
-                      <div id="particular_adv_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_adv_<%= particular_id %>_<%= dt %>_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label adv_amt %>
                       </div>
-                      <div id="particular_discount_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_discount_<%= particular_id %>_<%= dt %>_<%= i %>" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%= precision_label td_amt %>
                       </div>
                   </div>
@@ -191,7 +191,7 @@
                       <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
                       <% end %>
                       <script>
-                        $("#particular_fees_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>").html("9");
+                        $("#particular_fees_<%= particular_id %>_<%= dt %>_<%= i %>").html("9");
                       </script>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %> <%= diff_amount %>

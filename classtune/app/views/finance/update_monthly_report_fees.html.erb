@@ -139,7 +139,7 @@
                   <div style="width: 100%; text-align: right; padding-top: 8px;">
                       <% total = (amt + adv_amt) - td_amt %>
                       <% date_wise_total += total %>
-                      Total:&nbsp;&nbsp;&nbsp;<b id="particular_total_<%= dt %>_<%= i %>"><%= precision_label  total %></b>
+                      Total:&nbsp;&nbsp;&nbsp;<b id="particular_total_<%= dt %>_<%= i %>"><%= precision_label total %></b>
                   </div>
                 
               </td>
@@ -198,7 +198,7 @@
                             var particular_fees_discount = parseFloat(j("#particular_discount_<%= particular_id %>_<%= dt %>_1").html());
                             var fees = (particular_fees + particular_fees_adv) - particular_fees_discount;
                             
-                            j("#particular_total_<%= dt %>_1").htmlfees.toFixed(2));
+                            j("#particular_total_<%= dt %>_1").html(fees.toFixed(2));
                         });
                       </script>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
@@ -240,7 +240,7 @@
                       </div>
                       <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%#= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
-                          <%= fees_month["#{dt}"] %>
+                          <%= precision_label fees_month["#{dt}"] %>
                       </div>
                   </div>
               </td>
@@ -279,18 +279,18 @@
                       <% particular_wise_fees_amount_total += particular_wise_fees_amount[fees_particular.id] %>
                       <% particular_wise_adv_amount_total += particular_wise_adv_amount[fees_particular.id] %>
                       <% particular_wise_discount_amount_total += particular_wise_discount_amount[fees_particular.id] %>
-                      Total:&nbsp;&nbsp;&nbsp;<b><%= total %></b>
+                      Total:&nbsp;&nbsp;&nbsp;<b><%= precision_label total %></b>
                   </div>
                 </td>
             <% end %>  
             <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
                 <div style="width: 100%; text-align: center; padding-top: 8px;">
-                    <b><%= total_fees_discount %></b>
+                    <b><%= precision_label total_fees_discount %></b>
                 </div>
             </td>    
             <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
                 <div style="width: 100%; text-align: center; padding-top: 8px;">
-                    <b><%= grand_fine %></b>
+                    <b><%= gprecision_label rand_fine %></b>
                 </div>
             </td>    
             <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">

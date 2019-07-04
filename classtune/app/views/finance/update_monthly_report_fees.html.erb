@@ -173,6 +173,15 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
+                      <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
+                      <% act_tot = fees_month["#{dt}"].to_f %>
+                      <% diff_amount = tot_amt - act_tot %>
+                      <% if diff_amount < 0 %>
+                        <% diff_amount = act_tot - tot_amt %>
+                        <% date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
+                      <% else %>
+                        <% date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f + diff_amount) %>
+                      <% end %>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %>
                       </div>

@@ -430,7 +430,7 @@
                       <%  unless @grading_levels.empty? %>
                         <% i = 0 %>
                         <% @grading_levels.each_with_index do |grade,index| %>
-                        <% if i>=4 && i<7 %>
+                        <% if i>=4 && i<8 %>
                           <td class="align-left">
                             <% if grade.max_score.nil? %>  
                               <%= '%i%' % grade.min_score %>

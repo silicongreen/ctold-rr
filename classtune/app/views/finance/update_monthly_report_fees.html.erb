@@ -191,7 +191,7 @@
                       <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
                       <% end %>
                       <script>
-                        $("#particular_fees_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>").val("9");
+                        $("#particular_fees_<%= particular_id %>_<%= fees_month["#{dt}"] %>_<%= i %>").html("9");
                       </script>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %> <%= diff_amount %>

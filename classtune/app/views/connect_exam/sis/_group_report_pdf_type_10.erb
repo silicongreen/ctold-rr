@@ -241,7 +241,7 @@
                           
                           total_marks_obtain = total_marks_obtain+total_mark_all.round()
                            
-                          if has_mark == true or total_mark.to_i == 0
+                          if has_mark == true && total_mark.to_i > 0
                           %>
                           
                           <td class="col-pdf"><b><%= total_mark %></b></td>

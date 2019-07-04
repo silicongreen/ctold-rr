@@ -112,7 +112,7 @@
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <div style="width: 100%; ">
                       <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                          Fees <%= dt %>
+                          Fees
                       </div>
                       <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           Adv.
@@ -122,7 +122,7 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <div id="particular_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_fees_<%= i %>" data-total_val="particular_total_fees_<%= dt %>" data-total_val="particular_total_adv_<%= dt %>" data-total_val="particular_total_discount_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label amt %>
                       </div>
                       <div id="particular_adv_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
@@ -173,13 +173,13 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <div id="particular_total_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %>
                       </div>
-                      <div id="particular_total_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_adv_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_adv %>
                       </div>
-                      <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_discount_<%= dt %>" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_discount %>
                       </div>
                   </div>
@@ -194,15 +194,16 @@
                           Total
                       </div>
                   </div>
-                  <div style="width: 100%; text-align: center; padding-top: 8px;">
+                  <div id="particular_total_fees_<%= dt %>_gt" style="width: 100%; text-align: center; padding-top: 8px;">
                       <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_total %>
                       </div>
-                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= dt %>_fine" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fine %>
                       </div>
-                      <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
+                          <%= fees_month["#{dt}"] %>
                       </div>
                   </div>
               </td>

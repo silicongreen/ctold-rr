@@ -882,7 +882,7 @@ class PaymentSettingsController < ApplicationController
             card_order_status = ""
 
             xml_str = Nokogiri::XML(result)
-
+abort(xml_str.to_s)
             verifiedId = 0 
             found_verified = false 
             xmlind = 0
@@ -1458,7 +1458,7 @@ class PaymentSettingsController < ApplicationController
           flash[:notice] = "All Orders has been changed successfully"
         else
           if verified_no.to_i == 0
-            flash[:notice] = "No Orders has not verify yet"
+            flash[:notice] = "Orders has not verify yet"
           else
             flash[:notice] = verified_no.to_s + " of " + num_orders.to_s + " Order has been verified, Order IDs are: " + order_ids.reject{|x| order_ids_new.include?(x)}.join(", ")
           end

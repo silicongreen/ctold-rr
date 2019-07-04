@@ -75,6 +75,7 @@
               <% particular_wise_discount_amount[fees_particular.id] = 0 %>
           <% end %>
           <% (@start_date.to_date..@end_date.to_date).each do |day| %>
+          <% dt = @start_date.to_date.strftime("%M%d") %>
           <% date_wise_fees = 0.00 %>
           <% date_wise_adv = 0.00 %>
           <% date_wise_discount = 0.00 %>
@@ -85,6 +86,7 @@
               <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
             </td>
             <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
+            <% i = 1 %>
             <% @finance_particular_categories.each do |fees_particular| %>
               <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
               <% apwfc = @transactions_advances.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") and p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
@@ -110,7 +112,7 @@
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <div style="width: 100%; ">
                       <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                          Fees-
+                          Fees <%= dt %>
                       </div>
                       <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           Adv.
@@ -120,23 +122,24 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label amt %>
                       </div>
-                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_adv_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label adv_amt %>
                       </div>
-                      <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_discount_<%= i %>" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%= precision_label td_amt %>
                       </div>
                   </div>
                   <div style="width: 100%; text-align: right; padding-top: 8px;">
                       <% total = (amt + adv_amt) - td_amt %>
                       <% date_wise_total += total %>
-                      Total:&nbsp;&nbsp;&nbsp;<b><%= total %></b>
+                      Total:&nbsp;&nbsp;&nbsp;<b id="particular_total_<%= i %>"><%= total %></b>
                   </div>
                 
               </td>
+              <% i += 1 %>
             <% end %>
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
                   <% discount_on_total_fees = @transactions_discount_total_fees.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d")} %>
@@ -170,10 +173,10 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %>
                       </div>
-                      <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= i %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_adv %>
                       </div>
                       <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">

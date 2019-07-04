@@ -26,7 +26,6 @@ class Student < ActiveRecord::Base
   belongs_to :country
   belongs_to :batch
   belongs_to :student_category
-  belongs_to :student_security
   belongs_to :nationality, :class_name => 'Country'
   belongs_to :dual_nationality, :class_name => 'Country'
   belongs_to :user
@@ -34,6 +33,7 @@ class Student < ActiveRecord::Base
   #  has_one    :immediate_contact,:class_name => 'Guardian',:foreign_key => 'id',:primary_key => 'immediate_contact_id'
   belongs_to    :immediate_contact,:class_name => 'Guardian'
   has_one    :student_previous_data
+  has_one    :student_security
   has_many   :student_previous_subject_mark
   #  has_many   :guardians, :foreign_key => 'ward_id'
   has_many   :guardians, :foreign_key => 'ward_id', :primary_key=>:sibling_id
@@ -110,6 +110,7 @@ class Student < ActiveRecord::Base
       raise ActiveRecord::Rollback
     end
   end
+  
 #  def nationality
 #    unless self.nationality_id.blank?
 #      if self.nationality_method.nationality.blank?

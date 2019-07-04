@@ -1,0 +1,241 @@
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.js" ></script>
+<style type="text/css">
+    .student-security-form{background-color: #fff; width:96%; padding:20px; text-align: center;}
+    .row{width:100%; display: inline-block; border-bottom: 2px solid #ddd;} 
+    .col-6{width: 45%; padding: 5px; margin-left: 30px; float: left;}
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    input[type=file] {
+        width: 100%;
+        background-color: #63707e;
+        color: white;
+        padding: 11px 15px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+    label{font-size: 18px;}
+    img {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        width: 50%;
+        float: left;
+        margin-left: 5px;
+    }
+    .useUpload{
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+    .useUpload {display: none;}
+
+</style>
+
+<script>
+  function readURL(input, imgid, field) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              j('#' + imgid).attr('src', e.target.result);
+              var resize = new Croppie($('#' + imgid)[0], {
+                  viewport: {width: 200, height: 220},
+                  boundary: {width: 300, height: 300},
+                  showZoomer: false,
+                  enableResize: false,
+                  enableOrientation: true
+              });
+              j('#securityCardForm').on('submit', function () {
+                  resize.result('base64').then(function (dataImg) {
+                      j('#'+field).val(dataImg);
+                  });
+              });
+          };
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+</script> 
+
+<div class="header-wrapper">
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "Student Security Card", :controller => 'student', :action => 'student_security', :id => @student.id %>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <% if @current_user.admin? or permitted_to? :edit, :student%>
+      <div class="header-form-wrapper">
+          <div class="icon-wrapper">
+              <%= link_to '<div class="edit-icon"></div>', :controller => 'student', :action => 'edit', :id => @student.id %>
+          </div>
+      </div>
+    <% end %>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <ul class="header-tabs">
+            <% if permitted_to? :profile,:student %>
+              <li >
+                  <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%end%>
+
+            <% if permitted_to? :reports,:student and !check_free_school? %>
+              <li>
+                  <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+              </li>
+            <%  end %>
+
+            <% BatchStudent.find_by_student_id(@student.id) %>  
+
+            <% if !BatchStudent.blank? %>
+              <li>
+                  <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%  end %> 
+
+            <% if permitted_to? :guardians,:student %>
+              <li>
+                  <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+
+            <% if !check_free_school? %>
+              <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+                <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+                  <% unless t(mod[:title]) == "Hostel" %>
+                    <li>
+                        <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+                    </li>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %> 
+
+            <% if school_form_apply? and ( @current_user.admin? or permitted_to? :form_to_apply, :student ) %>
+              <li>
+                  <%= link_to "#{t('form_text')}", {:controller => "student", :action => "form_to_apply", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>      
+
+            <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+              <li>
+                  <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+            <% if permitted_to? :student_security, :student %>
+              <li class="active">
+                  <%= link_to "Student Security", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+        </ul>
+    </div>
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+    <% form_for(@student_security, :url => {:action=> 'create_student_security',:id=>@student.id}, :html=> {:multipart=>true, :id => 'securityCardForm'}) do |form| %>
+      <%= error_messages_for 'student_security', :header_message => nil %>
+
+      <div class="student-security-form">
+          <div class="row"><h3>Update Security Card Photos</h3></div>
+          <div class="row">
+              <div class="col-6">
+                  <label>Upload Parent Photo</label> 
+                  <input type="file" class="custom-file-inpu" onchange="readURL(this, 'photo1preview','photoField1');" />
+                  <%= form.hidden_field  :photo1 , :id => "photoField1"%>
+              </div>
+              <div class="col-6">
+                  <img id="photo1preview" >
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <label>Upload Parent Photo</label> 
+                  <input type="file" class="custom-file-inpu" onchange="readURL(this, 'photo2preview','photoField2');" />
+                  <%= form.hidden_field  :photo2 , :id => "photoField2"%>
+              </div>
+              <div class="col-6">
+                  <img id="photo2preview" >
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <label>Upload Guardian Photo</label> 
+                  <input type="file" class="custom-file-inpu" onchange="readURL(this, 'photo3preview','photoField3');" />
+                  <%= form.hidden_field  :photo3 , :id => "photoField3"%>
+              </div>
+              <div class="col-6">
+                  <img id="photo3preview" >
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <label>Upload Guardian Photo</label> 
+                  <input type="file" class="custom-file-inpu" onchange="readURL(this, 'photo4preview','photoField4');" />
+                  <%= form.hidden_field  :photo4 , :id => "photoField4"%>
+              </div>
+              <div class="col-6">
+                  <img id="photo4preview" >
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                  <label>Upload Guardian Photo</label> 
+                  <input type="file" class="custom-file-inpu" onchange="readURL(this, 'photo5preview','photoField5');" />
+                  <%= form.hidden_field  :photo5 , :id => "photoField5"%>
+              </div>
+              <div class="col-6">
+                  <img id="photo5preview" >
+              </div>
+          </div>
+          <div class="row">
+              <%= submit_tag "Update",:class=>"btn m-btn--pill m-btn--air btn-success m-btn--wide", :id => 'uploadSubmitBtn' %>   
+          </div>
+      </div>
+    <% end %>
+
+</div>
+<div class="clearfix"></div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+
+
+
+
+
+

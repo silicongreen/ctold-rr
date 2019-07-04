@@ -1,0 +1,183 @@
+<div class="header-wrapper">
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= link_to "Student Security Card", :controller => 'student', :action => 'student_security', :id => @student.id %>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <% if @current_user.admin? or permitted_to? :edit, :student%>
+      <div class="header-form-wrapper">
+          <div class="icon-wrapper">
+              <%= link_to '<div class="edit-icon"></div>', :controller => 'student', :action => 'edit', :id => @student.id %>
+          </div>
+      </div>
+    <% end %>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <ul class="header-tabs">
+            <% if permitted_to? :profile,:student %>
+              <li >
+                  <%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%end%>
+
+            <% if permitted_to? :reports,:student and !check_free_school? %>
+              <li>
+                  <%= link_to "#{t('reports_text')}", {:controller => 'student', :action => 'reports', :id => @student}, {:class => 'f2'} %>
+              </li>
+            <%  end %>
+
+            <% BatchStudent.find_by_student_id(@student.id) %>  
+
+            <% if !BatchStudent.blank? %>
+              <li>
+                  <%= link_to "Previous Report", {:controller => "student", :action => "previous_report", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <%  end %> 
+
+            <% if permitted_to? :guardians,:student %>
+              <li>
+                  <%= link_to "#{t('guardians_text')}", {:controller => "student", :action => "guardians", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+
+            <% if !check_free_school? %>
+              <% Champs21Plugin::ADDITIONAL_LINKS[:student_profile_more_menu].each do |mod| %>
+                <% if can_access_request? "#{mod[:destination][:action]}".to_sym,"#{mod[:destination][:controller]}".to_sym %>
+                  <% unless t(mod[:title]) == "Hostel" %>
+                    <li>
+                        <%= link_to "#{t(mod[:title])}", mod[:destination].merge(:id=>@student.id), {:class => 'f2'} %>
+                    </li>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %> 
+
+            <% if school_form_apply? and ( @current_user.admin? or permitted_to? :form_to_apply, :student ) %>
+              <li>
+                  <%= link_to "#{t('form_text')}", {:controller => "student", :action => "form_to_apply", :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>      
+
+            <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
+              <li>
+                  <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+            <% if permitted_to? :student_security, :student %>
+              <li class="active">
+                  <%= link_to "Student Security", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
+              </li>
+            <% end %>
+        </ul>
+    </div>
+</div>
+<% default_image = "/images/HR/default_employee.png" %>
+<div id="page-yield" class="bg-disable">
+    <div class="student-security-form">
+        <%= link_to "Edit", {:controller => 'student', :action => 'edit_student_security', :id => @student.id} %>
+        <hr/>
+        <div class="gallery">
+            <div class="galleryimg">
+                <% if @student.photo.file? %>
+                  <%= image_tag  @student.photo.url %>
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Student</div>
+            </div>
+            <div class="galleryimg">
+                <% if @student_security.photo1? %>
+                  <img src="<%= @student_security.photo1 %>" />
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Parent</div>
+            </div>
+            <div class="galleryimg">
+                <% if @student_security.photo2? %>
+                  <img src="<%= @student_security.photo2 %>" />
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Parent</div>
+            </div>
+            <div class="galleryimg">
+                <% if @student_security.photo3? %>
+                    <img src="<%= @student_security.photo3 %>" />
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Guardian</div>
+            </div>
+            <div class="galleryimg">
+                <% if @student_security.photo4? %>
+                    <img src="<%=  @student_security.photo4 %>" />
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Guardian</div>
+            </div>
+            <div class="galleryimg">
+                <% if @student_security.photo5? %>
+                    <img src="<%=  @student_security.photo5 %>" />
+                <% else %>
+                  <%= image_tag  default_image %>
+                <% end  %>
+                <div class="desc">Guardian</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+
+<style type="text/css">
+    .student-security-form{background-color: #fff; width:96%; padding:20px; text-align: center;}
+    .row{width:100%; display: inline-block; border-bottom: 2px solid #ddd;} 
+    .col-6{width: 45%; padding: 5px; float: left;}
+    .gallery{width:100%; height: 900px; background-color: #fff;}
+    .student-security-form a {
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+    div.galleryimg {
+        margin: 10px 10px;
+        border: 1px solid #ccc;
+        float: left;
+        width: 30%;
+    }
+
+    div.galleryimg:hover {
+        border: 1px solid #777;
+    }
+
+    div.galleryimg img {
+        width: 100%;
+    }
+
+    div.desc {
+        padding: 15px;
+        text-align: center;
+    }
+
+</style>
+

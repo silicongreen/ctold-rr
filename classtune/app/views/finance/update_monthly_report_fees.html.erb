@@ -193,6 +193,11 @@
                       <script>
                         j(document).ready(function(){
                             j("#particular_fees_<%= particular_id %>_<%= dt %>_1").html(<%= particular_wise_fees_amount[particular_id] %>);
+                            var particular_fees = parseFloat(j("#particular_fees_<%= particular_id %>_<%= dt %>_1").html());
+                            var particular_fees_adv = parseFloat(j("#particular_adv_<%= particular_id %>_<%= dt %>_1").html());
+                            var particular_fees_discount = parseFloat(j("#particular_discount_<%= particular_id %>_<%= dt %>_1").html());
+                            var fees = (particular_fees + particular_fees_adv) - particular_fees_discount;
+                            alert(fees)
                         });
                       </script>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">

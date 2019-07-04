@@ -882,7 +882,7 @@ class PaymentSettingsController < ApplicationController
             card_order_status = ""
 
             xml_str = Nokogiri::XML(result)
-abort(xml_str.to_s)
+#abort(xml_str.to_s)
             verifiedId = 0 
             found_verified = false 
             xmlind = 0

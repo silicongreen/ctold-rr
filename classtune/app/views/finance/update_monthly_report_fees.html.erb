@@ -95,7 +95,7 @@
               <% particular_wise_discount_amount[fees_particular.id] = 0 %>
           <% end %>
           <% (@start_date.to_date..@end_date.to_date).each do |day| %>
-          <% dt = @start_date.to_date.strftime("%m%d") %>
+          <% dt = day.to_date.strftime("%m%d") %>
           <% date_wise_fees = 0.00 %>
           <% date_wise_adv = 0.00 %>
           <% date_wise_discount = 0.00 %>
@@ -196,7 +196,7 @@
                       </div>
                   </div>
                   <div style="width: 100%; ">
-                      <%= fees_month["#{dt}"] %>
+                      <% unless  fees_month["#{dt}"].nil? %>
                       <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
                       <% act_tot = fees_month["#{dt}"].to_f %>
                       <% diff_amount = tot_amt - act_tot %>
@@ -221,6 +221,7 @@
                             j("#particular_total_<%= dt %>_1").html(fees.toFixed(2));
                         });
                       </script>
+                      <% end %>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %>
                       </div>
@@ -260,7 +261,11 @@
                       </div>
                       <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
                           <%#= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
+                          <% unless  fees_month["#{dt}"].nil? %>
                           <%= precision_label fees_month["#{dt}"] %>
+                          <% else %>
+                          <%= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
+                          <% end %>
                       </div>
                   </div>
               </td>

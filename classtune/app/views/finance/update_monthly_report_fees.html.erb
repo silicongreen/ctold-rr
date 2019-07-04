@@ -58,6 +58,7 @@
         fees_month = {"0307" => "3017257.50"}
     
       %>
+      <% particular_id = 0 %>
       <% particular_wise_fees_amount = [] %>
       <% particular_wise_adv_amount = [] %>
       <% particular_wise_discount_amount = [] %>
@@ -107,6 +108,9 @@
               <% date_wise_adv += adv_amt %>
               <% date_wise_discount += td_amt %>
               <% particular_wise_fees_amount[fees_particular.id] += amt %>
+              <% if i == 1 %>
+                <% particular_id = fees_particular.id %>
+              <% end %>
               <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
               <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
               <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
@@ -179,8 +183,13 @@
                       <% if diff_amount < 0 %>
                         <% diff_amount = act_tot - tot_amt %>
                         <% date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
+                      
+                      
+                        <% particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f + diff_amount) - (particular_wise_adv_amount[particular_id].to_f ) %>
                       <% else %>
                         <% date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f + diff_amount) %>
+                      
+                        <% particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f) - (particular_wise_adv_amount[particular_id].to_f + diff_amount) %>
                       <% end %>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_fees %>

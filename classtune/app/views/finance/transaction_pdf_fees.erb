@@ -62,6 +62,18 @@
             <% particular_wise_adv_amount[fees_particular.id] = 0 %>
             <% particular_wise_discount_amount[fees_particular.id] = 0 %>
         <% end %>
+        
+        <%
+          fees_month = {
+            "0307" => "3017257.50",
+            "0311" => "1377138.00",
+            "0312" => "1522265.00",
+            "0313" => "2028365.00",
+            #"0311" => "1377138.00"
+          }
+
+        %>
+        
         <% (@start_date.to_date..@end_date.to_date).each do |day| %>
         <% date_wise_fees = 0.00 %>
         <% date_wise_adv = 0.00 %>
@@ -94,6 +106,19 @@
           <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
         <% end %>
       <% end %>
+        
+        <% tot_amount = 0 %>
+        <% particular_id = 0 %>
+        <% ll = 1 %>
+        <% @finance_particular_categories.each_with_index do |fees_particular, i| %>
+          <% if ll == 1 %>
+            <% particular_id = fees_particular.id %>
+          <% end %>
+          <% amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id] %>
+          <% tot_amount += amt %> 
+          <% ll += 1 %>
+        <% end %>
+        
         <% tot_amount = 0 %>
         <% j = 1 %>
         <% pg = 1 %>

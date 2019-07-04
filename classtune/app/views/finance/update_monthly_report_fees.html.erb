@@ -198,7 +198,7 @@
                             var particular_fees_discount = parseFloat(j("#particular_discount_<%= particular_id %>_<%= dt %>_1").html());
                             var fees = (particular_fees + particular_fees_adv) - particular_fees_discount;
                             
-                            j("#particular_total_<%= dt %>_1").html(parseFloat(fees));
+                            j("#particular_total_<%= dt %>_1").htmlfees.toFixed(2));
                         });
                       </script>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">

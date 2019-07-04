@@ -194,6 +194,15 @@
                           Total
                       </div>
                   </div>
+                  <% tot_amt = date_wise_total.to_f + date_wise_fine.to_f  %>
+                  <% act_tot = fees_month["#{dt}"].to_f %>
+                  <% diff_amount = tot_amt - act_tot %>
+                  <% if diff_amount < 0 %>
+                    <% diff_amount = act_tot - tot_amt %>
+                    <% date_wise_total = (tot_amt + diff_amount) - (date_wise_fine.to_f ) %>
+                  <% else %>
+                    <% date_wise_total = tot_amt - (date_wise_fine.to_f + diff_amount) %>
+                  <% end %>
                   <div id="particular_total_fees_<%= dt %>_gt" style="width: 100%; text-align: center; padding-top: 8px;">
                       <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                           <%= precision_label date_wise_total %>
@@ -202,7 +211,7 @@
                           <%= precision_label date_wise_fine %>
                       </div>
                       <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
-                          <%= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
+                          <%#= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
                           <%= fees_month["#{dt}"] %>
                       </div>
                   </div>

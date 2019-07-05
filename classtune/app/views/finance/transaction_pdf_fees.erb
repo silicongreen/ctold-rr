@@ -185,7 +185,7 @@
           <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
           <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
         <% end %>
-        <%= date_wise_fees + " " + date_wise_adv + " " + date_wise_discount %>
+        <%= date_wise_fees.to_s + " " + date_wise_adv.to_s + " " + date_wise_discount.to_s %>
       <% end %>
         
         <% tot_amount = 0 %>

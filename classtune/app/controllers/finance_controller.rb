@@ -700,28 +700,57 @@ class FinanceController < ApplicationController
       end
     end
     
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    
+    fmt = Spreadsheet::Format.new :number_format => "0.00"
+    row_1 = ["Sl No","Particular Name","Amount"]
+    
+    # Create a new Workbook
+    new_book = Spreadsheet::Workbook.new
+
+    # Create the worksheet
+    new_book.create_worksheet :name => 'Particular Wise Transaction'
+
+    # Add row_1
+    new_book.worksheet(0).insert_row(0, row_1)
+    ind = 1
+    total_amount = 0.00
+    @finance_particular_categories.each_with_index do |fees_particular, i| 
+      amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
+      total_amount += amt
+      row_new = [i+1, fees_particular.name, sprintf('%.2f', amt)]
+      new_book.worksheet(0).insert_row(ind, row_new)
+      ind += 1
+    end
+    
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+
+    filename = "monthly-report-#{Time.now.to_date.to_s}.xls"
+    send_data spreadsheet.string, :filename => filename, :type =>  "application/vnd.ms-excel"
    
-    csv = FasterCSV.generate do |csv|
-      cols = []
-      cols << "Sl No"
-      cols << "Particular Name"
-      cols << "Amount"
-      
-      csv << cols
-      @finance_particular_categories.each_with_index do |fees_particular, i| 
-        cols = []
-        cols << i + 1
-        cols << fees_particular.name
-        amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
-        cols << sprintf('%.2f', amt)
-        
-        csv << cols
-      end
-    end   
-      
-      
-    filename = "monthly-report-#{Time.now.to_date.to_s}.csv"
-    send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
+#    csv = FasterCSV.generate do |csv|
+#      cols = []
+#      cols << "Sl No"
+#      cols << "Particular Name"
+#      cols << "Amount"
+#      
+#      csv << cols
+#      @finance_particular_categories.each_with_index do |fees_particular, i| 
+#        cols = []
+#        cols << i + 1
+#        cols << fees_particular.name
+#        amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
+#        cols << sprintf('%.2f', amt)
+#        
+#        csv << cols
+#      end
+#    end   
+#      
+#      
+#    filename = "monthly-report-#{Time.now.to_date.to_s}.csv"
+#    send_data(csv, :type => 'text/csv; charset=utf-8; header=present', :filename => filename)
   end
   
   def transaction_pdf_fees_month_csv

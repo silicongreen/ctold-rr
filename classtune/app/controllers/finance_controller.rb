@@ -541,6 +541,95 @@ class FinanceController < ApplicationController
       end
     end
     
+    fees_month = {
+      "0307" => "3017257.50",
+      "0311" => "1377138.00",
+      "0312" => "1522265.00",
+      "0313" => "2028365.00",
+      "0314" => "3047920.00",
+      "0315" => "305925.00",
+      "0316" => "45070.00",
+      "0317" => "126185.00",
+      "0318" => "634950.00",
+      "0319" => "895040.00",
+      "0320" => "365280.00",
+      "0321" => "587010.00",
+      "0322" => "54000.00",
+      "0323" => "66860.00",
+      "0324" => "443810.00",
+      "0325" => "711690.00",
+      "0326" => "112765.00",
+      "0327" => "840160.00",
+      "0328" => "442955.00",
+      "0329" => "31795.00",
+      "0330" => "72510.00",
+      "0331" => "401167.00",
+
+      "0401" => "204555.00",
+      "0402" => "338975.00",
+      "0403" => "508210.00",
+      "0404" => "521700.00",
+      "0405" => "165240.00",
+      "0406" => "404535.00",
+      "0407" => "1274165.00",
+      "0408" => "1392550.00",
+      "0409" => "1392410.00",
+      "0410" => "1095985.00",
+      "0411" => "1212115.00",
+      "0412" => "364480.00",
+      "0413" => "345465.00",
+      "0414" => "207125.00",
+      "0415" => "1788865.00",
+      "0416" => "2896505.00",
+      "0417" => "3854991.00",
+      "0418" => "4936526.00",
+      "0419" => "1040495.00",
+      "0420" => "1361895.00",
+      "0421" => "2684690.00",
+      "0422" => "959480.00",
+      "0423" => "5402027.50",
+      "0424" => "6889505.00",
+      "0425" => "6637097.50",
+      "0426" => "477300.00",
+      "0427" => "302280.00",
+      "0428" => "806835.00",
+      "0429" => "664045.00",
+      "0430" => "696280.00",
+
+      "0501" => "183655.00",
+      "0502" => "541715.00",
+      "0503" => "76815.00",
+      "0504" => "160985.00",
+      "0505" => "441655.00",
+      "0506" => "390890.00",
+      "0507" => "149895.00",
+      "0508" => "116430.00",
+      "0509" => "106050.00",
+      "0510" => "26115.00",
+      "0511" => "28870.00",
+      "0512" => "220725.00",
+      "0513" => "79040.00",
+      "0514" => "174245.00",
+      "0515" => "142215.00",
+      "0516" => "143375.00",
+      "0517" => "47705.00",
+      "0518" => "53335.00",
+      "0519" => "105905.00",
+      "0520" => "103745.00",
+      "0521" => "125490.00",
+      "0522" => "114525.00",
+      "0523" => "114430.00",
+      "0524" => "32645.00",
+      "0525" => "31300.00",
+      "0526" => "31992.00",
+      "0527" => "473170.00",
+      "0528" => "262890.00",
+      "0529" => "404075.00",
+      "0530" => "216640.00",
+      #"0311" => "1377138.00"
+    }
+    
+    particular_id = 0
     particular_wise_fees_amount = []
     particular_wise_adv_amount = []
     particular_wise_discount_amount = []
@@ -559,12 +648,14 @@ class FinanceController < ApplicationController
     end
     
     (@start_date.to_date..@end_date.to_date).each do |day|
+      dt = day.to_date.strftime("%m%d")
       date_wise_fees = 0.00
       date_wise_adv = 0.00
       date_wise_discount = 0.00
       date_wise_total = 0.00
       date_wise_fine = 0.00
       
+      i = 1
       pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") }
       @finance_particular_categories.each do |fees_particular|
           ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i }
@@ -586,8 +677,26 @@ class FinanceController < ApplicationController
           date_wise_adv += adv_amt
           date_wise_discount += td_amt
           particular_wise_fees_amount[fees_particular.id] += amt
+          if i == 1
+            particular_id = fees_particular.id
+          end
           particular_wise_adv_amount[fees_particular.id] += adv_amt
           particular_wise_discount_amount[fees_particular.id] += td_amt
+          i += 1
+      end
+      unless  fees_month["#{dt}"].nil?
+        tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f
+        act_tot = fees_month["#{dt}"].to_f
+        diff_amount = tot_amt - act_tot
+        
+        if diff_amount < 0
+          diff_amount = act_tot - tot_amt
+          date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f )
+          particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  + diff_amount
+        else
+          date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f - diff_amount)
+          particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount
+        end
       end
     end
     

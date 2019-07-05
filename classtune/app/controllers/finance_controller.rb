@@ -713,7 +713,7 @@ class FinanceController < ApplicationController
         cols << i + 1
         cols << fees_particular.name
         amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
-        cols << amt.to_f
+        cols << sprintf('%.2f', amt)
         
         csv << cols
       end

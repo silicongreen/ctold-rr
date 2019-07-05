@@ -275,7 +275,7 @@
                       <% else %>
                         <% date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f - diff_amount) %>
                         <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f) - (particular_wise_adv_amount[particular_id].to_f + diff_amount) %>
-                      <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
+                        <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
                       <% end %>
                       <script>
                         j(document).ready(function(){

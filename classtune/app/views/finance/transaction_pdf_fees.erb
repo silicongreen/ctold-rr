@@ -45,7 +45,7 @@
             <h4>Date Wise Collection Report <%= "For  #{@start_date.to_date.strftime("%B %d, %Y")} #{t('to')}  #{@end_date.to_date.strftime("%B %d, %Y")}" %></h4>
         </div>
         
-        
+        <% particular_id = 0 %>
         <% particular_wise_fees_amount = [] %>
         <% particular_wise_adv_amount = [] %>
         <% particular_wise_discount_amount = [] %>
@@ -155,12 +155,14 @@
       %>
         
         <% (@start_date.to_date..@end_date.to_date).each do |day| %>
+        <% dt = day.to_date.strftime("%m%d") %>
         <% date_wise_fees = 0.00 %>
         <% date_wise_adv = 0.00 %>
         <% date_wise_discount = 0.00 %>
         <% date_wise_total = 0.00 %>
         <% date_wise_fine = 0.00 %>
       
+        <% i = 1 %>
         <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
         <% @finance_particular_categories.each do |fees_particular| %>
           <% ptd = pt.select{|p| p.finance_fee_particular_category_id.to_i == fees_particular.id.to_i } %>
@@ -182,10 +184,28 @@
           <% date_wise_adv += adv_amt %>
           <% date_wise_discount += td_amt %>
           <% particular_wise_fees_amount[fees_particular.id] += amt %>
+          <% if i == 1 %>
+            <% particular_id = fees_particular.id %>
+          <% end %>
           <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
           <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
+          <% i += 1 %>
         <% end %>
-        <%= day.to_date.strftime("%m%d") + " - " + date_wise_fees.to_s + " " + date_wise_adv.to_s + " " + date_wise_discount.to_s %>
+        <% unless  fees_month["#{dt}"].nil? %>
+          <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
+          <% act_tot = fees_month["#{dt}"].to_f %>
+          <% diff_amount = tot_amt - act_tot %>
+          <% if diff_amount < 0 %>
+            <% diff_amount = act_tot - tot_amt %>
+            <% date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
+            <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f + diff_amount) - (particular_wise_adv_amount[particular_id].to_f ) %>
+            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  + diff_amount %>
+          <% else %>
+            <% date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f - diff_amount) %>
+            <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f) - (particular_wise_adv_amount[particular_id].to_f + diff_amount) %>
+            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
+          <% end %>
+        <% end %>
         <br />
       <% end %>
         

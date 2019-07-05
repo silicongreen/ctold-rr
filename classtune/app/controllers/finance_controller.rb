@@ -719,11 +719,13 @@ class FinanceController < ApplicationController
     @finance_particular_categories.each_with_index do |fees_particular, i| 
       amt = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id]
       total_amount += amt
-      row_new = [i+1, fees_particular.name, sprintf('%.2f', amt)]
+      row_new = [i+1, fees_particular.name, amt]
       new_book.worksheet(0).insert_row(ind, row_new)
       new_book.worksheet(0).row(ind).set_format(2, fmt)
       ind += 1
     end
+    row_new = ["", "Total Amount", total_amount]
+    new_book.worksheet(0).row(ind).set_format(2, fmt)
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

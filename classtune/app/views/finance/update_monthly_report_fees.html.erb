@@ -568,7 +568,8 @@
                           <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
                           <% diff_amount = fees_month_diff["#{dt}"].to_f %>
                           <% if diff_amount < 0 %>
-                            <% diff_amount = act_tot - tot_amt %>
+                            <% diff_amount = diff_amount * (-1) %>
+                            <%= diff_amount %>
                             <% date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
                             <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f + diff_amount) - (particular_wise_adv_amount[particular_id].to_f ) %>
                             <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  + diff_amount %>

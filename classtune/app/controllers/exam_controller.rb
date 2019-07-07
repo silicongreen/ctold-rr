@@ -2977,7 +2977,7 @@ class ExamController < ApplicationController
     end
     @all_subject_connect_exam = Subject.find_all_by_id(sub_id_array,:order=>"priority asc")
     @all_subject_connect_exam.each do |value|
-      key = value.id.to_s
+      key = value.code.to_s
       end_row = starting_row+7
       (starting_row..end_row).each do |i|
         sheet1.row(i).default_format = center_align_format

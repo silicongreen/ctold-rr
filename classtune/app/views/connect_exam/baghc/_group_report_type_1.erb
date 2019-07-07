@@ -140,15 +140,15 @@
                                 <td class='left'><%= subjects['name'] %></td>
                                 <% failed_grade = false %>
                                 <% @report_data['report']['exams'].each do |report| %>
-                                  <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank? and !report['result'][report['exam_id']][subjects['id']]['grade'].blank? %>
-                                      <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
-                                        <% failed_grade = true %>
-                                      <% end %>
-                                  <% end %>
+                                  <%
+                                    grade_mark = 0
+                                    full_mark = 0
+                                  %>
                                       
                                   <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% if report['exam_category'] == '1' %>
                                             <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% else %>
@@ -157,6 +157,7 @@
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                             <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% if report['exam_category'] == '1' %>
                                               <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% else %>
@@ -168,13 +169,32 @@
                                    <% if report['exam_category'] == '3' %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                           <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% full_mark = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% mtt_total = mtt_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                             <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% mtt = mtt+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% grade_mark = report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                         <% end %>
                                   <% end %>
+                                  <%
+                                    if full_mark > 0
+                                      if grade_mark > 0
+                                        point_mark = (grade_mark.to_f/full_mark.to_f)*100
+                                        grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
+                                        if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
+                                          if grade.credit_points.to_i == 0
+                                            failed_grade = true
+                                          end  
+                                        end
+                                      else
+                                        failed_grade = true
+                                      end  
+                                    end 
+                                
+                                  %>
+                                  
                                 <% end %>
                                 <%
                                   total_mark = total_mark+total_100

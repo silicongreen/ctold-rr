@@ -83,7 +83,6 @@
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                 <% total_mark = total_mark.to_f+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                               <% else %>
-                                AB
                               <% end %>
                               <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
                                 <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
@@ -244,56 +243,48 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                   <tr class="even remarks-tr">
                     <td>
-                        <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
-                            <% if failed == true %>
-                              Failed
-                           <% else %>
-                            <% if !grade.blank? and !grade.name.blank? %>
-                              <%= grade.description %>
-                            <% else %>
-                                
-                            <% end %>
-                           <% end %>
-                        <% end %>
+                        <b>Others : </b>Oral- 10, Neatness- 5, Punctuality- 5, Attendance- 10, HW- 05, Hand Writing- 05
+                        
                     </td>
                   </tr>
               </table>
               
               <div class='line'></div>
+              <% batch_split = @batch.name.split(" ") %>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 
-                      <tr class="even border-bottom-1-px">
-                          <td class="col-pdf " width="25%">
-                               <br/><br/><br/>
-                          </td> 
-                          <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
-                          </td>
-                          <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
-                          </td> 
-                          <td class="col-pdf " width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"60%" %>
-                          </td>
-                      </tr>
-                      <tr class="even">
-                           
-                          <td class="col-pdf" width="25%">
-                              Class Teacher
-                          </td>
-                          <td class="col-pdf " width="25%">
-                              Parents/Guardian
-                          </td>
-                          <td class="col-pdf " width="25%">
-                              Vice-Principal
-                          </td>
-                          <td class="col-pdf" width="25%">
-                              Principal
-                          </td> 
-                          
-                      </tr>
+                  <tr class="even border-bottom-1-px">
+                      <td class="col-pdf " width="25%">
+                          <br/><br/><br/>
+                      </td> 
+                      <td class="col-pdf" width="25%">
+                          <br/><br/><br/>
+                      </td>
+                      <td class="col-pdf" width="25%">
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
+                      </td> 
+                      <td class="col-pdf " width="25%">
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"70%" %>
+                      </td>
+                  </tr>
+                  <tr class="even">
 
-              </table> 
+                      <td class="col-pdf" width="25%">
+                          Class Teacher
+                      </td>
+                      <td class="col-pdf " width="25%">
+                          Parents/Guardian
+                      </td>
+                      <td class="col-pdf " width="25%">
+                          Vice-Principal
+                      </td>
+                      <td class="col-pdf" width="25%">
+                          Principal
+                      </td> 
+
+                  </tr>
+
+              </table>  
               
           </div>
       </div>

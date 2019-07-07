@@ -3053,7 +3053,7 @@ class ExamController < ApplicationController
       tmp_row << ""
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
-          key = value.id.to_s
+          key = value.code.to_s
           unless std_result['subjects'][key].blank?
             
             tmp_row << std_result['subjects'][key]['result']['at'].to_s

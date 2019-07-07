@@ -3107,9 +3107,9 @@ class ExamController < ApplicationController
   def continues
     @id = params[:id]
     @transcript = params[:transscript]
-    @student_main_id = params[:student_main_id]
+    @student_main_id = params[:student]
     
-    @connect_exam_obj = ExamConnect.active.find(@id)
+    @connect_exam_obj = ExamConnect.find_by_id(@id)
     @batch = Batch.find(@connect_exam_obj.batch_id)
    
     

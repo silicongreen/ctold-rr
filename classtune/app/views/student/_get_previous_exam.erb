@@ -39,6 +39,18 @@
         <td class="col-1"><%= p.exam_connect.published_date %></td>
         <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/connectexam/0<%= p.exam_connect_id.to_s %>/connect_exam_<%= p.exam_connect_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
       </tr>
+      <% else %>
+    
+        <%  prevexam = PreviousExam.find_by_connect_exam_id(p.exam_connect_id,:conditions=>["(is_finished = 1 and(data_type = 1 or data_type=2))"]) %>
+        <% unless prevexam.blank? %>
+        <tr class="tr-<%= cycle('odd', 'even') %>">
+          <td class="col-1"><%= p.exam_connect.name %></td>
+          <td class="col-1"><%= p.exam_connect.published_date %></td>
+          <td class="col-1"><%= link_to "Show", {:controller => "exam", :action => "continues", :student=>p.student_id,:id=>p.exam_connect_id},:target => '_blank' %></td>
+        </tr>
+        
+        <% end %>
+      
       <% end %>
     <% end %>
     <% end %>

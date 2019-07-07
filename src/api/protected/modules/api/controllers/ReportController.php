@@ -281,7 +281,7 @@ class ReportController extends Controller
         }
         $batch_id = Yii::app()->request->getPost('batch_id');
         $response = array();
-        if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret &&  (Yii::app()->user->isTeacher || Yii::app()->user->isAdmin ))
+        if ($connect_exam_id && Yii::app()->user->user_secret === $user_secret)
         {
             $objPreviousExam = new PreviousExams();
             $finish_exam = $objPreviousExam->getFinishExam($connect_exam_id);

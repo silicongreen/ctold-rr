@@ -45,23 +45,37 @@ class DelayedBatchTranfer
   end
 
   def perform
-    saved_batch = PdfSave.find_by_batch_id_and_status(@from,true)
-    un_saved_batch = PdfSave.find_by_batch_id_and_status(@from,false)
-    if !@students.blank? and (!saved_batch.blank? or un_saved_batch.blank?)
+   
+    @connect_exam_done = []
+    if !@students.blank?
       
-      if @transfer_all == "Yes" && !saved_batch.blank?
-        batch_saved = PdfSave.find(saved_batch.id)
-        batch_saved.destroy
-      end
+     
+      
       
       @batch = Batch.find @from, :include => [:students],:order => "students.first_name ASC"
       @exam_groups = ExamGroup.active.find_all_by_batch_id(@batch.id)
       @connect_exam = ExamConnect.active.find_all_by_batch_id(@batch.id) 
       students = Student.find(@students)
       now = I18n.l(@local_tzone_time.to_datetime, :format=>'%Y-%m-%d %H:%M:%S')
-      create_user_cookie()
+#      create_user_cookie()
       save_batch_transfer(@from,@to,@session,now)
       reminder_recipient_ids = []
+      
+      unless @connect_exam.blank?
+        @connect_exam.each do |ec|
+          unless @connect_exam_done.include?(ec.id)
+            @connect_exam_done << ec.id
+            prev_exam = PreviousExam.find_all_by_connect_exam_id(ec.id)
+            unless prev_exam.blank?
+              prev_exam.each do |pe|
+                p_exam = PreviousExam.find(pe.id)
+                p_exam.is_finished = 1
+                p_exam.save
+              end
+            end
+          end     
+        end
+      end
 
       students.each do |s|
         batch_student = s.batch_students.find_or_create_by_batch_id_and_session_and_batch_start_and_batch_end(s.batch.id,@session,@prev_start,@prev_end)

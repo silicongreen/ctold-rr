@@ -207,6 +207,11 @@
             "0529" => "-535.00",
             #"0311" => "1377138.00"
           }
+        elsif (@filter_by_course.to_i == 1 and @filter_by_payment_type.to_i == 2) 
+          fees_month = {}
+          fees_month_diff = {
+            "0405" => "-3790.00",
+          }
         elsif @filter_by_course.to_i == 0 and @filter_by_payment_type.to_i == 1 #Mobile Banking
           fees_month = {
             "0307" => "2904982.50",
@@ -388,7 +393,7 @@
         end
     
       %>
-      <%= debug fees_month_diff.inspect %>
+      
       <% particular_id = 0 %>
       <% particular_wise_fees_amount = [] %>
       <% particular_wise_adv_amount = [] %>

@@ -84,7 +84,7 @@
             <% end %>
            <% if permitted_to? :student_security, :student %>
               <li>
-                  <%= link_to "Student Security", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
+                  <%= link_to "Security Card", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
               </li>
             <% end %>
         </ul>

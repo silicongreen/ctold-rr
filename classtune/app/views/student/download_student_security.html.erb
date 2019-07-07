@@ -1,84 +1,3 @@
-<% default_image = "public/images/HR/default_employee.png" %>
-<div id="page-yield" class="available_sections1 baf_shaheen">
-    <div class="section1 row" >
-        <% i = 0 %>
-        <% @student_security.each do |card| %>
-        
-        <% i = i+1 %>
-          <div class="security-card">
-              <div class="col-6">
-                  <div class="card-header">
-                      <h2>The Holder of this card is authorised to collect</h2>
-                  </div>
-                  <div class="card-details">
-                      <p><strong class="std-name"> <%= card.full_name  %> </strong> of class: <strong><%= card.batch.course.course_name %></strong> Section: <strong class="sectionname"><%= card.batch.course.section_name  %> </strong></p>
-                      <p>Roll No: <strong><%= card.class_roll_no %></strong> Date of Issue: <strong><%= Date.today  %> </strong></p>
-                      <p class="incharge">
-                      In-Charge
-                      </p>
-                      <p class="validtill">Valid till: <strong><%= Date.today + 4.months  %> </strong></p>
-                  </div>
-              </div>
-              <div class="col-6 card-images">
-                  <div class="galleryimg">
-                      <% if card.photo.file? %>
-                        <%= image_tag  card.photo.url %>
-                      <% else %>
-                         <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end  %>
-                      <div class="desc">Student</div>
-                  </div>
-                  <div class="galleryimg">
-                      <% if card.student_security %>
-                        <img src="<%= card.student_security.photo1   %>" />
-                      <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end %>
-                      <div class="desc">Parent</div>
-                  </div>
-                  <div class="galleryimg">
-                      <% if card.student_security %>
-                        <img src="<%= card.student_security.photo2   %>" />
-                      <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end %>
-                      <div class="desc">Parent</div>
-                  </div>
-                  <div class="galleryimg">
-                      <% if card.student_security %>
-                        <img src="<%= card.student_security.photo3   %>" />
-                      <%  else %>
-                         <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end %>
-                      <div class="desc">Guardian</div>
-                  </div>
-                  <div class="galleryimg">
-                      <% if card.student_security %>
-                        <img src="<%= card.student_security.photo4   %>" />
-                      <%  else %>
-                         <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end %>
-                      <div class="desc">Guardian</div>
-                  </div>
-                  <div class="galleryimg">
-                      <% if card.student_security %>
-                        <img src="<%= card.student_security.photo5   %>" />
-                      <%  else %>
-                         <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
-                      <% end %>
-                      <div class="desc">Guardian</div>
-                  </div>
-              </div>
-          </div>
-          <% if i%3 == 0 %>
-            <div class="page-break-main"></div>
-          <% end %>
-          
-        <% end %>
-    </div>
-</div>
-
-
 <style>
     div.page-break-main { display:block; clear:both; page-break-after:always; height: 200px; }
     .security-card{
@@ -98,26 +17,25 @@
         text-align: center;
     }
     .card-header h2{padding-bottom: 30px;}
-    
+
     .card-details{
         width: 90%;
         margin: 0 auto;
     }
-    .card-details p{
-        font-size: 25px;
-    }
+    .student-info{font-size: 25px;}
     .incharge{
         float: right;
         margin-top: 100px;
         margin-right: 80px;
-        font-size: 30px;
+        font-size: 16px !important;
         border-top: 2px solid #000;
         width: 200px;
         text-align: center;
     }
     .validtill{
-      margin-top: 250px;
+        margin-top: 200px;
     }
+    .chargeinfo{font-size: 15px !important;}
     .std-name{
         text-transform: uppercase;
     }
@@ -148,4 +66,91 @@
         text-align: center;
     }
 
-</style>    
+</style>   
+<% default_image = "public/images/HR/default_employee.png" %>
+<div id="page-yield" class="available_sections1 baf_shaheen">
+    <div class="section1 row" >
+        <% i = 0 %>
+        <% @student_security.each do |card| %>
+
+          <% i = i+1 %>
+        <div class="security-card">
+              <div class="col-6">
+                  <div class="card-header">
+                      <h2>The Holder of this card is authorised to collect</h2>
+                  </div>
+                  <div class="card-details">
+                      <p class="student-info">
+                          <strong class="std-name"> <%= card.full_name  %> </strong> <br/> 
+                          of class: <strong><%= card.batch.course.course_name %></strong> 
+                          Section: <strong class="sectionname"><%= card.batch.course.section_name  %> </strong>
+                          Roll No: <strong><%= card.class_roll_no %></strong><br/> 
+                          Date of Issue: <strong><%= Date.today  %> </strong>
+                      </p>
+                      <p class="incharge">
+                          Authorised Signature 
+                      </p>
+                      <p class="validtill">Valid till: <strong><%= Date.today + 4.months  %> </strong></p>
+                      <p class="chargeinfo"><sup>*</sup>A charge of Taka 200 is to be paid for replacement of the card </p>
+                  </div>
+              </div>
+              <div class="col-6 card-images">
+                  <div class="galleryimg">
+                      <% if card.photo.file? %>
+                        <%= image_tag  card.photo.url %>
+                      <% else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end  %>
+                      <div class="desc">Student</div>
+                  </div>
+                  <div class="galleryimg">
+                      <% if card.student_security %>
+                        <img src="<%= card.student_security.photo1   %>" />
+                      <%  else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end %>
+                      <div class="desc">Parent</div>
+                  </div>
+                  <div class="galleryimg">
+                      <% if card.student_security %>
+                        <img src="<%= card.student_security.photo2   %>" />
+                      <%  else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end %>
+                      <div class="desc">Parent</div>
+                  </div>
+                  <div class="galleryimg">
+                      <% if card.student_security %>
+                        <img src="<%= card.student_security.photo3   %>" />
+                      <%  else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end %>
+                      <div class="desc">Guardian</div>
+                  </div>
+                  <div class="galleryimg">
+                      <% if card.student_security %>
+                        <img src="<%= card.student_security.photo4   %>" />
+                      <%  else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end %>
+                      <div class="desc">Guardian</div>
+                  </div>
+                  <div class="galleryimg">
+                      <% if card.student_security %>
+                        <img src="<%= card.student_security.photo5   %>" />
+                      <%  else %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                      <% end %>
+                      <div class="desc">Guardian</div>
+                  </div>
+              </div>
+          </div>
+          <% if i%3 == 0 %>
+            <div class="page-break-main"></div>
+          <% end %>
+
+        <% end %>
+    </div>
+</div>
+
+

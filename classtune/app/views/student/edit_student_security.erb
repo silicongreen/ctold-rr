@@ -86,7 +86,7 @@
         </div>
         <div class="header-title-text-wrapper">
             <div class="header-title-main-text f2">
-                <%= link_to "Student Security Card", :controller => 'student', :action => 'student_security', :id => @student.id %>
+                <%= link_to "Security Card", :controller => 'student', :action => 'student_security', :id => @student.id %>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -155,7 +155,7 @@
             <% end %>
             <% if permitted_to? :student_security, :student %>
               <li class="active">
-                  <%= link_to "Student Security", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
+                  <%= link_to "Security Card", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %>
               </li>
             <% end %>
         </ul>

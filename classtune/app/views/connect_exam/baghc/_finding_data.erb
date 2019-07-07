@@ -16,36 +16,29 @@
         total_full_mark = 0
         u_grade = false
         @tabulation_data['report']['subjects'].each do |sub|
-          total_80 = 0
-          full_80 = 0
-          total_20 = 0
-          full_20 = 0
-          cq = 0
-          mcq = 0
-          cq_total = 0
-          mcq_total = 0 
-          
+          total_100 = 0
+          full_100 = 0
           @tabulation_data['report']['exams'].each do |report|
             grade_mark = 0
             full_mark = 0
             if report['exam_category'] == '1' or report['exam_category'] == '2'
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                total_80 = total_80.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                grade_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                total_100 = total_100.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                grade_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
               end
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                full_80 = full_80+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                full_100 = full_100+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                 full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
               end
             end
           
             if report['exam_category'] == '3'
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
-                total_20 = total_20.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
-                grade_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                total_100 = total_100.to_f+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                grade_mark = report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
               end
               if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][sub['id']].blank?  and !report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].blank?
-                full_20 = full_20+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
+                full_100 = full_100+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                 full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
               end
             end
@@ -65,17 +58,14 @@
             end  
             
           end
-          total_mark = total_mark+total_80+total_20
-          total_full_mark = total_full_mark+full_80+full_20
-          converted_80 = 0
-          converted_20 = 0
-          if total_80 > 0
-            converted_80 = (total_80.to_f/full_80.to_f)*80
+          total_mark = total_mark+total_100
+          total_full_mark = total_full_mark+full_100
+          coverted_100 = 0
+          if total_100 > 0
+            coverted_100 = (total_100.to_f/full_100.to_f)*100
           end
-          if total_20 > 0
-            converted_20 = (total_20.to_f/full_20.to_f)*20
-          end
-          coverted_100 = converted_80+converted_20
+          
+          coverted_100 = coverted_100.round()
           total_mark_result = total_mark_result+coverted_100
           gp_point =0
           grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)

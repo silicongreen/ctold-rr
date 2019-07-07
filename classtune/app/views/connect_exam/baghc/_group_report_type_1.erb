@@ -12,6 +12,7 @@
                   </td>
                   <td>
                     <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
+                    <h4 align="center"><b>www.baghc.edu.bd</b></h4>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
                     <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
                     <br/><br/>
@@ -31,7 +32,7 @@
                   <tr>
                     <td>Marks</td>
                     <td>Grade</td>
-                    <td>GPA</td>
+                    <td>GP</td>
                   </tr>
                   <% @grading_levels.each do |grade| %>
                   <tr>
@@ -39,7 +40,7 @@
                       <% if grade.max_score.nil? %>  
                       <%= '%i%' % grade.min_score %>
                       <% else %>  
-                      <%= grade.min_score.to_s + " - " + grade.max_score.to_s %>  
+                      <%= grade.min_score.to_i.to_s + " - " + grade.max_score.to_i.to_s %>  
                       <% end %>
                     </td>
                     <td><%= grade.name %></td>
@@ -102,13 +103,12 @@
                           <tr class="table-header">
                               <td rowspan="2">SL</td>
                               <td rowspan="2">Subjects</td>
-                              <td colspan="3">Marks Obtained</td>
+                              <td rowspan="2">CQ/SQ</td>
+                              <td rowspan="2">MCQ</td>
+                              <td rowspan="2">MTT/Prac</td>
                               <td colspan="4">Result</td>  
                           </tr>
-                          <tr class="table-header">
-                              <td>CQ/SQ</td>
-                              <td>MCQ</td>
-                              <td>MTT/Prac</td>
+                          <tr class="table-header"> 
                               <td>Total(%)</td> 
                               <td>Highest Mark(%)</td>
                               <td>GP</td>
@@ -125,14 +125,14 @@
                         <% unless @report_data['report']['subjects'].blank? %> 
                           <% i = 0 %>   
                           <% @report_data['report']['subjects'].each do |subjects| %>
-                            <% total_80 = 0 %>
-                            <% full_80 = 0 %>
-                            <% total_20 = 0 %>
-                            <% full_20 = 0 %>
+                            <% total_100 = 0 %>
+                            <% full_100 = 0 %>
                             <% cq = 0 %>
                             <% mcq = 0 %>
+                            <% mtt = 0 %>
                             <% cq_total = 0 %>
                             <% mcq_total = 0 %>
+                            <% mtt_total = 0 %>
                             
                             <% i = i+1 %> 
                             <tr class="table-header">
@@ -148,7 +148,7 @@
                                       
                                   <% if report['exam_category'] == '1' or report['exam_category'] == '2' %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                          <% full_80 = full_80+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% if report['exam_category'] == '1' %>
                                             <% cq_total = cq_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                           <% else %>
@@ -156,36 +156,35 @@
                                           <% end %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                            <% total_80 = total_80+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% if report['exam_category'] == '1' %>
-                                              <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                              <% cq = cq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% else %>
-                                              <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                              <% mcq = mcq+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                             <% end %>
                                            
                                         <% end %>
                                   <% end %>
                                    <% if report['exam_category'] == '3' %>
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
-                                          <% full_20 = full_20+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% full_100 = full_100+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+                                          <% mtt_total = mtt_total+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
                                         <% end %> 
                                         <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
-                                            <% total_20 = total_20+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
+                                            <% total_100 = total_100+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
+                                            <% mtt = mtt+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round() %>
                                         <% end %>
                                   <% end %>
                                 <% end %>
                                 <%
-                                  total_mark = total_mark+total_80+total_20
-                                  total_full_mark = total_full_mark+full_80+full_20
-                                  converted_80 = 0
-                                  converted_20 = 0
-                                  if total_80 > 0
-                                    converted_80 = (total_80.to_f/full_80.to_f)*80
+                                  total_mark = total_mark+total_100
+                                  total_full_mark = total_full_mark+full_100
+                                  coverted_100 = 0
+                                  if total_100 > 0
+                                    coverted_100 = (total_100.to_f/full_100.to_f)*100
                                   end
-                                  if total_20 > 0
-                                    converted_20 = (total_20.to_f/full_20.to_f)*20
-                                  end
-                                  coverted_100 = converted_80+converted_20
+                                 
+                                  coverted_100 = coverted_100.round()
                                   total_mark_result = total_mark_result+coverted_100
                                   gp_point =0
                                   lg = "-"
@@ -200,27 +199,27 @@
                                 %>
                                 <td>
                                   <% if cq_total > 0 %>
-                                    <%= cq %> <font class="soft">[<%= cq_total %>]</font>
+                                    <%= cq %> <font class="soft">[<%= cq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
                                   <% if mcq_total > 0 %>
-                                    <%= mcq %> <font class="soft">[<%= mcq_total %>]</font>
+                                    <%= mcq %> <font class="soft">[<%= mcq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
-                                  <% if full_20 > 0 %>
-                                    <%= total_20 %> <font class="soft">[<%= full_20 %>]</font>
+                                  <% if mtt_total > 0 %>
+                                    <%= mtt %> <font class="soft">[<%= mtt_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
-                                  <%= sprintf( "%0.02f", coverted_100) %>  
+                                  <%= coverted_100.to_i %>  
                                 </td>
                                 <%
                                     highest_mark = 0
@@ -229,7 +228,7 @@
                                     end
                                 %>
                                 <td>
-                                   <%= sprintf( "%0.02f", highest_mark) %>
+                                   <%= highest_mark.to_i %>
                                 </td>
                                 <% if failed_grade %>
                                   <% main_failed_grade = true %>
@@ -264,13 +263,13 @@
                             <% end %>
                             <tr class="table-header">
                                 <td colspan="2" style="text-align:center">
-                                    <b>Total Marks</b>
+                                    <b>Total</b>
                                 </td>
                                 <td colspan="3" style="text-align:center">
-                                    <b><%= sprintf( "%0.02f", total_mark) %></b> [<%= sprintf( "%0.02f", total_full_mark) %>]
+                                    <b><%= total_mark.to_i %></b> [<%= total_full_mark.to_i %>]
                                 </td>
                                 <td style="text-align:center">
-                                    <b><%= sprintf( "%0.02f", total_mark_result) %></b>
+                                    <b><%= total_mark_result.to_i %></b>
                                 </td>
                                 <td style="text-align:center">
                                     &nbsp;

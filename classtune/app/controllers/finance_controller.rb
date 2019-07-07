@@ -725,6 +725,7 @@ class FinanceController < ApplicationController
       ind += 1
     end
     row_new = ["", "Total Amount", total_amount]
+    new_book.worksheet(0).insert_row(ind, row_new)
     new_book.worksheet(0).row(ind).set_format(2, fmt)
     
     spreadsheet = StringIO.new 

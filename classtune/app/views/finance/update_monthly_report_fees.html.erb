@@ -146,14 +146,14 @@
           }
         elsif @filter_by_course.to_i == 1 and @filter_by_payment_type.to_i == 0 #Mobile Banking
           fees_month_diff = {
-            "0307" => "2904982.50",
-            "0311" => "1313303.00",
-            "0312" => "1484245.00",
-            "0313" => "1974300.00",
-            "0314" => "2991905.00",
-            "0315" => "305925.00",
-            "0316" => "41020.00",
-            "0317" => "123795.00",
+            "0307" => "4745.00",
+            "0311" => "-8055.00",
+            "0312" => "29325.00",
+            "0313" => "-8490.00",
+            "0314" => "35880.00",
+            "0315" => "-12855.00",
+            "0316" => "-2050.00",
+            
             "0318" => "623430.00",
             "0319" => "884920.00",
             "0320" => "360425.00",
@@ -560,6 +560,31 @@
                             j("#particular_total_<%= dt %>_1").html(fees.toFixed(2));
                         });
                       </script>
+                      <% else %>
+                        <% unless  fees_month_diff["#{dt}"].nil? %>
+                          <% diff_amount = fees_month_diff["#{dt}"].to_f %>
+                          <% if diff_amount < 0 %>
+                            <% diff_amount = act_tot - tot_amt %>
+                            <% date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
+                            <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f + diff_amount) - (particular_wise_adv_amount[particular_id].to_f ) %>
+                            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  + diff_amount %>
+                          <% else %>
+                            <% date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f - diff_amount) %>
+                            <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f) - (particular_wise_adv_amount[particular_id].to_f + diff_amount) %>
+                            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
+                          <% end %>
+                          <script>
+                            j(document).ready(function(){
+                                j("#particular_fees_<%= particular_id %>_<%= dt %>_1").html(<%= particular_wise_fees_amount[particular_id] %>);
+                                var particular_fees = parseFloat(j("#particular_fees_<%= particular_id %>_<%= dt %>_1").html());
+                                var particular_fees_adv = parseFloat(j("#particular_adv_<%= particular_id %>_<%= dt %>_1").html());
+                                var particular_fees_discount = parseFloat(j("#particular_discount_<%= particular_id %>_<%= dt %>_1").html());
+                                var fees = (particular_fees + particular_fees_adv) - particular_fees_discount;
+
+                                j("#particular_total_<%= dt %>_1").html(fees.toFixed(2));
+                            });
+                          </script>
+                        <% end %>
                       <% end %>
                       <div id="particular_total_fees_<%= dt %>" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                         <%= precision_label date_wise_fees %> <b><%= actual_diff_amount %></b>

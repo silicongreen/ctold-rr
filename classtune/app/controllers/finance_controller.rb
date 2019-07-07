@@ -694,6 +694,7 @@ class FinanceController < ApplicationController
         #"0311" => "1377138.00"
       }
     elsif @filter_by_course.to_i == 0 and @filter_by_payment_type.to_i == 1 #Mobile Banking
+      abort('here')
       fees_month = {
         "0307" => "2904982.50",
         "0311" => "1313303.00",

@@ -2975,7 +2975,7 @@ class ExamController < ApplicationController
     @subject_result.each do |key,sub_res|
       sub_id_array << key
     end
-    @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:order=>"priority asc")
+    @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:conditions=>["batch_id = ?",@batch.id],:order=>"priority asc")
     @all_subject_connect_exam.each do |value|
       key = value.code.to_s
       end_row = starting_row+7

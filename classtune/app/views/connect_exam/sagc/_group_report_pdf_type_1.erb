@@ -257,7 +257,7 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                   <tr class="even remarks-tr">
                     <td>
-                        <b>Remarks : </b> <% if !@exam_comment.blank? %><%= @exam_comment.comments %><% else %>
+                        <b>Remarks : </b>
                             <% if failed == true %>
                               Failed
                             <% else %>
@@ -267,7 +267,6 @@
 
                               <% end %>
                             <% end %>
-                          <% end %>
                           <br/>    
                           Oral- 10, Neatness- 5, Punctuality- 5, Attendance- 10, HW- 05, Hand Writing- 05
                         
@@ -275,7 +274,7 @@
                   </tr>
               </table>
               
-              <div class='line'></div>
+             
               <% batch_split = @batch.name.split(" ") %>
               <table id="pdf-table" class="evaluation table_99 top-left-center sign_table"  width="99.8%" >
 

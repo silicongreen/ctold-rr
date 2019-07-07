@@ -563,6 +563,7 @@
                       </script>
                       <% else %>
                         <% unless  fees_month_diff["#{dt}"].nil? %>
+                          <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
                           <% diff_amount = fees_month_diff["#{dt}"].to_f %>
                           <% if diff_amount < 0 %>
                             <% diff_amount = act_tot - tot_amt %>

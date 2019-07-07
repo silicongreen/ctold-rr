@@ -569,15 +569,15 @@
                           <% diff_amount = fees_month_diff["#{dt}"].to_f %>
                           <% if diff_amount < 0 %>
                             <% diff_amount = diff_amount * (-1) %>
-                            <% #date_wise_fees = (tot_amt + date_wise_discount.to_f + diff_amount) - (date_wise_adv.to_f ) %>
-                            <% date_wise_discount = date_wise_discount.to_f + diff_amount %>
+                            <% date_wise_fees = date_wise_fees - diff_amount %>
+                            <% date_wise_total = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
                             <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f + diff_amount) - (particular_wise_adv_amount[particular_id].to_f ) %>
-                            <% particular_wise_discount_amount[particular_id] = particular_wise_discount_amount[particular_id].to_f  + diff_amount %>
+                            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  - diff_amount %>
                           <% else %>
-                            <% #date_wise_fees = (tot_amt + date_wise_discount.to_f) - (date_wise_adv.to_f - diff_amount) %>
-                            <% date_wise_discount = date_wise_discount.to_f - diff_amount %>
+                            <% date_wise_fees = date_wise_fees + diff_amount %>
+                            <% date_wise_total = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
                             <% # particular_wise_fees_amount[particular_id] = (particular_wise_fees_amount[particular_id].to_f + particular_wise_discount_amount[particular_id].to_f) - (particular_wise_adv_amount[particular_id].to_f + diff_amount) %>
-                            <% particular_wise_discount_amount[particular_id] = particular_wise_discount_amount[particular_id].to_f  - diff_amount %>
+                            <% particular_wise_fees_amount[particular_id] = particular_wise_fees_amount[particular_id].to_f  + diff_amount %>
                           <% end %>
                           <script>
                             j(document).ready(function(){

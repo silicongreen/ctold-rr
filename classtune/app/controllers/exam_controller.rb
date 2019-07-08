@@ -3040,7 +3040,7 @@ class ExamController < ApplicationController
         @exam_comment_all.each do |ec|
           if ec.student_id.to_i == std_result['id'].to_i
             exam_comment = ec
-          break
+            break
           end
         end
       end

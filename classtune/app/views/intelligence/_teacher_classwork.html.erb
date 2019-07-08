@@ -12,7 +12,7 @@
           </div>
           <div class="row_data">
             <div>
-              <%= calendar_date_select_tag "start_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"},
+              <%= calendar_date_select_tag "start_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_classworks"},
             :with => "$('new_student').serialize()",
             :before => "$('loading_6').show();",
             :success => "$('loading_6').hide();"  )}", :popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
@@ -29,7 +29,7 @@
           </div>
           <div class="row_data">
             <div>
-              <%= calendar_date_select_tag "select_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"},
+              <%= calendar_date_select_tag "select_date",@date_today, :readonly=> true,:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_classworks"},
             :with => "$('new_student').serialize()",
             :before => "$('loading_6').show();",
             :success => "$('loading_6').hide();"  )}", :popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
@@ -51,7 +51,7 @@
             <div class="custom_drop_wrapper">
              <%= select :student, :department, options_for_select(@departments.map { |s| [s.name, s.id] }), 
               {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_classworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_3').show();",
               :success => "$('loading_3').hide();")}"} %>
               <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_3", :style =>"display: none;" ) %>
             </div>
@@ -73,11 +73,11 @@
           <div>
             <div class="custom_drop_wrapper">
                <%
-              typehash2 = [["homework_given", "Homework Given"], ["total_class", "Total Class"], ["emp_name", "Employee Name"]]
+              typehash2 = [["classwork_given", "Classwork Given"], ["total_class", "Total Class"], ["emp_name", "Employee Name"]]
               %>
              <%= select :student,:sort_by, typehash2.map{|role| [ role[1], role[0] ]}, 
               {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_4').show();",
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_classworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_4').show();",
               :success => "$('loading_4').hide();")}"} %>
               <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_4", :style =>"display: none;" ) %>
             </div>
@@ -98,7 +98,7 @@
               %>
              <%= select :student,:sort_type, typehash3.map{|role| [ role[1], role[0] ]}, 
               {:prompt => "#{t('select')}"},
-              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_homeworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_5').show();",
+              {:onChange => "#{remote_function(:url => {:controller => "intelligence", :action => "get_teacher_classworks"}, :with => "$('new_student').serialize()" ,:before => "$('loading_5').show();",
               :success => "$('loading_5').hide();")}"} %>
               <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_5", :style =>"display: none;" ) %>
             </div>

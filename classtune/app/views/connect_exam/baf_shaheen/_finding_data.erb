@@ -15,6 +15,9 @@
     connect_exam = 0
     batch_loop = 0
     @tabulation_data['report'].each do |tab|
+      if tab.kind_of?(Array) or tab.blank? or tab['students'].blank?
+        next
+      end
       batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
       batch_subject_id = batch_subject.map(&:id)
       batch_loop = batch_loop+1
@@ -180,10 +183,10 @@
             @sections = ["Orchid","Tulip","Cosmos","Lilac"]
           end
           if @promoted_to == "IV"
-            @sections = ["Daisy","Daffodil","Salvia","Dahlia"]
+            @sections = ["Daisy","Daffodil","Salvia"]
           end
           if @promoted_to == "V"
-            @sections = ["Bluebell","Lavender","Zinia"]
+            @sections = ["Bluebell","Lavender"]
           end
           if @promoted_to == "VI"
             @sections = ["Primrose","Snowdrop"]

@@ -4686,7 +4686,7 @@ class ExamController < ApplicationController
       
       
     elsif MultiSchool.current_school.id == 348
-      if @connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 10 or @connect_exam_obj.result_type == 12
+      if (@connect_exam_obj.result_type == 8 or @connect_exam_obj.result_type == 9 or @connect_exam_obj.result_type == 10 or @connect_exam_obj.result_type == 12) and @transcript.blank?
         render :pdf => template,
           :save_to_file => file_name,
           :save_only    => for_save,
@@ -4698,6 +4698,19 @@ class ExamController < ApplicationController
           :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
           :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+      elsif !@transcript.blank?  
+        render :pdf => template,
+          :save_to_file => file_name,
+          :save_only    => for_save,
+          :orientation => 'Portrait',
+          
+          :encoding =>    'utf8',
+          :margin => {    :top=> 10,
+          :bottom => 20,
+          :left=> 8,
+          :right => 8},
+          :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+          :footer => {:html => { :template=> 'layouts/pdf_footer_sis_transcript.html'}}
       else
         render :pdf => template,
           :save_to_file => file_name,

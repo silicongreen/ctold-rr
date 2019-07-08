@@ -3035,9 +3035,14 @@ class ExamController < ApplicationController
       else
         tmp_row << "F"
       end 
-      
+      exam_comment = {}
       unless @exam_comment_all.blank? 
-        exam_comment = @exam_comment_all.find{|v| v.student_id.to_i = std_result['id'].to_i }
+        @exam_comment_all.each do |ec|
+          if ec.student_id.to_i == std_result['id'].to_i
+            exam_comment = ec
+          break
+          end
+        end
       end
       
       

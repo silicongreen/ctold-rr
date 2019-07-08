@@ -212,11 +212,11 @@
               <% grade_point_avg = grade_point_avg.to_f/100 %>
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                 <tr class="odd">
-                   <td class="col-pdf align-left" rowspan="3" width="35%"><b>Letter Grade</b></td>
+                   <td class="col-pdf align-left" rowspan="4" ><b>Letter Grade</b></td>
                    <%
                       grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
                    %>
-                   <td class="col-pdf font-size-45" rowspan="3"  width="65%"><b>
+                   <td class="col-pdf font-size-45" rowspan="4"><b>
                            <% if failed == true %>
                               F
                            <% else %>

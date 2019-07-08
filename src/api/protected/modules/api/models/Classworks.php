@@ -183,7 +183,7 @@ class Classworks extends CActiveRecord
                     $value->created_at = $value->updated_at;
                 }        
                 $marge['assign_time'] = date("h:i a", strtotime("+6 hour", strtotime($value->created_at)));
-                $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
+                //$marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = $value->title;
                 $marge['id'] = $value->id;
                 

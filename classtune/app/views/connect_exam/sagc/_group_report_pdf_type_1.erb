@@ -194,7 +194,20 @@
               </table>
                 
              
-                
+               <% 
+                total_att = ""
+                absent = ""
+                if !@exam_comment.blank?
+                  all_comments = @exam_comment.comments
+                  if !all_comments.blank?
+                    all_comments_array = all_comments.split("|")
+                    total_att = all_comments_array[0]
+                    if !all_comments_array[1].nil?
+                      absent = all_comments_array[1]
+                    end
+                  end
+                end
+              %> 
               <% grade_point_avg = (grade_point_avg.to_f*100).round() %>
               <% grade_point_avg = grade_point_avg.to_f/100 %>
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
@@ -236,20 +249,7 @@
                     </td>
                 </tr> 
               </table>
-              <% 
-                total_att = ""
-                absent = ""
-                if !@exam_comment.blank?
-                  all_comments = @exam_comment.comments
-                  if !all_comments.blank?
-                    all_comments_array = all_comments.split("|")
-                    total_att = all_comments_array[0]
-                    if !all_comments_array[1].nil?
-                      absent = all_comments_array[1]
-                    end
-                  end
-                end
-              %>
+              
               
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                   <tr class="even remarks-tr">

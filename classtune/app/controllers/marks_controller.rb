@@ -555,7 +555,11 @@ class MarksController < ApplicationController
                   data[k][0] = exam_connect_batch.to_s
                   data[k][1] = "<a href='/exam/tabulation/#{exam_connect.id.to_s}#view=FitH' target='_blank'>#{exam_connect.name.to_s} (Tablulation)</a>"
                   data[k][2] = "<a href='/exam/marksheet/#{exam_connect.id.to_s}?subject_id=#{exam.subject_id.to_s}#view=FitH' target='_blank'>#{exam.subject_name.to_s} (Marksheet)</a>"
-                  data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                  if exam_connect.result_type.to_i > 8 && exam_connect.result_type.to_i != 11
+                    data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>&nbsp;&nbsp; <a href='/exam/continues/#{exam_connect.id.to_s}?transscript=1#view=FitH' target='_blank'>Transcript</a>"
+                  else
+                    data[k][3] = "<a href='/exam/continues/#{exam_connect.id.to_s}#view=FitH' target='_blank'>REPORT CARD</a>"
+                  end
                   k = k+1
                 end
               end

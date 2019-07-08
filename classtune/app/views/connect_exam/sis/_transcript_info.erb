@@ -1,0 +1,35 @@
+<table class="std_info_table" width="100%" cellspacing="0">
+    <tr>
+        <td class="align-left" colspan="4"><b>STUDENT INFORMATION</b></td>
+        <td class="align-left">Transcript </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.admission_no %></td>
+    </tr>
+    <tr>
+        <td class="align-left">Name </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.full_name %></td>
+        <td class="align-left">Student ID </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.admission_no %></td>
+    </tr>
+    <tr>
+        <td class="align-left">Date of Birth </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d-%m-%y") unless @student.date_of_birth.nil? %></td>
+        <td class="align-left">Enrollment Date </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="align-left">Gender </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= "#{@student.gender_as_text.upcase}" %></td>
+        <td class="align-left">Graduation Date </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td></td>
+    </tr>
+</table>
+<p>&nbsp;</p>
+<table class="std_info_table center-table" width="99%" cellspacing="0">
+    <tr>
+        <td class="align-left last-td"><b>Grade:&nbsp;&nbsp;&nbsp;<%= @batch.course.course_name %></b></td>
+    </tr>
+    <tr class="bottom-border-1 last-td">
+        <% month_number =@connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%-m"):@connect_exam_obj.published_date.strftime("%-m") %>
+
+        <% if month_number.to_i>6 %>
+          <td class="align-left last-td"><b>Academic Year:&nbsp;&nbsp;&nbsp;</b><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i+1:@connect_exam_obj.published_date.strftime("%Y").to_i+1 %></td>
+        <% else %>
+          <td class="align-left last-td"><b>Academic Year:&nbsp;&nbsp;&nbsp;</b><%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y").to_i-1:@connect_exam_obj.published_date.strftime("%Y").to_i-1 %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
+        <% end %>
+    </tr>
+
+
+</table>

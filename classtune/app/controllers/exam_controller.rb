@@ -2950,6 +2950,7 @@ class ExamController < ApplicationController
     center_align_format = Spreadsheet::Format.new :horizontal_align => :center,  :vertical_align => :middle
     @id = params[:id]
     @connect_exam_obj = ExamConnect.active.find(@id)
+    @exam_comment_all = ExamConnectComment.find_all_by_exam_connect_id(@connect_exam_obj.id)
   
     @batch = Batch.find(@connect_exam_obj.batch_id)
     
@@ -3035,6 +3036,10 @@ class ExamController < ApplicationController
         tmp_row << "F"
       end 
       
+      unless @exam_comment_all.blank? 
+        exam_comment = @exam_comment_all.find{|v| v.student_id.to_i = std_result['id'].to_i }
+      end
+      
       
       if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
         tmp_row <<  @student_position_first_term[std_result['id'].to_i]
@@ -3049,8 +3054,25 @@ class ExamController < ApplicationController
         tmp_row << ""
       end
       
-      tmp_row << ""
-      tmp_row << ""
+      unless exam_comment.blank?
+        total_att = ""
+        absent = ""
+        if !exam_comment.blank?
+          all_comments = exam_comment.comments
+          if !all_comments.blank?
+            all_comments_array = all_comments.split("|")
+            total_att = all_comments_array[0]
+            if !all_comments_array[1].nil?
+              absent = all_comments_array[1]
+            end
+          end
+        end
+        tmp_row << total_att
+        tmp_row << absent
+      else
+        tmp_row << ""
+        tmp_row << ""
+      end
       unless std_result['subjects'].blank?
         @all_subject_connect_exam.each do |value|
           key = value.code.to_s

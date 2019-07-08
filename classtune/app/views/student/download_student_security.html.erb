@@ -12,28 +12,30 @@
         float: left;
     }
     .card-header{
-        width: 50%;
-        margin: 0 auto;
+        width: 100%;
         text-align: center;
     }
-    .card-header h2{padding-bottom: 30px;}
-
     .card-details{
         width: 90%;
         margin: 0 auto;
     }
     .student-info{font-size: 25px;}
-    .incharge{
+    .authorisation{
         float: right;
-        margin-top: 100px;
+        margin-top: 10px;
         margin-right: 80px;
-        font-size: 16px !important;
-        border-top: 2px solid #000;
         width: 200px;
         text-align: center;
     }
+    .authorisation img{
+      width:60%;
+    }
+    .incharge{
+      border-top: 2px #000 solid;
+      font-size: 16px !important;
+    }
     .validtill{
-        margin-top: 200px;
+        margin-top: 160px;
     }
     .chargeinfo{font-size: 15px !important;}
     .std-name{
@@ -65,9 +67,33 @@
         padding: 15px;
         text-align: center;
     }
+    .school-logo{
+      width: 100%;
+      margin-top: 30px;
+    }
+    .school-logo-summerfield{
+      width: 50%;
+      float: left;
+    }
+    .school-logo-summerfield img{
+      width: 70%;
+      margin-left: 30px;
+    }
+    .school-logo-tinytots{
+      width: 50%;
+      float: left;
+    }
+    .school-logo-tinytots img{
+      width: 70%;
+      float: right;
+      margin-right: 20px;
+    }
 
 </style>   
 <% default_image = "public/images/HR/default_employee.png" %>
+<% summerfield = "public/images/summerfield/logo.png" %>
+<% ttots = "public/images/summerfield/ttots.png" %>
+<% signature = "public/images/summerfield/signature.jpg" %>
 <div id="page-yield" class="available_sections1 baf_shaheen">
     <div class="section1 row" >
         <% i = 0 %>
@@ -76,8 +102,17 @@
           <% i = i+1 %>
         <div class="security-card">
               <div class="col-6">
+                  <div class="school-logo">
+                    <div class="school-logo-summerfield">
+                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (summerfield)) %>
+                  </div>
+                  <div class="school-logo-tinytots">
+                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (ttots))%>
+                  </div>
+                  </div>
+                  
                   <div class="card-header">
-                      <h2>The Holder of this card is authorised to collect</h2>
+                      <h3>The Holder of this card is authorised to collect</h3>
                   </div>
                   <div class="card-details">
                       <p class="student-info">
@@ -87,9 +122,10 @@
                           Roll No: <strong><%= card.class_roll_no %></strong><br/> 
                           Date of Issue: <strong><%= Date.today  %> </strong>
                       </p>
-                      <p class="incharge">
-                          Authorised Signature 
-                      </p>
+                      <div class="authorisation">
+                          <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (signature))%>
+                        <p class="incharge"> Authorised Signature </p>
+                      </div>
                       <p class="validtill">Valid till: <strong><%= Date.today + 4.months  %> </strong></p>
                       <p class="chargeinfo"><sup>*</sup>A charge of Taka 200 is to be paid for replacement of the card </p>
                   </div>
@@ -99,7 +135,7 @@
                       <% if card.photo.file? %>
                         <%= image_tag  card.photo.url %>
                       <% else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end  %>
                       <div class="desc">Student</div>
                   </div>
@@ -107,7 +143,7 @@
                       <% if card.student_security %>
                         <img src="<%= card.student_security.photo1   %>" />
                       <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end %>
                       <div class="desc">Parent</div>
                   </div>
@@ -115,7 +151,7 @@
                       <% if card.student_security %>
                         <img src="<%= card.student_security.photo2   %>" />
                       <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end %>
                       <div class="desc">Parent</div>
                   </div>
@@ -123,7 +159,7 @@
                       <% if card.student_security %>
                         <img src="<%= card.student_security.photo3   %>" />
                       <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end %>
                       <div class="desc">Guardian</div>
                   </div>
@@ -131,7 +167,7 @@
                       <% if card.student_security %>
                         <img src="<%= card.student_security.photo4   %>" />
                       <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end %>
                       <div class="desc">Guardian</div>
                   </div>
@@ -139,7 +175,7 @@
                       <% if card.student_security %>
                         <img src="<%= card.student_security.photo5   %>" />
                       <%  else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)),:width=> '85%' %>
+                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
                       <% end %>
                       <div class="desc">Guardian</div>
                   </div>

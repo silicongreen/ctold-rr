@@ -215,7 +215,7 @@
                    <%
                       grade = GradingLevel.grade_point_to_grade(grade_point_avg, @batch.id)
                    %>
-                   <td class="col-pdf font-size-45" rowspan="4" style="text-align:center !important; font-size: 26px !important;"  width="30%"><b>
+                   <td class="col-pdf font-size-45 center-class" rowspan="4"  width="30%"><b>
                            <% if failed == true %>
                               F
                            <% else %>
@@ -365,6 +365,11 @@
       .baf_shaheen td.align-left
       {
          text-align: left !important;
+      }
+      .baf_shaheen table.top-left-center tr.odd td.center-class
+      {
+          text-align:center !important; 
+          font-size: 26px !important;
       }
       .baf_shaheen table.tbl-lign-left tr.even td,.baf_shaheen table.tbl-lign-left tr.odd td
       {

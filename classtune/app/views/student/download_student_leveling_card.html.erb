@@ -11,7 +11,7 @@
             <div class="box-size-6">
                 <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp" colspan="2" width="30%"><b>ID</b></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2" width="40%"><b>ID</b></td> 
                     <td class="col-pdf aling-left no-warp" colspan="2"><%= student.admission_no %></td> 
                   </tr> 
                   <tr class="table-header">
@@ -29,7 +29,7 @@
                   <tr class="table-header">
                     <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
                     <td class="col-pdf aling-left no-warp"><%= student.class_roll_no %></td> 
-                    <td class="col-pdf aling-left no-warp"><b>Version</b></td> 
+                    <td class="col-pdf aling-left no-warp" style="text-align:right;"><b>Version</b></td> 
                     <td class="col-pdf aling-left no-warp"><%= batch_split[1] unless batch_split[1].blank? %></td> 
                   </tr>
                 </table>

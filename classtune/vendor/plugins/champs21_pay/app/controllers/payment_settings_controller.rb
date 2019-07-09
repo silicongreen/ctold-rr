@@ -851,7 +851,7 @@ class PaymentSettingsController < ApplicationController
             end
 
             result = Base64.decode64(status)
-            abort(result.inspect)
+            
             #s = Hash.from_xml(result).to_json
             #@financefee = FinanceFee.find(83278)
             #@student = Student.find(22845)
@@ -1048,6 +1048,7 @@ class PaymentSettingsController < ApplicationController
                 end
               end
               #abort(finance_order.inspect)
+              abort(fees.inspect)
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
 

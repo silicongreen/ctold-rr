@@ -1049,7 +1049,7 @@ class PaymentSettingsController < ApplicationController
                 end
               end
               #abort(finance_order.inspect)
-              abort(fees.inspect)
+              #abort(fees.inspect)
               unless fees.nil?
                 @financefee = FinanceFee.find(fees.id)
 

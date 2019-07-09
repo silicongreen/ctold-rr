@@ -1,0 +1,104 @@
+<div id="page-yield" class="available_sections1 baf_shaheen">
+    <div class="section1 row" >
+        <% std_count = 0 %>
+        <% unless @student_security.blank? %>
+          <% @student_security.each do |student| %>
+            <% std_count = std_count+1 %>
+            <div class="box-size-6">
+                <table id="pdf-table" width="100%" cellspacing="0">
+                  <tr class="table-header">
+                    <td class="col-pdf aling-left no-warp" width="30%"><b>ID</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= student.admission_no %></td> 
+                  </tr> 
+                  <tr class="table-header">
+                    <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= student.full_name %></td> 
+                  </tr>
+                  <tr class="table-header">
+                    <td class="col-pdf aling-left no-warp"><b>Class</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= student.batch.course.course_name %></td> 
+                  </tr>
+                  <tr class="table-header">
+                    <td class="col-pdf aling-left no-warp"><b>Section</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td> 
+                  </tr>
+                  <tr class="table-header">
+                    <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= student.class_roll_no %></td> 
+                  </tr>
+                </table>
+            </div>
+            <% if std_count%12 == 0 %>
+              <div class="page-break-main"></div>
+            <% end %>
+          <% end %>
+        <% end %>
+          
+    </div>
+
+
+</div>
+
+
+<style>
+    .box-size-6
+    {
+        width: 45%;
+        float:left;
+        margin: 30px;
+    }
+    #page-yield 
+    {
+        width:1250px;
+        margin: 0 auto;
+    }
+    .table-header2 td{
+        padding: 13px;
+        border: 1px solid #000000;
+        color: #000000;
+        background: #ffffff;
+        font-size: 27px;
+        text-align:center;
+    }
+    .table-header td{
+        padding: 13px;
+        border: 1px solid #000000;
+        color: #000000;
+        background: #ffffff;
+        font-size: 27px;
+        text-align:center;
+    }
+
+    .header-td > td
+    {
+        padding: 0px;
+    }
+
+    table#pdf-table{
+        border-top: 1px solid #000000;
+        border-collapse:collapse
+    }
+
+    #pdf-header-south{
+        width:1000px;
+    }
+    .no-warp
+    {
+        white-space: nowrap;
+    }
+    .page-break2 td{
+        height: 60px;
+        border: 1px solid #fff;
+    }
+
+    .page-break td{
+        height: 95px;
+        border: 1px solid #fff;
+    }
+
+    .table-header td.aling-left
+    {
+        text-align:left !important;
+    }
+    div.page-break-main { display:block; clear:both; page-break-after:always; }
+</style>    

@@ -1,11 +1,11 @@
 <style>
-    div.page-break-main { display:block; clear:both; page-break-after:always; height: 200px; }
+    div.page-break-main { display:block; clear:both; page-break-after:always;}
     .security-card{
         width: 99%;
         height:570px;
         border: 2px solid #000;
-        margin-bottom: 60px;
-        margin-top: 60px;
+        margin-bottom: 30px;
+        margin-top: 90px;
     }
     .col-6{
         width:50%;
@@ -48,7 +48,6 @@
     {
         width:1250px;
         margin: 0 auto;
-        overflow: hidden;
     }
 
     div.galleryimg {
@@ -70,6 +69,7 @@
     .school-logo{
       width: 100%;
       margin-top: 30px;
+      margin-bottom: 120px;
     }
     .school-logo-summerfield{
       width: 50%;
@@ -133,10 +133,15 @@
               <div class="col-6 card-images">
                   <div class="galleryimg">
                       <% if card.photo.file? %>
-                        <%= image_tag  card.photo.url %>
+                      <% profile_image = card.photo.url %>
+                        <% unless profile_image.index("RackMultipart").nil? %>	
+                           <% profile_image.gsub! '?', '.?' %>	
+                        <% end %>
                       <% else %>
-                        <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ (default_image)) %>
-                      <% end  %>
+                        <% profile_image = default_image %>
+                      <% end %>
+                      <%= wicked_pdf_image_tag "/"+"#{Rails.root}/public/"+ "#{profile_image}" %>
+                      
                       <div class="desc">Student</div>
                   </div>
                   <div class="galleryimg">

@@ -9967,7 +9967,71 @@ class FinanceController < ApplicationController
     student = Student.find_by_id(params[:student_id])
     FinanceFee.new_student_fee(fee_collection,student)
   end
+  
+  #Student Scholarship start
+  
+  def student_scholarship
+    @batches = Batch.active.map{|b| [b.full_name, b.id]}
+    @courses = Course.active
+    fee_cateroies = FinanceFeeParticularCategory.active
+    @particular = fee_cateroies.map{|p| [p.name, p.id]}
+  end
 
+  def load_scholarship_students
+    if params[:id].present?
+      @batch_id = params[:id]
+      @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
+    end
+    render :update do |page|
+      page.replace_html "students" ,:partial => "scholarship_student_list"
+    end
+  end
+#{"students"=>["1799", "11193", "11197", "1881", "11195"], "type"=>"1", "name"=>"ee", "finance_fee_category_id"=>"0",
+# "is_amount"=>"false", "discount"=>"4"}
+  def create_student_scholarship
+    @error = false
+    @fee_discount = FeeDiscount.new
+    batch = Batch.find_by_id(params[:fee_discount][:batch_id])
+      unless (params[:fee_discount][:students]).blank?
+        student_ids = params[:fee_discount][:students]
+        student_ids.each do |si|
+          s = Student.find(si)
+          unless s.nil?
+            if FeeDiscount.find_by_receiver_id('StudentFeeDiscount',s.id).present?
+              @error = true
+              @fee_discount.errors.add_to_base("#{t('flash20')} - #{a}")
+            end
+            unless (s.batch_id == batch.id)
+              @error = true
+              @fee_discount.errors.add_to_base("#{a} #{t('does_not_belong_to_batch')} #{batch.full_name}")
+            end
+          else
+            @error = true
+            @fee_discount.errors.add_to_base("#{a} #{t('is_invalid_admission_no')}")
+          end
+        end
+        unless @error
+          student_ids.each do |si|
+            s = Student.find(si)
+            @fee_discount.is_onetime= params[:fee_discount][:type]
+            @fee_discount.receiver_type="Student"
+            @fee_discount.receiver_id = s.id
+            @fee_discount.batch_id=s.batch_id
+            @fee_discount.finance_fee_particular_category_id = params[:fee_discount][:discount_on]
+            @fee_discount.is_amount = params[:fee_discount][:is_amount]
+            unless @fee_discount.save
+              @error = true
+            end
+          end
+        end
+      else
+        @error = true
+        @fee_discount.errors.add_to_base("#{t('admission_cant_be_blank')}")
+      end
+      redirect_to :action => 'student_scholarship'
+  end
+  #Student Scholarship end
+  
   private
 
   def date_format(date)
@@ -10633,7 +10697,6 @@ class FinanceController < ApplicationController
       end
     end
   end
-
 
 
 end

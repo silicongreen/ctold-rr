@@ -4,31 +4,37 @@
         <% unless @student_security.blank? %>
           <% @student_security.each do |student| %>
             <% std_count = std_count+1 %>
+            <% batch_split = student.batch.name.split(" ") %>
+            <% unless batch_split[2].blank?  %>
+              <% batch_split[1] = batch_split[1]+" "+batch_split[2] %>
+            <% end %>
             <div class="box-size-6">
                 <table id="pdf-table" width="100%" cellspacing="0">
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp" width="30%"><b>ID</b></td> 
-                    <td class="col-pdf aling-left no-warp"><%= student.admission_no %></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2" width="30%"><b>ID</b></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><%= student.admission_no %></td> 
                   </tr> 
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp"><b>Name</b></td> 
-                    <td class="col-pdf aling-left no-warp"><%= student.full_name %></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><b>Name</b></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><%= student.full_name %></td> 
                   </tr>
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp"><b>Class</b></td> 
-                    <td class="col-pdf aling-left no-warp"><%= student.batch.course.course_name %></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><b>Class</b></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><%= student.batch.course.course_name %></td> 
                   </tr>
                   <tr class="table-header">
-                    <td class="col-pdf aling-left no-warp"><b>Section</b></td> 
-                    <td class="col-pdf aling-left no-warp"><%= student.batch.course.section_name %></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><b>Section</b></td> 
+                    <td class="col-pdf aling-left no-warp" colspan="2"><%= student.batch.course.section_name %></td> 
                   </tr>
                   <tr class="table-header">
                     <td class="col-pdf aling-left no-warp"><b>Roll</b></td> 
                     <td class="col-pdf aling-left no-warp"><%= student.class_roll_no %></td> 
+                    <td class="col-pdf aling-left no-warp"><b>Version</b></td> 
+                    <td class="col-pdf aling-left no-warp"><%= batch_split[1] unless batch_split[1].blank? %></td> 
                   </tr>
                 </table>
             </div>
-            <% if std_count%10 == 0 %>
+            <% if std_count%14 == 0 %>
               <div class="page-break-main"></div>
             <% end %>
           <% end %>
@@ -43,9 +49,9 @@
 <style>
     .box-size-6
     {
-        width: 42%;
+        width: 40%;
         float:left;
-        margin: 40px;
+        margin: 40px 60px;
     }
     #page-yield 
     {
@@ -53,7 +59,7 @@
         margin: 0 auto;
     }
     .table-header2 td{
-        padding: 13px;
+        padding: 5px;
         border: 1px solid #000000;
         color: #000000;
         background: #ffffff;
@@ -61,7 +67,7 @@
         text-align:center;
     }
     .table-header td{
-        padding: 13px;
+        padding: 5px;
         border: 1px solid #000000;
         color: #000000;
         background: #ffffff;

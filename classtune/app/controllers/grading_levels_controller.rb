@@ -55,14 +55,19 @@ class GradingLevelsController < ApplicationController
           @batches = Batch.find_all_by_course_id(c.id)
           @grading_level.batch_id = @batches[0].id
           @batches.each do |batch|
-            @tmp_grading_level = GradingLevel.new(params[:grading_level])
-            @tmp_grading_level.batch_id = batch.id
-            if params[:grading_level][:type_data] == "percentage"
-              @tmp_grading_level.max_score = nil
-            end
-            unless @tmp_grading_level.save
-              @error_data = true
-            end
+            @find_grading_level = GradingLevel.find_by_batch_id_and_name(batch.id,params[:grading_level][:name])
+            if @find_grading_level.blank?
+              @tmp_grading_level = GradingLevel.new(params[:grading_level])
+              @tmp_grading_level.batch_id = batch.id
+              if params[:grading_level][:type_data] == "percentage"
+                @tmp_grading_level.max_score = nil
+              end
+              unless @tmp_grading_level.save
+                @error_data = true
+              end
+            else
+              @find_grading_level.update_attributes(params[:grading_level])
+            end  
           end  
         end
       else

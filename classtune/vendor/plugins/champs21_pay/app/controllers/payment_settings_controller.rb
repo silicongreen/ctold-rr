@@ -1320,7 +1320,7 @@ class PaymentSettingsController < ApplicationController
                       @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
 
                       @paid_fees = @financefee.finance_transactions
-
+                      abort(@batch.inspect)
                       if advance_fee_collection
                         fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
                         if fee_collection_advances_particular.include?(0)

@@ -474,14 +474,14 @@
                   monthly_mark_multiply2 = 10
                 end 
                 
-                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or (sub['grade_subject'].to_i == 1 && @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4)
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or (sub['grade_subject'].to_i == 1 && (@connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4))
                   monthly_mark_multiply = monthly_mark_multiply/2
                   monthly_mark_multiply2 = monthly_mark_multiply2/2
                 end
                 
                 monthly_total_main_mark1 = monthly_total_mark1
                 monthly_total_main_mark2 = monthly_total_mark2
-                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
+                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and ( sub['grade_subject'].to_i != 1 or (@connect_exam_obj.result_type != 3 and @connect_exam_obj.result_type != 4) )
                   if monthly_total_mark1 > 0
                     monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     monthly_total_mark1 = monthly_total_mark1.round()

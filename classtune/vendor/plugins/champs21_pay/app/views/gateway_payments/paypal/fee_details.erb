@@ -977,7 +977,7 @@
       <% @student_has_due = false %>
       <% end %>
       <% if @student_has_due == false #and @financefee.batch_id == @student.batch_id %>
-        <%= total_fees + " DID DID DID" %>
+        <%= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
             <tr>

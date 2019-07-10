@@ -1386,8 +1386,7 @@ class PaymentSettingsController < ApplicationController
                         unless multiple.nil?
                           if multiple.to_s == "true"
                             fees = request_params[:fees].split(",")
-                            submission_date = Date.today
-                            arrange_multiple_pay(@student.id, fees, submission_date)
+                            arrange_multiple_pay(@student.id, fees, nil)
                             pay_student_index(amount_from_gateway, total_fees, request_params, orderId, verification_trans_date, ref_id, fees)
                           else
                             pay_student(amount_from_gateway, total_fees, request_params, orderId, verification_trans_date, ref_id)

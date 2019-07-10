@@ -2598,8 +2598,7 @@ class PaymentSettingsController < ApplicationController
             loop_particular = 0
             
             unless request_params.nil?
-              abort(@fee_particulars.inspect)
-              abort("here")
+              abort("lloolaa")
               @fee_particulars.each do |fp|
                 advanced = false
                 particular_amount = fp.amount.to_f

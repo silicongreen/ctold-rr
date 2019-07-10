@@ -2597,6 +2597,7 @@ class PaymentSettingsController < ApplicationController
             loop_particular = 0
             unless request_params.nil?
               @fee_particulars.each do |fp|
+                abort(@fee_particulars.inspect)
                 advanced = false
                 particular_amount = fp.amount.to_f
                 unless request_params["fee_particular_" + fp.id.to_s].nil?
@@ -3003,7 +3004,7 @@ class PaymentSettingsController < ApplicationController
             messages = []
             messages[0] = message
             #sms = Delayed::Job.enqueue(SmsManager.new(message,recipients))
-            send_sms(messages,recipients)
+            #send_sms(messages,recipients)
           end
 
 

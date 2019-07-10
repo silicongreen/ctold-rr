@@ -2568,6 +2568,7 @@ class PaymentSettingsController < ApplicationController
   end
   
   def pay_student(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id)
+    abort("HERE")
     unless @financefee.is_paid?
       unless amount_from_gateway.to_f < 0
           unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f

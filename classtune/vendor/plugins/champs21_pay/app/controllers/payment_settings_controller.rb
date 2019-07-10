@@ -1387,6 +1387,9 @@ class PaymentSettingsController < ApplicationController
                           if multiple.to_s == "true"
                             fees = request_params[:fees].split(",")
                             arrange_multiple_pay(@student.id, fees, nil)
+                            unless request_params.nil?
+                              total_fees = request_params[:amount_to_pay]
+                            end
                             pay_student_index(amount_from_gateway, total_fees, request_params, orderId, verification_trans_date, ref_id, fees)
                           else
                             pay_student(amount_from_gateway, total_fees, request_params, orderId, verification_trans_date, ref_id)
@@ -3230,12 +3233,6 @@ class PaymentSettingsController < ApplicationController
   end
   
   def pay_student_index(amount_from_gateway, total_fees, request_params, orderId, trans_date, ref_id, fees)
-    unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
-      abort("HERE")
-    else  
-      abort(amount_from_gateway.to_s + "   " + total_fees.to_s)
-    end
-    
       unless amount_from_gateway.to_f < 0
         unless amount_from_gateway.to_f > Champs21Precision.set_and_modify_precision(total_fees).to_f
           transaction_parent = FinanceTransaction.new

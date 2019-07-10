@@ -793,13 +793,13 @@ module OnlinePayment
                           fees.each do |fee|
                             f = fee.to_i
                             payment = Payment.find(:first, :conditions => "order_id = '#{validation_orderId}' and payee_id = #{@student.id} and payment_id = #{f}")
-                            payment.update_attributes(:gateway_response => validation_response, :validation_response => validation_response)
+                            payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
                           end
                         else
-                          payment.update_attributes(:gateway_response => validation_response, :validation_response => validation_response)
+                          payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
                         end
                       else
-                        payment.update_attributes(:gateway_response => validation_response, :validation_response => validation_response)
+                        payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response)
                       end
                     end
                     

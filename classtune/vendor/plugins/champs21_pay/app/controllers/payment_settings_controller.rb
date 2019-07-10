@@ -2856,6 +2856,9 @@ class PaymentSettingsController < ApplicationController
               @finance_order.update_attributes(:status => 1)
 
             else
+              abort('here-1')
+              abort(@fee_particulars.inspect)
+              abort("here-1")
               @fee_particulars.each do |fp|
                 particular_amount = fp.amount.to_f
                 finance_transaction_particular = FinanceTransactionParticular.new

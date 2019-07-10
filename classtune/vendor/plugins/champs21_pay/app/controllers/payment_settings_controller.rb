@@ -1385,6 +1385,7 @@ class PaymentSettingsController < ApplicationController
                         multiple = request_params[:multiple]
                         unless multiple.nil?
                           if multiple.to_s == "true"
+                            abort("here")
                             fees = request_params[:fees].split(",")
                             pay_student_index(amount_from_gateway, total_fees, request_params, orderId, verification_trans_date, ref_id, fees)
                           else

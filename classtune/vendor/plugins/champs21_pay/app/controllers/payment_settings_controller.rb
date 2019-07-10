@@ -2598,7 +2598,6 @@ class PaymentSettingsController < ApplicationController
             loop_particular = 0
             
             unless request_params.nil?
-              abort('here')
               abort(@fee_particulars.inspect)
               abort("here")
               @fee_particulars.each do |fp|

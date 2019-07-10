@@ -17,196 +17,198 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <% unless @discounts.blank? %>
-
   <% unless flash[:notice].nil? %>
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
-  <hr style="border-top: 1px solid #ccc;" />
-  <h4>Batch Wise Discount</h4>  
-  
-  <% batch_discount = @discounts.select{|d| d.receiver_type == 'Batch'} %>
-  <% if batch_discount.length > 0 %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% batch_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-          <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
-        </td>
-       
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-              <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
-            </div>
-            </td>
-      </tr>
+  <% unless @discounts.first.finance_fee_category_id == 0 %>
+    <hr style="border-top: 1px solid #ccc;" />
+    <h4>Batch Wise Discount</h4>  
+
+    <% batch_discount = @discounts.select{|d| d.receiver_type == 'Batch'} %>
+    <% if batch_discount.length > 0 %>
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <thead><!-- class="thead-inverse" -->
+              <tr>
+                  <th><%= t('name') %></th>
+                  <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('discount') %></th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <% batch_discount.each do |f| %>
+                <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
+                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
+                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+                        <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                    </td>
+
+                    <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                        <div class="options">
+                            <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                            <%if f.collection_exist%>
+                              <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                            <%end%>
+
+                        </div>
+                    </td>
+                </tr>
+              <% end %>
+          </tbody>
+      </table>
+    <% else %>
+      <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+          <thead><!-- class="thead-inverse" -->
+              <tr>
+                  <th><%= t('name') %></th>
+                  <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('discount') %></th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td colspan="4"><%= t('no_discount_found_batch_wise') %></td>
+              </tr>
+          </tbody>  
+      </table>
     <% end %>
-    </tbody>
-  </table>
-  <% else %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="4"><%= t('no_discount_found_batch_wise') %></td>
-        </tr>
-    </tbody>  
-  </table>
-  <% end %>
-  
   <br />
   <hr style="border-top: 1px solid #ccc;" />
   <h4>Student Category Wise Discount</h4>  
   <% category_discount = @discounts.select{|d| d.receiver_type == 'StudentCategory'} %>
   <% if category_discount.length > 0 %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('student_category') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% category_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.category_name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-          <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
-        </td>
-       
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-              <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
-            </div>
-            </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+            <tr>
+                <th><%= t('name') %></th>
+                <th><%= t('discount_type_txt') %></th>
+                <th><%= t('student_category') %></th>
+                <th><%= t('discount') %></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% category_discount.each do |f| %>
+              <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.category_name %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+                      <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                  </td>
+
+                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                      <div class="options">
+                          <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                          <%if f.collection_exist%>
+                            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                          <%end%>
+
+                      </div>
+                  </td>
+              </tr>
+            <% end %>
+        </tbody>
+    </table>
   <% else %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('student_category') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="5"><%= t('no_discount_found_student_category_wise') %></td>
-        </tr>
-    </tbody>  
-  </table>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+            <tr>
+                <th><%= t('name') %></th>
+                <th><%= t('discount_type_txt') %></th>
+                <th><%= t('student_category') %></th>
+                <th><%= t('discount') %></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5"><%= t('no_discount_found_student_category_wise') %></td>
+            </tr>
+        </tbody>  
+    </table>
   <% end %>
-  
+  <% end %>
+
   <br />
   <hr style="border-top: 1px solid #ccc;" />
   <h4>Student Wise Discount</h4>  
   <% student_discount = @discounts.select{|d| d.receiver_type == 'Student'} %>
   <% if student_discount.length > 0 %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('student_name') %></th>
-        <th><%= t('admission_no') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <% student_discount.each do |f| %>
-      <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_short_name %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_admission_no %></td>
-        <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-          <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
-        </td>
-       
-          <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
-            <div class="options">
-            <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%if f.collection_exist%>
-            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
-            <%end%>
-            
-            </div>
-            </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+            <tr>
+                <th><%= t('name') %></th>
+                <th><%= t('discount_type_txt') %></th>
+                <th><%= t('student_name') %></th>
+                <th><%= t('admission_no') %></th>
+                <th><%= t('discount') %></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% student_discount.each do |f| %>
+              <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_short_name %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_admission_no %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
+                      <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                  </td>
+
+                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                      <div class="options">
+                          <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                          <%if f.collection_exist%>
+                            <span class="small"><%= link_to_remote "#{t('edit_text')}", :url => {:action => 'edit_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
+                          <%end%>
+
+                      </div>
+                  </td>
+              </tr>
+            <% end %>
+        </tbody>
+    </table>
   <% else %>
-  <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('discount_type_txt') %></th>
-        <th><%= t('student_name') %></th>
-        <th><%= t('admission_no') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="6"><%= t('no_discount_found_student_wise') %></td>
-        </tr>
-    </tbody>  
-  </table>
+    <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+        <thead><!-- class="thead-inverse" -->
+            <tr>
+                <th><%= t('name') %></th>
+                <th><%= t('discount_type_txt') %></th>
+                <th><%= t('student_name') %></th>
+                <th><%= t('admission_no') %></th>
+                <th><%= t('discount') %></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="6"><%= t('no_discount_found_student_wise') %></td>
+            </tr>
+        </tbody>  
+    </table>
   <% end %>
 <% else %>
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
-    <thead><!-- class="thead-inverse" -->
-      <tr>
-        <th><%= t('name') %></th>
-        <th><%= t('student_category') %></th>
-        <th><%= t('student_name') %></th>
-        <th><%= t('discount') %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="4"><%= t('no_discount_found') %></td>
-        </tr>
-    </tbody>  
+      <thead><!-- class="thead-inverse" -->
+          <tr>
+              <th><%= t('name') %></th>
+              <th><%= t('student_category') %></th>
+              <th><%= t('student_name') %></th>
+              <th><%= t('discount') %></th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td colspan="4"><%= t('no_discount_found') %></td>
+          </tr>
+      </tbody>  
   </table>
 
 <% end %>
+
+

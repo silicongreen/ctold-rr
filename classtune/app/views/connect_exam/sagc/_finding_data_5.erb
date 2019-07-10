@@ -444,7 +444,8 @@
                 total_mark2_80 = total_mark2.to_f
                 if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                   total_mark2_80 = total_mark2.to_f*term_mark_multiplier
-                end  
+                end 
+        
 
                 
 
@@ -473,7 +474,7 @@
                   monthly_mark_multiply2 = 10
                 end 
                 
-                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
+                if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or (sub['grade_subject'].to_i == 1 && @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4)
                   monthly_mark_multiply = monthly_mark_multiply/2
                   monthly_mark_multiply2 = monthly_mark_multiply2/2
                 end

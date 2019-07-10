@@ -2596,10 +2596,10 @@ class PaymentSettingsController < ApplicationController
 
             proccess_particulars_category = []
             loop_particular = 0
-            abort(request_params.inspect)
             unless request_params.nil?
+              abort(@fee_particulars.inspect)
+              abort("here")
               @fee_particulars.each do |fp|
-                abort(@fee_particulars.inspect)
                 advanced = false
                 particular_amount = fp.amount.to_f
                 unless request_params["fee_particular_" + fp.id.to_s].nil?

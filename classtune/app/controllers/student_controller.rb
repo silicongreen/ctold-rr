@@ -6383,7 +6383,9 @@ class StudentController < ApplicationController
                   if particular_amount.to_f != transaction.amount.to_f
                     finance_notmatch_transaction = FinanceNotmatchTransaction.new
                     finance_notmatch_transaction.transaction_id = transaction_id
+                    finance_notmatch_transaction.run_from = "StudentController - PayStudentIndex"
                     finance_notmatch_transaction.save
+                    
                   end
 
                   payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, f)
@@ -6864,6 +6866,7 @@ class StudentController < ApplicationController
           if particular_amount.to_f != transaction.amount.to_f
             finance_notmatch_transaction = FinanceNotmatchTransaction.new
             finance_notmatch_transaction.transaction_id = transaction_id
+            finance_notmatch_transaction.run_from = "StudentController - PayStudent"
             finance_notmatch_transaction.save
           end
           

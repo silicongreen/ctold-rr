@@ -639,6 +639,7 @@ class PaymentSettingsController < ApplicationController
                     if particular_amount.to_f != transaction.amount.to_f
                       finance_notmatch_transaction = FinanceNotmatchTransaction.new
                       finance_notmatch_transaction.transaction_id = transaction_id
+                      finance_notmatch_transaction.run_from = "PaymentSettingsController - PaymentVerification"
                       finance_notmatch_transaction.save
                     end
                     
@@ -1554,6 +1555,7 @@ class PaymentSettingsController < ApplicationController
                           if particular_amount.to_f != transaction.amount.to_f
                             finance_notmatch_transaction = FinanceNotmatchTransaction.new
                             finance_notmatch_transaction.transaction_id = transaction_id
+                            finance_notmatch_transaction.run_from = "PaymentSettingsController - OrderVerification"
                             finance_notmatch_transaction.save
                           end
                       
@@ -3216,6 +3218,7 @@ class PaymentSettingsController < ApplicationController
           if particular_amount.to_f != transaction.amount.to_f
             finance_notmatch_transaction = FinanceNotmatchTransaction.new
             finance_notmatch_transaction.transaction_id = transaction_id
+            finance_notmatch_transaction.run_from = "PaymentSettingsController - PayStudent"
             finance_notmatch_transaction.save
           end
           
@@ -3585,6 +3588,7 @@ class PaymentSettingsController < ApplicationController
                   if particular_amount.to_f != transaction.amount.to_f
                     finance_notmatch_transaction = FinanceNotmatchTransaction.new
                     finance_notmatch_transaction.transaction_id = transaction_id
+                    finance_notmatch_transaction.run_from = "PaymentSettingsController - PayStudentIndex"
                     finance_notmatch_transaction.save
                   end
 

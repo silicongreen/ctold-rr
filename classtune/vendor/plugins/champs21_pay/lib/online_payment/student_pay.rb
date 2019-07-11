@@ -2244,6 +2244,7 @@ module OnlinePayment
                     if particular_amount.to_f != transaction.amount.to_f
                       finance_notmatch_transaction = FinanceNotmatchTransaction.new
                       finance_notmatch_transaction.transaction_id = transaction_id
+                      finance_notmatch_transaction.run_from = "StudentPayController - PayStudentIndex"
                       finance_notmatch_transaction.save
                     end
 
@@ -2724,6 +2725,7 @@ module OnlinePayment
 
             if particular_amount.to_f != transaction.amount.to_f
               finance_notmatch_transaction = FinanceNotmatchTransaction.new
+              finance_notmatch_transaction.run_from = "StudentPayController - PayStudent"
               finance_notmatch_transaction.transaction_id = transaction_id
               finance_notmatch_transaction.save
             end

@@ -1211,7 +1211,7 @@ class PaymentSettingsController < ApplicationController
                 
                 request_params = @finance_order.request_params
                 
-            
+                abort(request_params.inspect)
                 unless request_params.nil?
                   multiple = request_params[:multiple]
                   unless multiple.nil?

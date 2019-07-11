@@ -1211,7 +1211,7 @@ class PaymentSettingsController < ApplicationController
                 
                 request_params = @finance_order.request_params
                 
-                abort(request_params.inspect)
+                #abort(request_params.inspect)
                 unless request_params.nil?
                   multiple = request_params[:multiple]
                   unless multiple.nil?
@@ -1221,7 +1221,8 @@ class PaymentSettingsController < ApplicationController
                         f = fee.to_i
                         payment = Payment.find(:first, :conditions => "order_id = '#{verification_orderId}' and payee_id = #{@student.id} and payment_id = #{f}")
                         if payment.nil?
-                          payment = Payment.new(:payee => @student,:payment => @financefee, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
+                          f1 = FinanceFee.find(fees.id)
+                          payment = Payment.new(:payee => @student,:payment => f1, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                           payment.save
                         else
                           payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)

@@ -1221,7 +1221,7 @@ class PaymentSettingsController < ApplicationController
                         f = fee.to_i
                         payment = Payment.find(:first, :conditions => "order_id = '#{verification_orderId}' and payee_id = #{@student.id} and payment_id = #{f}")
                         if payment.nil?
-                          f1 = FinanceFee.find(fees.id)
+                          f1 = FinanceFee.find(f)
                           payment = Payment.new(:payee => @student,:payment => f1, :order_id => orderId,:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                           payment.save
                         else

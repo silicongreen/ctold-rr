@@ -1051,6 +1051,7 @@ class PaymentSettingsController < ApplicationController
               #abort(finance_order.inspect)
               #abort(fees.inspect)
               unless fees.nil?
+                abort('here')
                 @financefee = FinanceFee.find(fees.id)
 
                 request_url = @verification_url + '/Transaction_Verify_Details'

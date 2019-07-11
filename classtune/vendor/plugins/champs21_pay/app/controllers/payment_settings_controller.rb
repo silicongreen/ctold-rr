@@ -1030,7 +1030,7 @@ class PaymentSettingsController < ApplicationController
               #fee_collection = FinanceFeeCollection.find(:all, :conditions => "due_date >= #{start_month.to_date} and end_date >= #{end_month.to_date}")
               unless @student.nil?
                 finance_order = FinanceOrder.find_by_order_id(o)
-                
+                abort(finance_order.inspect)
                 unless finance_order.nil?
                   fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{finance_order.finance_fee_id}")
                 else  
@@ -1051,7 +1051,7 @@ class PaymentSettingsController < ApplicationController
               #abort(finance_order.inspect)
               #abort(fees.inspect)
               unless fees.nil?
-                abort('here')
+                
                 @financefee = FinanceFee.find(fees.id)
 
                 request_url = @verification_url + '/Transaction_Verify_Details'

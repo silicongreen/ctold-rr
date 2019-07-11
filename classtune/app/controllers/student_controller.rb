@@ -6362,6 +6362,29 @@ class StudentController < ApplicationController
                       end
                     end
                   end
+                  
+                  transaction_id = transaction.id
+                  particular_amount = 0.00
+                  particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                  particular_wise_transactions.each do |pt|
+                    particular_amount += pt.amount.to_f
+                  end
+
+                  particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                  particular_wise_transactions.each do |pt|
+                    particular_amount += pt.amount.to_f
+                  end
+
+                  particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                  particular_wise_transactions.each do |pt|
+                    particular_amount -= pt.amount.to_f
+                  end
+
+                  if particular_amount.to_f != transaction.amount.to_f
+                    finance_notmatch_transaction = FinanceNotmatchTransaction.new
+                    finance_notmatch_transaction.transaction_id = transaction_id
+                    finance_notmatch_transaction.save
+                  end
 
                   payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, f)
                   #abort(payment.inspect)
@@ -6821,6 +6844,29 @@ class StudentController < ApplicationController
             end
           end
 
+          transaction_id = transaction.id
+          particular_amount = 0.00
+          particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          particular_wise_transactions.each do |pt|
+            particular_amount += pt.amount.to_f
+          end
+
+          particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          particular_wise_transactions.each do |pt|
+            particular_amount += pt.amount.to_f
+          end
+
+          particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction_id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+          particular_wise_transactions.each do |pt|
+            particular_amount -= pt.amount.to_f
+          end
+
+          if particular_amount.to_f != transaction.amount.to_f
+            finance_notmatch_transaction = FinanceNotmatchTransaction.new
+            finance_notmatch_transaction.transaction_id = transaction_id
+            finance_notmatch_transaction.save
+          end
+          
           payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, @financefee.id)
           payment.update_attributes(:finance_transaction_id => transaction.id)
           unless @financefee.transaction_id.nil?

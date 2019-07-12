@@ -1393,7 +1393,7 @@ class FinanceController < ApplicationController
         #        end
         #        abort(online_id.inspect)
         unless params[:test].nil?
-          if params[:test].to_i == 1
+          if params[:test].to_i > 0
             trans_ids = []
             p_amount = 0.00
             a_amount = 0.00
@@ -1413,26 +1413,46 @@ class FinanceController < ApplicationController
             @transactions = FinanceTransaction.find(:all, :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id")
             #abort(@transactions.length.to_s)
             @transactions.each do |pwt|
-              amount = 0.00
-              @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-              @particular_wise_transactions.each do |pt|
-                amount += pt.amount.to_f
-                p_amount += pt.amount.to_f
+              if params[:test].to_i == 1
+                amount = 0.00
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                @particular_wise_transactions.each do |pt|
+                  amount += pt.amount.to_f
+                  p_amount += pt.amount.to_f
+                end
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                @particular_wise_transactions.each do |pt|
+                  amount += pt.amount.to_f
+                  a_amount += pt.amount.to_f
+                end
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                @particular_wise_transactions.each do |pt|
+                  amount -= pt.amount.to_f
+                  d_amount += pt.amount.to_f
+                end
+                if amount.to_f != pwt.amount.to_f
+                  trans_ids << pwt.id
+                end
+                tot_amount += amount
+              elsif params[:test].to_i == 2  
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "id, amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"])
+                @particular_wise_transactions.each do |pt|
+                  particular_id = pt.id
+                  fpt = FinanceFeeParticular.find(:all, :conditions => "id = #{particular_id}")
+                  if fpt.nil?
+                    trans_ids << particular_id
+                  end
+                end
+              elsif params[:test].to_i == 3  
+                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "id, amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"])
+                @particular_wise_transactions.each do |pt|
+                  particular_id = pt.id
+                  fpt = FeeDiscount.find(:all, :conditions => "id = #{particular_id}")
+                  if fpt.nil?
+                    trans_ids << particular_id
+                  end
+                end
               end
-              @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-              @particular_wise_transactions.each do |pt|
-                amount += pt.amount.to_f
-                a_amount += pt.amount.to_f
-              end
-              @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-              @particular_wise_transactions.each do |pt|
-                amount -= pt.amount.to_f
-                d_amount += pt.amount.to_f
-              end
-              if amount.to_f != pwt.amount.to_f
-                trans_ids << pwt.id
-              end
-              tot_amount += amount
             end
             abort(trans_ids.inspect)
           end

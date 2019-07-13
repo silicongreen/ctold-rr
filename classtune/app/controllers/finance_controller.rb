@@ -1439,7 +1439,7 @@ class FinanceController < ApplicationController
                 if pwt.amount.to_f != online_payment.gateway_response[:amount].to_f
                   order_id = online_payment.order_id
                   online_amount = online_payment.gateway_response[:amount].to_f
-                  online_payments = Payment.find(:all, :conditions => "order_id = #{order_id}")
+                  online_payments = Payment.find(:all, :conditions => "order_id = '#{order_id}'")
                   transaction_ids = online_payments.map(&:finance_transaction_id)
                   @online_payment_transactions = FinanceTransaction.find(:all, :conditions => ["id IN (#{transaction_ids.join(",")})"])
                   amt = 0.0

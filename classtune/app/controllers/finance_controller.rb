@@ -1435,22 +1435,14 @@ class FinanceController < ApplicationController
                 end
                 tot_amount += amount
               elsif params[:test].to_i == 2  
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "id, amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"])
-                @particular_wise_transactions.each do |pt|
-                  particular_id = pt.id
-                  fpt = FinanceFeeParticular.find(:all, :conditions => "id = #{particular_id}")
-                  if fpt.nil?
-                    trans_ids << particular_id
-                  end
+                online_payments = Payment.find(:first, :conditions => "finance_transaction_id = #{pwt.id}")
+                if pwt.amount.to_f != online_payments.gateway_response[:amount].to_f
+                  trans_ids << pwt.id
                 end
               elsif params[:test].to_i == 3  
-                @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "id, amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{pwt.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"])
-                @particular_wise_transactions.each do |pt|
-                  particular_id = pt.id
-                  fpt = FeeDiscount.find(:all, :conditions => "id = #{particular_id}")
-                  if fpt.nil?
-                    trans_ids << particular_id
-                  end
+                online_payments = Payment.find(:all, :conditions => "finance_transaction_id = #{pwt.id}")
+                if online_payments.length > 1
+                  trans_ids << pwt.id
                 end
               end
             end

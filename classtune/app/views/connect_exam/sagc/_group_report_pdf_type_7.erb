@@ -459,7 +459,8 @@
                     
                   <tr class="page-break-grade">
                      <td colspan="100"></td>
-                  </tr> 
+                  </tr>
+                  <% subject_count = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
@@ -469,7 +470,8 @@
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
                           <% total_subject = total_subject+1 %>
-                          <td class="col-pdf"><%= total_subject %></td>
+                          <% subject_count = subject_count+1 %>
+                          <td class="col-pdf"><%= subject_count %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   

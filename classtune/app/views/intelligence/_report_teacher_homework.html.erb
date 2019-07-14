@@ -88,7 +88,7 @@
                                       <button data-balloon="<%= ballon_text %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id.count %></button>
                                       <% employee['homework_given'] = hw_given_id.count %>
                                     <% else %>
-                                      <%= employee['homework_given'].to_i %>
+                                      <%= employee['homework_given'] %>
                                     <% end %>  
                                       
                              </b></td>
@@ -99,7 +99,7 @@
                                       <button data-balloon="<%= ballon_text_3pm %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id_3pm.count %></button>
                                       <% employee['homework_given_before_3pm'] = hw_given_id_3pm.count %>
                                     <% else %>
-                                      <%= employee['homework_given_before_3pm'].to_i %>
+                                      <%= employee['homework_given_before_3pm'] %>
                                     <% end %> 
                                       
                              </b></td>

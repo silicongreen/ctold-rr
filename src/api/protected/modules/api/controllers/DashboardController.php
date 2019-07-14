@@ -765,6 +765,21 @@ class DashboardController extends Controller
 
         if ($target && $id && Yii::app()->user->user_secret === $user_secret && (Yii::app()->user->isTeacher || Yii::app()->user->isStudent || (Yii::app()->user->isParent && $student_id && $batch_id)))
         {
+            
+            $batch_id_new = 0;
+            if(Yii::app()->user->isStudent && Yii::app()->user->isParent)
+            {
+                if (Yii::app()->user->isStudent)
+                {
+                    $student_id = Yii::app()->user->profileId;
+                }
+                $studentObj = new Students();
+                $std_data = $studentObj->findByPk($student_id);
+                if($std_data)
+                {
+                    $batch_id_new = $std_data->batch_id;
+                }
+            }
 
             $post_data = array();
             if (empty($page_number))
@@ -1304,6 +1319,7 @@ class DashboardController extends Controller
             $response['data']['total'] = 1;
             $response['data']['has_next'] = false;
             $response['data']['post'] = $post_data;
+            $response['data']['batch_id_new'] = $batch_id_new;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Data Found";
         }

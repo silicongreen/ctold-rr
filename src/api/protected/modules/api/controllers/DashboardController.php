@@ -128,6 +128,16 @@ class DashboardController extends Controller
                 $student_id = Yii::app()->user->profileId;
                 $batch_id = Yii::app()->user->batchId;
             }
+            $batch_id_new = 0;
+            if(Yii::app()->user->isStudent && Yii::app()->user->isParent)
+            {
+                $studentObj = new Students();
+                $std_data = $studentObj->findByPk($student_id);
+                if($std_data)
+                {
+                    $batch_id_new = $std_data->batch_id;
+                }
+            }
             $user_id = Yii::app()->user->id;
             $school_id = Yii::app()->user->schoolId;
             
@@ -230,6 +240,7 @@ class DashboardController extends Controller
             $feeds = $objreminder->getUserReminderNew($user_id,$page_number,$page_size);
             
             $response['data']['feeds'] = $this->formatFeeds($feeds);
+            $response['data']['batch_id_new'] = $batch_id_new;
             
             $response['status']['code'] = 200;
             $response['status']['msg'] = "Success";

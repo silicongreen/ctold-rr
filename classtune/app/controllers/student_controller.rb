@@ -1472,6 +1472,7 @@ class StudentController < ApplicationController
         stdgu.guardian_id = @guardian.id
         stdgu.save
       end
+      @guardian.save_to_free = true
       @guardian.create_guardian_user(@student,false)
       
       redirect_to :controller => "student", :action => "admission2", :id => @student.id

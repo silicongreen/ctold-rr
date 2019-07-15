@@ -1472,7 +1472,6 @@ class StudentController < ApplicationController
         stdgu.guardian_id = @guardian.id
         stdgu.save
       end
-      @guardian.save_to_free = true
       @guardian.create_guardian_user(@student,false)
       
       redirect_to :controller => "student", :action => "admission2", :id => @student.id
@@ -1491,7 +1490,16 @@ class StudentController < ApplicationController
         @student = Student.update(@student.id, :immediate_contact_id => immediate_contact.id)
         @guardian = Guardian.find(immediate_contact.id)
         usernamep = @guardian.user.username
-       
+        champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+        api_endpoint = champs21_api_config['api_url']
+        uri = URI(api_endpoint + "api/user/createuser")
+        http = Net::HTTP.new(uri.host, uri.port)
+        auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+        auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
+        auth_res = http.request(auth_req)
+        @auth_response = JSON::parse(auth_res.body)
+        sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"
+        CONN.execute sql
       end
       redirect_to :action => "previous_data", :id => @student.id
     end  
@@ -1502,7 +1510,29 @@ class StudentController < ApplicationController
       
       @guardian = Guardian.find(params[:immediate_contact][:contact])
       usernamep = @guardian.user.username
-    
+      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+      api_endpoint = champs21_api_config['api_url']
+      uri = URI(api_endpoint + "api/user/createuser")
+      http = Net::HTTP.new(uri.host, uri.port)
+      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+      auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
+      auth_res = http.request(auth_req)
+      @auth_response = JSON::parse(auth_res.body)      
+            
+      sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"
+      CONN.execute sql
+      
+      if sms_setting.application_sms_active and sms_setting.student_admission_sms_active and @student.is_sms_enabled
+        recipients = []
+        message = "#{t('student_admission_done')}  #{@student.admission_no} #{t('password_is')} 123456"
+        if sms_setting.parent_sms_active
+          guardian = Guardian.find(@student.immediate_contact_id)
+          recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+        end
+        unless recipients.empty? or !send_sms("studentregister")
+          Delayed::Job.enqueue(SmsManager.new(message,recipients))
+        end
+      end
       redirect_to :action => "previous_data", :id => @student.id
     end
   end
@@ -1524,7 +1554,35 @@ class StudentController < ApplicationController
       #      
       @guardian = Guardian.find(params[:immediate_contact][:contact])      
       usernamep = @guardian.user.username
-
+      champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+      api_endpoint = champs21_api_config['api_url']
+      uri = URI(api_endpoint + "api/user/createuser")
+      http = Net::HTTP.new(uri.host, uri.port)
+      auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
+      auth_req.set_form_data({"paid_id" => @guardian.user.id, "paid_username" => usernamep, "paid_password" => "123456","password" => "123456", "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @guardian.first_name, "last_name" => @guardian.last_name, "country" => @guardian.country_id, "email" => usernamep, "user_type" => "4" })
+      auth_res = http.request(auth_req)
+      @auth_response = JSON::parse(auth_res.body) 
+      
+      sql = "update students_guardians set `g_first_name`='#{@guardian.first_name}',`g_last_name`='#{@guardian.last_name}',`g_username`='#{usernamep}',`g_password`='123456',`guardian_id`= #{@guardian.user.id},`g_phone`='#{@guardian.mobile_phone}' where `student_id`= #{@student.user.id} and`school_id` = #{MultiSchool.current_school.id}"      
+      CONN.execute sql         
+      
+      if sms_setting.application_sms_active and sms_setting.student_admission_sms_active and @student.is_sms_enabled
+        recipients = []
+        message = "#{t('student_admission_done')}   #{@student.admission_no} #{t('password_is')} 123456"
+        if sms_setting.parent_sms_active
+          unless @student.student_guardian.empty?
+            guardians = @student.student_guardian
+            guardians.each do |guardian|
+              recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+            end  
+          end
+          #          guardian = Guardian.find(@student.immediate_contact_id)
+          #          recipients.push guardian.mobile_phone unless guardian.mobile_phone.nil?
+        end
+        unless recipients.empty? or !send_sms("studentregister")
+          Delayed::Job.enqueue(SmsManager.new(message,recipients))
+        end
+      end
       flash[:notice] = "#{t('flash23')}"
       redirect_to :action => "profile", :id => @student.id
     end
@@ -5829,6 +5887,22 @@ class StudentController < ApplicationController
           @order_id = "O" + finance_order.id.to_s
           finance_order.update_attributes(:order_id => @order_id)
         end
+        
+        payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+        unless payment.nil?
+          finance_transaction_id = payment.finance_transaction_id
+          unless finance_transaction_id.nil?
+            finance_order = FinanceOrder.new()
+            finance_order.finance_fee_id = @financefee.id
+            finance_order.student_id = @financefee.student_id
+            finance_order.batch_id = @financefee.batch_id
+            finance_order.balance = remaining_amount
+            finance_order.save
+            @order_id = "O" + finance_order.id.to_s
+            finance_order.update_attributes(:order_id => @order_id)
+          end
+          
+        end
       end
     end
 
@@ -6034,6 +6108,23 @@ class StudentController < ApplicationController
               finance_order.update_attributes(:order_id => @order_id)
             end
           end
+          
+          payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+          unless payment.nil?
+            finance_transaction_id = payment.finance_transaction_id
+            unless finance_transaction_id.nil?
+              finance_order = FinanceOrder.new()
+              finance_order.finance_fee_id = @financefee.id
+              finance_order.student_id = @financefee.student_id
+              finance_order.batch_id = @financefee.batch_id
+              finance_order.balance = remaining_amount
+              finance_order.save
+              @order_id = "O" + finance_order.id.to_s
+              finance_order.update_attributes(:order_id => @order_id)
+            end
+
+          end
+          
         end
       end
 

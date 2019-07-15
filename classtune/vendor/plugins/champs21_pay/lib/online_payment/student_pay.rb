@@ -1748,23 +1748,25 @@ module OnlinePayment
             @order_id = "O" + finance_order.id.to_s
             finance_order.update_attributes(:order_id => @order_id)
           end
+          
+          payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+          unless payment.nil?
+            finance_transaction_id = payment.finance_transaction_id
+            unless finance_transaction_id.nil?
+              finance_order = FinanceOrder.new()
+              finance_order.finance_fee_id = @financefee.id
+              finance_order.student_id = @financefee.student_id
+              finance_order.batch_id = @financefee.batch_id
+              finance_order.balance = remaining_amount
+              finance_order.save
+              @order_id = "O" + finance_order.id.to_s
+              finance_order.update_attributes(:order_id => @order_id)
+            end
+
+          end
         end
         
-        payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
-        unless payment.nil?
-          finance_transaction_id = payment.finance_transaction_id
-          unless finance_transaction_id.nil?
-            finance_order = FinanceOrder.new()
-            finance_order.finance_fee_id = @financefee.id
-            finance_order.student_id = @financefee.student_id
-            finance_order.batch_id = @financefee.batch_id
-            finance_order.balance = remaining_amount
-            finance_order.save
-            @order_id = "O" + finance_order.id.to_s
-            finance_order.update_attributes(:order_id => @order_id)
-          end
-          
-        end
+        
       end
 
       if @active_gateway == "Authorize.net"
@@ -1968,6 +1970,22 @@ module OnlinePayment
                 @order_id_saved = true
                 finance_order.update_attributes(:order_id => @order_id)
               end
+            end
+            
+            payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+            unless payment.nil?
+              finance_transaction_id = payment.finance_transaction_id
+              unless finance_transaction_id.nil?
+                finance_order = FinanceOrder.new()
+                finance_order.finance_fee_id = @financefee.id
+                finance_order.student_id = @financefee.student_id
+                finance_order.batch_id = @financefee.batch_id
+                finance_order.balance = remaining_amount
+                finance_order.save
+                @order_id = "O" + finance_order.id.to_s
+                finance_order.update_attributes(:order_id => @order_id)
+              end
+
             end
           end
         end

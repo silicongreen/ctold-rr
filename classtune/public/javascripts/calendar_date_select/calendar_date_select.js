@@ -447,3 +447,9 @@ CalendarDateSelect.prototype = {
   },
   callback: function(name, param) { if (this.options.get(name)) { this.options.get(name).bind(this.target_element)(param); } }
 }
+
+document.observe("dom:loaded", function() {
+    j(document).on('click','.calendar-input input',function(){
+        j(this).parent(".calendar-input").children(".calendar_date_select_popup_icon").trigger("click");
+    });
+});

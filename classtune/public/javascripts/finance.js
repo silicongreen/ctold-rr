@@ -561,10 +561,6 @@ function loadJS()
         j('#hide2').hide();
         j('#active-batch-link').hide();
         
-        j(document).on('click','.calendar-input input',function(){
-            j(".calendar_date_select_popup_icon").trigger("click");
-        });
-
         j("#fees_submission_batch_id").select2();
 
         /* This code section can be found in _student_fees_submission.html.erb*/

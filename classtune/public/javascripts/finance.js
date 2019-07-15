@@ -560,6 +560,10 @@ function loadJS()
     document.observe("dom:loaded", function() {
         j('#hide2').hide();
         j('#active-batch-link').hide();
+        
+        j(document).on('click','.calendar-input input',function(){
+            j(".calendar_date_select_popup_icon").trigger("click");
+        });
 
         j("#fees_submission_batch_id").select2();
 

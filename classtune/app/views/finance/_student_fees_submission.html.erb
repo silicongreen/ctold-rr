@@ -1100,6 +1100,7 @@
                               :success => "$('loader1').hide();")}"}  %>
                       </div>
                   </div>
+                  <div id="payment_mode"></div>  
                   <div class="label-field-pair" style="width: 99%;">
                     <div class="label-container"><%= t('payment_notes') %> </div>
                     <div class="input-container"><%= form.text_area :payment_note,:cols => 50, :rows => 1 %></div>
@@ -1136,7 +1137,6 @@
       <tr>
         <td colspan="5" style="background: #fff;">
           <div class="pay_fees">
-            <div id="payment_mode"></div>
             <%  if total_fees > 0 and @show_only_structure == false %>
               <div class="pay_fees_buttons">
                 <%= submit_tag "► #{t('pay_fees')}",:class=>'submit_button' , :id => 'submit_button',:onClick => "return validate_payment_mode()" %>

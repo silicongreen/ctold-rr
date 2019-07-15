@@ -187,6 +187,18 @@ module ApplicationHelper
       return
     end
   end
+  
+  def to_comma_seperated_precision_label(val)
+    if defined? val and val != '' and !val.nil?
+      a,b = sprintf("%0.2f", val).split('.')
+      a.gsub!(/(\d)(?=(\d{3})+(?!\d))/, '\\1,')
+      c = "#{a}.#{b}"
+      return c
+    else
+      return
+    end
+    
+  end
 
   def precision_count
     precision_count = Configuration.get_config_value('PrecisionCount')

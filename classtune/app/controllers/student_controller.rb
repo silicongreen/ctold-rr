@@ -5888,7 +5888,7 @@ class StudentController < ApplicationController
           finance_order.update_attributes(:order_id => @order_id)
         end
         
-        payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+        payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
         unless payment.nil?
           finance_transaction_id = payment.finance_transaction_id
           unless finance_transaction_id.nil?
@@ -5901,7 +5901,7 @@ class StudentController < ApplicationController
             @order_id = "O" + finance_order.id.to_s
             finance_order.update_attributes(:order_id => @order_id)
           end
-          
+
         end
       end
     end
@@ -6109,7 +6109,7 @@ class StudentController < ApplicationController
             end
           end
           
-          payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+          payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
           unless payment.nil?
             finance_transaction_id = payment.finance_transaction_id
             unless finance_transaction_id.nil?

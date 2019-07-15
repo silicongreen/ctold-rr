@@ -1749,7 +1749,7 @@ module OnlinePayment
             finance_order.update_attributes(:order_id => @order_id)
           end
           
-          payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+          payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
           unless payment.nil?
             finance_transaction_id = payment.finance_transaction_id
             unless finance_transaction_id.nil?
@@ -1972,7 +1972,7 @@ module OnlinePayment
               end
             end
             
-            payment = Payment.find(:first, :condition => "order_id = '#{@order_id}'")
+            payment = Payment.find(:first, :conditions => "order_id = '#{@order_id}'")
             unless payment.nil?
               finance_transaction_id = payment.finance_transaction_id
               unless finance_transaction_id.nil?

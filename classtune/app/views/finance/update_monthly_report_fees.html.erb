@@ -179,7 +179,7 @@
                               Waiver
                           </div>
                       </div>
-                      <div style="width: 100%; ">
+                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
                           <% actual_diff_amount = 0 %>
                           <% unless  fees_month["#{dt}"].nil? %>
                           <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
@@ -246,7 +246,7 @@
                               <%= to_comma_seperated_precision_label date_wise_discount %>
                           </div>
                       </div>
-                      <div style="width: 100%; ">
+                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Amount
                           </div>
@@ -268,14 +268,14 @@
                         <% date_wise_total = tot_amt - (date_wise_fine.to_f + diff_amount) %>
                       <% end %>
                       <% end %>
-                      <div id="particular_total_fees_<%= dt %>_gt" style="width: 100%; text-align: center; padding-top: 8px;">
-                          <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                      <div id="particular_total_fees_<%= dt %>_gt" style="width: 100%; text-align: center;">
+                          <div style="width: 32%; margin-right: 2px; border-right: 1px solid #ccc; display: inline-block;">
                               <%= to_comma_seperated_precision_label date_wise_total %>
                           </div>
-                          <div id="particular_total_fees_<%= dt %>_fine" style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
+                          <div id="particular_total_fees_<%= dt %>_fine" style="width: 32%; margin-right: 2px; border-right: 1px solid #ccc; display: inline-block;">
                               <%= to_comma_seperated_precision_label date_wise_fine %>
                           </div>
-                          <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
+                          <div id="particular_total_fees_<%= dt %>_total" style="width: 32%; display: inline-block;">
                               <%#= precision_label (date_wise_total.to_f + date_wise_fine.to_f) %>
                               <% unless  fees_month["#{dt}"].nil? %>
                               <%= to_comma_seperated_precision_label fees_month["#{dt}"] %>
@@ -293,7 +293,7 @@
                 </th>
                 <% @finance_particular_categories.each do |fees_particular| %>
                     <td style="white-space: nowrap; text-align: center; padding-right: 10px; vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                      <div style="width: 100%; ">
+                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Fees
                           </div>
@@ -346,7 +346,7 @@
                             Waiver
                         </div>
                     </div>
-                    <div style="width: 100%; ">
+                    <div style="width: 100%; padding-top: 4px; padding-bottom: 4px;">
                         <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                             <%= to_comma_seperated_precision_label particular_wise_fees_amount_total %>
                         </div>
@@ -357,7 +357,7 @@
                             <%= to_comma_seperated_precision_label particular_wise_discount_amount_total %>
                         </div>
                     </div>
-                    <div style="width: 100%; ">
+                    <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
                         <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                             Amount
                         </div>
@@ -368,7 +368,7 @@
                             Total
                         </div>
                     </div>
-                    <div style="width: 100%; text-align: center; padding-top: 8px;">
+                    <div style="width: 100%; text-align: center; ">
                         <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                             <% grand_total = (particular_wise_fees_amount_total + particular_wise_adv_amount_total) - (particular_wise_discount_amount_total + total_fees_discount) %>
                             <%= to_comma_seperated_precision_label grand_total %>

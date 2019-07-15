@@ -129,7 +129,7 @@ class DashboardController extends Controller
                 $batch_id = Yii::app()->user->batchId;
             }
             $batch_id_new = 0;
-            if(Yii::app()->user->isStudent && Yii::app()->user->isParent)
+            if(Yii::app()->user->isStudent || Yii::app()->user->isParent)
             {
                 $studentObj = new Students();
                 $std_data = $studentObj->findByPk($student_id);

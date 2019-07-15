@@ -41,6 +41,7 @@
     <%= t('finance_transactions_view') %>
   </div>
   <% unless @finance_particular_categories.blank? %>  
+  <h2 style="padding-left: 10px;">Particular Wise Report</h2>
   <div id="table-scroll" class="table-scroll">
       <div class="table-wrap">
         <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="width: 98%; table-layout:fixed;">
@@ -385,6 +386,9 @@
         </table>  
       </div>
   </div>
+  <% else %>
+  <h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Particular Wise Report</h2>
+  <p>No records found</p>
   <% end %>  
 
 </div>

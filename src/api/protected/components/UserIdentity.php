@@ -82,6 +82,7 @@ class UserIdentity extends CUserIdentity {
      * against some persistent user identity storage (e.g. database).
      * @return boolean whether authentication succeeds.
      */
+    
     public function authenticate() {
         
         if ($this->__b_paid_user) {

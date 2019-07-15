@@ -136,6 +136,7 @@ class DashboardController extends Controller
                 if($std_data)
                 {
                     $batch_id_new = $std_data->batch_id;
+                    CUserIdentity::setState("batch_id",$batch_id_new);
                 }
             }
             $user_id = Yii::app()->user->id;

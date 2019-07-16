@@ -5767,6 +5767,7 @@ class ExamController < ApplicationController
                   end  
 
                 end
+                sb_mark_new = 0
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
@@ -5786,12 +5787,12 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
                   end
-                  sb_mark_new = 0
+                  
                   if full_sb1 > 0 || full_sb2 > 0
-                    
                     if appeared_sb
                       sb_mark_new = total_sb1+total_sb2
                       sb_mark_new = sprintf( "%0.02f", sb_mark_new)
+                      sb_mark_new = sb_mark_new.to_f
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_mark_new
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"

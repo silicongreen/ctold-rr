@@ -258,11 +258,14 @@
                      <td colspan="100"></td>
                   </tr> 
                   <% subject_count = 0 %>
+                  <% total_subject = 0 %>
+                  <% failed = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>
                         <% next %>
                       <% end %>
+                      <% failed_subject = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
                           <% total_mark = 0 %>
                           <% full_mark = 0 %>
@@ -338,6 +341,14 @@
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                   <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                  
+                                  <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" %>
+                                    <% if (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 11 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25) && (report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 13 || report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 30) %>
+                                      <% failed = true %>
+                                      <% failed_subject = true %>
+                                    <% end %>
+                                  <% end %>
+                                  
                                   <% if report['exam_category'] == '3'  %>
                                     <% sb = sb+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
                                   <% elsif report['exam_category'] == '4' %>
@@ -380,6 +391,12 @@
                             <% if !grade.blank? and !grade.name.blank? %>
                               <% if grade.credit_points.to_i == 0 %>
                                 <% failed = true %>
+                                <% failed_subject = true %>
+                              <% end %>
+                            
+                              <% if  failed_subject == true %>
+                                <% grade.credit_points = 0.0 %>
+                                <% grade.name = "F" %>
                               <% end %>
                               <td class="col-pdf"><%= grade.name %></td>
                               <td class="col-pdf"><%= grade.credit_points %></td>
@@ -499,7 +516,7 @@
               <table id="pdf-table" class="evaluation table_99 top-left-center"  width="99.8%" >
                   <tr class="even remarks-tr">
                     <td>
-                        <b>Remarks : </b>=
+                        <b>Remarks : </b>
                             <% if failed == true %>
                               Failed
                            <% else %>
@@ -507,7 +524,7 @@
                               <%= grade.description %>
                             <% else %>
                                 
-                            <% end %>=
+                            <% end %>
                         <% end %>
                     </td>
                   </tr>
@@ -524,10 +541,10 @@
                               <br/><br/><br/>
                           </td>
                           <td class="col-pdf" width="25%">
-                              <br/><br/><br/>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/"+batch_split[0].downcase+".png")), :width=>"70%" %>
                           </td> 
                           <td class="col-pdf " width="25%">
-                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"60%" %>
+                              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/principal-sir-signature-2019.jpg")), :width=>"70%" %>
                           </td>
                       </tr>
                       <tr class="even">
@@ -547,7 +564,7 @@
                           
                       </tr>
 
-              </table>
+              </table> 
               
           </div>
       </div>

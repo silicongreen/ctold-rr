@@ -3501,16 +3501,6 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-    elsif MultiSchool.current_school.id == 352
-      render :pdf => 'marksheet',
-        :orientation => 'Portrait', :zoom => 1.00,:save_to_file => file_name,
-        :page_size => 'Legal',
-        :margin => {    :top=> 10,
-        :bottom => 10,
-        :left=> 10,
-        :right => 10},
-        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
     else 
       render :pdf => 'marksheet',
         :orientation => 'Landscape', :zoom => 1.00,:save_to_file => file_name,
@@ -5458,6 +5448,10 @@ class ExamController < ApplicationController
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
+                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i == 5
+                        u_grade1 = u_grade1+1
+                        subject_failed = true
+                      end
                     elsif rs['exam_category'] == '2'
                       if rs['quarter'] == '1'
                         at_total_mark1 = at_total_mark1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
@@ -5777,7 +5771,6 @@ class ExamController < ApplicationController
                   end  
 
                 end
-                sb_mark_new = 0
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
@@ -5797,12 +5790,9 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
                   end
-                  
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
-                      sb_mark_new = total_sb1+total_sb2
-                      sb_mark_new = sb_mark_new.round()
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_mark_new
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  
@@ -5814,7 +5804,7 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
                     end  
                   end
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+sb_mark_new+total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
                   if @subject_result[main_sub_id].blank?
                     @subject_result[main_sub_id] = {}

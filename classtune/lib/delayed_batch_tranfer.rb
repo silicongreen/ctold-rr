@@ -156,7 +156,7 @@ class DelayedBatchTranfer
         
         unless @fee_collection_batch.blank?
           @fee_collection_batch.each do |ec|
-            ec.update_attribute(:is_deleted,true)
+#            ec.update_attribute(:is_deleted,true)
           end
         end
         

@@ -5791,8 +5791,7 @@ class ExamController < ApplicationController
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
                       sb_mark_new = total_sb1+total_sb2
-                      sb_mark_new = sprintf( "%0.02f", sb_mark_new)
-                      sb_mark_new = sb_mark_new.to_f
+                      sb_mark_new = sb_mark_new.round()
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_mark_new
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"

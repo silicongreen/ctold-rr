@@ -5786,9 +5786,13 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
                   end
+                  sb_mark_new = 0
                   if full_sb1 > 0 || full_sb2 > 0
+                    
                     if appeared_sb
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
+                      sb_mark_new = total_sb1+total_sb2
+                      sb_mark_new = sprintf( "%0.02f", sb_mark_new)
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_mark_new
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  
@@ -5800,7 +5804,7 @@ class ExamController < ApplicationController
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
                     end  
                   end
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+sb_mark_new+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
                   if @subject_result[main_sub_id].blank?
                     @subject_result[main_sub_id] = {}

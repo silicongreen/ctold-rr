@@ -194,6 +194,7 @@
                             <% class_test_mark = class_test_mark.round() %>
                             <td class="col-pdf no-warp"><%= class_test_mark %></td>
                                   
+                            
                             <% main_exam_mark = 0 %>
                             <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   
@@ -380,8 +381,8 @@
                                   <% third_subject = "(3rd)" %>
                                 <% end %>
                               <% end %>
-                            
-                            <td class="col-pdf"><%= total_subject+1 %></td>
+                            <% total_subject_main = total_subject_main+1 %>
+                            <td class="col-pdf"><%= total_subject_main %></td>
                             <td class="col-pdf no-warp align-left-baf"><%= subjects2['name'] %><%= fourth_subject %><%= third_subject %></td>
                             <% unless @report_data['report']['exams'].blank? %>  
                               <% @report_data['report']['exams'].each do |report| %>   

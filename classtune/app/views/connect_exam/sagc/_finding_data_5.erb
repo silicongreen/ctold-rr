@@ -78,13 +78,6 @@
      
         connect_exam = 0
         batch_loop = 0
-        all_std_id = []
-        @tabulation_data['report'].each do |tab|
-          tab['students'].each do |std| 
-            all_std_id << std['id'].to_i
-          end
-        end
-        @all_student_list = Student.find_all_by_id(all_std_id)
         @tabulation_data['report'].each do |tab|
           batch_subject = Subject.find_all_by_batch_id(@tabulation_data['batches'][batch_loop], :conditions=>"elective_group_id IS NULL and is_deleted=false")
           batch_subject_id = batch_subject.map(&:id)
@@ -122,6 +115,7 @@
             
             grand_total = 0
             grand_total_with_fraction = 0
+           
             grand_grade_point = 0
 
             grand_total1 = 0
@@ -137,10 +131,7 @@
 
             grand_total_main = 0
             grade_poin_main = 0
-            @student_tab = @all_student_list.find{|value| value.id.to_i == std['id'].to_i}
-            if @student_tab.blank?
-              next
-            end
+            @student_tab = Student.find_by_id(std['id'].to_i)
             if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
               if @student_result[loop_std].blank?
                 @student_result[loop_std] = {}
@@ -159,8 +150,7 @@
             if std_group_name == group_name or connect_exam_id.to_i == @connect_exam_obj.id
               @total_std = @total_std+1
             end
-          
-            total_std_subject = std_subject.select{|value| value.student_id.to_i == std['id'].to_i}
+            total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
             std_subject_id = total_std_subject.map(&:subject_id)
             total_subject = 0
             subject_array = []
@@ -172,8 +162,8 @@
               if !@subject_code.blank? && !@subject_code[sub['code']].blank?	
                 main_sub_id = @subject_code[sub['code']]
               else	
-                @subject_code[sub['code'].to_s] = sub['id']	
-                main_sub_id = sub['id']	
+                @subject_code[sub['code'].to_s] = sub['code']	
+                main_sub_id = sub['code']	
               end 	
               if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                 @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
@@ -323,7 +313,7 @@
                       if rs['quarter'] == '1'
                         total_sb1 = total_sb1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4  or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13 || @connect_exam_obj.result_type != 11)
                               u_grade1 = u_grade1+1
                               subject_failed = true
@@ -338,7 +328,7 @@
                       if rs['quarter'] == '2'
                         total_sb2 = total_sb2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4  or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13 || @connect_exam_obj.result_type != 11)
                             u_grade2 = u_grade2+1
                             subject_failed = true
@@ -359,7 +349,7 @@
                       if rs['quarter'] == '1'
                         total_ob1 = total_ob1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13 || @connect_exam_obj.result_type != 11)
                               u_grade1 = u_grade1+1
                               subject_failed = true
@@ -370,7 +360,7 @@
                       if rs['quarter'] == '2'
                         total_ob2 = total_ob2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                            if (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11) && (rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 30 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 13 || @connect_exam_obj.result_type != 11)
                               u_grade2 = u_grade2+1
                               subject_failed = true
@@ -387,7 +377,7 @@
                       if rs['quarter'] == '1'
                         total_pr1 = total_pr1+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                               u_grade1 = u_grade1+1
                               subject_failed = true
@@ -398,7 +388,7 @@
                       if rs['quarter'] == '2'
                         total_pr2 = total_pr2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                         if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && (rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 8 or rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25)
-                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
+                          unless sub['subject_group_id'].to_i > 0 or @connect_exam_obj.result_type == 1 or @connect_exam_obj.result_type == 3 or @connect_exam_obj.result_type == 4 or @connect_exam_obj.result_type == 8 or sub['grade_subject'].to_i == 1
                             if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 25 || rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round.to_i != 11
                               u_grade2 = u_grade2+1
                               subject_failed = true
@@ -434,7 +424,7 @@
                    term_mark_multiplier = 0.90
                 end
                 
-                if sub['grade_subject'].to_i == 1 && @connect_exam_obj.result_type == 3 && @connect_exam_obj.result_type == 4
+                if sub['grade_subject'].to_i == 1
                   term_mark_multiplier = 1.00
                 end
                 
@@ -444,8 +434,7 @@
                 total_mark2_80 = total_mark2.to_f
                 if full_mark2 > 100 or term_mark_multiplier == 0.80 or term_mark_multiplier == 0.90
                   total_mark2_80 = total_mark2.to_f*term_mark_multiplier
-                end 
-        
+                end  
 
                 
 
@@ -481,7 +470,7 @@
                 
                 monthly_total_main_mark1 = monthly_total_mark1
                 monthly_total_main_mark2 = monthly_total_mark2
-                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
+                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1
                   if monthly_total_mark1 > 0
                     monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     monthly_total_mark1 = monthly_total_mark1.round()
@@ -562,7 +551,7 @@
                   grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                   grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                   grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-
+                  
 
 
                   if fourth_subject.blank? && subject_failed == false
@@ -674,16 +663,20 @@
                     @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
                   end
                   
+                  if main_mark >= 40
+                    @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
+                  end
+                  
                   grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                   if !grade.blank? && !grade.name.blank?
-                    if subject_failed == true
+                    if subject_failed == true and @connect_exam_obj.result_type != 1
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = "F"
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['lg'] = grade.name
                     end
                   end
                   if !grade.blank? && !grade.name.blank? && sub['grade_subject'].to_i != 1
-                    if grade.credit_points.to_i == 0 or subject_failed == true
+                    if grade.credit_points.to_i == 0 or (subject_failed == true and @connect_exam_obj.result_type != 1)
 
                       if @subject_result[main_sub_id]['failed'].blank?
                         @subject_result[main_sub_id]['failed'] = 1
@@ -761,8 +754,8 @@
                   if !@subject_code.blank? && !@subject_code[sub2['code']].blank?	
                     main_sub_id = @subject_code[sub2['code']]
                   else	
-                    @subject_code[sub2['code'].to_s] = sub2['id']	
-                    main_sub_id = sub2['id']	
+                    @subject_code[sub2['code'].to_s] = sub2['code']	
+                    main_sub_id = sub2['code']	
                   end 	
                   if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)	
                     @student_result[loop_std]['subjects'][main_sub_id.to_s] = {}	
@@ -1152,7 +1145,7 @@
                       grand_total1_with_fraction = grand_total1_with_fraction+total_mark1_no_round
                       grand_total2_with_fraction = grand_total2_with_fraction+total_mark2_no_round
                       grand_total_with_fraction = grand_total_with_fraction+main_mark_no_round
-
+                      
 
 
                       if fourth_subject.blank?
@@ -1227,6 +1220,9 @@
                         @subject_result[main_sub_id]['total'] = 1
                       else
                         @subject_result[main_sub_id]['total'] = @subject_result[main_sub_id]['total']+1
+                      end
+                      if main_mark >= 40
+                        @student_result[loop_std]['subjects'][main_sub_id]['result']['parcent'] = main_mark
                       end
                       grade = GradingLevel.percentage_to_grade(main_mark, @batch.id)
                       if !grade.blank? && !grade.name.blank?
@@ -1314,6 +1310,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
+                  
                 end
               end
               if exam_type == 1
@@ -1321,6 +1318,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
+                  
                 end
               end
               if exam_type == 2
@@ -1328,6 +1326,7 @@
                 grade_point_avg = grade_point_avg.round(2)
                 if grade_point_avg > 5
                   grade_point_avg = 5.00
+                  
                 end
               end
 
@@ -1370,6 +1369,9 @@
                 @student_result[loop_std]['grand_total'] = grand_total2
                 @student_result[loop_std]['grand_total_with_fraction'] = grand_total2_with_fraction
               end
+              
+              
+             
               
               @student_result[loop_std]['gp'] = grade_point_avg
               

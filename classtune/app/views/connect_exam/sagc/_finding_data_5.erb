@@ -297,9 +297,10 @@
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
-                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i == 5
+                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5
                         u_grade1 = u_grade1+1
                         subject_failed = true
+                        
                       end
                     elsif rs['exam_category'] == '2'
                       if rs['quarter'] == '1'
@@ -620,6 +621,8 @@
                   end  
 
                 end
+                ob_round = 0
+                sb_round = 0
                 if connect_exam_id.to_i == @connect_exam_obj.id or (std_group_name == group_name && !@class.blank?)
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['at'] = at_total_mark1+at_total_mark2
                   
@@ -634,6 +637,8 @@
 
                   if full_ob1 > 0 || full_ob2 > 0
                     if appeared_ob
+                      ob_round = total_ob1+total_ob2
+                      ob_round = ob_round.round()
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
@@ -641,6 +646,8 @@
                   end
                   if full_sb1 > 0 || full_sb2 > 0
                     if appeared_sb
+                      sb_round = total_sb1+total_sb2
+                      sb_round = sb_round.round()
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
@@ -653,7 +660,7 @@
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['pr'] = "AB"
                     end  
                   end
-                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = total_ob1+total_ob2+total_sb1+total_sb2+total_pr1+total_pr2
+                  @student_result[loop_std]['subjects'][main_sub_id]['result']['rt'] = ob_round+sb_round+total_pr1+total_pr2
                   @student_result[loop_std]['subjects'][main_sub_id]['result']['ct'] = total_mark1+total_mark2
                   if @subject_result[main_sub_id].blank?
                     @subject_result[main_sub_id] = {}

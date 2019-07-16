@@ -20,166 +20,111 @@
 
 
 </div>
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+
+
+</div>
 <div id="page-yield">
 
-    <div class="hor_line"></div>
-    <h3 align="center"><%=Configuration.get_config_value('InstitutionName'); %></h3>
-    <div class="hor_line"></div>
+    <div class="header-sagc">
+        <div class="header-sagc-left">
+            <div class="logo-left"><%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/sagc_logo.png")),:width=> '60%',:style=>"margin-left: 20%; margin-top: 10%;" %></div>
+            <div class="school-name-left">
+                <h2><%=Configuration.get_config_value('InstitutionName').upcase; %></h2>
+                <span>Dhaka Cantonment</span>
+                <span>Dhaka-1206</span>
+                <span>Phone: 9833306, Web: sagc.edu.bd</span>
+            </div>
+        </div>
+        <div class="header-sagc-right">
+            <span><%=  Time.now %></span>
+            <span>Page 1 of 1</span>
+        </div>
+    </div>
+
+
+    <div class="extender"> </div>
     <div class="report">
         <div id ="main_info">
-            <h4> <%= "#{t('from')} ( #{@start_date}) #{t('to')} ( #{@end_date})" %>&nbsp;&nbsp; Date Wise Collection Report</h4>
+            <h4>Date Wise Collection Report <%= "For  #{@start_date.to_date.strftime("%B %d, %Y")} #{t('to')}  #{@end_date.to_date.strftime("%B %d, %Y")}" %></h4>
         </div>
+        
+        <% j = 1 %>
+        <% pg = 1 %>
+        
         <div id="pdf-info">
             <table id="pdf-table" width="100%" cellspacing="0">
                 <tr class="table-header">
-                    <td class="col-pdf align-center">Date</td>
-                    <% @finance_fee_category.each do |fees_particuler| %>
-                      <td class="col-pdf align-center"><%= fees_particuler.name %></td>
-                    <% end %>
-                    <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
-                      <td class="col-pdf align-center"><%= fees_extra_particuler %></td>
-                    <% end %>
-                    <td class="col-pdf align-center">Total Collection</td>
+                    <td style="width: 50px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Sl No</td>
+                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Student Name</td>
+                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Student ID</td>
+                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Order Id</td>
+                    <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                 </tr>
-                <% fee_total = {} %>
-                <% grand_total = 0.0 %>
-                <% c= 'even' %>
-                <% date_count = 0 %>
-                <% @dates.each do |day| %>
-                  <% date_count = date_count+1 %>
-                  <% if date_count > 24 %>
-                    <% date_count  = 1 %>
-                    <tr class="page-break">
-                        <td colspan="100"></td>
-                    </tr> 
-                    <tr class="table-header">
-                        <td class="col-pdf align-center">Date</td>
-                        <% @finance_fee_category.each do |fees_particuler| %>
-                          <td class="col-pdf align-center"><%= fees_particuler.name %></td>
-                        <% end %>
-                        <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
-                          <td class="col-pdf align-center"><%= fees_extra_particuler %></td>
-                        <% end %>
-                        <td class="col-pdf align-center">Total Collection</td>
-                    </tr>
+                <% tot_amount = 0 %>
+                <% @student_ids.each_with_index do |std, i| %>
+                  
+                  <% student = Student.find(std) %>
+                  <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std } %>
+                  <% transaction_id = pt[0].id %>
+                  <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
+                  
+                  <% if pg == 1 %>
+                    <% if j == 14 %>
+                      <tr><td colspan="3" style="height: 45px;"></td></tr>
+                      <% j = 1 %>
+                      <% pg += 1 %>
+                    <% end %>
+                  <% else %>
+                      <% if j == 16 %>
+                        <tr><td colspan="3" style="height: 25px;"></td></tr>
+                        <% j = 1 %>
+                        <% pg += 1 %>
+                      <% end %>
                   <% end %>
-                  <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                      <td style="white-space: nowrap;" class="align-center"><%= day.last %></td>
-                      <% total_fees = 0.0 %>
-                      <% i = 0 %>
-
-                      <% @finance_fee_category.each do |fees_particuler| %>
-                        <% fee_amount = 0.0 %>
-                        <% unless @transactions_particular.blank? %>
-                          <% @transactions_particular.each do |transactions_particular| %>
-                            <% if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_id == fees_particuler.id and transactions_particular.particular_type = "ParticularCategory" %>
-                              <% fee_amount+=transactions_particular.amount %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                        <% total_fees += fee_amount %>
-                        <td>
-                            <%= (fee_amount==0) ? "-" : precision_label(fee_amount) %>
-                        </td>
-
-
-                        <% if fee_total[i].blank? %>
-                          <% fee_total[i] = 0 %>
-                        <% end %>
-                        <% fee_total[i] +=fee_amount %>
-                        <% grand_total +=fee_amount %>
-                        <% i +=1; %>
-                      <% end %>
- 
-
-                      <% discount_amount = 0 %> 
-
-                      <% unless @transactions_particular.blank? %>
-                        <% @transactions_particular.each do |transactions_particular| %>
-                          <% if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and (transactions_particular.particular_type == "Discount" or transactions_particular.particular_type == "OnetimeDiscount" or transactions_particular.particular_type == "Fine Discount")   %>
-                            <% discount_amount+=transactions_particular.amount %>
-                          <% end %>
-                        <% end %> 
-                      <% end %> 
-
-                      <% if fee_total[i].blank? %>
-                        <% fee_total[i] = 0 %>
-                      <% end %>
-                      <% fee_total[i] += discount_amount %>  
-
-                      <td>
-                          <%= (discount_amount==0) ? "-" : "["+precision_label(discount_amount).to_s+"]" %>
+                
+                  <tr class="even">
+                      <td style="text-align: center; padding: 10px;"><%= i + 1 %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= student.full_name %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= student.admission_no %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= payment.order_id %></td>
+                      <td style="text-align: right; padding-right: 20px;">
+                        <%= to_comma_seperated_precision_label payment.gateway_response[:amount] %>
                       </td>
-
-                      <% i +=1; %>
-                      <% fine_amount = 0 %>
-
-                      <% unless @transactions_particular.blank? %>
-                        <% @transactions_particular.each do |transactions_particular| %>
-                          <% if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_type == "Fine"   %>
-                            <% fine_amount+=transactions_particular.amount %>
-                          <% end %>
-                        <% end %> 
-                      <% end %>
-
-                      <% if fee_total[i].blank? %>
-                        <% fee_total[i] = 0 %>
-                      <% end %>
-                      <% fee_total[i] += fine_amount %>  
-                      <% total_fees += fine_amount %>
-                      <% grand_total += fine_amount %>
-
-                      <td>
-                          <%= (fine_amount==0) ? "-" : precision_label(fine_amount) %>
-                      </td>
-
-                      <% i +=1; %>
-                      <% vat_amount = 0 %> 
-
-                      <% unless @transactions_particular.blank? %>
-                        <% @transactions_particular.each do |transactions_particular| %>
-                          <% if transactions_particular.transaction_date.to_date.beginning_of_month.strftime("%b-%y") == day.first.strftime("%b-%y") and transactions_particular.particular_type == "Vat"   %>
-                            <% vat_amount+=transactions_particular.amount %>
-                          <% end %>
-                        <% end %> 
-                      <% end %>
-
-                      <% if fee_total[i].blank? %>
-                        <% fee_total[i] = 0 %>
-                      <% end %>
-                      <% fee_total[i] += vat_amount %>  
-                      <% total_fees += vat_amount %>
-                      <% grand_total += vat_amount %>
-
-                      <td>
-                          <%= (vat_amount==0) ? "-" : precision_label(vat_amount) %>
-                      </td>
-                      <% i +=1; %>
-                      <td><%= (total_fees==0) ? "-" : precision_label(total_fees) %></td>
                   </tr>
+
+                  <% tot_amount += payment.gateway_response[:amount].to_f %>
+                  <% j += 1 %>  
                 <% end %>
-                <% c= 'even' %>
-                <tr class="table-header">
-                    <td style="white-space: nowrap;" class="align-center">Total Collection</td>
-                    <% i = 0 %>
-                    <% @finance_fee_category.each do |fees_particuler| %>
-                      <td>
-                          <%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : precision_label(fee_total[i]) %>
-                      </td>
-                      <% i = i+1 %>
-                    <% end %>
-                    <% @all_fees_extra_particulers.each do |fees_extra_particuler| %>
-                      <td>
-                          <%= (fee_total[i].blank? or fee_total[i] == 0) ? "-" : precision_label(fee_total[i]) %>
-                      </td>
-                      <% i = i+1 %>
-                    <% end %>
-                    <td><%= (grand_total==0) ? "-" : precision_label(grand_total) %></td>
+                <tr class="even">
+                    <td style="text-align: center; padding: 10px;">&nbsp;</td>
+                    <td style="text-align: left; padding-left: 20px; font-weight: bold;" colspan="3">Total Amount</td>
+                    <td style="text-align: right; padding-right: 20px;">
+                      <%= to_comma_seperated_precision_label tot_amount %>
+                    </td>
                 </tr>  
-
-
             </table>
         </div>
+        
+        
 
     </div>
 
@@ -222,4 +167,357 @@
     }
  
     
+</style>   
+<style>
+    .header-sagc{
+        width: 99%;
+        padding-bottom: 20px;
+    }
+    .sub-header-sagc{
+        width: 99%;
+        height: 200px;
+    }
+    .content-area{
+        width: 99%;
+    }
+    .content-area table{
+        width: 100%;
+    }
+    .content-area table tr.thead, .content-area table tr.tfoot{
+        width: 100%;
+        background: #A5A5A5;
+        height: 40px;
+        border: none;
+    }
+    .content-area table tr.content{
+        width: 100%;
+        background: #E5E5E5;
+        height: 20px;
+        border: none;
+    }
+    .content-area table tr.content td{
+        padding: 2px 20px;
+    }
+    .content-area table tr.content td.amount{
+        text-align: right;
+    }
+    .content-area table tr.thead td{
+        height: 20px;
+        text-align: center;
+    }
+    .content-area table tr.thead td.sri{
+        width: 5%;
+    }
+    .content-area table tr.tfoot td{
+        height: 20px;
+        text-align: left;
+        padding: 2px 20px;
+    }
+    .content-area table tr.tfoot td span{
+        float: right;
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .content-area table tr.tfoot td h2{
+        font-weight: bold;
+        font-size: 9px;
+    }
+    .header-sagc-left{
+        width: 80%;
+        vertical-align: top;
+        display: inline-table;
+    }
+    .sub-header-sagc-left{
+        width: 60%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-right{
+        width: 39%;
+        vertical-align: top;
+        display: inline-table;
+        padding: 4px;
+        margin: 0 auto;
+    }
+    .sub-header-sagc-left .std-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 130px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        padding: 10px;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-left .std-items{
+        width: 50%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items-full{
+        width: 100%;
+        border-bottom: 1px solid #fff;
+        display: inline-table;
+        padding-bottom: 6px;
+    }
+    .sub-header-sagc-left .std-items .label{
+        width: 70%;
+        padding-right: 5%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items-full .label{
+        width: 35%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-left .std-items .text{
+        width: 24%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-left .std-items-full .text{
+        width: 62%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .sub-header-sagc-right .receipt-area{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 176px;
+        border-radius: 8px;
+        background: #E5E5E5;
+        -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    }
+    .sub-header-sagc-right .receipt-area .money_receipt{
+        width: 100%;
+        border: 1px solid #ccc;
+        display: inline-table;
+        height: 50px;
+        border-radius: 8px;
+        background: #A5A5A5;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding: 0 auto;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full{
+        width: 100%;
+        padding-bottom: 10px;
+        display: inline-table;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .label{
+        width: 50%;
+        padding-right: 2%;
+        display: inline-table;
+        text-align: right;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .sub-header-sagc-right .receipt-area .std-items-full .text{
+        width: 48%;
+        display: inline-table;
+        font-size: 11px;
+    }
+    .header-sagc-left .logo-left{
+        width: 15%;
+        display: inline-block;
+    }
+    .header-sagc-left .school-name-left{
+        width: 84%;
+        display: inline-table;
+        vertical-align: top;
+    }
+    .header-sagc-left .school-name-left h2{
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        text-align: left !important;
+    }
+    .header-sagc-left .school-name-left span:first-child{
+        padding-top: 10px;
+    }
+    .header-sagc-left .school-name-left span{
+        font-size: 11px;
+        display: block;
+        vertical-align: top;
+        padding-bottom: 4px;
+    }
+    .header-sagc-right span{
+        font-size: 11px;
+        display: block;
+        vertical-align: top;
+        padding-bottom: 10px;
+    }
+    .header-sagc-right{
+        width: 19%;
+        vertical-align: top;
+        display: inline-table;
+        text-align: center;
+        margin-top: 5px;
+    }
+</style>
+
+<style>
+
+ #page-yield div.div-33
+{
+    float:left;
+    width: 32%;
+    margin-right: 15px;
+    border: 1px solid black;
+    min-height: 680px
+    
+} 
+#page-yield div.div-33 .section .general-header
+{
+    width: 100%;
+}
+#page-yield div.div-33:last-child
+{
+    margin-right: 0px;
+}
+table.vat_area tr td
+{
+    font-size: 10px;
+   
+}
+.registration_numer
+{
+  font-size: 10px;
+}
+.logo-left-div
+{
+  float:left;
+  width: 16%;
+  margin-left: 10px;
+}
+.school-left-div
+{
+  float: left;
+  width: 70%;
+  margin-left: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left-clear
+{
+  float:left;
+  clear:both;
+}
+center.due
+{
+  clear:both;
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+center
+{
+  clear:both;
+  margin-top: 1px;
+  font-size: 11px;
+}
+center.small
+{
+    font-size: 9px;
+    margin-top:10px;
+    margin-bottom: -15px;
+}
+.std_info .table-header td{
+    padding: 3px !important;
+    border-top: 1px solid black !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    font-weight: normal;
+    background: #fff;
+    font-size: 11px;
+   
+}
+.std_info tr.table-header td.border-left-none
+{
+    border-left: none !important;
+}
+.std_info tr.table-header td.border-right-none
+{
+    border-right: none !important;
+}
+table#pdf-table{
+    border: none;
+    border-bottom: 1px solid black;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+table.std_info
+{
+    width:99.6%;
+    margin-left: 1px;
+}
+table.std_info tr td
+{
+    font-size: 8px !important;
+}
+table.signature
+{
+    width: 100%;
+    margin-top:80px;
+}
+table.signature tr td
+{
+    border-top: 1px solid Black;
+    padding: 3px 10px;
+    width: 30%;
+    text-align: center;
+    font-size: 11px;
+    
+}
+.in-words
+{
+  float:left;
+  clear:both;
+  margin-top: 10px;
+  padding: 3px;
+  font-size: 11px;
+  letter-spacing:normal !important;
+  
+}
+div.no-padding-no-margin
+{
+    padding: 0px 5px !important;
+    font-size: 11px;
+    margin-top: 5px !important;
+    margin-bottom: -15px !important;
+    font-weight: bold;
+}
+tr.table-header td.align-right
+{
+    text-align: right !important;
+}
+tr.table-header td.align-center
+{
+    text-align: center;
+}
+.no-warp
+{
+    white-space: nowrap;
+}
 </style>   

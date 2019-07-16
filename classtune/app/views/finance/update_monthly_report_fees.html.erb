@@ -415,7 +415,6 @@
             padding:5px 10px;
             border:1px solid #000;
             background:#fff;
-            /*white-space:nowrap;*/
             vertical-align:top;
     }
     .table-scroll thead, .table-scroll tfoot {
@@ -425,7 +424,6 @@
             position:absolute;
             top:0;
             left:0;
-            pointer-events:none;
     }
     .clone th, .clone td {
             visibility:hidden
@@ -440,8 +438,15 @@
     .clone .fixed-side {
             background:#eee;
             visibility:visible;
+            z-index: 1;
+            border-left: 1px solid #ccc;
+            position: relative;
+    }
+    a:hover {
+        text-decoration: none;
     }
     .clone thead, .clone tfoot{background:transparent;}
+
 </style>   
 
 <script>
@@ -453,6 +458,7 @@
   });
   
   j(document).ready(function() {
+    
     j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
   });
   

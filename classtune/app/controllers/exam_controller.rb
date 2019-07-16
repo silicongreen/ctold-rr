@@ -5790,7 +5790,7 @@ class ExamController < ApplicationController
                     if appeared_ob
                       ob_round = total_ob1+total_ob2
                       ob_round = ob_round.round()
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = total_ob1+total_ob2
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = ob_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['ob'] = "AB"
                     end  
@@ -5799,7 +5799,7 @@ class ExamController < ApplicationController
                     if appeared_sb
                       sb_round = total_sb1+total_sb2
                       sb_round = sb_round.round()
-                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = total_sb1+total_sb2
+                      @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = sb_round
                     else
                       @student_result[loop_std]['subjects'][main_sub_id]['result']['sb'] = "AB"
                     end  

@@ -971,8 +971,10 @@ class AttendancesController < ApplicationController
     end
     get_attendence_student(params[:batch_id],@date_to_use)
     @students = []
+    @register = 0
     if @student_response['status']['code'].to_i == 200
       @students = @student_response['data']['batch_attendence']
+      @register = @student_response['data']['register']
       allfattendence = ForceAttendence.find_all_by_batch_id_and_date(params[:batch_id],@date_to_use)
       @stdids = allfattendence.map(&:student_id)
     end

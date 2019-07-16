@@ -18,7 +18,7 @@
 #under the License. -%>
 <div class="clearfix"></div>
 <div class="CSSTableGenerator" style="width: 97%;margin-top: 10px;">
-
+    <% if @register.to_i == 0 %><h4 style="color:red" id="att_not_taken">Attendance Not Taken Yet</h4><% end %>
     <table id="listing table-design">
         <thead>
             <tr class="tr-head">

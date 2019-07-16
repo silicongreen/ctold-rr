@@ -1273,7 +1273,8 @@ class Attendances extends CActiveRecord {
         return $attendence;
         
     }
-   
+    
+    
     public function Register($batch_id,$date,$school_id = 0)
     {
         $criteria = new CDbCriteria;

@@ -1640,9 +1640,17 @@ class CalenderController extends Controller
             {
                 $date = date("Y-m-d");
             }
+            $att_register_obj = new AttendanceRegisters();
+            $att_register_data = $att_register_obj->getRegisterData($date, $batch_id);
+            $register = 0;
+            if($att_register_data)
+            {
+                $register = 1;
+            }
             $attendence = new Attendances();
             $bacthes = $attendence->getBatchStudentTodayAttendence($batch_id, $date);
             $response['data']['batch_attendence'] = $bacthes;
+            $response['data']['register'] = $register;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "DATA_FOUND";
         }

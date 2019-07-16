@@ -454,7 +454,9 @@
               <% if !params[:show_one].blank? && !@promoted_to.blank? && @promoted_to == "Grade 9" %>
                 <h3 align="center">N.B. Laboratory fees will be taken after subject selection within one month of regular classes.</h3>
               <% end %>
-              <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result.</h3>
+              <% if !params[:report].blank? %>
+                <h3 align="center">N.B. Roll No. in the new class will be set as per merit list of the final result.</h3>
+              <% end %>
               <h3>&nbsp;</h3>
               <h3>&nbsp;</h3>
               <table class="signature">

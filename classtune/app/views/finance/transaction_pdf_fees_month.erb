@@ -83,8 +83,9 @@
                 <% @student_ids.each_with_index do |std, i| %>
                   
                   <% student = Student.find(std) %>
-                  <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std } %>
-                  <% transaction_id = pt[0].id %>
+                  <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std }.first %>
+                  <% transaction_id = pt.id %>
+                  <% amount = pt.amount %>
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
                   
                   <% if pg == 1 %>
@@ -95,7 +96,7 @@
                     <% end %>
                   <% else %>
                       <% if j == 20 %>
-                        <tr><td colspan="3" style="height: 25px;"></td></tr>
+                        <tr><td colspan="3" style="height: 30px;"></td></tr>
                         <% j = 1 %>
                         <% pg += 1 %>
                       <% end %>
@@ -107,11 +108,11 @@
                       <td style="text-align: left; padding-left: 20px;"><%= student.admission_no %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= payment.order_id %></td>
                       <td style="text-align: right; padding-right: 20px;">
-                        <%= to_comma_seperated_precision_label payment.gateway_response[:amount] %>
+                        <%= to_comma_seperated_precision_label amount %>
                       </td>
                   </tr>
 
-                  <% tot_amount += payment.gateway_response[:amount].to_f %>
+                  <% tot_amount += amount.to_f %>
                   <% j += 1 %>  
                 <% end %>
                 <tr class="even">

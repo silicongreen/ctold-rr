@@ -724,6 +724,7 @@ class FinanceController < ApplicationController
       :weight           => :bold,
       :pattern_bg_color => :red,
       :size             => 11,
+      :pattern          => 1,
       :horizontal_align => :centre
     })
   

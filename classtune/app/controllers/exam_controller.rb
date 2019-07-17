@@ -5600,8 +5600,6 @@ class ExamController < ApplicationController
                   total_mark1_80 = total_mark1.to_f*term_mark_multiplier
                 end
                 
-                
-                monthly_mark_divider = 3
                 monthly_mark_multiply = 20
                 if full_mark1 == 75
                   full_mark1 = 75
@@ -5610,9 +5608,7 @@ class ExamController < ApplicationController
                 else
                   full_mark1 = 50
                   monthly_mark_multiply = 10
-                  monthly_mark_divider = 4
                 end
-                monthly_mark_divider2 = 3
                 monthly_mark_multiply2 = 20
                 if full_mark2 == 75
                   full_mark2 = 75
@@ -5621,23 +5617,15 @@ class ExamController < ApplicationController
                 else
                   full_mark2 = 50
                   monthly_mark_multiply2 = 10
-                  monthly_mark_divider2 = 4
                 end 
                 
                 if @connect_exam_obj.result_type == 7 or @connect_exam_obj.result_type == 8
-                  if monthly_total_mark1 > 0
-                    monthly_total_mark1 = (monthly_total_mark1/monthly_mark_divider)
-                    monthly_total_mark1 = monthly_total_mark1.round()
-                  end 
-                  if monthly_total_mark2 > 0
-                    monthly_total_mark2 = (monthly_total_mark2/monthly_mark_divider2)
-                    monthly_total_mark2 = monthly_total_mark2.round()
-                  end
+                  monthly_mark_multiply = monthly_mark_multiply/2
+                  monthly_mark_multiply2 = monthly_mark_multiply2/2
                 end
                 
-                monthly_total_main_mark1 = monthly_total_mark1
-                monthly_total_main_mark2 = monthly_total_mark2
-                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 7 and @connect_exam_obj.result_type != 8
+                
+                if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 1
                   if monthly_total_mark1 > 0
                     monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
                     monthly_total_mark1 = monthly_total_mark1.round()
@@ -5647,6 +5635,9 @@ class ExamController < ApplicationController
                     monthly_total_mark2 = monthly_total_mark2.round()
                   end
                 end
+                
+                monthly_total_main_mark1 = monthly_total_mark1
+                monthly_total_main_mark2 = monthly_total_mark2
                 
                 total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
 
@@ -6244,8 +6235,7 @@ class ExamController < ApplicationController
                       monthly_mark_multiply2 = monthly_mark_multiply2/2
                     end
 
-                    monthly_total_main_mark1 = monthly_total_mark1
-                    monthly_total_main_mark2 = monthly_total_mark2
+                    
                     if @connect_exam_obj.result_type != 5 and @connect_exam_obj.result_type != 6
                       if monthly_total_mark1 > 0
                         monthly_total_mark1 = (monthly_total_mark1/monthly_full_mark1)*monthly_mark_multiply
@@ -6256,6 +6246,8 @@ class ExamController < ApplicationController
                         monthly_total_mark2 = monthly_total_mark2.round()
                       end
                     end
+                    monthly_total_main_mark1 = monthly_total_mark1
+                    monthly_total_main_mark2 = monthly_total_mark2
 
                     total_mark2_no_round = total_mark2
                     full_mark2 = full_mark2

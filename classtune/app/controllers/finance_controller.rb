@@ -722,7 +722,6 @@ class FinanceController < ApplicationController
     fmt = Spreadsheet::Format.new :number_format => "0.00"
     title_format = Spreadsheet::Format.new({
       :weight           => :bold,
-      :pattern_bg_color => :red,
       :size             => 11,
       :horizontal_align => :centre
     })

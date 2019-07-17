@@ -733,8 +733,17 @@ class FinanceController < ApplicationController
     font_format = Spreadsheet::Format.new({
       :size             => 12
     });
+    font_format_footer = Spreadsheet::Format.new({
+      :size             => 12,
+      :weight           => :bold
+    });
     amount_format = Spreadsheet::Format.new({
       :size             => 12,
+      :number_format    => "0.00"
+    });
+    amount_format_footer = Spreadsheet::Format.new({
+      :size             => 12,
+      :weight           => :bold
       :number_format    => "0.00"
     });
 
@@ -780,8 +789,8 @@ class FinanceController < ApplicationController
     row_new = ["", "Total Amount", "", "", total_amount]
     new_book.worksheet(0).insert_row(ind, row_new)
     new_book.worksheet(0).merge_cells(ind, 1, ind, 3)
-    new_book.worksheet(0).row(ind).set_format(1, font_format)
-    new_book.worksheet(0).row(ind).set_format(4, amount_format)
+    new_book.worksheet(0).row(ind).set_format(1, font_format_footer)
+    new_book.worksheet(0).row(ind).set_format(4, amount_format_footer)
     
     spreadsheet = StringIO.new 
     new_book.write spreadsheet 

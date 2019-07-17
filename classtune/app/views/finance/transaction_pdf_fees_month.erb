@@ -80,13 +80,13 @@
                     <td style="width: 300px; text-align: center; vertical-align: middle; padding: 10px; border-bottom: 2px solid #ccc; background: #fff;">Amount</td>
                 </tr>
                 <% tot_amount = 0 %>
-                <% @student_ids.each_with_index do |std, i| %>
+                <% @order_ids.each_with_index do |order, i| %>
                   
-                  <% student = Student.find(std) %>
-                  <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std }.first %>
+                  <% pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first %>
+                  <% std_id = pt.payee_id %>
                   <% transaction_id = pt.id %>
                   <% amount = pt.amount %>
-                  <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
+                  <% student = Student.find(std_id) %>
                   
                   <% if pg == 1 %>
                     <% if j == 14 %>
@@ -106,7 +106,7 @@
                       <td style="text-align: center; padding: 10px;"><%= i + 1 %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= student.full_name %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= student.admission_no %></td>
-                      <td style="text-align: left; padding-left: 20px;"><%= payment.order_id %></td>
+                      <td style="text-align: left; padding-left: 20px;"><%= order %></td>
                       <td style="text-align: right; padding-right: 20px;">
                         <%= to_comma_seperated_precision_label amount %>
                       </td>

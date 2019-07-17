@@ -723,13 +723,17 @@ class FinanceController < ApplicationController
     title_format = Spreadsheet::Format.new({
       :weight           => :bold,
       :pattern_bg_color => :grey,
-      :size             => 10,
+      :size             => 12,
       :horizontal_align => :centre
     })
   
+    center_font_format = Spreadsheet::Format.new({
+      :horizontal_align => :centre,
+      :size             => 12
+    });
     center_format = Spreadsheet::Format.new({
-      :horizontal_align => :centre
-    })
+      :size             => 12
+    });
 
     row_1 = ["Sl No","Student Name","Student ID","Order Id","Amount"]
     
@@ -758,10 +762,11 @@ class FinanceController < ApplicationController
       total_amount += amount.to_f
       row_new = [i+1, student.full_name, student.admission_no, payment.order_id, amount.to_f]
       new_book.worksheet(0).insert_row(ind, row_new)
-      new_book.worksheet(0).row(ind).set_format(4, fmt)
+      new_book.worksheet(0).row(ind).set_format(0, center_font_format)
       new_book.worksheet(0).row(ind).set_format(0, center_format)
-      new_book.worksheet(0).row(ind).set_format(2, center_format)
-      new_book.worksheet(0).row(ind).set_format(3, center_format)
+      new_book.worksheet(0).row(ind).set_format(2, center_font_format)
+      new_book.worksheet(0).row(ind).set_format(3, center_font_format)
+      new_book.worksheet(0).row(ind).set_format(4, fmt)
       new_book.worksheet(0).column(0).width = 10
       new_book.worksheet(0).column(1).width = 50
       new_book.worksheet(0).column(2).width = 15

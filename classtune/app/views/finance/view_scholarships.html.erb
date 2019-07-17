@@ -1,0 +1,225 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Latest compiled JavaScript -->
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+<%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<div id="content-header">
+	<%= show_header_icon %>
+	<h1><%= t('fee_discounts') %></h1>
+	<div class='header-sep'>
+		|
+	</div>
+	<div class='sub-header'>
+		<%= t('finance_management') %>
+	</div>
+
+	<div id="inner-tab-menu">
+		<ul>
+			<li class='themed_bg themed-dark-hover-background'>
+				<%= link_to "#{t('view_discount')}", :action=>'fee_discounts'%>
+			</li>
+			<li class='themed_bg themed-dark-hover-background'>
+				<%= link_to "View Scholarship", :action=>'view_scholarships'%>
+			</li>
+		</ul>
+
+	</div>
+
+</div>
+<div id="page-yield">
+	<div class="bread_crumb">
+		<%= link_to t('finance_text'), :controller => "finance", :action=>"index" %>
+		<div class = "bread-crumb-separator">
+			>
+		</div>
+		<%= link_to "#{t('fees_text')}", :controller => "finance", :action => "fees_index" %>
+		<div class = "bread-crumb-separator">
+			>
+		</div>
+		View Scholarship
+	</div>
+	<div id="flash_box"></div>
+	<% unless flash[:notice].nil? %>
+	<p class="flash-msg">
+		<%= flash[:notice] %>
+	</p>
+	<% end %>
+	<h2 style="text-align: center;">Scholarship Students</h2>
+	<hr/>
+	<table id="scholarshipTable" class="row-border compact stripe hover">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Student ID</th>
+				<th>Name</th>
+				<th>Batch</th>
+				<th>Scholarship Name</th>
+				<th>Scholarship On</th>
+				<th>Discount</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% unless @scholarships.blank? %>
+			<% @scholarships.each do |sc| %>
+			<% unless sc.receiver.nil? %>
+			<tr id="deleteID-<%= sc.id %>">
+				<td></td>
+				<td><%= sc.receiver.admission_no %></td>
+				<td><%= sc.receiver.full_name %></td>
+				<td><%= sc.receiver.batch.course_section %></td>
+				<td><%= sc.name %></td>
+				<td><%= sc.finance_fee_particular_category.name %></td>
+				<td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
+				<td>
+				<button class="scholarAmountEdit" data-edit="<%= sc.id %>" data-amount="<%= sc.discount %>" data-type="<%= sc.is_amount %>">
+					<i class="fa fa-edit"></i>
+				</button>
+				<button class="scholarDeleteButton" data-delete="<%= sc.id %>">
+					<i class="fa fa-trash"></i>
+				</button></td>
+			</tr>
+			<% end %>
+			<% end %>
+			<% else %>
+			<tr>
+				<td colspan="5" style="text-align: center;"><h3>No Scholarship Students Available</h3></td>
+			</tr>
+			<% end %>
+		</tbody>
+
+	</table>
+</div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+	j(document).ready(function() {
+		j(document).on('click', ".scholarAmountEdit", function() {
+			var discount = j(this).data("edit");
+			var editEl = "#editID-" + discount;
+
+			if (j(this).hasClass('scholarUpdateButton')) {
+				var amountValue = j("input[name=editamount]").val();
+				var typeValue = j("select[name=amounttype]").val();
+				j(this).html("<i class='fa fa-edit'></i>");
+				j(this).removeClass('scholarUpdateButton');
+				new Ajax.Request('/finance/update_scholarship', {
+					asynchronous : true,
+					evalScripts : true,
+					parameters : 'amount=' + amountValue + '&type=' + typeValue + '&id=' + discount
+				})
+			} else {
+				if (j('button').hasClass('scholarUpdateButton')) {
+					alert('Please update single discount at once');
+				} else {
+					var textAmount = j(editEl).text();
+					var numberAmount = j(this).data('amount');
+					var isAmount = j(this).data('type');
+					var options = `<option value="1" ${isAmount == 1 ? 'selected': ''}>BDT</option><option value="0" ${isAmount == 0 ? 'selected': ''}>%</option>`;
+					var formElem = "<input type='number' value='" + numberAmount + "' name='editamount' /><select name='amounttype'>"+options+"</select><span class='resetButton'>X</span>";
+					j(editEl).html(formElem);
+					j(this).html("<i class='fa fa-check'></i>");
+					j(this).addClass('scholarUpdateButton');
+					j(document).on('click', ".resetButton", function() {
+						j(editEl).text(textAmount);
+						j('.scholarAmountEdit').removeClass('scholarUpdateButton');
+						j('.scholarAmountEdit').html("<i class='fa fa-edit'></i>");
+					});
+				}
+			}
+
+		});
+
+		j(document).on('click', ".scholarDeleteButton", function() {
+			if (confirm("Confirm Delete This Scholarship?")) {
+				var discount = j(this).data("delete");
+				new Ajax.Request('/finance/delete_scholarship', {
+					asynchronous : true,
+					evalScripts : true,
+					parameters : 'id=' + discount
+				});
+			}
+
+		});
+
+		//DataTable
+		var t = j('#scholarshipTable').DataTable({
+			"columnDefs" : [{
+				"searchable" : true,
+				"orderable" : true,
+				"targets" : 0
+			}],
+			"order" : [[1, 'asc']]
+		});
+
+		t.on('order.dt search.dt', function() {
+			t.column(0, {
+				search : 'applied',
+				order : 'applied'
+			}).nodes().each(function(cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+		//DataTable
+	});
+
+</script>
+<style>
+	.scholarAmountEdit {
+		background-color: #4CAF50; 
+		border: none;
+		color: white;
+		padding: 5px 7px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}
+
+	.scholarDeleteButton {
+		background-color: #ff0000; 
+		border: none;
+		color: white;
+		padding: 5px 7px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+	}
+	.resetButton {
+		background-color: #f7b71d;
+		border: none;
+		color: white;
+		padding: 5px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 12px;
+		float: right;
+		cursor: pointer;
+	}
+	td{text-align: center;}
+
+
+</style>
+

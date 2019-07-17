@@ -16,20 +16,12 @@
 #See the License for the specific language governing permissions and
 #limitations under the License.
 
-class FinanceFeeParticularCategory < ActiveRecord::Base
+class FinanceFeeDiscountCategory < ActiveRecord::Base
   
-  has_many   :fee_particulars, :class_name => "FinanceFeeParticular"
-  has_many   :fee_discount
-  validates_uniqueness_of :name,:case_sensitive => false,:message=>"already marked as absent"
-
-  named_scope :active,:conditions => {:is_deleted => false}
+  belongs_to :finance_fee_collection
+  belongs_to :finance_fee_category
+  belongs_to :finance_fee_particular_category
+    
+  named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
   
-  def fee_particular_exists
-    fees_particular = FinanceFeeParticular.find(:all, :conditions => {:finance_fee_particular_category_id => id.to_i})
-    if fees_particular.present?
-      return true
-    else
-      return false
-    end
-  end
 end

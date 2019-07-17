@@ -1,21 +1,45 @@
-<% if @students.present? %>
-   <div class="batch_select_box">
-    <div class="label-field-pair">
-        <div class="label-container"><label> <%= t('select_student') %><span class="necessary-field">*</span>:</label></div>
-        <div class="fee_category_scroll" style="background: #fff; height: 300px; max-height: 300px;">
-          <div class="sel-list" style="padding-bottom: 5px; width: 100%;">
-              <div style="display: inline-block; float: left; width: 60%;">
-                <input type="text" name="search_std" id="search_std" />  
-              </div>  
-              <div style="clear: both;"></div>
-          </div>
-          <% @students.each do |s| %>
-            <div class="each_batch" style="padding-bottom: 8px;">
-                <div class="checkbox_inline"><%= check_box_tag "fee_discount[students][]",s.id, :class=>'students_box' %></div> 
-                <div class="checkbox_label"><label id="std_<%= s.id %>" class="std_name"><%= s.full_name %></label></div>
-            </div>
-          <% end %>
-        </div>
-    </div>
-  </div>
-<% end %>
+<h4>Student List</h4>
+<hr/>
+<table class="table" width="100%" cellpadding="1" cellspacing="1">
+	<thead>
+		<tr>
+			<th scope="col">Student Name</th>
+			<th scope="col">Batch Name</th>
+			<th scope="col">Student ID</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% if @students.present? %>
+			<% @students.each do |s| %>
+			<tr class="students-list-item" style="cursor: pointer;" data-name="<%= s.full_name %>" data-stid="<%= s.id %>" data-admission="<%= s.admission_no %>">
+				<td><%= s.full_name %></td>
+				<td><%= s.batch.full_name %></td>
+				<td><%= s.admission_no %></td>
+			</tr>
+			<% end %>
+		<% else %>
+		<tr>
+			<th scope="col"><%= t('no_students_found') %></th>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<script>
+		var stdarr = [];
+	j(document).ready(function() {
+		j(".students-list-item").click(function() {
+			let stdid = j(this).data("stid");
+			let admid = j(this).data("admission");
+			let stdname = j(this).data("name");
+			if(!stdarr.includes(stdid))
+			{
+				j("#selected-students").append("<label style='padding:3px; margin:3px 5px; border-bottom: 1px solid #ddd;'><input  type='checkbox' name='fee_discount[students][]' value='"+stdid+"' checked='checked' />" + stdname + "-<strong>"+admid+"</strong></label>")
+				j(this).css("color", "green");
+				stdarr.push(stdid);
+			}
+			
+		});
+	});
+
+</script>

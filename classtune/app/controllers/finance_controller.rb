@@ -2497,7 +2497,179 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee))
+      #NEED TO DELETE
+      @collection = params[:finance_fee_collection]
+      @fee_collection = params[:fee_collection]
+      
+      unless @fee_collection.nil?
+        category = @fee_collection[:category_ids]
+        subject = "#{t('fees_submission_date')}"
+
+        @finance_fee_collection = FinanceFeeCollection.new(
+          :name => @collection[:name],
+          :start_date => @collection[:start_date],
+          :end_date => @collection[:end_date],
+          :due_date => @collection[:due_date],
+          :fee_category_id => @collection[:fee_category_id],
+          :include_transport => @include_transport,
+          :fine_id=>@collection[:fine_id]
+        )
+        FinanceFeeCollection.transaction do
+          if @finance_fee_collection.save
+            new_event =  Event.create(:title=> "Fees Due", :description =>@collection[:name], :start_date => @finance_fee_collection.due_date.to_datetime, :end_date => @finance_fee_collection.due_date.to_datetime, :is_due => true , :origin=>@finance_fee_collection)
+            category.each do |b|
+              b=b.to_i
+              FeeCollectionBatch.create(:finance_fee_collection_id=>@finance_fee_collection.id,:batch_id=>b)
+              fee_category_name = @collection[:fee_category_id]
+              @students = Student.find_all_by_batch_id(b)
+              @fee_category= FinanceFeeCategory.find_by_id(@collection[:fee_category_id])
+
+              unless @fee_category.fee_particulars.all(:conditions=>"is_tmp = 0 and is_deleted=false and batch_id=#{b}").collect(&:receiver_type).include?"Batch"
+                cat_ids=@fee_category.fee_particulars.select{|s| s.receiver_type=="StudentCategory"  and (!s.is_deleted and s.batch_id==b.to_i)}.collect(&:receiver_id)
+                student_ids=@fee_category.fee_particulars.select{|s| s.receiver_type=="Student" and (!s.is_deleted and s.batch_id==b.to_i)}.collect(&:receiver_id)
+                @students = @students.select{|stu| (cat_ids.include?stu.student_category_id or student_ids.include?stu.id)}
+              end
+              body = "<p><b>#{t('fee_submission_date_for')} <i>"+fee_category_name+"</i> #{t('has_been_published')} </b>
+                \n \n  #{t('start_date')} : "+@finance_fee_collection.start_date.to_s+" \n"+
+                " #{t('end_date')} :"+@finance_fee_collection.end_date.to_s+" \n "+
+                " #{t('due_date')} :"+@finance_fee_collection.due_date.to_s+" \n \n \n "+
+                " #{t('check_your')}  #{t('fee_structure')}"
+
+
+              recipient_ids = []
+
+              @students.each do |s|
+
+                unless s.has_paid_fees
+                  FinanceFee.new_student_fee(@finance_fee_collection,s)
+
+                  recipient_ids << s.user.id if s.user
+                  recipient_ids << s.immediate_contact.user_id if s.immediate_contact.present?
+                end
+              end
+              recipient_ids = recipient_ids.compact
+              BatchEvent.create(:event_id => new_event.id, :batch_id => b )
+              if  @sent_remainder
+                Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
+                    :recipient_ids => recipient_ids,
+                    :subject=>subject,
+                    :body=>body ))
+              end
+
+              prev_record = Configuration.find_by_config_key("job/FinanceFeeCollection/1")
+              if prev_record.present?
+                prev_record.update_attributes(:config_value=>Time.now)
+              else
+                Configuration.create(:config_key=>"job/FinanceFeeCollection/1", :config_value=>Time.now)
+              end
+            end
+
+            if @include_transport
+              @batchs = @fee_collection[:category_ids]
+              @transport_fee_collection = TransportFeeCollection.new(
+                :name => @collection[:name] + " - Transport",
+                :fee_collection_id => @finance_fee_collection.id,
+                :start_date => @collection[:start_date],
+                :end_date => @collection[:end_date],
+                :due_date => @collection[:due_date]
+              )
+              unless @transport_fee_collection.valid?
+                @error = true
+              end
+              unless @batchs.blank? 
+                unless @batchs.blank?
+                  @batchs.each do |b|
+                    batch = Batch.find(b)
+                    @transport_fee_collection = TransportFeeCollection.new(
+                        :name => @collection[:name] + " - Transport",
+                        :fee_collection_id => @finance_fee_collection.id,
+                        :start_date => @collection[:start_date],
+                        :end_date => @collection[:end_date],
+                        :due_date => @collection[:due_date],
+                        :batch_id => b
+                    )
+
+                    if @transport_fee_collection.save
+                      @event= Event.create(:title=> "#{t('transport_fee_text')}", :description=> "#{t('fee_name')}: #{@collection[:name]} - Transport", :start_date=> @collection[:due_date], :end_date=> @collection[:due_date], :is_due => true, :origin=>@transport_fee_collection)
+                      recipients = []
+                      subject = "#{t('fees_submission_date')}"
+                      body = "<p><b>#{t('fee_submission_date_for')} <i>"+ "#{@transport_fee_collection.name}" +"</i> #{t('has_been_published')} </b><br /><br/>
+                                      #{t('start_date')} : "+@transport_fee_collection.start_date.to_s+" <br />"+
+                        " #{t('end_date')} :"+@transport_fee_collection.end_date.to_s+" <br /> "+
+                        " #{t('due_date')} :"+@transport_fee_collection.due_date.to_s+" <br /><br /><br /> "+
+                        "#{t('regards')}, <br/>" + @user.full_name.capitalize
+                      batch.active_transports.each do |t|
+                        student = t.receiver
+                        unless student.nil?
+                          recipients << student.user.id
+                          TransportFee.create(:receiver =>student, :bus_fare => t.bus_fare, :transport_fee_collection_id=>@transport_fee_collection.id)
+                          UserEvent.create(:event_id=> @event.id, :user_id => student.user.id)
+                        end
+                      end
+
+                      #if sent_remainder
+                      #  Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
+                      #      :recipient_ids => recipients,
+                      #      :subject=>subject,
+                      #      :body=>body ))
+                      #end
+                    else
+                      @error = true
+                    end
+                  end
+                end
+                if @include_employee
+                  @transport_fee_collection = TransportFeeCollection.new(
+                        :name => @collection[:name] + " - Transport",
+                        :fee_collection_id => @finance_fee_collection.id,
+                        :start_date => @collection[:start_date],
+                        :end_date => @collection[:end_date],
+                        :due_date => @collection[:due_date]
+                  )
+                  if @transport_fee_collection.save
+                    recipients = []
+                    @event=Event.create(:title=> "#{t('transport_fee_text')}", :description=> "#{t('fee_name')}: #{@collection[:name]} - Transport", :start_date=> @collection[:due_date], :end_date=> @collection[:due_date], :is_due => true, :origin=>@transport_fee_collection)
+                    subject = "#{t('fees_submission_date')}"
+                    body = "<p><b>#{t('fee_submission_date_for')} <i>"+ "#{@transport_fee_collection.name}" +"</i> #{t('has_been_published')} </b><br /><br/>
+                                      #{t('start_date')} : "+@transport_fee_collection.start_date.to_s+" <br />"+
+                      " #{t('end_date')} :"+@transport_fee_collection.end_date.to_s+" <br /> "+
+                      " #{t('due_date')} :"+@transport_fee_collection.due_date.to_s+" <br /><br /><br /> "+
+                      "#{t('regards')}, <br/>" + @user.full_name.capitalize
+                    employee_transport = Transport.find(:all,:include => :vehicle, :conditions => ["receiver_type = 'Employee' AND vehicles.status = ?", "Active"])
+                    employee_transport.each do |t|
+                      emp = t.receiver
+                      unless emp.nil?
+                        TransportFee.create(:receiver =>emp,  :bus_fare => t.bus_fare, :transport_fee_collection_id=>@transport_fee_collection.id)
+                        UserEvent.create(:event_id=> @event.id, :user_id => emp.user.id)
+                        recipients << emp.user.id
+                      end
+                    end
+                    #if sent_remainder
+                    #  Delayed::Job.enqueue(DelayedReminderJob.new( :sender_id  => @user.id,
+                    #      :recipient_ids => recipients,
+                    #      :subject=>subject,
+                    #      :body=>body ))
+                    #end
+                  else
+                    @error = true
+                  end
+                end
+              else
+                @error = true
+                @transport_fee_collection.errors.add_to_base("#{t('please_select_a_batch_or_emp')}")
+              end
+            end
+
+          else
+#            @error = true
+#            raise ActiveRecord::Rollback
+          end
+
+        end
+      end
+      
+      #NEED TO DELETE
+      #Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee))
       
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')
@@ -9450,6 +9622,16 @@ class FinanceController < ApplicationController
 
   def delete_student_fees
     finance =  FinanceFee.find_by_id(params[:fee_id])
+    date_id = finance.fee_collection_id
+    student_id = finance.student_id
+    date = FinanceFeeCollection.find(date_id)
+    student = Student.find(student_id)
+    discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    discounts_ids = discounts_on_particulars.map(&:id)
+    discounts_ids.each do |did|
+      collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
+      collection_discount.destroy
+    end
     finance.destroy
     render :update do |page|
       page << "searchAjax(1);"
@@ -9465,32 +9647,83 @@ class FinanceController < ApplicationController
   #Student Scholarship start
   
   def student_scholarship
-    @batches = Batch.active.map{|b| [b.full_name, b.id]}
     @courses = Course.active
     fee_cateroies = FinanceFeeParticularCategory.active
     @particular = fee_cateroies.map{|p| [p.name, p.id]}
   end
-
+  
+  def view_scholarships
+    @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+  end
+  
+  def update_scholarship
+     unless params[:id].nil?
+        @fee_discount = FeeDiscount.find_by_id(params[:id].to_i)
+        unless params[:amount].blank?
+        @fee_discount.discount = params[:amount]
+        end
+        unless params[:type].nil?
+        @fee_discount.is_amount = params[:type]
+        end
+        @fee_discount.save
+        
+        render :update do |page|
+          page.replace_html "editID-"+ @fee_discount.id.to_s ,:partial => "scholarship_amount"
+        end
+     end
+  end
+  
+  def delete_scholarship
+     unless params[:id].nil?
+        @fee_discount = FeeDiscount.find_by_id(params[:id].to_i)
+        @fee_discount.destroy
+        
+        render :update do |page|
+          page.replace_html "deleteID-"+ params[:id] ,""
+        end
+     end
+  end
+  
   def load_scholarship_students
-    if params[:id].present?
-      @batch_id = params[:id]
-      @students = Student.active.find_all_by_batch_id(@batch_id, :order => 'first_name ASC, middle_name ASC, last_name ASC')
-    end
+    if params[:query].length>= 3
+        params[:query].gsub! '+', ' '
+        @students = Student.active.find(:all,
+          :conditions => ["first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ?
+                            OR admission_no LIKE ? OR (concat(first_name, \" \", last_name) LIKE ? ) OR (concat(first_name, \"+\", last_name) LIKE ? ) ",
+            "#{params[:query]}%","#{params[:query]}%","#{params[:query]}%",
+            "%#{params[:query]}%", "%#{params[:query]}%", "%#{params[:query]}%" ],
+          :order => "batch_id asc,first_name asc",:include =>  [{:batch=>:course}]) unless params[:query] == ''
+      else
+        @students = Student.active.find(:all,
+          :conditions => ["admission_no = ? " , params[:query]],
+          :order => "batch_id asc,first_name asc",:include =>  [{:batch=>:course}]) unless params[:query] == ''
+      end   
     render :update do |page|
-      page.replace_html "students" ,:partial => "scholarship_student_list"
+      page.replace_html "student-search-results" ,:partial => "scholarship_student_list"
     end
   end
   
   def create_student_scholarship
     unless (params[:fee_discount][:students]).blank?
-      student_ids = params[:fee_discount][:students]
-        student_ids.each do |si|
+
+        student_ids = params[:fee_discount][:students]
+        uniqstds = student_ids.uniq
+ 
+        @scholarship = Scholarship.new
+        @scholarship.name = params[:fee_discount][:name]
+        @scholarship.discount_particular_id = params[:fee_discount][:discount_on]
+        @scholarship.is_amount = params[:fee_discount][:is_amount]
+        @scholarship.amount = params[:fee_discount][:discount]
+        @scholarship.save
+
+        uniqstds.each do |si|
           s = Student.find(si)
           @fee_discount = FeeDiscount.new
           @fee_discount.name = params[:fee_discount][:name]
           @fee_discount.discount = params[:fee_discount][:discount]
           @fee_discount.receiver_type ="Student"
           @fee_discount.receiver_id = s.id
+          @fee_discount.scholarship_id = @scholarship.id
           @fee_discount.batch_id = s.batch_id
           @fee_discount.finance_fee_category_id = 0
           @fee_discount.finance_fee_particular_category_id = params[:fee_discount][:discount_on]
@@ -9499,11 +9732,11 @@ class FinanceController < ApplicationController
             @error = true
           end
         end
-    else
-      @error = true
-      @fee_discount.errors.add_to_base("#{t('admission_cant_be_blank')}")
-    end
-    redirect_to :action => 'student_scholarship'
+        flash[:notice] = "Scholarship Created Successfully"
+     else
+         flash[:notice] = "No Student Selected"
+     end
+    redirect_to :action => 'student_scholarship' 
   end
   #Student Scholarship end
   

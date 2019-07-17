@@ -185,7 +185,11 @@ class Batch < ActiveRecord::Base
   def course_section_name
     "#{course_name}, Section: #{section_name}"
   end
-
+  
+  def course_section
+    "#{course_name}, #{section_name}"
+  end
+  
   def inactivate
     update_attribute(:is_deleted, true)
     self.employees_subjects.destroy_all

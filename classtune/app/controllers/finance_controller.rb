@@ -720,6 +720,12 @@ class FinanceController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     
     fmt = Spreadsheet::Format.new :number_format => "0.00"
+    title_format = Spreadsheet::Format.new({
+      :weight           => :bold,
+      :pattern_bg_color => :grey,
+      :size             => 10
+    })
+
     row_1 = ["Sl No","Student Name","Student ID","Order Id","Amount"]
     
     # Create a new Workbook
@@ -730,6 +736,12 @@ class FinanceController < ApplicationController
 
     # Add row_1
     new_book.worksheet(0).insert_row(0, row_1)
+    new_book.worksheet(0).row(0).set_format(0, title_format)
+    new_book.worksheet(0).row(0).set_format(1, title_format)
+    new_book.worksheet(0).row(0).set_format(2, title_format)
+    new_book.worksheet(0).row(0).set_format(3, title_format)
+    new_book.worksheet(0).row(0).set_format(4, title_format)
+    
     ind = 1
     total_amount = 0.00
     @student_ids.each_with_index do |std, i|

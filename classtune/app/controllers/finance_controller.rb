@@ -742,7 +742,7 @@ class FinanceController < ApplicationController
       row_new = [i+1, student.full_name, student.admission_no, payment.order_id, amount.to_f]
       new_book.worksheet(0).insert_row(ind, row_new)
       new_book.worksheet(0).row(ind).set_format(4, fmt)
-      new_book.worksheet(0).column(0)width = student.full_name.length + 100
+     # new_book.worksheet(0).column(0)width = student.full_name.length + 100
       ind += 1
     end
     row_new = ["", "Total Amount", "", "", total_amount]

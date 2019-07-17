@@ -6248,6 +6248,23 @@ class ExamController < ApplicationController
                       end
                     end
                     
+                    total_mark2 = total_mark2_80+monthly_total_mark2+at_total_mark2
+
+                    total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
+
+                    if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
+                       full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
+                       full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
+                       if total_sb1 > 0
+                         total_sb1 = (total_sb1.to_f/full_sb1.to_f)*full_mark_sb1_converted.to_f
+                       end
+                       if total_sb2 > 0
+                         total_sb2 = (total_sb2.to_f/full_sb2.to_f)*full_mark_sb2_converted.to_f
+                       end
+                       total_mark1 = total_ob1+total_sb1+total_pr1+monthly_total_mark1
+                       total_mark2 = total_ob2+total_sb2+total_pr2+monthly_total_mark2
+                    end
+                    
 
                     total_mark2_no_round = total_mark2
                     full_mark2 = full_mark2

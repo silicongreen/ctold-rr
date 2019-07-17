@@ -869,7 +869,7 @@ class FinanceController < ApplicationController
       pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first
       transaction_id = pt.id
       std_id = pt.payee_id
-      student = Student.find(std_id)
+      student = Student.find(:first, :conditions => "id = #{std_id}")
       if student.nil?
         student = ArchivedStudent.find(:first, :conditions => "former_id = #{std_id}")
       end

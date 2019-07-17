@@ -743,7 +743,7 @@ class FinanceController < ApplicationController
     });
     amount_format_footer = Spreadsheet::Format.new({
       :size             => 12,
-      :weight           => :bold,
+      :weight           => :bold, 
       :number_format    => "0.00"
     });
 

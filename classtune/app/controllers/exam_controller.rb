@@ -5580,7 +5580,7 @@ class ExamController < ApplicationController
                    term_mark_multiplier = 0.90
                 end
                 
-                if sub['grade_subject'].to_i == 1
+                if sub['grade_subject'].to_i == 1 or @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
                   term_mark_multiplier = 1.00
                 end
                 
@@ -5642,8 +5642,8 @@ class ExamController < ApplicationController
                 total_mark1 = total_mark1_80+monthly_total_mark1+at_total_mark1
                 
                 if @connect_exam_obj.result_type == 5 or @connect_exam_obj.result_type == 6
-                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_total_mark1
-                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_total_mark2
+                   full_mark_sb1_converted = full_mark1-full_pr1-full_ob1-monthly_full_mark1
+                   full_mark_sb2_converted = full_mark2-full_pr2-full_ob2-monthly_full_mark2
                    if total_sb1 > 0
                      total_sb1 = (total_sb1.to_f/full_sb1.to_f)*full_mark_sb1_converted.to_f
                    end

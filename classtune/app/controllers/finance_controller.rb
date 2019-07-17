@@ -744,10 +744,9 @@ class FinanceController < ApplicationController
       new_book.worksheet(0).row(ind).set_format(4, fmt)
       new_book.worksheet(0).column(0).width = 10
       new_book.worksheet(0).column(1).width = 50
-      new_book.worksheet(0).column(2).width = 10
-      new_book.worksheet(0).column(3).width = 10
-      new_book.worksheet(0).column(4).width = 10
-      new_book.worksheet(0).column(5).width = 10
+      new_book.worksheet(0).column(2).width = 15
+      new_book.worksheet(0).column(3).width = 20
+      new_book.worksheet(0).column(4).width = 20
       ind += 1
     end
     row_new = ["", "Total Amount", "", "", total_amount]

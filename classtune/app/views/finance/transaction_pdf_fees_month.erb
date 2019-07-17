@@ -87,6 +87,7 @@
                   <% transaction_id = pt.id %>
                   <% amount = pt.amount %>
                   <% student = Student.find(std_id) %>
+                  <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
                   
                   <% if pg == 1 %>
                     <% if j == 14 %>

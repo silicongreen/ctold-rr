@@ -85,10 +85,10 @@
                   <% pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first %>
                   <% std_id = pt.payee_id %>
                   <% transaction_id = pt.id %>
-                  <% amount = pt.amount %>
                   <% student = Student.find(std_id) %>
                   <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>
-                  
+                  <% amount = payment.gateway_response[:amount] %>  
+                
                   <% if pg == 1 %>
                     <% if j == 14 %>
                       <tr><td colspan="3" style="height: 40px;"></td></tr>
@@ -109,7 +109,7 @@
                       <td style="text-align: left; padding-left: 20px;"><%= student.admission_no %></td>
                       <td style="text-align: left; padding-left: 20px;"><%= order %></td>
                       <td style="text-align: right; padding-right: 20px;">
-                        <%= to_comma_seperated_precision_label amount %>
+                        <%= to_comma_seperated_precision_label amount.to_f %>
                       </td>
                   </tr>
 

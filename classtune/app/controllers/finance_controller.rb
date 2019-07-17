@@ -870,7 +870,9 @@ class FinanceController < ApplicationController
       transaction_id = pt.id
       std_id = pt.payee_id
       student = Student.find(std_id)
-      
+      if student.nil?
+        student = ArchivedStudent.find(:first, :conditions => "former_id = #{std_id}")
+      end
       payment = Payment.find_by_finance_transaction_id(transaction_id)
       amount = payment.gateway_response[:amount]
       

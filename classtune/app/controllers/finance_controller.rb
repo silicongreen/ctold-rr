@@ -722,7 +722,7 @@ class FinanceController < ApplicationController
     fmt = Spreadsheet::Format.new :number_format => "0.00"
     title_format = Spreadsheet::Format.new({
       :weight           => :bold,
-      :pattern_bg_color => :grey,
+      :pattern_bg_color => :red,
       :size             => 11,
       :horizontal_align => :centre
     })
@@ -733,6 +733,10 @@ class FinanceController < ApplicationController
     });
     font_format = Spreadsheet::Format.new({
       :size             => 12
+    });
+    amount_format = Spreadsheet::Format.new({
+      :size             => 12,
+      :number_format    => "0.00"
     });
 
     row_1 = ["Sl No","Student Name","Student ID","Order Id","Amount"]
@@ -766,8 +770,7 @@ class FinanceController < ApplicationController
       new_book.worksheet(0).row(ind).set_format(1, font_format)
       new_book.worksheet(0).row(ind).set_format(2, center_font_format)
       new_book.worksheet(0).row(ind).set_format(3, center_font_format)
-      new_book.worksheet(0).row(ind).set_format(4, fmt)
-      new_book.worksheet(0).row(ind).set_format(4, font_format)
+      new_book.worksheet(0).row(ind).set_format(4, amount_format)
       new_book.worksheet(0).column(0).width = 10
       new_book.worksheet(0).column(1).width = 50
       new_book.worksheet(0).column(2).width = 15

@@ -218,103 +218,10 @@
                         </td>  
                     </tr>
                   <% end %>
-                  <tr class="tr-footer">
-                    <th class="align-center fixed-side" style="vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                      Total Amount
-                    </th>
-                    <% @finance_particular_categories.each do |fees_particular| %>
-                        <td style="white-space: nowrap; text-align: center; padding-right: 10px; vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                          <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
-                              <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                  Fees
-                              </div>
-                              <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                  Adv.
-                              </div>
-                              <div style="width: 32%; border-bottom: 2px solid #ccc; display: inline-block;">
-                                  Waiver
-                              </div>
-                          </div>
-                          <div style="width: 100%; ">
-                              <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                  <%= precision_label particular_wise_fees_amount[fees_particular.id] %>
-                              </div>
-                              <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                  <%= precision_label particular_wise_adv_amount[fees_particular.id] %>
-                              </div>
-                              <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
-                                  <%= precision_label particular_wise_discount_amount[fees_particular.id] %>
-                              </div>
-                          </div>
-                          <div style="width: 100%; text-align: right; padding-top: 8px;">
-                              <% total = (particular_wise_fees_amount[fees_particular.id] + particular_wise_adv_amount[fees_particular.id]) - particular_wise_discount_amount[fees_particular.id] %>
-                              <% particular_wise_fees_amount_total += particular_wise_fees_amount[fees_particular.id] %>
-                              <% particular_wise_adv_amount_total += particular_wise_adv_amount[fees_particular.id] %>
-                              <% particular_wise_discount_amount_total += particular_wise_discount_amount[fees_particular.id] %>
-                              Total:&nbsp;&nbsp;&nbsp;<b><%= to_comma_seperated_precision_label total %></b>
-                          </div>
-                        </td>
-                    <% end %>  
-                    <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                        <div style="width: 100%; text-align: center; padding-top: 8px;">
-                            <b><%= to_comma_seperated_precision_label total_fees_discount %></b>
-                        </div>
-                    </td>    
-                    <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                        <div style="width: 100%; text-align: center; padding-top: 8px;">
-                            <b><%= to_comma_seperated_precision_label grand_fine %></b>
-                        </div>
-                    </td>    
-                    <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
-                        <div style="width: 100%; ">
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                Fees
-                            </div>
-                            <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                Adv.
-                            </div>
-                            <div style="width: 32%; border-bottom: 2px solid #ccc; display: inline-block;">
-                                Waiver
-                            </div>
-                        </div>
-                        <div style="width: 100%; padding-top: 4px; padding-bottom: 4px;">
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                <%= to_comma_seperated_precision_label particular_wise_fees_amount_total %>
-                            </div>
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                <%= to_comma_seperated_precision_label particular_wise_adv_amount_total %>
-                            </div>
-                            <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
-                                <%= to_comma_seperated_precision_label particular_wise_discount_amount_total %>
-                            </div>
-                        </div>
-                        <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                Amount
-                            </div>
-                            <div style="width: 32%; margin-right: 2px;border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                Fine
-                            </div>
-                            <div style="width: 32%; border-bottom: 2px solid #ccc; display: inline-block;">
-                                Total
-                            </div>
-                        </div>
-                        <div style="width: 100%; text-align: center; ">
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                <% grand_total = (particular_wise_fees_amount_total + particular_wise_adv_amount_total) - (particular_wise_discount_amount_total + total_fees_discount) %>
-                                <%= to_comma_seperated_precision_label grand_total %>
-                            </div>
-                            <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
-                                <%= to_comma_seperated_precision_label grand_fine %>
-                            </div>
-                            <div style="width: 32%; border-bottom: 1px solid #ccc; display: inline-block;">
-                                <%= to_comma_seperated_precision_label (grand_total.to_f + grand_fine.to_f) %>
-                            </div>
-                        </div>
-                    </td>
-                  </tr>  
+                    
               </tbody>
           </table>
+          <%= will_paginate @particular_wise_transactions_payee,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
       </div>
   </div>
   <% else %>

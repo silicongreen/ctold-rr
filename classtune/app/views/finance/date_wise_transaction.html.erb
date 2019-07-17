@@ -221,9 +221,9 @@
                     
               </tbody>
           </table>
-          <%= will_paginate @particular_wise_transactions_payee,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
       </div>
   </div>
+  <%= will_paginate @particular_wise_transactions_payee,:params=>{:start_date => params[:start_date],:end_date => params[:end_date]} %>
   <% else %>
   <h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Date Wise Particular Report</h2>
   <p>No records found</p>

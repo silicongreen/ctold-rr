@@ -456,7 +456,57 @@ class FinanceController < ApplicationController
         @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
         @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
         
-        @particular_wise_transactions_payee = FinanceTransaction.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id",:page => params[:page],:per_page => 10)
+        
+        @filter_by_course = params[:filter_by_course]
+        unless params[:filter_by_course].nil?
+          if params[:filter_by_course].to_i == 1
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          elsif params[:filter_by_course].to_i == 2
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          else
+            batches = Batch.all.map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          end
+        else
+          batches = Batch.all.map(&:id)
+          extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          #abort(params.inspect)
+        end
+        #abort(extra_params.inspect)
+        @filter_by_payment_type = params[:filter_by_payment_type]
+        unless params[:filter_by_payment_type].nil?
+          if params[:filter_by_payment_type].to_i != 0
+            filter_by_payment_type = "MB"
+            if params[:filter_by_payment_type].to_i == 1
+              filter_by_payment_type = "MB"
+            elsif params[:filter_by_payment_type].to_i == 2
+              filter_by_payment_type = "ITCL"
+            end 
+            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
+          end
+        end
+        
+        @particular_wise_transactions_payee = FinanceTransaction.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "finance_transactions.payee_id",:page => params[:page],:per_page => 10)
         #@particular_wise_transactions_payee = FinanceTransactionParticular.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id",:page => params[:page],:per_page => 10)
         @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transactions.payee_id IN (#{@particular_wise_transactions_payee.map(&:payee_id).join(",")}) and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id")
         @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
@@ -711,7 +761,56 @@ class FinanceController < ApplicationController
     if date_format_check
       unless @start_date > @end_date
 
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
+        @filter_by_course = params[:filter_by_course]
+        unless params[:filter_by_course].nil?
+          if params[:filter_by_course].to_i == 1
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          elsif params[:filter_by_course].to_i == 2
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          else
+            batches = Batch.all.map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          end
+        else
+          batches = Batch.all.map(&:id)
+          extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          #abort(params.inspect)
+        end
+        #abort(extra_params.inspect)
+        @filter_by_payment_type = params[:filter_by_payment_type]
+        unless params[:filter_by_payment_type].nil?
+          if params[:filter_by_payment_type].to_i != 0
+            filter_by_payment_type = "MB"
+            if params[:filter_by_payment_type].to_i == 1
+              filter_by_payment_type = "MB"
+            elsif params[:filter_by_payment_type].to_i == 2
+              filter_by_payment_type = "ITCL"
+            end 
+            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
+          end
+        end
+        
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "finance_transactions.payee_id")
         @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
 
       end
@@ -806,7 +905,56 @@ class FinanceController < ApplicationController
     if date_format_check
       unless @start_date > @end_date
         
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
+        @filter_by_course = params[:filter_by_course]
+        unless params[:filter_by_course].nil?
+          if params[:filter_by_course].to_i == 1
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          elsif params[:filter_by_course].to_i == 2
+            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
+            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
+            college_courses_id = eleven_courses_id + tweleve_courses_id
+            #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          else
+            batches = Batch.all.map(&:id)
+            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          end
+        else
+          batches = Batch.all.map(&:id)
+          extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
+          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
+          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
+          #abort(params.inspect)
+        end
+        #abort(extra_params.inspect)
+        @filter_by_payment_type = params[:filter_by_payment_type]
+        unless params[:filter_by_payment_type].nil?
+          if params[:filter_by_payment_type].to_i != 0
+            filter_by_payment_type = "MB"
+            if params[:filter_by_payment_type].to_i == 1
+              filter_by_payment_type = "MB"
+            elsif params[:filter_by_payment_type].to_i == 2
+              filter_by_payment_type = "ITCL"
+            end 
+            extra_params += ' and gateway_response like \'%%:payment_type: ' + filter_by_payment_type + '%%\''
+            #extra_params += " and payments.gateway_response like '%:payment_type: " + filter_by_payment_type + "%'"
+            #extra_params += " and payments.gateway_response like '%" + params[:filter_by_payment_type].to_s + "%'"
+          end
+        end
+        
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "finance_transactions.payee_id")
         @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
         
       end

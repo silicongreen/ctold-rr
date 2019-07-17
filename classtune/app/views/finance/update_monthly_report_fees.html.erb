@@ -87,7 +87,7 @@
               <% date_wise_fine = 0.00 %>
               <tr class="tr-odd">
                 <th style="white-space: nowrap; vertical-align: middle;" class="align-center fixed-side">
-                  <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
+                  <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>&filter_by_course=<%= @filter_by_course %>&filter_by_payment_type<%= @filter_by_payment_type %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
                 </th>
                 <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
                 <% i = 1 %>

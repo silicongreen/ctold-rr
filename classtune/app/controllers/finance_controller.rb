@@ -707,25 +707,11 @@ class FinanceController < ApplicationController
   def transaction_pdf_fees_month_csv
     fixed_category_name
 
-    if date_format_check
-      unless @start_date > @end_date
-        
-        @fin_start_date = Configuration.find_by_config_key('FinancialYearStartDate').config_value
-        @fin_end_date = Configuration.find_by_config_key('FinancialYearEndDate').config_value
-        
-        @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id")
-        @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
-        
-        @transactions_advances = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id")
-        @transactions_discount = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = fee_discounts.finance_fee_particular_category_id", :group => "finance_transactions.payee_id")
-        @transactions_discount_total_fees = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, 'Total Fee Discount' as  name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id = 0 and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id ", :group => "finance_transactions.payee_id")
-        @transactions_fine = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, 'Fine' as name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Fine' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
-        
-        unless @particular_wise_transactions.blank?
-          @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
-          @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
-        end
-      end
+    unless @start_date > @end_date
+
+      @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
+      @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
+
     end
     
     require 'spreadsheet'
@@ -746,12 +732,12 @@ class FinanceController < ApplicationController
     total_amount = 0.00
     @student_ids.each_with_index do |std, i|
       student = Student.find(std)
-      pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std }
-      transaction_id = pt[0].id
+      pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std }.first
+      transaction_id = pt.id
+      amount = pt.amount
       payment = Payment.find_by_finance_transaction_id(transaction_id)
-      amt = payment.gateway_response[:amount]
-      total_amount += amt.to_f
-      row_new = [i+1, student.full_name, student.admission_no, payment.order_id, amt.to_f]
+      total_amount += amount.to_f
+      row_new = [i+1, student.full_name, student.admission_no, payment.order_id, amount.to_f]
       new_book.worksheet(0).insert_row(ind, row_new)
       new_book.worksheet(0).row(ind).set_format(4, fmt)
       ind += 1

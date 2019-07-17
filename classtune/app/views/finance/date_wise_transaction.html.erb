@@ -81,7 +81,10 @@
                     <% date_wise_fine = 0.00 %>
                   
                     <tr class="tr-odd">
-                        <% student = Student.find(std) %>
+                        <% student = Student.find(:first, :conditions => "id = #{std}") %>
+                        <% if student.nil?  %>
+                        <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{std}") %>
+                        <% end %>
                         <% pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std } %>
                         <% transaction_id = pt[0].id %>
                         <% payment = Payment.find_by_finance_transaction_id(transaction_id) %>

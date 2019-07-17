@@ -310,7 +310,7 @@
                                 %>
                                 <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                 <% if !grade.blank? and !grade.name.blank? %>
-                                  <% if grade.credit_points.to_i == 0 %>
+                                  <% if grade.credit_points.to_i == 0 && fourth_subject.blank? %>
                                     <% failed = true %>
                                   <% end %>
                                   <% if fourth_subject.blank? %>
@@ -322,7 +322,7 @@
                                     <% end %>  
                                   <% end %>
                                   <td class="col-pdf" rowspan="2"><%= grade.name %></td>
-                                  <td class="col-pdf" rowspan="2">|| <%= grade.credit_points %></td>
+                                  <td class="col-pdf" rowspan="2"><%= grade.credit_points %></td>
                                 <% else %>
                                   <td class="col-pdf" rowspan="2">-</td>
                                   <td class="col-pdf" rowspan="2">-</td>
@@ -495,7 +495,6 @@
                      <td colspan="100"></td>
                   </tr>
                   <% subject_count = 0 %>
-                  <% failed = false %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>

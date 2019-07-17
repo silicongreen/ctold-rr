@@ -723,7 +723,8 @@ class FinanceController < ApplicationController
     title_format = Spreadsheet::Format.new({
       :weight           => :bold,
       :pattern_bg_color => :grey,
-      :size             => 10
+      :size             => 10,
+      :horizontal_align => :centre
     })
 
     row_1 = ["Sl No","Student Name","Student ID","Order Id","Amount"]

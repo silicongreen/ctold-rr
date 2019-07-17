@@ -868,10 +868,11 @@ class FinanceController < ApplicationController
     @order_ids.each_with_index do |order, i|
       pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first
       transaction_id = pt.id
-      transaction_id = pt.id
       std_id = pt.payee_id
       student = Student.find(std_id)
-      amount = pt.amount
+      
+      payment = Payment.find_by_finance_transaction_id(transaction_id)
+      amount = payment.gateway_response[:amount]
       
       total_amount += amount.to_f
       row_new = [i+1, student.full_name, student.admission_no, order, amount.to_f]

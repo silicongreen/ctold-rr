@@ -707,11 +707,13 @@ class FinanceController < ApplicationController
   def transaction_pdf_fees_month_csv
     fixed_category_name
 
-    unless @start_date > @end_date
+    if date_format_check
+      unless @start_date > @end_date
 
-      @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
-      @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'"], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id", :group => "finance_transactions.payee_id")
+        @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
 
+      end
     end
     
     require 'spreadsheet'

@@ -810,8 +810,8 @@ class FinanceController < ApplicationController
           end
         end
         
-        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.transaction_datetime ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "payments.order_id")
-        @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
+        @particular_wise_transactions = FinanceTransaction.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_transactions.amount as amount, payments.order_id", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "payments.order_id")
+        @order_ids = @particular_wise_transactions.map(&:order_id).uniq
 
       end
     end
@@ -865,14 +865,16 @@ class FinanceController < ApplicationController
     
     ind = 1
     total_amount = 0.00
-    @student_ids.each_with_index do |std, i|
-      student = Student.find(std)
-      pt = @particular_wise_transactions.select{|pwt| pwt.payee_id == std }.first
+    @order_ids.each_with_index do |order, i|
+      pt = @particular_wise_transactions.select{|pwt| pwt.order_id == order }.first
       transaction_id = pt.id
+      transaction_id = pt.id
+      std_id = pt.payee_id
+      student = Student.find(std_id)
       amount = pt.amount
-      payment = Payment.find_by_finance_transaction_id(transaction_id)
+      
       total_amount += amount.to_f
-      row_new = [i+1, student.full_name, student.admission_no, payment.order_id, amount.to_f]
+      row_new = [i+1, student.full_name, student.admission_no, order, amount.to_f]
       new_book.worksheet(0).insert_row(ind, row_new)
       new_book.worksheet(0).row(ind).set_format(0, center_font_format)
       new_book.worksheet(0).row(ind).set_format(1, font_format)

@@ -113,80 +113,78 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script>
-	j(document).ready(function() {
-		j(document).on('click', ".scholarAmountEdit", function() {
-			var discount = j(this).data("edit");
-			var editEl = "#editID-" + discount;
+j(document).ready(function() {
+j(document).on('click', ".scholarAmountEdit", function() {
+var discount = j(this).data("edit");
+var editEl = "#editID-" + discount;
 
-			if (j(this).hasClass('scholarUpdateButton')) {
-				var amountValue = j("input[name=editamount]").val();
-				var typeValue = j("select[name=amounttype]").val();
-				j(this).html("<i class='fa fa-edit'></i>");
-				j(this).removeClass('scholarUpdateButton');
-				new Ajax.Request('/finance/update_scholarship', {
-					asynchronous : true,
-					evalScripts : true,
-					parameters : 'amount=' + amountValue + '&type=' + typeValue + '&id=' + discount
-				})
-			} else {
-				if (j('button').hasClass('scholarUpdateButton')) {
-					alert('Please update single discount at once');
-				} else {
-					var textAmount = j(editEl).text();
-					var numberAmount = j(this).data('amount');
-					var isAmount = j(this).data('type');
-					var options = `<option value="1" ${isAmount == 1 ? 'selected': ''}>BDT</option><option value="0" ${isAmount == 0 ? 'selected': ''}>%</option>`;
-					var formElem = "<input type='number' value='" + numberAmount + "' name='editamount' /><select name='amounttype'>"+options+"</select><span class='resetButton'>X</span>";
-					j(editEl).html(formElem);
-					j(this).html("<i class='fa fa-check'></i>");
-					j(this).addClass('scholarUpdateButton');
-					j(document).on('click', ".resetButton", function() {
-						j(editEl).text(textAmount);
-						j('.scholarAmountEdit').removeClass('scholarUpdateButton');
-						j('.scholarAmountEdit').html("<i class='fa fa-edit'></i>");
-					});
-				}
-			}
+if (j(this).hasClass('scholarUpdateButton')) {
+var amountValue = j("input[name=editamount]").val();
+var typeValue = j("select[name=amounttype]").val();
+j(this).html("<i class='fa fa-edit'></i>");
+j(this).removeClass('scholarUpdateButton');
+new Ajax.Request('/finance/update_scholarship', {
+asynchronous : true,
+evalScripts : true,
+parameters : 'amount=' + amountValue + '&type=' + typeValue + '&id=' + discount
+})
+} else {
+if (j('button').hasClass('scholarUpdateButton')) {
+alert('Please update single discount at once');
+} else {
+var textAmount = j(editEl).text();
+var numberAmount = j(this).data('amount');
+var isAmount = j(this).data('type');
+var options = `<option value="1" ${isAmount == 1 ? 'selected': ''}>BDT</option><option value="0" ${isAmount == 0 ? 'selected': ''}>%</option>`;
+var formElem = `<input type="number" value="${numberAmount}" name="editamount"/><select name="amounttype">${options}</select><span class="resetButton">X</span>`;
+j(editEl).html(formElem);
+j(this).html("<i class='fa fa-check'></i>");
+j(this).addClass('scholarUpdateButton');
+j(document).on('click', ".resetButton", function() {
+j(editEl).text(textAmount);
+j('.scholarAmountEdit').removeClass('scholarUpdateButton');
+j('.scholarAmountEdit').html("<i class='fa fa-edit'></i>");
+});
+}
+}
+});
 
-		});
+j(document).on('click', ".scholarDeleteButton", function() {
+if (confirm("Confirm Delete This Scholarship?")) {
+var discount = j(this).data("delete");
+new Ajax.Request('/finance/delete_scholarship', {
+asynchronous : true,
+evalScripts : true,
+parameters : 'id=' + discount
+});
+}
 
-		j(document).on('click', ".scholarDeleteButton", function() {
-			if (confirm("Confirm Delete This Scholarship?")) {
-				var discount = j(this).data("delete");
-				new Ajax.Request('/finance/delete_scholarship', {
-					asynchronous : true,
-					evalScripts : true,
-					parameters : 'id=' + discount
-				});
-			}
+});
 
-		});
+//DataTable
+var t = j('#scholarshipTable').DataTable({
+"columnDefs" : [{
+"searchable" : true,
+"orderable" : true,
+"targets" : 0
+}],
+"order" : [[1, 'asc']]
+});
 
-		//DataTable
-		var t = j('#scholarshipTable').DataTable({
-			"columnDefs" : [{
-				"searchable" : true,
-				"orderable" : true,
-				"targets" : 0
-			}],
-			"order" : [[1, 'asc']]
-		});
-
-		t.on('order.dt search.dt', function() {
-			t.column(0, {
-				search : 'applied',
-				order : 'applied'
-			}).nodes().each(function(cell, i) {
-				cell.innerHTML = i + 1;
-			});
-		}).draw();
-		//DataTable
-	});
-
-</script>
+t.on('order.dt search.dt', function() {
+t.column(0, {
+search : 'applied',
+order : 'applied'
+}).nodes().each(function(cell, i) {
+cell.innerHTML = i + 1;
+});
+}).draw();
+//DataTable
+});
+	</script>
 <style>
 	.scholarAmountEdit {
-		background-color: #4CAF50; 
+		background-color: #4CAF50;
 		border: none;
 		color: white;
 		padding: 5px 7px;
@@ -197,7 +195,7 @@
 	}
 
 	.scholarDeleteButton {
-		background-color: #ff0000; 
+		background-color: #ff0000;
 		border: none;
 		color: white;
 		padding: 5px 7px;
@@ -218,8 +216,10 @@
 		float: right;
 		cursor: pointer;
 	}
-	td{text-align: center;}
-
+	td {
+		text-align: center;
+	}
+	button{cursor: pointer;}
 
 </style>
 

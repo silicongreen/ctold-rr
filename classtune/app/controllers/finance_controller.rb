@@ -1998,19 +1998,23 @@ class FinanceController < ApplicationController
 
   def list_category_batch
     #DONE
-    fee_category=FinanceFeeCategory.find(params[:category_id])
-    #@batches= Batch.find(:all,:joins=>"INNER JOIN `category_batches` ON `batches`.id = `category_batches`.batch_id INNER JOIN finance_fee_categories on finance_fee_categories.id=category_batches.finance_fee_category_id INNER JOIN courses on courses.id=batches.course_id",:conditions=>"finance_fee_categories.name = '#{fee_category.name}' and finance_fee_categories.description = '#{fee_category.description}'",:order=>"courses.code ASC")
-    @batches=Batch.active.find(:all,:joins=>[{:category_batches=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{fee_category.id}",:order=>"courses.code ASC").uniq
-    #@batches=fee_category.batches.all(:order=>"name ASC")
-    
-    #@finance_fee_particular_categories_id = FinanceFeeParticular.find_all_by_finance_fee_category_id(params[:category_id]).map(&:finance_fee_particular_category_id).uniq.delete_if{ |x| x==0 }
-    
-    #unless @finance_fee_particular_categories_id.empty?
-    #  @finance_fee_particular_categories = FinanceFeeParticularCategory.find(:all, :conditions => ["id NOT IN (?) and is_deleted = ?", @finance_fee_particular_categories_id, false])
-    #else
-    @finance_fee_particular_categories = FinanceFeeParticularCategory.active
-    #end
-    
+    unless params[:category_id]== "0"
+      fee_category=FinanceFeeCategory.find(params[:category_id])
+      #@batches= Batch.find(:all,:joins=>"INNER JOIN `category_batches` ON `batches`.id = `category_batches`.batch_id INNER JOIN finance_fee_categories on finance_fee_categories.id=category_batches.finance_fee_category_id INNER JOIN courses on courses.id=batches.course_id",:conditions=>"finance_fee_categories.name = '#{fee_category.name}' and finance_fee_categories.description = '#{fee_category.description}'",:order=>"courses.code ASC")
+      @batches=Batch.active.find(:all,:joins=>[{:category_batches=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{fee_category.id}",:order=>"courses.code ASC").uniq
+      #@batches=fee_category.batches.all(:order=>"name ASC")
+      
+      #@finance_fee_particular_categories_id = FinanceFeeParticular.find_all_by_finance_fee_category_id(params[:category_id]).map(&:finance_fee_particular_category_id).uniq.delete_if{ |x| x==0 }
+      
+      #unless @finance_fee_particular_categories_id.empty?
+      #  @finance_fee_particular_categories = FinanceFeeParticularCategory.find(:all, :conditions => ["id NOT IN (?) and is_deleted = ?", @finance_fee_particular_categories_id, false])
+      #else
+      @finance_fee_particular_categories = FinanceFeeParticularCategory.active
+      #end
+    else
+      @finance_fee_particular_categories = FinanceFeeParticularCategory.active
+      @batches = Batch.active.find(:all,:order=>"courses.code ASC").uniq
+    end
     render :update do |page|
       page.replace_html 'list-category-batch', :partial => 'list_category_batch'
       page.replace_html 'list-particular-category', :partial => 'list_particular_category'

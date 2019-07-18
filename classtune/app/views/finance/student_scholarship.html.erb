@@ -27,209 +27,174 @@
 <%= stylesheet_link_tag 'tadded-header' %>
 <%= stylesheet_link_tag 'form-bootstrap' %>
 <% content_for :head do %>
-<%= javascript_include_tag "custom/tabbed-header" %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
 <div id="content-header">
-	<%= show_header_icon %>
-	<h1><%= t('fee_discounts') %></h1>
-	<div class='header-sep'>
-		|
-	</div>
-	<div class='sub-header'>
-		<%= t('finance_management') %>
-	</div>
+    <%= show_header_icon %>
+    <h1><%= t('fee_discounts') %></h1>
+    <div class='header-sep'>
+        |
+    </div>
+    <div class='sub-header'>
+        <%= t('finance_management') %>
+    </div>
 
-	<div id="inner-tab-menu">
-		<ul>
-			<li class='themed_bg themed-dark-hover-background'>
-				<%= link_to "#{t('view_discount')}", :action=>'fee_discounts'%>
-			</li>
-			<li class='themed_bg themed-dark-hover-background'>
-				<%= link_to "View Scholarship", :action=>'view_scholarships'%>
-			</li>
-		</ul>
+    <div id="inner-tab-menu">
+        <ul>
+            <li class='themed_bg themed-dark-hover-background'>
+                <%= link_to "#{t('view_discount')}", :action=>'fee_discounts'%>
+            </li>
+            <li class='themed_bg themed-dark-hover-background'>
+                <%= link_to "View Scholarship", :action=>'view_scholarships'%>
+            </li>
+        </ul>
 
-	</div>
+    </div>
 
 </div>
 <div id="page-yield">
-	<div class="bread_crumb">
-		<%= link_to t('finance_text'), :controller => "finance", :action=>"index" %>
-		<div class = "bread-crumb-separator">
-			>
-		</div>
-		<%= link_to "#{t('fees_text')}", :controller => "finance", :action => "fees_index" %>
-		<div class = "bread-crumb-separator">
-			>
-		</div>
-		Create Scholarship
-	</div>
-	<div id="flash_box"></div>
-	<% unless flash[:notice].nil? %>
-	<p class="flash-msg">
-		<%= flash[:notice] %>
-	</p>
-	<% end %>
-	<div style="width: 100%; float: left;">
-		<div style="width: 60%; float: left;">
-			<% form_for :fee_discount, :url=>{:action=>"create_student_scholarship"}  do |form|%>
-			<div id="form-errors"></div>
-			<ul class="form-style-1">
-				<li>
-					<label>Selected Students</label>
-					<div class="input-container" id="selected-students"></div>
-				</li>
-				<li>
-					<label> Discount <%= t('name') %><span class="necessary-field">*</span></label>
-					<%= form.text_field :name, :style=>"width: 82%", :required => true %>
-				</li>
-				<li>
-					<label for="reason"><%= t('discount_on') %><span class="necessary-field">*</span>:</label>
-					<%= select("fee_discount" , :discount_on, @particular, {:prompt => "#{t('discount_on')}" }, :required => true) %>
-				</li>
-				<li>
-					<label  for="is_amount"><%= t('discount_type') %></label>
-					<span class="label_for_gender" for="is_amount_false"> <%= t('percentage') %>
-						<%= form.radio_button  :is_amount, false, :checked => "checked" %></span>
-					<span class="label_for_gender" for="is_amount_true"><%= t('amount') %>
-						<%= form.radio_button  :is_amount, true %></span>
-				</li>
-				<li>
-					<label for="discount"> <%= t('discount') %> <span class="necessary-field">*</span></label>
-					<%= form.text_field :discount, :style=>"width: 82%; display: inline-block;", :class=>'precision_text', :required => true %> <span id="percent_span" style="display: none;">%</span>
-				</li>
-				<li>
-					<%= form.submit "► #{t('create_text')}", :id => "submit_button" %>
-				</li>
-			<ul/>
-			<% end %>
-		</div>
-		<div style="width: 35%; margin-left: 20px; float: left;">
-			<ul class="form-style-1">
-				<li>
-					<label>Search Student</label>
-					<input id="student-search-box" placeholder="Search Students" type="text"/>
-				</li>
-			</ul>
-			<div id="student-search-results"></div>
-		</div>
-	</div>
+    <div class="bread_crumb">
+        <%= link_to t('finance_text'), :controller => "finance", :action=>"index" %>
+        <div class = "bread-crumb-separator">
+            >
+        </div>
+        <%= link_to "#{t('fees_text')}", :controller => "finance", :action => "fees_index" %>
+        <div class = "bread-crumb-separator">
+            >
+        </div>
+        Create Scholarship
+    </div>
+    <div id="flash_box"></div>
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg">
+          <%= flash[:notice] %>
+      </p>
+    <% end %>
+    <div style="width: 100%; float: left;">
+        <div style="width: 60%; float: left;">
+            <% form_for :fee_discount, :url=>{:action=>"create_student_scholarship"}  do |form|%>
+              <div id="form-errors"></div>
+              <ul class="form-style-1">
+                  <li>
+                      <label>Selected Students</label>
+                      <div class="input-container" id="selected-students"></div>
+                  </li>
+                  <li>
+                      <label> Discount <%= t('name') %><span class="necessary-field">*</span></label>
+                      <%= form.text_field :name, :style=>"width: 82%", :required => true %>
+                  </li>
+                  <li>
+                      <label for="reason"><%= t('discount_on') %><span class="necessary-field">*</span>:</label>
+                      <%= select("fee_discount" , :discount_on, @particular, {:prompt => "#{t('discount_on')}" }, :required => true) %>
+                  </li>
+                  <li>
+                      <label  for="is_amount"><%= t('discount_type') %></label>
+                      <span class="label_for_gender" for="is_amount_false"> <%= t('percentage') %>
+                          <%= form.radio_button  :is_amount, false, :checked => "checked" %></span>
+                      <span class="label_for_gender" for="is_amount_true"><%= t('amount') %>
+                          <%= form.radio_button  :is_amount, true %></span>
+                  </li>
+                  <li>
+                      <label for="discount"> <%= t('discount') %> <span class="necessary-field">*</span></label>
+                      <%= form.text_field :discount, :style=>"width: 82%; display: inline-block;", :class=>'precision_text', :required => true %> <span id="percent_span" style="display: none;">%</span>
+                  </li>
+                  <li>
+                      <%= form.submit "► #{t('create_text')}", :id => "submit_button" %>
+                  </li>
+              <ul/>
+            <% end %>
+        </div>
+        <div style="width: 35%; margin-left: 20px; float: left;">
+            <ul class="form-style-1">
+                <li>
+                    <label>Search Student</label>
+                    <div class="search">
+                        <input id="student-search-box" placeholder="&#xf002; Name or ID " type="text"/>
+                    </div>
+                </li>
+            </ul>
+            <div id="student-search-results"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-	j(document).ready(function() {
-		j("select").select2();
-		j("#student-search-box").keyup(function() {
-			var value = j(this).val();
-			if (value.length >= 3) {
-				new Ajax.Request('/finance/load_scholarship_students', {
-					asynchronous : true,
-					evalScripts : true,
-					parameters : 'query=' + value
-				})
-			} else {
-				j("#student-search-results").html(" ");
-			}
-		});
-	});
+  j(document).ready(function () {
+      j("select").select2();
+      j("#student-search-box").keyup(function () {
+          var value = j(this).val();
+          if (value.length >= 3) {
+              new Ajax.Request('/finance/load_scholarship_students', {
+                  asynchronous: true,
+                  evalScripts: true,
+                  parameters: 'query=' + value
+              })
+          } else {
+              j("#student-search-results").html(" ");
+          }
+      });
+  });
 
 </script>
 <style>
-	.select2-container .select2-selection--single {
-		width: 100%;
-	}
-	.mdl-data-table td, .mdl-data-table th {
-		text-align: left;
-	}
-	.select2-results__options li {
-		padding: 10px 4px;
-		border-bottom: 1px dotted #ccc;
-	}
-	.select2-search--dropdown .select2-search__field {
-		padding: 10px;
-		border-radius: 5px;
-	}
-	.label_for_student_gender {
-		font-weight: bold;
-	}
-	#discount_types_radio {
-		margin-top: 10px;
-	}
-	#submit-button {
-		width: 100%;
-		text-align: center;
-	}
-	#submit-button input {
-		padding: 10px;
-	}
-	.fee_category_scroll {
-		width: 55%;
-	}
+    .select2{width:330px !important;}
+    #student-search-box{width: 100%;}
+    .form-style-1 {
+        margin: 10px auto;
+        max-width: 400px;
+        padding: 20px 12px 10px 20px;
+        font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    }
+    .form-style-1 li {
+        padding: 0;
+        display: block;
+        list-style: none;
+        margin: 10px 0 0 0;
+    }
+    .form-style-1 label {
+        margin: 0 0 3px 0;
+        padding: 0px;
+        display: block;
+        font-weight: bold;
+    }
+    .form-style-1 input[type=text], .form-style-1 input[type=date], .form-style-1 input[type=datetime], .form-style-1 input[type=number], .form-style-1 input[type=search], .form-style-1 input[type=time], .form-style-1 input[type=url], .form-style-1 input[type=email], textarea, select {
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border: 1px solid #BEBEBE;
+        padding: 7px;
+        margin: 0px;
+        -webkit-transition: all 0.30s ease-in-out;
+        -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+        -o-transition: all 0.30s ease-in-out;
+        outline: none;
+    }
+    .form-style-1 input[type=text]:focus, .form-style-1 input[type=date]:focus, .form-style-1 input[type=datetime]:focus, .form-style-1 input[type=number]:focus, .form-style-1 input[type=search]:focus, .form-style-1 input[type=time]:focus, .form-style-1 input[type=url]:focus, .form-style-1 input[type=email]:focus, .form-style-1 textarea:focus, .form-style-1 select:focus {
+        -moz-box-shadow: 0 0 8px #32ff6a;
+        -webkit-box-shadow: 0 0 8px #32ff6a;
+        box-shadow: 0 0 8px #32ff6a;
+        border: 1px solid #88D5E9;
+    }
+    .form-style-1 .field-select {
+        width: 100%;
+    }
+    .form-style-1 input[type=submit] {
+        background: #27aa80;
+        padding: 8px 15px 8px 15px;
+        border: none;
+        color: #fff;
+    }
+    .form-style-1 input[type=submit]:hover {
+        background: #32ff6a;
+        box-shadow: none;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        cursor: pointer;
+    }
 
-	.form-style-1 {
-		margin: 10px auto;
-		max-width: 400px;
-		padding: 20px 12px 10px 20px;
-		font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	}
-	.form-style-1 li {
-		padding: 0;
-		display: block;
-		list-style: none;
-		margin: 10px 0 0 0;
-	}
-	.form-style-1 label {
-		margin: 0 0 3px 0;
-		padding: 0px;
-		display: block;
-		font-weight: bold;
-	}
-	.form-style-1 input[type=text], .form-style-1 input[type=date], .form-style-1 input[type=datetime], .form-style-1 input[type=number], .form-style-1 input[type=search], .form-style-1 input[type=time], .form-style-1 input[type=url], .form-style-1 input[type=email], textarea, select {
-		box-sizing: border-box;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		border: 1px solid #BEBEBE;
-		padding: 7px;
-		margin: 0px;
-		-webkit-transition: all 0.30s ease-in-out;
-		-moz-transition: all 0.30s ease-in-out;
-		-ms-transition: all 0.30s ease-in-out;
-		-o-transition: all 0.30s ease-in-out;
-		outline: none;
-	}
-	.form-style-1 input[type=text]:focus, .form-style-1 input[type=date]:focus, .form-style-1 input[type=datetime]:focus, .form-style-1 input[type=number]:focus, .form-style-1 input[type=search]:focus, .form-style-1 input[type=time]:focus, .form-style-1 input[type=url]:focus, .form-style-1 input[type=email]:focus, .form-style-1 textarea:focus, .form-style-1 select:focus {
-		-moz-box-shadow: 0 0 8px #88D5E9;
-		-webkit-box-shadow: 0 0 8px #88D5E9;
-		box-shadow: 0 0 8px #88D5E9;
-		border: 1px solid #88D5E9;
-	}
-	.form-style-1 .field-divided {
-		width: 49%;
-	}
-
-	.form-style-1 .field-long {
-		width: 100%;
-	}
-	.form-style-1 .field-select {
-		width: 100%;
-	}
-	.form-style-1 .field-textarea {
-		height: 100px;
-	}
-	.form-style-1 input[type=submit], .form-style-1 input[type=button] {
-		background: #4B99AD;
-		padding: 8px 15px 8px 15px;
-		border: none;
-		color: #fff;
-	}
-	.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover {
-		background: #4691A4;
-		box-shadow: none;
-		-moz-box-shadow: none;
-		-webkit-box-shadow: none;
-	}
-	.form-style-1 .required {
-		color: red;
-	}
+    .search input { 
+        font-family:  FontAwesome, sans-serif;
+    }
 
 </style>

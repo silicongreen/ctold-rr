@@ -63,9 +63,12 @@
               <label for="student_course"><%= t('select_a_category') %> : </label>
             </div>
             <div class="input-container">
+            	<% mappedfees = @fees_categories.map {|b| [b.name, b.id]} %>
+            	<% all_fee_category = mappedfees.push(["Common", 0])%>
                 <%= select :finance_fee_particular, :finance_fee_category_id,
-                      @fees_categories.map {|b| [b.name, b.id]},
-                      {:prompt => "#{t('select_a_category')}"},{:onChange => "#{remote_function(:url => {:action => "list_category_batch"}, :with => "'category_id='+value",:before => "$('loader').show();",
+                      all_fee_category,
+                      {:prompt => "#{t('select_a_category')}"},
+                      {:onChange => "#{remote_function(:url => {:action => "list_category_batch"}, :with => "'category_id='+value",:before => "$('loader').show();",
                       :success => "$('loader').hide();")}"}%>
                 <%= image_tag("loader.gif",
                     :align => "absmiddle",

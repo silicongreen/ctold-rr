@@ -1,45 +1,49 @@
 <h4>Student List</h4>
 <hr/>
 <table class="table" width="100%" cellpadding="1" cellspacing="1">
-	<thead>
-		<tr>
-			<th scope="col">Student Name</th>
-			<th scope="col">Batch Name</th>
-			<th scope="col">Student ID</th>
-		</tr>
-	</thead>
-	<tbody>
-		<% if @students.present? %>
-			<% @students.each do |s| %>
-			<tr class="students-list-item" style="cursor: pointer;" data-name="<%= s.full_name %>" data-stid="<%= s.id %>" data-admission="<%= s.admission_no %>">
-				<td><%= s.full_name %></td>
-				<td><%= s.batch.full_name %></td>
-				<td><%= s.admission_no %></td>
-			</tr>
-			<% end %>
-		<% else %>
-		<tr>
-			<th scope="col"><%= t('no_students_found') %></th>
-		</tr>
-		<% end %>
-	</tbody>
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Batch</th>
+            <th scope="col">ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @students.present? %>
+          <% @students.each do |s| %>
+            <tr class="students-list-item" style="cursor: pointer;" data-name="<%= s.full_name %>" data-stid="<%= s.id %>" data-admission="<%= s.admission_no %>">
+                <td><%= s.full_name %></td>
+                <td><%= s.batch.full_name %></td>
+                <td><%= s.admission_no %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+              <th scope="col"><%= t('no_students_found') %></th>
+          </tr>
+        <% end %>
+    </tbody>
 </table>
 
 <script>
-		var stdarr = [];
-	j(document).ready(function() {
-		j(".students-list-item").click(function() {
-			let stdid = j(this).data("stid");
-			let admid = j(this).data("admission");
-			let stdname = j(this).data("name");
-			if(!stdarr.includes(stdid))
-			{
-				j("#selected-students").append("<label style='padding:3px; margin:3px 5px; border-bottom: 1px solid #ddd;'><input  type='checkbox' name='fee_discount[students][]' value='"+stdid+"' checked='checked' />" + stdname + "-<strong>"+admid+"</strong></label>")
-				j(this).css("color", "green");
-				stdarr.push(stdid);
-			}
-			
-		});
-	});
+  j(document).ready(function () {
+      var stdudentList = [];
+      j(".studentCheckBox:checked").each(function(){
+        stdudentList.push(parseInt(j(this).val()));
+      });
+      
+      j(".students-list-item").click(function () {
+          let stdid = j(this).data("stid");
+          let admid = j(this).data("admission");
+          let stdname = j(this).data("name");
+          if (!stdudentList.includes(stdid))
+          {
+              j("#selected-students").append("<label style='padding:3px; margin:3px 5px; border-bottom: 1px solid #ddd;'><input class='studentCheckBox'  type='checkbox' name='fee_discount[students][]' value='" + stdid + "' checked='checked' />" + stdname + "-<strong>" + admid + "</strong></label>")
+              j(this).css("color", "green");
+              stdudentList.push(stdid);
+          }
+
+      });
+  });
 
 </script>

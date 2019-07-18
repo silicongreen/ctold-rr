@@ -5448,7 +5448,7 @@ class ExamController < ApplicationController
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
-                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                         u_grade1 = u_grade1+1
                         subject_failed = true
                         

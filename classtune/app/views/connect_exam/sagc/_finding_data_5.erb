@@ -297,7 +297,7 @@
                       if rs['quarter'] == '2'
                         monthly_total_mark2 = monthly_total_mark2+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                       end
-                      if !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
+                      if rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i != 5 && !rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'].blank? && rs['result'][rs['exam_id']][sub['id']][std['id']]['grade'] == "F" && fourth_subject.blank? &&  @connect_exam_obj.result_type == 5 && rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_i != 13
                         u_grade1 = u_grade1+1
                         subject_failed = true
                         
@@ -716,7 +716,8 @@
                         if @student_result[loop_std]['subject_failed'].blank?
                           @student_result[loop_std]['subject_failed'] = []
                         end
-                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.round().to_s
+                        mark_failed = total_mark1+total_mark2
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+mark_failed.round().to_s
                       end 
                     else
                       if @subject_result[main_sub_id].blank?

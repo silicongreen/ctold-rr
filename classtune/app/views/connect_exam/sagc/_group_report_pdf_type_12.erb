@@ -516,6 +516,7 @@
                   <tr class="page-break-grade">
                      <td colspan="100"></td>
                   </tr> 
+                  <% total_subject_main = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
                     <% @report_data['report']['subjects'].each do |subjects| %>
                       <% if subjects['grade_subject'].to_i != 1 %>

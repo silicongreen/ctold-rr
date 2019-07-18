@@ -289,7 +289,7 @@
                           <% full_mark = 0 %>
                           <% total_subject = total_subject+1 %>
                           <% subject_count = subject_count+1 %>
-                          <td class="col-pdf"><%= subject_count %></td>
+                          <td class="col-pdf"><%= total_subject %></td>
                           <td class="col-pdf no-warp align-left-baf"><%= subjects['name'] %></td>
                           <% unless @report_data['report']['exams'].blank? %>  
                             <% @report_data['report']['exams'].each do |report| %>   

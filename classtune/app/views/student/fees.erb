@@ -46,7 +46,7 @@
                   <% if @student.photo.file? %>
                     <% @profile_image = @student.photo.url %>
                   <div style="display: none;">
-                    <%= debug user.photo.exists?.inspect %>
+                    <%= debug @student.photo.inspect %>
                       </div>
                     <% unless @profile_image.index("RackMultipart").nil? %>
                       <% if File.exists?("/" + @profile_image) %>

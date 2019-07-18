@@ -715,7 +715,7 @@
                 <tr class="odd">
                       <td class="align-left no-warp" width="50%"><b>Grade Point Avg</b></td>
                       <td><b>
-                          <% if failed == true %>
+                          <% if @student_position_first_term_batch[@student.id.to_i].blank? %> 
                             0.00
                           <% else %>
                             <%= sprintf( "%0.02f", grade_point_avg) %>
@@ -731,7 +731,7 @@
                       <td class="align-left no-warp">Letter Grade</td>
                       <td >
                           <b>
-                          <% if failed == true %>
+                          <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
                               F
                           <% else %>
                             <% if !grade.blank? and !grade.name.blank? %>
@@ -809,7 +809,7 @@
                   <tr class="even remarks-tr">
                     <td>
                         <b>Remarks : </b> 
-                            <% if failed == true %>
+                            <% if @student_position_first_term_batch[@student.id.to_i].blank? %>
                               Failed
                            <% else %>
                             <% if !grade.blank? and !grade.name.blank? %>

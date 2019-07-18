@@ -46,7 +46,11 @@
                   <% if @student.photo.file? %>
                     <% @profile_image = @student.photo.url %>
                     <% unless @profile_image.index("RackMultipart").nil? %>
-                      <% @profile_image.gsub! '?', '.?' %>
+                      <% if File.exists?(@profile_image) %>
+                        <% @profile_image.gsub! '?', '.?' %>
+                      <% else %>
+                        <% @profile_image = "master_student/profile/default_student.png" %>
+                      <% end %>
                     <% end %>
 
                   <% else %>
@@ -162,13 +166,28 @@
                                   <td class='fee_due'><%=  precision_label((finance_fee.balance.to_f+d.fine_to_pay(@student).to_f)) %></td>
                               </tr>
                               <tr>
+                                  <% has_due = false %>
+                                  <% due = 0.00 %>
                                   <td class='fee_due'><b>Status</b></td>
                                   <% if finance_fee.balance.to_f > 0 %>
+                                  <% has_due = true %>
+                                  <% due = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
                                   <td class='fee_due'>Unpaid</td>
                                   <% else %>
                                   <td class='fee_due'>Paid</td>
                                   <% end %>
                               </tr>
+                              <% if has_due %>
+                                <% if finance_fee.balance.to_f != due.to_f %>
+                                    <% ffee = FinanceFee.find(finance_fee.id) %>
+                                    <% ffee.update_attributes(:balance => due, :is_paid => false) %>
+                                <% end %>
+                              <% else %>
+                                <% if finance_fee.is_paid == false %>
+                                  <% ffee = FinanceFee.find(finance_fee.id) %>
+                                  <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
+                                <% end %>
+                              <% end %>
                           </table>
                       </div>
                       <% if MultiSchool.current_school.id != 352 %>  
@@ -196,7 +215,7 @@
                       end
                     end
                   %>
-                  <%  %>
+                  
                   <% if finance_fee.balance.to_f+d.fine_to_pay(@student).to_f == 0.00 %>
                   <% bal = FinanceFee.get_student_balance(d,@student, finance_fee) %>  
                   <% else %>
@@ -219,6 +238,8 @@
                                   <td class='fee_due'><b>Paid</b></td>
                                   <td class='fee_due'>BDT <%=  precision_label(paid_amount) %></td>
                               </tr>
+                              <% has_due = false %>
+                              <% due = 0.00 %>
                               <% if paid_amount - bal > 0 %>
                               <tr>
                                   <td class='fee_due'><b>Advance</b></td>
@@ -226,6 +247,7 @@
                                   <td class='fee_due'>BDT <%=  precision_label(advance) %></td>
                               </tr>
                               <% else %>
+                              <% has_due = true %>
                               <tr>
                                   <td class='fee_due'><b>Due</b></td>
                                   <% due = bal - paid_amount %>
@@ -234,13 +256,24 @@
                               <% end %>
                               <tr>
                                   <td class='fee_due'><b>Status</b></td>
-                                  <% if finance_fee.balance.to_f > 0 %>
+                                  <% if has_due %>
                                   <td class='fee_due'>Unpaid</td>
                                   <% else %>
                                   <td class='fee_due'>Paid</td>
                                   <% end %>
                               </tr>
                           </table>
+                          <% if has_due %>
+                            <% if finance_fee.balance.to_f != due.to_f %>
+                                <% ffee = FinanceFee.find(finance_fee.id) %>
+                                <% ffee.update_attributes(:balance => due, :is_paid => false) %>
+                            <% end %>
+                          <% else %>
+                            <% if finance_fee.is_paid == false %>
+                              <% ffee = FinanceFee.find(finance_fee.id) %>
+                              <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
+                            <% end %>
+                          <% end %>
                       </div>
                       <% if MultiSchool.current_school.id != 352 %> 
                       <div class="fee_bottom">

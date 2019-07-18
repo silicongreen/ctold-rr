@@ -281,6 +281,9 @@
                             <% grand_total = grand_total+tota_mark_with_monthly.to_f.round.to_i %>
                             <td class="col-pdf no-warp">
                                <%= highest_mark.to_f.round.to_i %>
+                              <% if failed_subject == true && subjects['subject_group_id'].to_i > 0 %>
+                                <%= "  -"  %>
+                              <% end %>
                             </td>
                             <% if subjects['subject_group_id'].to_i > 0 %>
                               

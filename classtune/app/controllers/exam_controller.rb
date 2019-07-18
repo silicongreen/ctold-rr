@@ -5712,6 +5712,7 @@ class ExamController < ApplicationController
                   
                   if full_mark1 == 50 && main_mark1 == 44 && @connect_exam_obj.result_type == 12
                     main_mark1 = 45
+                    main_mark = 45
                   end
                   if full_mark2 == 50 && main_mark2 == 44 && @connect_exam_obj.result_type == 12
                     main_mark2 = 45

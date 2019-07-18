@@ -5867,7 +5867,8 @@ class ExamController < ApplicationController
                         if @student_result[loop_std]['subject_failed'].blank?
                           @student_result[loop_std]['subject_failed'] = []
                         end
-                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+main_mark.round().to_s
+                        mark_failed = total_mark1+total_mark2
+                        @student_result[loop_std]['subject_failed'] << sub['code']+"-"+mark_failed.round().to_s
                       end 
                     else
                       if @subject_result[main_sub_id].blank?

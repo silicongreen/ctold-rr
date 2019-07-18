@@ -102,7 +102,10 @@
           
           <div id="student_profile_heading1">
               <div id="student_main_info1">
-                  <span class="name"><h1> Dues</h1> </span>
+                  <span class="name" style="width: 70%; display: inline-block;"><h1> Student Fees</h1> </span>
+                  <span class="name" style="width: 23%; display: inline-block; text-align: right; padding-right: 20px;">
+                      <a class="history" href="javascript:;" style="">History</a>
+                  </span>
               </div>
               <div class="extender"> </div>
           </div>
@@ -125,6 +128,8 @@
           <div class="extender"> </div>
           <div class="line" style=""></div>
           <div id="fees_list" style="background: #FBFBFB; padding: 20px; min-height: 300px;">
+              <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
+              <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
               <% found_fees = false %>
               <% if @dates_unpaid.present? %>
               <% found_fees = true %>
@@ -359,10 +364,108 @@
     .fee_bottom span a{
       color: #fff;
     }
+    .history{
+        font-size: 14px; 
+        font-family: verdana;
+        color: #000; 
+        border: 1px solid #ccc; 
+        padding: 5px; 
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .history:hover{
+        text-decoration: none;
+        background: #1C4F04;
+        color: #fff;
+    }
+    .live{
+        background: #DB3434;
+        color: #fff; 
+        font-size: 14px; 
+        font-family: verdana;
+        border: 1px solid #ccc; 
+        padding: 5px; 
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .history:hover{
+        text-decoration: none;
+        background: #1C4F04;
+        color: #fff;
+    }
+    .live:hover{
+        text-decoration: none;
+        background: #fff;
+        color: #000;
+    }
+    .paid{
+        display: none;
+    }
+    .unpaid{
+        display: block;
+    }
 </style>
 
 <script>
   j(document).ready(function(){
+      var unpaid = 0;
+      j(".unpaid").each(function(){
+        if ( j(this).css('display') != "none" )
+        {
+          unpaid++;
+        }
+      });
+      if ( unpaid == 0 )
+      {
+         j("#no_fee_dues").show();
+      }
+      
+      j(document).on('click', '.history', function(){
+          j("#no_fee_dues").hide();
+          j("#no_fee_history").hide();
+          j(".paid").show();
+          j(".unpaid").hide();
+          
+          var paid = 0;
+          j(".paid").each(function(){
+            if ( j(this).css('display') != "none" )
+            {
+              paid++;
+            }
+          });
+          if ( paid == 0 )
+          {
+             j("#no_fee_history").show();
+          }
+          
+          j(this).removeClass("history");
+          j(this).addClass("live");
+          j(this).text("Current");
+      });
+      
+      j(document).on('click', '.live', function(){
+          j("#no_fee_dues").hide();
+          j("#no_fee_history").hide();
+          j(".paid").hide();
+          j(".unpaid").show();
+          
+          var unpaid = 0;
+          j(".unpaid").each(function(){
+            if ( j(this).css('display') != "none" )
+            {
+              unpaid++;
+            }
+          });
+          if ( unpaid == 0 )
+          {
+             j("#no_fee_dues").show();
+          }
+          
+          j(this).removeClass("live");
+          j(this).addClass("history");
+          j(this).text("History");
+      });
+      
       j(document).on('click', '.finance_fees_collection_chk', function(){
           var count_fees = 0;
           var fees = "";

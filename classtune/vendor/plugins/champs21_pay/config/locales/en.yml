@@ -2,6 +2,7 @@ en:
   champs21_pay_label: "Online Payment"
   select_gateway: "Select Gateway"
   include_fees: "Enable Online Payment"
+  include_combined_fees: "Combined Fees Payment"
   paypal_id: "Paypal ID"
   paypal_certificate: "Paypal Certificate"
   online_payment: "Online Payment"

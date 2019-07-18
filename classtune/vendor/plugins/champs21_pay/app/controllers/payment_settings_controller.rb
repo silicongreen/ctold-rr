@@ -1745,49 +1745,56 @@ class PaymentSettingsController < ApplicationController
 ##    order_ids = ["410202", "588254", "889707", "346240", "284674", "752775", "900481", "144658", "994418", "805254", "145218", "487866", "126529", "977381", "352622", "180363", "871216", "180783", "510797", "913520", "989037", "191434", "782724", "350415", "923373", "669304", "242781"]
 #    abort(online_payments.length.to_s + "  " + order_ids.uniq.length.to_s + "  " + order_ids.length.to_s + "  " + verified.to_s)
     
-#    @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
-#    if @active_gateway == "Paypal"
-#      @gateway_fields = Champs21Pay::PAYPAL_CONFIG_KEYS
-#    elsif @active_gateway == "Authorize.net"
-#      @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
-#    elsif @active_gateway == "ssl.commerce"
-#      @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
-#    elsif @active_gateway == "trustbank"
-#      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS
-#    end
-#    @enabled_fees = PaymentConfiguration.find_by_config_key("enabled_fees").try(:config_value)  
-#    @enabled_fees ||= Array.new
+    @active_gateway = PaymentConfiguration.config_value("champs21_gateway")
+    if @active_gateway == "Paypal"
+      @gateway_fields = Champs21Pay::PAYPAL_CONFIG_KEYS
+    elsif @active_gateway == "Authorize.net"
+      @gateway_fields = Champs21Pay::AUTHORIZENET_CONFIG_KEYS
+    elsif @active_gateway == "ssl.commerce"
+      @gateway_fields = Champs21Pay::SSL_COMMERCE_CONFIG_KEYS
+    elsif @active_gateway == "trustbank"
+      @gateway_fields = Champs21Pay::TRUST_BANK_CONFIG_KEYS
+    end
+    @enabled_fees = PaymentConfiguration.find_by_config_key("enabled_fees").try(:config_value)  
+    @enabled_fees ||= Array.new
+    
+    @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)  
+    @include_combined_fees ||= Array.new
 
-#    if request.post?
-#      payment_settings = params[:payment_settings]
-#      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_sslcommerz')
-#      configuration.update_attributes(:config_value => 0)
-#      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_testtrustbank')
-#      configuration.update_attributes(:config_value => 0)
-#      payment_settings.each_pair do |key,value|
-#        if key == 'is_test_sslcommerz' && value == 'on'
-#          value = 1
-#        elsif key == 'is_test_sslcommerz' && value != 'on'
-#          value = 0
-#        end
-#        if key == 'is_test_testtrustbank' && value == 'on'
-#          value = 1
-#        elsif key == 'is_test_testtrustbank' && value != 'on'
-#          value = 0
-#        end
-#        configuration = PaymentConfiguration.find_or_initialize_by_config_key(key)
-#        if configuration.update_attributes(:config_value => value)
-#          flash[:notice] = "Payment setting has been saved successfully."
-#        else
-#          flash[:notice] = "#{configuration.errors.full_messages.join("\n")}"
-#        end
-#      end
-#      unless payment_settings.keys.include? "enabled_fees"
-#        configuration = PaymentConfiguration.find_or_initialize_by_config_key("enabled_fees")
-#        configuration.update_attributes(:config_value => Array.new)
-#      end
-#      redirect_to settings_online_payments_path
-#    end
+    if request.post?
+      payment_settings = params[:payment_settings]
+      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_sslcommerz')
+      configuration.update_attributes(:config_value => 0)
+      configuration = PaymentConfiguration.find_or_initialize_by_config_key('is_test_testtrustbank')
+      configuration.update_attributes(:config_value => 0)
+      payment_settings.each_pair do |key,value|
+        if key == 'is_test_sslcommerz' && value == 'on'
+          value = 1
+        elsif key == 'is_test_sslcommerz' && value != 'on'
+          value = 0
+        end
+        if key == 'is_test_testtrustbank' && value == 'on'
+          value = 1
+        elsif key == 'is_test_testtrustbank' && value != 'on'
+          value = 0
+        end
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key(key)
+        if configuration.update_attributes(:config_value => value)
+          flash[:notice] = "Payment setting has been saved successfully."
+        else
+          flash[:notice] = "#{configuration.errors.full_messages.join("\n")}"
+        end
+      end
+      unless payment_settings.keys.include? "enabled_fees"
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key("enabled_fees")
+        configuration.update_attributes(:config_value => Array.new)
+      end
+      unless payment_settings.keys.include? "include_combined_fees"
+        configuration = PaymentConfiguration.find_or_initialize_by_config_key("include_combined_fees")
+        configuration.update_attributes(:config_value => Array.new)
+      end
+      redirect_to settings_online_payments_path
+    end
   end
 
   def show_gateway_fields

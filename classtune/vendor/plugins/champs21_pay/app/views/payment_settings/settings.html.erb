@@ -39,7 +39,18 @@
   <% end %>
 
   <% form_for :payment_settings,:url => {:action => :settings} do |f| %>
-    <div class="label-field-pair-gateway">
+    <div class="label-field-pair-gateway" style="border-bottom: 1px solid #ccc;">
+      <label for="configuration_fee"><%= t('include_combined_fees') %></label>
+      <div class="check_box_group">
+        <div class="value">
+          <% fee = "Enable Combined Fees Payment" %>  
+          <%= check_box_tag "payment_settings[include_combined_fees][]",fee, (@include_combined_fees.include? fee),:id => "checkbox_#{fee.underscore}" %>
+          <label for="configuration_<%= fee.underscore %>" style="max-width: 200px;"><%= fee %></label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="label-field-pair-gateway" style="border-bottom: 1px solid #ccc;">
       <label for="configuration_fee"><%= t('include_fees') %></label>
       <% allowed_module = ["Student Fee"]
       if Champs21Plugin.accessible_plugins.include? "champs21_applicant_registration"

@@ -619,8 +619,8 @@ function loadJS()
             }
             //j("#particulars_tr_extra").remove();
         });
-
-        j(document).on("click",".fees_particular_fa",function(){
+        
+        j(document).off('click','.fees_particular_fa').on("click",".fees_particular_fa",function(){
             var id = this.id.replace('fee_particular_fa_','');
             if (j(this).hasClass("fa-check-square-o"))
             {

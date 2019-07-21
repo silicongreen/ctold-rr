@@ -147,6 +147,7 @@ multi_school_models:
 - BoardSession
 - StudentExcludeDiscount
 - StudentFeeConfiguration
+- StudentFeeLedger
 - AttendanceVehicle
 
 general_models:

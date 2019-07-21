@@ -6,8 +6,6 @@
     @student_position_first_term = @student_position_second_term
     @student_position_first_term_batch = @student_position_second_term_batch
   end
-
-
 %>
  <% total_u = 0 %>
   <div id="page-yield"  class="available_sections1 baf_shaheen">
@@ -174,8 +172,7 @@
                             <% if class_test_mark > 0 && class_test_mark_full_mark > 0 %>
                               <% class_test_mark = (class_test_mark.to_f/class_test_mark_full_mark.to_f)*class_test_converted_mark %>
                               <% class_test_mark = class_test_mark.round() %>
-                            <% else %>
-                              
+                            <% else %>  
                               <% class_test_mark = 0 %>
                             <% end %>  
                             <td class="col-pdf no-warp">
@@ -190,7 +187,7 @@
                               <% if report['exam_category'] != '1' %>
                                 <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
-                                      <td class="col-pdf">-</td>
+                                      <td class="col-pdf">AB</td>
                                     <% else %>
                                       <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
                                     <% end %>
@@ -203,7 +200,9 @@
                             <td class="col-pdf no-warp">
                                <%= main_exam_mark.to_f.round.to_i %>
                             </td>   
-                          
+                            <td class="col-pdf no-warp">
+                               <%= sprintf( "%0.02f", avg_mark)%>
+                            </td>
                             <% tota_mark_with_monthly = avg_mark+class_test_mark %>
                             <td class="col-pdf no-warp">
                                 <b><%= tota_mark_with_monthly.to_f.round.to_i %></b>
@@ -585,7 +584,6 @@
           float:left;
           width: 31.7%;
           font-size: 14px;
-
       }
     .baf_shaheen div.grade_information table#pdf-table tr.even td
     {
@@ -649,5 +647,4 @@
 }
    
    
-  </style>    
-     
+  </style>  

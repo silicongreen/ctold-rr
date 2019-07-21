@@ -7381,35 +7381,35 @@ class FinanceController < ApplicationController
 #      student_fee_ledger.save
 #    end
 
-    if MultiSchool.current_school.id == 312
-      @students = Student.active
-      @students.each do |s|
-        finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
-        unless finance_fees.nil?
-          finance_fees.each do |fee|
-            unless fee.is_paid
-              date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-              unless date.nil?
-                balance = FinanceFee.get_student_balance(date, s, fee)
-                finance_fee = FinanceFee.find_by_id_and_is_paid(fee.id, false)
-                finance_fee.update_attributes(:balance=>balance)
-              end
-            end
-#            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
-#            unless date.nil?
-#              balance = FinanceFee.get_student_balance(date, s, fee)
-#              ledger_date = date.start_date
-#              student_fee_ledger = StudentFeeLedger.new
-#              student_fee_ledger.student_id = s.id
-#              student_fee_ledger.ledger_date = ledger_date
-#              student_fee_ledger.amount_to_pay = balance.to_f
-#              student_fee_ledger.fee_id = fee.id
-#              student_fee_ledger.save
+#    if MultiSchool.current_school.id == 312
+#      @students = Student.active
+#      @students.each do |s|
+#        finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
+#        unless finance_fees.nil?
+#          finance_fees.each do |fee|
+#            unless fee.is_paid
+#              date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+#              unless date.nil?
+#                balance = FinanceFee.get_student_balance(date, s, fee)
+#                finance_fee = FinanceFee.find_by_id_and_is_paid(fee.id, false)
+#                finance_fee.update_attributes(:balance=>balance)
+#              end
 #            end
-          end
-        end
-      end
-    end
+##            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+##            unless date.nil?
+##              balance = FinanceFee.get_student_balance(date, s, fee)
+##              ledger_date = date.start_date
+##              student_fee_ledger = StudentFeeLedger.new
+##              student_fee_ledger.student_id = s.id
+##              student_fee_ledger.ledger_date = ledger_date
+##              student_fee_ledger.amount_to_pay = balance.to_f
+##              student_fee_ledger.fee_id = fee.id
+##              student_fee_ledger.save
+##            end
+#          end
+#        end
+#      end
+#    end
     
 #    @students = Student.active
 #    @students.each do |s|

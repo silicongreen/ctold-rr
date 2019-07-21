@@ -5844,9 +5844,9 @@ class FinanceController < ApplicationController
               FinanceFee.update_student_fee(@fee_collection, s, @fee)
             end
 
-            if discount.is_visible == false
-              discount.destroy
-            end
+            #if discount.is_visible == false
+            #  discount.destroy
+            #end
             render :update do |page|
               page << "reload_discount(#{@discount_id});"
             end
@@ -5856,9 +5856,9 @@ class FinanceController < ApplicationController
               collection_discount.destroy
             end
 
-            if discount.is_visible == false
-              discount.destroy
-            end
+#            if discount.is_visible == false
+#              discount.destroy
+#            end
             render :update do |page|
               page << "reload_discount(#{@discount_id});"
             end
@@ -5877,9 +5877,9 @@ class FinanceController < ApplicationController
             FinanceFee.update_student_fee(@fee_collection, s, @fee)
           end
 
-          if discount.is_visible == false
-            discount.destroy
-          end
+#          if discount.is_visible == false
+#            discount.destroy
+#          end
           render :update do |page|
             page << "reload_discount(#{@discount_id});"
           end

@@ -31,7 +31,7 @@ class Settings {
     public static $free_domain_string = array("free");
     public static $card_attendence_school = [2, 3, 246, 319, 352, 312];
     public static $card_attendence_school_status = [2, 3];
-    public static $card_attendence_school_employee_only = [319, 312, 3];
+    public static $card_attendence_school_employee_only = [319, 312];
     public static $school_sms_extra_string = array(
         319 => " GH."
     );
@@ -1914,15 +1914,15 @@ class Settings {
     public static function sendNotification($notification_ids,$user_ids) {
         $api_access_key_gcm = 'AIzaSyBrKEjz2fYKuBiNJwtKD09DtmRZKkEeFYk';
         $api_access_key_fcm = 'AAAA9xu5n9A:APA91bFWbXcRyqgByR1vpvMibChz8tZxvA9g1AcMdGAOOvsqEeIXg8LqkdMbWUQtPEUlCW0TjxADE15fdWIBRWEd1_UGKgq4BXLdNRcZB3hgw0CVD-crjADNU8u4uq1TBIp7FKCWGqbFQlnxccZFDdvmOPddPFcTcw';
-        $servername = "localhost";
-        $username = "champs21_school";
-        $password = "u[QXL=OF%D,F";
-        $dbname_source = "champs21_school";
-        
 //        $servername = "localhost";
-//        $username = "champs21";
-//        $password = "079366";
+//        $username = "champs21_school";
+//        $password = "u[QXL=OF%D,F";
 //        $dbname_source = "champs21_school";
+        
+        $servername = "localhost";
+        $username = "champs21";
+        $password = "079366";
+        $dbname_source = "champs21_school";
 
         // Create connection
         $conn_source = new mysqli($servername, $username, $password, $dbname_source);

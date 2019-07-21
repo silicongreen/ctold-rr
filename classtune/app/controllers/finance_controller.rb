@@ -7373,6 +7373,86 @@ class FinanceController < ApplicationController
   end
 
   def fees_student_dates
+#    @students = Student.active
+#    @students.each do |s|
+#      student_fee_ledger = StudentFeeLedger.new
+#      student_fee_ledger.student_id = s.id
+#      student_fee_ledger.ledger_date = s.admission_date
+#      student_fee_ledger.save
+#    end
+
+    if MultiSchool.current_school.id == 312
+      @students = Student.active
+      @students.each do |s|
+        finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
+        unless finance_fees.nil?
+          finance_fees.each do |fee|
+            unless fee.is_paid
+              date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+              unless date.nil?
+                balance = FinanceFee.get_student_balance(date, s, fee)
+                finance_fee = FinanceFee.find_by_id_and_is_paid(fee.id, false)
+                finance_fee.update_attributes(:balance=>balance)
+              end
+            end
+#            date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+#            unless date.nil?
+#              balance = FinanceFee.get_student_balance(date, s, fee)
+#              ledger_date = date.start_date
+#              student_fee_ledger = StudentFeeLedger.new
+#              student_fee_ledger.student_id = s.id
+#              student_fee_ledger.ledger_date = ledger_date
+#              student_fee_ledger.amount_to_pay = balance.to_f
+#              student_fee_ledger.fee_id = fee.id
+#              student_fee_ledger.save
+#            end
+          end
+        end
+      end
+    end
+    
+#    @students = Student.active
+#    @students.each do |s|
+#      finance_fees = FinanceFee.find(:all, :conditions => "student_id = #{s.id}")
+#      unless finance_fees.nil?
+#        finance_fees.each do |fee|
+#          date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee.fee_collection_id}")
+#          unless date.nil?
+#            balance = FinanceFee.get_student_balance(date, s, fee)
+#            ledger_date = date.start_date
+#            student_fee_ledger = StudentFeeLedger.new
+#            student_fee_ledger.student_id = s.id
+#            student_fee_ledger.ledger_date = ledger_date
+#            student_fee_ledger.amount_to_pay = balance.to_f
+#            student_fee_ledger.fee_id = fee.id
+#            student_fee_ledger.save
+#          end
+#        end
+#      end
+#    end
+
+#    @students = Student.active
+#    @students.each do |s|
+#      finance_transactions = FinanceTransaction.find(:all, :conditions => "payee_id = #{s.id} AND finance_id IS NOT NULL ")
+#      unless finance_transactions.nil?
+#        finance_transactions.each do |transaction|
+#          fee = FinanceFee.find(:first, :conditions => "id = #{transaction.finance_id}")
+#          unless fee.nil?
+#            balance = transaction.amount
+#            ledger_date = transaction.transaction_date
+#            student_fee_ledger = StudentFeeLedger.new
+#            student_fee_ledger.student_id = s.id
+#            student_fee_ledger.ledger_date = ledger_date
+#            student_fee_ledger.fee_id = fee.id
+#            student_fee_ledger.amount_paid = balance.to_f
+#            student_fee_ledger.transaction_id = transaction.id
+#            order_ids = Payment.find(:all, :conditions => "finance_transaction_id = #{transaction.id}").map(&:order_id)
+#            student_fee_ledger.order_id = order_ids.join(",")
+#            student_fee_ledger.save
+#          end
+#        end
+#      end
+#    end
     @student = Student.find(params[:id])
     #@dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fees.batch_id='#{@student.batch.id}' and finance_fee_collections.is_deleted=#{false} and fee_collection_batches.is_deleted=#{false}").uniq
     @dates=FinanceFeeCollection.find(:all,:joins=>"INNER JOIN fee_collection_batches on fee_collection_batches.finance_fee_collection_id=finance_fee_collections.id INNER JOIN finance_fees on finance_fees.fee_collection_id=finance_fee_collections.id",:conditions=>"finance_fees.student_id='#{@student.id}' and finance_fee_collections.is_deleted=#{false} and fee_collection_batches.is_deleted=#{false}").uniq # and finance_fees.batch_id='#{@student.batch.id}'

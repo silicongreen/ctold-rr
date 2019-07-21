@@ -1,0 +1,28 @@
+.select2-container .select2-selection--single
+{
+    height:32px;
+}
+.mdl-data-table td, .mdl-data-table th
+{
+    text-align:left;
+}
+.select2-results__options li {
+    padding: 10px 4px;
+    border-bottom: 1px dotted #ccc;
+}
+.select2-search--dropdown .select2-search__field {
+    padding: 10px;
+    border-radius: 5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 4px !important;
+}
+.select2-selection{
+    height: 35px !important;
+    margin-left: 10px;
+    padding-top: 2px;
+    padding-left: 10px;
+}
+.select2-container{
+    width: 92% !important;
+}

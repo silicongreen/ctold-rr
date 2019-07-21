@@ -64,10 +64,6 @@
                   <td class="col-4 desc" style="width: 45%;"><%= (finance_fee_particular_category.description.length > 30) ? finance_fee_particular_category.description[0..30] + "..." : finance_fee_particular_category.description %></td>
                   <td class="edit_btn_td" style="width: 25%;">
                       <div class="edit_btn">
-                      <% if finance_fee_particular_category.fee_particular_exists %>
-                      <% else %>
-                        <span class="small"> <%= link_to_remote t('delete_text'),:confirm=>"#{t('delete_confirm_msg')}", :url => { :action => 'particular_category_delete',:id => finance_fee_particular_category.id} %></span>
-                      <% end %>
                       <span class="small"> <%= link_to_remote t('edit_text'), :url => { :action => 'particular_category_edit',:id => finance_fee_particular_category.id} %></span>
                       </div>
                   </td>

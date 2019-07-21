@@ -30,7 +30,7 @@ class FeeDiscount < ActiveRecord::Base
 #  validates_uniqueness_of :name,:scope=>[:batch_id,:finance_fee_category_id]
   validates_inclusion_of :discount, :in => 0..100,:unless=>:is_amount,:message=>:amount_in_percentage_cant_exceed_100,:allow_blank=>true
 #  after_create :update_category,:if=>Proc.new{Configuration.find_by_config_key("SetupDiscountReceiverType").present? and Configuration.find_by_config_key("SetupCollectionDiscount").present?}
-  before_update :collection_exist
+  before_update :collection_exist, :check_transaction
 
   def validate
       unless finance_fee_category.nil?
@@ -210,12 +210,21 @@ class FeeDiscount < ActiveRecord::Base
       unless is_deleted_changed?
         collection_ids=finance_fee_category.fee_collections.collect(&:id)
         if CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id(id,collection_ids)
-        errors.add_to_base(t('collection_exists_for_this_category_cant_edit_this_discount'))
+          errors.add_to_base(t('collection_exists_for_this_category_cant_edit_this_discount'))
           return false
         else
           return true
         end
       end
+    end
+  end
+  
+  def check_transaction
+    if FinanceTransactionParticular.find(:all,:conditions=>"particular_type = 'Adjustment' and transaction_type='Discount' and particular_id=#{id}").present?
+      errors.add_to_base(t('transaction_exists_for_this_category_cant_delete_or_edit_this_discount'))
+      return false
+    else
+      return true
     end
   end
 

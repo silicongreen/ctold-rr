@@ -1,3 +1,8 @@
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 function reloadFeeSubmission(batch_id,date_id,student_id,submission_date)
 {
     var year = submission_date.getFullYear();
@@ -1054,13 +1059,21 @@ function loadJS()
               generateAmountToPay(); 
         });
 
-        j(document).on("click",".chk_extra_particular",function(){
-             var particular_name = j.trim(j("#selectParticular").val());
-             if ( particular_name == '' )
+        j(document).off('click','.chk_extra_particular').on("click",".chk_extra_particular",function(){
+             j(this).hide();
+             var particular_category_id = j.trim(j("#selectParticular").val());
+             if ( particular_category_id == '' )
              {
                 alert("Please Select a Particular Category");
                 return ;
              }
+             var particular_name = j.trim(j("#extra_particular_name").val());
+             if ( particular_name == '' )
+             {
+                alert("Particular name can't be blank");
+                return ;
+             }
+             particular_name = particular_name.replaceAll("&","--")
              var particular_amount = j.trim(j("#extra_particular_amount").val());
              if ( particular_amount == 0 )
              {
@@ -1084,7 +1097,7 @@ function loadJS()
                   {
                     asynchronous:true, 
                     evalScripts:true, 
-                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+'&no_vat=1'
+                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular_category='+particular_category_id+'&particular='+particular_name+'&no_vat=1'
                   }
              );
         });

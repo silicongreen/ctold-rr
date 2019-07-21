@@ -87,7 +87,7 @@
               <% date_wise_fine = 0.00 %>
               <tr class="tr-odd">
                 <th style="white-space: nowrap; vertical-align: middle;" class="align-center fixed-side">
-                  <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>&filter_by_course=<%= @filter_by_course %>&filter_by_payment_type<%= @filter_by_payment_type %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
+                  <a href="/finance/date_wise_transaction?start_date=<%= day %>&end_date=<%= day %>&filter_by_course=<%= @filter_by_course %>&filter_by_payment_type=<%= @filter_by_payment_type %>" target="_blank" ><%= I18n.l(day.to_date,:format=>"%d %b %Y") %></a>
                 </th>
                 <% pt = @particular_wise_transactions.select{|pwt| I18n.l(pwt.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d") } %>
                 <% i = 1 %>
@@ -116,7 +116,7 @@
                   <% end %>
                   <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
                   <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
-                  <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                  <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                       <div style="width: 100%; ">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Fees
@@ -148,7 +148,7 @@
                   </td>
                   <% i += 1 %>
                 <% end %>
-                  <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                  <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                       <% discount_on_total_fees = @transactions_discount_total_fees.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d")} %>
                       <% discount_total_amount = discount_on_total_fees.map(&:amount).sum %>
                       <div style="width: 100%; text-align: center; padding-top: 8px;">
@@ -158,7 +158,7 @@
                       <% total_fees_discount += discount_total_amount %>
                       <% date_wise_total -= discount_total_amount %>
                   </td>
-                  <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                  <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                       <% fine_discount = @transactions_fine.select{|p|  I18n.l(p.transaction_date.to_date,:format=>"%Y-%m-%d") == I18n.l(day.to_date,:format=>"%Y-%m-%d")} %>
                       <% fine_discount_amount = fine_discount.map(&:amount).sum %>
                       <div style="width: 100%; text-align: center; padding-top: 8px;">
@@ -167,7 +167,7 @@
                       <% date_wise_fine += fine_discount_amount %>
                       <% grand_fine += date_wise_fine %>
                   </td>
-                  <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                  <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                       <div style="width: 100%; ">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Fees
@@ -179,7 +179,7 @@
                               Waiver
                           </div>
                       </div>
-                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
+                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px; z-index: 1; position: relative;">
                           <% actual_diff_amount = 0 %>
                           <% unless  fees_month["#{dt}"].nil? %>
                           <% tot_amt = (date_wise_fees.to_f + date_wise_adv.to_f) - date_wise_discount.to_f %>
@@ -246,7 +246,7 @@
                               <%= to_comma_seperated_precision_label date_wise_discount %>
                           </div>
                       </div>
-                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
+                      <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px; z-index: 1; position: relative;">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Amount
                           </div>
@@ -288,11 +288,11 @@
               </tr>
               <% end %>
               <tr class="tr-footer">
-                <th class="align-center fixed-side" style="vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
+                <th class="align-center fixed-side" style="vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold; z-index: 1; position: relative;">
                   Total Amount
                 </th>
                 <% @finance_particular_categories.each do |fees_particular| %>
-                    <td style="white-space: nowrap; text-align: center; padding-right: 10px; vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
+                    <td style="white-space: nowrap; text-align: center; padding-right: 10px; vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold; z-index: 1; position: relative;">
                       <div style="width: 100%; display: block; padding-top: 6px; padding-bottom: 6px;">
                           <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                               Fees
@@ -324,17 +324,17 @@
                       </div>
                     </td>
                 <% end %>  
-                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
+                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold; z-index: 1; position: relative;">
                     <div style="width: 100%; text-align: center; padding-top: 8px;">
                         <b><%= to_comma_seperated_precision_label total_fees_discount %></b>
                     </div>
                 </td>    
-                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
+                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold; z-index: 1; position: relative;">
                     <div style="width: 100%; text-align: center; padding-top: 8px;">
                         <b><%= to_comma_seperated_precision_label grand_fine %></b>
                     </div>
                 </td>    
-                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold;">
+                <td style="white-space: nowrap; text-align: center; padding-right: 10px;vertical-align: middle; background-color: #DAF6DA !important;color: #000;font-weight: bold; z-index: 1; position: relative;">
                     <div style="width: 100%; ">
                         <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                             Fees
@@ -423,7 +423,7 @@
     .clone {
             position:absolute;
             top:0;
-            left:0;
+            left:-1px;
     }
     .clone th, .clone td {
             visibility:hidden

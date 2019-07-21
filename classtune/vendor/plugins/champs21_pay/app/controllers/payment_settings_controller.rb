@@ -1792,6 +1792,11 @@ class PaymentSettingsController < ApplicationController
       unless payment_settings.keys.include? "include_combined_fees"
         configuration = PaymentConfiguration.find_or_initialize_by_config_key("include_combined_fees")
         configuration.update_attributes(:config_value => Array.new)
+      else  
+        student_fee_configurations = StudentFeeConfiguration.find(:all, :conditions => "config_key = 'combined_payment_student' and config_value = '#{0}'")
+        student_fee_configurations.each do |sfc|
+          sfc.destroy
+        end
       end
       redirect_to settings_online_payments_path
     end

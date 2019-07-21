@@ -1253,69 +1253,6 @@ class FinanceController < ApplicationController
     end
   end
 
-  #-----------------------------------OLD PDF REPORT
-  #  def transaction_pdf_fees
-  #    fixed_category_name
-  #    if date_format_check
-  #      unless @start_date > @end_date
-  #        extra_params = ""
-  #        extra_joins = ""
-  #        @filter_by_course = params[:filter_by_course]
-  #        unless params[:filter_by_course].nil?
-  #          if params[:filter_by_course].to_i == 1
-  #            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-  #            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-  #            college_courses_id = eleven_courses_id + tweleve_courses_id
-  #            school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-  #            batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
-  #            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
-  #            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-  #            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-  #          elsif params[:filter_by_course].to_i == 2
-  #            eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
-  #            tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
-  #            college_courses_id = eleven_courses_id + tweleve_courses_id
-  #            #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
-  #            batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
-  #            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
-  #            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-  #            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-  #          else
-  #            batches = Batch.active.map(&:id)
-  #            extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
-  #            extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-  #            extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-  #          end
-  #        else
-  #          batches = Batch.active.map(&:id)
-  #          extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
-  #          extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
-  #          extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
-  #          #abort(params.inspect)
-  #        end
-  #        
-  #        @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
-  #        @transactions_advances = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
-  #        @transactions_discount = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false} " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = fee_discounts.finance_fee_particular_category_id " + extra_joins, :group => "transaction_date, finance_fee_particular_categories.id")
-  #        @transactions_discount_total_fees = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, 'Total Fee Discount' as  name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount' and fee_discounts.finance_fee_particular_category_id = 0 and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN fee_discounts ON fee_discounts.id = finance_transaction_particulars.particular_id  " + extra_joins, :group => "transaction_date")
-  #        @transactions_fine = FinanceTransactionParticular.find(:all, :select => "CAST(payments.transaction_datetime as DATE) as transaction_date, 'Fine' as name, 0 as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Fine' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' " + extra_params], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "transaction_date")
-  #        
-  #        @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
-  #        @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
-  #
-  #        render :pdf => 'transaction_pdf_fees',
-  #        :margin => {:top=> 10,
-  #        :bottom => 10,
-  #        :left=> 10,
-  #        :right => 10},
-  #        :orientation => 'Portrait',
-  #        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-  #        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
-  #        end
-  #    end
-  #  end
-  #-----------------------------------OLD PDF REPORT
-
   def transaction_pdf
     fixed_category_name
     @hr = Configuration.find_by_config_value("HR")
@@ -1348,8 +1285,6 @@ class FinanceController < ApplicationController
       end
     end
   end
-
-
 
   def salary_employee
     if date_format_check
@@ -1474,6 +1409,7 @@ class FinanceController < ApplicationController
       page.reload
     end
   end
+  
   def employee_payslip_reject
     dates = MonthlyPayslip.find_all_by_salary_date_and_employee_id(Date.parse(params[:id2]),params[:id])
     employee = Employee.find(params[:id])
@@ -1528,7 +1464,6 @@ class FinanceController < ApplicationController
     end
   end
 
-
   def view_employee_payslip
     @is_present_employee=true
     @is_present_employee=false if (Employee.find_by_id(params[:id]).nil?)
@@ -1541,7 +1476,6 @@ class FinanceController < ApplicationController
       redirect_to :controller => "finance", :action => "view_monthly_payslip"
     end
   end
-
 
   def search_ajax
     other_conditions = ""
@@ -1714,6 +1648,58 @@ class FinanceController < ApplicationController
     @finance_fee_particular_categories = FinanceFeeParticularCategory.active
     respond_to do |format|
       format.js { render :action => 'master_particular_category_new' }
+    end
+  end
+  
+  def set_combined_payment_configuration
+    unless params[:student].nil?
+      student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{params[:student].to_i} and config_key = '#{params[:key]}'")
+      if student_fee_configuration.nil?
+        student_fee_configuration = StudentFeeConfiguration.new
+        student_fee_configuration.student_id = params[:student].to_i
+        student_fee_configuration.config_key = params[:key]
+        student_fee_configuration.config_value = params[:value]
+        if student_fee_configuration.save
+          if params[:value].to_i == 1
+            render :update do |page|
+              page << "enable_combined_payment();"
+            end
+          else
+            render :update do |page|
+              page << "remove_combined_payment();"
+            end
+          end
+        else
+          render :update do |page|
+            page << "remove_combined_payment();"
+          end
+        end
+      else
+        @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value) 
+        if params[:value].to_i == 0
+          unless @include_combined_fees.blank?
+            student_fee_configuration.destroy
+          else  
+            student_fee_configuration.update_attributes(:config_value => params[:value])
+          end
+        else
+          student_fee_configuration.update_attributes(:config_value => params[:value])
+        end
+        #student_fee_configuration.update_attributes(:config_value => params[:value])
+        if params[:value].to_i == 1
+          render :update do |page|
+            page << "enable_combined_payment();"
+          end
+        else
+          render :update do |page|
+            page << "remove_combined_payment();"
+          end
+        end
+      end
+    else
+      render :update do |page|
+        page << "remove_combined_payment();"
+      end
     end
   end
   
@@ -5525,11 +5511,11 @@ class FinanceController < ApplicationController
       @student = Student.find(params[:student])
       @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@date.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = '#{@student.id}'")
       
-      @particular_id = params[:particular]
+      @particular_id = params[:particular_category]
 
       @particular_n = FinanceFeeParticularCategory.first(:select=>"name",:conditions=>"id = #{@particular_id} AND is_deleted = #{false}")
-      @particular_name = @particular_n.name
-      
+      @particular_name = params[:particular].gsub('--', '&')
+      #abort(@particular_name.inspect)
       # @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@particular_name, '',false)
       
       #@particular = @batch.finance_fee_particulars.find_by_finance_fee_category_id_and_finance_fee_particular_category_id_and_receiver_type_and_receiver_id(@date.fee_category_id, @particular_id, 'Student', @student.id)
@@ -5562,6 +5548,7 @@ class FinanceController < ApplicationController
         if @particular_name.downcase == 'vat'
           if params[:no_vat].nil?
             render :update do |page|
+              page << 'j(".chk_extra_particular").show();'
               page << 'j("#fee_vat_chk").hide();'
               page << 'j("#fee_vat_amount").attr("type","hidden");'
               page << 'j(".assign_vat_to_user").hide();'
@@ -5574,6 +5561,7 @@ class FinanceController < ApplicationController
           else
             render :update do |page|
               page.replace_html "particulars_tr_id", :partial => "temp_particular"
+              page << 'j(".chk_extra_particular").show();'
               page << 'j("#particulars_tr_id").addClass("particulars_tr");'
               page << 'j("#particulars_tr_id").attr("id","particular_' + @finance_fee_particular.id.to_s + '");'
               page << 'j("#particulars_tr_extra").remove();'
@@ -5586,6 +5574,7 @@ class FinanceController < ApplicationController
         else
           render :update do |page|
             page.replace_html "particulars_tr_id", :partial => "temp_particular"
+            page << 'j(".chk_extra_particular").show();'
             page << 'j("#particulars_tr_id").addClass("particulars_tr");'
             page << 'j("#particulars_tr_id").attr("id","particular_' + @finance_fee_particular.id.to_s + '");'
             page << 'j("#particulars_tr_extra").remove();'
@@ -5612,7 +5601,10 @@ class FinanceController < ApplicationController
       @fine_amount = params[:fine_amount]
       @fine_name = params[:fine_name]
       
-      @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@fine_name, '',false)
+      #@finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@fine_name, '',false)
+      @particular_category_id = 187
+      @finance_fee_particular_category = FinanceFeeParticularCategory.find(:first, :conditions => "id = #{@particular_category_id}")
+      
       @particular_category_id = @finance_fee_particular_category.id
       
       @student_ids_n_amounts = params[:students].split(",")
@@ -9005,13 +8997,19 @@ class FinanceController < ApplicationController
     #batch=@fee_discount.batch
     @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id)
     @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
+    #abort(@fee_discount.inspect)
     unless @fee_category.nil?
       @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@fee_discount.batch_id}' and is_deleted= #{false}"])
       #@fee_category.is_collection_open ? @discount_edit = false : @discount_edit = true
     end
     render :update do |page|
       page.replace_html "discount-box", :partial => "show_fee_discounts"
-      page.replace_html "flash-notice", :text => "<p class='flash-msg'>#{t('discount_deleted_successfully')}.</p>"
+      if @error
+        page.replace_html 'form-errors', :partial => 'errors', :object => @fee_discount
+      else
+        page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('particulars_deleted_successfully')}.</p>"
+      end
+      #page.replace_html "flash-notice", :text => "<p class='flash-msg'>#{t('discount_deleted_successfully')}.</p>"
     end
 
   end
@@ -9743,14 +9741,21 @@ class FinanceController < ApplicationController
 
   def regenerate_student_fees
     student = params[:student_id]
-    if params[:delete]
-      if params[:delete].to_i == 1
-        finance =  FinanceFee.find_by_id(params[:finance_fee_id])
-        unless finance.blank?
-          finance.destroy
-        end
+    finance =  FinanceFee.find_by_id(params[:fee_id])
+    unless finance.blank?
+      date_id = finance.fee_collection_id
+      student_id = finance.student_id
+      date = FinanceFeeCollection.find(date_id)
+      student = Student.find(student_id)
+      discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+      discounts_ids = discounts_on_particulars.map(&:id)
+      discounts_ids.each do |did|
+        collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
+        collection_discount.destroy
       end
+      finance.destroy
     end
+    
     if params[:option]
       if params[:option].to_i == 1
         student.each do |v|

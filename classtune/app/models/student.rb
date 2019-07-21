@@ -53,6 +53,7 @@ class Student < ActiveRecord::Base
   has_many   :assessment_scores
   has_many   :exam_scores
   has_many   :previous_exam_scores
+  has_many   :student_fee_configurations
   #has_many   :siblings,:class_name=>'Student',:primary_key=>:sibling_id
 
 

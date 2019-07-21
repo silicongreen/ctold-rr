@@ -279,6 +279,9 @@
         <% end %>
       <% end %>
       <%# if total_fees > 0 %>
+      <% if  @fee_particulars.length == 0 %>
+        <tr class="particulars_tr" style="display: none;"><td colspan="5"></td></tr>
+      <% end %>  
       <tr>
           <td class="col-1" style=" text-align: center;">&nbsp;</td>
           <td colspan="4" id="add_extra_particular" class="col-2" style="font-size: 14px; font-weight: bold; cursor: pointer;"><i class="fa fa-plus-square-o" style="font-size: 16px; cursor: pointer;" aria-hidden="true"></i>&nbsp;&nbsp;Add Extra Particulars
@@ -1308,6 +1311,10 @@
 <% end %>  
 <script type="text/javascript">
   <%# unless @finance_fee_particular_categories.nil? %>
+  j(document).off('change','#selectParticular').on('change','#selectParticular',function(){
+      var selectedText = j("#selectParticular option:selected").text();
+      j("#extra_particular_name").val(selectedText);
+  }); 
   j(document).off('click','#add_extra_particular').on('click','#add_extra_particular',function(){
       if ( j("#particulars_tr_extra").length == 0 )
       {
@@ -1341,7 +1348,10 @@
                   }
 
                   html += '<select>';
-                  html += '<div>';
+                  html += '</div>';
+                  html += '<div class="input-container" style="padding: 10px; display: none;">';
+                  html += '<input type="text" name="extra_particular_name" id="extra_particular_name" value="" style="border-radius: 4px; border: 1px solid #ccc; padding: 10px; width: 89%;" />';
+                  html += '</div>';
                   html += '</td><td class="col-6" colspan="3" style="text-align: right;">';
                   html += '<input type="text" name="extra_particular_amount" id="extra_particular_amount" value="" style="border-radius: 4px; border: 1px solid #999; padding: 4px; width: 40%;" onkeypress="return isNumberKey(event,this, \'particular_extra\')" onkeydown="checkKey(event,this, \'particular_extra\')" />&nbsp;&nbsp;<i class="fa fa-check-square chk_extra_particular" name="extra_particular_chk" id="extra_particular_chk" style="font-size: 16px; cursor: pointer; " aria-hidden="true"></i></td></tr>';
                   j('.particulars_tr').last().after(html);

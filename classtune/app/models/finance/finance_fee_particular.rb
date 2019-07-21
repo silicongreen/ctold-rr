@@ -34,7 +34,7 @@ class FinanceFeeParticular < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 10
   before_save :verify_precision
-  before_update :check_discounts
+  before_update :check_discounts, :check_transaction
 
   def verify_precision
     self.amount = Champs21Precision.set_and_modify_precision self.amount
@@ -79,8 +79,82 @@ class FinanceFeeParticular < ActiveRecord::Base
   private
 
   def check_discounts
-    if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and batch_id=#{batch_id}").present?
-      errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+    if receiver_type == "Batch"
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+      batch = Batch.find(:first, :conditions => "id=#{receiver_id}")
+      unless batch.nil?
+        category_id = batch.students.map(&:student_category_id).uniq
+        unless category_id.blank?
+          if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='StudentCategory' and receiver_id IN (#{category_id.join(",")}) and batch_id=#{batch_id}").present?
+            errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+            return false
+          end
+          if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='StudentCategory' and receiver_id IN (#{category_id.join(",")}) and batch_id=#{batch_id}").present?
+            errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+            return false
+          end
+        end
+        
+        student_ids = batch.students.map(&:id).uniq
+        unless student_ids.blank?
+          if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
+            errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+            return false
+          end
+          if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
+            errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+            return false
+          end
+        end
+      end
+    elsif receiver_type == "StudentCategory"
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+      
+      category_id = receiver_id
+      student_ids = Student.find(:all, :conditions => "student_category_id=#{category_id}").map(&:id)
+      unless student_ids.blank?
+        if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
+          errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+          return false
+        end
+        if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
+          errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+          return false
+        end
+      end
+    else
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+      if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and receiver_type='#{receiver_type}' and receiver_id=#{receiver_id} and batch_id=#{batch_id}").present?
+        errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+        return false
+      end
+    end
+#    if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and batch_id=#{batch_id}").present?
+#      errors.add_to_base(t('discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
+#      return false
+#    end
+  end
+
+  def check_transaction
+    if FinanceTransactionParticular.find(:all,:conditions=>"particular_type = 'Particular' and transaction_type='Fee Collection' and particular_id=#{id}").present?
+      errors.add_to_base(t('transaction_exists_for_this_category_cant_delete_or_edit_this_particular'))
       return false
     end
   end

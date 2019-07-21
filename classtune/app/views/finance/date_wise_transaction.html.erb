@@ -122,7 +122,7 @@
                           <% particular_wise_adv_amount[fees_particular.id] += adv_amt %>
                           <% particular_wise_discount_amount[fees_particular.id] += td_amt %>
                         
-                          <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                          <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                               <div style="width: 100%; ">
                                   <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                                       Fees
@@ -154,7 +154,7 @@
                           </td>
                           <% i += 1 %>
                         <% end %>
-                        <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                        <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                             <% discount_on_total_fees = @transactions_discount_total_fees.select{|p|  p.payee_id == std} %>
                             <% discount_total_amount = discount_on_total_fees.map(&:amount).sum %>
                             <div style="width: 100%; text-align: center; padding-top: 8px;">
@@ -164,7 +164,7 @@
                             <% total_fees_discount += discount_total_amount %>
                             <% date_wise_total -= discount_total_amount %>
                         </td>
-                        <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                        <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                             <% fine_discount = @transactions_fine.select{|p|  p.payee_id == std} %>
                             <% fine_discount_amount = fine_discount.map(&:amount).sum %>
                             <div style="width: 100%; text-align: center; padding-top: 8px;">
@@ -173,7 +173,7 @@
                             <% date_wise_fine += fine_discount_amount %>
                             <% grand_fine += date_wise_fine %>
                         </td>
-                        <td style="white-space: nowrap; text-align: center; padding-right: 10px;">
+                        <td style="white-space: nowrap; text-align: center; padding-right: 10px; z-index: 1; position: relative;">
                             <div style="width: 100%; ">
                                 <div style="width: 32%; margin-right: 2px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; display: inline-block;">
                                     Fees

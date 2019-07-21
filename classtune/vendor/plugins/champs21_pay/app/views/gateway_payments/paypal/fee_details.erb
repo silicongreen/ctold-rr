@@ -31,6 +31,30 @@
     </ul>
   </div>
 </div>
+<% combine_fees_enabled = false %>
+<% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
+<% unless @include_combined_fees.blank? %>
+<% combine_fees_enabled = true %>
+<% end %>
+<% student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and config_key = 'combined_payment_student'") %>
+<% unless student_fee_configuration.nil? %>
+  <% if student_fee_configuration.config_value.to_i == 1 %>
+    <% combine_fees_enabled = true %>
+  <% else %>
+    <% combine_fees_enabled = false %>
+  <% end %>
+<% end %>
+
+<% unless params[:opt].nil? %>
+  <% opt = params[:opt][0..params[:opt].length - 4].reverse %>
+  <% opt = Base64.decode64(opt) %>
+  <% a_opt = opt.split("-") %>
+  <% if a_opt.length == 2 %>
+    <% if a_opt[0].to_i == @student.id and a_opt[1].to_i == @date.id %>
+      <% combine_fees_enabled = false %>
+    <% end %>
+  <% end %>
+<% end %>
 
 <div id="page-yield">
 <% unless flash[:notice].nil? %>
@@ -983,6 +1007,7 @@
         <%#= total_fees.to_s + " DID DID DID" %>
         <% if total_fees > 0  %>
             <% @amount_to_pay = precision_label(balance+@fine_amount.to_f) %>
+            <% unless combine_fees_enabled %>
             <tr>
               <td colspan="5" style="padding-bottom: 30px;">
                   <div class="pay_fees"><div class="pay_fees_buttons">
@@ -1015,6 +1040,7 @@
                 <% end %>  
               </td>
             </tr>
+            <% end %>
         <% end %>
       <% else %>
             <% if @financefee.batch_id != @student.batch_id and total_fees > 0 %>

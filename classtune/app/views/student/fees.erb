@@ -124,10 +124,32 @@
                 <% end %>
               <% end %>
           </div>
+          <% combine_fees_enabled = false %>
           <% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
+          <% unless @include_combined_fees.blank? %>
+          <% combine_fees_enabled = true %>
+          <% end %>
+          <% student_fee_configuration = StudentFeeConfiguration.find(:first, :conditions => "student_id = #{@student.id} and config_key = 'combined_payment_student'") %>
+          <% unless student_fee_configuration.nil? %>
+            <% if student_fee_configuration.config_value.to_i == 1 %>
+              <% combine_fees_enabled = true %>
+            <% else %>
+              <% combine_fees_enabled = false %>
+            <% end %>
+          <% end %>
+          
           <div class="extender"> </div>
           <div class="line" style=""></div>
           <div id="fees_list" style="background: #FBFBFB; padding: 20px; min-height: 300px;">
+              <% if @current_user.admin?  %>
+              <div id="combined_configuration-1" style="padding: 20px 0; display: none;">
+                  <% if combine_fees_enabled %>
+                  <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+                  <% else %>
+                  <i id="combined_payment_student" name="combined_payment_student" class="fa fa-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+                  <% end %>
+              </div>
+              <% end %>
               <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
               <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
               <% found_fees = false %>
@@ -159,9 +181,9 @@
                   <% end %>
                   <div class='fee_details_box <%= fee_box_class %>' id="finance_fee_<%= finance_fee.id %>">
                       <% checked_class = "fa-square-o" %>
-                      <% cls_rerd = "finance_fees_collection_chk" %>
-                      <% unless @include_combined_fees.blank? %>
-                        <% cls_rerd = "" %>
+                      <% cls_rerd = "finance_fees_collection_chk finance_fees_collection_all" %>
+                      <% if combine_fees_enabled %>
+                        <% cls_rerd = "finance_fees_collection_all" %>
                         <% checked_class  = "fa-check-square-o" %>
                         <% fees_multiple += finance_fee.id.to_s + "," %>
                       <% end %>
@@ -218,7 +240,7 @@
                       </div>
                       <% else %>
                       <div class="fee_bottom">
-                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></span>
+                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %></span>
                       </div>
                       <% end %>
                   </div>
@@ -249,13 +271,13 @@
                   <% fee_box_class = "paid" %>
                   <% end %>
                   <div class='fee_details_box <%= fee_box_class %>' id="finance_fee_<%= finance_fee.id %>">
-                      <% cls_rerd = "" %>
+                      <% cls_rerd = "finance_fees_collection_all" %>
                       <% checked_class = "fa-check-square-o" %>
                       <% if due > 0 %>
-                        <% cls_rerd = "finance_fees_collection_chk" %>
+                        <% cls_rerd = "finance_fees_collection_chk finance_fees_collection_all" %>
                         <% checked_class = "fa-square-o" %>
                       
-                        <% unless @include_combined_fees.blank? %>
+                        <% if combine_fees_enabled %>
                           <% checked_class = "fa-check-square-o" %>
                           <% cls_rerd = "" %>
                           <% fees_multiple += finance_fee.id.to_s + "," %>
@@ -322,7 +344,7 @@
                       </div>
                       <% else %>
                       <div class="fee_bottom">
-                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></span>
+                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s).reverse + '===' + "" %></span>
                       </div>
                       <% end %>
                   </div>
@@ -405,7 +427,120 @@
         display: block;
     }
 </style>
+<script>
+  String.prototype.replaceAll = function(search, replacement) {
+      var target = this;
+      return target.replace(new RegExp(search, 'g'), replacement);
+  };
+</script>
+<% if @current_user.admin?  %>
+  <script>
+    j(document).ready(function(){
+        j(document).on('click', '#combined_payment_student', function(){
+            var count_fees = 0;
+            var fees = "";
 
+            if ( j(this).hasClass('fa-check-square-o') )
+            {
+                j(this).addClass('fa-square-o');
+                j(this).removeClass('fa-check-square-o');
+                 new Ajax.Request('/finance/set_combined_payment_configuration', 
+                      {
+                        asynchronous:true, 
+                        evalScripts:true, 
+                        parameters:'student='+<%=  @student.id %>+'&value=0'+'&key='+j(this).attr('id')
+                      }
+                )
+            }
+            else
+            {
+                j(this).removeClass('fa-square-o');
+                j(this).addClass('fa-check-square-o');
+                new Ajax.Request('/finance/set_combined_payment_configuration', 
+                      {
+                        asynchronous:true, 
+                        evalScripts:true, 
+                        parameters:'student='+<%=  @student.id %>+'&value=1'+'&key='+j(this).attr('id')
+                      }
+                )
+            }
+        });
+    });
+    
+    function enable_combined_payment()
+    {
+        var count_fees = 0;
+        var fees = "";
+        
+        j("#combined_payment_student").removeClass('fa-square-o');
+        j("#combined_payment_student").addClass('fa-check-square-o');
+        
+        j('.finance_fees_collection_all').each(function(){
+            j(this).removeClass('fa-square-o');
+            j(this).addClass('fa-check-square-o');
+        });
+        
+        j('.finance_fees_collection_all').each(function(){
+            if ( j(this).hasClass('fa-check-square-o') )
+            {
+              var fee_id = this.id.replace('fee_collection_','');
+              fees += fee_id + ",";
+              count_fees++;
+            }
+        });
+        
+        if ( count_fees == 0 )
+        {
+            j("#combined_pay").hide();
+        }
+        else
+        {
+            fees = fees.substr(0, fees.length - 1);
+            j("#combined_pay").show();
+            j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+            var href = j('#lnk').children('a').attr('href');
+            j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+        }
+    }
+    
+    function remove_combined_payment()
+    {
+        var count_fees = 0;
+        var fees = "";
+        
+        j("#combined_payment_student").addClass('fa-square-o');
+        j("#combined_payment_student").removeClass('fa-check-square-o');
+        
+        j('.finance_fees_collection_all').each(function(){
+            j(this).addClass('fa-square-o');
+            j(this).removeClass('fa-check-square-o');
+        });
+        
+        j('.finance_fees_collection_all').each(function(){
+            if ( j(this).hasClass('fa-check-square-o') )
+            {
+              var fee_id = this.id.replace('fee_collection_','');
+              fees += fee_id + ",";
+              count_fees++;
+            }
+        });
+        
+        if ( count_fees == 0 )
+        {
+            j("#combined_pay").hide();
+        }
+        else
+        {
+            fees = fees.substr(0, fees.length - 1);
+            j("#combined_pay").show();
+            j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+            var href = j('#lnk').children('a').attr('href');
+            j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+        }
+    }
+  </script>  
+
+<% end %>
 <script>
   j(document).ready(function(){
       var unpaid = 0;
@@ -418,11 +553,45 @@
       if ( unpaid == 0 )
       {
          j("#no_fee_dues").show();
+         j("#combined_configuration").hide();
+         
+         j('.fee_link').each(function(){
+            var href = j(this).attr('href');
+            var key = this.id.replace("fee_link_", "");
+            var k = "=aaz" + key.replaceAll("=","") + "odc==";
+            j(this).attr('href', href + "?opt=" + k);
+        });
       }
+      else if ( unpaid == 1 )
+      {
+          j("#combined_pay").hide();
+          
+          j('.finance_fees_collection_chk').each(function(){
+              j(this).removeClass('finance_fees_collection_chk');
+          });
+          
+          j('.fee_link').each(function(){
+              var href = j(this).attr('href');
+              var key = this.id.replace("fee_link_", "");
+              j(this).attr('href', href + "?opt=" + key);
+          });
+      }
+      else
+      {
+          j('.fee_link').each(function(){
+              var href = j(this).attr('href');
+              var key = this.id.replace("fee_link_", "");
+              var k = "==az" + key.replaceAll("=","") + "lcd===";
+              j(this).attr('href', href + "?opt=" + k);
+          });
+      }
+      
+      
       
       j(document).on('click', '.history', function(){
           j("#no_fee_dues").hide();
           j("#no_fee_history").hide();
+          j("#combined_configuration").hide();
           j(".paid").show();
           j(".unpaid").hide();
           
@@ -448,6 +617,7 @@
           j("#no_fee_history").hide();
           j(".paid").hide();
           j(".unpaid").show();
+          j("#combined_configuration").show();
           
           var unpaid = 0;
           j(".unpaid").each(function(){
@@ -459,6 +629,7 @@
           if ( unpaid == 0 )
           {
              j("#no_fee_dues").show();
+             j("#combined_configuration").hide();
           }
           
           j(this).removeClass("live");

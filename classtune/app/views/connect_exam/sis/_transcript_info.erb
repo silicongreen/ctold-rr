@@ -3,11 +3,18 @@
 <table class="std_info_table" width="100%" cellspacing="0">
     <tr>
         <td class="align-left" colspan="4"><b>STUDENT INFORMATION</b></td>
-        <td class="align-left">Transcript </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %></td>
+        <%
+        extra_string = "0"
+        if @student.class_roll_no.to_i > 9
+          extra_string = "00"
+        end  
+          
+        %>
+        <td class="align-left">Transcript </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-<%= extra_string %><%= @student.class_roll_no %></td>
     </tr>
     <tr>
         <td class="align-left">Name </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.full_name %></td>
-        <td class="align-left">Student ID </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%Y") unless @student.admission_date.nil? %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %></td>
+        <td class="align-left">Student ID </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.admission_no %></td>
     </tr>
     <tr>
         <td class="align-left">Date of Birth </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d-%m-%Y") unless @student.date_of_birth.nil? %></td>

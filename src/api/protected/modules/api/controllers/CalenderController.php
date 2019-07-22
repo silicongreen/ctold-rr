@@ -1103,7 +1103,7 @@ class CalenderController extends Controller
     {
         $user_secret = Yii::app()->request->getPost('user_secret');
         $batch_id = Yii::app()->request->getPost('batch_id');
-        $student_id = Yii::app()->request->getPost('student_id');
+        $student_id_all = Yii::app()->request->getPost('student_id');
         $late = Yii::app()->request->getPost('late');
         $date = Yii::app()->request->getPost('date');
         //$reason = Yii::app()->request->getPost('reason');
@@ -1112,9 +1112,9 @@ class CalenderController extends Controller
         {
            
             $student_ids = array();
-            if($student_id)
+            if($student_id_all)
             {
-                $student_ids = explode(",", $student_id);
+                $student_ids = explode(",", $student_id_all);
             }
             $lates = explode(",", $late);
             if (!$date)
@@ -1127,6 +1127,7 @@ class CalenderController extends Controller
             
             $attendence_batch = $attendence->getAttendenceBatch($batch_id, $date);
             if ($attendence_batch)
+            {
                 foreach ($attendence_batch as $value)
                 {
                     $previous_attendence = $attendence->findbypk($value->id);
@@ -1148,6 +1149,7 @@ class CalenderController extends Controller
                         $previous_attendence->delete();
                     }
                 }
+            }
 
               
             foreach ($student_ids as $key => $student_id)

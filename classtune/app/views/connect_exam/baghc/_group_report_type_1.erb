@@ -324,6 +324,20 @@
                             <td>Total Student: <%= @total_std unless @total_std.blank? %></td>
                         </tr>
                     </table>
+                    <% 
+                      total_att = ""
+                      absent = ""
+                      if !@exam_comment.blank?
+                        all_comments = @exam_comment.comments
+                        if !all_comments.blank?
+                          all_comments_array = all_comments.split("|")
+                          @report_data['total'] = all_comments_array[0]
+                          if !all_comments_array[1].nil?
+                            @report_data['present'] = all_comments_array[1]
+                          end
+                        end
+                      end
+                    %>
                     <table id="pdf-table" class="margin-top-10"  width="99.8%">
                         <tr class="table-header">
                             <td colspan="4" style="text-align:center;" >Attendance Report duration: <%= @connect_exam_obj.attandence_start_date.blank? ? '-':@connect_exam_obj.attandence_start_date.strftime("%Y-%m-%d") %> to <%= @connect_exam_obj.attandence_end_date.blank? ? '-':@connect_exam_obj.attandence_end_date.strftime("%Y-%m-%d") %></td>

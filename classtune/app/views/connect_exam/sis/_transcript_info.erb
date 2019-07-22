@@ -3,15 +3,15 @@
 <table class="std_info_table" width="100%" cellspacing="0">
     <tr>
         <td class="align-left" colspan="4"><b>STUDENT INFORMATION</b></td>
-        <td class="align-left">Transcript </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %>-001</td>
+        <td class="align-left">Transcript </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %></td>
     </tr>
     <tr>
         <td class="align-left">Name </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= @student.full_name %></td>
-        <td class="align-left">Student ID </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%y") unless @student.admission_date.nil? %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %>-001</td>
+        <td class="align-left">Student ID </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%Y") unless @student.admission_date.nil? %>-<%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %>-0<%= @student.class_roll_no %></td>
     </tr>
     <tr>
-        <td class="align-left">Date of Birth </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d-%m-%y") unless @student.date_of_birth.nil? %></td>
-        <td class="align-left">Enrollment Date </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%y") unless @student.admission_date.nil? %></td>
+        <td class="align-left">Date of Birth </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.date_of_birth,:format=>"%d-%m-%Y") unless @student.date_of_birth.nil? %></td>
+        <td class="align-left">Enrollment Date </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= I18n.l(@student.admission_date,:format=>"%Y") unless @student.admission_date.nil? %></td>
     </tr>
     <tr>
         <td class="align-left">Gender </td><td colspan="3" class="font-dark align-left">:&nbsp;&nbsp;<%= "#{@student.gender_as_text.upcase}" %></td>

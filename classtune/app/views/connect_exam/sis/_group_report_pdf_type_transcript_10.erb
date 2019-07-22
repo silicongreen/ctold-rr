@@ -24,10 +24,11 @@
                   <tr class="odd">
                     
                         <td class="col-pdf"><%= "Subject" %></td>
-                        <td class="col-pdf">First Term</td>
+                         <td class="col-pdf"><%= "Code" %></td>
+                        <td class="col-pdf">Mock 1</td>
      
-                        <td class="col-pdf">Final Term</td>
-                        <td class="col-pdf">Final Marks</td>
+                        <td class="col-pdf">Mock 2</td>
+                        <td class="col-pdf">Average</td>
                         <td class="col-pdf">Grade</td>
                         <td class="col-pdf">GPA</td>
                         
@@ -61,6 +62,7 @@
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
 
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
+                          <td class="col-pdf no-warp  align-left"><%= subjects['code'] %></td>
                           <% 
                           unless @report_data['report']['exams'].blank?   
                             @report_data['report']['exams'].each do |report| 

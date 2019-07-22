@@ -4,9 +4,12 @@
     <tr>
         <td class="align-left" colspan="4"><b>STUDENT INFORMATION</b></td>
         <%
-        extra_string = "0"
+        extra_string = "00"
         if @student.class_roll_no.to_i > 9
-          extra_string = "00"
+          extra_string = "0"
+        end
+        if @student.class_roll_no.to_i > 99
+          extra_string = ""
         end  
           
         %>

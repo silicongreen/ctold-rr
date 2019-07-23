@@ -1,0 +1,71 @@
+<%-# Champs21
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% unless @student_fee_ledgers.blank? %>  
+<h3 style="font-size: 14px; letter-spacing: 1.5px;">Total Record: <%= @count_students %></h3>
+<div id="table-scroll" class="table-scroll" style="display: block;">
+    <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;">
+        <thead><!-- class="thead-inverse" -->
+          <tr>
+            <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Student Info</th>
+            <th style="text-align: center; vertical-align: middle;">Amount to Pay</th>
+            <th style="text-align: center; vertical-align: middle;">Paid Amount</th>
+            <th style="text-align: center; vertical-align: middle;">Dues</th>
+            <th style="text-align: center; vertical-align: middle;">Advance</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% @student_fee_ledgers.each do |student_fee_ledger| %>
+              <tr class="tr-odd">
+                  <% student = Student.find(:first, :conditions => "id = #{student_fee_ledger.student_id}") %>
+                  <% if student.nil?  %>
+                  <% student = ArchivedStudent.find(:first, :conditions => "former_id = #{student_fee_ledger.student_id}") %>
+                  <% end %>
+                  <th style="vertical-align: middle; text-align: left;" class="fixed-side">
+                      <a href="/finance/student_ledger/<%= student_fee_ledger.student_id %>" target="_blank" style="color: #444; line-height: 23px; font-size: 16px;">
+                        <%= student.full_name unless student.full_name.nil? %><br />
+                        <small>ID: <%= student.admission_no unless student.admission_no.nil? %></small><br />
+                        <small><%= student.batch.full_name %></small><br />
+                      </a>
+                  </th>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
+                  <% if student_fee_ledger.diff_amount.to_f <= 0 %>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label 0.00 %></td>
+                  <% else %>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label student_fee_ledger.diff_amount.to_f %></td>
+                  <% end %>
+                  <% if student_fee_ledger.diff_amount.to_f >= 0 %>
+                  <td style="text-align: right;"><%=  to_comma_seperated_precision_label 0.00 %></td>
+                  <% else %>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label student_fee_ledger.diff_amount.to_f * (-1) %></td>
+                  <% end %>
+              </tr>
+            <% end %>
+
+        </tbody>
+    </table>
+</div>
+<div style="padding-top: 20px;">
+  <%= will_paginate @students,:params=>{:filter_by_course => params[:filter_by_course]} %>
+</div>
+<% else %>
+<h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">Student Ledger List</h2>
+<p>No records found</p>
+<% end %>

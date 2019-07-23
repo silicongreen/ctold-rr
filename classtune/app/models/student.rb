@@ -88,6 +88,7 @@ class Student < ActiveRecord::Base
   before_save :save_biometric_info
 
   after_create :set_sibling
+  after_update :set_ledger
 
   #  after_create :create_default_menu_links
 
@@ -112,29 +113,6 @@ class Student < ActiveRecord::Base
     end
   end
   
-#  def nationality
-#    unless self.nationality_id.blank?
-#      if self.nationality_method.nationality.blank?
-#        self.nationality_method
-#      else
-#        self.nationality_method.nationality.name = self.nationality_method.nationality.nationality
-#        self.nationality_method.nationality.id = self.nationality_method.id
-#        self.nationality_method.nationality
-#      end  
-#    end
-#  end
-#  
-#  def dual_nationality
-#    unless self.dual_nationality_id.blank?
-#      if self.dual_nationality_method.nationality.blank?
-#        self.dual_nationality_method
-#      else
-#        self.dual_nationality_method.nationality.name = self.dual_nationality_method.nationality.nationality
-#        self.dual_nationality_method.nationality
-#      end  
-#    end
-#  end
-
   def validate
     
     errors.add(:admission_date, :not_less_than_hundred_year) if self.admission_date.year < Date.today.year - 100 \
@@ -174,6 +152,7 @@ class Student < ActiveRecord::Base
       school_subscription_info.save;
     end
   end
+  
   def check_student_limit?
     school_subscription_info = SubscriptionInfo.find(:first,:conditions=>{:school_id=>MultiSchool.current_school.id},:limit=>1)
     
@@ -547,15 +526,11 @@ class Student < ActiveRecord::Base
     assessment_score = self.assessment_scores.find(:first, :conditions => { :student_id => self.id,:descriptive_indicator_id=>indicator_id,:exam_id=>exam_id,:batch_id=>batch_id })
     assessment_score.nil? ? assessment_scores.build(:descriptive_indicator_id=>indicator_id,:exam_id=>exam_id,:batch_id=>batch_id) : assessment_score
   end
+  
   def observation_score_for(indicator_id,batch_id)
     assessment_score = self.assessment_scores.find(:first, :conditions => { :student_id => self.id,:descriptive_indicator_id=>indicator_id,:batch_id=>batch_id })
     assessment_score.nil? ? assessment_scores.build(:descriptive_indicator_id=>indicator_id,:batch_id=>batch_id) : assessment_score
   end
-
-  #  def create_default_menu_links
-  #    default_links = MenuLink.find_all_by_user_type("student")
-  #    self.user.menu_links = default_links
-  #  end
 
   def has_higher_priority_ranking_level(ranking_level_id,type,subject_id)
     ranking_level = RankingLevel.find(ranking_level_id)
@@ -726,9 +701,11 @@ class Student < ActiveRecord::Base
   def siblings
     @siblings ||= (self.class.find_all_by_sibling_id_and_immediate_contact_id(sibling_id,self.immediate_contact_id) - [self])
   end
+  
   def all_siblings
     self.class.find_all_by_sibling_id(sibling_id)-[self]
   end
+  
   def old_batch
     "#{ Batch.find(changes["batch_id"].last).full_name}"
   end
@@ -737,20 +714,43 @@ class Student < ActiveRecord::Base
     Batch.find(changes["batch_id"].first).full_name
   end
 
-  #  def guardians_with_siblings
-  #    if siblings.present?
-  #      self.class.first(:select=>"students.*,count(guardians.id) as gc",
-  #        :conditions=>["students.id IN (?)",siblings.collect(&:id)+[id]],
-  #        :joins=>:guardians).try(:guardians_without_siblings) || guardians_without_siblings
-  #    else
-  #      guardians_without_siblings
-  #    end
-  #  end
-  #  alias_method_chain :guardians,:siblings
-
   def set_sibling
     Student.connection.execute("UPDATE `students` SET `sibling_id` = '#{id}' WHERE `id` = #{id};")
+    unless admission_date.nil?
+      student_fee_ledger = StudentFeeLedger.new
+      student_fee_ledger.student_id = id
+      student_fee_ledger.ledger_date = admission_date
+      student_fee_ledger.save
+    else
+      student_fee_ledger = StudentFeeLedger.new
+      student_fee_ledger.student_id = id
+      student_fee_ledger.ledger_date = Date.today.strftime("%Y-%m-%d")
+      student_fee_ledger.save
+    end
     inc_student_count_subscription
+  end
+
+  def set_ledger
+    student_fee_ledger = StudentFeeLedger.find(:first, :conditions => "student_id = #{id} and amount_to_pay = 0 and amount_paid = 0 and fee_id = 0 and order_id is NULL")
+    unless student_fee_ledger.nil?
+      unless admission_date.nil?
+        if admission_date.to_date != student_fee_ledger.ledger_date.to_date
+          student_fee_ledger.update_attributes(:ledger_date => admission_date)
+        end
+      end
+    else
+      unless admission_date.nil?
+        student_fee_ledger = StudentFeeLedger.new
+        student_fee_ledger.student_id = id
+        student_fee_ledger.ledger_date = admission_date
+        student_fee_ledger.save
+      else
+        student_fee_ledger = StudentFeeLedger.new
+        student_fee_ledger.student_id = id
+        student_fee_ledger.ledger_date = Date.today.strftime("%Y-%m-%d")
+        student_fee_ledger.save
+      end
+    end
   end
 
   def self.students_details (parameters)

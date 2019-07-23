@@ -261,3 +261,201 @@ a.next_page, a.prev_page {
     color: #fff !important;
     font-size: 12px;
 }
+.fees_wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+#student_profile_heading{
+    background: url("/images/backgrounds/top_profile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    float: left;
+    margin: 0;
+    max-height: 120px;
+    padding: 0;
+    width: 100%;
+}
+#profile_picture_display{
+    float: left;
+    height: 120px;
+}
+#profile_picture_display img{
+    height: 100%;
+}
+#student_main_info{
+    float: left;
+    padding: 30px 0 0 20px;
+    width: 75%;
+}
+#student_name{
+    color: #FFF;
+    font-size: 35px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#student_class{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+#personal_info_wrapper {
+    float: left;
+    width: 100%;
+}
+#class_info{
+    border-bottom: 1px solid #DFE1E2;
+    border-top: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+#class_info .infos{
+    background-color: #f6f8f8;
+    border-right: 1px solid #DFE1E2;
+    float: left;
+    width: 33.3%;
+}
+#class_info .last {
+    border-right: 0 none;
+    float: right;
+    width: 33.1%;
+}
+#class_info .infos div:first-child{
+    color: #d71921;
+    font-size: 25px;
+    padding: 30px 0 0;
+    text-align: center;
+}
+#class_info .infos div:last-child{
+    color: #868a8b;
+    font-size: 18px;
+    padding: 5px 0 20px;
+    text-align: center;
+}
+#student_profile_heading1 {
+    clear: both;
+    padding: 0 0 0 20px;
+    width: 100%;
+}
+#student_main_info1 span.name {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    margin: 13px 0 0;
+    padding-right: 20px;
+    width: 100%;
+    font: bold;
+}
+#student_main_info1 span.course {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    margin: 10px 0 0;
+    padding-right: 20px;
+    width: 100%;
+}
+#student_main_info1 span.adm {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    margin: 5px 0 0;
+    padding: 0;
+    width: 100%;
+}
+
+table#listing{
+    float: left;
+}
+
+.profile_info_label_top {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+    background: #eff3fe;
+    border-top:1px solid #bdcfff;
+    margin-right:5px;
+}
+.profile_info_label_top2 {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+    background: #dae6ff;
+    border-top:1px solid #bdcfff;
+    margin-right:5px;
+}
+.profile_info_label_top {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+}
+.user_button {
+    margin-top:40px;
+    margin-left:270px;
+}
+
+.parent-del-button {
+    margin : 20px 0 40px 600px;
+}
+.profile_top_banner{
+    position:absolute;
+    float:right;
+    padding-left:525px;
+    margin-top:-12px;
+
+}
+.parent-edit-button{
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#27292B none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin:0px auto;
+    margin-left:10px;
+    padding:7px 12px;
+    border:none;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+    float:left;
+}
+.parent-edit-button:hover{
+    background: #373B3F;
+}
+.parent-edit-button a{
+    color:#fff;
+    text-decoration: none;
+}
+#guardians-links span{
+    font-weight:600;
+    color:#444444;
+    margin-bottom: 10px;
+    display:block;
+    text-decoration: underline;
+}
+.button-pair{
+    width:220px;
+    margin:20px auto;
+}
+#new_profile_info_top {
+    margin:30px auto;
+    width:697px;
+
+}

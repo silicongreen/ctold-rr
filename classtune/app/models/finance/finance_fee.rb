@@ -29,7 +29,10 @@ class FinanceFee < ActiveRecord::Base
   has_many   :fees_advances, :foreign_key => 'fee_id'
   has_one    :fee_refund
   named_scope :active , :joins=>[:finance_fee_collection] ,:conditions=>{:finance_fee_collections=>{:is_deleted=>false}}
-
+  after_create :set_ledger
+  after_update :update_ledger
+  
+  
   def check_transaction_done
     unless self.transaction_id.nil?
       return true
@@ -770,6 +773,34 @@ class FinanceFee < ActiveRecord::Base
     
     bal = ( total_payable - total_discount )
     bal
+  end
+  
+  def set_ledger
+    student_fee_ledger = StudentFeeLedger.new
+    student_fee_ledger.student_id = student_id
+    student_fee_ledger.ledger_date = finance_fee_collection.start_date
+    student_fee_ledger.amount_to_pay = balance.to_f
+    student_fee_ledger.fee_id = id
+    student_fee_ledger.save
+  end
+  
+  def update_ledger
+    if is_paid == false and balance > 0
+      student_fee_ledgers = StudentFeeLedger.find(:all, :conditions => "student_id = #{student_id} and fee_id = #{id}")
+      unless student_fee_ledgers.nil?
+        student_fee_ledgers.each do |fee_ledger|
+          student_fee_ledger = StudentFeeLedger.find(fee_ledger.id)
+          student_fee_ledger.update_attributes(:amount_to_pay => balance.to_f)
+        end
+      else
+        student_fee_ledger = StudentFeeLedger.new
+        student_fee_ledger.student_id = student_id
+        student_fee_ledger.ledger_date = finance_fee_collection.start_date
+        student_fee_ledger.amount_to_pay = balance.to_f
+        student_fee_ledger.fee_id = id
+        student_fee_ledger.save
+      end
+    end
   end
   
 end

@@ -1,0 +1,164 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css" rel="stylesheet" />
+<style>
+    .form-field{
+        width: 90%;
+        padding: 9px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 0 auto;
+    }
+    #assignParticularButton{padding: 10px; cursor: pointer; padding: 5px; background-color: #ddd; float: right; }
+    #addParticularButton{padding: 10px; cursor: pointer; padding: 5px; background-color: #ddd;  }
+    .minusButton{background-color: #EC1300; border-radius: 10px; cursor: pointer;  padding: 2px;  }
+    .saveButton{background-color: #49BB4B; border-radius: 10px; padding: 2px; cursor: pointer;  }
+    .particularname{padding: 10px; }
+    .text-center{text-align: center;}
+</style>
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>SL No.</th>
+            <th>Particulars</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody id="particularTableRows">
+        <tr id="zeroRow"><td colspan="4"><span class="text-center">No Particulars</span></td></tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <strong id="addParticularButton"><i class="fa fa-plus"></i><span>Add Particular</span></strong>
+                <strong id="assignParticularButton"><i class="fa fa-check"></i><span>Assign Particular</span></strong>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script type="text/javascript">
+
+
+  j(document).ready(function () {
+
+      j(document).off('click', '#assignParticularButton').on('click', '#assignParticularButton', function () {
+          var tableRow = j('#particularTableRows tr').length;
+          j('#particularTableRows').append(`<tr class="particularDataRow">
+            <td class="text-center"><label>${tableRow} <%= check_box_tag "particular_box",{},true,:class => 'new_particular_box particular_box' %></label> </td>
+            <td><span><strong><%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.name, item.id] }, {:prompt => "--select particular category--"},{:class => "form-field"} ) %></strong> </span></td>
+            <td><span class="particularname"><%= text_field_tag "assign_particular_name", "", :class=>"form-field particular_box_input newNameField", :placeholder => "Particular Name", :required => true %></span></td>
+            <td class="text-center"><span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span></td>
+              </tr>`);
+          if (tableRow > 0)
+          {
+              j("#zeroRow").hide();
+          }
+      });
+
+      j(document).off('click', '#addParticularButton').on('click', '#addParticularButton', function () {
+          if (j("tr").hasClass("addParticularRow"))
+          {
+              alert("Please add that particular first");
+          } else
+          {
+              var tableRow = j('#particularTableRows tr').length;
+              j('#particularTableRows').append(`<tr class="addParticularRow" id="replaceIfDataSaved">
+            <td class="text-center">${tableRow}</td>
+            <td><span><strong><%= select("fee_category_id","" ,@all_particulars.map { |item| [item.name, item.id] },{:prompt => "--select particular category--"},{:class => "form-field addNewParticularClass",'data-fieldname' => 'particular_category_id', :required => true}) %></strong> </span></td>
+            <td><span class="particularname"><%= text_field_tag "particular_name","", {:class => "form-field addNewParticularClass",:placeholder => "Particular Name", 'data-fieldname' => 'particular_name'} %></span>
+       <span class="particularname"><%= text_field_tag "particular_amount","", {:class => "form-field addNewParticularClass",:placeholder => "Particular Amount", 'data-fieldname' => 'particular_amount', :required => true} %></span>
+<div class="label-container2"><label><%= t('create_using') %></label></div>
+          <div class="input-container2">
+              <div class="opt"><%= radio_button("finance_fee_particular","receiver_type","Batch",
+  {:checked=> true ,:onchange => "#{remote_function(:url => {:action => "new_student_or_student_category"},
+    :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('all') %></div>
+              <div class="opt"><%=  radio_button("finance_fee_particular","receiver_type","Student",
+  {:checked=>@student,:onchange => "#{remote_function(:url => {:action => "new_student_or_student_category"},
+    :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('admission_no') %></div>
+              <div class="opt"> <%= radio_button("finance_fee_particular","receiver_type","StudentCategory",
+  {:checked=>@category,:onchange => "#{remote_function(:url => {:action => "new_student_or_student_category"},
+    :with => "'select_value='+value+'&batch_id='+selected_batches()")}"}) %><%= t('student_category') %> </div>
+            <div style="clear: both; height: 10px;"></div>
+          </div>
+          <div id="student" style="float: left; width: 100%; height: auto;">
+<%if @render%>
+  <%if @student%>
+    <%= render :partial => "fee_collection_student_list_new" %>
+  <%end%>
+  <%if @category%>
+                              <div class="label-field-pair">
+                                <div class="label-container"><label><%= t('student_category') %>:</label></div>
+                                <div class="input-container"> <%= select :finance_fee_particular,:receiver_id, @student_categories.map { |c| [c.name, c.id] },
+      {:prompt => "#{t('select_category')}" }%></div></div>
+  <%end%>
+<%end%>
+        </div>
+</td> <td class="text-center">
+<span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span><br/>
+          <span class="saveButton"><i class="fa fa-check"></i></span>
+</td>
+              </tr>`);
+              if (tableRow > 0)
+              {
+                  j("#zeroRow").hide();
+              }
+          }
+
+      });
+
+      j(document).on('click', '.deleteRowButton', function () {
+          j(this).parents("tr").remove();
+          var tableRowExist = j('#particularTableRows tr').length;
+          if (tableRowExist <= 1)
+          {
+              j("#zeroRow").show();
+          }
+      });
+
+      j(document).on('change', "select[name='fee_category_id[]']", function () {
+          let selected = j(this).find("option:selected").text();
+          j("input[name='particular_name']").val(selected);
+      });
+      j(document).on('change', "select[name='assign_fee_category_id[]']", function () {
+          let selected = j(this).find("option:selected").text();
+          let selectedValue = j(this).find("option:selected").val();
+          j(".newNameField").val(selected);
+          j(".new_particular_box").val(selectedValue);
+          j(".newNameField").attr("id","particular_name_"+selectedValue);
+          j("input").removeClass("newNameField");
+          j("input").removeClass("new_particular_box");
+      });
+
+      j(document).on('click', '.saveButton', function () {
+          var formFields = [];
+          var values = [];
+          var selectedStudents = [];
+          j('.addNewParticularClass').each(function () {
+              values[j(this).data('fieldname')] = j(this).val();
+          });
+          var recieverType = j("input[name='finance_fee_particular[receiver_type]']:checked").val();
+          if (recieverType === "Student")
+          {
+              j("input[name='student_ids[]']:checked").each(function () {
+                  selectedStudents.push(j(this).val());
+              });
+
+              values["student_id"] = selectedStudents;
+          }
+          formFields.push(values);
+          var batches = selected_batches();
+
+          new Ajax.Request('/finance/add_fees_particulars_create',
+                  {
+                      asynchronous: true,
+                      evalScripts: true,
+                      parameters: 'finance_fee_particular_category_id=' + formFields[0].particular_category_id + '&amount=' + formFields[0].particular_amount + '&particular_name=' + formFields[0].particular_name + '&student_category_id=' + formFields[0].student_category + '&batch_ids=' + batches + '&receiver_type=' + recieverType + '&students=' + selectedStudents + '&finance_fee_category_id=' + j("#finance_fee_collection_fee_category_id").val()
+                  }
+          )
+
+      });
+
+  });
+
+
+</script>

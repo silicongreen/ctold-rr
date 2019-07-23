@@ -19,224 +19,268 @@
 
 
 <div id="content-header">
-<%= show_header_icon %>
-  <h1><%= t('fees_collection') %></h1>
-<div class='header-sep'>|</div>
-<div class='sub-header'><%= t('create_fee_collection') %></div>
-
-<div id="inner-tab-menu">
-  <ul>
-    <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('fees_collection')}", :action=>'fee_collection'%></li>
-  </ul>
-</div>
-
+    <%= show_header_icon %>
+    <h1><%= t('fees_collection') %></h1>
+    <div class='header-sep'>|</div>
+    <div class='sub-header'><%= t('create_fee_collection') %></div>
+    <div id="inner-tab-menu">
+        <ul>
+            <li class='themed_bg themed-dark-hover-background'><%= link_to "#{t('fees_collection')}", :action=>'fee_collection'%></li>
+        </ul>
+    </div>
 </div>
 <div id="page-yield">
-  <div id="flash_box">
-  </div>
-  <% unless flash[:notice].nil? %>
-    <p class="flash-msg"> <%= flash[:notice] %> </p>
-  <% end %>
+    <div id="flash_box">
+    </div>
+    <% unless flash[:notice].nil? %>
+      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% end %>
 
-  <% form_for @finance_fee_collection,
-    :url => {:action => 'fee_collection_create'},:html=>{:onsubmit=>"return validate();"} do |form| %>
+    <% form_for @finance_fee_collection,
+      :url => {:action => 'fee_collection_create'},:html=>{:onsubmit=>"return validate();"} do |form| %>
 
-    <div id="form-errors"><%= error_messages_for 'finance_fee_collection' %></div>
-    <div id="left-side-inputs">
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason"> <%= t('fee_category') %>:</label></div>
-        <div class="input-container">
-          <%= form.select(:fee_category_id, @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
-            {:selected => @fee_category.present? ? @fee_category.first.name : nil , :prompt => "#{ t('select_category')}" },
-            {:onchange => "#{remote_function(:url => {:action => "fee_collection_batch_list"},
-              :with => "'id='+value",
-              :before => "Element.show('loader')",
-              :success => "Element.hide('loader')")}", :autocomplete => "off"
-            })%>
-        </div>
-        <div class="loader_div">
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader",
-            :style =>"display: none; position : absolute; " ) %>
-        </div>
-      </div>
-      <div style="clear: both;"></div>  
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason">  <%= t('fee_collection_name') %>:</label></div>
-        <div class="input-container"><%= form.text_field :name, :value => Date.today.strftime("%b") + "' " + Date.today.strftime("%Y") %></div>
-      </div>
-      <div style="clear: both; height: 10px;"></div>  
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason"><%= t('fine') %>:</label></div>
-        <div class="input-container">
-          <%= form.select(:fine_id, @fines.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
-            {:prompt => "#{t('select_fine')}" },
-            {:onchange => "#{remote_function(:url => {:action => "fine_list"},
-              :with => "'id='+value",
-              :before => "Element.show('loader1')",
-              :success => "Element.hide('loader1')")}", :autocomplete => "off"
-            })%>
-        </div>
-        <div class="loader_div">
-          <%= image_tag("loader.gif",
-            :align => "absmiddle",
-            :border => 0,
-            :id => "loader1",
-            :style =>"display: none; position : absolute; " ) %>
-        </div>
-      </div>
-
-      <div id ="fines" style="margin: 0;"></div>
-
-
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason">  <%= t('start_date') %>:</label></div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[start_date]', I18n.l(@finance_fee_collection.start_date || Date.today,:format=>"%d %b %Y"),:popup=>"force",:class=>'start_date',:onchange=>"executeOnChange();" %></div>
-      </div>
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason">  <%= t('end_date') %>:</label></div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[end_date]',I18n.l(@finance_fee_collection.end_date || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'end_date' %></div>
-      </div>
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason">  <%= t('due_date') %>:</label></div>
-        <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[due_date]', I18n.l(@finance_fee_collection.due_date || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
-      </div>
-      <div class="label-field-pair">
-        <div class="label-container"><label for="reason"></label></div>
-        <div class="input-container">
-          <div class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
-            <div class="checkbox_inline"><%= check_box_tag "sent_remainder", 1, true, :class=>'batches_box' %></div> 
-            <div class="checkbox_label" style="width: 120px;"><label>Sent Reminder</label></div>
-            
-            <div class="checkbox_inline"><%= check_box_tag "include_transport", 1, true, :class=>'batches_box' %></div> 
-            <div class="checkbox_label" style="width: 120px;"><label>Include Transport Fee</label></div>
-            
+      <div id="form-errors"><%= error_messages_for 'finance_fee_collection' %></div>
+      <div id="left-side-inputs">
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason"> <%= t('fee_category') %>:</label></div>
+              <div class="input-container">
+                  <%= form.select(:fee_category_id, @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
+                    {:selected => @fee_category.present? ? @fee_category.first.name : nil , :prompt => "#{ t('select_category')}" },
+                    {:onchange => "#{remote_function(:url => {:action => "fee_collection_batch_list"},
+                      :with => "'id='+value",
+                      :before => "Element.show('loader')",
+                      :success => "Element.hide('loader')")}", :autocomplete => "off"
+                    })%>
+              </div>
+              <div class="loader_div">
+                  <%= image_tag("loader.gif",
+                    :align => "absmiddle",
+                    :border => 0,
+                    :id => "loader",
+                    :style =>"display: none; position : absolute; " ) %>
+              </div>
           </div>
-          <div id="include_employee_div" class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
-            <div class="checkbox_inline"><%= check_box_tag "include_employee", 1, false, :class=>'batches_box' %></div> 
-            <div class="checkbox_label" style="width: 280px;"><label style="width: 100%;">Include Transport Fee For Employee</label></div>
+          <div style="clear: both;"></div>  
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason">  <%= t('fee_collection_name') %>:</label></div>
+              <div class="input-container"><%= form.text_field :name, :value => Date.today.strftime("%b") + "' " + Date.today.strftime("%Y") %></div>
           </div>
-        </div>
+          <div style="clear: both; height: 10px;"></div>  
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason"><%= t('fine') %>:</label></div>
+              <div class="input-container">
+                  <%= form.select(:fine_id, @fines.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
+                    {:prompt => "#{t('select_fine')}" },
+                    {:onchange => "#{remote_function(:url => {:action => "fine_list"},
+                      :with => "'id='+value",
+                      :before => "Element.show('loader1')",
+                      :success => "Element.hide('loader1')")}", :autocomplete => "off"
+                    })%>
+              </div>
+              <div class="loader_div">
+                  <%= image_tag("loader.gif",
+                    :align => "absmiddle",
+                    :border => 0,
+                    :id => "loader1",
+                    :style =>"display: none; position : absolute; " ) %>
+              </div>
+          </div>
+
+          <div id ="fines" style="margin: 0;"></div>
+
+
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason">  <%= t('start_date') %>:</label></div>
+              <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[start_date]', I18n.l(@finance_fee_collection.start_date || Date.today,:format=>"%d %b %Y"),:popup=>"force",:class=>'start_date',:onchange=>"executeOnChange();" %></div>
+          </div>
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason">  <%= t('end_date') %>:</label></div>
+              <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[end_date]',I18n.l(@finance_fee_collection.end_date || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'end_date' %></div>
+          </div>
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason">  <%= t('due_date') %>:</label></div>
+              <div class="input-container calendar-input"><%= calendar_date_select_tag 'finance_fee_collection[due_date]', I18n.l(@finance_fee_collection.due_date || Date.today,:format=>"%d %b %Y"), :popup=>"force",:class=>'due_date'%></div>
+          </div>
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason"></label></div>
+              <div class="input-container">
+                  <div class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
+                      <div class="checkbox_inline"><%= check_box_tag "include_employee", 1, false, :class=>'batches_box' %></div> 
+                      <div class="checkbox_label" style="width: 120px;"><label style="width: 100%;">Include Transport Fee For Employee</label></div>
+
+                      <div class="checkbox_inline"><%= check_box_tag "include_transport", 1, true, :class=>'batches_box' %></div> 
+                      <div class="checkbox_label" style="width: 120px;"><label style="width: 100%;">Include Transport Fee</label></div>
+
+                  </div>
+              </div>
+          </div>
       </div>
-    </div>
 
 
-    <div id ="batchs">
-      <% unless params[:fee_collection].nil? %>
-        <%= render :partial=>'fee_collection_batchs' if params[:fee_collection][:category_ids].present? %>
-      <% end %>
-    </div>
-
-    <div class="extender"></div>
-    <div id="submit-button">
-      <%=  submit_tag "► #{t('create_text')}",:class=>'submit_button',:disable_with => "► #{t('create_text')}" %>
-    </div>
-  <% end %>
+      <div id ="batchs">
+          <% unless params[:fee_collection].nil? %>
+            <%= render :partial=>'fee_collection_batchs' if params[:fee_collection][:category_ids].present? %>
+          <% end %>
+      </div>
+            <div class="extender"></div>
+            <div id="fee_category_particulars_div">
+              
+            </div>
+<div id="category_generated_table"></div>
+      <div class="extender"></div>
+      <div id="submit-button">
+          <%=  submit_tag "► #{t('create_text')}",:class=>'submit_button',:disable_with => "► #{t('create_text')}" %>
+      </div>
+    <% end %>
+      
 </div>
-<script>
-  function validate(){
-    string=""
-   if ($$('#finance_fee_collection_fee_category_id')[0].value.length==0)
-     {string='<%="#{t('select_fee_category')}"%>'+"\n"
-       }
-   if ($$('.batch_select_box')[0]==undefined)
-     {
-       string=string+'<%="#{t('finance.flash28')}"%>'+"\n";
-     }else{
-        pointer=0
-         arr=$$('#fee_collection_category_ids_')
-         len=$$('#fee_collection_category_ids_').length
-         for(i=0;i<len;i++){
-          if (arr[i].checked){pointer=1}
-         }
-          if (pointer==0){
-            string=string+'<%="#{t('select_one_batch')}" %>'+"\n";
-          }
-     }
-     if ($$('#finance_fee_collection_name')[0].value.length==0)
-       {
-         string=string+'<%="#{t('fee_collection_name_cant_be_blank')}"%>'+ "\n"
-       }
-       if (!($$('.start_date')[0].value<=$$('.end_date')[0].value))
-         {
-           string=string+'<%="#{t('start_date_cant_be_after_end_date')}"%>'+"\n"
-         }
-         if (!($$('.end_date')[0].value<=$$('.due_date')[0].value))
-         {
-           string=string+'<%="#{t('end_date_cant_be_after_due_date')}"%>'+"\n"
-         }
 
-         if (string.length==0)
-           {
-             return true;
-           }
-           else
-             {
-               alert(string);
-               return false;
-             }
+<script>
+  function validate() {
+      string = ""
+      if ($$('#finance_fee_collection_fee_category_id')[0].value.length == 0)
+      {
+      string = '<%="#{t('select_fee_category')}"%>' + "\n"
+      }
+      if ($$('.batch_select_box')[0] == undefined)
+      {
+          string = string + '<%="#{t('finance.flash28')}"%>' + "\n";
+      } else {
+          pointer = 0
+          arr = $$('#fee_collection_category_ids_')
+          len = $$('#fee_collection_category_ids_').length
+          for (i = 0; i < len; i++) {
+              if (arr[i].checked) {
+          pointer = 1
+        }
+          }
+          if (pointer == 0) {
+              string = string + '<%="#{t('select_one_batch')}" %>' + "\n";
+          }
+      }
+      if ($$('#finance_fee_collection_name')[0].value.length == 0)
+      {
+          string = string + '<%="#{t('fee_collection_name_cant_be_blank')}"%>' + "\n"
+      }
+      if (!($$('.start_date')[0].value <= $$('.end_date')[0].value))
+      {
+          string = string + '<%="#{t('start_date_cant_be_after_end_date')}"%>' + "\n"
+      }
+      if (!($$('.end_date')[0].value <= $$('.due_date')[0].value))
+      {
+          string = string + '<%="#{t('end_date_cant_be_after_due_date')}"%>' + "\n"
+      }
+      
+      var particulars = 0;
+      j("#fee_category_particulars_div").html("");
+      j(".particular_box").each(function(){
+         if ( j(this).prop("checked") )
+         {
+            var p_id = this.value;
+            var p_name = j("#particular_name_" + p_id).val();
+            if ( j.trim(p_name).length > 0 )
+            {
+                particulars++;
+                var input_particular_id = '<input type="hidden" name="particular_id[]" name="particular_id_new" value="' + p_id + '" />';
+                input_particular_id += '<input type="hidden" name="particular_name[]" name="particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                j("#fee_category_particulars_div").append(input_particular_id);
+            }
+         }
+      });
+      
+      if ( particulars == 0 )
+      {
+          string = string + 'No particular selected for this fee collection' + "\n"
+      }
+      if (string.length == 0)
+      {
+          return true;
+      } else
+      {
+          alert(string);
+          return false;
+      }
 
   }
-  
+
   function executeOnChange()
   {
-    var monthNames = ["Jan' ", "Feb' ", "Mar' ", "Apr'", "May' ", "June' ",
-                         "July' ", "Aug' ", "Sep' ", "Oct' ", "Nov' ", "Dec' "
-    ];
-     var d = new Date(j(".start_date").val());
-     var yr = d.getFullYear();
-     var name = monthNames[d.getMonth()] + yr;
-     j("#finance_fee_collection_name").val(name);
+      var monthNames = ["Jan' ", "Feb' ", "Mar' ", "Apr'", "May' ", "June' ",
+          "July' ", "Aug' ", "Sep' ", "Oct' ", "Nov' ", "Dec' "
+      ];
+      var d = new Date(j(".start_date").val());
+      var yr = d.getFullYear();
+      var name = monthNames[d.getMonth()] + yr;
+      j("#finance_fee_collection_name").val(name);
   }
   
-  j(document).ready(function(){
-      j(document).on("click", "#include_transport", function(){
-          if ( j("#include_transport").prop("checked") )
+  function selected_batches()
+      {
+          var batches = "";
+          j(".category_select").each(function () {
+              if (j(this).prop('checked'))
+              {
+                  batches += this.value + ",";
+              }
+          });
+          if (j.trim(batches).length > 0)
+          {
+              batches = batches.substr(0, batches.length - 1);
+          }
+          return batches;
+      }
+
+  j(document).ready(function () {
+      j(document).on("click", "#include_transport", function () {
+          if (j("#include_transport").prop("checked"))
           {
               j("#include_employee_div").show();
-              j("#include_employee").attr("checked",true);
-          }
-          else
+              j("#include_employee").attr("checked", true);
+          } else
           {
               j("#include_employee_div").hide();
               j("#include_employee").removeAttr("checked");
           }
       });
+
   });
+  
+  
 </script>
 
 <style>
     .label-field-pair .label-container {
         width: 39% !important;
     }
-    
+
     .label-field-pair select{
         width: 110% !important;
     }
-    
+
     .batch_select_box{
-      margin: 20px;
+        margin: 20px;
     }
-    
+
     .fee_category1_scroll {
-      margin-right: 0px;
-      margin-left: 0px;
-      margin-top: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 0px;
     }
-    
+
     #batchs {
         float: right;
         height: 243px;
         width: 407px;
     }
     #batchs .batch_select_box{
-      width: 390px;
-      height: 246px;
+        width: 390px;
+        height: 246px;
     }
-    
+
     #batchs .batch_select_box .label-field-pair{
-      width: 389px !important;
+        width: 389px !important;
+    }
+    #category_generated_table{
+        margin-top: 50px;
     }
 </style>

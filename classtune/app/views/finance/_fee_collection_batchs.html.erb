@@ -32,7 +32,7 @@
               <% unless params[:fee_collection].nil? %>
                 <% checked = params[:fee_collection][:category_ids].include?(f.id.to_s) if params[:fee_collection][:category_ids].present? %>
               <% end %>
-                <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box' %></div> 
+                <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box category_select' %></div> 
                 <div class="checkbox_label"><label><%= f.full_name %></label></div>
             </div>
 

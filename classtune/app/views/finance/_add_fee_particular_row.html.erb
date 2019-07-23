@@ -1,0 +1,14 @@
+<tr class="particularDataRow">
+    <td class="text-center"><label><span class="rowNumber"></span> <%= check_box_tag "particular_box", @finance_fee_particular.id, true, :class => 'particular_box' %></label></td>
+    <td><span><strong><%= select("added_fee_category_id",{} , options_for_select([[@finance_fee_particular.finance_fee_particular_category.name, @finance_fee_particular.finance_fee_particular_category_id]]),{:selected => @finance_fee_particular.finance_fee_particular_category_id},{:class => "form-field"} ) %></strong> </span></td>
+    <td><span class="particularname"><%= text_field_tag "particular_name_"+@finance_fee_particular.id.to_s, "", :class=>"form-field particular_box_input", :value => @finance_fee_particular.name %></span></td>
+    <td class="text-center"><span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span></td>
+</tr>
+<script type="text/javascript">
+  j(document).ready(function () {
+      var tableRow = j('#particularTableRows tr').length;
+      j('.rowNumber').text(tableRow - 1);
+      j("#replaceIfDataSaved").removeAttr('id')
+      j(".rowNumber").removeAttr('class')
+  });
+</script>

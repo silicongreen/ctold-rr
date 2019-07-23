@@ -1,0 +1,5 @@
+<div class="label-field-pair">
+    <div class="label-container"><label><%= t('student_category') %>:</label></div>
+    <div class="input-container"> <%= select "student_category","", @student_categories.map { |c| [c.name, c.id] },
+      {:prompt => "#{t('select_category')}" }, :class => "addNewParticularClass" ,'data-fieldname' => 'student_category'%></div>
+</div>

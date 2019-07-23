@@ -1,0 +1,220 @@
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+
+<div style="background: transparent; height: 40px;">
+
+</div>
+
+<div id="page-yield" class="bg-disable">
+    <div class="fees_wrapper">
+        <div id="student_profile_heading">
+            <div id="profile_picture_display">
+                <% if @student.photo.file? %>
+                  <% @profile_image = @student.photo.url %>
+
+                  <% unless @profile_image.index("RackMultipart").nil? %>
+                    <% if @student.photo.exists? %>
+                      <% @profile_image.gsub! '?', '.?' %>
+                    <% else %>
+                      <% @profile_image = "master_student/profile/default_student.png" %>
+                    <% end %>
+                  <% end %>
+
+                <% else %>
+                  <% @profile_image = "master_student/profile/default_student.png" %>
+                <% end %>
+                <%= image_tag "#{@profile_image}", :width=>"125" %>
+                <% if @student.photo.file? %>
+                <% if @current_user.admin? or permitted_to? :remove_photo, :student %>
+                <div class="image-delete-link" />
+                   <%= link_to '<img src="/images/buttons/delete-new.png" />', {:controller => 'student', :action => 'remove_photo', :id => @student.id}, :confirm => "Do you realy want to remove this photo?" %>
+                </div>
+                <% end %>
+                <% end %>
+
+            </div>
+
+            <div id ="student_main_info">
+                <div id="student_name" class="f2"><%= @student.full_name %></div>
+                <div id="student_class"><%= @student.batch.course.course_name %></div>
+            </div>
+        </div>
+
+        <div id="personal_info_wrapper">
+            <div id="class_info">
+              <% if Batch.active.find(:all, :group => "name").length > 1  %>
+                <div class="infos">
+                    <div><%= @student.batch.name %></div>
+                    <div><%= t('batch_text') %></div>
+                </div>
+              <% end %>
+              <div class="infos">
+                  <div><%= @student.admission_no %></div>
+                  <div><%= t('adm_no') %></div>
+              </div>
+              <div class="infos last">
+                  <% unless  @student.batch.course.section_name.empty? %>
+                  <div><%= @student.batch.course.section_name %></div>
+                  <div><%= t('profile_section_label') %></div>
+                  <% else %>
+                  <div> No Section</div>
+                  <div></div>
+                  <% end %>
+
+              </div>
+          </div>
+        </div>
+
+        <div id="student_profile_heading1">
+            <div id="student_main_info1">
+                <span class="name" style="width: 70%; display: inline-block;"><h1> Student Ledger</h1> </span>
+            </div>
+            <div class="extender"> </div>
+        </div>
+        
+        <hr style="border: 1px solid #ccc;" />
+        <div id="table-scroll" class="table-scroll" style="display: block; width: 80%; padding-bottom: 20px;">
+            <table class="table-bordered main-table" id="table-scroll" cellspacing="0" cellpadding="0" border="0" style="table-layout:fixed;">
+                <thead><!-- class="thead-inverse" -->
+                  <tr>
+                    <th class="fixed-side" scope="col" style="width: 200px; text-align: center; vertical-align: middle;">Ledger Date</th>
+                    <th style="text-align: center; vertical-align: middle;">Amount to Pay</th>
+                    <th style="text-align: center; vertical-align: middle;">Paid Amount</th>
+                    <th style="text-align: center; vertical-align: middle;">Amount <br /> (Dues/Advance)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% carried_amount = 0 %>
+                    <% current_balance = 0 %>
+                    <% i = 0 %>
+                    <% @student_fee_ledgers.each do |student_fee_ledger| %>
+                    <% info = "" %>
+                    <% if student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                    <% info = "(Admission Date)" %>
+                    <% elsif student_fee_ledger.amount_to_pay.to_f > 0.00 and student_fee_ledger.amount_paid.to_f == 0.00 %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay > 0.00 and fee_id IS NOT NULL and amount_paid = 0.00 and transaction_id = 0"]) %>
+                      <% unless student_ledgers.nil? %>
+                        <% student_ledgers.each do |student_ledger| %>
+                          <% fee = FinanceFee.find(:first, :conditions => "id = #{student_ledger.fee_id}") %>
+                          <% unless fee.nil? %>
+                            <% info += "(<a href='/student/fee_details/" + @student.id.to_s + "/" + fee.finance_fee_collection.id.to_s + "?opt=" + Base64.encode64(@student.admission_no.to_s + "-" + fee.finance_fee_collection.id.to_s).reverse + '===' + "' target='_blank' style='text-decoration: underline;'>" + fee.finance_fee_collection.name + '</a>' %>
+                            <% if i == student_ledgers.length - 1 %>
+                            <% info += ")" %>
+                            <% else %>
+                            <% info += ", " %>
+                            <% end %>
+                            <% i += 1 %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% elsif student_fee_ledger.amount_to_pay.to_f == 0.00 and student_fee_ledger.amount_paid.to_f > 0.00 %>
+                      <% student_ledgers = StudentFeeLedger.find(:all, :select => "id, fee_id, transaction_id", :conditions => ["student_id = #{@student.id} and ledger_date = '#{student_fee_ledger.ledger_date}' and amount_to_pay = 0.00 and amount_paid > 0.00"]) %>
+                      <% unless student_ledgers.nil? %>
+                        <% student_ledgers.each do |student_ledger| %>
+                          <% payments = Payment.find(:all, :conditions => "finance_transaction_id = #{student_ledger.transaction_id}") %>
+                          <% unless payments.nil? %>
+                            <% payments.each do |payment| %>
+                              <% fee = FinanceFee.find(:first, :conditions => "id = #{payment.payment_id}") %>
+                              <% info += "Order Id: #{payment.order_id} <a href='/finance/student_fee_receipt_pdf/#{@student.id}/#{fee.finance_fee_collection.id}?trn_id=#{payment.finance_transaction_id}' target='_blank' style='text-decoration: underline;'>Print receipt</a><Br />" %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <tr class="tr-odd">
+                          <th style="vertical-align: middle; text-align: left; color: #555; font-family: verdana; font-size: 12px; line-height: 17px;" class="fixed-side">
+                              <%= student_fee_ledger.ledger_date.strftime("%d %B, %Y") %><br />
+                              <small><%= info %></small>
+                          </th>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_to_pay %></td>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;"><%= to_comma_seperated_precision_label student_fee_ledger.amount_paid %></td>
+                          <% current_balance = (carried_amount + student_fee_ledger.amount_to_pay.to_f) - student_fee_ledger.amount_paid.to_f %>
+                          <% carried_amount = current_balance %>
+                          <td style="vertical-align: middle; text-align: right; font-size: 12px;">
+                              <% if current_balance < 0 %>
+                                <%= to_comma_seperated_precision_label current_balance * (-1) %><br />
+                                <small style="font-size: 13px;">(Advance)</small>
+                              <% else %>
+                                <%= to_comma_seperated_precision_label current_balance %>
+                              <% end %>
+                          </td>
+                      </tr>
+                    <% end %>
+
+                </tbody>
+            </table>
+            <% unless carried_amount == 0 %>
+              <div style="width: 140px; float: right; padding: 20px; border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; background: #3b823c; color: #fff; text-align: center;">
+                  <% if carried_amount < 0 %>
+                  <b style="font-size: 18px;"><%= to_comma_seperated_precision_label carried_amount * (-1) %></b><br />
+                  <small style="font-size: 10px; letter-spacing: 2px; font-family: verdana;">(Advance)</small>
+                  <% else %>
+                  <b style="font-size: 18px;"><%= to_comma_seperated_precision_label carried_amount %></b>
+                  <% end %>
+              </div>
+            <% end %>
+        </div>
+        
+    </div>
+</div>
+
+<%= stylesheet_link_tag 'tadded-header' %>
+<% content_for :head do %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
+<style>
+    .table-scroll {
+	position:relative;
+	max-width:1000px;
+	margin:auto;
+	overflow:hidden;
+    }
+    .table-wrap {
+            width:100%;
+            overflow:auto;
+    }
+    .table-scroll table {
+            width:100%;
+            margin:auto;
+            border-collapse:separate;
+            border-spacing:0;
+    }
+    .table-scroll th, .table-scroll td {
+            padding:5px 10px;
+            background:#fff;
+            vertical-align:top;
+    }
+    .table-scroll thead, .table-scroll tfoot {
+            background:#f9f9f9;
+    }
+    .clone {
+            position:absolute;
+            top:0;
+            left:0;
+    }
+    .clone th, .clone td {
+            visibility:hidden
+    }
+    .clone td, .clone th {
+            border-color:transparent
+    }
+    .clone tbody th {
+            visibility:visible;
+            color:red;
+    }
+    .clone .fixed-side {
+            background:#eee;
+            visibility:visible;
+            z-index: 1;
+    }
+    a:hover {
+        text-decoration: none !important;
+    }
+    .clone thead, .clone tfoot{background:transparent;}
+</style>   
+
+<script>
+  j(document).ready(function() {
+      j(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');   
+  });
+  
+</script>  

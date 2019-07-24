@@ -79,7 +79,13 @@
                 unless @batch.name.upcase.index("ENGLISH").nil?
                   medium = "English"
                 end
-                if @batch.course.group.upcase != "SCIENCE" and @batch.course.group.upcase != "BUSINESS STUDIES" and @batch.course.group.upcase != "HUMANITIES"
+                if !@batch.course.group.upcase.index("SCIENCE").nil?
+                  @batch.course.group = "Science"
+                elsif !@batch.course.group.upcase.index("BUSINESS").nil?
+                  @batch.course.group = "Business Studies"
+                elsif !@batch.course.group.upcase.index("HUMAN").nil?
+                  @batch.course.group = "Humanities"
+                else
                   @batch.course.group = "N/A"
                 end  
               %>

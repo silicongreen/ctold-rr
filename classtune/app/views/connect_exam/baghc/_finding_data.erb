@@ -32,6 +32,16 @@
           total_full_mark = 0
           u_grade = false
           tab['subjects'].each do |sub|
+            has_exam = false
+            tab['exams'].each do |rs|
+              if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].blank?
+                has_exam = true
+                break
+              end  
+            end 
+            if has_exam == false
+              next
+            end
             if batch_subject_id.include?(sub['id'].to_i) or std_subject_id.include?(sub['id'].to_i)  
               total_100 = 0
               full_100 = 0

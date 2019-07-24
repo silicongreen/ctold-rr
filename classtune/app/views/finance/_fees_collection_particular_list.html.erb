@@ -9,7 +9,8 @@
     }
     #assignParticularButton{padding: 10px; cursor: pointer; padding: 5px; background-color: #ddd; float: right; }
     #addParticularButton{padding: 10px; cursor: pointer; padding: 5px; background-color: #ddd;  }
-    .minusButton{background-color: #EC1300; border-radius: 10px; cursor: pointer;  padding: 2px;  }
+    #addTransport{padding: 9px; cursor: pointer; background-color: #fff; border: 1px solid #ccc; border-radius: 5px;  }
+    .minusButton{background-color: #FFF; border-radius: 3px; cursor: pointer;  padding: 3px 4px; border: 1px solid #ccc; color: #F00;  }
     .saveButton{background-color: #49BB4B; border-radius: 10px; padding: 2px; cursor: pointer;  }
     .particularname{padding: 10px; }
     .text-center{text-align: center;}
@@ -25,35 +26,86 @@
     </thead>
 
     <tbody id="particularTableRows">
-        <tr id="zeroRow"><td colspan="4"><span class="text-center">No Particulars</span></td></tr>
+        <tr class="particularDataRow">
+            <td class="text-center">
+                <h3 class="sl_no" style="display: inline-block; padding-right: 10px;">1</h3>
+                <!--i class="fa fa-check-square-o particular-box"></i-->
+            </td>
+            <td id="fee_category_td" style="vertical-align: middle;">
+                <%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.name, item.finance_fee_particular_category_id] }, {},{:class => "form-field fee_category_tr_row"} ) %>
+            </td>
+            <td id="fee_particular_name_td" style="width: 300px; vertical-align: middle;">
+                <span class="particularname">
+                  <%= text_field_tag "assign_particular_name", @fee_particulars[0].name, :class=>"form-field particular_box_input newNameField", :placeholder => "Particular Name", :"data-transport" => 0 %>
+                </span>
+                <div style="border-top: 1px solid #ccc; text-align: center; width: 100%;">
+                    <a id="particular_details_1_<%= @fee_particulars[0].finance_fee_particular_category_id %>" href="javascript:;" style="font-family: verdana; font-size: 12px;" class="particular_details">Particular Details</a>
+                    <div id="particular_details_div_1_<%= @fee_particulars[0].finance_fee_particular_category_id %>" style="border: 1px solid #ccc; height: 200px; width: 88%; padding: 20px; border-radius: 6px; background: #FCFCFC; overflow-y: auto; overflow-x: none; display: none; margin: 0 auto;" class="particular_details_div"></div>
+                </div>
+            </td>
+            <td class="text-center" style="vertical-align: middle;"></td>
+        </tr>
+        <tr class="table-actions">
+            <td class="text-center">
+              <i class="fa fa-plus-square-o assignParticularButton" style="cursor: pointer; font-size: 20px; color: #0c9b2b;"></i>
+            </td>
+            <td id="fee_category_td" colspan="3" style="vertical-align: middle;">&nbsp;</td>
+        </tr>
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="4">
-                <strong id="addParticularButton"><i class="fa fa-plus"></i><span>Add Particular</span></strong>
-                <strong id="assignParticularButton"><i class="fa fa-check"></i><span>Assign Particular</span></strong>
+            <td colspan="4" style="padding: 20px;">
+                <strong id="addTransport"><i class="fa fa-bus assignParticularButton" style="cursor: pointer; font-size: 16px; padding-right: 6px;  color: #0c9b2b;"></i><span style="color: #0c9b2b;">Add Transport</span></strong>
+                <!--strong id="addParticularButton"><i class="fa fa-plus"></i><span>Add Particular</span></strong-->
+                <!--strong id="assignParticularButton"><i class="fa fa-check"></i><span>Assign Particular</span></strong-->
             </td>
         </tr>
     </tfoot>
+</table>
+<table id="particular-row" style="display: none;">
+    <tr id="particularDataRow-tmp" class="particularDataRow-tmp">
+        <td class="text-center">
+            <h3 class="sl_no" style="display: inline-block; padding-right: 10px;">1</h3>
+        </td>
+        <td id="fee_category_td" style="vertical-align: middle;">
+            <%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.name, item.finance_fee_particular_category_id] }, {:prompt => "--select particular category--"},{:class => "form-field fee_category_tr_row"} ) %>
+        </td>
+        <td id="fee_particular_name_td" style="width: 300px; vertical-align: middle;">
+            <span class="particularname">
+              <%= text_field_tag "assign_particular_name", "", :class=>"form-field particular_box_input newNameField", :placeholder => "Particular Name", :"data-transport" => 0 %>
+            </span>
+            <div style="border-top: 1px solid #ccc; text-align: center; display: none; width: 100%;">
+                <a id="particular_details_" href="javascript:;" style="font-family: verdana; font-size: 12px;" class="particular_details">Particular Details</a>
+                <div id="particular_details_div_" style="border: 1px solid #ccc; height: 200px; width: 88%; padding: 20px; border-radius: 6px; background: #FCFCFC; overflow-y: auto; overflow-x: none; display: none; margin: 0 auto;" class="particular_details_div"></div>
+            </div>
+        </td>
+        <td class="text-center" style="vertical-align: middle;"><span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span></td>
+    </tr>
+</table>
+<table id="particular-row-transport" style="display: none;">
+    <tr id="particularDataTransportRow-tmp" class="particularDataTransportRow-tmp">
+        <td class="text-center">
+            <h3 class="sl_no" style="display: inline-block; padding-right: 10px;">1</h3>
+        </td>
+        <td id="fee_category_td" style="vertical-align: middle;">
+            <%= select("assign_fee_category_id",{} ,@fee_particulars_transport.map { |item| [item.name, item.finance_fee_particular_category_id] }, {:prompt => "--select particular category--"},{:class => "form-field fee_category_tr_row"} ) %>
+        </td>
+        <td id="fee_particular_name_td" style="width: 300px; vertical-align: middle;">
+            <span class="particularname">
+              <%= text_field_tag "assign_particular_name", "", :class=>"form-field particular_box_input newNameField", :placeholder => "Particular Name", :"data-transport" => 1 %>
+            </span>
+            <div style="border-top: 1px solid #ccc; text-align: center; display: none; width: 100%;">
+                <a id="particular_details_" href="javascript:;" style="font-family: verdana; font-size: 12px;" class="particular_details">Particular Details</a>
+                <div id="particular_details_div_" style="border: 1px solid #ccc; height: 200px; width: 88%; padding: 20px; border-radius: 6px; background: #FCFCFC; overflow-y: auto; overflow-x: none; display: none; margin: 0 auto;" class="particular_details_div"></div>
+            </div>
+        </td>
+        <td class="text-center" style="vertical-align: middle;"><span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span></td>
+    </tr>
 </table>
 <script type="text/javascript">
 
 
   j(document).ready(function () {
-
-      j(document).off('click', '#assignParticularButton').on('click', '#assignParticularButton', function () {
-          var tableRow = j('#particularTableRows tr').length;
-          j('#particularTableRows').append(`<tr class="particularDataRow">
-            <td class="text-center"><label>${tableRow} <%= check_box_tag "particular_box",{},true,:class => 'new_particular_box particular_box' %></label> </td>
-            <td><span><strong><%= select("assign_fee_category_id",{} ,@fee_particulars.map { |item| [item.name, item.id] }, {:prompt => "--select particular category--"},{:class => "form-field"} ) %></strong> </span></td>
-            <td><span class="particularname"><%= text_field_tag "assign_particular_name", "", :class=>"form-field particular_box_input newNameField", :placeholder => "Particular Name", :required => true %></span></td>
-            <td class="text-center"><span class="minusButton deleteRowButton"><i class="fa fa-times"></i></span></td>
-              </tr>`);
-          if (tableRow > 0)
-          {
-              j("#zeroRow").hide();
-          }
-      });
 
       j(document).off('click', '#addParticularButton').on('click', '#addParticularButton', function () {
           if (j("tr").hasClass("addParticularRow"))
@@ -106,28 +158,15 @@
 
       });
 
-      j(document).on('click', '.deleteRowButton', function () {
-          j(this).parents("tr").remove();
-          var tableRowExist = j('#particularTableRows tr').length;
-          if (tableRowExist <= 1)
-          {
-              j("#zeroRow").show();
-          }
-      });
-
-      j(document).on('change', "select[name='fee_category_id[]']", function () {
-          let selected = j(this).find("option:selected").text();
-          j("input[name='particular_name']").val(selected);
-      });
-      j(document).on('change', "select[name='assign_fee_category_id[]']", function () {
-          let selected = j(this).find("option:selected").text();
-          let selectedValue = j(this).find("option:selected").val();
-          j(".newNameField").val(selected);
-          j(".new_particular_box").val(selectedValue);
-          j(".newNameField").attr("id","particular_name_"+selectedValue);
-          j("input").removeClass("newNameField");
-          j("input").removeClass("new_particular_box");
-      });
+      //j(document).on('change', "select[name='assign_fee_category_id[]']", function () {
+      //    let selected = j(this).find("option:selected").text();
+      //    let selectedValue = j(this).find("option:selected").val();
+      //    j(".newNameField").val(selected);
+      //    j(".new_particular_box").val(selectedValue);
+      //    j(".newNameField").attr("id","particular_name_"+selectedValue);
+      //    j("input").removeClass("newNameField");
+      //    j("input").removeClass("new_particular_box");
+      //});
 
       j(document).on('click', '.saveButton', function () {
           var formFields = [];

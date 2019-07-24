@@ -1,0 +1,14 @@
+<% unless @batches.blank? %>
+  <input type="hidden" name="particular_category_id_batch" id="particular_category_id_batch" value="<%= @particular_category_id %>" />
+  <input type="hidden" name="fee_category_id_batch" id="fee_category_id_batch" value="<%= @fee_category_id %>" />
+  <div style='width: 100%; text-align: center; '>
+    <div class="batch-div">
+        <%= select("batches_particular",{} ,@batches.map { |b| [b.full_name, b.id] },{:prompt => "Select a batch"},{:class => "form-field select2-combo particular-batch-combo"} ) %>
+    </div>
+  </div>
+
+  <div id="batch_particular_info" style='width: 100%; text-align: center; padding-top: 20px;'>
+    
+      
+  </div>
+<% end %>

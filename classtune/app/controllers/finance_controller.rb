@@ -1191,33 +1191,65 @@ class FinanceController < ApplicationController
           @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id").count
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           else
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
+            end
           end
         elsif @filter_by_dues.to_i == 1
           @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) = sum( amount_paid )").count
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) = sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           else
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           end
         elsif @filter_by_dues.to_i == 2
           @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )").count
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           else
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           end
         elsif @filter_by_dues.to_i == 3
           @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )").count
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           else
-            @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            unless @students.nil?
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+            else
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
+            end
           end
         end
         
@@ -2400,7 +2432,7 @@ class FinanceController < ApplicationController
       @finance_fee_category = FinanceFeeCategory.new
       @finance_fee_particular = FinanceFeeParticular.new
       @batches = Batch.find params[:id] unless params[:id] == ""
-      @master_categories =@batches.finance_fee_categories.find(:all, :conditions =>["is_deleted = '#{false}' and is_master = 1 "])
+      @master_categories =@batches.finance_fee_categories.find(:all, :conditions =>["is_deleted = '#{false}' and is_master = 1"])
       #@master_categories = FinanceFeeCategory.find(:all,:conditions=> ["is_deleted = '#{false}' and is_master = 1 and batch_id=?",params[:id]])
       @student_categories = StudentCategory.active
 
@@ -3095,7 +3127,8 @@ class FinanceController < ApplicationController
     if params[:id].present?
       @fee_category=FinanceFeeCategory.find(params[:id])
       @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
-      @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and is_tmp=#{true}",:group=>"finance_fee_particular_category_id").uniq
+      @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and finance_fee_particular_category_id != 78 and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
+      @fee_particulars_transport = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=0 and finance_fee_particular_category_id = 78",:group=>"finance_fee_particular_category_id").uniq
       #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq
       @all_particulars = FinanceFeeParticularCategory.active
     end
@@ -3205,6 +3238,46 @@ class FinanceController < ApplicationController
     end
   end
   
+  def particular_details
+    unless params[:batches].nil?
+      @batches = Batch.find(:all, :conditions => "id IN (#{params[:batches]})")
+      @particular_category_id = params[:particular_category_id]
+      @fee_category_id = params[:fee_category_id]
+      #@fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id IN (#{params[:batches]})")
+      divs = params[:div_id]
+      obj = params[:obj]
+      render :update do |page|
+        page.replace_html divs ,:partial => "particular_details"
+        page << "j('##{divs}').show()"
+        page << "j('##{obj}').text('Hide Particular Details');"
+        page << "j('##{obj}').removeClass('particular_details');"
+        page << "j('##{obj}').addClass('hide_particular_details');"
+        page << 'j(".select2-combo").select2(); '
+      end
+    else
+      divs = params[:div_id]
+      render :update do |page|
+        page.replace_html divs ,:text => ""
+      end
+    end
+  end
+  
+  def particular_batch_details
+    unless params[:batch_id].nil?
+      @batch_id = params[:batch_id]
+      @fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id = #{params[:batch_id]}")
+      render :update do |page|
+        page.replace_html "batch_particular_info" ,:partial => "particular_batch_details"
+        page << 'j(".spinner-batch").remove(); '
+      end
+    else
+      render :update do |page|
+        page.replace_html "batch_particular_info",:text => ""
+        page << 'j(".spinner-batch").remove(); '
+      end
+    end
+  end
+  
   def get_particular_by_category_student
     if params[:id].present?
       select_options = ["Total Fees", "0-" + params[:id].to_s]
@@ -3232,7 +3305,7 @@ class FinanceController < ApplicationController
 
   def fee_collection_new
     @fines=Fine.active
-    @fee_categories=FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'concat(finance_fee_categories.name,finance_fee_categories.description)')
+    @fee_categories=FinanceFeeCategory.find(:all, :conditions => "finance_fee_categories.is_visible = 1", :joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'concat(finance_fee_categories.name,finance_fee_categories.description)')
     @finance_fee_collection = FinanceFeeCollection.new
   end
 
@@ -3252,56 +3325,25 @@ class FinanceController < ApplicationController
       include_employee = true
     end
     
-    finance_fee_category_id = params[:finance_fee_collection][:fee_category_id]
-    finance_fee_category = FinanceFeeCategory.find(finance_fee_category_id)
-    new_finance_fee_category = FinanceFeeCategory.new
-    new_finance_fee_category.name = params[:finance_fee_collection][:name]
-    new_finance_fee_category.is_master = finance_fee_category.is_master
-    new_finance_fee_category.is_visible = 0
-    new_finance_fee_category.save
-    
-    particular_ids = params[:particular_id]
-    particular_ids.each do |p_id|
-      finance_fee_particular = FinanceFeeParticular.find(:first, :conditions => "id = #{p_id.to_i}")
-      unless finance_fee_particular.nil?
-        unless finance_fee_particular.nil?
-          fee_particular_category_id = finance_fee_particular.finance_fee_particular_category_id
-          if finance_fee_particular.finance_fee_category_id.to_i == finance_fee_category_id.to_i and finance_fee_particular.is_tmp  and finance_fee_particular.opt 
-            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{fee_particular_category_id} and is_tmp = #{true} and opt = #{true}")
-          else
-            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{fee_particular_category_id} and finance_fee_category_id = #{finance_fee_category_id}")
-          end
-          finance_fee_particulars.each do |ffp|
-            p_name = ffp.name
-            particular_names = params[:particular_name]
-            particular_names.each do |pn|
-              p_names = pn.split("_")
-              p_name_id = p_names[0]
-              if p_name_id.to_i == ffp.id.to_i
-                p_name = pn.gsub(p_id.to_s + "_", "")
-              end
-            end
-            finance_fee_particular_new = FinanceFeeParticular.new
-            finance_fee_particular_new.name = p_name
-            finance_fee_particular_new.amount = ffp.amount
-            finance_fee_particular_new.finance_fee_category_id = new_finance_fee_category.id
-            finance_fee_particular_new.finance_fee_particular_category_id = ffp.finance_fee_particular_category_id
-            finance_fee_particular_new.receiver_id = ffp.receiver_id
-            finance_fee_particular_new.receiver_type = ffp.receiver_type
-            finance_fee_particular_new.batch_id = ffp.batch_id
-            finance_fee_particular_new.is_tmp = 0
-            finance_fee_particular_new.opt = 0
-            finance_fee_particular_new.save
-            if ffp.finance_fee_category_id.to_i == finance_fee_category_id.to_i and ffp.is_tmp and ffp.opt 
-              tmp_finance_fee_particular = FinanceFeeParticular.find(ffp.id.to_i)
-              tmp_finance_fee_particular.destroy
-            end
-          end
-        end
-      end
+    particular_ids = []
+    unless params[:particular_id].nil?
+      particular_ids = params[:particular_id]
     end
     
-    params[:finance_fee_collection][:fee_category_id] = new_finance_fee_category.id
+    transport_particular_id = []
+    unless params[:transport_particular_id].nil?
+      transport_particular_id = params[:transport_particular_id]
+    end
+    
+    particular_names = []
+    unless params[:particular_name].nil?
+      particular_names = params[:particular_name]
+    end
+    
+    transport_particular_name = []
+    unless params[:transport_particular_name].nil?
+      transport_particular_name = params[:transport_particular_name]
+    end
     
     @user = current_user
     @fee_categories=FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
@@ -3312,13 +3354,7 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      @collection = params[:finance_fee_collection]
-      @fee_collection = params[:fee_collection]
-      @sent_remainder = sent_remainder
-      @include_transport = include_transport
-      @include_employee = include_employee
-
-      #Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee))
+      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee, particular_ids, particular_names, transport_particular_id, transport_particular_name))
       
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')

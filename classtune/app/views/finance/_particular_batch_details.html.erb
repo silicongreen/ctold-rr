@@ -1,0 +1,86 @@
+<% unless @fee_particulars.blank? %>
+  <% fee_particulars = @fee_particulars.select{|fp| fp.batch_id == @batch_id.to_i} %>
+  <% if fee_particulars.blank? %>  
+  <div id="particular_<%= @batch_id %>" class="particular-div" style="font-family: verdana; width: 100%; font-size: 12px; padding: 10px; ">
+      No fee particular
+  </div>
+  <% else %>  
+  <div id="particular_<%= @batch_id %>" class="particular-div" style="font-family: verdana; width: 100%; font-size: 12px; ">
+      <% fee_particular_batches = fee_particulars.select{|fs| fs.receiver_type == 'Batch'} %>
+      <% fee_particular_students = fee_particulars.select{|fs| fs.receiver_type == 'Student'} %>
+      <% fee_particular_student_categories = fee_particulars.select{|fs| fs.receiver_type == 'StudentCategory'} %>
+      <h3 style="padding: 4px; border-bottom: 1px solid #ccc; font-size: 13px;">Batch Particular Amount</h3>
+      <% unless fee_particular_batches.blank? %>
+      <table class="table table-bordered">
+          <% fee_particular_batches.each do |fee_particular_batch| %>
+          <tr>
+              <td>Amount</td>
+              <td style="text-align: right;"><%= to_comma_seperated_precision_label fee_particular_batch.amount %></td>
+          </tr>
+          <% end %>
+      </table>
+      <% else %>
+      <p>No Batch wise particular Amount</p>
+      <% end %>
+
+      <hr style="border: 1px solid #ccc;"/>
+      <div style="clear: both; height: 10px;"></div>
+
+      <h3 style="padding: 4px; border-bottom: 1px solid #ccc; font-size: 13px;">Student Category Particular Amount</h3>
+      <% unless fee_particular_student_categories.blank? %>
+      <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Category Name</th>
+                  <th>Amount</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% fee_particular_student_categories.each do |fee_particular_student_category| %>
+              <% student_category = StudentCategory.find(:first, :conditions => "id = #{fee_particular_student_category.receiver_id}") %>  
+              <% unless student_category.nil? %>
+              <tr>
+                  <td><%= student_category.name %></td>
+                  <td style="text-align: right;"><%= to_comma_seperated_precision_label fee_particular_student_category.amount %></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+      </table>
+      <% else %>
+      <p>No Student Category wise particular Amount</p>
+      <% end %>
+
+      <hr style="border: 1px solid #ccc;"/>
+      <div style="clear: both; height: 10px;"></div>
+
+      <h3 style="padding: 4px; border-bottom: 1px solid #ccc; font-size: 13px;">Student Particular Amount</h3>
+      <% unless fee_particular_students.blank? %>
+      <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Student Info</th>
+                  <th>Amount</th>
+              </tr>
+          </thead>
+          <tbody>
+          <% fee_particular_students.each do |fee_particular_student| %>
+          <% student = Student.find(:first, :conditions => "id = #{fee_particular_student.receiver_id}") %>  
+            <% unless student.nil? %>    
+            <tr>
+                <td style="text-align: left;"><%= student.full_name %><br /><small><%= student.admission_no %></small></td>
+                <td style="text-align: right;"><%= to_comma_seperated_precision_label fee_particular_student.amount %></td>
+            </tr>
+            <% end %>
+          <% end %>
+      </table>
+      <% else %>
+      <p>No Student wise particular Amount</p>
+      <% end %>
+  </div>
+  <% end %>  
+<% else %>
+<div id="particular_<%= @batch_id %>" class="particular-div" style="font-family: verdana; width: 100%; font-size: 12px; padding: 10px; ">
+    No fee particular
+</div>
+<% end %>  

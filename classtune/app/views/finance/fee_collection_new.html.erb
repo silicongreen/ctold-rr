@@ -17,6 +17,12 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">
+
+<%= javascript_include_tag 'select2.full.min.js' %>
+
 
 <div id="content-header">
     <%= show_header_icon %>
@@ -122,13 +128,15 @@
             <%= render :partial=>'fee_collection_batchs' if params[:fee_collection][:category_ids].present? %>
           <% end %>
       </div>
-            <div class="extender"></div>
-            <div id="fee_category_particulars_div">
-              
-            </div>
-<div id="category_generated_table"></div>
+      
       <div class="extender"></div>
-      <div id="submit-button">
+      <div id="fee_category_particulars_div" style="display: none;"> 
+
+      </div>
+      
+      <div id="category_generated_table"></div>
+      <div class="extender"></div>
+      <div id="submit-button" style="text-align: center;">
           <%=  submit_tag "► #{t('create_text')}",:class=>'submit_button',:disable_with => "► #{t('create_text')}" %>
       </div>
     <% end %>
@@ -136,6 +144,45 @@
 </div>
 
 <script>
+  function resetSN()
+  {
+     var sn = 1;
+     j('.sl_no').each(function(){
+          j(this).html(sn);
+          sn += 1;
+     });
+     
+     sn = 1;
+     j('.particular_details').each(function(){
+          var particular_details_id = this.id.replace("particular_details_", "");
+          var a_particular_details_id = particular_details_id.split("_");
+          j(this).attr("id", "particular_details_" + sn + "_" + a_particular_details_id[1]);
+          sn += 1;
+     });
+     
+     sn = 1;
+     j('.particular_details_div').each(function(){
+          var particular_details_id = this.id.replace("particular_details_div_", "");
+          var a_particular_details_id = particular_details_id.split("_");
+          j(this).attr("id", "particular_details_div_" + sn + "_" + a_particular_details_id[1]);
+          sn += 1;
+     });
+  }
+  
+  function remove_other()
+  {
+    j(".hide_particular_details").each(function () {
+        j(this).text("Particular Details");
+        j(this).addClass("particular_details");
+        j(this).removeClass("hide_particular_details");
+        var a_id = this.id.replace("particular_details_", "").split("_");
+        var particular_category_id = a_id[1];
+        var div_id = "particular_details_div_" + a_id[0] + "_" + a_id[1];
+        j("#" + div_id).html("");
+        j("#" + div_id).hide();
+    });
+  }
+  
   function validate() {
       string = ""
       if ($$('#finance_fee_collection_fee_category_id')[0].value.length == 0)
@@ -173,16 +220,24 @@
       
       var particulars = 0;
       j("#fee_category_particulars_div").html("");
-      j(".particular_box").each(function(){
-         if ( j(this).prop("checked") )
+      j(".fee_category_tr_row").each(function(){
+         if ( this.value.length > 0 )
          {
             var p_id = this.value;
-            var p_name = j("#particular_name_" + p_id).val();
-            if ( j.trim(p_name).length > 0 )
+            var p_name = j(this).parent('td').next('td').children('span.particularname').children("input").val();
+            if ( j.trim(p_id).length > 0 )
             {
                 particulars++;
-                var input_particular_id = '<input type="hidden" name="particular_id[]" name="particular_id_new" value="' + p_id + '" />';
-                input_particular_id += '<input type="hidden" name="particular_name[]" name="particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                if ( j(this).parent('td').next('td').children('span.particularname').children("input").data('transport') == "1" )
+                {
+                  var input_particular_id = '<input type="hidden" name="transport_particular_id[]" name="transport_particular_id_new" value="' + p_id + '" />';
+                input_particular_id += '<input type="hidden" name="transport_particular_name[]" name="transport_particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                }
+                else
+                {
+                  var input_particular_id = '<input type="hidden" name="particular_id[]" name="particular_id_new" value="' + p_id + '" />';
+                  input_particular_id += '<input type="hidden" name="particular_name[]" name="particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                }
                 j("#fee_category_particulars_div").append(input_particular_id);
             }
          }
@@ -192,6 +247,7 @@
       {
           string = string + 'No particular selected for this fee collection' + "\n"
       }
+      //return false;
       if (string.length == 0)
       {
           return true;
@@ -215,20 +271,20 @@
   }
   
   function selected_batches()
-      {
-          var batches = "";
-          j(".category_select").each(function () {
-              if (j(this).prop('checked'))
-              {
-                  batches += this.value + ",";
-              }
-          });
-          if (j.trim(batches).length > 0)
+  {
+      var batches = "";
+      j(".category_select").each(function () {
+          if (j(this).prop('checked'))
           {
-              batches = batches.substr(0, batches.length - 1);
+              batches += this.value + ",";
           }
-          return batches;
+      });
+      if (j.trim(batches).length > 0)
+      {
+          batches = batches.substr(0, batches.length - 1);
       }
+      return batches;
+  }
 
   j(document).ready(function () {
       j(document).on("click", "#include_transport", function () {
@@ -242,6 +298,224 @@
               j("#include_employee").removeAttr("checked");
           }
       });
+      
+      j(document).on("keyup", ".batch_search", function () {
+          var srch_val = this.value;
+          j('.batch_name_srch').each(function(){
+              var batchid = this.id.replace("batch_name_srch_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.batches_box').each(function(){
+                      if ( this.value == batchid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.batches_box').each(function(){
+                      if ( this.value == batchid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
+      
+      j(document).off('click', '.assignParticularButton').on('click', '.assignParticularButton', function () {
+          var particularDataRow = document.getElementById("particularDataRow-tmp")
+          var clonetr = particularDataRow.cloneNode(true);
+          j(clonetr).removeAttr("id");
+          j(clonetr).removeClass("particularDataRow-tmp");
+          j(clonetr).addClass("particularDataRow");
+          j('.particularDataRow').last().after(clonetr.outerHTML);
+          if ( j("#zeroRow").length == 1 )
+          {
+            j("#zeroRow").remove();
+          }
+          resetSN();
+      });
+      
+      j(document).off('click', '#addTransport').on('click', '#addTransport', function () {
+          var particularDataRow = document.getElementById("particularDataTransportRow-tmp")
+          var clonetr = particularDataRow.cloneNode(true);
+          j(clonetr).removeAttr("id");
+          j(clonetr).removeClass("particularDataTransportRow-tmp");
+          j(clonetr).addClass("particularDataRow");
+          j('.particularDataRow').last().after(clonetr.outerHTML);
+          if ( j("#zeroRow").length == 1 )
+          {
+            j("#zeroRow").remove();
+          }
+          resetSN();
+      });
+      
+      j(document).off('click', '.particular-box').on('click', '.particular-box', function () {
+          if (j(this).hasClass('fa-check-square-o'))
+          {
+              j(this).removeClass('fa-check-square-o');
+              j(this).addClass('fa-square-o');
+              j(this).parent('td').parent('tr').children('td').each(function(){
+                  j(this).css('background', "#ccc");
+              });
+          }
+          else
+          {
+              j(this).addClass('fa-check-square-o');
+              j(this).removeClass('fa-square-o');
+              var val = new Number(j(this).parent('td').children('h3.sl_no').html());
+              var evenorodd = (val % 2 == 0);
+              j(this).parent('td').parent('tr').children('td').each(function(){
+                  if ( evenorodd )
+                  {
+                    j(this).css('background', "#FFFFFF");
+                  }
+                  else
+                  {
+                    j(this).css('background', "#F9F9F9");
+                  }
+              });
+          }
+      });
+
+      j(document).on('click', '.deleteRowButton', function () {
+          j(this).parents("tr").remove();
+          resetSN();
+          var tableRowExist = j('#particularTableRows tr').length;
+          if (tableRowExist == 0)
+          {
+              j('#particularTableRows').html('<tr id="zeroRow"><td colspan="4"><span class="text-center">No Particulars</span></td></tr>');
+          }
+      });
+      
+      j(document).on('change', ".fee_category_tr_row", function (e) {
+          var selected = j(this).find("option:selected").text();
+          var val = this.value;
+          var found = false;
+          var len = 0;
+          var obj = this;
+          j(".fee_category_tr_row").each(function(){
+            if ( obj != this )
+            {
+                if (this.value == val)
+                {
+                    found = true;
+                    len++;
+                }
+            }
+          });
+          
+          var choice = true;
+          if ( found )
+          {
+            choice = confirm("You already declare this particular for the fee collection, Please make sure\n\n if you accidently select this particular or you intentionally select this particular to make duplicate particular for this fee collection? ");
+          }
+          if (choice)
+          {
+            if ( val.length == 0 )
+            {
+              j(this).parent('td').next('td').children('span.particularname').children("input").val("");
+              j(this).parent('td').next('td').children('div').hide();
+            }
+            else
+            {
+              if (found)
+              {
+                  j(this).parent('td').next('td').children('span.particularname').children("input").val(selected + " (" + len + ")");
+              }
+              else
+              {
+                  j(this).parent('td').next('td').children('span.particularname').children("input").val(selected);
+              }
+              j(this).parent('td').next('td').children('div').show();
+              var sn = j(this).parent('td').parent('tr').children('td:first-child').children('label.sl_no').html();
+              j(this).parent('td').next('td').children('div').children('a').attr('id', 'particular_details_' + sn + "_" + val);
+              j(this).parent('td').next('td').children('div').children('div').attr('id', 'particular_details_div_' + sn + "_" + val);
+            }
+            if ( found )
+            {
+                j(this).parent('td').parent('tr').children('td').each(function(){
+                    j(this).css('background', "#f7f2f2");
+                });
+            }
+          }
+          else
+          {
+            this.value = "";
+          }
+      });
+      
+      j(document).on('change', ".particular-batch-combo", function (e) {
+          j(this).after("<i class='fa fa-spinner fa-spin spinner-batch'></i>");
+          var val = this.value;
+          new Ajax.Request('/finance/particular_batch_details', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'particular_category_id='+j("#particular_category_id_batch").val()+'&batch_id='+val+'&fee_category_id='+j("#fee_category_id_batch").val()
+                  }
+          )
+      });
+      
+      j(document).on('click', ".particular_details", function (e) {
+          remove_other();
+          j(this).html("Particular Details " + "<i class='fa fa-spinner fa-spin'></i>");
+          var obj = this.id;
+          var a_id = this.id.replace("particular_details_", "").split("_");
+          var particular_category_id = a_id[1];
+          var div_id = "particular_details_div_" + a_id[0] + "_" + a_id[1];
+          var batches = "";
+          j('.batches_selected').each(function(){
+              if ( j(this).prop('checked') )
+              {
+                 batches += this.value + ",";
+              }
+          });
+          batches = batches.substr(0, batches.length - 1);
+          if ( j(this).parent('div').parent('td').children('span').children('input').data('transport') == "1" )
+          {
+            var fee_category_id = 0;
+          }
+          else
+          {
+            var fee_category_id = j("#finance_fee_collection_fee_category_id").val();
+          }
+          new Ajax.Request('/finance/particular_details', 
+                  {
+                    asynchronous:true, 
+                    evalScripts:true, 
+                    parameters:'particular_category_id='+particular_category_id+'&batches='+batches+'&fee_category_id='+fee_category_id+'&div_id='+div_id+'&obj='+obj
+                  }
+          )
+      });
+      
+      j(document).on('click', ".hide_particular_details", function (e) {
+          j(this).text("Particular Details");
+          j(this).addClass("particular_details");
+          j(this).removeClass("hide_particular_details");
+          var a_id = this.id.replace("particular_details_", "").split("_");
+          var particular_category_id = a_id[1];
+          var div_id = "particular_details_div_" + a_id[0] + "_" + a_id[1];
+          j("#" + div_id).html("");
+          j("#" + div_id).hide();
+      });
 
   });
   
@@ -249,6 +523,9 @@
 </script>
 
 <style>
+    .submit_button{
+      margin-left: 0;
+    }
     .label-field-pair .label-container {
         width: 39% !important;
     }
@@ -282,5 +559,8 @@
     }
     #category_generated_table{
         margin-top: 50px;
+    }
+    .select2-selection{
+      text-align: left;
     }
 </style>

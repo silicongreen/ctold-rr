@@ -82,7 +82,7 @@
               coverted_100 = coverted_100.round()
               total_mark_result = total_mark_result+coverted_100
               gp_point =0
-              if coverted_100 != 0
+              if full_100 > 0
                 grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
                 if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                   gp_point = grade.credit_points

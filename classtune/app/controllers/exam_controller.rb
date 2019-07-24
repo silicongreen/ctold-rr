@@ -1429,7 +1429,14 @@ class ExamController < ApplicationController
       @batch = @exam_group.batch
       @students = Student.find_all_by_id(student_list,:conditions=>["is_deleted = ? and is_active = ?",false,true])
       if @students.blank?
-        @students = ArchivedStudent.find_all_by_former_id(student_list)
+        @students_archive = ArchivedStudent.find_all_by_former_id(student_list)
+        unless @students_archive.blank?
+          @students_archive.each do |std|
+            std.id = std.former_id
+            @students << std
+          end
+        end
+        
       end
       
     else

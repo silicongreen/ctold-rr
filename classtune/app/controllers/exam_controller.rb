@@ -1347,6 +1347,16 @@ class ExamController < ApplicationController
 
       @batch = @exam_group.batch
       @students = Student.find_all_by_id(student_list, :order=>"class_roll_no ASC",:conditions=>["is_deleted = ? and is_active = ?",false,true])
+      if @students.blank?
+        @students_archive = ArchivedStudent.find_all_by_former_id(student_list)
+        unless @students_archive.blank?
+          @students_archive.each do |std|
+            std.id = std.former_id
+            @students << std
+          end
+        end
+        
+      end
     else
       @batch = @exam_group.batch
       @students=Student.find_all_by_batch_id(@batch.id, :order=>"class_roll_no ASC",:conditions=>["is_deleted = ? and is_active = ?",false,true])

@@ -4754,7 +4754,7 @@ class ExamController < ApplicationController
           :left=> 10,
           :right => 10},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-          :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+          :footer => {:html => { :template=> 'layouts/pdf_footer_baghc.html'}}
     elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
       if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7
         render :pdf => template,

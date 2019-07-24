@@ -10,9 +10,15 @@
          @subjects.each do |subjects|
            if subjects['elective_group_id'].to_i!=0
              @all_student_subject.each do |sub_std|
-               if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
-                 student_subject << subjects.id
-               end 
+               unless student.former_id.blank?
+                if subjects.id.to_i == sub_std.subject_id and student.former_id.to_i == sub_std.student_id
+                  student_subject << subjects.id
+                end 
+               else
+                if subjects.id.to_i == sub_std.subject_id and student.id.to_i == sub_std.student_id
+                  student_subject << subjects.id
+                end 
+               end
              end 
            else
              student_subject << subjects.id 

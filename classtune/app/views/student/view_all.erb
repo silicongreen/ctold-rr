@@ -1,21 +1,21 @@
 <%-# Champs21
-   #Copyright 2010 teamCreative Private Limited
-   #
-   #This product includes software developed at
-   #Project Champs21 - http://www.champs21.com/
-   #
-   #Licensed under the Apache License, Version 2.0 (the "License");
-   #you may not use this file except in compliance with the License.
-   #You may obtain a copy of the License at
-   #
-   #  http://www.apache.org/licenses/LICENSE-2.0
-   #
-   #Unless required by applicable law or agreed to in writing,
-   #software distributed under the License is distributed on an
-   #"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-   #KIND, either express or implied.  See the License for the
-   #specific language governing permissions and limitations
-   #under the License. -%>
+#Copyright 2010 teamCreative Private Limited
+#
+#This product includes software developed at
+#Project Champs21 - http://www.champs21.com/
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -43,343 +43,438 @@
 
 <div class="header-wrapper">
 
-  <div class="header-title">
-    <div class="header-icon">
-      <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+    <div class="header-title">
+        <div class="header-icon">
+            <%= image_tag '/images/icons/profile-icon.png', :html => {:alt => 'Student Profile'} %>
+        </div>
+        <div class="header-title-text-wrapper">
+            <div class="header-title-main-text f2">
+                <%= t('student_details') %>
+            </div>
+            <div class="clearfix"></div>
+            <div class="header-title-sub-text">
+                <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
+            </div>
+        </div>
     </div>
-    <div class="header-title-text-wrapper">
-      <div class="header-title-main-text f2">
-        <%= t('student_details') %>
-      </div>
-      <div class="clearfix"></div>
-      <div class="header-title-sub-text">
-        <%= I18n.l(@local_tzone_time.to_date, :format=>'%d/%m/%Y') %>
-      </div>
+
+    <div class="clearfix"></div>
+
+    <div class="tabbed-header-wrapper">
+        <ul class="header-tabs">
+            <li>
+                <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
+            </li>
+            <li class="active">
+                <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to 'Category Wise Students', {:controller => 'student', :action => 'category_student'}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
+            </li>
+            <li>
+                <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
+            </li>
+
+        </ul>
     </div>
-  </div>
-
-  <div class="clearfix"></div>
-
-  <div class="tabbed-header-wrapper">
-    <ul class="header-tabs">
-      <li>
-        <%= link_to "Student Search", {:controller => 'student', :action => 'index'}, {:class => 'f2'} %>
-      </li>
-      <li class="active">
-        <%= link_to t('view_all'), {:controller => 'student', :action => 'view_all'}, {:class => 'f2'} %>
-      </li>
-      <li>
-        <%= link_to 'Category Wise Students', {:controller => 'student', :action => 'category_student'}, {:class => 'f2'} %>
-      </li>
-      <li>
-        <%= link_to "Class Section", {:controller => 'student', :action => 'class_section'}, {:class => 'f2'} %>
-      </li>
-      <li>
-        <%= link_to "Graduation Lists", {:controller => 'student', :action => 'graduation_lists'}, {:class => 'f2'} %>
-      </li>
-      <li>
-        <%= link_to t('advanced'), {:controller => 'student', :action => 'advanced_search'}, {:class => 'f2'} %>
-      </li>
-
-    </ul>
-  </div>
 
 </div>
 <div id="page-yield" style="width:130%; margin-left:-18%; ">
-  <% form_for(@student, :url => {:action=> 'download_student_list'}, :html=> {:id=>'new_student'}) do |s| %>
-    <% unless flash[:notice].nil? %>
-      <p class="flash-msg"> <%= flash[:notice] %> </p>
+    <% form_for(@student, :url => {:action=> 'download_student_list'}, :html=> {:id=>'new_student'}) do |s| %>
+      <% unless flash[:notice].nil? %>
+        <p class="flash-msg"> <%= flash[:notice] %> </p>
+      <% end %>
+
+      <% if Batch.active.find(:all, :group => "name").length > 1  %>
+        <% batchlist = [] %>
+
+        <div class="form-group col-sm-6">
+            <label for="student_grade"><%= t('shift_label') %></label>
+            <select id="batch_name" name="batch_name" onchange="filterbatch(this)">
+                <option value="" selected="selected">Select a Shift</option>
+                <% Batch.active.find(:all, :group => "name").each do |batch| %>
+                  <% batchsplit = batch.name.split(" ") %>
+                  <% unless batchlist.include?(batchsplit[0]) %>
+                    <% batchlist << batchsplit[0]  %>
+                    <option value="<%= batchsplit[0] %>"><%= batchsplit[0] %></option>
+                  <% end %>
+                <% end %>
+            </select>
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="student_grade"><%= "Version" %></label>
+            <select id="version_name" name="version_name" onchange="filterversion(this)">
+                <% version_array = [] %>
+                <option value="" selected="selected">Select a Version</option>
+                <% Batch.active.find(:all, :group => "name").each do |batch| %>
+
+                  <%
+                  batchsplit = batch.name.split(" ")
+                  version = ""
+                  unless batchsplit[1].blank?
+                    version = batchsplit[1]
+                    end
+                  unless batchsplit[2].blank?
+                    version = version+" "+batchsplit[2]
+                    end
+
+                %>
+                  <% if !version_array.include?(version) && !version.blank? %>
+                    <% version_array << version %>
+                    <option value="<%= version %>"><%= version %></option>
+                  <% end %>
+                <% end %>
+            </select>
+        </div>
+      <% end %>
+
+      <div class="form-group col-sm-6">
+          <label for="student_grade"><%= "Class" %></label>
+          <select id="class_name" name="class_name" onchange="filterclass(this)">
+              <option value="" selected="selected">Select a Class</option>
+              <% Course.active.find(:all, :group => "course_name").each do |course| %>
+                <option value="<%= course.course_name %>"><%= course.course_name %></option>
+              <% end %>
+          </select>
+      </div>
+      <input type="hidden" name="pdf" id="pdf" value="0" />
+
+      <div class="form-group col-sm-6">
+          <label for="student_grade"><%= "Session" %></label>
+          <select id="session_name" name="session_name" onchange="filtersession(this)">
+              <option value="" selected="selected">Select a Session</option>
+              <% Course.active.find(:all, :group => "session").each do |course| %>
+                <% unless course.session.blank?  %>
+                  <option value="<%= course.session %>"><%= course.session %></option>
+                <% end %>
+              <% end %>
+          </select>
+      </div>
+
+      <div class="form-group col-sm-6">
+          <label for="student_grade"><%= "Group" %></label>
+          <select id="group_name" name="group_name" onchange="filtergroup(this)">
+              <option value="" selected="selected">Select a Group</option>
+              <% Course.active.find(:all, :group => "`group`").each do |course| %>
+                <% unless course.group.blank?  %>
+                  <option value="<%= course.group %>"><%= course.group %></option>
+                <% end %>
+              <% end %>
+          </select>
+      </div>
+      <div class="form-group col-sm-6">
+          <label for="student_grade"><%= "Section" %></label>
+          <select id="section_name" name="section_name" class="js-example-basic-single" onchange="filtersection(this)">
+              <option value="" selected="selected">Select a Section</option>
+              <% Course.active.find(:all, :group => "`section_name`").each do |course| %>
+                <% unless course.section_name.blank?  %>
+                  <option value="<%= course.section_name %>"><%= course.section_name %></option>
+                <% end %>
+              <% end %>
+          </select>
+      </div>
+      <div class="form-group col-sm-6">
+          <label for="student_grade"><%= "Category" %></label>
+          <select id="category_name" name="category_name" onchange="filtercategory(this)">
+              <option value="" selected="selected">Select a Category</option>
+              <% StudentCategory.active.find(:all).each do |cat| %>
+                <% unless cat.name.blank?  %>
+                  <option value="<%= cat.name %>"><%= cat.name %></option>
+                <% end %>
+              <% end %>
+          </select>
+      </div>
+      <div class="form-group col-sm-6">
+          <label for="student_religion"><%= t('religion') %></label>
+          <%= select "student_religion", :religion, ["Islam", "Hindu", "Christian", "Buddhist", "Other"],{:prompt=> "Select Religion"},:onchange => "filterreligion(this)" %>
+      </div>
+      <div class="form-group col-sm-6">
+          <label for="student_date_of_admission">Date of Admission</label>
+          <%= calendar_date_select_tag 'admission_date', I18n.l(Date.today-1.years,:format=>"%d %b %Y") , :year_range => 72.years.ago..0.years.ago,:popup=>"force", :class=>"form-control",:onchange => "filteradmission(this)" %>
+      </div>
+
+
+
+
+
+
+
+      <div id="students" style="float:left; width:100%;">
+          <div id="image_loading" style="display:none;"><%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2" ) %></div>
+          <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
+              <thead>
+              <th data-orderable="false"><%= "Photo" %></th>
+              <th data-orderable="false"><%= "ID" %></th>
+              <th data-orderable="false"><%= "Roll" %></th>
+              <th data-orderable="false"><%= "Name" %></th>
+              <th data-orderable="false"><%= "Blood Group" %></th>
+              <th data-orderable="false"><%= "Admission Date" %></th>
+              <th data-orderable="false"><%= "Category" %></th>
+              <th data-orderable="false"><%= "Class" %></th>
+              <th data-orderable="false"><%= "Section" %></th>
+              <th data-orderable="false"><%= "Shift" %></th>
+              <th data-orderable="false"><%= "Session" %></th>
+              <th data-orderable="false"><%= "Version" %></th>
+              <th data-orderable="false"><%= "Group" %></th>
+              <th data-orderable="false"><%= "Password" %></th>
+              <th data-orderable="false"><%= "Mobile" %></th>
+              <th data-orderable="false"><%= "Action" %></th>
+              </thead>
+          </table>
+      </div>
+      <div id="students" style="float:left; width:100%;">
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#pdf').val('0');
+                   j('#new_student').attr('action', 'download_student_list');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Download">
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#pdf').val('1');
+                   j('#new_student').attr('action', 'download_student_list');
+                   j('#new_student').attr('target', '_blank');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="PDF Download">
+
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#new_student').attr('action', 'download_student_security');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Security Card">
+
+
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#new_student').attr('action', 'download_student_family_list');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Download Student Family">
+
+          <input style="margin-left: 10px;"
+                 name="commit" onclick="j('#new_student').attr('action', 'download_student_leveling_card');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Student Labeling Card">
+
+      </div>
     <% end %>
-
-    <% if Batch.active.find(:all, :group => "name").length > 1  %>
-      <% batchlist = [] %>
-
-      <div class="form-group col-sm-6">
-        <label for="student_grade"><%= t('shift_label') %></label>
-        <select id="batch_name" name="batch_name" onchange="filterbatch(this)">
-          <option value="" selected="selected">Select a Shift</option>
-          <% Batch.active.find(:all, :group => "name").each do |batch| %>
-            <% batchsplit = batch.name.split(" ") %>
-            <% unless batchlist.include?(batchsplit[0]) %>
-              <% batchlist << batchsplit[0]  %>
-              <option value="<%= batchsplit[0] %>"><%= batchsplit[0] %></option>
-            <% end %>
-          <% end %>
-        </select>
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="student_grade"><%= "Version" %></label>
-        <select id="version_name" name="version_name" onchange="filterversion(this)">
-          <% version_array = [] %>
-          <option value="" selected="selected">Select a Version</option>
-          <% Batch.active.find(:all, :group => "name").each do |batch| %>
-
-            <%
-              batchsplit = batch.name.split(" ")
-              version = ""
-              unless batchsplit[1].blank?
-                version = batchsplit[1]
-              end
-              unless batchsplit[2].blank?
-                version = version+" "+batchsplit[2]
-              end
-
-            %>
-            <% if !version_array.include?(version) && !version.blank? %>
-              <% version_array << version %>
-              <option value="<%= version %>"><%= version %></option>
-            <% end %>
-          <% end %>
-        </select>
-      </div>
-    <% end %>
-
-    <div class="form-group col-sm-6">
-      <label for="student_grade"><%= "Class" %></label>
-      <select id="class_name" name="class_name" onchange="filterclass(this)">
-        <option value="" selected="selected">Select a Class</option>
-        <% Course.active.find(:all, :group => "course_name").each do |course| %>
-          <option value="<%= course.course_name %>"><%= course.course_name %></option>
-        <% end %>
-      </select>
-    </div>
-    <input type="hidden" name="pdf" id="pdf" value="0" />
-
-    <div class="form-group col-sm-6">
-      <label for="student_grade"><%= "Session" %></label>
-      <select id="session_name" name="session_name" onchange="filtersession(this)">
-        <option value="" selected="selected">Select a Session</option>
-        <% Course.active.find(:all, :group => "session").each do |course| %>
-          <% unless course.session.blank?  %>
-            <option value="<%= course.session %>"><%= course.session %></option>
-          <% end %>
-        <% end %>
-      </select>
-    </div>
-
-    <div class="form-group col-sm-6">
-      <label for="student_grade"><%= "Group" %></label>
-      <select id="group_name" name="group_name" onchange="filtergroup(this)">
-        <option value="" selected="selected">Select a Group</option>
-        <% Course.active.find(:all, :group => "`group`").each do |course| %>
-          <% unless course.group.blank?  %>
-            <option value="<%= course.group %>"><%= course.group %></option>
-          <% end %>
-        <% end %>
-      </select>
-    </div>
-
-    <div id="studentSection">
-      <div class="form-group col-sm-6">
-        <label for="student_grade"><%= "Section" %></label>
-        <select id="section_name" name="section_name" class="js-example-basic-single" onchange="filtersection(this)">
-          <option value="" selected="selected">Select a Section</option>
-          <% Course.active.find(:all, :group => "`section_name`").each do |course| %>
-            <% unless course.section_name.blank?  %>
-              <option value="<%= course.section_name %>"><%= course.section_name %></option>
-            <% end %>
-          <% end %>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group col-sm-6">
-      <label for="student_grade"><%= "Category" %></label>
-      <select id="category_name" name="category_name" onchange="filtercategory(this)">
-        <option value="" selected="selected">Select a Category</option>
-        <% StudentCategory.active.find(:all).each do |cat| %>
-          <% unless cat.name.blank?  %>
-            <option value="<%= cat.name %>"><%= cat.name %></option>
-          <% end %>
-        <% end %>
-      </select>
-    </div>
-
-
-
-
-    <div id="students" style="float:left; width:100%;">
-      <div id="image_loading" style="display:none;"><%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loading_2" ) %></div>
-      <table class="mdl-data-table" id="hr_report" cellspacing="0" width="100%" style="float:left; clear:both; margin:10px 0px;">
-        <thead>
-        <th data-orderable="false"><%= "Photo" %></th>
-        <th data-orderable="false"><%= "ID" %></th>
-        
-        <th data-orderable="false"><%= "Roll" %></th>
-        <th data-orderable="false"><%= "Name" %></th>
-        <th data-orderable="false"><%= "Blood Group" %></th>
-        <th data-orderable="false"><%= "Category" %></th>
-        <th data-orderable="false"><%= "Class" %></th>
-        <th data-orderable="false"><%= "Section" %></th>
-        <th data-orderable="false"><%= "Shift" %></th>
-        
-        <th data-orderable="false"><%= "Session" %></th>
-        <th data-orderable="false"><%= "Version" %></th>
-        <th data-orderable="false"><%= "Group" %></th>
-        <th data-orderable="false"><%= "Password" %></th>
-        <th data-orderable="false"><%= "Mobile" %></th>
-        <th data-orderable="false"><%= "Action" %></th>
-        </thead>
-      </table>
-    </div>
-    <div id="students" style="float:left; width:100%;">
-      <input style="margin-left: 10px;"
-             name="commit" onclick="j('#pdf').val('0');j('#new_student').attr('action','download_student_list');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); } result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="Download">
-      <input style="margin-left: 10px;"
-             name="commit" onclick="j('#pdf').val('1');j('#new_student').attr('action','download_student_list');j('#new_student').attr('target','_blank');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); } result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="PDF Download">
-      
-      <input style="margin-left: 10px;"
-             name="commit" onclick="j('#new_student').attr('action','download_student_security'); if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); } result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="Security Card">
-     
-      
-      <input style="margin-left: 10px;"
-             name="commit" onclick="j('#new_student').attr('action','download_student_family_list');if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); } result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="Download Student Family">
-      
-      <input style="margin-left: 10px;"
-             name="commit" onclick="j('#new_student').attr('action','download_student_leveling_card'); if (window.hiddenCommit) { window.hiddenCommit.setAttribute('value', this.value); }else { hiddenCommit = document.createElement('input');hiddenCommit.type = 'hidden';hiddenCommit.value = this.value;hiddenCommit.name = this.name;this.form.appendChild(hiddenCommit); } result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());if (result == false) { this.value = this.getAttribute('originalValue');this.disabled = false; }return result;" type="submit"  value="Student Labeling Card">
-
-    </div>
-  <% end %>
 
 </div>
 <script>
-    var oDataTable;
-    var jq = jQuery.noConflict();
-    function send_sms(student_id)
-    {
-        var image_loading = jq('#image_loading').html()
-        jq('#student_'+student_id).html(image_loading);
-        jq.get( "/student/send_sms_username_password/"+student_id, function( data ) {
-            jq('#student_'+student_id).html("<font color='green'>Message Send</font>");
-        });
-    }
-    jq(document).ready(function() {
-        jq('.js-example-basic-single').select2();
-        var value = jq("#class_name").val();
-        if ( value != null )
-        {
-            new Ajax.Request('/student/get_section_by_class/'+value,
-                {
-                    asynchronous:true,
-                    evalScripts:true
-                }
-            );
-        }
-        oDataTable = jq('#hr_report').DataTable( {
-            processing: true,
-            serverSide: true,
-            "info": false,
-            "pageLength": 100,
-            ajax: {
-                url: "/student/get_student_ajax",
-                type: 'POST'
-            },
-            columns: [
-                { "data": "p_image" },
-                { "data": "admission_no" },
-                { "data": "roll_no" },
-                { "data": "student_name" },
-                { "data": "blood_group" },
-                { "data": "category" },
-                { "data": "class" },
-                { "data": "section" },
-                { "data": "batch" },
-                { "data": "session" },
-                { "data": "version" },
-                { "data": "group" },
-                { "data": "password" },
-                { "data": "sms_number" },
-                { "data": "send_sms" }
+  var oDataTable;
+  var jq = jQuery.noConflict();
+  function send_sms(student_id)
+  {
+      var image_loading = jq('#image_loading').html()
+      jq('#student_' + student_id).html(image_loading);
+      jq.get("/student/send_sms_username_password/" + student_id, function (data) {
+          jq('#student_' + student_id).html("<font color='green'>Message Send</font>");
+      });
+  }
+  jq(document).ready(function () {
+      jq('.js-example-basic-single').select2();
+      var value = jq("#class_name").val();
+      if (value != null)
+      {
+          new Ajax.Request('/student/get_section_by_class/' + value,
+                  {
+                      asynchronous: true,
+                      evalScripts: true
+                  }
+          );
+      }
+      oDataTable = jq('#hr_report').DataTable({
+          processing: true,
+          serverSide: true,
+          "info": false,
+          "pageLength": 100,
+          ajax: {
+              url: "/student/get_student_ajax",
+              type: 'POST'
+          },
+          columns: [
+              {"data": "p_image"},
+              {"data": "admission_no"},
+              {"data": "roll_no"},
+              {"data": "student_name"},
+              {"data": "blood_group"},
+              {"data": "admission_date"},
+              {"data": "category"},
+              {"data": "class"},
+              {"data": "section"},
+              {"data": "batch"},
+              {"data": "session"},
+              {"data": "version"},
+              {"data": "group"},
+              {"data": "password"},
+              {"data": "sms_number"},
+              {"data": "send_sms"}
 
-            ]
-        });
+          ]
+      });
 
-        var id = '<%=params[:id] %>';
-        var id2 = '<%=params[:id2] %>';
-        if(id == 'cat'){
-            if(id2!=''){
-                jq("#category_name").val(id2)
-                oDataTable.column( 8 ).search( id2 ).draw();
-            }
-        }
+      var id = '<%=params[:id] %>';
+      var id2 = '<%=params[:id2] %>';
+      if (id == 'cat') {
+          if (id2 != '') {
+              jq("#category_name").val(id2)
+              oDataTable.column(8).search(id2).draw();
+          }
+      }
 
-    });
+  });
 
-    function filterbatch(data)
-    {
-        var value = jq("#batch_name").val();
-        if(jq("#version_name").val())
-        {
-            value = value+" "+jq("#version_name").val()
-        }
-        oDataTable.column( 3 ).search( value ).draw();
+  function filterbatch(data)
+  {
+      var value = jq("#batch_name").val();
+      if (jq("#version_name").val())
+      {
+          value = value + " " + jq("#version_name").val()
+      }
+      oDataTable.column(3).search(value).draw();
 
-    }
-    function filterversion(data)
-    {
-        var value = jq("#version_name").val();
-        if(jq("#batch_name").val())
-        {
-            value = jq("#batch_name").val()+" "+value
-        }
-        oDataTable.column( 3 ).search( value ).draw();
+  }
+  function filterversion(data)
+  {
+      var value = jq("#version_name").val();
+      if (jq("#batch_name").val())
+      {
+          value = jq("#batch_name").val() + " " + value
+      }
+      oDataTable.column(3).search(value).draw();
 
-    }
-    function filterclass(data)
-    {
-        var value = jq("#class_name").val();
-        if ( value != null )
-        {
-            new Ajax.Request('/student/get_section_by_class/'+value,
-                {
-                    asynchronous:true,
-                    evalScripts:true
-                }
-            );
-        }
-        oDataTable.column( 4 ).search( value ).draw();
+  }
+  function filterclass(data)
+  {
+      var value = jq("#class_name").val();
+      if (value != null)
+      {
+          new Ajax.Request('/student/get_section_by_class/' + value,
+                  {
+                      asynchronous: true,
+                      evalScripts: true
+                  }
+          );
+      }
+      oDataTable.column(4).search(value).draw();
 
-    }
-    function filtersession(data)
-    {
-        var value = jq("#session_name").val();
-        oDataTable.column( 6 ).search( value ).draw();
+  }
+  function filtersession(data)
+  {
+      var value = jq("#session_name").val();
+      oDataTable.column(6).search(value).draw();
 
-    }
-    function filtergroup(data)
-    {
-        var value = jq("#group_name").val();
-        oDataTable.column( 7 ).search( value ).draw();
+  }
+  function filtergroup(data)
+  {
+      var value = jq("#group_name").val();
+      oDataTable.column(7).search(value).draw();
 
-    }
-    function filtersection(data)
-    {
-        var value = jq("#section_name").val();
-        oDataTable.column( 5 ).search( value ).draw();
+  }
+  function filtersection(data)
+  {
+      var value = jq("#section_name").val();
+      oDataTable.column(5).search(value).draw();
 
-    }
-    function filtercategory(data)
-    {
-        var value = jq("#category_name").val();
-        oDataTable.column( 8 ).search( value ).draw();
+  }
+  function filtercategory(data)
+  {
+      var value = jq("#category_name").val();
+      oDataTable.column(8).search(value).draw();
 
-    }
+  }
+  function filterreligion(data)
+  {
+    var value = jq("#student_religion_religion").val();
+    oDataTable.column(9).search(value).draw();
+  }
+  function filteradmission(data)
+  {
+    var value = jq("#admission_date").val();
+    oDataTable.column(10).search(value).draw();
+  }
 </script>
 
 <style>
-  .select2-container .select2-selection--single
-  {
-    height:32px;
-  }
-  .mdl-data-table td, .mdl-data-table th
-  {
-    text-align:left;
-    white-space: normal;
-    padding:10px 3px 10px 7px;
-    font-size: 12px;
-  }
-  table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before
-  {
-    content: initial !important;
-  }
+    .select2-container .select2-selection--single
+    {
+        height:32px;
+    }
+    .mdl-data-table td, .mdl-data-table th
+    {
+        text-align:left;
+        white-space: normal;
+        padding:10px 3px 10px 7px;
+        font-size: 12px;
+    }
+    table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before
+    {
+        content: initial !important;
+    }
 </style>

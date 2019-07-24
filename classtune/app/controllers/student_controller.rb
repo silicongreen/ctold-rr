@@ -513,6 +513,10 @@ class StudentController < ApplicationController
                   condition = condition+" and courses.group = '"+v1+"'"
                 elsif key.to_i == 8
                   condition = condition+" and student_categories.name = '"+v1+"'"
+                elsif key.to_i == 9
+                  condition = condition+" and students.religion = '"+v1+"'"
+                elsif key.to_i == 10
+                  condition = condition+" and students.admission_date = '"+v1.to_date.strftime('%Y-%m-%d')+"'"
                 end  
               end
             end
@@ -520,7 +524,6 @@ class StudentController < ApplicationController
         end
       end
     end
-    
     unless search_value.blank?
       condition = condition+" and students.admission_no = '"+search_value+"'"
     end
@@ -577,10 +580,12 @@ class StudentController < ApplicationController
         @profile_image = "/images/master_student/profile/default_student.png" 
       end 
       blood_group = student.blood_group
+      religion = student.religion
+      admission_date = student.admission_date 
       p_image = "<img src='#{@profile_image}' width='80' />"
       send_sms = "<a href='javascript:void(0)' id='student_"+student.id.to_s+"' onClick='send_sms("+student.id.to_s+")'>Send</a>"
       send_sms = send_sms+"&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/student/edit/"+student.id.to_s+"' target='_blank' >Edit</a>"
-      std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
+      std = {:p_image=>p_image,:admission_no=>student.admission_no,:roll_no=>student.class_roll_no,:password=>password,:sms_number=>student.sms_number,:student_name=>"<a href='/student/profile/"+student.id.to_s+"'>"+student.full_name+"</a>",:admission_date=>admission_date,:religion=>religion,:category=>std_category,:blood_group=>blood_group,:class=>student.batch.course.course_name,:batch=>batch,:section=>student.batch.course.section_name,:session=>student.batch.course.session,:version=>version,:group=>student.batch.course.group,:send_sms=>send_sms}
       data[k] = std
       k += 1
     end
@@ -3720,7 +3725,6 @@ class StudentController < ApplicationController
       batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
       @courses = Course.find(:all, :conditions => ["id IN (?) and is_deleted = ?", batches, false], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
     end
-    
     @batches = Batch.active
   end
 

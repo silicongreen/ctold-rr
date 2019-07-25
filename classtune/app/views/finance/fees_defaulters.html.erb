@@ -17,6 +17,13 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/select2.min.css">
+<link rel="stylesheet" href="/stylesheets/select2-finance.css">
+
+<%= javascript_include_tag 'select2.full.min.js' %>
+<%= javascript_include_tag 'select2-finance.js' %>
+
 <div id="content-header">
 <%= show_header_icon %>
   <h1><%= t('fees_defaulters_text') %></h1>
@@ -32,7 +39,7 @@
         <div class="label-container"><label><%= t('select_a_batch') %></label></div>
         <div class="input-container"> <%= select :fees_defaulters, :batch_id, @batches.map { |c| [c.full_name, c.id] },
             {:prompt => "#{t('select_a_batch')}"},
-            {:onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates_defaulters"},
+            {:class => "select2-combo", :onChange => "#{remote_function(:url => {:action => "update_fees_collection_dates_defaulters"},
             :with => "'batch_id='+value",
             :before => "Element.show('loader')",
             :success => "Element.hide('loader');load_select();")}", :autocomplete => "off", :style=>"width: 90% !important; float: left;"
@@ -69,8 +76,3 @@
     float: left;
   }
 </style>
-<script type="text/javascript" charset="utf-8">
-  j('#fees_defaulters_batch_id').select2();
-  j('#fees_defaulters_dates_id').select2();
-
-</script>

@@ -205,7 +205,7 @@ class Subjects extends CActiveRecord
        return $subject;
     }
     
-    function get_employee_subjects($employee_id)
+    function get_employee_subjects($employee_id,$lesson_id = 0,$return_selcted_subject_array=false)
     {
             $bachTutor = new BatchTutors();
             $all_sub = $bachTutor->all_access_employee_sub();

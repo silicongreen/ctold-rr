@@ -74,7 +74,7 @@
                               if employee['classwork_given'].to_i > 0 && !employee['classwork_given_data_3pm'].blank? 
                                 employee['classwork_given_data_3pm'].each do |hw|
                                   if class_sub_id.include?(hw['subjects_id'].to_i)
-                                    ballon_text_3pm = ballon_text+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
+                                    ballon_text_3pm = hw_given_id_3pm+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
                                     hw_given_id_3pm << hw['subjects_id'].to_i
                                   end
                                 end

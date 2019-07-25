@@ -205,6 +205,95 @@ class Subjects extends CActiveRecord
        return $subject;
     }
     
+    function get_employee_subjects()
+    {
+            $bachTutor = new BatchTutors();
+            $all_sub = $bachTutor->all_access_employee_sub();
+            $criteria = new CDbCriteria;
+            $criteria->select = 't.*';
+            if($all_sub)
+            {
+                $criteria->addCondition("(employee.employee_id = $employee_id OR subject.id in (".implode(",",$all_sub)."))");
+            }
+            else
+            {    
+                $criteria->compare("employee.employee_id", $employee_id);
+            }
+            
+           
+            $criteria->with = array(
+                "employee" => array(
+                    "select" => "employee.id",
+                    'joinType' => "LEFT JOIN",
+                ),
+                "Subjectbatch" => array(
+                    "select" => "Subjectbatch.name",
+                    'joinType' => "LEFT JOIN",
+                    'with' => array(
+                        "courseDetails" => array(
+                            "select" => "courseDetails.course_name, courseDetails.section_name",
+                            'joinType' => "LEFT JOIN",
+                        )
+                    )
+                ) 
+            );
+           
+
+            $criteria->compare("Subjectbatch.is_deleted", 0);
+            $criteria->compare("courseDetails.is_deleted", 0);
+            $criteria->order = "cast(courseDetails.code as SIGNED INTEGER) ASC, Subjectbatch.name ASC";
+            
+            
+            $obj_subject = $this->findAll($criteria);
+        
+            $subject = array();
+            $i = 0; 
+            $subject_selected = array();
+            if($lesson_id>0)
+            {
+                $lessonplan = new Lessonplan();
+                $lessonplan = $lessonplan->findByPk($lesson_id);
+                if($lessonplan && $lessonplan->subject_ids)
+                {
+                    $subject_selected_string = $lessonplan->subject_ids;
+                    $subject_selected = explode(",", $subject_selected_string);
+                }
+            }
+            $sub_id_array = [];
+            foreach ($obj_subject as $value)
+            {
+                if(in_array($value->id, $sub_id_array))
+                {
+                    continue;
+                }
+                $sub_id_array[] = $value->id;
+                if($return_selcted_subject_array)
+                {
+                   if(in_array($value->id, $subject_selected))
+                   {
+                        $subject[$i]['id'] = $value->id;
+                        $subject[$i]['name'] = $value->name." - ".$value['Subjectbatch']->name." ".$value['Subjectbatch']['courseDetails']->course_name." ".$value['Subjectbatch']['courseDetails']->section_name;
+                        $i++;
+                   }
+                     
+                }
+                else
+                {
+                    $subject[$i]['id'] = $value->id;
+                    $subject[$i]['name'] = $value->name." - ".$value['Subjectbatch']->name." ".$value['Subjectbatch']['courseDetails']->course_name." ".$value['Subjectbatch']['courseDetails']->section_name;
+                    $subject[$i]['selected'] = 0;
+                    if(in_array($value->id, $subject_selected))
+                    {
+                        $subject[$i]['selected'] = 1;
+                    }
+                    $i++;  
+                }    
+                
+            }
+
+            return $subject;
+    }
+    
     public function getSubjectNoExam($batch_id,$student_id=0,$subjects_ids = false)
     {
         $criteria = new CDbCriteria();

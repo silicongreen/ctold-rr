@@ -425,15 +425,15 @@ class EmployeesSubjects extends CActiveRecord
             $criteria->with = array(
                 'subject' => array(
                     'select' => 'DISTINCT subject.id,subject.name',
-                    'joinType' => "INNER JOIN",
+                    'joinType' => "LEFT JOIN",
                     'with' => array(
                         "Subjectbatch" => array(
                             "select" => "Subjectbatch.name",
-                            'joinType' => "INNER JOIN",
+                            'joinType' => "LEFT JOIN",
                             'with' => array(
                                 "courseDetails" => array(
                                     "select" => "courseDetails.course_name, courseDetails.section_name",
-                                    'joinType' => "INNER JOIN",
+                                    'joinType' => "LEFT JOIN",
                                 )
                             )
                         )

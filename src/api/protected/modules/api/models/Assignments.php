@@ -461,7 +461,7 @@ class Assignments extends CActiveRecord
             
             if($before_3pm)
             {
-                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
             }
             else
             {
@@ -526,8 +526,15 @@ class Assignments extends CActiveRecord
                 if (date("H:i:s", strtotime($value->created_at)) == "00:00:00")
                 {
                     $value->created_at = $value->updated_at;
-                }        
-                $marge['assign_time'] = date("h:i a", strtotime("+6 hour", strtotime($value->created_at)));
+                } 
+                if(strpos($value->content, "</") !== false )
+                {
+                    $marge['assign_time'] = date("h:i a", strtotime("+6 hour", strtotime($value->created_at)));
+                }
+                else 
+                {
+                    $marge['assign_time'] = date("h:i a",strtotime($value->created_at));
+                }
                 $marge['duedate'] = date("Y-m-d", strtotime($value->duedate));
                 $marge['name'] = $value->title;
                 $marge['content'] = $value->content;
@@ -554,7 +561,7 @@ class Assignments extends CActiveRecord
             
             $criteria->compare('t.employee_id', $employee_id);
             
-            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00'))");
+            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
            
              
                 

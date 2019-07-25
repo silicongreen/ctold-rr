@@ -205,16 +205,17 @@ class Subjects extends CActiveRecord
        return $subject;
     }
     
-    function get_employee_subjects()
+    function get_employee_subjects($employee_id)
     {
             $bachTutor = new BatchTutors();
             $all_sub = $bachTutor->all_access_employee_sub();
             $criteria = new CDbCriteria;
-            $criteria->select = 't.*';
             $criteria->together = true;
+            $criteria->select = 't.*';
+            
             if($all_sub)
             {
-                $criteria->addCondition("(employee.employee_id = $employee_id OR subject.id in (".implode(",",$all_sub)."))");
+                $criteria->addCondition("(employee.employee_id = $employee_id OR t.id in (".implode(",",$all_sub)."))");
             }
             else
             {    

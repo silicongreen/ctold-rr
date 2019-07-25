@@ -1,0 +1,211 @@
+<%= stylesheet_link_tag 'tadded-header' %>
+<%= stylesheet_link_tag 'inline-calendar' %>
+<style>
+    .label-field-pair label {
+        width: 80px;
+    }
+    .text-input-bg img {
+        padding-top: 10px;
+        padding-left: 2px;
+    }
+    .date-field-sec {
+        background-color: #f8f8fa;
+        border: 1px solid #DFE1E2;
+        float: left;
+        border-right: 1px solid #DFE1E2;
+        width:45%;
+        margin-right: 5px;
+    }
+    .button-sec {
+        background-color: #f8f8fa;
+        border: 1px solid #DFE1E2;
+        float: left;
+        border-right: 1px solid #DFE1E2;
+        width:5%;
+    }
+    .row {
+        background-color: #f8f8fa;
+        border: 1px solid #DFE1E2;
+        float: left;
+        width: 30%;
+        margin-right: 28px;
+        border-right: 1px solid #DFE1E2;
+    }
+    .row_label {
+        background-color: #ffffff;
+        border-right: 1px solid #DFE1E2;
+        float: left;
+        width: 48.2%;
+        padding: 0px 0px;
+    }
+    .row_label div {
+        color: #868A8B;
+        float: left;
+        padding: 8px 10px;
+        width: 80%;
+    }
+    .row_data {
+        float: left;
+        width: 48.6%;
+    }
+    .custom_drop_wrapper select::-ms-expand {
+        display: none;
+    }
+    .custom_drop_wrapper select {
+        background-color: transparent;
+        background-image: url("/images/icons/drop_down_normal.png");
+        background-position: 98% 0;
+        background-repeat: no-repeat;
+        background-size: 37px 36px;
+        border: medium none;
+        cursor: pointer;
+        display: block;
+        height: 35px;
+        width: 100%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* border-right: 1px solid black; */
+    }
+    img.calendar_date_select_popup_icon
+    {
+        border: 0px;
+        cursor: pointer;
+        width: 20px;
+        float: left;
+        margin: 7px;
+    }
+    .cds_header .month
+    {
+        padding:0px;
+    }
+    .report-button{
+        background-color: #49BB4B;
+        padding: 5px;
+        color: #fff;
+        border-radius: 5px;
+        border: 1px solid #49BB4B;
+        cursor: pointer;
+    }
+    #show-homework-report{text-align: center; margin-top: 100px;}
+    .dataTableButton{
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 5px 7px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+    }
+</style>  
+<div id="page-yield" class="bg-disable">
+    <div class="header-wrapper">
+        <div class="header-title" style="width:50%;">
+            <div class="header-icon"  style="width:12%;">
+                <%= image_tag '/images/icons/homework.png', :html => {:alt => 'Homework'} %>
+            </div>
+            <div class="header-title-text-wrapper">
+                <div class="header-title-main-text f2">
+                    <%= t('homework_intelligence') %>
+                </div>
+                <div class="header-title-sub-text">
+                    <%= Time.now.strftime("%d/%m/%Y") %>
+                </div>
+            </div>
+
+        </div>
+        <div id="inner-tab-menu" style="width: 50%;float: left;">
+            <ul>
+                <li class='themed_bg themed-dark-hover-background'><%= link_to "Lesson Plan", {:controller => "intelligence", :action => "lessonplan"} %></li>
+                <li class='themed_bg themed-dark-hover-background'><%= link_to "Classwork", {:controller => "intelligence", :action => "classwork"} %></li>
+                <li class='themed_bg themed-dark-hover-background'><%= link_to "Attendance", {:controller => "intelligence", :action => "index"} %></li>
+                <li class='themed_bg themed-dark-hover-background'><%= link_to "Exam Report", {:controller => "intelligence", :action => "report"} %></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div class="tabbed-header-wrapper">
+            <ul class="header-tabs">
+                <li>
+                    <%= link_to "Homework Overall",
+                      {:controller=>"intelligence", :action=>"homework"},
+                      {:class => 'f2'}
+                  %>
+                </li>
+
+                <li>
+                    <%= link_to_remote "Homework by Teacher",
+                      :before => "Element.show('loader2');",
+                      :success => "Element.hide('loader2');",
+                      :update => 'report-roll-call',
+                      :url=>{:controller=>"intelligence", :action=>"teacher_homework"},
+                      :html => {:class => 'f2'}
+                  %>
+                </li>
+                <li class="active">
+                    <%= link_to "Homework Report", {:controller => "intelligence", :action => "homework_report"},:html => {:class => 'f2'}%>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="loader-image">
+        <%= image_tag("loader2.gif",
+          :align => "absmiddle",
+          :border => 0,
+          :id => "loader2",
+          :style =>"display: none;" ) %>
+    </div>
+
+    <div id="page-yield" style="margin-top:0px;">  
+        <div style="float:left; clear:both; margin-top:20px; width:100%;">
+            <div class="date-field-sec">
+                <div class="row_label" >
+                    <div>
+                        Select Start date
+                    </div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= calendar_date_select_tag "start_date",'', :readonly=> true,:popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
+                    </div>
+                </div>
+            </div>
+            <div class="date-field-sec">
+                <div class="row_label" >
+                    <div>
+                        Select End date
+                    </div>
+                </div>
+                <div class="row_data">
+                    <div>
+                        <%= calendar_date_select_tag "end_date",'', :readonly=> true, :popup=>:force, :placeholder => '',:style=>'height:29px; float:left;' %>
+                    </div>
+                </div>
+            </div>
+            <div class="button-sec">
+                <div class="row_label"><button class="report-button" id="showReportButton">Report</button></div>
+            </div>  
+        </div>  
+
+        <%= image_tag("loader.gif", :align => "absmiddle", :border => 0, :id => "loader", :style =>"display: none;" ) %>
+
+        <div id="show-homework-report"></div>
+
+    </div>
+    <% content_for :head do %>
+      <%= javascript_include_tag "swfobject" %>
+      <%= javascript_include_tag "custom/tabbed-header" %>
+    <% end %>
+
+    <script>
+      j(document).ready(function () {
+          j(document).on('click', "#showReportButton", function () {
+              var startdate = j('#start_date').val();
+              var enddate = j('#end_date').val();
+              new Ajax.Request('/intelligence/report_of_all_homework', {
+                  asynchronous: true,
+                  evalScripts: true,
+                  parameters: 'startdate=' + startdate + '&enddate=' + enddate
+              })
+          });
+      });
+    </script>

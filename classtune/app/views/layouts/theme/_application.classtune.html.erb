@@ -34,10 +34,10 @@
     <%= stylesheet_link_tag(*get_stylesheets) %>
     <link rel="stylesheet" href="/stylesheets/jquery-ui-1.9.2.custom.css">
     <link rel="stylesheet" href="/stylesheets/media_query.css">
-    <% unless controller.controller_path == "finance" and controller.action_name == "view_scholarships" %>
-    <%= javascript_include_tag 'jquery/jquery-1.9.1.min.js' %>
+    <% unless (controller.controller_path == "finance" and controller.action_name == "view_scholarships") or (controller.controller_path == "intelligence" and controller.action_name == "homework_report") %>
+      <%= javascript_include_tag 'jquery/jquery-1.9.1.min.js' %>
     <% else %>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <% end %>
     <link rel="stylesheet" href="/stylesheets/select2.min.css">
     <%= javascript_include_tag 'select2.full.min.js' %>

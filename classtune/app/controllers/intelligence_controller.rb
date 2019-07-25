@@ -88,9 +88,7 @@ class IntelligenceController < ApplicationController
     if !params[:select_date].blank?
       @date_used = params[:select_date]
     end
-     
-    
-    
+
     
     if !params[:student].blank? and !params[:student][:batch_name].blank?
       batches_data = Batch.find_by_id(params[:student][:batch_name])
@@ -170,6 +168,29 @@ class IntelligenceController < ApplicationController
       format.js { render :action => 'report_data_lessonplan' }
     end
   
+  end
+  
+  def homework_report
+  end
+  
+  def report_of_all_homework
+    @start_date = params[:startdate].to_date
+    @end_date = params[:enddate].to_date
+    homework_all = Assignment.find(:all, :conditions=>["DATE(created_at)>=? and DATE(created_at)<=?",start_date,end_date],:order=>"created_at desc")
+    batches = Batch.active
+    start_date.upto(end_date) do |date|
+      batches.each do |batch|
+        @homeworks = homework_all.select{|e| e.created_at.to_date == date.to_date && e.batch_id == batch.id }
+        @routine_response = get_routines_for_homework(date.to_date, batch.id)
+        @routine = []
+        if @routine_response['status']['code'].to_i == 200
+          @routine = @routine_response['data']['time_table']
+        end
+      end
+    end
+    render :update do |page|
+      page.replace_html 'show-homework-report', :partial => 'report_of_homework'
+    end
   end
   
   def graph_for_lessonplan
@@ -258,10 +279,6 @@ class IntelligenceController < ApplicationController
     render :text => chart.to_s
     
   end
-  
-  
-  
-  
   
   def teacher_classwork
     @date_today = @local_tzone_time.to_date
@@ -383,9 +400,7 @@ class IntelligenceController < ApplicationController
     if !params[:select_date].blank?
       @date_used = params[:select_date]
     end
-     
-    
-    
+
     
     if !params[:student].blank? and !params[:student][:batch_name].blank?
       batches_data = Batch.find_by_id(params[:student][:batch_name])
@@ -1980,10 +1995,7 @@ class IntelligenceController < ApplicationController
     require 'net/http'
     require 'uri'
     require "yaml"
-    
 
-    
- 
     champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
     api_endpoint = champs21_api_config['api_url']
 
@@ -2001,5 +2013,22 @@ class IntelligenceController < ApplicationController
     end
     
     @student_response
+  end
+  
+  def get_routines_for_homework(date, batch_id)
+    require 'net/http'
+    require 'uri'
+    require "yaml"
+ 
+    champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
+    api_endpoint = champs21_api_config['api_url']
+    
+    homework_uri = URI(api_endpoint + "api/routine")
+    http = Net::HTTP.new(homework_uri.host, homework_uri.port)
+    homework_req = Net::HTTP::Post.new(homework_uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded', 'Cookie' => session[:api_info][0]['user_cookie'] })
+    homework_req.set_form_data({"daily"=>1,"call_from_web"=>1,"date" => date, "batch_id"=> batch_id,"user_secret" => session[:api_info][0]['user_secret']})
+
+    homework_res = http.request(homework_req)
+    @routine_response = JSON::parse(homework_res.body)
   end
 end

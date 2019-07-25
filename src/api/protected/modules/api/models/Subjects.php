@@ -211,6 +211,7 @@ class Subjects extends CActiveRecord
             $all_sub = $bachTutor->all_access_employee_sub();
             $criteria = new CDbCriteria;
             $criteria->select = 't.*';
+            $criteria->together = true;
             if($all_sub)
             {
                 $criteria->addCondition("(employee.employee_id = $employee_id OR subject.id in (".implode(",",$all_sub)."))");

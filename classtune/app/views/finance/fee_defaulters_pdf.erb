@@ -91,7 +91,7 @@
           <tr class="<%= "#{c}" %> td-body">
               <td class="col-pdf" style="text-align: center;"><%= index += 1 %></td>
               <td class="col-pdf" style="text-align: center;"><%= s.admission_no %></td>
-              <td class="col-pdf"><%= s.full_name.length > 20 ? "#{s.full_name[0...20]}..." : s.full_name %></td>
+              <td class="col-pdf"><%= s.full_name %></td>
               <td class="col-pdf" style="text-align: center;"><%= s.class_roll_no %></td>
               <td class="col-pdf" style="text-align: center;"><%= b.course.section_name %></td>
               <td class="col-pdf" style="text-align: center;"><%= sc.name %></td>
@@ -125,6 +125,7 @@
         font-family: verdana;
         font-size: 12px;
         background: #fff;
+        height: 30px;
     }
     #pdf-table tr.td-body td:last {
         border-bottom: 1px solid #000;

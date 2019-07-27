@@ -3263,9 +3263,9 @@ class FinanceController < ApplicationController
   end
   
   def particular_batch_details
-    unless params[:batch_id].nil?
+    unless params[:batch_id].blank?
       @batch_id = params[:batch_id]
-      @fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id = #{params[:batch_id]}")
+      @fee_particulars = FinanceFeeParticular.find(:all, :conditions => "is_deleted = #{false} and finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id = #{params[:batch_id]}")
       render :update do |page|
         page.replace_html "batch_particular_info" ,:partial => "particular_batch_details"
         page << 'j(".spinner-batch").remove(); '

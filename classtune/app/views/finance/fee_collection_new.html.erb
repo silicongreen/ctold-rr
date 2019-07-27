@@ -465,13 +465,26 @@
       j(document).on('change', ".particular-batch-combo", function (e) {
           j(this).after("<i class='fa fa-spinner fa-spin spinner-batch'></i>");
           var val = this.value;
-          new Ajax.Request('/finance/particular_batch_details', 
-                  {
-                    asynchronous:true, 
-                    evalScripts:true, 
-                    parameters:'particular_category_id='+j("#particular_category_id_batch").val()+'&batch_id='+val+'&fee_category_id='+j("#fee_category_id_batch").val()
-                  }
-          )
+          if ( j("#is_transport_particular").val() == "1" )
+          {
+            new Ajax.Request('/finance/particular_batch_details', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true, 
+                      parameters:'particular_category_id='+j("#particular_category_id_batch").val()+'&vehicle_id='+val+'&fee_category_id='+j("#fee_category_id_batch").val()+'&transport=1'
+                    }
+            )
+          }
+          else
+          {
+            new Ajax.Request('/finance/particular_batch_details', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true, 
+                      parameters:'particular_category_id='+j("#particular_category_id_batch").val()+'&batch_id='+val+'&fee_category_id='+j("#fee_category_id_batch").val()+'&transport=0'
+                    }
+            )
+          }
       });
       
       j(document).on('click', ".particular_details", function (e) {
@@ -489,8 +502,10 @@
               }
           });
           batches = batches.substr(0, batches.length - 1);
+          var transport = 0;
           if ( j(this).parent('div').parent('td').children('span').children('input').data('transport') == "1" )
           {
+            transport = 1;
             var fee_category_id = 0;
           }
           else
@@ -501,7 +516,7 @@
                   {
                     asynchronous:true, 
                     evalScripts:true, 
-                    parameters:'particular_category_id='+particular_category_id+'&batches='+batches+'&fee_category_id='+fee_category_id+'&div_id='+div_id+'&obj='+obj
+                    parameters:'particular_category_id='+particular_category_id+'&batches='+batches+'&fee_category_id='+fee_category_id+'&div_id='+div_id+'&obj='+obj+'&transport='+transport
                   }
           )
       });

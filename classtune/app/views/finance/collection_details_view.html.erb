@@ -49,7 +49,9 @@
     <div class="input-container">
       <div style="width: 100%; padding:0px 0px 48px 0px; text-align: center;">
         <button type="button" class="button submit_button" id="regenerateAll" >Regenerate All</button>
+        <% if @absent_fine %>
         <button type="button" class="button submit_button" id="add_absent_fine" >Add Absent Fine</button>
+        <% end %>
         <%= image_tag("Loader-transparant.gif",:align => "absmiddle",:border => 0,:id => "add-loader", :class=>"add-palette-loader", :style =>"display: none;" ) %>
       </div>
     </div>
@@ -364,7 +366,6 @@
         var student_cnt = 0;
         var student_amt_empty_or_null = 0;
         var student_ids_n_amount = "";
-        
         var found = false;
         j(".student_ids").each(function(){
             if (j(this).prop("checked"))
@@ -432,6 +433,7 @@
         }
         
         j("#absent_fine_clicked").show();
+        j(this).attr('disabled', 'true');
         new Ajax.Request('/finance/create_absent_fine_particular_multiple', 
               {
                 asynchronous:true, 

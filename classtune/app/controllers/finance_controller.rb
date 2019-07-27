@@ -3125,10 +3125,17 @@ class FinanceController < ApplicationController
   
   def fee_collection_batch_list
     if params[:id].present?
+      require "yaml"
+      transport_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_transport.yml")['school']
+      transport_particular_id = transport_config['transport_particular_id_' + MultiSchool.current_school.id.to_s]
+      if transport_particular_id.blank?
+        transport_particular_id = 0
+      end
+      
       @fee_category=FinanceFeeCategory.find(params[:id])
       @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
-      @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and finance_fee_particular_category_id != 78 and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
-      @fee_particulars_transport = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=0 and finance_fee_particular_category_id = 78",:group=>"finance_fee_particular_category_id").uniq
+      @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and finance_fee_particular_category_id != #{transport_particular_id.to_i} and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
+      @fee_particulars_transport = FinanceFeeParticularCategory.find(:all, :conditions=>"id = #{transport_particular_id.to_i}")
       #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq
       @all_particulars = FinanceFeeParticularCategory.active
     end
@@ -3240,19 +3247,38 @@ class FinanceController < ApplicationController
   
   def particular_details
     unless params[:batches].nil?
-      @batches = Batch.find(:all, :conditions => "id IN (#{params[:batches]})")
-      @particular_category_id = params[:particular_category_id]
-      @fee_category_id = params[:fee_category_id]
-      #@fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id IN (#{params[:batches]})")
-      divs = params[:div_id]
-      obj = params[:obj]
-      render :update do |page|
-        page.replace_html divs ,:partial => "particular_details"
-        page << "j('##{divs}').show()"
-        page << "j('##{obj}').text('Hide Particular Details');"
-        page << "j('##{obj}').removeClass('particular_details');"
-        page << "j('##{obj}').addClass('hide_particular_details');"
-        page << 'j(".select2-combo").select2(); '
+      if params[:transport].to_i == 0
+        @transport = false
+        @batches = Batch.find(:all, :conditions => "id IN (#{params[:batches]})")
+        @particular_category_id = params[:particular_category_id]
+        @fee_category_id = params[:fee_category_id]
+        #@fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id IN (#{params[:batches]})")
+        divs = params[:div_id]
+        obj = params[:obj]
+        render :update do |page|
+          page.replace_html divs ,:partial => "particular_details"
+          page << "j('##{divs}').show()"
+          page << "j('##{obj}').text('Hide Particular Details');"
+          page << "j('##{obj}').removeClass('particular_details');"
+          page << "j('##{obj}').addClass('hide_particular_details');"
+          page << 'j(".select2-combo").select2(); '
+        end
+      else
+        @transport = true
+        @vehicles = Vehicle.all
+        @particular_category_id = params[:particular_category_id]
+        @fee_category_id = params[:fee_category_id]
+        #@fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id IN (#{params[:batches]})")
+        divs = params[:div_id]
+        obj = params[:obj]
+        render :update do |page|
+          page.replace_html divs ,:partial => "particular_details"
+          page << "j('##{divs}').show()"
+          page << "j('##{obj}').text('Hide Particular Details');"
+          page << "j('##{obj}').removeClass('particular_details');"
+          page << "j('##{obj}').addClass('hide_particular_details');"
+          page << 'j(".select2-combo").select2(); '
+        end
       end
     else
       divs = params[:div_id]
@@ -3263,12 +3289,37 @@ class FinanceController < ApplicationController
   end
   
   def particular_batch_details
-    unless params[:batch_id].blank?
-      @batch_id = params[:batch_id]
-      @fee_particulars = FinanceFeeParticular.find(:all, :conditions => "is_deleted = #{false} and finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id = #{params[:batch_id]}")
-      render :update do |page|
-        page.replace_html "batch_particular_info" ,:partial => "particular_batch_details"
-        page << 'j(".spinner-batch").remove(); '
+    unless params[:transport].blank?
+      if params[:transport].to_i == 0
+        unless params[:batch_id].blank?
+          @transport = false
+          @batch_id = params[:batch_id]
+          @fee_particulars = FinanceFeeParticular.find(:all, :conditions => "is_deleted = #{false} and finance_fee_category_id = #{params[:fee_category_id]} and finance_fee_particular_category_id = #{params[:particular_category_id]} and batch_id = #{params[:batch_id]}")
+          render :update do |page|
+            page.replace_html "batch_particular_info" ,:partial => "particular_batch_details"
+            page << 'j(".spinner-batch").remove(); '
+          end
+        else
+          render :update do |page|
+            page.replace_html "batch_particular_info",:text => ""
+            page << 'j(".spinner-batch").remove(); '
+          end
+        end
+      else
+        unless params[:vehicle_id].blank?
+          @transport = true
+          @vehicle_id = params[:vehicle_id]
+          @transports = Transport.find_all_by_vehicle_id(@vehicle_id)
+          render :update do |page|
+            page.replace_html "batch_particular_info" ,:partial => "particular_batch_details"
+            page << 'j(".spinner-batch").remove(); '
+          end
+        else
+          render :update do |page|
+            page.replace_html "batch_particular_info",:text => ""
+            page << 'j(".spinner-batch").remove(); '
+          end
+        end
       end
     else
       render :update do |page|
@@ -3315,16 +3366,6 @@ class FinanceController < ApplicationController
       sent_remainder = true
     end
     
-    include_transport = false
-    unless params[:include_transport].nil?
-      include_transport = true
-    end
-    
-    include_employee = false
-    unless params[:include_employee].nil?
-      include_employee = true
-    end
-    
     particular_ids = []
     unless params[:particular_id].nil?
       particular_ids = params[:particular_id]
@@ -3354,7 +3395,7 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder,include_transport, include_employee, particular_ids, particular_names, transport_particular_id, transport_particular_name))
+      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name))
       
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')
@@ -6142,8 +6183,32 @@ class FinanceController < ApplicationController
       @fine_amount = params[:fine_amount]
       @fine_name = params[:fine_name]
       
-      #@finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@fine_name, '',false)
-      @particular_category_id = 187
+      require "yaml"
+      finance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_absent_fine.yml")['school']
+      all_schools = finance_config['ids'].split(",")
+      current_school = MultiSchool.current_school.id
+      @absent_fine = false
+      if all_schools.include?(current_school.to_s)
+        @absent_fine = true
+      end
+      
+      if @absent_fine
+        finance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_absent_fine.yml")['school']
+        particular_category_id = finance_config['absent_particular_id_' + MultiSchool.current_school.id.to_s]
+        if particular_category_id.blank?
+          particular_category_id = 0
+        end
+        @particular_category_id = particular_category_id
+        
+      else
+        @finance_fee_particular_category = FinanceFeeParticularCategory.find_or_create_by_name_and_description_and_is_deleted(@fine_name, '',false)
+        @particular_category_id = @finance_fee_particular_category.id
+      end
+      
+      #abort(@particular_category_id.inspect)
+      
+      #
+      #@particular_category_id = 187
       @finance_fee_particular_category = FinanceFeeParticularCategory.find(:first, :conditions => "id = #{@particular_category_id}")
       
       @particular_category_id = @finance_fee_particular_category.id
@@ -6191,6 +6256,10 @@ class FinanceController < ApplicationController
       render :update do |page|
         page.replace_html "resultDiv", :partial => "collection_details_view"
         page << "j('#absent_fine_clicked').hide();"
+        page << "j('#add_absent_fine').trigger('click');"
+        page << "j('#fine_name').val('');"
+        page << "j('#fine_amount').val('');"
+        page << "j('#save_absent_fine').removeAttr('disabled');"
         page << "j('#save_absent_fine_panel').hide();"
       end
       
@@ -9616,6 +9685,15 @@ class FinanceController < ApplicationController
   #   @discounts = @fee_collection.fee_discounts.all(:conditions=>["batch_id='#{params[:batch_id]}'"])
   #   end
   def collection_details_view
+    require "yaml"
+    finance_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_absent_fine.yml")['school']
+    all_schools = finance_config['ids'].split(",")
+    current_school = MultiSchool.current_school.id
+    @absent_fine = false
+    if all_schools.include?(current_school.to_s)
+      @absent_fine = true
+    end
+    
     unless params[:batch_id].nil?
       @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id = #{params[:id]} AND finance_fees.batch_id = #{params[:batch_id]}")
     else

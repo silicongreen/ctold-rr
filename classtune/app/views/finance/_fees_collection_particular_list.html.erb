@@ -88,7 +88,7 @@
             <h3 class="sl_no" style="display: inline-block; padding-right: 10px;">1</h3>
         </td>
         <td id="fee_category_td" style="vertical-align: middle;">
-            <%= select("assign_fee_category_id",{} ,@fee_particulars_transport.map { |item| [item.name, item.finance_fee_particular_category_id] }, {:prompt => "--select particular category--"},{:class => "form-field fee_category_tr_row"} ) %>
+            <%= select("assign_fee_category_id",{} ,@fee_particulars_transport.map { |item| [item.name, item.id] }, {:prompt => "--select particular category--"},{:class => "form-field fee_category_tr_row"} ) %>
         </td>
         <td id="fee_particular_name_td" style="width: 300px; vertical-align: middle;">
             <span class="particularname">

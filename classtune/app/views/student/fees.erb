@@ -110,20 +110,6 @@
               <div class="extender"> </div>
           </div>
 
-          <div class="fees" style="display: none;">
-              <% if permitted_to? :fees_received, :finance %>
-                <% form_for :fee do |f|%>
-      <%# if @student.has_paid_fees == true %>
-      <%#*<div class="check_box"> <%= check_box :fee, :has_paid_fees,:checked=>true  %>
-      <%# else %>
-      <%#*<div class="check_box"><%= check_box :fee, :has_paid_fees,:checked=>false %>
-      <%# end %>
-                  <div class="check_box"><%= check_box :fee, :has_paid_fees,:checked=>@student.has_paid_fees %></div>
-                  <div class="paid_text"><%= t('has_paid_all_the_fees') %></div>
-                  <%= submit_tag "► #{t('update')}",:class=>'user_button' %>
-                <% end %>
-              <% end %>
-          </div>
           <% combine_fees_enabled = false %>
           <% @include_combined_fees = PaymentConfiguration.find_by_config_key("include_combined_fees").try(:config_value)    %>
           <% unless @include_combined_fees.blank? %>
@@ -140,28 +126,32 @@
           
           <div class="extender"> </div>
           <div class="line" style=""></div>
-          <div id="fees_list" style="background: #FBFBFB; padding: 20px; min-height: 300px;">
-              <% if @current_user.admin?  %>
-              <div id="combined_configuration-1" style="padding: 20px 0; display: none;">
-                  <% if combine_fees_enabled %>
-                  <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
-                  <% else %>
-                  <i id="combined_payment_student" name="combined_payment_student" class="fa fa-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
-                  <% end %>
-              </div>
-              <% end %>
-              <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
-              <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
-              <% found_fees = false %>
-              <% if @dates_unpaid.present? %>
-              <% found_fees = true %>
-              <% end %>
-              <% if @dates_paid.present? %>
-              <% found_fees = true %>
-              <% end %>
-              <div style="width: 100%; text-align: right;"></div>
+          <div id="fees_list" style="background: #FBFBFB; padding: 20px;">
+            <% if @current_user.admin?  %>
+            <div id="combined_configuration-1" style="padding: 20px 0; display: none;">
+                <% if combine_fees_enabled %>
+                <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+                <% else %>
+                <i id="combined_payment_student" name="combined_payment_student" class="fa fa-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
+                <% end %>
+            </div>
+            <% end %>
+            <p id="no_fee_dues" style="display: none; font-size: 14px; font-family: verdana;">No Fee dues found</p>
+            <p id="no_fee_history" style="display: none; font-size: 14px; font-family: verdana;">No Previous Fee History</p>
+            <% found_fees = false %>
+            <% if @dates_unpaid.present? %>
+            <% found_fees = true %>
+            <% end %>
+            <% if @dates_paid.present? %>
+            <% found_fees = true %>
+            <% end %>
+            <div style="width: 100%; text-align: right;"></div>
+          </div>
+          
+            <div id="fees_list_unpaid"  style="background: #FBFBFB; padding: 20px; float: left; width: 96%;">
               <div style="text-align: center; width: 100%;">
                 <% fees_multiple = "" %>  
+                <% l = 0 %>  
                 <%- @dates_unpaid.each do |d| -%>
                   <%  finance_fee = @student.finance_fee_by_date(d) %>
                   <%  paid_fees = finance_fee.finance_transactions %>
@@ -244,11 +234,16 @@
                       </div>
                       <% end %>
                   </div>
+                  <% if l < @dates_unpaid.length - 1 %>
                   <div style="float: left; width: 3%; height: 300px;"></div>
+                  <% end %>
+                  <% l += 1 %>  
                 <% end %>
+              </div></div>
+              <div id="fees_list_paid" style="background: #FBFBFB; padding: 20px; float: left; width: 96%; border-bottom: 1px solid #999;">
+                  <div style="text-align: center; width: 100%;">
                 <%- @dates_paid.each do |d| -%>
                   <%  finance_fee = @student.finance_fee_by_date(d) %>
-                  
                   <%  paid_fees = finance_fee.finance_transactions %>
                   <%
                     paid_amount = 0.0
@@ -309,12 +304,14 @@
                                   <td class='fee_due'>BDT <%=  precision_label(advance) %></td>
                               </tr>
                               <% else %>
-                              <% has_due = true %>
                               <tr>
                                   <td class='fee_due'><b>Due</b></td>
                                   <% due = bal - paid_amount %>
                                   <td class='fee_due'>BDT <%=  precision_label(due) %></td>
                               </tr>
+                              <% if due > 0.00 %>
+                              <% has_due = true %>
+                              <% end %>
                               <% end %>
                               <tr>
                                   <td class='fee_due'><b>Status</b></td>
@@ -350,16 +347,16 @@
                   </div>
                   <div style="float: left; width: 3%; height: 300px;"></div>
                 <% end %>  
-              </div>
+              </div></div>  
               <% if found_fees %>
               <% display = "none" %>
               <% if fees_multiple.strip.length > 0 %>
                 <% display = "block" %>
               <% end %>
               <div id="combined_pay" style="display: <%= display %>;">
-                <div style="clear: both; height: 4px;"></div>
-                <hr style="border-top: 1px solid #ccc;" />
-                <div style="width: 100%; text-align: right;">
+                <div style="clear: both; height: 4px; background: #FBFBFB; "><hr style="border: 1px solid #ccc;" /></div>
+                
+                <div style="padding: 10px; text-align: right; height: 60px;">
                     <% if fees_multiple.strip.length > 0 %>
                     <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip}, {:class=> 'user_button', :id => "lnk_btn"} %></div>
                     <% else %>
@@ -420,10 +417,10 @@
         background: #fff;
         color: #000;
     }
-    .paid{
+    #fees_list_paid{
         display: none;
     }
-    .unpaid{
+    #fees_list_unpaid{
         display: block;
     }
 </style>
@@ -544,6 +541,31 @@
 <script>
   j(document).ready(function(){
       var unpaid = 0;
+      j(".fee_details_box").each(function(){
+        if (j(this).hasClass('paid'))
+        {
+           var parent_id = j(this).parent('div').parent('div').attr('id');
+           if ( parent_id == "fees_list_unpaid" )
+           {
+             var id = this.id;
+             var html = j(this).html();
+             j("#fees_list_paid").children('div').append('<div class="fee_details_box paid" id="' + id + '">' + html + '</div>');
+             j(this).remove();
+           }
+        }
+        else if (j(this).hasClass('unpaid'))
+        {
+           var parent_id = j(this).parent('div').parent('div').attr('id');
+           if ( parent_id == "fees_list_paid" )
+           {
+             var id = this.id;
+             var html = j(this).html();
+             j("#fees_list_unpaid").children('div').append('<div class="fee_details_box unpaid" id="' + id + '">' + html + '</div>');
+             j(this).remove();
+           }
+        }
+      });
+      
       j(".unpaid").each(function(){
         if ( j(this).css('display') != "none" )
         {
@@ -592,8 +614,10 @@
           j("#no_fee_dues").hide();
           j("#no_fee_history").hide();
           j("#combined_configuration").hide();
-          j(".paid").show();
-          j(".unpaid").hide();
+          j("#fees_list_paid").show();
+          j("#fees_list_unpaid").hide();
+          j("#combined_pay").hide();
+          
           
           var paid = 0;
           j(".paid").each(function(){
@@ -615,9 +639,11 @@
       j(document).on('click', '.live', function(){
           j("#no_fee_dues").hide();
           j("#no_fee_history").hide();
-          j(".paid").hide();
-          j(".unpaid").show();
+          j("#fees_list_paid").hide();
+          j("#fees_list_unpaid").show();
+          
           j("#combined_configuration").show();
+          j("#combined_pay").show();
           
           var unpaid = 0;
           j(".unpaid").each(function(){

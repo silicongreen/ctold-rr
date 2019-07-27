@@ -46,7 +46,7 @@ class DelayedFeeCollectionJob
       FinanceFeeCollection.transaction do
         if @finance_fee_collection.save
           @particular_ids.each_with_index do |p_id, i|
-            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{p_id.to_i} and finance_fee_category_id = #{finance_fee_category_id}")
+            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{p_id.to_i} and finance_fee_category_id = #{finance_fee_category_id} and is_deleted = #{false}")
             unless finance_fee_particulars.nil?
               finance_fee_particulars.each do |ffp|
                 p_name = ffp.name
@@ -72,7 +72,7 @@ class DelayedFeeCollectionJob
           end
           
           @transport_particular_id.each_with_index do |p_id, i|
-            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{p_id.to_i} and finance_fee_category_id = 0")
+            finance_fee_particulars = FinanceFeeParticular.find(:all, :conditions => "finance_fee_particular_category_id = #{p_id.to_i} and finance_fee_category_id = 0 and is_deleted = #{false}")
             unless finance_fee_particulars.nil?
               finance_fee_particulars.each do |ffp|
                 p_name = ffp.name
@@ -94,6 +94,27 @@ class DelayedFeeCollectionJob
                 finance_fee_particular_new.opt = 0
                 finance_fee_particular_new.save
               end
+            end
+          end
+          
+          fee_discounts = FeeDiscount.all(:conditions=>"finance_fee_category_id=#{finance_fee_category_id} and is_deleted = #{false}")
+          unless fee_discounts.nil?
+            fee_discounts.each do |f|
+              fee_discount_new = FeeDiscount.new
+              fee_discount_new.name = f.name
+              fee_discount_new.type = f.type
+              fee_discount_new.is_onetime = f.is_onetime
+              fee_discount_new.receiver_id = f.receiver_id
+              fee_discount_new.scholarship_id = f.scholarship_id
+              fee_discount_new.finance_fee_category_id = new_finance_fee_category.id
+              fee_discount_new.finance_fee_particular_category_id = f.finance_fee_particular_category_id
+              fee_discount_new.is_late = f.is_late
+              fee_discount_new.is_visible = f.is_visible
+              fee_discount_new.is_amount = f.is_amount
+              fee_discount_new.discount = f.discount
+              fee_discount_new.receiver_type = f.receiver_type
+              fee_discount_new.batch_id = f.batch_id
+              fee_discount_new.save
             end
           end
           

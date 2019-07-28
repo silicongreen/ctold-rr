@@ -63,7 +63,7 @@ class AssessmentScoresController < ApplicationController
     end
     @grading_levels=@batch.grading_level_list
     unless @batch.check_credit_points
-#      flash[:notice]="Incomplete credit points for #{@batch.full_name}. Please assign credit points to all grades."
+      #      flash[:notice]="Incomplete credit points for #{@batch.full_name}. Please assign credit points to all grades."
       flash[:notice]="#{t('incomplete_credit_points_for')}" + " #{@batch.full_name}. " + "#{t('please_assign_credit_points_to_all_grades')}"
       redirect_to :controller => "grading_levels"
       return

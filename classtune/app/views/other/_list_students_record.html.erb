@@ -16,8 +16,10 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
-
-<% form_for :admid_card ,:url=>{:action=>'print_student_record'}, :html=> {:target=>'_blank'} do |f| %>
+<style>
+  .submit_button{margin-top: 10px;}
+</style>
+<% form_for :admid_card ,:url=>{:action=>'print_student_record'}, :html=> {:target=>'_blank',:id=>'new_student'} do |f| %>
 <div id="list">
   <div class="sel-list">
     <%= t('select') %>: <%= link_to_function "#{t('all')}", "$$('input.right').each(function(checkbox) { checkbox.checked = true; });" %>,
@@ -44,5 +46,6 @@
 </div>   
 
 </div>
-<%= submit_tag "Print Student Record",:class=>'submit_button', :id => 'submit_button' %>
+<%= submit_tag "Print Student Record",:class=>'submit_button', :id => 'submit_button', :onclick=>'this.form.action="print_student_record";' %>
+<%= submit_tag "Excel Student Record",:class=>'submit_button', :id => 'submit_button' , :onclick=>'this.form.action="excel_student_record";' %>
 <% end %>

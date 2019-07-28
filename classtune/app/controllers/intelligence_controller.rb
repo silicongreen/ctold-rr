@@ -176,9 +176,9 @@ class IntelligenceController < ApplicationController
   def report_of_all_homework
     @start_date = params[:startdate].to_date
     @end_date = params[:enddate].to_date
-    homework_all = Assignment.find(:all, :conditions=>["DATE(created_at)>=? and DATE(created_at)<=?",start_date,end_date],:order=>"created_at desc")
+    homework_all = Assignment.find(:all, :conditions=>["DATE(created_at)>=? and DATE(created_at)<=?",@start_date,@end_date],:order=>"created_at desc")
     batches = Batch.active
-    start_date.upto(end_date) do |date|
+    @start_date.upto(@end_date) do |date|
       batches.each do |batch|
         @homeworks = homework_all.select{|e| e.created_at.to_date == date.to_date && e.batch_id == batch.id }
         @routine_response = get_routines_for_homework(date.to_date, batch.id)

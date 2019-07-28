@@ -86,7 +86,7 @@
                       <td></td>
                       <td><%= sc.receiver.admission_no %></td>
                       <td><%= sc.receiver.full_name %></td>
-                      <td><%= sc.receiver.batch.course_section %></td>
+                      <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
                       <td><%= sc.name %></td>
                       <td><%= sc.finance_fee_particular_category.name %></td>
                       <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
@@ -188,7 +188,8 @@
                   }
               },
               {
-                  extend: 'pdf',
+                  extend: 'pdfHtml5',
+                  download: 'open',
                   title: 'Scholarship Students',
                   className: 'dataTableButton',
                   exportOptions: {

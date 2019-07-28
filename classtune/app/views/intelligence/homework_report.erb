@@ -46,7 +46,7 @@
     }
     .row_data {
         float: left;
-        width: 48.6%;
+        width: 50%;
     }
     .custom_drop_wrapper select::-ms-expand {
         display: none;
@@ -97,7 +97,7 @@
         font-size: 16px;
     }
 </style>  
-<div id="page-yield" class="bg-disable">
+<div id="page-yield">
     <div class="header-wrapper">
         <div class="header-title" style="width:50%;">
             <div class="header-icon"  style="width:12%;">
@@ -155,7 +155,7 @@
           :style =>"display: none;" ) %>
     </div>
 
-    <div id="page-yield" style="margin-top:0px;">  
+    <div style="margin-top:0px;">  
         <div style="float:left; clear:both; margin-top:20px; width:100%;">
             <div class="date-field-sec">
                 <div class="row_label" >
@@ -191,21 +191,22 @@
         <div id="show-homework-report"></div>
 
     </div>
-    <% content_for :head do %>
-      <%= javascript_include_tag "swfobject" %>
-      <%= javascript_include_tag "custom/tabbed-header" %>
-    <% end %>
+</div>
+<% content_for :head do %>
+  <%= javascript_include_tag "swfobject" %>
+  <%= javascript_include_tag "custom/tabbed-header" %>
+<% end %>
 
-    <script>
-      j(document).ready(function () {
-          j(document).on('click', "#showReportButton", function () {
-              var startdate = j('#start_date').val();
-              var enddate = j('#end_date').val();
-              new Ajax.Request('/intelligence/report_of_all_homework', {
-                  asynchronous: true,
-                  evalScripts: true,
-                  parameters: 'startdate=' + startdate + '&enddate=' + enddate
-              })
-          });
+<script>
+  j(document).ready(function () {
+      j(document).on('click', "#showReportButton", function () {
+          var startdate = j('#start_date').val();
+          var enddate = j('#end_date').val();
+          new Ajax.Request('/intelligence/report_of_all_homework', {
+              asynchronous: true,
+              evalScripts: true,
+              parameters: 'startdate=' + startdate + '&enddate=' + enddate
+          })
       });
-    </script>
+  });
+</script>

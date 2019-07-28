@@ -44,13 +44,13 @@ unless @all_group_exams.blank?
         if is_elective == nil
           total_exam = Student.count(:all, :conditions =>["is_deleted = ? and batch_id = ?",false,exam_subject.batch_id])
         else
-          total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ?",exam_subject.id,exam_subject.batch_id],:group=>[:student_id])
+          total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ?",exam_subject.id,exam_subject.batch_id],:group=>:student_id)
         end
       else
         if is_elective == nil
           total_exam = Student.count(:all, :conditions =>["is_deleted = ? and batch_id = ? and id not in (?)",false,exam_subject.batch_id,@all_exam_absent_student_id])
         else
-          total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ? and student_id not in (?)",exam_subject.id,exam_subject.batch_id,@all_exam_absent_student_id],:group=>[:student_id])
+          total_exam = StudentsSubject.count(:all, :conditions =>["subject_id = ? and batch_id = ? and student_id not in (?)",exam_subject.id,exam_subject.batch_id,@all_exam_absent_student_id],:group=>:student_id)
         end
       end  
       

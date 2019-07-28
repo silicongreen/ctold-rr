@@ -475,7 +475,7 @@ class ExamsController < ApplicationController
               @students.push [student.first_name.to_s,student.last_name.to_s, student.id, student] unless student.nil?
             elsif MultiSchool.current_school.id == 342
               @students.push [student.class_roll_no,student.first_name, student.id, student] unless student.nil? 
-            else
+            elsif !student.class_roll_no.blank? and !student.first_name.blank? and !student.id.blank?
               @students.push [student.class_roll_no.to_i,student.first_name.to_s, student.id.to_i, student] unless student.nil? 
             end
           end

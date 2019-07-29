@@ -418,8 +418,8 @@ class ClassworkController extends Controller
 
         if (Yii::app()->user->user_secret === $user_secret && Yii::app()->user->isTeacher)
         {
-            $emplyee_subject = new EmployeesSubjects();
-            $subjects = $emplyee_subject->getSubject(Yii::app()->user->profileId);
+            $emplyee_subject = new Subjects();
+            $subjects = $emplyee_subject->get_employee_subjects(Yii::app()->user->profileId);
             $response['data']['subjects'] = $subjects;
             $response['status']['code'] = 200;
             $response['status']['msg'] = "EVENTS_FOUND";

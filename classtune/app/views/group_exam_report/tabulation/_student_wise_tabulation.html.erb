@@ -145,7 +145,7 @@ end
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
-          <% if MultiSchool.current_school.id != 246 %>
+          <% if MultiSchool.current_school.id != 246 and (MultiSchool.current_school.id != 325 or @batch.course.course_name != "Early I") %>
           <td class="col-pdf">Position</td>
           <% end %>
           
@@ -165,7 +165,7 @@ end
             <td><%= exam.subject.code %></td>
           <% end %>
           <td class="col-pdf">Total</td>
-          <% if MultiSchool.current_school.id != 246 %>
+          <% if MultiSchool.current_school.id != 246 and (MultiSchool.current_school.id != 325 or @batch.course.course_name != "Early I") %>
           <td class="col-pdf">Position</td>
           <% end %>
         </tr>
@@ -235,7 +235,7 @@ end
           <% last_mark = total %>
       <% end %>    
       <td class="col-pdf"><%= total %></td>
-      <% if MultiSchool.current_school.id != 246 %>
+      <% if MultiSchool.current_school.id != 246 and (MultiSchool.current_school.id != 325 or @batch.course.course_name != "Early I") %>
       <% if off_rank == false %>
         <td class="name-std"><%= rank %></td>
       <% else %>

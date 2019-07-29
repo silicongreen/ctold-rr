@@ -111,12 +111,8 @@
               <div class="label-container"><label for="reason"></label></div>
               <div class="input-container">
                   <div class="each_batch" style="border-bottom: 0; width: 320px; overflow: hidden;">
-                      <div class="checkbox_inline"><%= check_box_tag "include_employee", 1, false, :class=>'batches_box' %></div> 
-                      <div class="checkbox_label" style="width: 120px;"><label style="width: 100%;">Include Transport Fee For Employee</label></div>
-
-                      <div class="checkbox_inline"><%= check_box_tag "include_transport", 1, true, :class=>'batches_box' %></div> 
-                      <div class="checkbox_label" style="width: 120px;"><label style="width: 100%;">Include Transport Fee</label></div>
-
+                    <div class="checkbox_inline"><%= check_box_tag "sent_remainder", 1, true, :class=>'batches_box' %></div> 
+                    <div class="checkbox_label" style="width: 120px;"><label>Sent Reminder</label></div>
                   </div>
               </div>
           </div>
@@ -225,18 +221,26 @@
          {
             var p_id = this.value;
             var p_name = j(this).parent('td').next('td').children('span.particularname').children("input").val();
+            var default_particular_name = "0";
+            if ( j(this).parent('td').children('span').children("input.disabled_new_particular_name").prop('checked') )
+            {
+              default_particular_name = "1";
+            }
+            
             if ( j.trim(p_id).length > 0 )
             {
                 particulars++;
                 if ( j(this).parent('td').next('td').children('span.particularname').children("input").data('transport') == "1" )
                 {
-                  var input_particular_id = '<input type="hidden" name="transport_particular_id[]" name="transport_particular_id_new" value="' + p_id + '" />';
-                input_particular_id += '<input type="hidden" name="transport_particular_name[]" name="transport_particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                  var input_particular_id = '<input type="hidden" name="transport_particular_id[]" id="transport_particular_id_new" value="' + p_id + '" />';
+                  input_particular_id += '<input type="hidden" name="default_transport_particular_name[]" id="default_transport_particular_name" value="' + default_particular_name + '" />';
+                  input_particular_id += '<input type="hidden" name="transport_particular_name[]" id="transport_particular_name_new" value="' + p_id + '_' + p_name + '" />';
                 }
                 else
                 {
-                  var input_particular_id = '<input type="hidden" name="particular_id[]" name="particular_id_new" value="' + p_id + '" />';
-                  input_particular_id += '<input type="hidden" name="particular_name[]" name="particular_name_new" value="' + p_id + '_' + p_name + '" />';
+                  var input_particular_id = '<input type="hidden" name="particular_id[]" id="particular_id_new" value="' + p_id + '" />';
+                  input_particular_id += '<input type="hidden" name="default_particular_name[]" id="default_particular_name_new" value="' + default_particular_name + '" />';
+                  input_particular_id += '<input type="hidden" name="particular_name[]" id="particular_name_new" value="' + p_id + '_' + p_name + '" />';
                 }
                 j("#fee_category_particulars_div").append(input_particular_id);
             }
@@ -296,6 +300,17 @@
           {
               j("#include_employee_div").hide();
               j("#include_employee").removeAttr("checked");
+          }
+      });
+      
+      j(document).on("click", ".disabled_new_particular_name", function () {
+          if (j(this).prop("checked"))
+          {
+              j(this).parent('span').parent('td').parent('tr').children('td').children('span.particularname').children('input').prop('disabled', true);
+          } 
+          else
+          {
+              j(this).parent('span').parent('td').parent('tr').children('td').children('span.particularname').children('input').prop('disabled', false);
           }
       });
       

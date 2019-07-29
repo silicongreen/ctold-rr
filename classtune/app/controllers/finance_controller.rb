@@ -3334,7 +3334,7 @@ class FinanceController < ApplicationController
       select_options = ["Total Fees", "0-" + params[:id].to_s]
       finance_fee_particulars = FinanceFeeParticular.active.find(:all,:joins=>[:finance_fee_particular_category],:conditions=>"finance_fee_particulars.finance_fee_category_id =#{params[:id]} and finance_fee_particulars.is_tmp=#{false} and finance_fee_particulars.is_deleted=#{false}",:group=>"finance_fee_particulars.finance_fee_particular_category_id").uniq
       fines = Fine.active
-      @particular = [select_options] + finance_fee_particulars.map{|p| [p.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
+      @particular = [select_options] + finance_fee_particulars.map{|p| [p.finance_fee_particular_category.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
     end
     render :update do |page|
       page.replace_html "discount_on" ,:partial => "fee_discount_on_student"
@@ -3381,9 +3381,19 @@ class FinanceController < ApplicationController
       particular_names = params[:particular_name]
     end
     
+    default_particular_names = []
+    unless params[:default_particular_name].nil?
+      default_particular_names = params[:default_particular_name]
+    end
+    
     transport_particular_name = []
     unless params[:transport_particular_name].nil?
       transport_particular_name = params[:transport_particular_name]
+    end
+    
+    default_transport_particular_name = []
+    unless params[:default_transport_particular_name].nil?
+      default_transport_particular_name = params[:default_transport_particular_name]
     end
     
     @user = current_user
@@ -3395,7 +3405,7 @@ class FinanceController < ApplicationController
     category =[]
     @finance_fee_collection = FinanceFeeCollection.new
     if request.post?
-      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name))
+      Delayed::Job.enqueue(DelayedFeeCollectionJob.new(@user,params[:finance_fee_collection],params[:fee_collection], sent_remainder, particular_ids, particular_names, transport_particular_id, transport_particular_name, default_particular_names, default_transport_particular_name))
       
       flash[:notice]="#{t('collection_is_in_queue')}" + " <a href='/scheduled_jobs/FinanceFeeCollection/1'>" + "#{t('cick_here_to_view_the_scheduled_job')}"
       #flash[:notice] = t('flash_msg33')
@@ -3740,10 +3750,13 @@ class FinanceController < ApplicationController
   
   def fee_collection_assign_discount_student
     @student = Student.find(params[:student_id])
-    @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_receiver_type_and_receiver_id(params[:batch_id], true, 'Student', params[:student_id] )
     @fee_collection_id = params[:id]
-    @batch_id = params[:batch_id]
-    @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
+    collection = FinanceFeeCollection.find(:first, :conditions => "id = #{@fee_collection_id}")
+    unless collection.blank?
+      @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_receiver_type_and_receiver_id_and_finance_fee_category_id_and_is_deleted(params[:batch_id], true, 'Student', params[:student_id], collection.fee_category_id, false )
+      @batch_id = params[:batch_id]
+      @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
+    end
   end
   
   def assign_fee_discount_to_collection_student
@@ -9379,21 +9392,21 @@ class FinanceController < ApplicationController
 
   def load_discount_create_form
     if params[:type]== "batch_wise"
-      @fee_categories =  FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
+      @fee_categories =  FinanceFeeCategory.find(:all, :conditions => "finance_fee_categories.is_visible = #{true}", :joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
       @fee_discount = BatchFeeDiscount.new
       render :update do |page|
         page.replace_html "form-box", :partial => "batch_wise_discount_form";
         page.replace_html 'form-errors', :text =>""
       end
     elsif params[:type]== "category_wise"
-      @fee_categories = FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
+      @fee_categories = FinanceFeeCategory.find(:all, :conditions => "finance_fee_categories.is_visible = #{true}", :joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
       @student_categories = StudentCategory.active
       render :update do |page|
         page.replace_html "form-box", :partial => "category_wise_discount_form"
         page.replace_html 'form-errors', :text =>""
       end
     elsif params[:type] == "student_wise"
-      @fee_categories = FinanceFeeCategory.find(:all,:joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
+      @fee_categories = FinanceFeeCategory.find(:all, :conditions => "finance_fee_categories.is_visible = #{true}", :joins=>"INNER JOIN finance_fee_particulars on finance_fee_particulars.finance_fee_category_id=finance_fee_categories.id AND finance_fee_particulars.is_tmp = 0 AND finance_fee_particulars.is_deleted = 0 INNER JOIN batches on batches.id=finance_fee_particulars.batch_id AND batches.is_active = 1 AND batches.is_deleted = 0 AND finance_fee_categories.is_deleted=0",:group=>'finance_fee_categories.name')
       @courses = Course.active
       render :update do |page|
         page.replace_html "form-box", :partial => "student_wise_discount_form"

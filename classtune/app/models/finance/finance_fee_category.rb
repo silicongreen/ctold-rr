@@ -21,6 +21,7 @@ class FinanceFeeCategory < ActiveRecord::Base
   belongs_to :student
   #
   has_many   :fee_particulars, :class_name => "FinanceFeeParticular"
+  has_many   :finance_fees_auto_categories, :class_name => "FinanceFeesAutoCategory"
   has_many   :fee_collections, :foreign_key =>"fee_category_id",:class_name => "FinanceFeeCollection"
   has_many   :fee_discounts
   has_many   :batches,:through=>:category_batches

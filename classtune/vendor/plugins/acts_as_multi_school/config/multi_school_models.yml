@@ -148,6 +148,7 @@ multi_school_models:
 - StudentExcludeDiscount
 - StudentFeeConfiguration
 - StudentFeeLedger
+- FinanceFeesAutoCategory
 - AttendanceVehicle
 
 general_models:

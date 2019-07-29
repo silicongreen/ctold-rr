@@ -148,9 +148,10 @@ multi_school_models:
 - StudentExcludeDiscount
 - StudentFeeConfiguration
 - StudentFeeLedger
+- FinanceFeesAutoCategory
 - AttendanceVehicle
 
-general_models:
+general_models: 
 - PrivilegeTag
 - Privilege
 - Country

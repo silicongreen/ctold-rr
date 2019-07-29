@@ -17,7 +17,7 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 <style>
-  .submit_button{margin-top: 10px;}
+  .submit_button{margin-top: 10px; width: 45%; float: left;}
 </style>
 <% form_for :admid_card ,:url=>{:action=>'print_student_record'}, :html=> {:target=>'_blank',:id=>'new_student'} do |f| %>
 <div id="list">
@@ -43,9 +43,9 @@
           <div class="text-input-bg"><input type="text" name="year" /> </div>
     </div>
 
-</div>   
-
-</div>
+</div>  
+<div style="width: 100%;">
 <%= submit_tag "Print Student Record",:class=>'submit_button', :id => 'submit_button', :onclick=>'this.form.action="print_student_record";' %>
 <%= submit_tag "Excel Student Record",:class=>'submit_button', :id => 'submit_button' , :onclick=>'this.form.action="excel_student_record";' %>
+    </div>
 <% end %>

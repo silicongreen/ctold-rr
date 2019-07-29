@@ -15,176 +15,176 @@
         <% i = 0 %>
         <% j = 0 %>
         <% @students.each do |std_info| %>
-        
-        <% i = i+1 %>
-        <% j = j+1 %>
-        <% if i > 2 %>
-          <% i = 1 %>
-          
-        <% end %>
-        <% margin = 0 %>
-        
-        <% if (j%2) == 0 %>
-         <% margin = 7 %> 
-        <% end %>
-        
-      
-        <% if std_info.photo.file? %>
-          <% @profile_image = std_info.photo.url %>
-        <% else %>
-          <% @profile_image = "/images/master_student/profile/default_student.png" %>
-        <% end %>  
-        <div style="height:47%; width:90%; margin:<%= margin %>% auto; clear:both;" >
-        <div class="col-xs-12" style="min-height:370px;">
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12">
-              <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px; height:120px;' src='/images/school_logo/2/sfx-logo.png' /></div>
-              <div class="col-xs-8">
-                  <div class="col-xs-12"><center><b><font size="4">STUDENT RECORD (Annual)</font></b></center></div>
-                  <div class="col-xs-12"><center><font size="3"><%= @section_name %></font></center></div>
-                  <div class="col-xs-12"><center><font size="3">YEAR : <%= @year %></font></center></div>
-                  <div class="col-xs-12"><center><b><font size="4"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
-                  <div class="col-xs-12"><center><b><font size="2"><%=Configuration.get_config_value('InstitutionAddress'); %></font></b></center></div>
-                  
+
+          <% i = i+1 %>
+          <% j = j+1 %>
+          <% if i > 2 %>
+            <% i = 1 %>
+
+          <% end %>
+          <% margin = 0 %>
+
+          <% if (j%2) == 0 %>
+            <% margin = 7 %> 
+          <% end %>
+
+
+          <% if std_info.photo.file? %>
+            <% @profile_image = std_info.photo.url %>
+          <% else %>
+            <% @profile_image = "/images/master_student/profile/default_student.png" %>
+          <% end %>  
+          <div style="height:47%; width:90%; margin:<%= margin %>% auto; clear:both;" >
+               <div class="col-xs-12" style="min-height:370px;">
+               <div class="col-xs-12">&nbsp;</div>
+              <div class="col-xs-12">
+                  <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px; height:120px;' src='/images/school_logo/2/sfx-logo.png' /></div>
+                  <div class="col-xs-8">
+                      <div class="col-xs-12"><center><b><font size="4">STUDENT RECORD (Annual)</font></b></center></div>
+                      <div class="col-xs-12"><center><font size="3"><%= @section_name %></font></center></div>
+                      <div class="col-xs-12"><center><font size="3">YEAR : <%= @year %></font></center></div>
+                      <div class="col-xs-12"><center><b><font size="4"><%=Configuration.get_config_value('InstitutionName'); %></font></b></center></div>
+                      <div class="col-xs-12"><center><b><font size="2"><%=Configuration.get_config_value('InstitutionAddress'); %></font></b></center></div>
+
+                  </div>
+                  <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px;width:125px;' src="<%=  @profile_image %>" /></div>
               </div>
-              <div class="col-xs-2" style="padding:0px;"><img style='margin-top:9px;width:125px;' src="<%=  @profile_image %>" /></div>
-            </div>
-            
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12 font-size-12">
-                <div class="col-xs-12 data-group" style="padding:0px;">
-                    <div class="col-xs-4" >Name&nbsp;:&nbsp;<%= std_info.full_name %></div>
-                    <div class="col-xs-4" >Class & Section&nbsp;:&nbsp;<%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></div>
-                    <div class="col-xs-4" >Nationality&nbsp;:&nbsp;<%= std_info.nationality.nationality.nationality unless std_info.nationality_id.nil? %></div>
-                  
-                </div>
-                <div class="col-xs-12 data-group">
-                    <div class="col-xs-4" >DOB&nbsp;:&nbsp;<%= I18n.l(std_info.date_of_birth,:format=>"%d %b %Y") unless std_info.date_of_birth.nil? %></div>
-                    <div class="col-xs-4" >Date of Admission&nbsp;:&nbsp;<%= I18n.l(std_info.admission_date,:format=>"%d %b %Y") unless std_info.admission_date.nil? %></div>
-                    <div class="col-xs-4" >Religion&nbsp;:&nbsp;<%= std_info.religion.titlecase unless std_info.religion.blank? %></div>       
-                 
-                </div>
-                <% father_mobile = "" %>
-                <% mother_mobile = "" %>
-                <% office_phone = "" %>
-                <% guardians = GuardianStudents.find_all_by_student_id(std_info.id) %>
-                <% unless guardians.blank?  %>
-                 <% guardians.each do |gur| %>
-                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
-                  <% unless gurdian.blank? %>
-                      <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
+
+              <div class="col-xs-12">&nbsp;</div>
+              <div class="col-xs-12">&nbsp;</div>
+              <div class="col-xs-12 font-size-12">
+                  <div class="col-xs-12 data-group" style="padding:0px;">
+                      <div class="col-xs-4" >Name&nbsp;:&nbsp;<%= std_info.full_name %></div>
+                      <div class="col-xs-4" >Class & Section&nbsp;:&nbsp;<%= std_info.batch.course.course_name %> <%= std_info.batch.course.section_name %></div>
+                      <div class="col-xs-4" >Nationality&nbsp;:&nbsp;<%= std_info.nationality.nationality.nationality unless std_info.nationality_id.nil? %></div>
+
+                  </div>
+                  <div class="col-xs-12 data-group">
+                      <div class="col-xs-4" >DOB&nbsp;:&nbsp;<%= I18n.l(std_info.date_of_birth,:format=>"%d %b %Y") unless std_info.date_of_birth.nil? %></div>
+                      <div class="col-xs-4" >Date of Admission&nbsp;:&nbsp;<%= I18n.l(std_info.admission_date,:format=>"%d %b %Y") unless std_info.admission_date.nil? %></div>
+                      <div class="col-xs-4" >Religion&nbsp;:&nbsp;<%= std_info.religion.titlecase unless std_info.religion.blank? %></div>       
+
+                  </div>
+                  <% father_mobile = "" %>
+                  <% mother_mobile = "" %>
+                  <% office_phone = "" %>
+                  <% guardians = GuardianStudents.find_all_by_student_id(std_info.id) %>
+                  <% unless guardians.blank?  %>
+                    <% guardians.each do |gur| %>
+                      <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                      <% unless gurdian.blank? %>
+                        <% if gurdian.relation.index("Father") || gurdian.relation.index("father") %>
                           <div class="col-xs-12 data-group">
-                            
+
                               <div class="col-xs-4" >Father's Name&nbsp;:&nbsp;<%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
-                              
+
                               <div class="col-xs-4" >Qualification&nbsp;:&nbsp;<%= gurdian.education unless gurdian.education.blank? %></div>
                               <div class="col-xs-4" >Occupation&nbsp;:&nbsp;<%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
-                        
-                            
+
+
                           </div>
                           <div class="col-xs-12 data-group">
-                            
+
                               <div class="col-xs-4" >Designation&nbsp;:&nbsp;<%=  gurdian.designation  unless gurdian.occupation.blank? %></div>
                               <div class="col-xs-8" >Passport / ID No&nbsp;:&nbsp;<%=  gurdian.passport  unless gurdian.occupation.blank? %></div>
-                            
+
                           </div>
                           <% father_mobile = gurdian.mobile_phone %>
                           <% office_phone = gurdian.office_phone1  %>
                           <% break %>
+                        <% end %>
                       <% end %>
-                  <% end %>
-                 <% end %>
-                
-                  <% guardians.each do |gur| %>
-                  <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
-                  <% unless gurdian.blank? %>
-                      <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
+                    <% end %>
+
+                    <% guardians.each do |gur| %>
+                      <% gurdian = Guardian.find_by_id(gur.guardian_id) %>
+                      <% unless gurdian.blank? %>
+                        <% if gurdian.relation.index("Mother") || gurdian.relation.index("mother") %>
                           <div class="col-xs-12 data-group">
-                         
+
                               <div class="col-xs-4" >Mother's Name&nbsp;:&nbsp;<%=  gurdian.first_name %> <%=  gurdian.last_name %></div>
-                              
+
                               <div class="col-xs-4" >Qualification&nbsp;:&nbsp;<%= gurdian.education unless gurdian.education.blank? %></div>
                               <div class="col-xs-4" >Occupation&nbsp;:&nbsp;<%=  gurdian.occupation  unless gurdian.occupation.blank? %></div>
-                            
-                            
+
+
                           </div>
                           <div class="col-xs-12 data-group">
-                            
+
                               <div class="col-xs-4" >Designation&nbsp;:&nbsp;<%=  gurdian.designation  unless gurdian.occupation.blank? %></div>
                               <div class="col-xs-8" >Passport / ID No&nbsp;:&nbsp;<%=  gurdian.passport  unless gurdian.occupation.blank? %></div>
-                            
+
                           </div>
-                          
+
                           <% mother_mobile = gurdian.mobile_phone %>
                           <% break %>
+                        <% end %>
                       <% end %>
+                    <% end %>
                   <% end %>
-                <% end %>
-               <% end %>
-               
-               <div class="col-xs-12 data-group">
-                   
-                   <div class="col-xs-8" >Present Address&nbsp;:&nbsp;<font size="1"><%=  std_info.address_line1 unless std_info.address_line1.blank? %></font></div>
-                    <div class="col-xs-4" >Land Phone(Res):<%=  std_info.phone1.to_s  unless std_info.phone1.blank? %></div>
-                </div>
-                
-                <div class="col-xs-12 data-group">
-                  
-                    <div class="col-xs-3" >Office&nbsp;:&nbsp;<%= office_phone %></div>
-                    <div class="col-xs-5" >Mobile Phone (Father)&nbsp;:&nbsp;<%=  father_mobile %></div>
-                    <div class="col-xs-4" >(Mother)&nbsp;:&nbsp;<%= mother_mobile %></div>
-                  
-                </div>
-              
-                   
-            </div>
-          
-            <% @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", std_info.sibling_id,std_info.id]) %>
-            <% unless @siblings.blank?  %>
-              <div class="col-xs-12"><center><b><font size="1">OTHER CHILDREN OF THE FAMILY IN THE SCHOOL/CLASS & SECTION</font></b></center></div>
-              <div class="col-xs-12">&nbsp;</div>
-              <% j = 0 %>
-              <% @siblings.each do |sibling| %>
-                <% j = j+1 %>
-                <div class="col-xs-4 data-group" style="padding:0px !important;">
-                    <div class="col-xs-1"  style="padding:0px !important;"><%= j  %>.</div>
-                    <div class="col-xs-10 underline"  style="padding:0px !important;"><%=  sibling.first_name + " " + sibling.last_name %></div>
-                </div>
-              <% end %>
-            <% end %>
-             
-               
-            
-               
-              
-            
-            
-        </div> 
-        <div class="col-xs-12 signature" >
-                <div class="col-xs-5 data-group2">
-                    Father's Signature & Date
-                </div> 
-                <div class="col-xs-2">
 
-                </div>
-                <div class="col-xs-5 data-group2">
-                     Mother's Signature & Date
-                </div>
-                
+                  <div class="col-xs-12 data-group">
+
+                      <div class="col-xs-8" >Present Address&nbsp;:&nbsp;<font size="1"><%=  std_info.address_line1 unless std_info.address_line1.blank? %></font></div>
+                      <div class="col-xs-4" >Land Phone(Res):<%=  std_info.phone1.to_s  unless std_info.phone1.blank? %></div>
+                  </div>
+
+                  <div class="col-xs-12 data-group">
+
+                      <div class="col-xs-3" >Office&nbsp;:&nbsp;<%= office_phone %></div>
+                      <div class="col-xs-5" >Mobile Phone (Father)&nbsp;:&nbsp;<%=  father_mobile %></div>
+                      <div class="col-xs-4" >(Mother)&nbsp;:&nbsp;<%= mother_mobile %></div>
+
+                  </div>
+
+
+              </div>
+
+              <% @siblings = Student.find(:all,:conditions => ["sibling_id = ? AND id != ?", std_info.sibling_id,std_info.id]) %>
+              <% unless @siblings.blank?  %>
+                <div class="col-xs-12"><center><b><font size="1">OTHER CHILDREN OF THE FAMILY IN THE SCHOOL/CLASS & SECTION</font></b></center></div>
+                <div class="col-xs-12">&nbsp;</div>
+                <% j = 0 %>
+                <% @siblings.each do |sibling| %>
+                  <% j = j+1 %>
+                  <div class="col-xs-4 data-group" style="padding:0px !important;">
+                      <div class="col-xs-1"  style="padding:0px !important;"><%= j  %>.</div>
+                      <div class="col-xs-10 underline"  style="padding:0px !important;"><%=  sibling.first_name + " " + sibling.last_name %></div>
+                  </div>
+                <% end %>
+              <% end %>
+
+
+
+
+
+
+
+          </div> 
+          <div class="col-xs-12 signature" >
+              <div class="col-xs-5 data-group2">
+                  Father's Signature & Date
+              </div> 
+              <div class="col-xs-2">
+
+              </div>
+              <div class="col-xs-5 data-group2">
+                  Mother's Signature & Date
+              </div>
+
           </div>
-        </div>
-    </div>
-        <% end %>
-    </body>
+      </div>
+  </div>
+<% end %>
+</body>
 </html>
 <style>
     html,body
     {
         height: 100%;
         margin: 0px;
-        
-        
+
+
     }
     body > div.col-xs-12
     {
@@ -193,70 +193,70 @@
         position: relative;
         clear:both;
         float:none;
-       
+
     }
     div.signature
     {
-       position: relative;
-       top:90px !important;
+        position: relative;
+        top:90px !important;
     }
     .col-xs-12
     {
-       padding:0px !important;
+        padding:0px !important;
     }
     .col-xs-12 div
     {
-       padding:0px !important;
+        padding:0px !important;
     }
     div.data-group2
     {
-      border-top: 1px solid black;
-      text-align: center;
-      font-size: 12px;
+        border-top: 1px solid black;
+        text-align: center;
+        font-size: 12px;
     }
     div.col-xs-12 div.group-2
     {
-      font-size: 12px;
+        font-size: 12px;
     }
-     div.col-xs-12 div.data-group
+    div.col-xs-12 div.data-group
     {
-      padding: 0px 0px !important;
-      border-bottom: 1px solid black;
-      font-size: 12px;
-      
+        padding: 0px 0px !important;
+        border-bottom: 1px solid black;
+        font-size: 12px;
+
     }
 
-    
-    
-  .table-user-information > tbody > tr {
-    border-top: 1px solid rgb(221, 221, 221);
-}
 
-.table-user-information > tbody > tr:first-child {
-    border-top: 0;
-}
 
-.table-user-information
-{
-    border: 0;
-    
-}
-.table-user-information > tbody > tr > td {
-    border: 0;
-    font-size: 13px;
-    
-}
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 5px;
-}
-ul li
-{
-    list-style: decimal;
-    font-size: 13px;
-}
+    .table-user-information > tbody > tr {
+        border-top: 1px solid rgb(221, 221, 221);
+    }
+
+    .table-user-information > tbody > tr:first-child {
+        border-top: 0;
+    }
+
+    .table-user-information
+    {
+        border: 0;
+
+    }
+    .table-user-information > tbody > tr > td {
+        border: 0;
+        font-size: 13px;
+
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        padding: 5px;
+    }
+    ul li
+    {
+        list-style: decimal;
+        font-size: 13px;
+    }
 </style>
 <style type="text/css" media="print">
-  @page { size: A4; }
+    @page { size: A4; }
 </style>
 <script>
   window.print();

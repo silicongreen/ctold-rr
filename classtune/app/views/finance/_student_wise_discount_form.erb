@@ -18,7 +18,7 @@
 #under the License. -%>
 
 <%#,:before=>"$('submit_button').disable();console.log('disbled')",:complete=>"$('submit_button').enable();console.log('enabled')"  %>
-<% form_remote_for :fee_discount, :url=>{:action=>"student_wise_fee_discount_create"},:before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000)"   do |form|%>
+<% form_remote_for :fee_discount, :url=>{:action=>"student_wise_fee_discount_create"},:before=>"$('submit_button').disable()",:complete=>"setTimeout(function(){$('submit_button').enable();},5000); j('#id_id').val();"   do |form|%>
   <div class="label-field-pair">
     <div class="label-container"><label><%= t('select_discount_type') %><span class="necessary-field">*</span> : </label></div>
     <div class="input-container"> <%= select("fee_discount",:type,[["#{t('one_time')}",1],["#{t('repeat_every_month')}",2]],

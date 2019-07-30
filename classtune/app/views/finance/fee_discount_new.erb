@@ -127,6 +127,46 @@
               }
           });
       });
+      
+      j(document).on("keyup", ".batch_search", function () {
+          var srch_val = this.value;
+          j('.batch_name_srch').each(function(){
+              var batchid = this.id.replace("batch_name_srch_","");
+              var val = j(this).html();
+              if ( val.toLowerCase().indexOf(srch_val.toLowerCase()) == -1  )
+              {
+                  j('.batches_box').each(function(){
+                      if ( this.value == batchid )
+                      {
+                         j(this).removeAttr('checked');
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().hide();
+              }
+              else
+              {
+                  j('.batches_box').each(function(){
+                      if ( this.value == batchid )
+                      {
+                         if ( j(this).prop('checked') == false && j(this).parent().parent().css('display') != 'block')
+                         {
+                            if ( j('#none_click').val() == 1 )
+                            {
+                               j(this).removeAttr('checked');
+                            }
+                            else
+                            {
+                               j(this).prop('checked', true);
+                            }
+                         }
+                         return ;
+                      }
+                  });
+                  j(this).parent().parent().show();
+              }
+          });
+      });
   });
 </script>
 

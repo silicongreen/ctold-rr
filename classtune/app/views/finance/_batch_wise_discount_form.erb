@@ -21,7 +21,7 @@
     
 
 </script>
-<% form_remote_for :fee_discount, :url=>{:action=>"batch_wise_discount_create"},:html=>{:id=>'form'},:before=>"j('.submit_button').attr('disabled', true);",:complete=>"j('.submit_button').attr('value','►#{t('create_text')}');j('.submit_button').attr('disabled', false);" do |form|%>
+<% form_remote_for :fee_discount, :url=>{:action=>"batch_wise_discount_create"},:html=>{:id=>'form'},:before=>"j('.submit_button').attr('disabled', true);",:complete=>"j('.submit_button').attr('value','►#{t('create_text')}');j('.submit_button').attr('disabled', false); j('#id_id').val();" do |form|%>
 
   <div class="label-field-pair">
     <div class="label-container"><label><%= t('select_discount_type') %><span class="necessary-field">*</span> : </label></div>

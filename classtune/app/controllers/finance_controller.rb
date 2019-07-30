@@ -3110,7 +3110,7 @@ class FinanceController < ApplicationController
       end
     end
     render :update do |page|
-      page.replace_html "batchs" ,:partial => "fee_collection_batchs"
+      page.replace_html "batchs" ,:partial => "fee_collection_batchs_discount"
       if is_late == 1
         page << "$('discount_types_radio').hide()"
         page << "j('#fee_discount_discount').css('width','84%')"
@@ -3232,9 +3232,9 @@ class FinanceController < ApplicationController
         finance_fee_particulars = FinanceFeeParticular.active.find(:all,:joins=>[:finance_fee_particular_category],:conditions=>"finance_fee_particulars.finance_fee_category_id =#{params[:id]} and finance_fee_particulars.is_tmp=#{false} and finance_fee_particulars.is_deleted=#{false}",:group=>"finance_fee_particulars.finance_fee_particular_category_id").uniq
         if discount_type.to_i == 1
           fines = Fine.active
-          @particular = [select_options] + finance_fee_particulars.map{|p| [p.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
+          @particular = [select_options] + finance_fee_particulars.map{|p| [p.finance_fee_particular_category.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]} + fines.map{|p| [p.name, "F" + p.id.to_s + "-" + params[:id].to_s]}
         else
-          @particular = [select_options] + finance_fee_particulars.map{|p| [p.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]}
+          @particular = [select_options] + finance_fee_particulars.map{|p| [p.finance_fee_particular_category.name, p.finance_fee_particular_category.id.to_s + "-" + params[:id].to_s]}
         end
       end
     end
@@ -9495,6 +9495,25 @@ class FinanceController < ApplicationController
             unless @fee_discount.save
               @error = true
               raise ActiveRecord::Rollback
+            else
+              if @fee_discount.is_onetime
+                fee_discount_id = @fee_discount.id
+                finance_fees_auto_categories = FinanceFeesAutoCategory.find(:all, :conditions => "finance_fee_category_id = #{@fee_discount.finance_fee_category_id}")
+                unless finance_fees_auto_categories.blank?
+                  finance_fees_auto_categories.each do |finance_fees_auto_category|
+                    fee_discount = FeeDiscount.new(params[:fee_discount])
+                    fee_discount.finance_fee_category_id = finance_fees_auto_category.finance_fee_auto_category_id
+                    fee_discount.receiver_type="Batch"
+                    fee_discount.is_onetime=params[:fee_discount][:type]
+                    fee_discount.batch_id=c
+                    fee_discount.receiver_id = c
+                    fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+                    fee_discount.is_late = is_late
+                    fee_discount.parent_id = fee_discount_id
+                    fee_discount.save
+                  end
+                end
+              end
             end
           end
         end
@@ -9544,6 +9563,24 @@ class FinanceController < ApplicationController
               @error = true
               @fee_discount.errors.add_to_base("#{t('select_student_category')}") if params[:fee_discount][:receiver_id].empty?
               raise ActiveRecord::Rollback
+            else
+              if @fee_discount.is_onetime
+                fee_discount_id = @fee_discount.id
+                finance_fees_auto_categories = FinanceFeesAutoCategory.find(:all, :conditions => "finance_fee_category_id = #{@fee_discount.finance_fee_category_id}")
+                unless finance_fees_auto_categories.blank?
+                  finance_fees_auto_categories.each do |finance_fees_auto_category|
+                    fee_discount = FeeDiscount.new(params[:fee_discount])
+                    fee_discount.finance_fee_category_id = finance_fees_auto_category.finance_fee_auto_category_id
+                    fee_discount.receiver_type="StudentCategory"
+                    fee_discount.is_onetime=params[:fee_discount][:type]
+                    fee_discount.batch_id=c
+                    fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+                    fee_discount.is_late = is_late
+                    fee_discount.parent_id = fee_discount_id
+                    fee_discount.save
+                  end
+                end
+              end
             end
           end
         end
@@ -9611,6 +9648,25 @@ class FinanceController < ApplicationController
             @fee_discount.is_late = is_late
             unless @fee_discount.save
               @error = true
+            else
+              if @fee_discount.is_onetime
+                fee_discount_id = @fee_discount.id
+                finance_fees_auto_categories = FinanceFeesAutoCategory.find(:all, :conditions => "finance_fee_category_id = #{@fee_discount.finance_fee_category_id}")
+                unless finance_fees_auto_categories.blank?
+                  finance_fees_auto_categories.each do |finance_fees_auto_category|
+                    fee_discount =FeeDiscount.new(params[:fee_discount])
+                    fee_discount.finance_fee_category_id = finance_fees_auto_category.finance_fee_auto_category_id
+                    fee_discount.is_onetime=params[:fee_discount][:type]
+                    fee_discount.receiver_type="Student"
+                    fee_discount.receiver_id = s.id
+                    fee_discount.batch_id=s.batch_id
+                    fee_discount.finance_fee_particular_category_id = finance_fee_particular_category_id
+                    fee_discount.is_late = is_late
+                    fee_discount.parent_id = fee_discount_id
+                    fee_discount.save
+                  end
+                end
+              end
             end
           end
         end
@@ -9663,6 +9719,10 @@ class FinanceController < ApplicationController
     unless @fee_discount.update_attributes(params[:fee_discount])
       @error = true
     else
+      if @fee_discount.is_onetime 
+        fee_discount_id = @fee_discount.id
+        fee_discounts = FeeDiscount.find(:all, :conditions => "parent_id = #{fee_discount_id}")
+      end
       @fee_category = @fee_discount.finance_fee_category
       @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@fee_discount.batch_id}'  and is_deleted= 0"])
       #@fee_category.is_collection_open ? @discount_edit = false : @discount_edit = true

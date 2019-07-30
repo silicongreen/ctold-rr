@@ -1,0 +1,53 @@
+<%-# Licensed to the Apache Software Foundation (ASF) under one
+#or more contributor license agreements.  See the NOTICE file
+#distributed with this work for additional information
+#regarding copyright ownership.  The ASF licenses this file
+#to you under the Apache License, Version 2.0 (the
+#"License"); you may not use this file except in compliance
+#with the License.  You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing,
+#software distributed under the License is distributed on an
+#"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#KIND, either express or implied.  See the License for the
+#specific language governing permissions and limitations
+#under the License. -%>
+
+<% if @batches.present? %>
+ <%=hidden_field_tag :category,@fee_category.id if @fee_category%>
+  <div class="batch_select_box" style="padding-bottom: 10px; height: 285px;">
+    <div class="label-field-pair" style="float: left; height: auto;">
+        <div style="display: inline-block; width: 29%; float: left; ">
+            <div style="width: 100%; display: inline-block;">
+              <div class="label-container" style="width: 100%;"><label> <%= t('select_batch') %><span class="necessary-field">*</span>:</label></div>
+            </div>
+        </div>
+        <div class="fee_category_scroll" style="background: #FAFAFA; width: 52%; float: left; overflow: hidden;">
+          <div class="sel-list" style="padding-bottom: 5px; width: 93%; border: none; display: inline-block; vertical-align: top; text-align: right; padding-right: 20px; font-size: 14px;">
+            <%= link_to_function t('all'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = true; });" %> |
+            <%= link_to_function t('none'), "$$('input.batches_box').each(function(checkbox) { checkbox.checked = false; });" %>
+          </div>  
+          <div style="width: 85%; display: inline-block;">
+            <input type="text" name="batch_search" id="batch_search" class="form-field batch_search" />
+          </div>  
+          <div style="height: 165px; overflow-y: auto; width: 98%;">
+            <% @batches.each do |f| %>
+
+              <div class="each_batch" style="padding: 5px 0; width: 100%; ">
+                <% checked = true %>
+                <% unless params[:fee_collection].nil? %>
+                  <% checked = params[:fee_collection][:category_ids].include?(f.id.to_s) if params[:fee_collection][:category_ids].present? %>
+                <% end %>
+                  <div class="checkbox_inline"><%= check_box_tag "fee_collection[category_ids][]", f.id, checked, :class=>'batches_box category_select batches_selected' %></div> 
+                  <div class="checkbox_label" style="width: 90%;"><label id="batch_name_srch_<%= f.id %>" class="batch_name_srch" style="width: 100%;"><%= f.full_name %></label></div>
+              </div>
+
+            <% end %>
+          </div>  
+        </div>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+<% end %>

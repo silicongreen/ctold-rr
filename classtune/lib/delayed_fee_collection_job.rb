@@ -175,6 +175,7 @@ class DelayedFeeCollectionJob
                   fee_discount_new.discount = f.discount
                   fee_discount_new.receiver_type = f.receiver_type
                   fee_discount_new.batch_id = f.batch_id
+                  fee_discount_new.parent_id = f.id
                   fee_discount_new.save
                 end
               end

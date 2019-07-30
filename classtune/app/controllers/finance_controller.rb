@@ -95,7 +95,7 @@ class FinanceController < ApplicationController
       flash[:notice] = "#{t('flash25')}"
     end
   end
-
+  
   def donation_receipt_pdf
     @donation = FinanceDonation.find(params[:id])
     @currency_type = currency
@@ -10503,6 +10503,47 @@ class FinanceController < ApplicationController
   
   def view_scholarships
     @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+  end
+  
+  def download_pdf_scholarships
+    @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    
+    render :pdf => "download_pdf_scholarships",
+      :orientation => 'Portrait',
+      :page_size => 'Legal',
+      :margin => {:top=> 10,
+      :bottom => 10,
+      :left=> 10,
+      :right => 10},
+      :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+      :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+  end
+  
+  def download_excel_scholarships    
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'student_scholarships'
+    
+    row_1 = ['#','Student ID','Student Name','Class, Section','Scholarship Name','Scholarship On','Discount','Amount']
+    new_book.worksheet(0).insert_row(0, row_1)
+    @scholarships = FeeDiscount.find(:all, :conditions => ["finance_fee_category_id = 0"])
+    row_loop = 1
+    sl = 1
+    @scholarships.each do |sc|
+      batch = sc.receiver.batch.nil? ? '' : sc.receiver.batch.course_section
+      type = sc.is_amount == true ? 'BDT'  : '%'
+      discount = sc.discount.to_s+type
+      data_row = [sl,sc.receiver.admission_no, sc.receiver.full_name, batch, sc.name, sc.finance_fee_particular_category.name, discount,'' ]
+      new_book.worksheet(0).insert_row(row_loop, data_row)
+      row_loop+=1
+      sl+=1
+    end
+    
+    sheet1.add_header(Configuration.get_config_value('InstitutionName'))
+    spreadsheet = StringIO.new 
+    new_book.write spreadsheet 
+    send_data spreadsheet.string, :filename => "Student_scholarship.xls", :type =>  "application/vnd.ms-excel"
   end
   
   def update_scholarship

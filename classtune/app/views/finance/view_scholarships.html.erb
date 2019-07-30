@@ -16,12 +16,16 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License. -%>
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Latest compiled JavaScript -->
 <%= stylesheet_link_tag 'tadded-header' %>
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
+<style>
+    table.dataTable thead th, table.dataTable thead td{border-bottom: 2px solid #ccc !important; background-color: #4CAF50; color: #fff;}
+</style>
 <div id="content-header">
     <%= show_header_icon %>
     <h1><%= t('fee_discounts') %></h1>
@@ -35,18 +39,13 @@
     <div id="inner-tab-menu">
         <ul>
             <li class='themed_bg themed-dark-hover-background'>
-                <%= link_to "#{t('view_discount')}", :action=>'fee_discounts'%>
-            </li>
-            <li class='themed_bg themed-dark-hover-background'>
                 <%= link_to "View Scholarship", :action=>'view_scholarships'%>
             </li>
         </ul>
-
     </div>
-
 </div>
 <div id="page-yield">
-    <div class="bread_crumb">
+    <div class="bread_crumb" style="position:relative;">
         <%= link_to t('finance_text'), :controller => "finance", :action=>"index" %>
         <div class = "bread-crumb-separator">
             >
@@ -56,22 +55,33 @@
             >
         </div>
         View Scholarship
+        <div id="inner-tab-menu" style="position:absolute; top: -30px; right: -20px;">
+        <ul>
+            <li class='themed_bg themed-dark-hover-background'>
+                <a href="/finance/download_pdf_scholarships" target="_blank">Download PDF</a>
+            </li>
+            <li class='themed_bg themed-dark-hover-background'>
+                <a href="/finance/download_excel_scholarships" >Download Excel</a>
+            </li>
+        </ul>
     </div>
+    </div>
+    
     <div id="flash_box"></div>
     <% unless flash[:notice].nil? %>
       <p class="flash-msg">
           <%= flash[:notice] %>
       </p>
     <% end %>
-    <h2 style="text-align: center;">Scholarship Students</h2>
+
+    <h2 style="text-align: center;">Scholarship</h2>
     <hr/>
-    <table id="scholarshipTable" class="row-border compact stripe hover">
+    <table id="scholarshipTable" class="table-bordered" style="padding-top:15px; border: none;">
         <thead>
             <tr>
                 <th></th>
                 <th>Student ID</th>
-                <th>Name</th>
-                <th>Batch</th>
+                <th>Student Info</th>
                 <th>Scholarship Name</th>
                 <th>Scholarship On</th>
                 <th>Discount</th>
@@ -85,8 +95,7 @@
                   <tr id="deleteID-<%= sc.id %>">
                       <td></td>
                       <td><%= sc.receiver.admission_no %></td>
-                      <td><%= sc.receiver.full_name %></td>
-                      <td><%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %></td>
+                      <td style="text-align:left; line-height: 24px;"><%= sc.receiver.full_name %> <br/> (<%= sc.receiver.batch.course_section unless sc.receiver.batch.nil? %>)</td>
                       <td><%= sc.name %></td>
                       <td><%= sc.finance_fee_particular_category.name %></td>
                       <td><span id="editID-<%= sc.id %>"><%= precision_label sc.discount %> <%= sc.is_amount == true ? 'BDT'  : '%' %></span></td>
@@ -177,26 +186,6 @@
                   "targets": 0
               }],
           "order": [[1, 'asc']],
-          dom: 'Bfrtip',
-          buttons: [
-              {
-                  extend: 'csv',
-                  title: 'Scholarship Students',
-                  className: 'dataTableButton',
-                  exportOptions: {
-                      columns: 'th:not(:last-child)'
-                  }
-              },
-              {
-                  extend: 'pdfHtml5',
-                  download: 'open',
-                  title: 'Scholarship Students',
-                  className: 'dataTableButton',
-                  exportOptions: {
-                      columns: 'th:not(:last-child)'
-                  }
-              }
-          ]
       });
 
       t.on('order.dt search.dt', function () {
@@ -249,13 +238,13 @@
     }
     button{cursor: pointer;}
     .dataTableButton{
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 5px 7px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 5px 7px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
     }
 </style>
 

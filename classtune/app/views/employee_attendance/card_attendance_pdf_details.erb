@@ -223,7 +223,11 @@
                         <% weekdate = em[10].split(",").map{|c| c.to_date} %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>" style="border-bottom: 1px solid #000;">
                             <% if newPage %>
-                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a %u")})"  %></td>
+                            <% if em[2].to_date.strftime("%u").to_i == 5 or em[2].to_date.strftime("%u").to_i == 6 %>
+                            <td class="col-pdf" style="border-right: 2px solid #000; font-weight: bold;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
+                            <% else %>
+                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
+                            <% end %>
                             <% end %>
                             <td class="col-pdf"><%= em[5]  %></td>
                             <td class="col-pdf"><%= em[6]  %></td>

@@ -5840,7 +5840,7 @@ class ExamController < ApplicationController
                         end
                       end
                     end 
-                  elsif subject_failed == false
+                  elsif subject_failed == false and four_subject_failed == false
                     grade = GradingLevel.percentage_to_grade(main_mark1, @batch.id)
                     if !grade.blank? and !grade.name.blank? and sub['subject_group_id'].to_i == 0
 

@@ -223,15 +223,20 @@
                       <% employee_attendances.each_with_index do |em, ind| %>
                         <% weekdate = em[10].split(",").map{|c| c.to_date} %>
                         <tr class="<%= cycle('odd_summary', 'even_summary') %>" style="border-bottom: 1px solid #000;">
-                            <% if newPage %>
                             <% if em[2].to_date.strftime("%u").to_i == 5 or em[2].to_date.strftime("%u").to_i == 6 %>
                             <% friday_saturday_style = "font-weight: bold;" %>
-                            <td class="col-pdf" style="border-right: 2px solid #000; font-weight: bold;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
                             <% else %>
                             <% friday_saturday_style = "font-weight: normal;" %>
-                            <td class="col-pdf" style="border-right: 2px solid #000;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
                             <% end %>
+                            
+                            <% if newPage %>
+                              <% if em[2].to_date.strftime("%u").to_i == 5 or em[2].to_date.strftime("%u").to_i == 6 %>
+                              <td class="col-pdf" style="border-right: 2px solid #000; font-weight: bold;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
+                              <% else %>
+                              <td class="col-pdf" style="border-right: 2px solid #000;"><%= "#{em[2]} (#{em[2].to_date.strftime("%a")})"  %></td>
+                              <% end %>
                             <% end %>
+                            
                             <td class="col-pdf" style="<%= friday_saturday_style %>"><%= em[5]  %></td>
                             <td class="col-pdf" style="<%= friday_saturday_style %>"><%= em[6]  %></td>
                             <td class="col-pdf" style="<%= friday_saturday_style %>">

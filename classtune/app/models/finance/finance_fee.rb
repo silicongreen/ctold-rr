@@ -775,6 +775,15 @@ class FinanceFee < ActiveRecord::Base
     bal
   end
   
+  def self.check_update_student_fee_without_discount(date, s, fee)
+    fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{s.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==s.batch) }
+    total_payable=fee_particulars.map{|st| st.amount}.sum.to_f
+    total_discount = 0
+
+    bal = ( total_payable - total_discount )
+    bal
+  end
+  
   def set_ledger
     student_fee_ledger = StudentFeeLedger.new
     student_fee_ledger.student_id = student_id

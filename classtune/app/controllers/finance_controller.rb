@@ -3742,18 +3742,21 @@ class FinanceController < ApplicationController
   end
   
   def fee_collection_assign_discount
-    @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime(params[:batch_id], true )
     @fee_collection_id = params[:id]
-    @batch_id = params[:batch_id]
-    @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
+    @fee_collection = FinanceFeeCollection.find(:first, :conditions => "id = #{@fee_collection_id}")
+    unless @fee_collection.blank?
+      @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_finance_fee_category_id_and_is_deleted_and_is_visible(params[:batch_id], true, @fee_collection.fee_category_id, false, true )
+      @batch_id = params[:batch_id]
+      @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
+    end
   end
   
   def fee_collection_assign_discount_student
     @student = Student.find(params[:student_id])
     @fee_collection_id = params[:id]
-    collection = FinanceFeeCollection.find(:first, :conditions => "id = #{@fee_collection_id}")
-    unless collection.blank?
-      @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_receiver_type_and_receiver_id_and_finance_fee_category_id_and_is_deleted(params[:batch_id], true, 'Student', params[:student_id], collection.fee_category_id, false )
+    @fee_collection = FinanceFeeCollection.find(:first, :conditions => "id = #{@fee_collection_id}")
+    unless @fee_collection.blank?
+      @discounts = FeeDiscount.find_all_by_batch_id_and_is_onetime_and_receiver_type_and_receiver_id_and_finance_fee_category_id_and_is_deleted_and_is_visible(params[:batch_id], true, 'Student', params[:student_id], @fee_collection.fee_category_id, false, true )
       @batch_id = params[:batch_id]
       @fee_collection_discount = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id(@fee_collection_id, params[:batch_id]).map(&:fee_discount_id)
     end
@@ -3851,18 +3854,55 @@ class FinanceController < ApplicationController
                 collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
                 collection_discount.save
                 
-                @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
-
-                s = @fee.student
-
                 found = false
-                unless s.has_paid_fees
-                  bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
-                  if bal >= 0
-                    found = true
-                    FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                error_text = ""
+                if discount.finance_fee_particular_category_id == 0
+                  @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
+                  s = @fee.student
+
+                  found = false
+                  unless s.has_paid_fees
+                    bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
+                    if bal >= 0
+                      found = true
+                      FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                    else
+                      found = false
+                      collection_discount.destroy
+                    end
+                  end
+                  unless found 
+                    error_text = "Student Discount can't be assign, discount amount is greater than Fee Amount"
+                  end
+                else
+                  student = Student.find(:first, :conditions => "id = #{receiver_id.to_i}")
+                  unless student.nil?
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                    amount = fee_particulars.map(&:amount).sum
+                    discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
+                    collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                    fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                    unless fee_discount_ids.blank?
+                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                      fee_discounts.each do |f_discount|
+                        discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                      end
+                    end
+                    remaining_amount = amount - discount_amt
+                    if remaining_amount >= 0
+                      found = true
+                      @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+                      FinanceFee.update_student_fee(@fee_collection, student, @fee)
+                    else
+                      found = false
+                      collection_discount.destroy
+                    end
                   else
-                    collection_discount.destroy
+                    found = false
+                  end
+                  unless found 
+                    error_text = "Student Discount can't be assign, discount amount is greater than Particular Amount"
                   end
                 end
                 
@@ -3904,7 +3944,7 @@ class FinanceController < ApplicationController
                 else
                   collection_discount.destroy
                   render :update do |page|
-                    page.replace_html 'student_discount_error', :text => "Student Discount can't be assign, discount amount is greater than Fee amount"
+                    page.replace_html 'student_discount_error', :text => error_text
                     page << "$('student_discount_div').show();"
                     page << "setTimeout(function(){$('student_discount_div').hide();}, 3000)"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
@@ -3996,21 +4036,55 @@ class FinanceController < ApplicationController
                 collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
                 collection_discount.save
                 
-                @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
-
-                s = @fee.student
-
                 found = false
-                unless s.has_paid_fees
-                  bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
-                  if bal >= 0
-                    found = true
-                    FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                if discount.finance_fee_particular_category_id == 0
+                  @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+
+                  s = @fee.student
+
+                  unless s.has_paid_fees
+                    bal = FinanceFee.check_update_student_fee(@fee_collection, s, @fee)
+                    if bal >= 0
+                      found = true
+                      FinanceFee.update_student_fee(@fee_collection, s, @fee)
+                    else
+                      found = true
+                      collection_discount.destroy
+                    end
+                  end
+                  unless found 
+                    error_text = "Student Discount can't be assign, discount amount is greater than Fee amount"
+                  end
+                else
+                  student = Student.find(:first, :conditions => "id = #{receiver_id.to_i}")
+                  unless student.nil?
+                    fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                    amount = fee_particulars.map(&:amount).sum
+                    discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
+                    collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                    fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                    unless fee_discount_ids.blank?
+                      fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                      fee_discounts.each do |f_discount|
+                        discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                      end
+                    end
+                    remaining_amount = amount - discount_amt
+                    if remaining_amount >= 0
+                      found = true
+                      @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+                      FinanceFee.update_student_fee(@fee_collection, student, @fee)
+                    else
+                      found = false
+                      collection_discount.destroy
+                    end
                   else
-                    collection_discount.destroy
+                    found = false
+                  end
+                  unless found 
+                    error_text = "Student Discount can't be assign, discount amount is greater than Particular Amount"
                   end
                 end
-                
                 if found
                   fee_discount_collection = FeeDiscountCollection.new(
                     :finance_fee_collection_id => @fee_collection_id,
@@ -4025,7 +4099,7 @@ class FinanceController < ApplicationController
                 else
                   collection_discount.destroy
                   render :update do |page|
-                    page.replace_html 'student_discount_error', :text => "Student Discount can't be assign, discount amount is greater than Fee amount"
+                    page.replace_html 'student_discount_error', :text => error_text
                     page << "$('student_discount_div').show();"
                     page << "setTimeout(function(){$('student_discount_div').hide();}, 3000)"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
@@ -4072,19 +4146,82 @@ class FinanceController < ApplicationController
                 collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
                 collection_discount.save
                 
-                @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and students.batch_id = #{batch_id} and is_paid=#{false} and student_categories.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN student_categories ON student_categories.id = students.student_category_id ")
                 found = true
                 std_ids = []
-                k = 0
-                @fees.each do |f|
-                  s = f.student
-                  
-                  unless s.has_paid_fees
-                    bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
-                    if bal < 0
-                      found = false
-                      std_ids[k] = {:admission_no => s.admission_no, :full_name => s.full_name, :sid => s.id, :roll_no => s.class_roll_no, :balance => f.balance}
-                      k += 1
+                total_fee_discount = false
+                if discount.finance_fee_particular_category_id == 0
+                  total_fee_discount = true
+                  @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and students.batch_id = #{batch_id} and is_paid=#{false} and student_categories.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN student_categories ON student_categories.id = students.student_category_id ")
+                  k = 0
+                  @fees.each do |f|
+                    s = f.student
+
+                    unless s.has_paid_fees
+                      bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
+                      if bal < 0
+                        discount_amt = bal * discount.discount.to_f/ (discount.is_amount?? bal : 100)
+                        collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        unless fee_discount_ids.blank?
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts.each do |f_discount|
+                            discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
+                          end
+                        end
+                        
+                        found = false
+                        std_ids[k] = {:admission_no => s.admission_no, :full_name => s.full_name, :sid => s.id, :roll_no => s.class_roll_no, :balance => f.balance, :discount_amt => discount_amt}
+                        k += 1
+                      end
+                    end
+                  end
+                  unless found 
+                    error_text = "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_category' style='font-size: 12px;'>List of students</a>"
+                  end
+                else
+                  batch = Batch.find(batch_id)
+                  unless batch.blank?
+                    students = batch.students
+                    k = 0
+                    unless students.blank?
+                      students.each do |student|
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                        amount = fee_particulars.map(&:amount).sum
+                        discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
+                        collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        unless fee_discount_ids.blank?
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts.each do |f_discount|
+                            discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                          end
+                        end
+                        remaining_amount = amount - discount_amt
+                        if remaining_amount < 0
+                          found = false
+                          std_ids[k] = {:admission_no => student.admission_no, :full_name => student.full_name, :sid => student.id, :roll_no => student.class_roll_no, :balance => amount, :discount_amt => discount_amt}
+                          k += 1
+                        end
+                      end
+                      unless found 
+                        error_text = "Some Student Discount can't be assign, discount amount is greater than Particular amount. <br /><a href='javascript:;' id='list_of_student_category' style='font-size: 12px;'>List of students</a>"
+                      end
+                    else
+                      render :update do |page|
+                        page.replace_html 'category_discount_error', :text => "Some Error occur while assigning Discount, Students not found please contact Administrator"
+                        page << "$('category_discount_div').show();"
+                        page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
+                        page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
+                        page << "j('#assign_student_#{@discount_id.to_s}').removeAttr('data-onclick');"
+                      end
+                    end
+                  else
+                    render :update do |page|
+                      page.replace_html 'category_discount_error', :text => "Some Error occur while assigning Discount, Batch not found please contact Administrator"
+                      page << "$('category_discount_div').show();"
+                      page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
+                      page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
+                      page << "j('#assign_student_#{@discount_id.to_s}').removeAttr('data-onclick');"
                     end
                   end
                 end
@@ -4115,15 +4252,22 @@ class FinanceController < ApplicationController
                     data_std += "<tr>"
                     data_std += "<td style='text-align: left;'><a href='/student/fee_details/" + s[:sid].to_s + "/"  + @fee_collection_id.to_s + "' target='_blank'>" + s[:admission_no] + "</a></td>"
                     data_std += "<td style='text-align: left;'>" + s[:full_name] + "</td>"
-                    data_std += "<td style='text-align: left;'>" + s[:roll_no] + "</td>"
+                    data_std += "<td style='text-align: center;'>" + s[:roll_no] + "</td>"
                     fbal = sprintf('%.2f', s[:balance])
-                    data_std += "<td style='text-align: right;'>" + fbal.to_s + "</td>"
+                    data_std += "<td style='text-align: right; padding-right: 5px;'>" + fbal.to_s + "</td>"
+                    fdiscount = sprintf('%.2f', s[:discount_amt])
+                    data_std += "<td style='text-align: right; padding-right: 5px;'>" + fdiscount.to_s + "</td>"
                     data_std += "</tr>"
                   end
-                  
+                  balance_txt = "Balance"
+                  unless total_fee_discount
+                    balance_txt = "Total Particular Amount"
+                  end
+                   
                   render :update do |page|
                     page.replace_html 'student_list_mismatch_discount', :text => data_std
-                    page.replace_html 'category_discount_error', :text => "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_category' style='font-size: 12px;'>List of students</a>"
+                    page.replace_html 'category_discount_error', :text => error_text
+                    page.replace_html 'balance_txt_catgory', :text => balance_txt
                     page << "$('category_discount_div').show();"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
@@ -4169,20 +4313,82 @@ class FinanceController < ApplicationController
                 collection_discount = CollectionDiscount.new(:fee_discount_id=>discount.id,:finance_fee_collection_id=>@fee_collection_id, :finance_fee_particular_category_id => discount.finance_fee_particular_category_id)
                 collection_discount.save
                 
-                @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and finance_fees.batch_id = #{batch_id} and is_paid=#{false} and students.batch_id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN batches ON batches.id = students.batch_id ")
-                
                 found = true
                 std_ids = []
-                k = 0
-                @fees.each do |f|
-                  s = f.student
-                  
-                  unless s.has_paid_fees
-                    bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
-                    if bal < 0
-                      found = false
-                      std_ids[k] = {:admission_no => s.admission_no, :full_name => s.full_name, :sid => s.id, :roll_no => s.class_roll_no, :balance => f.balance}
-                      k += 1
+                total_fee_discount = false
+                if discount.finance_fee_particular_category_id == 0
+                  total_fee_discount = true
+                  @fees = FinanceFee.find(:all, :conditions=>"fee_collection_id = #{@fee_collection_id} and finance_fees.batch_id = #{batch_id} and is_paid=#{false} and students.batch_id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id INNER JOIN batches ON batches.id = students.batch_id ")
+
+                  k = 0
+                  @fees.each do |f|
+                    s = f.student
+
+                    unless s.has_paid_fees
+                      bal = FinanceFee.check_update_student_fee(@fee_collection, s, f)
+                      if bal < 0
+                        discount_amt = bal * discount.discount.to_f/ (discount.is_amount?? bal : 100)
+                        collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        unless fee_discount_ids.blank?
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts.each do |f_discount|
+                            discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
+                          end
+                        end
+                        found = false
+                        std_ids[k] = {:admission_no => s.admission_no, :full_name => s.full_name, :sid => s.id, :roll_no => s.class_roll_no, :balance => f.balance, :discount_amt => discount_amt}
+                        k += 1
+                      end
+                    end
+                  end
+                  unless found 
+                    error_text = "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_batch' style='font-size: 12px;'>List of students</a>"
+                  end
+                else
+                  batch = Batch.find(batch_id)
+                  unless batch.blank?
+                    students = batch.students
+                    k = 0
+                    unless students.blank?
+                      students.each do |student|
+                        fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+                        amount = fee_particulars.map(&:amount).sum
+                        discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
+                        collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        unless fee_discount_ids.blank?
+                          fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
+                          fee_discounts.each do |f_discount|
+                            discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                          end
+                        end
+                        remaining_amount = amount - discount_amt
+                        if remaining_amount < 0
+                          found = false
+                          std_ids[k] = {:admission_no => student.admission_no, :full_name => student.full_name, :sid => student.id, :roll_no => student.class_roll_no, :balance => amount, :discount_amt => discount_amt}
+                          k += 1
+                        end
+                      end
+                      unless found 
+                        error_text = "Some Student Discount can't be assign, discount amount is greater than Particular amount. <br /><a href='javascript:;' id='list_of_student_batch' style='font-size: 12px;'>List of students</a>"
+                      end
+                    else
+                      render :update do |page|
+                        page.replace_html 'batch_discount_error', :text => "Some Error occur while assigning Discount, Students not found please contact Administrator"
+                        page << "$('batch_discount_div').show();"
+                        page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
+                        page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
+                        page << "j('#assign_student_#{@discount_id.to_s}').removeAttr('data-onclick');"
+                      end
+                    end
+                  else
+                    render :update do |page|
+                      page.replace_html 'batch_discount_error', :text => "Some Error occur while assigning Discount, Batch not found please contact Administrator"
+                      page << "$('batch_discount_div').show();"
+                      page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
+                      page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
+                      page << "j('#assign_student_#{@discount_id.to_s}').removeAttr('data-onclick');"
                     end
                   end
                 end
@@ -4213,15 +4419,23 @@ class FinanceController < ApplicationController
                     data_std += "<tr>"
                     data_std += "<td style='text-align: left;'><a href='/student/fee_details/" + s[:sid].to_s + "/"  + @fee_collection_id.to_s + "' target='_blank'>" + s[:admission_no] + "</a></td>"
                     data_std += "<td style='text-align: left;'>" + s[:full_name] + "</td>"
-                    data_std += "<td style='text-align: left;'>" + s[:roll_no] + "</td>"
+                    data_std += "<td style='text-align: center;'>" + s[:roll_no] + "</td>"
                     fbal = sprintf('%.2f', s[:balance])
+                    fdiscount = sprintf('%.2f', s[:discount_amt])
                     data_std += "<td style='text-align: right;'>" + fbal.to_s + "</td>"
+                    data_std += "<td style='text-align: right; padding-right: 5px;'>" + fdiscount.to_s + "</td>"
                     data_std += "</tr>"
+                  end
+                  
+                  balance_txt = "Balance"
+                  unless total_fee_discount
+                    balance_txt = "Total Particular Amount"
                   end
                   
                   render :update do |page|
                     page.replace_html 'student_list_mismatch_discount_batch', :text => data_std
-                    page.replace_html 'batch_discount_error', :text => "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_batch' style='font-size: 12px;'>List of students</a>"
+                    page.replace_html 'batch_discount_error', :text => error_text
+                    page.replace_html 'balance_txt_batch', :text => balance_txt
                     page << "$('batch_discount_div').show();"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('href','#');"
                     page << "j('#assign_student_#{@discount_id.to_s}').attr('onclick',j('#assign_student_#{@discount_id}').data('onclick'));"
@@ -9715,6 +9929,8 @@ class FinanceController < ApplicationController
   end
 
   def update_fee_discount
+    #collection_discounts = CollectionDiscount.find(:all, :conditions => "")
+    #@fee_discount.errors.add_to_base("#{t('admission_cant_be_blank')}")
     @fee_discount = FeeDiscount.find(params[:id])
     unless @fee_discount.update_attributes(params[:fee_discount])
       @error = true
@@ -9722,6 +9938,9 @@ class FinanceController < ApplicationController
       if @fee_discount.is_onetime 
         fee_discount_id = @fee_discount.id
         fee_discounts = FeeDiscount.find(:all, :conditions => "parent_id = #{fee_discount_id}")
+        unless fee_discounts.blank?
+          
+        end
       end
       @fee_category = @fee_discount.finance_fee_category
       @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@fee_discount.batch_id}'  and is_deleted= 0"])

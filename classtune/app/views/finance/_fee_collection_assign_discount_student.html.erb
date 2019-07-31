@@ -22,29 +22,49 @@
     <p class="flash-msg"> <%= flash[:notice] %> </p>
   <% end %>
     
-  <h2>Discount </h2>  
+  <h2 style="display: inline-block; padding-right: 20px; vertical-align: top;">Student Info: </h2>
+  <span style="display: inline-block; font-family: verdana; font-size: 20px; padding-top: 24px;"><%= @student.admission_no %> - <%= @student.full_name %><Br /><small style="font-size: 12px;"><%= @student.batch.full_name %></small></span>
+  <div style="clear: both; height: 20px;"></div>
   <% student_discount = @discounts.select{|d| d.receiver_type == 'Student'} %>
   <% if student_discount.length > 0 %>
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
     <thead><!-- class="thead-inverse" -->
       <tr>
-        <th style="width: 40%;"><%= t('student_info') %></th>
-        <th style="width: 30%;"><%= t('name_of_discount') %></th>
-        <th style="text-align: center; width: 20%;"><%= t('discount') %></th>
-        <th style="text-align: center; width: 10%;"><%= t('action') %></th>
+        <th style="width: 30%; vertical-align: middle;"><%= t('name_of_discount') %></th>
+        <th style="width: 20%; vertical-align: middle;"><%= t('discount_on') %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= t('discount') %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= "Fee Amount" %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= "Waiver Amount" %></th>
+        <th style="text-align: center; width: 10%; vertical-align: middle;"></th>
       </tr>
     </thead>
     <tbody>
     <tr id="student_discount_div" style="display: none;"><td colspan="6" style="text-align: center;"><p id="student_discount_error" class="flash-msg"></p></td></tr>
     <% student_discount.each do |f| %>
       <tr class="<%= cycle('odd', 'even')%>">
-        <td class="col-3"><%= @student.admission_no %> - <%= @student.full_name %></td>
         <td class="col-3"><%= f.name %></td>
+        <td class="col-3"><%= f.finance_fee_particular_category_id == 0 ? "Total Fees" : f.finance_fee_particular_category.name %></td>
         <td class="col-3" style="text-align: right; padding-right: 10px;">
-          <%= f.is_amount?? "#{precision_label(f.discount)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+          <%= f.is_amount?? "#{precision_label(f.discount)} BDT"  : "#{precision_label(f.discount)} #{"(%)"}" %>
         </td>
-       
-        <td class="col-1">
+        <%
+          if f.finance_fee_particular_category_id == 0
+            fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection.id} and is_paid=#{false} and students.id = #{@student.id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
+            amount = FinanceFee.check_update_student_fee_without_discount(@fee_collection, @student, fee)
+            discount_amt = amount * f.discount.to_f/ (f.is_amount?? amount : 100)
+          else
+            fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@student.batch_id} and finance_fee_particular_category_id = #{f.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
+            amount = fee_particulars.map(&:amount).sum
+            discount_amt = amount * f.discount.to_f/ (f.is_amount?? amount : 100)
+          end
+        %>
+        <td class="col-3" style="text-align: right; padding-right: 10px;">
+          <%= precision_label amount %>
+        </td>
+        <td class="col-3" style="text-align: right; padding-right: 10px;">
+            <%= precision_label discount_amt %>
+        </td>
+        <td class="col-1" style="text-slign: center;">
           <div id="discount_option_<%= f.id %>" class="options">
             <% if @fee_collection_discount.include?(f.id) %>  
             <span class="small_warning"> <%= link_to_remote "#{t('remove_assign')}",:confirm=>"#{t('assign_remove_msg')}", :html => {:id=>"remove_student_#{f.id}"},:url => {:action => 'remove_fee_discount_from_collection_student', :id => f.id,:fee_collection_id=>@fee_collection_id,:batch_id=>@batch_id,:type_discount=>"student", :receiver_id=>f.receiver_id},:before => "Element.show('loader_#{f.id}');j('#remove_student_#{f.id}').attr('href','javascript:;');j('#remove_student_#{f.id}').attr('data-onclick',j('#remove_student_#{f.id}').attr('onclick'));j('#remove_student_#{f.id}').removeAttr('onclick');", :success => "Element.hide('loader_#{f.id}')" %></span>  
@@ -68,15 +88,17 @@
   <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
     <thead><!-- class="thead-inverse" -->
       <tr>
-        <th style="width: 40%;"><%= t('student_info') %></th>
-        <th style="width: 30%;"><%= t('name_of_discount') %></th>
-        <th style="text-align: center; width: 20%;"><%= t('discount') %></th>
-        <th style="text-align: center; width: 10%;"><%= t('action') %></th>
+        <th style="width: 30%; vertical-align: middle;"><%= t('name_of_discount') %></th>
+        <th style="width: 20%; vertical-align: middle;"><%= t('discount_on') %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= t('discount') %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= "Fee Amount" %></th>
+        <th style="text-align: center; width: 20%; vertical-align: middle;"><%= "Waiver Amount" %></th>
+        <th style="text-align: center; width: 10%; vertical-align: middle;"></th>
       </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan="4"><%= t('no_discount_found_student_wise') %></td>
+            <td colspan="6"><%= t('no_discount_found_student_wise') %></td>
         </tr>
     </tbody>  
   </table>

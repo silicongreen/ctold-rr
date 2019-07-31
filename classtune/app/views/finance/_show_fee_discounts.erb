@@ -31,6 +31,7 @@
               <tr>
                   <th><%= t('name') %></th>
                   <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('discount_on') %></th>
                   <th><%= t('discount') %></th>
                   <th></th>
               </tr>
@@ -40,11 +41,12 @@
                 <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
                     <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
                     <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-                        <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.finance_fee_particular_category_id == 0 ? "Total Fees" : f.finance_fee_particular_category.name %></td>
+                    <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: right; padding-right: 10px;">
+                        <%= f.is_amount?? "#{precision_label(f.discount)} BDT"  : "#{precision_label(f.discount)} #{"(%)"}" %>
                     </td>
 
-                    <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                    <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: center;">
                         <div class="options">
                             <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
                             <%if f.collection_exist%>
@@ -63,13 +65,14 @@
               <tr>
                   <th><%= t('name') %></th>
                   <th><%= t('discount_type_txt') %></th>
+                  <th><%= t('discount_on') %></th>
                   <th><%= t('discount') %></th>
                   <th></th>
               </tr>
           </thead>
           <tbody>
               <tr>
-                  <td colspan="4"><%= t('no_discount_found_batch_wise') %></td>
+                  <td colspan="5"><%= t('no_discount_found_batch_wise') %></td>
               </tr>
           </tbody>  
       </table>
@@ -84,6 +87,7 @@
             <tr>
                 <th><%= t('name') %></th>
                 <th><%= t('discount_type_txt') %></th>
+                <th><%= t('discount_on') %></th>
                 <th><%= t('student_category') %></th>
                 <th><%= t('discount') %></th>
                 <th></th>
@@ -94,12 +98,13 @@
               <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.finance_fee_particular_category_id == 0 ? "Total Fees" : f.finance_fee_particular_category.name %></td>
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.category_name %></td>
-                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-                      <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: right; padding-right: 10px;">
+                      <%= f.is_amount?? "#{precision_label(f.discount)} BDT"  : "#{precision_label(f.discount)} #{"(%)"}" %>
                   </td>
 
-                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: center;">
                       <div class="options">
                           <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
                           <%if f.collection_exist%>
@@ -118,6 +123,7 @@
             <tr>
                 <th><%= t('name') %></th>
                 <th><%= t('discount_type_txt') %></th>
+                <th><%= t('discount_on') %></th>
                 <th><%= t('student_category') %></th>
                 <th><%= t('discount') %></th>
                 <th></th>
@@ -125,7 +131,7 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="5"><%= t('no_discount_found_student_category_wise') %></td>
+                <td colspan="6"><%= t('no_discount_found_student_category_wise') %></td>
             </tr>
         </tbody>  
     </table>
@@ -142,8 +148,8 @@
             <tr>
                 <th><%= t('name') %></th>
                 <th><%= t('discount_type_txt') %></th>
-                <th><%= t('student_name') %></th>
-                <th><%= t('admission_no') %></th>
+                <th><%= t('discount_on') %></th>
+                <th><%= "Student Info"  %></th>
                 <th><%= t('discount') %></th>
                 <th></th>
             </tr>
@@ -153,13 +159,20 @@
               <tr class="<%= cycle('odd', 'even')%> <%= (f.is_onetime) ? "info-border" : '' %>">
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.name %></td>
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= (f.is_onetime) ? "One Time" : 'Repeat' %></td>
-                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_short_name %></td>
-                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.student_admission_no %></td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>"><%= f.finance_fee_particular_category_id == 0 ? "Total Fees" : f.finance_fee_particular_category.name %></td>
                   <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>">
-                      <%= f.is_amount?? "#{precision_label(f.discount)}#{(currency)}"  : "#{precision_label(f.discount)}#{"(%)"}" %>
+                      <% student = Student.find(:first, :conditions => "id = #{f.receiver_id}") %>
+                      <% unless student.nil?  %>
+                      <b><%= student.full_name %></b><br />
+                      <small><%= student.admission_no %></small><br />
+                      <small><%= student.batch.full_name %></small>
+                      <% end %>
+                  </td>
+                  <td class="col-3 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: right; padding-right: 10px;">
+                      <%= f.is_amount?? "#{precision_label(f.discount)} BDT"  : "#{precision_label(f.discount)} #{"(%)"}" %>
                   </td>
 
-                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>">
+                  <td class="col-1 <%= (f.is_onetime) ? "info" : '' %>" style="text-align: center;">
                       <div class="options">
                           <span class="small"> <%= link_to_remote "#{t('delete_text')}",:confirm=>"#{t('delete_confirm_msg')}",:url => {:action => 'delete_fee_discount', :id => f.id,:batch_id=>f.batch_id} %></span>
                           <%if f.collection_exist%>
@@ -178,6 +191,7 @@
             <tr>
                 <th><%= t('name') %></th>
                 <th><%= t('discount_type_txt') %></th>
+                <th><%= t('discount_on') %></th>
                 <th><%= t('student_name') %></th>
                 <th><%= t('admission_no') %></th>
                 <th><%= t('discount') %></th>

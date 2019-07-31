@@ -82,7 +82,7 @@ class FeeDiscount < ActiveRecord::Base
           #  errors.add_to_base(t('discount_cannot_be_zero'))
           #end
         elsif finance_fee_particular_category_id > 0 and !is_late
-
+          
           particulars = finance_fee_category.fee_particulars.all(:group=>["receiver_type,receiver_id"],:select=>("sum(finance_fee_particulars.amount) as pamt,receiver_type,receiver_id"),:conditions=>"batch_id='#{batch_id}' and finance_fee_particular_category_id=#{finance_fee_particular_category_id} and is_deleted=false")
 
           if receiver_type=='StudentCategory'

@@ -167,9 +167,9 @@ class OtherController < ApplicationController
                   new_book.worksheet(0).insert_row(startrow+11, row_11)
                   border_bottom.push(startrow+11)
                    
-                  designation = gurdian.occupation.blank? ? '' : gurdian.designation  
-                  idno = gurdian.occupation.blank? ? '' : gurdian.passport
-                  row_12 = ['','Designation: '+designation,'Passport / ID No: '+idno,'','']
+                  designation = gurdian.occupation.blank? ? ' ' : gurdian.designation  
+                  idno = gurdian.occupation.blank? ? ' ' : gurdian.passport
+                  row_12 = ['','Designation: '+designation.to_s,'Passport / ID No: '+idno.to_s,'','']
                   new_book.worksheet(0).insert_row(startrow+12, row_12)
                   border_bottom.push(startrow+12)
                    
@@ -179,14 +179,14 @@ class OtherController < ApplicationController
               end
             end
           end
-          address = std.address_line1.blank? ? '' : std.address_line1
-          land_phone = std.phone1.blank? ? '': std.phone1.to_s 
-          row_13 = ['','Present Address: '+address,'','Land Phone(Res): '+land_phone]
+          address = std.address_line1.blank? ? ' ' : std.address_line1
+          land_phone = std.phone1.blank? ? ' ': std.phone1.to_s 
+          row_13 = ['','Present Address: '+address.to_s,'','Land Phone(Res): '+land_phone.to_s]
           new_book.worksheet(0).insert_row(startrow+13, row_13)
           border_bottom.push(startrow+13)
            
           address_row.push(startrow+13)
-          row_14 = ['','Office: '+office_phone ,'Mobile Phone (Father): '+father_mobile,'(Mother): '+mother_mobile]
+          row_14 = ['','Office: '+office_phone.to_s ,'Mobile Phone (Father): '+father_mobile.to_s,'(Mother): '+mother_mobile.to_s]
           new_book.worksheet(0).insert_row(startrow+14, row_14)
           border_bottom.push(startrow+14)
            

@@ -81,7 +81,7 @@ class OtherController < ApplicationController
       new_book = Spreadsheet::Workbook.new
       sheet1 = new_book.create_worksheet :name => 'student_record'
       center_align_format = Spreadsheet::Format.new :weight => :bold, :horizontal_align => :center, :vertical_align => :middle, :size => 13
-      large_bold_format = Spreadsheet::Format.new :weight => :bold,:size => 18, :horizontal_align => :center, :vertical_align => :middle
+      large_bold_format = Spreadsheet::Format.new :weight => :bold, :size => 18, :horizontal_align => :center, :vertical_align => :middle
       border_bottom_format = Spreadsheet::Format.new :bottom => :thin, :size => 13
       border_top_format = Spreadsheet::Format.new :top => :thin, :size => 13
       
@@ -96,10 +96,11 @@ class OtherController < ApplicationController
         address_row = []
         border_bottom = []
         border_top = []
-        row_begin = [Date.today,'','Student Record','']
-        new_book.worksheet(0).insert_row(0, row_begin)
+       
         std_loop = 4
         @students.each do |std|
+          row_begin = [Date.today,'','','']
+          new_book.worksheet(0).insert_row(std_loop-2, row_begin)
           startrow = std_loop
           row_1 = ['','','Student Record(Anual)','']
           new_book.worksheet(0).insert_row(startrow+1, row_1)
@@ -205,12 +206,10 @@ class OtherController < ApplicationController
       
       stu_record_row.each do |r|
         sheet1.row(r).default_format = large_bold_format
-        sheet1.merge_cells(r, 1, r, 3)
       end
       
       school_name_row.each do |n|
         sheet1.row(n).default_format = large_bold_format
-        sheet1.merge_cells(n, 1, n, 3)
       end
       
       address_row.each do |n|

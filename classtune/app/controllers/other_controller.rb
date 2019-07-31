@@ -143,9 +143,9 @@ class OtherController < ApplicationController
                   new_book.worksheet(0).insert_row(startrow+9, row_9)
                    border_bottom.push(startrow+9)
                    
-                  designation = gurdian.occupation.blank? ? '' : gurdian.designation  
-                  idno = gurdian.occupation.blank? ? '' : gurdian.passport
-                  row_10 = ['','Designation: '+designation,'Passport / ID No: '+idno,'','']
+                  designation = gurdian.occupation.blank? ? ' ' : gurdian.designation  
+                  idno = gurdian.occupation.blank? ? ' ' : gurdian.passport
+                  row_10 = ['','Designation: '+designation.to_s,'Passport / ID No: '+idno.to_s,'','']
                   new_book.worksheet(0).insert_row(startrow+10, row_10)
                   border_bottom.push(startrow+10)
                   

@@ -22,7 +22,7 @@
               <table id="pdf-table"  width="99%" class="left-table even-table exam-marks center-table" cellspacing="0" >
                   <% c = 'even'  %>
                   <tr class="odd">
-                        <td class="col-pdf"><%= "Code" %></td>
+                        
                         <td class="col-pdf"><%= "Subject" %></td>
                         
                         <td class="col-pdf">First Term</td>
@@ -58,7 +58,7 @@
                         <% total_mark_all = 0 %>
                         <% has_mark = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
-                          <td class="col-pdf no-warp  align-left"><%= subjects['code'] %></td>
+                          
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
                           
                           <% 

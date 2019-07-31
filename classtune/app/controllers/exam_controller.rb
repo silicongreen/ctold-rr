@@ -4727,7 +4727,7 @@ class ExamController < ApplicationController
           
           :encoding =>    'utf8',
           :margin => {    :top=> 10,
-          :bottom => 20,
+          :bottom => 30,
           :left=> 8,
           :right => 8},
           :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},

@@ -4,6 +4,7 @@ class Payment < ActiveRecord::Base
   belongs_to :finance_transaction
 
   serialize :gateway_response
+  serialize :validation_response
   
   after_create :set_ledger
   after_update :update_ledger

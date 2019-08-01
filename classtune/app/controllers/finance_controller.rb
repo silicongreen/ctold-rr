@@ -3880,13 +3880,22 @@ class FinanceController < ApplicationController
                   unless student.nil?
                     fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
                     amount = fee_particulars.map(&:amount).sum
+                    
                     discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
                     collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
-                    fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                    fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
+                    
                     unless fee_discount_ids.blank?
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
-                        discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                        is_discount_excluded = false
+                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                        unless excluded_discounts.blank?
+                          is_discount_excluded = true
+                        end
+                        unless is_discount_excluded
+                          discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                        end
                       end
                     end
                     remaining_amount = amount - discount_amt
@@ -3943,6 +3952,7 @@ class FinanceController < ApplicationController
                   end
                 else
                   collection_discount.destroy
+                  
                   render :update do |page|
                     page.replace_html 'student_discount_error', :text => error_text
                     page << "$('student_discount_div').show();"
@@ -4062,11 +4072,18 @@ class FinanceController < ApplicationController
                     amount = fee_particulars.map(&:amount).sum
                     discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
                     collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
-                    fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                    fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                     unless fee_discount_ids.blank?
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
-                        discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                        is_discount_excluded = false
+                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                        unless excluded_discounts.blank?
+                          is_discount_excluded = true
+                        end
+                        unless is_discount_excluded
+                          discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                        end
                       end
                     end
                     remaining_amount = amount - discount_amt
@@ -4177,6 +4194,13 @@ class FinanceController < ApplicationController
                   end
                   unless found 
                     error_text = "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_category' style='font-size: 12px;'>List of students</a>"
+                  else
+                    @fees.each do |f|
+                      s = f.student
+                      unless s.has_paid_fees
+                        FinanceFee.update_student_fee(@fee_collection, s, f)
+                      end
+                    end
                   end
                 else
                   batch = Batch.find(batch_id)
@@ -4189,11 +4213,21 @@ class FinanceController < ApplicationController
                         amount = fee_particulars.map(&:amount).sum
                         discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
                         collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
-                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
+                        
                         unless fee_discount_ids.blank?
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
-                            discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                            is_discount_excluded = false
+                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                            
+                            unless excluded_discounts.blank?
+                              is_discount_excluded = true
+                            end
+                            
+                            unless is_discount_excluded
+                              discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                            end
                           end
                         end
                         remaining_amount = amount - discount_amt
@@ -4226,13 +4260,6 @@ class FinanceController < ApplicationController
                   end
                 end
                 if found
-                  @fees.each do |f|
-                    s = f.student
-                    unless s.has_paid_fees
-                      FinanceFee.update_student_fee(@fee_collection, s, f)
-                    end
-                  end
-                
                   fee_discount_collection = FeeDiscountCollection.new(
                     :finance_fee_collection_id => @fee_collection_id,
                     :fee_discount_id           => @discount_id,
@@ -4344,6 +4371,13 @@ class FinanceController < ApplicationController
                   end
                   unless found 
                     error_text = "Some Student Discount can't be assign, discount amount is greater than Fee amount. <br /><a href='javascript:;' id='list_of_student_batch' style='font-size: 12px;'>List of students</a>"
+                  else
+                    @fees.each do |f|
+                      s = f.student
+                      unless s.has_paid_fees
+                        FinanceFee.update_student_fee(@fee_collection, s, f)
+                      end
+                    end
                   end
                 else
                   batch = Batch.find(batch_id)
@@ -4356,11 +4390,18 @@ class FinanceController < ApplicationController
                         amount = fee_particulars.map(&:amount).sum
                         discount_amt = amount * discount.discount.to_f/ (discount.is_amount?? amount : 100)
                         collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
-                        fee_discount_ids = collect_discounts.map(&:fee_discount_id)
+                        fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                         unless fee_discount_ids.blank?
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
-                            discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                            is_discount_excluded = false
+                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                            unless excluded_discounts.blank?
+                              is_discount_excluded = true
+                            end
+                            unless is_discount_excluded
+                              discount_amt += amount * f_discount.discount.to_f/ (f_discount.is_amount?? amount : 100)
+                            end
                           end
                         end
                         remaining_amount = amount - discount_amt
@@ -4393,13 +4434,6 @@ class FinanceController < ApplicationController
                   end
                 end
                 if found
-                  @fees.each do |f|
-                    s = f.student
-                    unless s.has_paid_fees
-                      FinanceFee.update_student_fee(@fee_collection, s, f)
-                    end
-                  end
-                
                   fee_discount_collection = FeeDiscountCollection.new(
                     :finance_fee_collection_id => @fee_collection_id,
                     :fee_discount_id           => @discount_id,
@@ -6519,7 +6553,7 @@ class FinanceController < ApplicationController
                 unless is_late
                   collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,fee_collection_id, discount.finance_fee_particular_category_id)
                   collection_discount.destroy
-
+                  
                   @fee_collection = FinanceFeeCollection.find(fee_collection_id)
                   @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
 
@@ -6536,7 +6570,7 @@ class FinanceController < ApplicationController
                   if collection_discount.present?
                     collection_discount.destroy
                   end
-
+                  
                   if discount.is_visible == false
                     discount.destroy
                   end
@@ -6546,7 +6580,7 @@ class FinanceController < ApplicationController
                 if collection_discount.present?
                   collection_discount.destroy
                 end
-
+                
                 @fee_collection = FinanceFeeCollection.find(fee_collection_id)
                 @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
 
@@ -6672,7 +6706,7 @@ class FinanceController < ApplicationController
           unless is_late
             collection_discount = CollectionDiscount.find_by_fee_discount_id_and_finance_fee_collection_id_and_finance_fee_particular_category_id(discount.id,@fee_collection_id, discount.finance_fee_particular_category_id)
             collection_discount.destroy
-
+            
             @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
             @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
 
@@ -6681,9 +6715,9 @@ class FinanceController < ApplicationController
               FinanceFee.update_student_fee(@fee_collection, s, @fee)
             end
 
-            #if discount.is_visible == false
-            #  discount.destroy
-            #end
+            if discount.is_visible == false
+              discount.destroy
+            end
             render :update do |page|
               page << "reload_discount(#{@discount_id});"
             end
@@ -6692,10 +6726,10 @@ class FinanceController < ApplicationController
             if collection_discount.present?
               collection_discount.destroy
             end
-
-#            if discount.is_visible == false
-#              discount.destroy
-#            end
+            
+            if discount.is_visible == false
+              discount.destroy
+            end
             render :update do |page|
               page << "reload_discount(#{@discount_id});"
             end
@@ -6705,7 +6739,7 @@ class FinanceController < ApplicationController
           if collection_discount.present?
             collection_discount.destroy
           end
-
+          
           @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
           @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{discount.receiver_id}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
 
@@ -9929,7 +9963,7 @@ class FinanceController < ApplicationController
   end
 
   def update_fee_discount
-    #collection_discounts = CollectionDiscount.find(:all, :conditions => "")
+    #
     #@fee_discount.errors.add_to_base("#{t('admission_cant_be_blank')}")
     @fee_discount = FeeDiscount.find(params[:id])
     unless @fee_discount.update_attributes(params[:fee_discount])
@@ -9939,7 +9973,12 @@ class FinanceController < ApplicationController
         fee_discount_id = @fee_discount.id
         fee_discounts = FeeDiscount.find(:all, :conditions => "parent_id = #{fee_discount_id}")
         unless fee_discounts.blank?
-          
+          fee_discounts.each do |f|
+            collection_discounts = CollectionDiscount.find(:all, :conditions => "fee_discount_id = #{f.id}")
+            if collection_discounts.blank?
+                f.update_attributes(params[:fee_discount])
+            end
+          end
         end
       end
       @fee_category = @fee_discount.finance_fee_category
@@ -9953,6 +9992,20 @@ class FinanceController < ApplicationController
     #batch=@fee_discount.batch
     @fee_category = FinanceFeeCategory.find(@fee_discount.finance_fee_category_id)
     @error = true  unless @fee_discount.update_attributes(:is_deleted=>true)
+    unless @error
+      if @fee_discount.is_onetime 
+        fee_discount_id = @fee_discount.id
+        fee_discounts = FeeDiscount.find(:all, :conditions => "parent_id = #{fee_discount_id}")
+        unless fee_discounts.blank?
+          fee_discounts.each do |f|
+            collection_discounts = CollectionDiscount.find(:all, :conditions => "fee_discount_id = #{f.id}")
+            if collection_discounts.blank?
+              f.update_attributes(:is_deleted=>true)
+            end
+          end
+        end
+      end
+    end
     #abort(@fee_discount.inspect)
     unless @fee_category.nil?
       @discounts = @fee_category.fee_discounts.all(:conditions=>["batch_id='#{@fee_discount.batch_id}' and is_deleted= #{false}"])

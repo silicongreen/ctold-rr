@@ -187,6 +187,7 @@ function calculateDiscount()
 
 function calculateTotalFees() 
 {
+    var current_amount = j("#remaining_amount").val();
     var fee_amount = parseFloat(j("#fee_total_amount").val());
     var paid_amount = parseFloat(j("#payment_done_label").html());
 
@@ -216,12 +217,58 @@ function calculateTotalFees()
     }*/
 
     var total_amount = parseFloat(amount + paid_amount);
-
-    j("#total_payable_label").html(total_amount.toFixed(2));
-    j("#total_amount").val(amount.toFixed(2));
-    j("#total_amount_label").html(amount.toFixed(2));
-
-    generateAmountToPay() 
+    if (amount == 0)
+    {
+        j(".payment_details").parent('td').parent('tr').hide();
+        j(".pay_fees_buttons").children('input').each(function(){
+            j(this).hide();
+        });
+        j(".pay_fees_buttons").children('a').each(function(){
+            j(this).hide();
+        });
+        j(".pay_fees_buttons").append("<span style='border: 1px solid #ccc; background: #F5F5F5; float: right; padding: 10px; border-radius: 6px;'>Amount to pay is Zero, Nothing to pay</span>");
+        
+        j("#total_payable_label").html(total_amount.toFixed(2));
+        j("#total_amount").val(amount.toFixed(2));
+        j("#total_amount_label").html(amount.toFixed(2));
+        
+        generateAmountToPay();
+    }
+    else
+    {
+        if ( current_amount == 0 && amount > 0)
+        {
+            j("#total_payable_label").parent('td').css('text-align', 'center')
+            j("#total_payable_label").html('<i class="fa fa-spinner fa-spin"></i>');
+            
+            j("#payment_done_label").parent('td').css('text-align', 'center')
+            j("#payment_done_label").html('<i class="fa fa-spinner fa-spin"></i>');
+            
+            j("#total_amount_label").parent('td').css('text-align', 'center')
+            j("#total_amount_label").html('<i class="fa fa-spinner fa-spin"></i>');
+            
+            j("#remaining_amount_label").parent('td').css('text-align', 'center')
+            j("#remaining_amount_label").html('<i class="fa fa-spinner fa-spin"></i>');
+            
+            var batch_id = j("#batch_id_particular").val();
+            var date_id = j("#date_id_particular").val();
+            var student_id = j("#student_id_particular").val();
+            new Ajax.Request('/finance/load_fees_submission_batch', 
+                    {
+                      asynchronous:true, 
+                      evalScripts:true, 
+                      parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id
+                    }
+            )
+        }
+        else
+        {
+            j("#total_payable_label").html(total_amount.toFixed(2));
+            j("#total_amount").val(amount.toFixed(2));
+            j("#total_amount_label").html(amount.toFixed(2));
+            generateAmountToPay();
+        }
+    } 
 }
 
 function generateAmountToPay() 
@@ -563,6 +610,12 @@ function disableFineDiscountAlso()
 function loadJS()
 {    
     document.observe("dom:loaded", function() {
+        j(document).on('keypress', '#fees_form', function(e){
+            if (e.keyCode == 13) {
+                return false;
+            }
+        });
+        
         j('#hide2').hide();
         j('#active-batch-link').hide();
         

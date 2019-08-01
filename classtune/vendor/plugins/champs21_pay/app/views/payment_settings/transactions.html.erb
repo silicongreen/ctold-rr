@@ -199,7 +199,15 @@
             </td>
             <% if MultiSchool.current_school.id == 352 %>
               <% if payment.gateway_response[:verified].to_i == 0 %>
+              <% unless payment.validation_response.nil? %>
+                <% if payment.validation_response[:verified].to_i == 0 %>
+                  <td style="text-align: center; vertical-align: middle;"><i id="payment<%= payment.id %>" class="fa fa-square-o payment_verify" style="color: #49BB4B; font-size: 24px; cursor: pointer;"></i><br /></td>
+                <% else %>
+                  <td style="text-align: center; vertical-align: middle;"><i class="fa fa-check-square-o" style="color: #49BB4B; font-size: 24px;"></i><br /></td>
+                <% end %>
+              <% else %>
               <td style="text-align: center; vertical-align: middle;"><i id="payment<%= payment.id %>" class="fa fa-square-o payment_verify" style="color: #49BB4B; font-size: 24px; cursor: pointer;"></i><br /></td>
+              <% end %>
               <% else %>
               <td style="text-align: center; vertical-align: middle;"><i class="fa fa-check-square-o" style="color: #49BB4B; font-size: 24px;"></i><br /></td>
               <% end %>

@@ -128,7 +128,7 @@
           <div class="line" style=""></div>
           <div id="fees_list" style="background: #FBFBFB; padding: 20px;">
             <% if @current_user.admin?  %>
-            <div id="combined_configuration-1" style="padding: 20px 0; display: none;">
+            <div id="combined_configuration" style="padding: 20px 0; ">
                 <% if combine_fees_enabled %>
                 <i id="combined_payment_student" name="combined_payment_student" class="fa fa-check-square-o" style="font-size: 20px; "></i>&nbsp;&nbsp;&nbsp;Enable Combined payment for this student
                 <% else %>
@@ -586,7 +586,7 @@
       }
       else if ( unpaid == 1 )
       {
-          j("#combined_pay").hide();
+          /*j("#combined_pay").hide();
           
           j('.finance_fees_collection_chk').each(function(){
               j(this).removeClass('finance_fees_collection_chk');
@@ -596,7 +596,7 @@
               var href = j(this).attr('href');
               var key = this.id.replace("fee_link_", "");
               j(this).attr('href', href + "?opt=" + key);
-          });
+          });*/
       }
       else
       {

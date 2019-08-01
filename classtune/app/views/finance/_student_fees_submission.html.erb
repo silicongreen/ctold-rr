@@ -1158,7 +1158,11 @@
             <% else %>
               <div class="pay_fees_buttons">
                 <% if total_fees == 0  %>  
-                <h4 class="info" style="padding: 4px 10px; margin: 18px 10px 0 !important;  border-radius: 4px;"><%= t('fees_paid') %></h4>
+                  <% if @paid_fees.empty? %>
+                    <span style='border: 1px solid #ccc; background: #F5F5F5; float: right; padding: 10px; border-radius: 6px;'>Amount to pay is Zero, Nothing to pay</span>
+                  <% else %>
+                    <h4 class="info" style="padding: 4px 10px; margin: 18px 10px 0 !important;  border-radius: 4px;"><%= t('fees_paid') %></h4>
+                  <% end %>
                 <% end %>
                 <% unless MultiSchool.current_school.id == 352 %>
                   <%= link_to "► #{t('print_receipt')}",
@@ -1349,7 +1353,7 @@
 
                   html += '<select>';
                   html += '</div>';
-                  html += '<div class="input-container" style="padding: 10px; display: none;">';
+                  html += '<div class="input-container" style="padding: 10px; ">';
                   html += '<input type="text" name="extra_particular_name" id="extra_particular_name" value="" style="border-radius: 4px; border: 1px solid #ccc; padding: 10px; width: 89%;" />';
                   html += '</div>';
                   html += '</td><td class="col-6" colspan="3" style="text-align: right;">';

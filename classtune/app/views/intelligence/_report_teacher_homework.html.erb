@@ -34,7 +34,11 @@
                         <td><b>Department</b></td> 
                         <td><b>Total Class</b></td> 
                         <td><b>Homework Given</b></td>
-                        <td><b>Homework Given Before 3pm</b></td>
+                        <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 354 %>
+                          <td><b>Homework Given Before 5pm</b></td>
+                        <% else %>
+                          <td><b>Homework Given Before 3pm</b></td>
+                        <% end %>
                         <td><b>Frequency</b></td> 
                     </tr>    
                     <% unless @report_data['employee_data'].blank? %>  
@@ -109,7 +113,7 @@
                             elsif employee['total_class'].to_i > 0 && employee['homework_given'].to_i > 0
                               employee['frequency'] = (employee['homework_given'].to_f/employee['total_class'].to_f)*100
                             elsif employee['total_class'].to_i == 0
-                              employee['frequency'] = 100
+                              employee['frequency'] = "-"
                             else
                               employee['frequency'] = 0
                             end  

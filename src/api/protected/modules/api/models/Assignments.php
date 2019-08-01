@@ -461,7 +461,15 @@ class Assignments extends CActiveRecord
             
             if($before_3pm)
             {
-                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
+                if(Yii::app()->user->schoolId == 325 || Yii::app()->user->schoolId == 246 || Yii::app()->user->schoolId == 354)
+                {
+                    $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '17:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '11:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '11:00:00')))");
+                }
+                else
+                {    
+                    $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
+                }
+                
             }
             else
             {
@@ -561,8 +569,14 @@ class Assignments extends CActiveRecord
             
             $criteria->compare('t.employee_id', $employee_id);
             
-            $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
-           
+            if(Yii::app()->user->schoolId == 325 || Yii::app()->user->schoolId == 246 || Yii::app()->user->schoolId == 354)
+            {
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '17:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '11:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '11:00:00')))");
+            }
+            else
+            {    
+                $criteria->addCondition("DATE(t.created_at) >= '".$start_date."' and DATE(t.created_at) <= '".$end_date."' and ((TIME(t.created_at) <= '15:00:00' AND t.content NOT LIKE '%</%') OR (TIME(t.created_at) <= '09:00:00' and (TIME(t.created_at) != '00:00:00' OR TIME(t.updated_at) <= '09:00:00')))");
+            }
              
                 
             

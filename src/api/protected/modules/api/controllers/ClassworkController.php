@@ -64,7 +64,7 @@ class ClassworkController extends Controller
 
         if (!$sort_by)
         {
-            $sort_by = "frequency";
+            $sort_by = "classwork_given";
         }
         if (!$sort_type)
         {

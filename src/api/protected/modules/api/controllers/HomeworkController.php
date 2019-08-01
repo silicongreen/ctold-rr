@@ -312,7 +312,7 @@ class HomeworkController extends Controller
 
         if (!$sort_by)
         {
-            $sort_by = "frequency";
+            $sort_by = "homework_given";
         }
         if (!$sort_type)
         {

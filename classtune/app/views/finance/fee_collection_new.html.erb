@@ -71,6 +71,10 @@
               <div class="label-container"><label for="reason">  <%= t('fee_collection_name') %>:</label></div>
               <div class="input-container"><%= form.text_field :name, :value => Date.today.strftime("%b") + "' " + Date.today.strftime("%Y") %></div>
           </div>
+          <div class="label-field-pair">
+              <div class="label-container"><label for="reason">  <%= "Title <small>(appear On Ledger)</small>" %>:</label></div>
+              <div class="input-container"><%= form.text_field :title, :value => "" %></div>
+          </div>
           <div style="clear: both; height: 10px;"></div>  
           <div class="label-field-pair">
               <div class="label-container"><label for="reason"><%= t('fine') %>:</label></div>

@@ -788,6 +788,7 @@ class FinanceFee < ActiveRecord::Base
     student_fee_ledger = StudentFeeLedger.new
     student_fee_ledger.student_id = student_id
     student_fee_ledger.ledger_date = finance_fee_collection.start_date
+    student_fee_ledger.ledger_title = finance_fee_collection.title  
     student_fee_ledger.amount_to_pay = balance.to_f
     student_fee_ledger.fee_id = id
     student_fee_ledger.save

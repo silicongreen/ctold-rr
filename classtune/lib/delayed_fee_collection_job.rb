@@ -25,6 +25,7 @@ class DelayedFeeCollectionJob
     new_finance_fee_category.name = @collection[:name]
     new_finance_fee_category.is_master = finance_fee_category.is_master
     new_finance_fee_category.is_visible = 0
+    new_finance_fee_category.parent_id = finance_fee_category_id
     if new_finance_fee_category.save
       finance_fees_auto_category = FinanceFeesAutoCategory.new
       finance_fees_auto_category.finance_fee_category_id = finance_fee_category_id
@@ -39,6 +40,7 @@ class DelayedFeeCollectionJob
 
         @finance_fee_collection = FinanceFeeCollection.new(
           :name => @collection[:name],
+          :title => @collection[:title],
           :start_date => @collection[:start_date],
           :end_date => @collection[:end_date],
           :due_date => @collection[:due_date],

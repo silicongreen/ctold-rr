@@ -150,7 +150,7 @@ table#listing{
     font-weight:bold;
     color:#548ab2;
 }
-.user_button {
+.user_button_new {
     margin-top:40px;
     margin-left:270px;
 }
@@ -285,14 +285,17 @@ table#listing{
     color:#000;
     padding-right: 15px;
 }
-.user_button  {
-    padding: 7px 10px;
+.user_button_new  {
+    background: #49BB4B none repeat scroll 0 0 !important;
+    padding: 10px 15px !important;
+    border-radius: 7px  !important;
+    -moz-border-radius: 7px  !important;
+    -webkit-border-radius: 7px  !important;
     color: #fff;
-    background: #27292B;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     border:none;
     cursor:pointer;
     text-decoration: none;
@@ -300,8 +303,9 @@ table#listing{
     display: inline;
     float: none;
 }
-.user_button:hover{
-    background:  #373B3F;
+.user_button_new:hover{
+    background: #145214 !important;
+    text-decoration: none !important;
 }
 
 #category-list li div.due-date{
@@ -345,8 +349,9 @@ table#listing{
     -webkit-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
-    margin-bottom: 40px;
+/*    margin-bottom: 40px;*/
 }
+
 .fee_details_box .fee_name{
     height: 50px; 
     text-align: center; 

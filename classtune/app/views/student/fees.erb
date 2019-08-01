@@ -152,6 +152,7 @@
               <div style="text-align: center; width: 100%;">
                 <% fees_multiple = "" %>  
                 <% l = 0 %>  
+                <% km = 1 %>      
                 <%- @dates_unpaid.each do |d| -%>
                   <%  finance_fee = @student.finance_fee_by_date(d) %>
                   <%  paid_fees = finance_fee.finance_transactions %>
@@ -237,11 +238,16 @@
                   <% if l < @dates_unpaid.length - 1 %>
                   <div style="float: left; width: 3%; height: 300px;"></div>
                   <% end %>
+                  <% if km % 3 == 0 %>
+                  <div style="clear: both; height: 30px;"></div>  
+                  <% end %>
                   <% l += 1 %>  
+                  <% km += 1 %>  
                 <% end %>
               </div></div>
               <div id="fees_list_paid" style="background: #FBFBFB; padding: 20px; float: left; width: 96%; border-bottom: 1px solid #999;">
                   <div style="text-align: center; width: 100%;">
+                <% km = 1 %>      
                 <%- @dates_paid.each do |d| -%>
                   <%  finance_fee = @student.finance_fee_by_date(d) %>
                   <%  paid_fees = finance_fee.finance_transactions %>
@@ -346,6 +352,10 @@
                       <% end %>
                   </div>
                   <div style="float: left; width: 3%; height: 300px;"></div>
+                  <% if km % 3 == 0 %>
+                  <div style="clear: both; height: 30px;"></div>  
+                  <% end %>
+                  <% km += 1 %>
                 <% end %>  
               </div></div>  
               <% if found_fees %>
@@ -356,11 +366,11 @@
               <div id="combined_pay" style="display: <%= display %>;">
                 <div style="clear: both; height: 4px; background: #FBFBFB; "><hr style="border: 1px solid #ccc;" /></div>
                 
-                <div style="padding: 10px; text-align: right; height: 60px;">
+                <div style="padding: 10px; text-align: center; height: 60px;">
                     <% if fees_multiple.strip.length > 0 %>
-                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip}, {:class=> 'user_button', :id => "lnk_btn"} %></div>
+                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true, :fees => fees_multiple.strip}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
                     <% else %>
-                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, {:class=> 'user_button', :id => "lnk_btn"} %></div>
+                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Pay Fees",{:action=>:fee_details, :id => @student.id, :multiple=>true}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
                     <% end %>
                 </div>
               </div>

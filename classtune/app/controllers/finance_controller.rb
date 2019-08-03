@@ -1140,8 +1140,8 @@ class FinanceController < ApplicationController
                       key = ""
                       values = ""
                       request_params.each do |k,v|
-                        key = k + ","
-                        values = v + ","
+                        key += k + ","
+                        values += v + ","
                       end
                       abort(key.to_s + "  " + values.to_s) 
                     end

@@ -1104,16 +1104,18 @@
           <tr class="<%= cycle("odd","even") %>">
             <% transaction_payment = false %>
             <% transaction_payment_not_assign = false %>
-            <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>
-            <% unless payment.present? %>
-              <% payment = Payment.find_by_payment_id(@financefee.id) %>
-              <% unless payment.nil? %>
-                <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
-                  <% transaction_payment_not_assign = true %>
+            <% if MultiSchool.current_school.id == 352 %>
+              <% payment = Payment.find_by_finance_transaction_id_and_payment_id(f.id, @financefee.id) %>
+              <% unless payment.present? %>
+                <% payment = Payment.find_by_payment_id(@financefee.id) %>
+                <% unless payment.nil? %>
+                  <% if payment.gateway_response[:amount].to_f == f.amount.to_f %>
+                    <% transaction_payment_not_assign = true %>
+                  <% end %>
                 <% end %>
+              <% else %>
+                <% transaction_payment = true %>
               <% end %>
-            <% else %>
-              <% transaction_payment = true %>
             <% end %>
 
             <% payment_mode = f.payment_mode %>
@@ -1150,15 +1152,35 @@
                   <% if payment.gateway_response[:verified].to_i == 1 %>
                     <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
                   <% else %>
+                    <% unless payment.validation_response.nil? %>
+                      <% if payment.validation_response[:verified].to_i == 0 %>
+                      <div style="width: 100%;">
+                        <div style="width: 60%; display: inline-block;">
+                          <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
+                        </div>
+                        <% if @current_user.admin? %>
+                        <div style="width: 35%; display: inline-block; text-align: right;">
+                          <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
+
+                        </div>
+                       <% end %>   
+                      </div>
+                      <% else %>
+                      <i class="fa fa-check-circle-o" style="font-size: 18px; color: #49BB4B;"></i>&nbsp;&nbsp;Verified
+                      <% end %>
+                    <% else %>
                     <div style="width: 100%;">
                       <div style="width: 60%; display: inline-block;">
                         <i class="fa fa-circle-o" style="font-size: 18px; color: #900;"></i>&nbsp;&nbsp;<span style="color: #900;">Not Verified</span>
                       </div>
+                      <% if @current_user.admin? %>
                       <div style="width: 35%; display: inline-block; text-align: right;">
                         <%= link_to "(verify Now)", {:controller => "online_payments", :action => "order_verifications", :order_tid => payment.order_id},:target => '_blank' %>
 
                       </div>
+                     <% end %>   
                     </div>
+                    <% end %>
                     <div style="clear: both; height: 1px;"></div>
                   <% end %>
                 </div>

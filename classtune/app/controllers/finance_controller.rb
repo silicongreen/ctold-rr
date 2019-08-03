@@ -1136,7 +1136,14 @@ class FinanceController < ApplicationController
                   unless finance_orders.blank?
                     if finance_orders.length == 1
                       finance_order = finance_orders[0]
-                      abort(finance_order.request_params.map{|k,v| [k,v]}.inspect)
+                      request_params = finance_order.request_params.map{|k,v| [k,v]}
+                      key = ""
+                      values = ""
+                      request_params.each do |k,v|
+                        key = k + ","
+                        values = v + ","
+                      end
+                      abort(key.to_s + "  " + values.to_s) 
                     end
                   end
                 end

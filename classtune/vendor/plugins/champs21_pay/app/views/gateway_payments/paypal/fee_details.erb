@@ -18,6 +18,18 @@
 #under the License. -%>
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
 
+
+<% if MultiSchool.current_school.id == 352 %>
+<%
+  require "yaml"
+  transport_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_transport.yml")['school']
+  transport_particular_id = transport_config['transport_particular_id_' + MultiSchool.current_school.id.to_s]
+  if transport_particular_id.blank?
+    transport_particular_id = 0
+  end
+%>  
+<% end %>  
+
 <div id="content-header">
   <%= show_header_icon %>
   <h1><%= t('online_payment') %></h1>
@@ -243,6 +255,11 @@
             </td>
             <td class="col-6">
               <%= fee.name %>
+              <% if transport_particular_id.to_i == fee.finance_fee_particular_category_id.to_i %>
+                <% unless fee.description.blank? %>
+                <br /><small>(<%= fee.description.gsub("---","</b>").gsub("--","<b>") %>)</small>
+                <% end %>
+              <% end %>  
               <% if @self_advance_fee %>
                 <br />(<small><%= month %> Month Advances</small>)
                 <br /><small>(<%= start_month %> to <%= end_month %>)

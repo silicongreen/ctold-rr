@@ -21,6 +21,17 @@
     @financefee.is_paid = true
   end
 %>
+<input type="hidden" name="is_student_fees" id="is_student_fees" value="<%= @from_batch_fee ? "0" : "1" %>"
+<% if MultiSchool.current_school.id == 352 %>
+<%
+  require "yaml"
+  transport_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_transport.yml")['school']
+  transport_particular_id = transport_config['transport_particular_id_' + MultiSchool.current_school.id.to_s]
+  if transport_particular_id.blank?
+    transport_particular_id = 0
+  end
+%>  
+<% end %>  
 <div class="fee_structure">
     <h2 style="display: none;"><%#= @fee_category.name %> (<%#= @fee_collection.name %>)</h2>
     <h2>Fee: <%= @fee_collection.name %></h2>
@@ -88,13 +99,13 @@
 <div id="register">
   <div class="header">
     <div class="prev">
-      <%= link_to_remote '◄',:url => {:action => 'load_fees_submission_batch', :batch_id => @batch.id, :student => @prev_student.id, :date=> @date.id }%>
+      <%= link_to_remote '◄',:url => {:action => 'load_fees_submission_batch', :batch_id => @batch.id, :student => @prev_student.id, :date=> @date.id, :student_fees => @from_batch_fee }%>
     </div>
     <div class="month">
       <%= @student.full_name %><%="(#{t('transfered_to_batch')}:#{@student.batch.full_name})" unless @batch==@student.batch%>
     </div>
     <div class="next">
-      <%= link_to_remote '►',:url => {:action => 'load_fees_submission_batch', :batch_id => @batch.id, :student => @next_student.id, :date=> @date.id }%>
+      <%= link_to_remote '►',:url => {:action => 'load_fees_submission_batch', :batch_id => @batch.id, :student => @next_student.id, :date=> @date.id, :student_fees => @from_batch_fee }%>
     </div>
     <div class="extender"></div>
   </div>
@@ -226,6 +237,11 @@
             </td>
             <td class="col-6">
               <%= fee.name %>
+              <% if transport_particular_id.to_i == fee.finance_fee_particular_category_id.to_i %>
+                <% unless fee.description.blank? %>
+                <br /><small>(<%= fee.description.gsub("---","</b>").gsub("--","<b>") %>)</small>
+                <% end %>
+              <% end %>  
               <% if @self_advance_fee %>
                 <br />(<small><%= month %> Month Advances</small>)
                 <br /><small>(<%= start_month %> to <%= end_month %>)
@@ -1324,7 +1340,7 @@
       {
           j.ajax({
               url: '/finance/load_fees_submission_batch/',
-              data: {batch_id : '<%= @batch.id %>',student : '<%= @student.id %>',date : <%= @date.id %> , option: 2},
+              data: {batch_id : '<%= @batch.id %>',student : '<%= @student.id %>',date : <%= @date.id %>, student_fees: <%= @from_batch_fee %>, option: 2},
               type: 'POST',
               asynchronous: true,
               dataType: 'json',

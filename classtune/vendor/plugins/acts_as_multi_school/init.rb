@@ -6,6 +6,7 @@ require 'multischool/champs21_setting_override'
 require 'multischool/authorization_overrides_for_plugin'
 require 'multischool/mailer'
 require 'school_loader'
+require 'finance_loader'
 require 'multi_school_migration'
 require 'dispatcher'
 
@@ -13,6 +14,7 @@ Authorization::AUTH_DSL_FILES << "#{RAILS_ROOT}/vendor/plugins/acts_as_multi_sch
 
 ActiveRecord::Base.send :include, MultiSchool
 ActionController::Base.send :include, SchoolLoader
+ActionController::Base.send :include, FinanceLoader
 ActionMailer::Base.send :include, MultiSchool::Mailer
 Champs21Plugin.send :include, MultiSchool::Champs21PluginWrapper
 Champs21Setting.send :include, MultiSchool::Champs21SettingOverride

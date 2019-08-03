@@ -21,9 +21,6 @@ class FinanceController < ApplicationController
   before_filter :login_required,:configuration_settings_for_finance
   #before_filter :check_permission,:only=>[:index,:fees_index,:categories,:transactions,:donation,:automatic_transactions,:payslip_index,:asset_liability,:finance_reports]
   before_filter :set_precision
-  helper_method :calculate_discount
-  helper_method :calculate_extra_fine
-  helper_method :get_fine_discount
   filter_access_to :all
 
   def index
@@ -60,6 +57,10 @@ class FinanceController < ApplicationController
       @cat_names << "'#{category[:category_name]}'"
     end
     @triggers = FinanceTransactionTrigger.all
+    @cat_names = @cat_names.reject { |c| c.to_s.empty? }
+    if @cat_names.blank?
+      @cat_names[0] = 0
+    end
     @categories = FinanceTransactionCategory.find(:all ,:conditions => ["name NOT IN (#{@cat_names.join(',')}) and is_income=1 and deleted=0 "])
   end
 
@@ -181,6 +182,10 @@ class FinanceController < ApplicationController
       @cat_names << "'#{category[:category_name]}'"
     end
     @transaction = FinanceTransaction.find(params[:id])
+    @cat_names = @cat_names.reject { |c| c.to_s.empty? }
+    if @cat_names.blank?
+      @cat_names[0] = 0
+    end
     @categories = FinanceTransactionCategory.all(:conditions => "is_income=true and name NOT IN (#{@cat_names.join(',')}) and deleted = false")
     if request.post? and @transaction.update_attributes(params[:transaction])
       flash[:notice] = "#{t('flash7')}"
@@ -317,6 +322,10 @@ class FinanceController < ApplicationController
       @cat_names << "'#{category[:category_name]}'"
     end
     @transaction_trigger = FinanceTransactionTrigger.find(params[:id])
+    @cat_names = @cat_names.reject { |c| c.to_s.empty? }
+    if @cat_names.blank?
+      @cat_names[0] = 0
+    end
     @categories = FinanceTransactionCategory.find(:all ,:conditions => ["name NOT IN (#{@cat_names.join(',')}) and is_income=1 and deleted=0 "])
   end
 
@@ -463,8 +472,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -473,18 +494,34 @@ class FinanceController < ApplicationController
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.all.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -508,7 +545,12 @@ class FinanceController < ApplicationController
         
         @particular_wise_transactions_payee = FinanceTransaction.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, sum( finance_transactions.amount ) as amount", :order => 'payments.payee_id ASC', :conditions => ["payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}'" + extra_params], :joins => "INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id " + extra_joins, :group => "finance_transactions.payee_id",:page => params[:page],:per_page => 10)
         #@particular_wise_transactions_payee = FinanceTransactionParticular.paginate(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id",:page => params[:page],:per_page => 10)
-        @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transactions.payee_id IN (#{@particular_wise_transactions_payee.map(&:payee_id).join(",")}) and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id")
+        particular_wise_transactions_payee = @particular_wise_transactions_payee.map(&:payee_id)
+        particular_wise_transactions_payee = particular_wise_transactions_payee.reject { |p| p.to_s.empty? }
+        if particular_wise_transactions_payee.blank?
+          particular_wise_transactions_payee[0] = 0
+        end
+        @particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_transactions.id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transactions.payee_id IN (#{particular_wise_transactions_payee.join(",")}) and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id")
         @student_ids = @particular_wise_transactions.map(&:payee_id).uniq
         
         @transactions_advances = FinanceTransactionParticular.find(:all, :select => "finance_transactions.payee_id, finance_fee_particular_categories.name, IFNULL(finance_fee_particular_categories.id, 0) as finance_fee_particular_category_id, sum( finance_transaction_particulars.amount ) as amount", :order => 'finance_transaction_particulars.transaction_date ASC', :conditions => ["finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance' and payments.transaction_datetime >= '#{@start_date.to_date.strftime("%Y-%m-%d 00:00:00")}' and payments.transaction_datetime <= '#{@end_date.to_date.strftime("%Y-%m-%d 23:59:59")}' and finance_fee_particular_categories.is_deleted = #{false}"], :joins => "INNER JOIN finance_transactions ON finance_transactions.id = finance_transaction_particulars.finance_transaction_id INNER JOIN payments ON finance_transactions.id = payments.finance_transaction_id LEFT JOIN finance_fee_particulars ON finance_fee_particulars.id = finance_transaction_particulars.particular_id LEFT JOIN finance_fee_particular_categories ON finance_fee_particular_categories.id = finance_fee_particulars.finance_fee_particular_category_id", :group => "finance_transactions.payee_id, finance_transaction_particulars.particular_id")
@@ -518,6 +560,10 @@ class FinanceController < ApplicationController
         
         unless @particular_wise_transactions.blank?
           @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
+          @finance_particular_categories_id = @finance_particular_categories_id.reject { |f| f.to_s.empty? }
+          if @finance_particular_categories_id.blank?
+            @finance_particular_categories_id[0] = 0
+          end
           @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
         end
         
@@ -548,8 +594,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -558,18 +616,34 @@ class FinanceController < ApplicationController
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.active.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.active.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -602,6 +676,7 @@ class FinanceController < ApplicationController
         
         unless @particular_wise_transactions.blank?
           @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
+          @finance_particular_categories_id = @finance_particular_categories_id.reject { |f| f.to_s.empty? }
           @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
         end
         
@@ -767,8 +842,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -777,18 +864,34 @@ class FinanceController < ApplicationController
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.all.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -916,8 +1019,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -925,19 +1040,35 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.all.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1001,6 +1132,10 @@ class FinanceController < ApplicationController
             tot_amount = 0.00
 
             batches = Batch.active.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1038,6 +1173,10 @@ class FinanceController < ApplicationController
                   online_amount = online_payment.gateway_response[:amount].to_f
                   online_payments = Payment.find(:all, :conditions => "order_id = '#{order_id}'")
                   transaction_ids = online_payments.map(&:finance_transaction_id)
+                  transaction_ids = transaction_ids.reject { |t| t.to_s.empty? }
+                  if transaction_ids.blank?
+                    transaction_ids[0] = 0
+                  end
                   @online_payment_transactions = FinanceTransaction.find(:all, :conditions => ["id IN (#{transaction_ids.join(",")})"])
                   amt = 0.0
                   @online_payment_transactions.each do |opt|
@@ -1065,8 +1204,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1074,19 +1225,35 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.all.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.all.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1125,6 +1292,10 @@ class FinanceController < ApplicationController
         
         unless @particular_wise_transactions.blank?
           @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
+          @finance_particular_categories_id = @finance_particular_categories_id.reject { |f| f.to_s.empty? }
+          if @finance_particular_categories_id.blank?
+            @finance_particular_categories_id[0] = 0
+          end
           @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
         end
         
@@ -1166,8 +1337,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " ( batches.id IN (#{batches.join(",")}) )"
             extra_joins = " INNER JOIN students ON students.id = student_fee_ledgers.student_id INNER JOIN batches ON batches.id = students.batch_id" 
           elsif @filter_by_course.to_i == 2
@@ -1175,7 +1358,15 @@ class FinanceController < ApplicationController
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " ( batches.id IN (#{batches.join(",")}) )"
             extra_joins = " INNER JOIN students ON students.id = student_fee_ledgers.student_id INNER JOIN batches ON batches.id = students.batch_id" 
           end
@@ -1192,13 +1383,23 @@ class FinanceController < ApplicationController
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
           else
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id")
             end
@@ -1208,13 +1409,23 @@ class FinanceController < ApplicationController
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) = sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
           else
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
@@ -1224,13 +1435,23 @@ class FinanceController < ApplicationController
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
           else
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
@@ -1240,13 +1461,23 @@ class FinanceController < ApplicationController
           @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
           unless extra_params.blank?
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
           else
             unless @students.nil?
-              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+              student_ids = @students.map(&:student_id)
+              student_ids = student_ids.reject { |s| s.to_s.empty? }
+              if student_ids.blank?
+                student_ids[0] = 0
+              end
+              @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
             else
               @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["" + extra_params], :joins => extra_joins, :group => "student_id")
             end
@@ -1279,8 +1510,20 @@ class FinanceController < ApplicationController
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1291,7 +1534,15 @@ class FinanceController < ApplicationController
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1319,34 +1570,54 @@ class FinanceController < ApplicationController
     if @filter_by_dues.to_i == 0
       @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id").count
       @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id",:page => params[:page],:per_page => 10)
+      student_ids = @students.map(&:student_id)
+      student_ids = student_ids.reject { |s| s.to_s.empty? }
+      if student_ids.blank?
+        student_ids[0] = 0
+      end
       unless extra_params.blank?
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 1
       @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) = sum( amount_paid )").count
       @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) = sum( amount_paid )",:page => params[:page],:per_page => 10)
+      student_ids = @students.map(&:student_id)
+      student_ids = student_ids.reject { |s| s.to_s.empty? }
+      if student_ids.blank?
+        student_ids[0] = 0
+      end
       unless extra_params.blank?
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) = sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 2
       @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )").count
       @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) > sum( amount_paid )",:page => params[:page],:per_page => 10)
+      student_ids = @students.map(&:student_id)
+      student_ids = student_ids.reject { |s| s.to_s.empty? }
+      if student_ids.blank?
+        student_ids[0] = 0
+      end
       unless extra_params.blank?
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) > sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
       end
     elsif @filter_by_dues.to_i == 3
       @count_students = StudentFeeLedger.find(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )").count
       @students = StudentFeeLedger.paginate(:all, :select => "student_id", :order => 'student_id ASC', :conditions => [extra_params], :joins => extra_joins, :group => "student_id", :having => "sum(amount_to_pay) < sum( amount_paid )",:page => params[:page],:per_page => 10)
+      student_ids = @students.map(&:student_id)
+      student_ids = student_ids.reject { |s| s.to_s.empty? }
+      if student_ids.blank?
+        student_ids[0] = 0
+      end
       unless extra_params.blank?
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")}) and " + extra_params], :joins => extra_joins, :group => "student_id")
       else
-        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{@students.map(&:student_id).join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
+        @student_fee_ledgers = StudentFeeLedger.find(:all, :select => "student_id, sum(amount_to_pay) as amount_to_pay, sum(amount_paid) as amount_paid, sum( amount_to_pay ) - sum( amount_paid ) as diff_amount", :order => 'student_id ASC', :having => "sum(amount_to_pay) < sum( amount_paid )", :conditions => ["student_id IN (#{student_ids.join(",")})" + extra_params], :joins => extra_joins, :group => "student_id")
       end
     end
         
@@ -1375,8 +1646,20 @@ class FinanceController < ApplicationController
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1387,7 +1670,15 @@ class FinanceController < ApplicationController
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1471,8 +1762,20 @@ class FinanceController < ApplicationController
         eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+        if school_course_id.blank?
+          school_course_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1483,7 +1786,15 @@ class FinanceController < ApplicationController
         tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
         college_courses_id = eleven_courses_id + tweleve_courses_id
         #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+        college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+        if college_courses_id.blank?
+          college_courses_id[0] = 0
+        end
         batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+        batches = batches.reject { |b| b.to_s.empty? }
+        if batches.blank?
+          batches[0] = 0
+        end
         extra_params = " ( batches.id IN (#{batches.join(",")}) )"
         unless @admission_no.blank?
           extra_params += " and students.admission_no Like '#{@admission_no}%%'"
@@ -1630,8 +1941,20 @@ class FinanceController < ApplicationController
             eleven_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%eleven%' or UPPER(course_name) LIKE '%XI%'").map(&:id)
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            school_course_id = school_course_id.reject { |s| s.to_s.empty? }
+            if school_course_id.blank?
+              school_course_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{school_course_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1640,18 +1963,34 @@ class FinanceController < ApplicationController
             tweleve_courses_id = Course.find(:all, :conditions => "LOWER(course_name) LIKE '%twelve%' or UPPER(course_name) LIKE '%XII%'").map(&:id)
             college_courses_id = eleven_courses_id + tweleve_courses_id
             #school_course_id = Course.find(:all, :conditions => "ID NOT IN (#{college_courses_id.join(",")})").map(&:id)
+            college_courses_id = college_courses_id.reject { |c| c.to_s.empty? }
+            if college_courses_id.blank?
+              college_courses_id[0] = 0
+            end
             batches = Batch.find(:all, :conditions => "course_id IN (#{college_courses_id.join(",")})").map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           else
             batches = Batch.active.map(&:id)
+            batches = batches.reject { |b| b.to_s.empty? }
+            if batches.blank?
+              batches[0] = 0
+            end
             extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
             extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
             extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
           end
         else
           batches = Batch.active.map(&:id)
+          batches = batches.reject { |b| b.to_s.empty? }
+          if batches.blank?
+            batches[0] = 0
+          end
           extra_params = " and ( batches.id IN (#{batches.join(",")}) or archived_batches.id IN (#{batches.join(",")}) )"
           extra_joins = " LEFT JOIN students ON students.id = finance_transactions.payee_id LEFT  JOIN batches ON batches.id = students.batch_id" 
           extra_joins += " LEFT JOIN archived_students ON archived_students.former_id = finance_transactions.payee_id LEFT JOIN batches as archived_batches ON archived_batches.id = archived_students.batch_id" 
@@ -1684,6 +2023,11 @@ class FinanceController < ApplicationController
         
         unless @particular_wise_transactions.blank?
           @finance_particular_categories_id = @particular_wise_transactions.map(&:finance_fee_particular_category_id).uniq
+          @finance_particular_categories_id = @finance_particular_categories_id.reject { |f| f.to_s.empty? }
+          if @finance_particular_categories_id.blank?
+            @finance_particular_categories_id[0] = 0
+          end
+          
           @finance_particular_categories = FinanceFeeParticularCategory.find(:all,:conditions => ["is_deleted = ? and id IN (" +  @finance_particular_categories_id.join(",") + ")", false])
         end
         
@@ -1710,6 +2054,10 @@ class FinanceController < ApplicationController
     if date_format_check
       unless @start_date > @end_date
         @transactions = FinanceTransaction.find(:all, :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
+        @fixed_cat_ids = @fixed_cat_ids.reject { |f| f.to_s.empty? }
+        if @fixed_cat_ids.blank?
+          @fixed_cat_ids[0] = 0
+        end
         @other_transaction_categories = FinanceTransactionCategory.find(:all, :conditions => ["finance_transactions.transaction_date >= '#{@start_date}' and finance_transactions.transaction_date <= '#{@end_date}'and finance_transaction_categories.id NOT IN (#{@fixed_cat_ids.join(",")})"],:joins=>[:finance_transactions]).uniq
         @transactions_fees = FinanceTransaction.total_fees(@start_date,@end_date).map{|t| t.transaction_total.to_f}.sum
         @salary = FinanceTransaction.sum('amount',:conditions=>{:title=>"Monthly Salary",:transaction_date=>@start_date..@end_date}).to_f
@@ -1733,6 +2081,10 @@ class FinanceController < ApplicationController
     if date_format_check
       @transactions = FinanceTransaction.find(:all,
         :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
+      @fixed_cat_ids = @fixed_cat_ids.reject { |f| f.to_s.empty? }
+      if @fixed_cat_ids.blank?
+        @fixed_cat_ids[0] = 0
+      end
       @other_transaction_categories = FinanceTransactionCategory.find(:all, :conditions => ["finance_transactions.transaction_date >= '#{@start_date}' and finance_transactions.transaction_date <= '#{@end_date}'and finance_transaction_categories.id NOT IN (#{@fixed_cat_ids.join(",")})"],:joins=>[:finance_transactions]).uniq
       @transactions_fees = FinanceTransaction.total_fees(@start_date,@end_date).map{|t| t.transaction_total.to_f}.sum
       @salary = FinanceTransaction.sum('amount',:conditions=>{:title=>"Monthly Salary",:transaction_date=>@start_date..@end_date}).to_f
@@ -2561,6 +2913,10 @@ class FinanceController < ApplicationController
             @student=true
             batches=Batch.find(params[:particular][:batch_ids])
             batches_id = batches.map(&:id)
+            batches_id = batches_id.reject { |b| b.to_s.empty? }
+            if batches_id.blank?
+              batches_id[0] = 0
+            end
             @students = Student.active.find(:all, :conditions => "batch_id IN (" + batches_id.join(",") + ")", :order => 'first_name ASC, middle_name ASC, last_name ASC')
           end
         elsif params[:finance_fee_particular][:receiver_type]=="StudentCategory"
@@ -2689,6 +3045,10 @@ class FinanceController < ApplicationController
             @student=true
             batches=Batch.find(:all, :conditions => "id IN (#{params[:batch_ids]})")
             batches_id = batches.map(&:id)
+            batches_id = batches_id.reject { |b| b.to_s.empty? }
+            if batches_id.blank?
+              batches_id[0] = 0
+            end
             @students = Student.active.find(:all, :conditions => "batch_id IN (" + batches_id.join(",") + ")", :order => 'first_name ASC, middle_name ASC, last_name ASC')
           end
         elsif params[:receiver_type]=="StudentCategory"
@@ -3582,6 +3942,11 @@ class FinanceController < ApplicationController
                               fee_advs.push(finance_fee_advance.id)
                             end
                             
+                            fee_advs = fee_advs.reject { |f| f.to_s.empty? }
+                            if fee_advs.blank?
+                              fee_advs[0] = 0
+                            end
+                            
                             finance_fee_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{fee_advs.join(",")})")  
                             
                             adv_fee_particulars = []
@@ -3595,6 +3960,10 @@ class FinanceController < ApplicationController
                             end
                             
                             unless adv_fee_particulars.include?(0)
+                              adv_fee_particulars = adv_fee_particulars.reject { |f| f.to_s.empty? }
+                              if adv_fee_particulars.blank?
+                                adv_fee_particulars[0] = 0
+                              end
                               fee_particulars = date_pre.finance_fee_particulars.all(:conditions=>"finance_fee_particular_category_id NOT IN (#{adv_fee_particulars.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{std.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==std or par.receiver==std.student_category or par.receiver==std.batch) }
                               @total_payable = fee_particulars.map{|fp| fp.amount}.sum.to_f
                               unless @total_payable == 0
@@ -3886,6 +4255,10 @@ class FinanceController < ApplicationController
                     fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                     
                     unless fee_discount_ids.blank?
+                      fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                      if fee_discount_ids.blank?
+                        fee_discount_ids[0] = 0
+                      end
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
@@ -4074,6 +4447,10 @@ class FinanceController < ApplicationController
                     collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
                     fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                     unless fee_discount_ids.blank?
+                      fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                      if fee_discount_ids.blank?
+                        fee_discount_ids[0] = 0
+                      end
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
@@ -4180,6 +4557,10 @@ class FinanceController < ApplicationController
                         collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
                         fee_discount_ids = collect_discounts.map(&:fee_discount_id)
                         unless fee_discount_ids.blank?
+                          fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                          if fee_discount_ids.blank?
+                            fee_discount_ids[0] = 0
+                          end
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
@@ -4216,6 +4597,10 @@ class FinanceController < ApplicationController
                         fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                         
                         unless fee_discount_ids.blank?
+                          fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                          if fee_discount_ids.blank?
+                            fee_discount_ids[0] = 0
+                          end
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
@@ -4358,6 +4743,10 @@ class FinanceController < ApplicationController
                         collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
                         fee_discount_ids = collect_discounts.map(&:fee_discount_id)
                         unless fee_discount_ids.blank?
+                          fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                          if fee_discount_ids.blank?
+                            fee_discount_ids[0] = 0
+                          end
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             discount_amt += bal * f_discount.discount.to_f/ (f_discount.is_amount?? bal : 100)
@@ -4392,6 +4781,10 @@ class FinanceController < ApplicationController
                         collect_discounts = CollectionDiscount.find(:all, :conditions => "finance_fee_collection_id = #{@fee_collection.id} and fee_discount_id != #{discount.id}")
                         fee_discount_ids = collect_discounts.map(&:fee_discount_id).uniq
                         unless fee_discount_ids.blank?
+                          fee_discount_ids = fee_discount_ids.reject { |f| f.to_s.empty? }
+                          if fee_discount_ids.blank?
+                            fee_discount_ids[0] = 0
+                          end
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
@@ -4993,6 +5386,10 @@ class FinanceController < ApplicationController
               end
               @fee_has_advance_particular = true
               @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+              @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+              if @advance_ids.blank?
+                @advance_ids[0] = 0
+              end
               @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
             end
 
@@ -5003,6 +5400,10 @@ class FinanceController < ApplicationController
                 @finance_fee_particulars = @finance_fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }.map(&:id)
                 
               else
+                fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+                if fee_collection_advances_particular.blank?
+                  fee_collection_advances_particular[0] = 0
+                end
                 @fee_particulars = @fee_category.fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }
                 @finance_fee_particulars = @finance_fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }.map(&:id)
               end
@@ -5022,6 +5423,10 @@ class FinanceController < ApplicationController
               if fee_collection_advances_particular.include?(0)
                 @fee_particulars = @finance_fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }
               else
+                fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+                if fee_collection_advances_particular.blank?
+                  fee_collection_advances_particular[0] = 0
+                end
                 @fee_particulars = @finance_fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }
                 @finance_fee_particulars = @finance_fee_collection.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==s or par.receiver==s.student_category or par.receiver==batch) }.map(&:id)
               end
@@ -5190,7 +5595,12 @@ class FinanceController < ApplicationController
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       @batches =  @date.batches
       
-      tmp_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id IN (#{@batches.map(&:id).join(',')})", :group => "name")
+      batches = @batches.map(&:id)
+      batches = batches.reject { |b| b.to_s.empty? }
+      if batches.blank?
+        batches[0] = 0
+      end
+      tmp_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id IN (#{batches.join(',')})", :group => "name")
       particulars_name = tmp_particulars.map(&:name)
       
       k = 1
@@ -5266,6 +5676,10 @@ class FinanceController < ApplicationController
                   end
                   @fee_has_advance_particular = true
                   @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+                  @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+                  if @advance_ids.blank?
+                    @advance_ids[0] = 0
+                  end
                   @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
                 end
                 #if @financefee.advance_fee_id.to_i > 0
@@ -5275,6 +5689,10 @@ class FinanceController < ApplicationController
 
                 if advance_fee_collection
                   fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+                  fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
+                  if fee_collection_advances_particular.blank?
+                    fee_collection_advances_particular[0] = 0
+                  end
                   if fee_collection_advances_particular.include?(0)
                     fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==batch) }
                   else
@@ -5408,7 +5826,12 @@ class FinanceController < ApplicationController
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       @batches =  @date.batches
       
-      tmp_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id IN (#{@batches.map(&:id).join(',')})", :group => "name")
+      batches = @batches.map(&:id)
+      batches = batches.reject { |b| b.to_s.empty? }
+      if batches.blank?
+        batches[0] = 0
+      end
+      tmp_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id IN (#{batches.join(',')})", :group => "name")
       particulars_name = tmp_particulars.map(&:name)
       
       k = 1
@@ -5485,6 +5908,10 @@ class FinanceController < ApplicationController
                   end
                   @fee_has_advance_particular = true
                   @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+                  @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+                  if @advance_ids.blank?
+                    @advance_ids[0] = 0
+                  end
                   @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
                 end
                 #if @financefee.advance_fee_id.to_i > 0
@@ -5494,6 +5921,10 @@ class FinanceController < ApplicationController
 
                 if advance_fee_collection
                   fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+                  fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
+                  if fee_collection_advances_particular.blank?
+                    fee_collection_advances_particular[0] = 0
+                  end
                   if fee_collection_advances_particular.include?(0)
                     fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==batch) }
                   else
@@ -5707,6 +6138,10 @@ class FinanceController < ApplicationController
               end
               @fee_has_advance_particular = true
               @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+              @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+              if @advance_ids.blank?
+                @advance_ids[0] = 0
+              end
               @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
             end
             #if @financefee.advance_fee_id.to_i > 0
@@ -5716,6 +6151,10 @@ class FinanceController < ApplicationController
 
             if advance_fee_collection
               fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+              fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+              if fee_collection_advances_particular.blank?
+                fee_collection_advances_particular[0] = 0
+              end
               if fee_collection_advances_particular.include?(0)
                 fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
               else
@@ -5902,6 +6341,10 @@ class FinanceController < ApplicationController
             end
             @fee_has_advance_particular = true
             @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+            @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+            if @advance_ids.blank?
+              @advance_ids[0] = 0
+            end
             @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
           end
         
@@ -6072,6 +6515,10 @@ class FinanceController < ApplicationController
             end
             @fee_has_advance_particular = true
             @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+            @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+            if @advance_ids.blank?
+              @advance_ids[0] = 0
+            end
             @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
           end
           #if @financefee.advance_fee_id.to_i > 0
@@ -6245,6 +6692,10 @@ class FinanceController < ApplicationController
             end
             @fee_has_advance_particular = true
             @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+            @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+            if @advance_ids.blank?
+              @advance_ids[0] = 0
+            end
             @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
           end
           
@@ -6901,6 +7352,10 @@ class FinanceController < ApplicationController
           end
           @fee_has_advance_particular = true
           @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+          @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+          if @advance_ids.blank?
+            @advance_ids[0] = 0
+          end
           @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
         end
         @due_date = @fee_collection.due_date
@@ -6910,6 +7365,10 @@ class FinanceController < ApplicationController
 
         if advance_fee_collection
           fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+          fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+          if fee_collection_advances_particular.blank?
+            fee_collection_advances_particular[0] = 0
+          end
           if fee_collection_advances_particular.include?(0)
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
           else
@@ -7062,6 +7521,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -7069,6 +7532,10 @@ class FinanceController < ApplicationController
     
     if advance_fee_collection
       fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+      fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+      if fee_collection_advances_particular.blank?
+        fee_collection_advances_particular[0] = 0
+      end
       if fee_collection_advances_particular.include?(0)
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       else
@@ -7161,6 +7628,7 @@ class FinanceController < ApplicationController
     end
     
     exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(@student.id).map(&:fee_discount_id)
+    exclude_discount_ids = exclude_discount_ids.reject { |e| e.to_s.empty? }
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
     else
@@ -7184,6 +7652,10 @@ class FinanceController < ApplicationController
         tot_payable += fp.amount.to_f
         transaction_ids = @paid_fees.map(&:id)
         unless transaction_ids.blank?
+          transaction_ids = transaction_ids.reject { |t| t.to_s.empty? }
+          if transaction_ids.blank?
+            transaction_ids[0] = 0
+          end
           paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Particular' AND transaction_type = 'Fee Collection' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{fp.id}")
           unless paidFess.blank?
             paidAmount += paidFess.map(&:amount).sum.to_f
@@ -7205,6 +7677,10 @@ class FinanceController < ApplicationController
         end
         if discount_on_total_fee == false
           particular_category_id = fp.finance_fee_particular_category_id 
+          exclude_discount_ids = exclude_discount_ids.reject { |e| e.to_s.empty? }
+          if exclude_discount_ids.blank?
+            exclude_discount_ids[0] = 0
+          end
           onetime_discounts = @date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{@batch.id}").select{|par|  ((par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch))  }
           if onetime_discounts.length > 0
             onetime_discounts.each do |d|   
@@ -7212,6 +7688,10 @@ class FinanceController < ApplicationController
               discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
               transaction_ids = @paid_fees.map(&:id)
               unless transaction_ids.blank?
+                transaction_ids = transaction_ids.reject { |t| t.to_s.empty? }
+                if transaction_ids.blank?
+                  transaction_ids[0] = 0
+                end
                 paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = #{d.id}")
                 unless paidFess.blank?
                   paidAmount += paidFess.map(&:amount).sum.to_f
@@ -7280,6 +7760,10 @@ class FinanceController < ApplicationController
       paidAmount = 0
       transaction_ids = @paid_fees.map(&:id)
       unless transaction_ids.blank?
+        transaction_ids = transaction_ids.reject { |t| t.to_s.empty? }
+        if transaction_ids.blank?
+          transaction_ids[0] = 0
+        end
         paidFess = FinanceTransactionParticular.find(:all, :conditions => "particular_type = 'Adjustment' AND transaction_type = 'Discount' AND finance_transaction_id IN (" + transaction_ids.join(",") + ") AND particular_id = 0")
         unless paidFess.blank?
           paidAmount += paidFess.map(&:amount).sum.to_f
@@ -7712,6 +8196,10 @@ class FinanceController < ApplicationController
         end
         @fee_has_advance_particular = true
         @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+        @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+        if @advance_ids.blank?
+          @advance_ids[0] = 0
+        end
         @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
       end
       
@@ -7726,6 +8214,10 @@ class FinanceController < ApplicationController
       
       if advance_fee_collection
         fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+        fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
+        if fee_collection_advances_particular.blank?
+          fee_collection_advances_particular[0] = 0
+        end
         if fee_collection_advances_particular.include?(0)
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
         else
@@ -8051,6 +8543,10 @@ class FinanceController < ApplicationController
         end
         @fee_has_advance_particular = true
         @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+        @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+        if @advance_ids.blank?
+          @advance_ids[0] = 0
+        end
         @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
       end
       
@@ -8157,6 +8653,10 @@ class FinanceController < ApplicationController
         end
         @fee_has_advance_particular = true
         @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+        @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+        if @advance_ids.blank?
+          @advance_ids[0] = 0
+        end
         @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
       end
       
@@ -8322,6 +8822,10 @@ class FinanceController < ApplicationController
           end
           @fee_has_advance_particular = true
           @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+          @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+          if @advance_ids.blank?
+            @advance_ids[0] = 0
+          end
           @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
         end
         
@@ -8515,6 +9019,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -8596,6 +9104,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -8689,6 +9201,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -9076,6 +9592,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -9169,6 +9689,10 @@ class FinanceController < ApplicationController
       @end_date = (params[:end_date]).to_date
       @start_date2 = (params[:start_date2]).to_date
       @end_date2 = (params[:end_date2]).to_date
+      @fixed_cat_ids = @fixed_cat_ids.reject { |f| f.to_s.empty? }
+      if @fixed_cat_ids.blank?
+        @fixed_cat_ids[0] = 0
+      end
       @transactions = FinanceTransaction.find(:all,
         :order => 'transaction_date desc', :conditions => ["transaction_date >= '#{@start_date}' and transaction_date <= '#{@end_date}'"])
       @transactions2 = FinanceTransaction.find(:all,
@@ -9234,6 +9758,10 @@ class FinanceController < ApplicationController
     @finance_fee=@student.finance_fee_by_date(@fee_collection)
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
     @fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"batch_id=#{@finance_fee.batch_id}").select{|par| par.receiver==@student or par.receiver==@student.student_category or par.receiver==@finance_fee.batch}
+    exclude_discount_ids = exclude_discount_ids.reject { |e| e.to_s.empty? }
+    if exclude_discount_ids.blank?
+      exclude_discount_ids[0] = 0
+    end
     @discounts=@fee_collection.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and batch_id=#{@finance_fee.batch_id}").select{|par| par.receiver==@student or par.receiver==@student.student_category or par.receiver==@finance_fee.batch}
     @total_discount = 0
     @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
@@ -10046,7 +10574,12 @@ class FinanceController < ApplicationController
       unless fee_collection.nil?  
         fee_collection_name = fee_collection.name
         fee_collections = FinanceFeeCollection.find_all_by_name(fee_collection_name)
-        @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id IN (#{fee_collections.map(&:id).join(",")})")
+        fee_collections_ids = fee_collections.map(&:id)
+        fee_collections_ids = fee_collections_ids.reject { |f| f.to_s.empty? }
+        if fee_collections_ids.blank?
+          fee_collections_ids[0] = 0
+        end
+        @finance_fees = FinanceFee.all(:select=>"finance_fees.id,finance_fees.student_id,finance_fees.is_paid,finance_fees.balance",:joins=>"INNER JOIN students ON students.id = finance_fees.student_id",:order => "if(students.class_roll_no = '' or students.class_roll_no is null,0,cast(students.class_roll_no as unsigned)),students.first_name ASC", :conditions=>"finance_fees.fee_collection_id IN (#{fee_collections_ids.join(",")})")
       end
     end
   end
@@ -10060,6 +10593,10 @@ class FinanceController < ApplicationController
     student_ids = @students.map(&:id)
     inactive_student_ids = student_ids - finance_student_ids
     unless inactive_student_ids.blank?
+      inactive_student_ids = inactive_student_ids.reject { |i| i.to_s.empty? }
+      if inactive_student_ids.blank?
+        inactive_student_ids[0] = 0
+      end
       @inactive_students = Student.find(:all, :conditions => "id In (#{inactive_student_ids.join(",")})")
     end
     render :update do |page|
@@ -10144,6 +10681,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -10177,6 +10718,10 @@ class FinanceController < ApplicationController
 
     if advance_fee_collection
       fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
+      fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+      if fee_collection_advances_particular.blank?
+        fee_collection_advances_particular[0] = 0
+      end
       if fee_collection_advances_particular.include?(0)
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       else
@@ -10427,6 +10972,10 @@ class FinanceController < ApplicationController
         end
         @fee_has_advance_particular = true
         @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+        @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+        if @advance_ids.blank?
+          @advance_ids[0] = 0
+        end
         @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
       end
       
@@ -10543,6 +11092,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     
@@ -10968,557 +11521,6 @@ class FinanceController < ApplicationController
     /(\d{4}-\d{2}-\d{2})/.match(date)
   end
 
-  def calculate_discount(date,batch,student,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
-    unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
-      exclude_discount_ids = exclude_discount_ids
-    else
-      exclude_discount_ids = [0]
-    end
-    
-    one_time_discount = false
-    one_time_total_amount_discount = false
-    onetime_discount_particulars_id = []
-    advance_fee_particular = []
-    unless advance_fee.nil? or advance_fee.empty? or advance_fee.blank?
-      advance_fee_particular = advance_fee.map(&:particular_id)
-    end
-    if MultiSchool.current_school.id == 312
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee_particular.include?(0))
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)) }
-        @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        @discounts_amount = []
-        @discounts.each do |d|
-          @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-          @total_discount = @total_discount + @discounts_amount[d.id]
-        end
-      else
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)) }
-        @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        @discounts_amount = []
-        @discounts.each do |d|
-          @discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-          @total_discount = @total_discount + @discounts_amount[d.id]
-        end
-      end
-    else
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee_particular.include?(0))
-        deduct_fee = 0
-        if fee_has_advance_particular and !advance_fee_particular.include?(0)
-          unless advance_fee_particular.blank?
-            particular_id = advance_fee_particular.join(",")
-            fee_particulars_deduct = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{particular_id})").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-            deduct_fee = fee_particulars_deduct.map{|l| l.amount}.sum.to_f
-          end
-        end
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @onetime_discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @onetime_discounts.length > 0
-          one_time_total_amount_discount= true
-          @onetime_discounts_amount = []
-          @onetime_discounts.each do |d|
-            @onetime_discounts_amount[d.id] = (@total_payable - deduct_fee) * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount = @total_discount + @onetime_discounts_amount[d.id]
-          end
-        else
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          @onetime_discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if @onetime_discounts.length > 0
-            one_time_discount = true
-            @onetime_discounts_amount = []
-            i = 0
-            @onetime_discounts.each do |d|   
-              onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @onetime_discounts_amount[d.id] = discount_amt
-                @total_discount = @total_discount + discount_amt
-                i = i + 1
-              end
-            end
-          end
-        end
-
-        unless one_time_total_amount_discount
-          if onetime_discount_particulars_id.empty?
-            onetime_discount_particulars_id[0] = 0
-          end
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @discounts_amount = []
-            @discounts.each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @discounts_amount[d.id] = discount_amt
-                @total_discount = @total_discount + discount_amt
-              end
-            end
-          else  
-            unless one_time_discount
-              deduct_fee = 0
-              if fee_has_advance_particular and !advance_fee_particular.include?(0)
-                unless advance_fee_particular.blank?
-                  particular_id = advance_fee_particular.join(",")
-                  fee_particulars_deduct = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{particular_id})").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-                  deduct_fee = fee_particulars_deduct.map{|l| l.amount}.sum.to_f
-                end
-              end
-              @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              @discounts_amount = []
-              @discounts.each do |d|
-                @discounts_amount[d.id] = (@total_payable - deduct_fee) * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-                @total_discount = @total_discount + @discounts_amount[d.id]
-              end
-            end
-          end
-        end
-      else
-        one_time_total_amount_discount= false
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @onetime_discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        
-        if @onetime_discounts.length > 0
-          one_time_total_amount_discount= true
-          @onetime_discounts_amount = []
-          @onetime_discounts.each do |d|
-            @onetime_discounts_amount[d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount = @total_discount + @onetime_discounts_amount[d.id]
-          end
-        end
-
-        unless one_time_total_amount_discount
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id IN (#{advance_fee_particular.join(",")})").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @discounts_amount = []
-            @discounts.each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                month = 1
-                unless advance_fee.nil?
-                  advance_fee.each do |fee|
-                    if fee.particular_id == fee_particulars_single.finance_fee_particular_category_id
-                      month = fee.no_of_month.to_i
-                    end
-                  end
-                end
-                payable_ampt = (fee_particulars_single.map{|l| l.amount}.sum.to_f * month.to_i).to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @discounts_amount[d.id] = discount_amt
-                @total_discount = @total_discount + discount_amt
-              end
-            end
-          else  
-            unless one_time_discount
-              deduct_fee = 0
-              @discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              @discounts_amount = []
-              @discounts.each do |d|
-                @discounts_amount[d.id] = (@total_payable - deduct_fee) * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-                @total_discount = @total_discount + @discounts_amount[d.id]
-              end
-            end  
-          end
-        end
-      end
-    end
-  end
-  
-  def calculate_discount_index_all(date,batch,student,ind,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
-    unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
-      exclude_discount_ids = exclude_discount_ids
-    else
-      exclude_discount_ids = [0]
-    end
-    
-    one_time_discount = false
-    one_time_total_amount_discount = false
-    onetime_discount_particulars_id = []
-    
-    if MultiSchool.current_school.id == 312
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee.particular_id.to_i == 0)
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-        @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        if @all_onetime_discounts[ind].length > 0
-          @all_onetime_discounts_amount[ind] = []
-          @all_onetime_discounts[ind].each do |d|
-            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
-          end
-        end
-      else
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-        @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        if @all_onetime_discounts[ind].length > 0
-          @all_onetime_discounts_amount[ind] = []
-          @all_onetime_discounts[ind].each do |d|
-            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
-          end
-        end
-      end
-    else
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee.particular_id.to_i == 0)
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @all_onetime_discounts[ind].length > 0
-          one_time_total_amount_discount= true
-          @all_onetime_discounts_amount[ind] = []
-          @all_onetime_discounts[ind].each do |d|
-            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
-          end
-        else
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if @all_onetime_discounts[ind].length > 0
-            one_time_discount = true
-            @all_onetime_discounts_amount[ind] = []
-            i = 0
-            @all_onetime_discounts[ind].each do |d|   
-              onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @all_onetime_discounts_amount[ind][d.id] = discount_amt
-                @all_total_discount[ind] = @all_total_discount[ind] + discount_amt
-                i = i + 1
-              end
-            end
-          end
-        end
-
-        unless one_time_total_amount_discount
-          if onetime_discount_particulars_id.empty?
-            onetime_discount_particulars_id[0] = 0
-          end
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)}
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @all_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @all_discounts_amount[ind] = []
-            @all_discounts[ind].each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @all_discounts_amount[ind][d.id] = discount_amt
-                @all_total_discount[ind] = @all_total_discount[ind] + discount_amt
-              end
-            end
-          else  
-            unless one_time_discount
-              @all_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              @all_discounts_amount[ind] = []
-              @all_discounts[ind].each do |d|
-                @all_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-                @all_total_discount[ind] = @all_total_discount[ind] + @all_discounts_amount[ind][d.id]
-              end
-            end
-          end
-        end
-      else
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee.discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @all_onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @all_onetime_discounts[ind].length > 0
-          one_time_total_amount_discount= true
-          @all_onetime_discounts_amount[ind] = []
-          @all_onetime_discounts[ind].each do |d|
-            @all_onetime_discounts_amount[ind][d.id] = @all_total_payable[ind] * d.discount.to_f/ (d.is_amount?? @all_total_payable[ind] : 100)
-            @all_total_discount[ind] = @all_total_discount[ind] + @all_onetime_discounts_amount[ind][d.id]
-          end
-        end
-
-        unless one_time_total_amount_discount
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch)}
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @all_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @all_discounts_amount[ind] = []
-            @all_discounts[ind].each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              unless fee_particulars_single.nil? or fee_particulars_single.empty? or fee_particulars_single.blank?
-                payable_ampt = (fee_particulars_single.map{|l| l.amount}.sum.to_f * advance_fee.no_of_month.to_i).to_f
-                discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-                @all_discounts_amount[ind][d.id] = discount_amt
-                @all_total_discount[ind] = @all_total_discount[ind] + discount_amt
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-  
-  def calculate_discount_index(date,batch,student,ind,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
-    unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
-      exclude_discount_ids = exclude_discount_ids
-    else
-      exclude_discount_ids = [0]
-    end
-    
-    one_time_discount = false
-    one_time_total_amount_discount = false
-    onetime_discount_particulars_id = []
-    
-    if MultiSchool.current_school.id == 312
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee.particular_id.to_i == 0)
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-        @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        if @onetime_discounts[ind].length > 0
-          @onetime_discounts_amount[ind] = []
-          @onetime_discounts[ind].each do |d|
-            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
-          end
-        end
-      else
-        fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-        @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_late=#{false}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-        if @onetime_discounts[ind].length > 0
-          @onetime_discounts_amount[ind] = []
-          @onetime_discounts[ind].each do |d|
-            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
-          end
-        end
-      end
-    else
-      if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee.particular_id.to_i == 0)
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @onetime_discounts[ind].length > 0
-          one_time_total_amount_discount= true
-          @onetime_discounts_amount[ind] = []
-          @onetime_discounts[ind].each do |d|
-            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
-          end
-        else
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if @onetime_discounts[ind].length > 0
-            one_time_discount = true
-            @onetime_discounts_amount[ind] = []
-            i = 0
-            @onetime_discounts[ind].each do |d|   
-              onetime_discount_particulars_id[i] = d.finance_fee_particular_category_id
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-              discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-              @onetime_discounts_amount[ind][d.id] = discount_amt
-              @total_discount[ind] = @total_discount[ind] + discount_amt
-              i = i + 1
-            end
-          end
-        end
-
-        unless one_time_total_amount_discount
-          if onetime_discount_particulars_id.empty?
-            onetime_discount_particulars_id[0] = 0
-          end
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0 and fee_discounts.finance_fee_particular_category_id NOT IN (" + onetime_discount_particulars_id.join(",") + ")").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @discounts_amount[ind] = []
-            @discounts[ind].each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              payable_ampt = fee_particulars_single.map{|l| l.amount}.sum.to_f
-              discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-              @discounts_amount[ind][d.id] = discount_amt
-              @total_discount[ind] = @total_discount[ind] + discount_amt
-            end
-          else  
-            unless one_time_discount
-              @discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              @discounts_amount[ind] = []
-              @discounts[ind].each do |d|
-                @discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-                @total_discount[ind] = @total_discount[ind] + @discounts_amount[ind][d.id]
-              end
-            end
-          end
-        end
-      else
-        one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        @onetime_discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @onetime_discounts[ind].length > 0
-          one_time_total_amount_discount= true
-          @onetime_discounts_amount[ind] = []
-          @onetime_discounts[ind].each do |d|
-            @onetime_discounts_amount[ind][d.id] = @total_payable * d.discount.to_f/ (d.is_amount?? @total_payable : 100)
-            @total_discount[ind] = @total_discount[ind] + @onetime_discounts_amount[ind][d.id]
-          end
-        end
-
-        unless one_time_total_amount_discount
-          fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==batch) }
-          discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par| ((par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-          if discounts_on_particulars.length > 0
-            @discounts[ind] = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = #{advance_fee.particular_id}").select{|par|  ((par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch)) and (fee_particulars.map(&:finance_fee_particular_category_id).include?(par. finance_fee_particular_category_id)) }
-            @discounts_amount[ind] = []
-            @discounts[ind].each do |d|   
-              fee_particulars_single = date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and finance_fee_particular_category_id=#{d.finance_fee_particular_category_id}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-              payable_ampt = (fee_particulars_single.map{|l| l.amount}.sum.to_f * advance_fee.no_of_month.to_i).to_f
-              discount_amt = payable_ampt * d.discount.to_f/ (d.is_amount?? payable_ampt : 100)
-              @discounts_amount[ind][d.id] = discount_amt
-              @total_discount[ind] = @total_discount[ind] + discount_amt
-            end
-          end
-        end
-      end
-    end
-  end
-  
-  def calculate_extra_fine(date,batch,student,fine_rule)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      s_date = date.start_date.to_date.beginning_of_month
-      e_date = date.start_date.to_date.end_of_month
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["start_date NOT BETWEEN ? AND ? and is_deleted=#{false}", s_date, e_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
-          unless fee_for_batch.nil? or fee_for_batch.empty?
-            fine_amount = fine_rule.fine_amount if fine_rule
-            extra_fine = extra_fine + fine_amount
-          end
-        end
-      end
-      @fine_amount = @fine_amount + extra_fine
-    end
-  end
-  
-  def calculate_extra_fine_index_all(date,batch,student,fine_rule,ind)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      s_date = date.start_date.to_date.beginning_of_month
-      e_date = date.start_date.to_date.end_of_month
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["start_date NOT BETWEEN ? AND ? and is_deleted=#{false}", s_date, e_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
-          unless fee_for_batch.nil? or fee_for_batch.empty?
-            fine_amount = fine_rule.fine_amount if fine_rule
-            extra_fine = extra_fine + fine_amount
-          end
-        end
-      end
-      @all_fine_amount[ind] = @all_fine_amount[ind] + extra_fine
-    end
-  end
-  
-  def calculate_extra_fine_index(date,batch,student,fine_rule,ind)
-    if MultiSchool.current_school.id == 340
-      #GET THE NEXT ALL months 
-      extra_fine = 0
-      s_date = date.start_date.to_date.beginning_of_month
-      e_date = date.start_date.to_date.end_of_month
-      other_months = FinanceFeeCollection.find(:all, :conditions => ["start_date NOT BETWEEN ? AND ? and is_deleted=#{false}", s_date, e_date], :order => "due_date asc")
-      unless other_months.nil? or other_months.empty?
-        other_months.each do |other_month|
-          fee_for_batch = FeeCollectionBatch.find(:all, :conditions => ["batch_id = ? and is_deleted=#{false} and finance_fee_collection_id != ?", batch.id, date.id])
-          unless fee_for_batch.nil? or fee_for_batch.empty?
-            fine_amount = fine_rule.fine_amount if fine_rule
-            extra_fine = extra_fine + fine_amount
-          end
-        end
-      end
-      @fine_amount[ind] = @fine_amount[ind] + extra_fine
-    end
-  end
-  
-  def get_fine_discount(date,batch,student)
-    if !@fine_amount.blank? and @fine_amount > 0
-      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
-      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
-        @discounts_on_lates = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @discounts_on_lates.length > 0
-          @has_fine_discount = true
-          @discounts_late_amount = []
-          @discounts_on_lates.each do |d|   
-            if @fine_amount > 0
-              discount_amt = @new_fine_amount * d.discount.to_f/ (d.is_amount?? @new_fine_amount : 100)
-              @fine_amount = @fine_amount - discount_amt
-              if @fine_amount < 0
-                discount_amt = 0
-              end
-              @discounts_late_amount[d.id] = discount_amt
-            else
-              @discounts_late_amount[d.id] = 0
-            end
-          end
-        end
-      end
-    else
-      @fine_amount = 0
-    end  
-  end
-  
-  def get_fine_discount_index(date,batch,student,ind)
-    if @fine_amount[ind] > 0
-      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
-      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
-        @discounts_on_lates[ind] = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @discounts_on_lates[ind].length > 0
-          @has_fine_discount[ind] = true
-          @discounts_late_amount[ind] = []
-          @discounts_on_lates[ind].each do |d|   
-            if @fine_amount[ind] > 0
-              discount_amt = @new_fine_amount[ind] * d.discount.to_f/ (d.is_amount?? @new_fine_amount[ind] : 100)
-              @fine_amount[ind] = @fine_amount[ind] - discount_amt
-              if @fine_amount[ind] < 0
-                discount_amt = 0
-              end
-              @discounts_late_amount[ind][d.id] = discount_amt
-            else
-              @discounts_late_amount[ind][d.id] = 0
-            end
-          end
-        end
-      end
-    end
-  end
-  
-  def get_fine_discount_index_all(date,batch,student,ind)
-    
-    if @all_fine_amount[ind] > 0
-      fee_collection_discount_ids = FeeDiscountCollection.active.find_all_by_finance_fee_collection_id_and_batch_id_and_is_late(date.id, batch.id, true).map(&:fee_discount_id)
-      unless fee_collection_discount_ids.nil? or fee_collection_discount_ids.empty?
-        @all_discounts_on_lates[ind] = FeeDiscount.find(:all, :conditions=>"is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{true} and id IN (" + fee_collection_discount_ids.join(",") + ")").select{|par|  (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-        if @all_discounts_on_lates[ind].length > 0
-          @all_has_fine_discount[ind] = true
-          @all_discounts_late_amount[ind] = []
-          @all_discounts_on_lates[ind].each do |d|   
-            if @all_fine_amount[ind] > 0
-              discount_amt = @all_new_fine_amount[ind] * d.discount.to_f/ (d.is_amount?? @all_new_fine_amount[ind] : 100)
-              @all_fine_amount[ind] = @all_fine_amount[ind] - discount_amt
-              if @all_fine_amount[ind] < 0
-                discount_amt = 0
-              end
-              @all_discounts_late_amount[ind][d.id] = discount_amt
-            else
-              @all_discounts_late_amount[ind][d.id] = 0
-            end
-          end
-        end
-      end
-    end
-  end
-  
   def get_fees_details(student_ids)
     @show_only_structure = false
     advance_fee_collection = false
@@ -11536,6 +11538,10 @@ class FinanceController < ApplicationController
       end
       @fee_has_advance_particular = true
       @advance_ids = @financefee.fees_advances.map(&:advance_fee_id)
+      @advance_ids = @advance_ids.reject { |a| a.to_s.empty? }
+      if @advance_ids.blank?
+        @advance_ids[0] = 0
+      end
       @fee_collection_advances = FinanceFeeAdvance.find(:all, :conditions => "id IN (#{@advance_ids.join(",")})")
     end
     @due_date = @fee_collection.due_date
@@ -11548,6 +11554,10 @@ class FinanceController < ApplicationController
       if fee_collection_advances_particular.include?(0)
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       else
+        fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
+        if fee_collection_advances_particular.blank?
+          fee_collection_advances_particular[0] = 0
+        end
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"is_deleted=#{false} and batch_id=#{@batch.id} and finance_fee_particular_category_id IN (#{fee_collection_advances_particular.join(",")})").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       end
     else

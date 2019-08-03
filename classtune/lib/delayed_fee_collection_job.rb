@@ -124,7 +124,7 @@ class DelayedFeeCollectionJob
                         unless s.blank?
                           finance_fee_particular_new = FinanceFeeParticular.new
                           finance_fee_particular_new.name = p_name
-                          finance_fee_particular_new.description = transport.route.destination unless transport.route.nil?
+                          finance_fee_particular_new.description = "--Vehical No: ---" + vehicle.vehicle_no + ", --Route: ---" + transport.route.destination unless transport.route.nil?
                           finance_fee_particular_new.amount = transport.bus_fare
                           finance_fee_particular_new.finance_fee_category_id = new_finance_fee_category.id
                           finance_fee_particular_new.finance_fee_particular_category_id = p_id

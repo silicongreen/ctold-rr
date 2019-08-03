@@ -19,7 +19,7 @@ function reloadFeeSubmission(batch_id,date_id,student_id,submission_date)
           {
             asynchronous:true, 
             evalScripts:true, 
-            parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id+'&submission_date='+dt
+            parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id+'&submission_date='+dt+'&student_fees='+j("#is_student_fees").val()
           }
     )
 }
@@ -257,7 +257,7 @@ function calculateTotalFees()
                     {
                       asynchronous:true, 
                       evalScripts:true, 
-                      parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id
+                      parameters:'batch_id='+batch_id+'&date='+date_id+'&student='+student_id+'&student_fees='+j("#is_student_fees").val()
                     }
             )
         }
@@ -1150,7 +1150,7 @@ function loadJS()
                   {
                     asynchronous:true, 
                     evalScripts:true, 
-                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular_category='+particular_category_id+'&particular='+particular_name+'&no_vat=1'
+                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular_category='+particular_category_id+'&particular='+particular_name+'&no_vat=1'+'&student_fees='+j("#is_student_fees").val()
                   }
              );
         });
@@ -1356,7 +1356,7 @@ function loadJS()
                      {
                        asynchronous:true, 
                        evalScripts:true, 
-                       parameters:'amount='+discount_amount+'&discount_ids='+discount_ids+'&discount_on='+discount_on+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&discount_name='+discount_name+'&no_vat=1'
+                       parameters:'amount='+discount_amount+'&discount_ids='+discount_ids+'&discount_on='+discount_on+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&discount_name='+discount_name+'&no_vat=1'+'&student_fees='+j("#is_student_fees").val()
                      }
                 );
              }
@@ -1375,7 +1375,7 @@ function loadJS()
                   {
                     asynchronous:true, 
                     evalScripts:true, 
-                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+''
+                    parameters:'amount='+particular_amount+'&batch_id='+j("#batch_id_particular").val()+'&date='+j("#date_id_particular").val()+'&student='+j("#student_id_particular").val()+'&particular='+particular_name+'&student_fees='+j("#is_student_fees").val()
                   }
              );
         });

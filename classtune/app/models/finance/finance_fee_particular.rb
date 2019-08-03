@@ -92,6 +92,10 @@ class FinanceFeeParticular < ActiveRecord::Base
       unless batch.nil?
         category_id = batch.students.map(&:student_category_id).uniq
         unless category_id.blank?
+          category_id = category_id.reject { |c| c.to_s.empty? }
+          if category_id.blank?
+            category_id[0] = 0
+          end
           if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='StudentCategory' and receiver_id IN (#{category_id.join(",")}) and batch_id=#{batch_id}").present?
             errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
             return false
@@ -104,6 +108,10 @@ class FinanceFeeParticular < ActiveRecord::Base
         
         student_ids = batch.students.map(&:id).uniq
         unless student_ids.blank?
+          student_ids = student_ids.reject { |s| s.to_s.empty? }
+          if student_ids.blank?
+            student_ids[0] = 0
+          end
           if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
             errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
             return false
@@ -127,6 +135,10 @@ class FinanceFeeParticular < ActiveRecord::Base
       category_id = receiver_id
       student_ids = Student.find(:all, :conditions => "student_category_id=#{category_id}").map(&:id)
       unless student_ids.blank?
+        student_ids = student_ids.reject { |s| s.to_s.empty? }
+        if student_ids.blank?
+          student_ids[0] = 0
+        end
         if FeeDiscount.find(:all,:conditions=>"is_deleted = '#{false}' and finance_fee_category_id=#{finance_fee_category_id} and finance_fee_particular_category_id=#{0} and receiver_type='Student' and receiver_id IN (#{student_ids.join(",")}) and batch_id=#{batch_id}").present?
           errors.add_to_base(t('total_discounts_exists_for_this_category_cant_delete_or_edit_this_particular'))
           return false

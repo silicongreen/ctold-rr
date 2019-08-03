@@ -17,6 +17,16 @@
 #specific language governing permissions and limitations
 #under the License. -%>
 
+<% if MultiSchool.current_school.id == 352 %>
+<%
+  require "yaml"
+  transport_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_transport.yml")['school']
+  transport_particular_id = transport_config['transport_particular_id_' + MultiSchool.current_school.id.to_s]
+  if transport_particular_id.blank?
+    transport_particular_id = 0
+  end
+%>  
+<% end %>  
 <div id="student_fee_details">
 <div id="content-header">
 <%= show_header_icon %>
@@ -226,8 +236,12 @@
                 <% end %>
             </td>
             <td class="col-6">
-              <%= fee.name %>
-                
+              <%= fee.name %>1
+              <% if transport_particular_id.to_i == fee.finance_fee_particular_category_id.to_i %>
+                <% unless fee.description.blank? %>
+                <br /><small>(<%= fee.description.gsub("---","</b>").gsub("--","<b>") %>)</small>
+                <% end %>
+              <% end %>  
               <% if @self_advance_fee %>
                 <br />(<small><%= month %> Month Advances</small>)
                 <br /><small>(<%= start_month %> to <%= end_month %>)

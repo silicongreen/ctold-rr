@@ -1492,6 +1492,23 @@ module FinanceLoader
           end
           
           payment = Payment.find_by_order_id_and_payee_id_and_payment_id(orderId, @student.id, @financefee.id)
+          if payment.gateway_response[:verified].to_i == 0
+            unless payment.validation_response.nil?
+              if payment.validation_response[:verified].to_i == 1
+                payment.update_attributes(:gateway_response => payment.validation_response)
+              end
+            end
+          end
+          
+          unless payment.gateway_response.nil?
+            unless payment.gateway_response[:tran_date].nil?
+              dt = payment.gateway_response[:tran_date].split(".")
+              transaction_datetime = dt[0]
+              
+              payment.update_attributes(:transaction_datetime => transaction_datetime)
+            end
+          end
+          
           payment.update_attributes(:finance_transaction_id => transaction.id)
           unless @financefee.transaction_id.nil?
             tid =   @financefee.transaction_id.to_s + ",#{transaction.id}"

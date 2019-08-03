@@ -1136,7 +1136,7 @@ class FinanceController < ApplicationController
                   unless finance_orders.blank?
                     if finance_orders.length == 1
                       finance_order = finance_orders[0]
-                      abort(finance_order.request_params.inspect)
+                      abort(finance_order.request_params.map(|k,v| [k,v]).inspect)
                     end
                   end
                 end

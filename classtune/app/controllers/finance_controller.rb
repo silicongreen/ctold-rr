@@ -1132,7 +1132,7 @@ class FinanceController < ApplicationController
                 if payments.length == 1
                   payment = payments[0]
                   order_id = payment.order_id
-                  finance_orders = FinanceOrder.find(:all, :conditions => "order_id = #{order_id}")
+                  finance_orders = FinanceOrder.find(:all, :conditions => "order_id = '#{order_id}'")
                   unless finance_orders.blank?
                     if finance_orders.length == 1
                       finance_order = finance_orders[0]

@@ -1126,6 +1126,21 @@ class FinanceController < ApplicationController
             transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_notmatch_transaction.transaction_id}")
             if transaction.blank?
               finance_notmatch_transaction.destroy
+            else
+              payments = Payment.find(:all, :conditions => "finance_transaction_id = #{finance_notmatch_transaction.transaction_id}")
+              unless payments.blank?
+                if payments.length == 1
+                  payment = payments[0]
+                  order_id = payment.order_id
+                  finance_orders = FinanceOrder.find(:all, :conditions => "order_id = #{order_id}")
+                  unless finance_orders.blank?
+                    if finance_orders.length == 1
+                      finance_order = finance_orders[0]
+                      abort(finance_order.request_params.inspect)
+                    end
+                  end
+                end
+              end
             end
           end
         end

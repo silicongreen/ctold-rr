@@ -110,6 +110,14 @@
     <div class="extender"></div>
   </div>
 </div>
+<div style="clear: both; height: 2px;"></div>
+<div style="border: 1px solid #ccc; display: none; margin: 0 auto; border-radius: 6px; width: 40%; padding: 10px; line-height: 24px;">
+    <b>Student Info: <b>
+    <hr style="border: 1px solid #ccc;"
+    <b>Name: </b><span style=""><%= @student.full_name %><Br />
+    <b>Admission No: </b><%= @student.admission_no %><Br />
+    <b>Batch: </b><%= @student.batch.full_name %>
+</div>
 <% end %>
 <input type="hidden" name="batch_id_particular" id="batch_id_particular" value="<%= @batch.id %>" />
 <input type="hidden" name="student_id_particular" id="student_id_particular" value="<%= @student.id %>" />

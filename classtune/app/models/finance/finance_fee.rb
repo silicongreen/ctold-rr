@@ -70,49 +70,50 @@ class FinanceFee < ActiveRecord::Base
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"is_tmp=#{false} and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
     total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
     
-    scholarship = FeeDiscount.all(:conditions=>"receiver_id=#{student.id} and finance_fee_category_id=#{0} and finance_fee_particular_category_id IN (#{fee_particulars.map(&:finance_fee_particular_category_id).join(',')}) and receiver_type='Student'")
-    
-    scholarship_discount = []
-    i = 0
-    scholarship.each do |scholar|
-      fee_particular  = fee_particulars.select{|fp| fp.finance_fee_particular_category_id == scholar.finance_fee_particular_category_id}.first
-      
-      fee_discount = FeeDiscount.new
-      fee_discount.name = scholar.name
-      fee_discount.is_onetime = true
-      fee_discount.discount = scholar.discount
-      fee_discount.receiver_type ="Student"
-      fee_discount.receiver_id = student.id
-      fee_discount.batch_id = student.batch_id
-      fee_discount.finance_fee_category_id = date.fee_category_id
-      fee_discount.finance_fee_particular_category_id = scholar.finance_fee_particular_category_id
-      fee_discount.is_amount = scholar.is_amount
-      
-      if fee_discount.save 
-        fee_discount_category = FinanceFeeDiscountCategory.new
-        fee_discount_category.finance_fee_category_id = fee_particular.finance_fee_category_id
-        fee_discount_category.finance_fee_particular_category_id = scholar.finance_fee_particular_category_id
-        fee_discount_category.finance_fee_collection_id = date.id
-        fee_discount_category.fee_discount_id = fee_discount.id
-        fee_discount_category.save
-        
-        collection_discount = CollectionDiscount.new(:fee_discount_id=>fee_discount.id,:finance_fee_collection_id=>date.id, 
-          :finance_fee_particular_category_id => fee_discount.finance_fee_particular_category_id)
-        
-        if collection_discount.save
-          fee_discount_collection = FeeDiscountCollection.new(
-            :finance_fee_collection_id => date.id,
-            :fee_discount_id           => fee_discount.id,
-            :batch_id                  => student.batch_id,
-            :is_late                   => 0
-          )
-          fee_discount_collection.save
-          scholarship_discount[i] = fee_discount.id
-          i += 1
+    unless fee_particulars.blank?
+      scholarship = FeeDiscount.all(:conditions=>"receiver_id=#{student.id} and finance_fee_category_id=#{0} and finance_fee_particular_category_id IN (#{fee_particulars.map(&:finance_fee_particular_category_id).join(',')}) and receiver_type='Student'")
+
+      scholarship_discount = []
+      i = 0
+      scholarship.each do |scholar|
+        fee_particular  = fee_particulars.select{|fp| fp.finance_fee_particular_category_id == scholar.finance_fee_particular_category_id}.first
+
+        fee_discount = FeeDiscount.new
+        fee_discount.name = scholar.name
+        fee_discount.is_onetime = true
+        fee_discount.discount = scholar.discount
+        fee_discount.receiver_type ="Student"
+        fee_discount.receiver_id = student.id
+        fee_discount.batch_id = student.batch_id
+        fee_discount.finance_fee_category_id = date.fee_category_id
+        fee_discount.finance_fee_particular_category_id = scholar.finance_fee_particular_category_id
+        fee_discount.is_amount = scholar.is_amount
+
+        if fee_discount.save 
+          fee_discount_category = FinanceFeeDiscountCategory.new
+          fee_discount_category.finance_fee_category_id = fee_particular.finance_fee_category_id
+          fee_discount_category.finance_fee_particular_category_id = scholar.finance_fee_particular_category_id
+          fee_discount_category.finance_fee_collection_id = date.id
+          fee_discount_category.fee_discount_id = fee_discount.id
+          fee_discount_category.save
+
+          collection_discount = CollectionDiscount.new(:fee_discount_id=>fee_discount.id,:finance_fee_collection_id=>date.id, 
+            :finance_fee_particular_category_id => fee_discount.finance_fee_particular_category_id)
+
+          if collection_discount.save
+            fee_discount_collection = FeeDiscountCollection.new(
+              :finance_fee_collection_id => date.id,
+              :fee_discount_id           => fee_discount.id,
+              :batch_id                  => student.batch_id,
+              :is_late                   => 0
+            )
+            fee_discount_collection.save
+            scholarship_discount[i] = fee_discount.id
+            i += 1
+          end
         end
       end
     end
-    
                   
 
     discounts_on_particulars=date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{false} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id > 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }

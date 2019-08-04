@@ -274,9 +274,10 @@ INNER JOIN students on students.id=finance_fees.student_id",:conditions=>["finan
 
 
   def delete_collection(batch)
+    FinanceFee.destroy_all(:fee_collection_id=>id,:batch_id=>batch)
     FeeCollectionBatch.destroy_all(:finance_fee_collection_id=>id,:batch_id=>batch)
     batch_event=BatchEvent.find(:first,:joins=>"INNER JOIN events on events.id=batch_events.event_id",:conditions=>"batch_events.batch_id=#{batch} and events.origin_id=#{id} and events.origin_type='FinanceFeeCollection'")
-     batch_event.destroy if batch_event
+    batch_event.destroy if batch_event
     #update_attributes(:is_deleted => true)
     unless fee_collection_batches.present?
       Event.destroy_all(:origin_type=>"FinanceFeeCollection",:origin_id=>id)

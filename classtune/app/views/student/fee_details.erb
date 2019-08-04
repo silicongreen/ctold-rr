@@ -236,7 +236,7 @@
                 <% end %>
             </td>
             <td class="col-6">
-              <%= fee.name %>1
+              <%= fee.name %>
               <% if transport_particular_id.to_i == fee.finance_fee_particular_category_id.to_i %>
                 <% unless fee.description.blank? %>
                 <br /><small>(<%= fee.description.gsub("---","</b>").gsub("--","<b>") %>)</small>

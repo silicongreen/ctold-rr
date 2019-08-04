@@ -3695,12 +3695,20 @@ class FinanceController < ApplicationController
         transport_particular_id = 0
       end
       
-      @fee_category=FinanceFeeCategory.find(params[:id])
-      @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
-      @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and finance_fee_particular_category_id != #{transport_particular_id.to_i} and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
-      @fee_particulars_transport = FinanceFeeParticularCategory.find(:all, :conditions=>"id = #{transport_particular_id.to_i}")
-      #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq
-      @all_particulars = FinanceFeeParticularCategory.active
+      if params[:id].to_i == 0
+        @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=0 and finance_fee_particular_category_id != #{transport_particular_id.to_i} and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
+        @fee_particulars_transport = FinanceFeeParticularCategory.find(:all, :conditions=>"id = #{transport_particular_id.to_i}")
+        #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq
+        @all_particulars = FinanceFeeParticularCategory.active
+      else  
+        @fee_category=FinanceFeeCategory.find(params[:id])
+        @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_categories.id =#{@fee_category.id} and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=#{@fee_category.id} and finance_fee_particular_category_id != #{transport_particular_id.to_i} and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
+        @fee_particulars_transport = FinanceFeeParticularCategory.find(:all, :conditions=>"id = #{transport_particular_id.to_i}")
+        #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq
+        @all_particulars = FinanceFeeParticularCategory.active
+      end
     end
     render :update do |page|
       page.replace_html "batchs" ,:partial => "fee_collection_batchs"

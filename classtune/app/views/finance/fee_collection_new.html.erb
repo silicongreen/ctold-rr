@@ -50,7 +50,7 @@
           <div class="label-field-pair">
               <div class="label-container"><label for="reason"> <%= t('fee_category') %>:</label></div>
               <div class="input-container">
-                  <%= form.select(:fee_category_id, @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
+                  <%= form.select(:fee_category_id, [["Common", 0]] + @fee_categories.map { |item| [item.name, item.id] }.sort_by{|x, y| x.downcase}.uniq,
                     {:selected => @fee_category.present? ? @fee_category.first.name : nil , :prompt => "#{ t('select_category')}" },
                     {:onchange => "#{remote_function(:url => {:action => "fee_collection_batch_list"},
                       :with => "'id='+value",

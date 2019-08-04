@@ -3687,6 +3687,7 @@ class FinanceController < ApplicationController
   end
   
   def fee_collection_batch_list
+    @category_id = params[:id]
     if params[:id].present?
       require "yaml"
       transport_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/finance_transport.yml")['school']

@@ -3696,7 +3696,7 @@ class FinanceController < ApplicationController
       end
       
       if params[:id].to_i == 0
-        @batches = Batch.active.find(:all,:joins=>[{:finance_fee_particulars=>:finance_fee_category},:course],:conditions=>"finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
+        @batches = Batch.active.find(:all,:joins=>[:finance_fee_particulars=,:course],:conditions=>"finance_fee_particulars.finance_fee_category_id=0 and finance_fee_particulars.is_deleted=#{false}",:order=>"courses.code ASC").uniq
         @fee_particulars = FinanceFeeParticular.find(:all, :conditions=>"finance_fee_category_id=0 and finance_fee_particular_category_id != #{transport_particular_id.to_i} and is_tmp=#{false}",:group=>"finance_fee_particular_category_id").uniq
         @fee_particulars_transport = FinanceFeeParticularCategory.find(:all, :conditions=>"id = #{transport_particular_id.to_i}")
         #@all_particulars = FinanceFeeParticular.find(:all,:group=>"finance_fee_particular_category_id").uniq

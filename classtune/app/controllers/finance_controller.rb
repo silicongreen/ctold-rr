@@ -1139,97 +1139,6 @@ class FinanceController < ApplicationController
                       request_params = finance_order.request_params
                       request_params_array = finance_order.request_params.map{|k,v| [k,v]}
                       
-                      transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id}"])
-                      unless transaction_particulars.blank?
-                        transaction_particulars.each do |transaction_particular|
-                          transaction_particular.destroy
-                        end
-                      end
-                      request_params_array.each do |k, v|
-                        unless k.index('fee_particular_amount_').nil?
-                          particular_id_array = k.gsub('fee_particular_amount_','').split("_")
-                          particular_id = particular_id_array[0]
-                          amount = v.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = particular_id
-                          finance_transaction_particular.particular_type = 'Particular'
-                          finance_transaction_particular.transaction_type = 'Fee Collection'
-                          finance_transaction_particular.amount = amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                        unless k.index('fee_discount_amount_').nil?
-                          particular_id_array = k.gsub('fee_discount_amount_','').split("_")
-                          particular_id = particular_id_array[0]
-                          amount = v.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = particular_id
-                          finance_transaction_particular.particular_type = 'Adjustment'
-                          finance_transaction_particular.transaction_type = 'Discount'
-                          finance_transaction_particular.amount = amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                        unless k.index('fee_fine_discount_amount_').nil?
-                          particular_id_array = k.gsub('fee_fine_discount_amount_','').split("_")
-                          particular_id = particular_id_array[0]
-                          amount = v.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = particular_id
-                          finance_transaction_particular.particular_type = 'FineAdjustment'
-                          finance_transaction_particular.transaction_type = 'Discount'
-                          finance_transaction_particular.amount = amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                        unless k.index('fee_vat_amount').nil?
-                          amount = v.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'VAT'
-                          finance_transaction_particular.transaction_type = ''
-                          finance_transaction_particular.amount = amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                        unless k.index('fine_amount_to_pay').nil?
-                          amount = v.to_f
-                          finance_transaction_particular = FinanceTransactionParticular.new
-                          finance_transaction_particular.finance_transaction_id = transaction.id
-                          finance_transaction_particular.particular_id = 0
-                          finance_transaction_particular.particular_type = 'Fine'
-                          finance_transaction_particular.transaction_type = ''
-                          finance_transaction_particular.amount = amount
-                          finance_transaction_particular.transaction_date = transaction.transaction_date
-                          finance_transaction_particular.save
-                        end
-                      end
-                      
-                      particular_amount = 0.00
-                      particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                      particular_wise_transactions.each do |pt|
-                        particular_amount += pt.amount.to_f
-                      end
-
-                      particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                      particular_wise_transactions.each do |pt|
-                        particular_amount += pt.amount.to_f
-                      end
-
-                      particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
-                      particular_wise_transactions.each do |pt|
-                        particular_amount -= pt.amount.to_f
-                      end
-                      
-                      if particular_amount.to_f == transaction.amount.to_f
-                        finance_notmatch_transaction.destroy
-                        abort('here')
-                      end
-                      
                       #abort(key.to_s + "  " + values.to_s) 
                       finance_id = transaction.finance_id
                       transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id}"])
@@ -1315,7 +1224,97 @@ class FinanceController < ApplicationController
                       
                       if particular_amount.to_f == transaction.amount.to_f
                         finance_notmatch_transaction.destroy
-                        abort('here')
+                      else
+                        transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id}"])
+                        unless transaction_particulars.blank?
+                          transaction_particulars.each do |transaction_particular|
+                            transaction_particular.destroy
+                          end
+                        end
+                        request_params_array.each do |k, v|
+                          unless k.index('fee_particular_amount_').nil?
+                            particular_id_array = k.gsub('fee_particular_amount_','').split("_")
+                            particular_id = particular_id_array[0]
+                            amount = v.to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = particular_id
+                            finance_transaction_particular.particular_type = 'Particular'
+                            finance_transaction_particular.transaction_type = 'Fee Collection'
+                            finance_transaction_particular.amount = amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                          unless k.index('fee_discount_amount_').nil?
+                            particular_id_array = k.gsub('fee_discount_amount_','').split("_")
+                            particular_id = particular_id_array[0]
+                            amount = v.to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = particular_id
+                            finance_transaction_particular.particular_type = 'Adjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                          unless k.index('fee_fine_discount_amount_').nil?
+                            particular_id_array = k.gsub('fee_fine_discount_amount_','').split("_")
+                            particular_id = particular_id_array[0]
+                            amount = v.to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = particular_id
+                            finance_transaction_particular.particular_type = 'FineAdjustment'
+                            finance_transaction_particular.transaction_type = 'Discount'
+                            finance_transaction_particular.amount = amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                          unless k.index('fee_vat_amount').nil?
+                            amount = v.to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = 0
+                            finance_transaction_particular.particular_type = 'VAT'
+                            finance_transaction_particular.transaction_type = ''
+                            finance_transaction_particular.amount = amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                          unless k.index('fine_amount_to_pay').nil?
+                            amount = v.to_f
+                            finance_transaction_particular = FinanceTransactionParticular.new
+                            finance_transaction_particular.finance_transaction_id = transaction.id
+                            finance_transaction_particular.particular_id = 0
+                            finance_transaction_particular.particular_type = 'Fine'
+                            finance_transaction_particular.transaction_type = ''
+                            finance_transaction_particular.amount = amount
+                            finance_transaction_particular.transaction_date = transaction.transaction_date
+                            finance_transaction_particular.save
+                          end
+                        end
+
+                        particular_amount = 0.00
+                        particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Fee Collection'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                        particular_wise_transactions.each do |pt|
+                          particular_amount += pt.amount.to_f
+                        end
+
+                        particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Particular' and finance_transaction_particulars.transaction_type = 'Advance'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                        particular_wise_transactions.each do |pt|
+                          particular_amount += pt.amount.to_f
+                        end
+
+                        particular_wise_transactions = FinanceTransactionParticular.find(:all, :select => "sum( finance_transaction_particulars.amount ) as amount", :conditions => ["finance_transaction_particulars.finance_transaction_id = #{transaction.id} and finance_transaction_particulars.particular_type = 'Adjustment' and finance_transaction_particulars.transaction_type = 'Discount'"], :group => "finance_transaction_particulars.finance_transaction_id")
+                        particular_wise_transactions.each do |pt|
+                          particular_amount -= pt.amount.to_f
+                        end
+
+                        if particular_amount.to_f == transaction.amount.to_f
+                          finance_notmatch_transaction.destroy
+                          abort('here')
+                        end
                       end
                     end
                   end

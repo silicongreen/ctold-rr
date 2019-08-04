@@ -2541,6 +2541,7 @@ authorization do
       :regenerate_student_fees,
       :generate_student_fees,
       :delete_student_fees,
+      :delete_student_fees_from_collection,
       :collection_details_view_inactive,
       #new_fee-----------
       :master_fees,

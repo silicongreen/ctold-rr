@@ -11575,6 +11575,22 @@ class FinanceController < ApplicationController
     end
   end
 
+  def delete_student_fees_from_collection
+    finance =  FinanceFee.find_by_id(params[:fee_id])
+    date_id = finance.fee_collection_id
+    student_id = finance.student_id
+    date = FinanceFeeCollection.find(date_id)
+    student = Student.find(student_id)
+    discounts_on_particulars=date.fee_discounts.all(:conditions=>"is_deleted=#{false} and batch_id=#{student.batch_id} and is_onetime=#{true} and is_late=#{false}").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+    discounts_ids = discounts_on_particulars.map(&:id)
+    discounts_ids.each do |did|
+      collection_discount = CollectionDiscount.find_by_finance_fee_collection_id_and_fee_discount_id(date_id, did)
+      collection_discount.destroy
+    end
+    finance.destroy
+    load_fees_submission_batch
+  end
+
   def generate_student_fees
     fee_collection = FinanceFeeCollection.find(params[:fee_id])
     student = Student.find_by_id(params[:student_id])

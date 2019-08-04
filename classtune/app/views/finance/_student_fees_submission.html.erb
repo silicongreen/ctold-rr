@@ -110,14 +110,26 @@
     <div class="extender"></div>
   </div>
 </div>
+<% if @current_user.admin? %>
 <div style="clear: both; height: 2px;"></div>
-<div style="border: 1px solid #ccc; display: none; margin: 0 auto; border-radius: 6px; width: 40%; padding: 10px; line-height: 24px;">
+<div style="border: 1px solid #ccc; margin: 0 auto; border-radius: 6px; width: 40%; padding: 10px; line-height: 24px;">
     <b>Student Info: <b>
-    <hr style="border: 1px solid #ccc;"
-    <b>Name: </b><span style=""><%= @student.full_name %><Br />
-    <b>Admission No: </b><%= @student.admission_no %><Br />
-    <b>Batch: </b><%= @student.batch.full_name %>
+    <hr style="border: 1px solid #ccc;" />
+    <b>Name: </b><span style="font-weight: normal;"><%= @student.full_name %></span><Br />
+    <b>Admission No: </b><span style="font-weight: normal;"><%= @student.admission_no %></span><Br />
+    <b>Batch: </b><span style="font-weight: normal;"><%= @student.batch.full_name %></span>
+    <% if @financefee.batch_id != @student.batch.id %>
+    <hr style="border: 1px solid #ccc;">
+    <b>Fee Batch: </b><span style="font-weight: normal;"><%= @financefee.batch.full_name %></span>
+    <hr style="border: 1px solid #ccc;">
+    <div style="width: 100%; text-align: center; padding-top: 10px; padding-bottom: 10px;">
+      <span class="small danger-btn" style="text-align: center; float: none; background: #dc3545 !important; padding: 10px; border: 1px solid #dc3545;">
+        <%= link_to_remote "Remove User Fee", :url => {:action => 'delete_student_fees_from_collection', :fee_id => @financefee.id, :batch_id => @batch.id, :student => @next_student.id, :date=> @date.id, :student_fees => @from_batch_fee},:confirm => "Are You sure to Delete?" %>
+      </span> 
+    </div>
+    <% end %>
 </div>
+<% end %>
 <% end %>
 <input type="hidden" name="batch_id_particular" id="batch_id_particular" value="<%= @batch.id %>" />
 <input type="hidden" name="student_id_particular" id="student_id_particular" value="<%= @student.id %>" />
@@ -1417,6 +1429,12 @@
 
 </script>
 <style>
+    a{
+      text-decoration: none !important;
+    }
+    a:hover{
+      text-decoration: none !important;
+    }
     .cancel{
         text-decoration: none;
     }

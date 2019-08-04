@@ -3996,7 +3996,6 @@ class FinanceController < ApplicationController
         new_finance_fee_category.is_visible = 0
         new_finance_fee_category.parent_id = finance_fee_category_id
       else
-        finance_fee_category = FinanceFeeCategory.find(finance_fee_category_id)
         new_finance_fee_category = FinanceFeeCategory.new
         new_finance_fee_category.name = "Common"
         new_finance_fee_category.is_master = true

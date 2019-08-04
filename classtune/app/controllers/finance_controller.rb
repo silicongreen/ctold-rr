@@ -1145,9 +1145,19 @@ class FinanceController < ApplicationController
                           transaction_particular.destroy
                         end
                       end
-                      request_params_array.each do |k, request_param|
+                      request_params_array.each do |k, v|
                         unless k.index('fee_particular_amount_').nil?
-                          
+                          particular_id_array = k.gsub('fee_particular_amount_','').split("_")
+                          particular_id = particular_id_array[0]
+                          amount = v.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = particular_id
+                          finance_transaction_particular.particular_type = 'Particular'
+                          finance_transaction_particular.transaction_type = 'Fee Collection'
+                          finance_transaction_particular.amount = amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
                         end
                       end
                       

@@ -1221,19 +1221,26 @@
                 </td>
               </tr>
             <% else %>
+            <% fees = [] %>  
             <% trans = FinanceTransaction.find(:all, :conditions => "parent_transaction_id = #{f.id}")  %>
+            <% unless trans.blank? %>  
             <% fees = FinanceFee.find(:all, :conditions => "id IN (#{trans.map(&:finance_id).join(",")})") %>
+            <% end %>  
+            <% unless fees.blank? %>    
             <% fee_collection = FinanceFeeCollection.find(:all, :conditions => "id IN (#{fees.map(&:fee_collection_id).join(",")})") %>
+            <% end %>
             <% fee_collection_name = "Fees payment for the Month of (" %>
             <% m = 0 %>
-            <% fee_collection.each do |fee| %>
-              <% if m == 0 %>
-                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+            <% unless fee_collection.blank? %>    
+              <% fee_collection.each do |fee| %>
+                <% if m == 0 %>
+                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + " - " %>
+                <% end %>
+                <% if m == fee_collection.length - 1 %>
+                  <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
+                <% end %>
+                <% m += 1 %>
               <% end %>
-              <% if m == fee_collection.length - 1 %>
-                <% fee_collection_name += fee.start_date.to_date.strftime('%B, %Y') + ")" %>
-              <% end %>
-              <% m += 1 %>
             <% end %>
             <% tran = FinanceTransaction.find(f.id) %>  
             <% if trans.length > 1 %>

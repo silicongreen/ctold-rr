@@ -20,12 +20,20 @@ class DelayedFeeCollectionJob
   def perform
 
     finance_fee_category_id = @collection[:fee_category_id]
-    finance_fee_category = FinanceFeeCategory.find(finance_fee_category_id)
-    new_finance_fee_category = FinanceFeeCategory.new
-    new_finance_fee_category.name = @collection[:name]
-    new_finance_fee_category.is_master = finance_fee_category.is_master
-    new_finance_fee_category.is_visible = 0
-    new_finance_fee_category.parent_id = finance_fee_category_id
+    if finance_fee_category_id.to_i != 0
+      finance_fee_category = FinanceFeeCategory.find(finance_fee_category_id)
+      new_finance_fee_category = FinanceFeeCategory.new
+      new_finance_fee_category.name = @collection[:name]
+      new_finance_fee_category.is_master = finance_fee_category.is_master
+      new_finance_fee_category.is_visible = 0
+      new_finance_fee_category.parent_id = finance_fee_category_id
+    else
+      new_finance_fee_category = FinanceFeeCategory.new
+      new_finance_fee_category.name = "Common"
+      new_finance_fee_category.is_master = true
+      new_finance_fee_category.is_visible = 0
+      new_finance_fee_category.parent_id = finance_fee_category_id
+    end
     if new_finance_fee_category.save
       finance_fees_auto_category = FinanceFeesAutoCategory.new
       finance_fees_auto_category.finance_fee_category_id = finance_fee_category_id

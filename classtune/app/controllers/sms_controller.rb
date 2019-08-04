@@ -944,8 +944,12 @@ class SmsController < ApplicationController
         elsif params[:option_sms] == 'student_feedues'
           sent_to = params[:send_sms][:send_to]
           fee_collection_id = params[:fee_collections]
-          unless params[:fee_collection][:collection_id].nil?
-            fee_collection_ids = params[:fee_collection][:collection_id]
+          unless params[:fee_collection].nil?
+            unless params[:fee_collection][:collection_id].nil?
+              fee_collection_ids = params[:fee_collection][:collection_id]
+            else
+              fee_collection_ids[0] = fee_collection_id
+            end
           else
             fee_collection_ids[0] = fee_collection_id
           end

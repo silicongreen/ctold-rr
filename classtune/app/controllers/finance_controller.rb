@@ -1159,6 +1159,54 @@ class FinanceController < ApplicationController
                           finance_transaction_particular.transaction_date = transaction.transaction_date
                           finance_transaction_particular.save
                         end
+                        unless k.index('fee_discount_amount_').nil?
+                          particular_id_array = k.gsub('fee_discount_amount_','').split("_")
+                          particular_id = particular_id_array[0]
+                          amount = v.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = particular_id
+                          finance_transaction_particular.particular_type = 'Adjustment'
+                          finance_transaction_particular.transaction_type = 'Discount'
+                          finance_transaction_particular.amount = amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                        unless k.index('fee_fine_discount_amount_').nil?
+                          particular_id_array = k.gsub('fee_fine_discount_amount_','').split("_")
+                          particular_id = particular_id_array[0]
+                          amount = v.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = particular_id
+                          finance_transaction_particular.particular_type = 'FineAdjustment'
+                          finance_transaction_particular.transaction_type = 'Discount'
+                          finance_transaction_particular.amount = amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                        unless k.index('fee_vat_amount').nil?
+                          amount = v.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = 0
+                          finance_transaction_particular.particular_type = 'VAT'
+                          finance_transaction_particular.transaction_type = ''
+                          finance_transaction_particular.amount = amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
+                        unless k.index('fine_amount_to_pay').nil?
+                          amount = v.to_f
+                          finance_transaction_particular = FinanceTransactionParticular.new
+                          finance_transaction_particular.finance_transaction_id = transaction.id
+                          finance_transaction_particular.particular_id = 0
+                          finance_transaction_particular.particular_type = 'Fine'
+                          finance_transaction_particular.transaction_type = ''
+                          finance_transaction_particular.amount = amount
+                          finance_transaction_particular.transaction_date = transaction.transaction_date
+                          finance_transaction_particular.save
+                        end
                       end
                       
                       particular_amount = 0.00

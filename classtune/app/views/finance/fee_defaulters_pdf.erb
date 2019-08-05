@@ -102,7 +102,7 @@
               <% fees = s.finance_fees %>
               <% cnt = 0 %>
               <% fees.each_with_index do |fee,m| %>
-                <% if fee.is_paid %>
+                <% unless fee.is_paid %>
                   <% if m == fees.length - 1 %>
                   <% fee_remarks += fee.finance_fee_collection.name %>
                   <% else %>

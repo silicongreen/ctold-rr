@@ -57,7 +57,7 @@
           <% b = Batch.find(s.batch_id)  %>
           <% sc = StudentCategory.find(s.student_category_id)  %>
           <% b_v = b.name.split(" ") %>
-          <% if page == 1 and i== 19 %>
+          <% if page == 1 and i== 36 %>
               <% i= 0 %>
               <% page += 1 %>
               <tr style="padding: 10px; height: 45px;"><td colspan="8">&nbsp;</td></tr>
@@ -120,13 +120,15 @@
       font-size: 12px;
     }
     #pdf-table tr.td-body td {
-        padding: 6px 10px;
+        padding: 4px 10px;
         color: #000;
         font-weight: normal;
         font-family: verdana;
         font-size: 12px;
         background: #fff;
-        height: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     #pdf-table tr.td-body td:last {
         border-bottom: 1px solid #000;

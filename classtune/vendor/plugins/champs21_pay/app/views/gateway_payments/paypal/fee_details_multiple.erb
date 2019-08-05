@@ -1070,12 +1070,12 @@
       </tr>
       <%
         found = true
-        @fees_collections.reverse.each do |fee|
-          f = fee.to_i
-          if @financefee[f].batch_id != @student.batch_id
-            found = false
-          end
-        end
+        #@fees_collections.reverse.each do |fee|
+        #  f = fee.to_i
+        #  if @financefee[f].batch_id != @student.batch_id
+        #   found = false
+        #  end
+        #end
       %>
       <% if has_dues == false %>
         <% if total_fees > 0 and found %>

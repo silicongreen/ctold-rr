@@ -74,7 +74,9 @@
           <% elsif page > 1 and i== 22 %>
               <% i= 0 %>
               <% page += 1 %>
+              <% unless @defaulters.length - index <= 22 %>
               <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
+              <% end %>
               <tr class="table-header">
                 <td class="col-pdf" style="width: 6%;">#</td>
                 <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>

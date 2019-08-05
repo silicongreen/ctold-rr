@@ -2926,6 +2926,8 @@ authorization do
       :previous_data,
       :generate_ssl_url,
       :previous_data_from_profile,
+      :category_log,
+      :batch_log,
       :previous_subject,
       :previous_data_edit,
       :save_previous_subject,

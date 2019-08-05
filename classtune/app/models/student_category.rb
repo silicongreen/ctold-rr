@@ -19,6 +19,7 @@
 class StudentCategory < ActiveRecord::Base
 
   has_many :students, :conditions => { :is_deleted => false,:is_active => true }
+  has_many :student_category_logs
   has_many :fee_category ,:class_name =>"FinanceFeeCategory"
   before_destroy :check_dependence
   validates_presence_of :name

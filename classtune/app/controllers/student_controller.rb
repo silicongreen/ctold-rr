@@ -30,7 +30,7 @@ class StudentController < ApplicationController
   
   before_filter :find_student, :only => [:previous_report,
     :academic_report, :academic_report_all, :admission3, :change_to_former,
-    :delete, :edit, :add_guardian, :email, :remove, :reports, 
+    :delete, :edit, :add_guardian, :email, :remove, :reports, :category_log, :batch_log,
     :guardians, :academic_pdf,:show_previous_details,:fees,:fee_details, :form_to_apply, :noc_letter, :noc_letter_update, :close_letter
   ]
   CONN = ActiveRecord::Base.connection
@@ -1228,7 +1228,29 @@ class StudentController < ApplicationController
             FinanceFee.new_student_fee(d,@student)
           end
             
-          
+          student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
+           
+          if student_category_log.blank?
+            student_category_log = StudentCategoryLog.new
+            student_category_log.student_id = @student.id
+            student_category_log.category_id = @student.student_category_id
+            student_category_log.user_id = current_user.id
+            student_category_log.ip = request.remote_ip
+            student_category_log.user_agent = request.user_agent
+            student_category_log.save
+          end
+
+          student_batch_log = StudentBatchLog.find(:first, :conditions => "student_id = #{@student.id}")
+          if student_batch_log.blank?
+            student_batch_log = StudentBatchLog.new
+            student_batch_log.student_id = @student.id
+            student_batch_log.batch_id = @student.batch_id
+            usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+            student_batch_log.user_id = current_user.id
+            student_batch_log.ip = request.remote_ip
+            student_batch_log.user_agent = request.user_agent
+            student_batch_log.save
+          end
           
           if !params[:f_first_name].blank?
             params[:guardian][:first_name] = params[:f_first_name]
@@ -2417,11 +2439,62 @@ class StudentController < ApplicationController
       if params[:student][:student_category_id] != "433"
         params[:student][:staff_id] = 0
       end
+      
       #abort(params[:student].inspect)
       unless params[:student][:image_file].blank?
         unless params[:student][:image_file].size.to_f > 280000
           if @student.update_attributes(params[:student])
+            student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
             
+            if student_category_log.blank?
+              student_category_log = StudentCategoryLog.new
+              student_category_log.student_id = @student.id
+              student_category_log.category_id = @previous_category_id
+              usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+              unless usr.blank?
+                student_category_log.user_id = usr.id
+              else  
+                student_category_log.user_id = current_user.id
+              end
+              
+              student_category_log.ip = request.remote_ip
+              student_category_log.user_agent = request.user_agent
+              student_category_log.save
+            end
+            
+            student_batch_log = StudentBatchLog.find(:first, :conditions => "student_id = #{@student.id}")
+            if student_batch_log.blank?
+              student_batch_log = StudentBatchLog.new
+              student_batch_log.student_id = @student.id
+              student_batch_log.batch_id = @previous_batch_id
+              usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+              unless usr.blank?
+                student_batch_log.user_id = usr.id
+              else  
+                student_batch_log.user_id = current_user.id
+              end
+              student_batch_log.ip = request.remote_ip
+              student_batch_log.user_agent = request.user_agent
+              student_batch_log.save
+            end
+            if @previous_category_id != @student.student_category_id
+              student_category_log = StudentCategoryLog.new
+              student_category_log.student_id = @student.id
+              student_category_log.category_id = @student.student_category_id
+              student_category_log.user_id = current_user.id
+              student_category_log.ip = request.remote_ip
+              student_category_log.user_agent = request.user_agent
+              student_category_log.save
+            end
+            if @previous_batch_id != @student.batch_id
+              student_batch_log = StudentBatchLog.new
+              student_batch_log.student_id = @student.id
+              student_batch_log.batch_id = @student.batch_id
+              student_batch_log.user_id = current_user.id
+              student_batch_log.ip = request.remote_ip
+              student_batch_log.user_agent = request.user_agent
+              student_batch_log.save
+            end
             if MultiSchool.current_school.id == 352
               if @previous_category_id != @student.student_category_id
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
@@ -2494,6 +2567,56 @@ class StudentController < ApplicationController
         end
       else
         if @student.update_attributes(params[:student])
+          student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
+           
+          if student_category_log.blank?
+            student_category_log = StudentCategoryLog.new
+            student_category_log.student_id = @student.id
+            student_category_log.category_id = @previous_category_id
+            usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+            unless usr.blank?
+              student_category_log.user_id = usr.id
+            else  
+              student_category_log.user_id = current_user.id
+            end
+            student_category_log.ip = request.remote_ip
+            student_category_log.user_agent = request.user_agent
+            student_category_log.save
+          end
+
+          student_batch_log = StudentBatchLog.find(:first, :conditions => "student_id = #{@student.id}")
+          if student_batch_log.blank?
+            student_batch_log = StudentBatchLog.new
+            student_batch_log.student_id = @student.id
+            student_batch_log.batch_id = @previous_batch_id
+            usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+            unless usr.blank?
+              student_batch_log.user_id = usr.id
+            else  
+              student_batch_log.user_id = current_user.id
+            end
+            student_batch_log.ip = request.remote_ip
+            student_batch_log.user_agent = request.user_agent
+            student_batch_log.save
+          end
+          if @previous_category_id != @student.student_category_id
+            student_category_log = StudentCategoryLog.new
+            student_category_log.student_id = @student.id
+            student_category_log.category_id = @student.student_category_id
+            student_category_log.user_id = current_user.id
+            student_category_log.ip = request.remote_ip
+            student_category_log.user_agent = request.user_agent
+            student_category_log.save
+          end
+          if @previous_batch_id != @student.batch_id
+            student_batch_log = StudentBatchLog.new
+            student_batch_log.student_id = @student.id
+            student_batch_log.batch_id = @student.batch_id
+            student_batch_log.user_id = current_user.id
+            student_batch_log.ip = request.remote_ip
+            student_batch_log.user_agent = request.user_agent
+            student_batch_log.save
+          end
           found_paid_fees = false
           paid_fees_type = ""
           @fee_ids = []
@@ -3233,6 +3356,48 @@ class StudentController < ApplicationController
       end
     end
     
+  end
+  
+  def category_log
+    student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
+
+    if student_category_log.blank?
+      student_category_log = StudentCategoryLog.new
+      student_category_log.student_id = @student.id
+      student_category_log.category_id = @previous_category_id
+      usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+      unless usr.blank?
+        student_category_log.user_id = usr.id
+      else  
+        student_category_log.user_id = current_user.id
+      end
+
+      student_category_log.ip = request.remote_ip
+      student_category_log.user_agent = request.user_agent
+      student_category_log.save
+    end
+
+    @student_category_logs = StudentCategoryLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
+  end
+  
+  def batch_log
+    student_batch_log = StudentBatchLog.find(:first, :conditions => "student_id = #{@student.id}")
+    if student_batch_log.blank?
+      student_batch_log = StudentBatchLog.new
+      student_batch_log.student_id = @student.id
+      student_batch_log.batch_id = @previous_batch_id
+      usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
+      unless usr.blank?
+        student_batch_log.user_id = usr.id
+      else  
+        student_batch_log.user_id = current_user.id
+      end
+      student_batch_log.ip = request.remote_ip
+      student_batch_log.user_agent = request.user_agent
+      student_batch_log.save
+    end
+    
+    @student_batch_logs = StudentBatchLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
   end
   
   def student_security

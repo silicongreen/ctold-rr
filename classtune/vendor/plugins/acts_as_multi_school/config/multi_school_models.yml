@@ -150,6 +150,8 @@ multi_school_models:
 - StudentFeeLedger
 - FinanceFeesAutoCategory
 - FinanceNotmatchTransaction
+- StudentCategoryLog
+- StudentBatchLog
 - AttendanceVehicle
 
 general_models: 

@@ -1,4 +1,15 @@
-
+<% if @current_user.admin? %>
+<style>
+  .header-wrapper .tabbed-header-wrapper ul.header-tabs li a {
+      color: #c2c5c6;
+      font-size: 14px;
+      letter-spacing: 0.75px;
+      text-decoration: none;
+      display: block;
+      padding: 17px 12px !important;
+  }
+</style>
+<% end %>
 <div class="header-wrapper">
 
   <div class="header-title">
@@ -65,6 +76,16 @@
           <% end %>
         <% end %>
       <% end %>
+          
+      <% if permitted_to? :student_security, :student %>
+        <li><%= link_to "Security Card", {:controller => 'student', :action => 'student_security', :id => @student.id}, {:class => 'f2'} %></li>
+      <% end %>
+          
+      <% if @current_user.admin? %>
+        <li><%= link_to "Category Log", {:controller => 'student', :action => 'category_log', :id => @student.id}, {:class => 'f2'} %></li>
+        <li><%= link_to "Batch Log", {:controller => 'student', :action => 'batch_log', :id => @student.id}, {:class => 'f2'} %></li>
+      <% end %>  
+          
       <% if permitted_to? :remove, :student or permitted_to? :admission1, :student %>
         <li>
           <%= link_to "#{t('delete_text')}", {:controller => 'student', :action => 'remove', :id => @student.id}, {:class => 'f2'} %>

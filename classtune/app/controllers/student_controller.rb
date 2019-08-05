@@ -2459,6 +2459,7 @@ class StudentController < ApplicationController
               
               student_category_log.ip = request.remote_ip
               student_category_log.user_agent = request.user_agent
+              student_category_log.created_at = @student.created_at
               student_category_log.save
             end
             
@@ -2475,6 +2476,7 @@ class StudentController < ApplicationController
               end
               student_batch_log.ip = request.remote_ip
               student_batch_log.user_agent = request.user_agent
+              student_category_log.created_at = @student.created_at
               student_batch_log.save
             end
             if @previous_category_id != @student.student_category_id
@@ -3359,9 +3361,9 @@ class StudentController < ApplicationController
   end
   
   def category_log
-    student_category_log = StudentCategoryLog.find(:first, :conditions => "student_id = #{@student.id}")
+    @student_category_logs = StudentCategoryLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
 
-    if student_category_log.blank?
+    if @student_category_logs.blank?
       student_category_log = StudentCategoryLog.new
       student_category_log.student_id = @student.id
       student_category_log.category_id = @student.student_category_id
@@ -3374,15 +3376,14 @@ class StudentController < ApplicationController
 
       student_category_log.ip = request.remote_ip
       student_category_log.user_agent = request.user_agent
+      student_category_log.created_at = @student.created_at
       student_category_log.save
     end
-
-    @student_category_logs = StudentCategoryLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
   end
   
   def batch_log
-    student_batch_log = StudentBatchLog.find(:first, :conditions => "student_id = #{@student.id}")
-    if student_batch_log.blank?
+    @student_batch_logs = StudentBatchLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
+    if @student_batch_logs.blank?
       student_batch_log = StudentBatchLog.new
       student_batch_log.student_id = @student.id
       student_batch_log.batch_id = @student.batch_id
@@ -3394,10 +3395,9 @@ class StudentController < ApplicationController
       end
       student_batch_log.ip = request.remote_ip
       student_batch_log.user_agent = request.user_agent
+      student_batch_log.created_at = @student.created_at
       student_batch_log.save
-    end
-    
-    @student_batch_logs = StudentBatchLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
+    end    
   end
   
   def student_security

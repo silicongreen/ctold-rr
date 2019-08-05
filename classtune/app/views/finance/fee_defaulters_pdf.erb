@@ -18,7 +18,6 @@
 #under the License. -%>
 
 
-
 </div>
 <div id="page-yield">
     
@@ -41,14 +40,14 @@
       <% page = 1 %>  
       <table id="pdf-table" width="100%" cellspacing="0">
         <tr class="table-header">
-            <td class="col-pdf" style="width: 6%;">#</td>
-            <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
-            <td class="col-pdf"><%= t('name') %></td>
-            <td class="col-pdf"><%= t('roll_no') %></td>
-            <td class="col-pdf"><%= t('section') %></td>
-            <td class="col-pdf"><%= t('student_category') %></td>
-            <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
-            <td class="col-pdf"><%= t('contact_number') %></td>
+            <td style="text-align: center;">#</td>
+            <td style="text-align: center;"><%= t('student_id') %></td>
+            <td class="name" style="text-align: center;"><%= t('name') %></td>
+            <td style="text-align: center;"><%= t('roll_no') %></td>
+            <td style="text-align: center;"><%= t('student_category') %></td>
+            <td style="text-align: center;"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+            <td style="text-align: center;"><%= t('contact_number') %></td>
+            <td style="text-align: center;"><%= "Remarks" %></td>
         </tr>
         <% i = 0 %>
         <% index = 0   %>
@@ -62,14 +61,14 @@
               <% page += 1 %>
               <tr style="padding: 10px; height: 45px;"><td colspan="8">&nbsp;</td></tr>
               <tr class="table-header">
-                <td class="col-pdf" style="width: 6%;">#</td>
-                <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
-                <td class="col-pdf"><%= t('name') %></td>
-                <td class="col-pdf"><%= t('roll_no') %></td>
-                <td class="col-pdf"><%= t('section') %></td>
-                <td class="col-pdf"><%= t('student_category') %></td>
-                <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
-                <td class="col-pdf"><%= t('contact_number') %></td>
+                <td style="text-align: center;">#</td>
+                <td style="text-align: center;"><%= t('student_id') %></td>
+                <td class="name" style="text-align: center;"><%= t('name') %></td>
+                <td style="text-align: center;"><%= t('roll_no') %></td>
+                <td style="text-align: center;"><%= t('student_category') %></td>
+                <td style="text-align: center;"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+                <td style="text-align: center;"><%= t('contact_number') %></td>
+                <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
           <% elsif page > 1 and i== 39 %>
               <% i= 0 %>
@@ -77,33 +76,38 @@
               <tr style="padding: 10px; height: 30px;"><td colspan="8">&nbsp;</td></tr>
               
               <tr class="table-header">
-                <td class="col-pdf" style="width: 6%;">#</td>
-                <td class="col-pdf" style="width: 14%;"><%= t('student_id') %></td>
-                <td class="col-pdf"><%= t('name') %></td>
-                <td class="col-pdf"><%= t('roll_no') %></td>
-                <td class="col-pdf"><%= t('section') %></td>
-                <td class="col-pdf"><%= t('student_category') %></td>
-                <td class="col-pdf"><%= t('due_amount')%> (<%= @currency_type%>)</td>
-                <td class="col-pdf"><%= t('contact_number') %></td>
+                <td style="text-align: center;">#</td>
+                <td style="text-align: center;"><%= t('student_id') %></td>
+                <td class="name" style="text-align: center;"><%= t('name') %></td>
+                <td style="text-align: center;"><%= t('roll_no') %></td>
+                <td style="text-align: center;"><%= t('student_category') %></td>
+                <td style="text-align: center;"><%= t('due_amount')%> (<%= @currency_type%>)</td>
+                <td style="text-align: center;"><%= t('contact_number') %></td>
+                <td style="text-align: center;"><%= "Remarks" %></td>
               </tr>
           <% end %>
           <% i += 1  %>
           <% c =cycle('even','odd ') %>
           <tr class="<%= "#{c}" %> td-body">
-              <td class="col-pdf" style="text-align: center;"><%= index += 1 %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s.admission_no %></td>
-              <td class="col-pdf"><%= s.full_name %></td>
-              <td class="col-pdf" style="text-align: center;"><%= s.class_roll_no %></td>
-              <td class="col-pdf" style="text-align: center;"><%= b.course.section_name %></td>
-              <td class="col-pdf" style="text-align: center;"><%= sc.name %></td>
+              <td style="text-align: center;"><%= index += 1 %></td>
+              <td style="text-align: center;"><%= s.admission_no %></td>
+              <td class="name"><%= s.full_name %></td>
+              <td style="text-align: center;"><%= s.class_roll_no %></td>
+              <td style="text-align: center;"><%= sc.name %></td>
+              <% fee_remarks = "" %>
               <% unless params[:date] == '0' %>
-              <td class="col-pdf" style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
+              <% fee_remarks = @date.name %>
+              <td style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
               <% else %>
-              <% fee = s.finance_fees %>
-              <td class="col-pdf" style="text-align: right;"><%= precision_label fee.map(&:balance).sum %></td>
+              <% fees = s.finance_fees %>
+              <% fees.each do |fee| %>
+                <% fee_remarks += fee.finance_fee_collection.name + ", " %>
+              <% end %>
+              <td style="text-align: right;"><%= precision_label fees.map(&:balance).sum %> (<%= fees.length %>)</td>
               <% end %>
 
-              <td class="col-pdf" style="text-align: center;"><%= s.sms_number %></td>
+              <td style="text-align: center;"><%= s.sms_number %></td>
+              <td class="col-pdf remarks" style="text-align: center;;"><%= truncate(fee_remarks, :length => 30) %></td>
           </tr>
         <% end %>
       </table>
@@ -117,14 +121,28 @@
       color: #000;
       font-weight: bold;
       font-family: verdana;
-      font-size: 12px;
+      font-size: 10px;
     }
-    #pdf-table tr.td-body td {
-        padding: 4px 10px;
+    #pdf-table tr.td-body td.name {
+      width: 5% !important;
+    }
+    #pdf-table tr.td-body td:not(.remarks) {
+        padding: 4px 4px;
         color: #000;
         font-weight: normal;
         font-family: verdana;
         font-size: 12px;
+        background: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #pdf-table tr.td-body td.remarks {
+        padding: 4px 10px;
+        color: #000;
+        font-weight: normal;
+        font-family: verdana;
+        font-size: 9px;
         background: #fff;
         white-space: nowrap;
         overflow: hidden;

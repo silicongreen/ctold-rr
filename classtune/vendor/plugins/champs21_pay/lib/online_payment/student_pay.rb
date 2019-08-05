@@ -952,7 +952,7 @@ module OnlinePayment
           @total_discount = 0
           @total_payable=@fee_particulars.map{|s| s.amount}.sum.to_f
 
-          calculate_discount(@date, @student.batch, @student, @financefee.is_paid)
+          calculate_discount(@date, @financefee.batch, @student, @financefee.is_paid)
 
           bal=(@total_payable-@total_discount).to_f
           days=(Date.today-@date.due_date.to_date).to_i
@@ -962,7 +962,7 @@ module OnlinePayment
           if days > 0 and auto_fine
             @fine_rule=auto_fine.fine_rules.find(:last,:conditions=>["fine_days <= '#{days}' and created_at <= '#{@date.created_at}'"],:order=>'fine_days ASC')
             @fine_amount=@fine_rule.is_amount ? @fine_rule.fine_amount : (bal*@fine_rule.fine_amount)/100 if @fine_rule
-            calculate_extra_fine(@date, @batch, @student, @fine_rule)
+            calculate_extra_fine(@date, @financefee.batch, @student, @fine_rule)
             @new_fine_amount = @fine_amount
             get_fine_discount(@date, @batch, @student)
             if @fine_amount < 0

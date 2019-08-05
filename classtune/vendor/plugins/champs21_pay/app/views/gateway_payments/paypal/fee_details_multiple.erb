@@ -306,6 +306,7 @@
             <input type="hidden" name="fee_total_amount_<%= f %>" id="fee_total_amount" value="<%= precision_label(total_fees_individual[f]) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
         </td>
       </tr>   
+      
       <% unless @total_discount[f] == 0 %>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>
         <tr class="tr-blank blank_tr_<%= f %>" style="display: none;"></tr>

@@ -4628,12 +4628,12 @@ class StudentController < ApplicationController
     @actual_discount = 1
 
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
 
@@ -4674,7 +4674,7 @@ class StudentController < ApplicationController
       if @total_discount == 0
         @adv_fee_discount = true
         @actual_discount = 0
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     unless params[:mobile_view].blank?

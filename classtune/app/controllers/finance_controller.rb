@@ -4181,7 +4181,7 @@ class FinanceController < ApplicationController
                               unless @total_payable == 0
                                 @total_discount = 0
 
-                                calculate_discount(date_pre, std.batch, std, false, finance_fee_advances, false)
+                                calculate_discount(date_pre, fee.batch, std, false, finance_fee_advances, false)
                                 balance=(@total_payable-@total_discount).to_f
                               end
                             end
@@ -5930,12 +5930,12 @@ class FinanceController < ApplicationController
                 @total_discount = 0
 
                 if advance_fee_collection
-                  calculate_discount(@date, batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+                  calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
                 else
                   if @fee_has_advance_particular
-                    calculate_discount(@date, batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                    calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
                   else
-                    calculate_discount(@date, batch, @student, false, nil, @fee_has_advance_particular)
+                    calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
                   end
                 end
 
@@ -6161,12 +6161,12 @@ class FinanceController < ApplicationController
                 @total_discount = 0
 
                 if advance_fee_collection
-                  calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+                  calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
                 else
                   if @fee_has_advance_particular
-                    calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                    calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
                   else
-                    calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+                    calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
                   end
                 end
                 
@@ -6407,12 +6407,12 @@ class FinanceController < ApplicationController
             @actual_discount = 1
 
             if advance_fee_collection
-              calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+              calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
             else
               if @fee_has_advance_particular
-                calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+                calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
               else
-                calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+                calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
               end
             end
 
@@ -6589,12 +6589,12 @@ class FinanceController < ApplicationController
           @total_discount = 0
         
           if advance_fee_collection
-            calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+            calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
           else
             if @fee_has_advance_particular
-              calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+              calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
             else
-              calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+              calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
             end
           end
           
@@ -6762,12 +6762,12 @@ class FinanceController < ApplicationController
           @total_discount = 0
         
           if advance_fee_collection
-            calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+            calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
           else
             if @fee_has_advance_particular
-              calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+              calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
             else
-              calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+              calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
             end
           end
           
@@ -6940,12 +6940,12 @@ class FinanceController < ApplicationController
           @total_discount = 0
         
           if advance_fee_collection
-            calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+            calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
           else
             if @fee_has_advance_particular
-              calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+              calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
             else
-              calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+              calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
             end
           end
           
@@ -7613,12 +7613,12 @@ class FinanceController < ApplicationController
         @actual_discount = 1
         
         if advance_fee_collection
-          calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+          calculate_discount(@date, @fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
         else
           if @fee_has_advance_particular
-            calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+            calculate_discount(@date, @fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
           else
-            calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+            calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
           end
         end
         
@@ -7659,7 +7659,7 @@ class FinanceController < ApplicationController
           if @total_discount == 0
             @adv_fee_discount = true
             @actual_discount = 0
-            calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+            calculate_discount(@date, @fee.batch, @student, false, nil, @fee_has_advance_particular)
           end
         end
 
@@ -7777,12 +7777,12 @@ class FinanceController < ApplicationController
     @total_discount = 0
     
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -8321,12 +8321,12 @@ class FinanceController < ApplicationController
         end
         
         if advance_fee_collection
-          calculate_discount_index_all(@date, @student.batch, @student,@student.id, true, @fee_collection_advances, @fee_has_advance_particular)
+          calculate_discount_index_all(@date, @all_financefee[@student.id].batch, @student,@student.id, true, @fee_collection_advances, @fee_has_advance_particular)
         else
           if @fee_has_advance_particular
-            calculate_discount_index_all(@date, @student.batch, @student,@student.id, false, @fee_collection_advances, @fee_has_advance_particular)
+            calculate_discount_index_all(@date, @all_financefee[@student.id].batch, @student,@student.id, false, @fee_collection_advances, @fee_has_advance_particular)
           else
-            calculate_discount_index_all(@date, @student.batch, @student,@student.id, false, nil, @fee_has_advance_particular)
+            calculate_discount_index_all(@date, @all_financefee[@student.id].batch, @student,@student.id, false, nil, @fee_has_advance_particular)
           end
         end
         
@@ -8798,12 +8798,12 @@ class FinanceController < ApplicationController
       @total_discount = 0
     
       if advance_fee_collection
-        calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
       else
         if @fee_has_advance_particular
-          calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
         else
-          calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
         end
       end
       
@@ -8905,12 +8905,12 @@ class FinanceController < ApplicationController
       end
       
       if advance_fee_collection
-        calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
       else
         if @fee_has_advance_particular
-          calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
         else
-          calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
         end
       end
       bal=(@total_payable-@total_discount).to_f
@@ -9271,12 +9271,12 @@ class FinanceController < ApplicationController
     end
     
     if advance_fee_collection
-      calculate_discount(@date, @student.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @student.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @student.batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
       
@@ -9355,12 +9355,12 @@ class FinanceController < ApplicationController
     end
     
     if advance_fee_collection
-      calculate_discount(@date, @student.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @student.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @student.batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -9442,12 +9442,12 @@ class FinanceController < ApplicationController
     end
     
     if advance_fee_collection
-      calculate_discount(@date, @student.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @student.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @student.batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -9689,12 +9689,12 @@ class FinanceController < ApplicationController
     end
     
     if advance_fee_collection
-      calculate_discount(@fee_collection, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@fee_collection, @finance_fee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@fee_collection, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@fee_collection, @finance_fee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@fee_collection, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@fee_collection, @finance_fee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -9838,12 +9838,12 @@ class FinanceController < ApplicationController
     @total_discount = 0
 
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -10963,12 +10963,12 @@ class FinanceController < ApplicationController
     
     
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -11009,7 +11009,7 @@ class FinanceController < ApplicationController
       if @total_discount == 0
         @adv_fee_discount = true
         @actual_discount = 0
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
   end
@@ -11215,12 +11215,12 @@ class FinanceController < ApplicationController
       end
       
       if advance_fee_collection
-        calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
       else
         if @fee_has_advance_particular
-          calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
         else
-          calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+          calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
         end
       end
       
@@ -11336,12 +11336,12 @@ class FinanceController < ApplicationController
     end
     
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
     
@@ -11815,12 +11815,12 @@ class FinanceController < ApplicationController
     @actual_discount = 1
 
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
 
@@ -11861,7 +11861,7 @@ class FinanceController < ApplicationController
       if @total_discount == 0
         @adv_fee_discount = true
         @actual_discount = 0
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
   end

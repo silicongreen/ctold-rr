@@ -316,6 +316,7 @@
             <input type="hidden" name="fee_total_amount" id="fee_total_amount" value="<%= precision_label(total_fees) %>" />&nbsp;&nbsp;<i class="fa fa-check-square" style="color: #598A3D; font-size: 20px; display: none;" aria-hidden="true"></i>
         </td>
       </tr>   
+      
       <% unless @total_discount == 0 %>
         <tr class="tr-blank"></tr>
         <tr class="tr-blank"></tr>
@@ -326,6 +327,7 @@
           <td class="col-1" colspan="4"><span class="themed_text"><%= t('discount') %></span></td>
         </tr>
         <% discount_total = 0 %>
+        
         <% unless @onetime_discounts.nil? or @onetime_discounts.empty? or @onetime_discounts.blank? %>
           <% @onetime_discounts.each do |d| %>
             <% unless @onetime_discounts_amount[d.id].nil? or @onetime_discounts_amount[d.id].blank? %>  

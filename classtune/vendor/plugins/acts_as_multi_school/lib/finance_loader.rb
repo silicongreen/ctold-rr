@@ -15,6 +15,9 @@ module FinanceLoader
   private
   
   def calculate_discount(date,batch,student,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
+    financefee = student.finance_fee_by_date date
+    batch = financefee.batch
+    
     exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
@@ -61,6 +64,7 @@ module FinanceLoader
       end
     else
       if is_advance_fee_collection == false or (is_advance_fee_collection && advance_fee_particular.include?(0))
+        
         deduct_fee = 0
         if fee_has_advance_particular and !advance_fee_particular.include?(0)
           unless advance_fee_particular.blank?
@@ -75,6 +79,7 @@ module FinanceLoader
         end
         one_time_discounts_on_particulars = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
         @onetime_discounts = date.fee_discounts.all(:conditions=>"fee_discounts.id not in (#{exclude_discount_ids.join(",")}) and is_deleted=#{false} and batch_id=#{batch.id} and is_onetime=#{true} and is_late=#{false} and fee_discounts.finance_fee_particular_category_id = 0").select{|par| (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
+        
         if @onetime_discounts.length > 0
           one_time_total_amount_discount= true
           @onetime_discounts_amount = []
@@ -228,9 +233,13 @@ module FinanceLoader
         end
       end
     end
+    #abort(@onetime_discounts.inspect)
   end
   
   def calculate_discount_index_all(date,batch,student,ind,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
+    financefee = student.finance_fee_by_date date
+    batch = financefee.batch
+    
     exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
@@ -396,6 +405,9 @@ module FinanceLoader
   end
   
   def calculate_discount_index(date,batch,student,ind,is_advance_fee_collection,advance_fee,fee_has_advance_particular)
+    financefee = student.finance_fee_by_date date
+    batch = financefee.batch
+    
     exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(student.id).map(&:fee_discount_id)
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
@@ -772,12 +784,12 @@ module FinanceLoader
     @actual_discount = 1
 
     if advance_fee_collection
-      calculate_discount(@date, @batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
+      calculate_discount(@date, @financefee.batch, @student, true, @fee_collection_advances, @fee_has_advance_particular)
     else
       if @fee_has_advance_particular
-        calculate_discount(@date, @batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, @fee_collection_advances, @fee_has_advance_particular)
       else
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
 
@@ -818,7 +830,7 @@ module FinanceLoader
       if @total_discount == 0
         @adv_fee_discount = true
         @actual_discount = 0
-        calculate_discount(@date, @batch, @student, false, nil, @fee_has_advance_particular)
+        calculate_discount(@date, @financefee.batch, @student, false, nil, @fee_has_advance_particular)
       end
     end
 

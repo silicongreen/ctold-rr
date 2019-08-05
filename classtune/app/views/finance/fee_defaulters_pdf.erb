@@ -100,14 +100,18 @@
               <td style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
               <% else %>
               <% fees = s.finance_fees %>
+              <% cnt = 0 %>
               <% fees.each_with_index do |fee,m| %>
-                <% if m == fees.length - 1 %>
-                <% fee_remarks += fee.finance_fee_collection.name %>
-                <% else %>
-                <% fee_remarks += fee.finance_fee_collection.name + ", " %>
+                <% if fee.is_paid %>
+                  <% if m == fees.length - 1 %>
+                  <% fee_remarks += fee.finance_fee_collection.name %>
+                  <% else %>
+                  <% fee_remarks += fee.finance_fee_collection.name + ", " %>
+                  <% end %>
+                  <% cnt += 1 %>
                 <% end %>
               <% end %>
-              <td style="text-align: right;"><%= precision_label fees.map(&:balance).sum %> (<%= fees.length %>)</td>
+              <td style="text-align: right;"><%= precision_label fees.map(&:balance).sum %> (<%= cnt %>)</td>
               <% end %>
 
               <td style="text-align: center;"><%= s.sms_number %></td>

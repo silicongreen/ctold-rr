@@ -3364,7 +3364,7 @@ class StudentController < ApplicationController
     if student_category_log.blank?
       student_category_log = StudentCategoryLog.new
       student_category_log.student_id = @student.id
-      student_category_log.category_id = @previous_category_id
+      student_category_log.category_id = @student.student_category_id
       usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
       unless usr.blank?
         student_category_log.user_id = usr.id
@@ -3385,7 +3385,7 @@ class StudentController < ApplicationController
     if student_batch_log.blank?
       student_batch_log = StudentBatchLog.new
       student_batch_log.student_id = @student.id
-      student_batch_log.batch_id = @previous_batch_id
+      student_batch_log.batch_id = @student.batch_id
       usr = User.find(:first, :conditions => "username = '#{MultiSchool.current_school.code}-admin'")
       unless usr.blank?
         student_batch_log.user_id = usr.id

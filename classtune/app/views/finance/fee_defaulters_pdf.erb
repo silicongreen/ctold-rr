@@ -100,8 +100,12 @@
               <td style="text-align: right;"><%= precision_label(s.balance.to_f+@date.fine_to_pay(s).to_f) %></td>
               <% else %>
               <% fees = s.finance_fees %>
-              <% fees.each do |fee| %>
+              <% fees.each_with_index do |fee,m| %>
+                <% if m == fees.length - 1 %>
+                <% fee_remarks += fee.finance_fee_collection.name %>
+                <% else %>
                 <% fee_remarks += fee.finance_fee_collection.name + ", " %>
+                <% end %>
               <% end %>
               <td style="text-align: right;"><%= precision_label fees.map(&:balance).sum %> (<%= fees.length %>)</td>
               <% end %>

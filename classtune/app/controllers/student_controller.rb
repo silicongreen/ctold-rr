@@ -2583,6 +2583,7 @@ class StudentController < ApplicationController
             end
             student_category_log.ip = request.remote_ip
             student_category_log.user_agent = request.user_agent
+            student_category_log.created_at = @student.created_at
             student_category_log.save
           end
 
@@ -2599,6 +2600,7 @@ class StudentController < ApplicationController
             end
             student_batch_log.ip = request.remote_ip
             student_batch_log.user_agent = request.user_agent
+            student_category_log.created_at = @student.created_at
             student_batch_log.save
           end
           if @previous_category_id != @student.student_category_id
@@ -3378,6 +3380,8 @@ class StudentController < ApplicationController
       student_category_log.user_agent = request.user_agent
       student_category_log.created_at = @student.created_at
       student_category_log.save
+      
+      @student_category_logs = StudentCategoryLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
     end
   end
   
@@ -3397,6 +3401,8 @@ class StudentController < ApplicationController
       student_batch_log.user_agent = request.user_agent
       student_batch_log.created_at = @student.created_at
       student_batch_log.save
+      
+      @student_batch_logs = StudentBatchLog.find(:all, :conditions => "student_id = #{@student.id}", :order => "created_at desc")
     end    
   end
   

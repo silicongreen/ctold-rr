@@ -2480,7 +2480,7 @@ class StudentController < ApplicationController
               end
               student_batch_log.ip = request.remote_ip
               student_batch_log.user_agent = request.user_agent
-              student_category_log.created_at = @student.created_at
+              student_batch_log.created_at = @student.created_at
               student_batch_log.save
             end
             unless @student.student_category_id.nil?
@@ -2610,7 +2610,7 @@ class StudentController < ApplicationController
             end
             student_batch_log.ip = request.remote_ip
             student_batch_log.user_agent = request.user_agent
-            student_category_log.created_at = @student.created_at
+            student_batch_log.created_at = @student.created_at
             student_batch_log.save
           end
           unless @student.student_category_id.nil?

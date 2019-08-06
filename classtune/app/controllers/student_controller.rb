@@ -2136,7 +2136,6 @@ class StudentController < ApplicationController
       unless params[:student][:image_file].blank?
         unless params[:student][:image_file].size.to_f > 280000
           if @student.update_attributes(params[:student])
-            
             if MultiSchool.current_school.id == 352
               if @previous_category_id != @student.student_category_id
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
@@ -2275,10 +2274,11 @@ class StudentController < ApplicationController
           @auth_response = JSON::parse(auth_res.body)
           
           flash[:notice] = "#{t('flash3')}"
+          
           #if found_paid_fees
           #  redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :paid_fees => @fee_ids, :paid_fees_type => paid_fees_type
           #else
-          redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
+            redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
           #end
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
@@ -2504,24 +2504,20 @@ class StudentController < ApplicationController
               student_batch_log.save
             end
             if MultiSchool.current_school.id == 352
-              if @previous_category_id != @student.student_category_id
+              if @previous_batch_id == @student.batch_id
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
-                @student_fees = @finance_fees.map{|s| s.fee_collection_id}
-
-                @payed_fees=FinanceFee.find(:all,:joins=>"INNER JOIN fee_transactions on fee_transactions.finance_fee_id=finance_fees.id INNER JOIN finance_fee_collections on finance_fee_collections.id=finance_fees.fee_collection_id",:conditions=>"finance_fees.student_id=#{@student.id}",:select=>"finance_fees.fee_collection_id").map{|s| s.fee_collection_id}
-                @payed_fees ||= []
-
-                @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
-                @fee_collection_dates.each do |date|
-                  d = FinanceFeeCollection.find(date.id)
-                  if @student_fees.include?(d.id)
-                    fee = FinanceFee.find_by_student_id_and_fee_collection_id_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
-                    unless fee.blank?
-                      s = Student.find(@student.id)
-                      FinanceFee.update_student_fee(d,s, fee)
+                unless @finance_fees.blank?
+                  @finance_fees.each do |f|
+                    if f.is_paid
+                      found_paid_fees = true
                     else
-                      s = Student.find(@student.id)
-                      FinanceFee.new_student_fee(d,s)
+                      fee_collection_id = f.fee_collection_id
+                      date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                      unless date.blank?
+                        s = Student.find(@student.id)
+                        bal = FinanceFee.get_student_balance(date, s, f)
+                        f.update_attributes(:balance=>bal)
+                      end
                     end
                   end
                 end
@@ -2634,58 +2630,30 @@ class StudentController < ApplicationController
             student_batch_log.save
           end
           found_paid_fees = false
+          
           paid_fees_type = ""
-          @fee_ids = []
           fee_ind = 0
           if MultiSchool.current_school.id == 352
             if @previous_category_id != @student.student_category_id
-              @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
-              @student_fees = @finance_fees.map{|s| s.fee_collection_id}
-
-              @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
-              @fee_collection_dates.each do |date|
-                d = FinanceFeeCollection.find(date.id)
-                if @student_fees.include?(d.id)
-                  fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
-                  unless fee.blank?
-                    s = Student.find(@student.id)
-                    FinanceFee.update_student_fee(d,s, fee)
-                  else
-                    fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, true)
-                    unless fee.blank?
+              if @previous_batch_id == @student.batch_id
+                @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+                unless @finance_fees.blank?
+                  @finance_fees.each do |f|
+                    if f.is_paid
                       found_paid_fees = true
-                      paid_fees_type = "category"
-                      @fee_ids[fee_ind] = fee.id
                     else
-                      s = Student.find(@student.id)
-                      FinanceFee.new_student_fee(d,s)
+                      fee_collection_id = f.fee_collection_id
+                      date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                      unless date.blank?
+                        s = Student.find(@student.id)
+                        bal = FinanceFee.get_student_balance(date, s, f)
+                        f.update_attributes(:balance=>bal)
+                      end
                     end
                   end
                 end
               end
             end
-
-            #   if @previous_batch_id != @student.batch_id
-            #     @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
-            #     @student_fees = @finance_fees.map{|s| s.fee_collection_id}
-            #
-            #     @fee_collection_dates =FinanceFeeParticular.find(:all,:joins=>"INNER JOIN collection_particulars on collection_particulars.finance_fee_particular_id=finance_fee_particulars.id INNER JOIN finance_fee_collections on finance_fee_collections.id=collection_particulars.finance_fee_collection_id",:conditions=>"finance_fee_particulars.batch_id='#{@student.batch_id}' and finance_fee_particulars.receiver_type='Batch'",:select=>"finance_fee_collections.*").uniq
-            #     @fee_collection_dates.each do |date|
-            #       d = FinanceFeeCollection.find(date.id)
-            #       if @student_fees.include?(d.id)
-            #         fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @previous_batch_id, false)
-            #         fee.destroy if fee.finance_transactions.empty?
-            #         fee = FinanceFee.find_by_student_id_and_fee_collection_id_and_batch_id_and_is_paid(@student.id, d.id, @student.batch_id, false)
-            #         unless fee.blank?
-            #           s = Student.find(@student.id)
-            #           FinanceFee.update_student_fee(d,s, fee)
-            #         else
-            #           s = Student.find(@student.id)
-            #           FinanceFee.new_student_fee(d,s)
-            #         end
-            #       end
-            #     end
-            #   end
           end
           
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
@@ -2699,11 +2667,16 @@ class StudentController < ApplicationController
           @auth_response = JSON::parse(auth_res.body)
           
           flash[:notice] = "#{t('flash3')}"
-          #if found_paid_fees
-          #  redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :paid_fees => @fee_ids, :paid_fees_type => paid_fees_type
-          #else
-          redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
-          #end
+          
+          if MultiSchool.current_school.id == 352
+            #if found_paid_fees
+            #  redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
+            #else
+              redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
+            #end
+          else
+            redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
+          end
         else
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]
@@ -2740,10 +2713,10 @@ class StudentController < ApplicationController
   
   def adjust_paid_fees
     @student = Student.find(params[:id])
-    unless params[:paid_fees_type].nil?
-      @paid_fees_type = params[:paid_fees_type]
-      @paid_fees = params[:paid_fees]
-    end
+    @previous_category_id = params[:previous_category_id]
+    @previous_batch_id = params[:previous_batch_id]
+    
+    @finance_fees = FinanceFee.find_all_by_student_id_and_is_paid(@student.id, true)
   end
   
   def edit_guardian_own

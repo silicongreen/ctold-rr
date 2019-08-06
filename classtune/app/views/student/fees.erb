@@ -503,10 +503,25 @@
         else
         {
             fees = fees.substr(0, fees.length - 1);
-            j("#combined_pay").show();
-            j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
-            var href = j('#lnk').children('a').attr('href');
-            j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+            var unpaid = 0;
+            j(".unpaid").each(function(){
+              if ( j(this).css('display') != "none" )
+              {
+                unpaid++;
+              }
+            });
+            if ( unpaid == 0 )
+            {
+                j("#combined_pay").hide();
+            }
+            else
+            {
+                j("#combined_pay").show();
+                j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+                var href = j('#lnk').children('a').attr('href');
+                j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+            }
+            
         }
     }
     
@@ -539,10 +554,24 @@
         else
         {
             fees = fees.substr(0, fees.length - 1);
-            j("#combined_pay").show();
-            j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
-            var href = j('#lnk').children('a').attr('href');
-            j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+            var unpaid = 0;
+            j(".unpaid").each(function(){
+              if ( j(this).css('display') != "none" )
+              {
+                unpaid++;
+              }
+            });
+            if ( unpaid == 0 )
+            {
+                j("#combined_pay").hide();
+            }
+            else
+            {
+              j("#combined_pay").show();
+              j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
+              var href = j('#lnk').children('a').attr('href');
+              j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+            }
         }
     }
   </script>  
@@ -653,7 +682,21 @@
           j("#fees_list_unpaid").show();
           
           j("#combined_configuration").show();
-          j("#combined_pay").show();
+          var unpaid = 0;
+          j(".unpaid").each(function(){
+            if ( j(this).css('display') != "none" )
+            {
+              unpaid++;
+            }
+          });
+          if ( unpaid == 0 )
+          {
+              j("#combined_pay").hide();
+          }
+          else
+          {
+            j("#combined_pay").show();
+          }
           
           var unpaid = 0;
           j(".unpaid").each(function(){

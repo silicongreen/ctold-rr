@@ -52,6 +52,8 @@
               <% next %>
             <% elsif !subj.elective_group.is_deleted.blank? %>
               <% next %>
+            <% elsif subj.elective_group.batch_id != subj.batch_id %>
+              <% next %>
             <% end %>
           <% end %>
           <li class="list<%=cycle('odd','even')%>">

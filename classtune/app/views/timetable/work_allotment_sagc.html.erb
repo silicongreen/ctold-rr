@@ -44,7 +44,7 @@
           <%= batch.full_name %>
         </li>
         <% batch.subjects.each do |subj| %>
-          <% if subj.is_deleted.to_i == 1 %>
+          <% if !subj.is_deleted.blank? %>
             <% next %>
           <% end %>
           <li class="list<%=cycle('odd','even')%>">

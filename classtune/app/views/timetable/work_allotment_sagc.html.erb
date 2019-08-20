@@ -47,6 +47,13 @@
           <% if !subj.is_deleted.blank? %>
             <% next %>
           <% end %>
+          <% if !subj.elective_group_id.blank? %>
+            <% if subj.elective_group.blank? %>
+              <% next %>
+            <% elsif !subj.elective_group.is_deleted.blank? %>
+              <% next %>
+            <% end %>
+          <% end %>
           <li class="list<%=cycle('odd','even')%>">
             <div class="category-subject-name"><%= "#{subj.name}" %></div>
             <div class="category-employee-options">

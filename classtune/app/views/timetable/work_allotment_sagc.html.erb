@@ -44,7 +44,9 @@
           <%= batch.full_name %>
         </li>
         <% batch.subjects.each do |subj| %>
-          
+          <% if subj.is_deleted.to_i == 1 %>
+            <% next %>
+          <% end %>
           <li class="list<%=cycle('odd','even')%>">
             <div class="category-subject-name"><%= "#{subj.name}" %></div>
             <div class="category-employee-options">

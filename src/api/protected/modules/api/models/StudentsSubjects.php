@@ -160,6 +160,7 @@ class StudentsSubjects extends CActiveRecord
             $criteria = new CDbCriteria();
             $criteria->select = 't.*';
             $criteria->compare('t.batch_id', $batch_id);
+            $criteria->compare('MainSubjects.is_deleted', 0);
             if($student_id)
             {
                 $criteria->compare('t.student_id', $student_id);
@@ -197,6 +198,7 @@ class StudentsSubjects extends CActiveRecord
         public function getSubjectStudent($subject_id)
         {
             $criteria = new CDbCriteria();
+            
             $criteria->select = 't.student_id';
             $criteria->compare('t.subject_id', $subject_id);
             $students = $this->findAll($criteria); 

@@ -297,7 +297,7 @@ class EmployeesSubjects extends CActiveRecord
                 )
             );
            
-
+            $criteria->compare('subject.is_deleted', 0);
             $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
             
@@ -441,7 +441,7 @@ class EmployeesSubjects extends CActiveRecord
                 )
             );
            
-
+            $criteria->compare('subject.is_deleted', 0);
             $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
             $criteria->order = "cast(courseDetails.code as SIGNED INTEGER) ASC, Subjectbatch.name ASC";

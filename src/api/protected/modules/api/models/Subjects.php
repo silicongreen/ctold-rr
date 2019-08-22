@@ -163,6 +163,7 @@ class Subjects extends CActiveRecord
        $criteria = new CDbCriteria(); 
        $criteria->select = 't.id';
        $criteria->compare('t.name', $sub_data->name);
+       $criteria->compare('t.is_deleted', 0);
        $criteria->compare('t.batch_id', $sub_data->batch_id);
        $subject = array();
        $subjects = $this->findAll($criteria);
@@ -213,6 +214,7 @@ class Subjects extends CActiveRecord
             $criteria->together = true;
             $criteria->select = 't.*';
             
+            
             if($all_sub)
             {
                 $criteria->addCondition("(employee.employee_id = $employee_id OR t.id in (".implode(",",$all_sub)."))");
@@ -240,7 +242,7 @@ class Subjects extends CActiveRecord
                 ) 
             );
            
-
+            $criteria->compare('t.is_deleted', 0);
             $criteria->compare("Subjectbatch.is_deleted", 0);
             $criteria->compare("courseDetails.is_deleted", 0);
             $criteria->order = "cast(courseDetails.code as SIGNED INTEGER) ASC, Subjectbatch.name ASC";

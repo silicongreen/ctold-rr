@@ -2326,6 +2326,7 @@ authorization do
       :student_wise_generated_report,
       :student_wise_generated_report_all,
       :student_wise_tabulation,
+      :student_wise_tabulation_excel,
       :exam_schedule_pdf
     ]
     has_permission_on [:scheduled_jobs],
@@ -3392,7 +3393,7 @@ authorization do
   role :student do
     includes :open
     has_permission_on [:course], :to => [:view]
-    has_permission_on [:exam], :to => [:continues,:student_wise_generated_report,:student_wise_generated_report_all,:student_wise_tabulation,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5, :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view, :exam_schedule_pdf]
+    has_permission_on [:exam], :to => [:continues,:student_wise_generated_report,:student_wise_generated_report_all,:student_wise_tabulation,:student_wise_tabulation_excel,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5, :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view, :exam_schedule_pdf]
     has_permission_on [:student],
       :to => [
       :exam_report,
@@ -3493,7 +3494,7 @@ authorization do
     includes :open
     has_permission_on [:course], :to => [:view]
     has_permission_on [:meetings], :to => [:index,:inbox,:outbox, :new, :create, :edit, :update, :show, :destroy, :employees_list]
-    has_permission_on [:exam], :to => [:continues,:student_wise_generated_report,:student_wise_generated_report_all,:student_wise_tabulation,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5 , :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view,:exam_schedule_pdf]
+    has_permission_on [:exam], :to => [:continues,:student_wise_generated_report,:student_wise_generated_report_all,:student_wise_tabulation,:student_wise_tabulation_excel,:generated_report, :generated_report4_pdf, :generated_report5_pdf, :generated_report5 , :graph_for_generated_report, :academic_report, :previous_years_marks_overview,:previous_years_marks_overview_pdf, :graph_for_previous_years_marks_overview, :generated_report3,:generated_report_all_subject, :graph_for_generated_report3 ,:graph_for_generated_report_all_subject,:generated_report4,:student_transcript,:student_transcript_pdf,:student_exam_schedule,:student_exam_schedule_view,:exam_schedule_pdf]
     has_permission_on [:timetable], :to => [:student_view, :update_student_tt, :student_timetable_pdf]
     has_permission_on [:student],
       :to => [
@@ -3830,6 +3831,7 @@ authorization do
       :student_wise_generated_report,
       :student_wise_generated_report_all,
       :student_wise_tabulation,
+      :student_wise_tabulation_excel,
       :consolidated_exam_report,
       :consolidated_exam_report_pdf,
       :subject_wise_report,
@@ -4092,6 +4094,7 @@ authorization do
       :student_wise_generated_report,
       :student_wise_generated_report_all,
       :student_wise_tabulation,
+      :student_wise_tabulation_excel,
       :consolidated_exam_report,
       :consolidated_exam_report_pdf,
       :subject_wise_report,

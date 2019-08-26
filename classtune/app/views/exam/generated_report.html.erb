@@ -42,6 +42,9 @@
               
               <li class="themed_bg themed-dark-hover-background"><%= link_to "Tabulation Sheet",
                         {:action => "student_wise_tabulation",:exam_group=>@exam_group.id},:target => '_blank' %></li>
+              
+              <li class="themed_bg themed-dark-hover-background"><%= link_to "Tabulation Sheet Excel",
+                        {:action => "student_wise_tabulation_excel",:exam_group=>@exam_group.id},:target => '_blank' %></li>
              
             </ul>
           </div>

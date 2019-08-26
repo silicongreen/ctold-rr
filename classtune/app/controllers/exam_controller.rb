@@ -1500,17 +1500,22 @@ class ExamController < ApplicationController
       tmp_row << student.class_roll_no
       tmp_row << student.full_name
       @exams.each do |exam|
+        has_mark = false
         unless exam_score.blank?
           exam_score.each do |es|
             if es.exam.subject.id.to_i == exam.subject.id.to_i
               if exam.subject.no_exams
                 tmp_row << es.remarks
               else
-                tmp_row <<  es.marks.present? ? es.marks.to_f: '0'
+                tmp_row <<  es.marks.to_f
                 total = total+es.marks.to_f
-              end  
+              end 
+              has_mark = true
             end
           end
+        end
+        if has_mark == false
+          tmp_row <<  ""
         end
       end
       tmp_row << total

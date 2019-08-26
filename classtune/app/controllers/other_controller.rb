@@ -13,6 +13,54 @@ class OtherController < ApplicationController
     @student_ids = @transports.map(&:receiver_id)
     @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
   end
+  def print_bus_card_excell
+    require 'spreadsheet'
+    Spreadsheet.client_encoding = 'UTF-8'
+    new_book = Spreadsheet::Workbook.new
+    sheet1 = new_book.create_worksheet :name => 'bus_student_list'
+    row_first = ['SL','Student Id','Roll No.','Name','Shift','Class','Section','Bus No','Mobile No']
+    new_book.worksheet(0).insert_row(0, row_first)
+    
+    if request.post?
+      unless params[:students].nil?
+          @student_ids = params[:students]
+          @students = Student.find_all_by_id(@student_ids,:include=>[{:batch=>[:course]}],:conditions=>["is_deleted = ?",false])
+          std_ids = @students.map(&:id)
+          @transports = Transport.find_all_by_receiver_id(std_ids,:conditions=>["receiver_type = ?","Student"],:include=>[:route,:vehicle])
+          std_loop = 0
+          @students.each do |std_info|
+            std_loop = std_loop+1
+            transport = @transports.find{|v| v.receiver_id == std_info.id}
+            batchsplit = std_info.batch.name.split(" ")
+            version = ""
+            batch = batchsplit[0]
+            unless batchsplit[1].blank?
+              version = batchsplit[1]
+            end
+            unless batchsplit[2].blank?
+              version = version+" "+batchsplit[2]
+            end
+          
+            tmp_row = []
+            tmp_row << std_loop
+            tmp_row << std_info.admission_no
+            tmp_row << std_info.class_roll_no
+            tmp_row << std_info.full_name
+            tmp_row << batch
+            tmp_row << std_info.batch.course.course_name
+            tmp_row << std_info.batch.course.section_name
+            tmp_row << transport.vehicle.vehicle_no
+            tmp_row << std_info.sms_number
+            new_book.worksheet(0).insert_row(std_loop, tmp_row)
+          end
+      end
+      sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Bus Student List)")
+      spreadsheet = StringIO.new 
+      new_book.write spreadsheet 
+      send_data spreadsheet.string, :filename => "Bus_student_list.xls", :type =>  "application/vnd.ms-excel"
+    end
+    
+  end
   def print_bus_card
     if request.post?
       unless params[:students].nil?
@@ -81,7 +129,7 @@ class OtherController < ApplicationController
       new_book = Spreadsheet::Workbook.new
       sheet1 = new_book.create_worksheet :name => 'student_record'
       center_align_format = Spreadsheet::Format.new :weight => :bold, :horizontal_align => :center, :vertical_align => :middle, :size => 13
-      large_bold_format = Spreadsheet::Format.new :weight => :bold, :size => 18, :horizontal_align => :center, :vertical_align => :middle
+      large_bold_format = Spreadsheet::Format.new :weight => :bold,:size => 18, :horizontal_align => :center, :vertical_align => :middle
       border_bottom_format = Spreadsheet::Format.new :bottom => :thin, :size => 13
       border_top_format = Spreadsheet::Format.new :top => :thin, :size => 13
       
@@ -96,11 +144,10 @@ class OtherController < ApplicationController
         address_row = []
         border_bottom = []
         border_top = []
-       
+        row_begin = [Date.today,'','Student Record','']
+        new_book.worksheet(0).insert_row(0, row_begin)
         std_loop = 4
         @students.each do |std|
-          row_begin = [Date.today,'','','']
-          new_book.worksheet(0).insert_row(std_loop-2, row_begin)
           startrow = std_loop
           row_1 = ['','','Student Record(Anual)','']
           new_book.worksheet(0).insert_row(startrow+1, row_1)
@@ -206,10 +253,12 @@ class OtherController < ApplicationController
       
       stu_record_row.each do |r|
         sheet1.row(r).default_format = large_bold_format
+        sheet1.merge_cells(r, 1, r, 3)
       end
       
       school_name_row.each do |n|
         sheet1.row(n).default_format = large_bold_format
+        sheet1.merge_cells(n, 1, n, 3)
       end
       
       address_row.each do |n|

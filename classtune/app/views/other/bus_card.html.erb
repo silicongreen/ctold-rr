@@ -30,7 +30,7 @@
  <div class="box"> 
 
   <div id="student-list">
-<% form_for :bus_card ,:url=>{:action=>'print_bus_card'}, :html=> {:target=>'_blank'} do |f| %>
+<% form_for :bus_card ,:url=>{:action=>'print_bus_card'}, :html=> {:target=>'_blank',:id=>'new_student'} do |f| %>
 <div id="sms_student" style="float: left; clear:both;">
 <% if @students.present? %>
     <input type="hidden" name="none_click" id="none_click" value="0" />
@@ -60,8 +60,39 @@
           </div>
       </div>
     </div>
-<% end %>  
-<%= submit_tag "Print Bus Card",:class=>'submit_button', :id => 'submit_button' %>
+<% end %> 
+    <input style="margin-left: 10px;" name="commit" onclick=" j('#new_student').attr('action', 'print_bus_card');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Print Bus Card">
+    <input style="margin-left: 10px;" name="commit" onclick=" j('#new_student').attr('action', 'print_bus_card_excell');
+                   if (window.hiddenCommit) {
+                     window.hiddenCommit.setAttribute('value', this.value);
+                   } else {
+                     hiddenCommit = document.createElement('input');
+                     hiddenCommit.type = 'hidden';
+                     hiddenCommit.value = this.value;
+                     hiddenCommit.name = this.name;
+                     this.form.appendChild(hiddenCommit);
+                   }
+                   result = (this.form.onsubmit ? (this.form.onsubmit() ? this.form.submit() : false) : this.form.submit());
+                   if (result == false) {
+                     this.value = this.getAttribute('originalValue');
+                     this.disabled = false;
+                   }
+                   return result;" type="submit"  value="Print Bus Card">
 </div>
 
 <% end %>

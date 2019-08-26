@@ -1827,7 +1827,8 @@ ORDER BY emp.first_name ASC"
     @department_id = Employee.find(params[:id]).employee_department_id
     @departments = EmployeeDepartment.find(:all,:conditions =>{:status=>true})
     @subject = Subject.find(params[:id1])
-    if TimetableEntry.find_all_by_subject_id_and_employee_id(@subject.id,params[:id]).blank?
+    @current_timetable=Timetable.find(:first,:conditions=>["timetables.start_date <= ? AND timetables.end_date >= ?",@local_tzone_time.to_date,@local_tzone_time.to_date])
+    if !@current_timetable || TimetableEntry.find_all_by_subject_id_and_employee_id_and_timetable_id(@subject.id,params[:id],@current_timetable.id).blank?
       EmployeesSubject.find_by_employee_id_and_subject_id(params[:id], params[:id1]).destroy
       flash[:notice]="#{t('subject_de_assigned_successfully')}"
     else

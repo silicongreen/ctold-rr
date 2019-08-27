@@ -227,7 +227,7 @@
                                     
                                       if !report['exam_name'].downcase.index('obj').nil? && ob_failed == true && count_obj>1
                                         marks_check = (obj.to_f/obj_full.to_f)*100
-                                        grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)
+                                        grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
                                         if !grade_check.blank? and !grade_check.name.blank?
                                           if grade_check.name.to_s != "U"
                                             ob_failed = false
@@ -236,7 +236,7 @@
                                       end
                                     if !report['exam_name'].downcase.index('sub').nil? && sub_failed == true && count_sub>1
                                         marks_check = (sub.to_f/sub_full.to_f)*100
-                                        grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)
+                                        grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
                                         if !grade_check.blank? and !grade_check.name.blank?
                                           if grade_check.name.to_s != "U"
                                             sub_failed = false
@@ -245,7 +245,7 @@
                                     end
                                     if !report['exam_name'].downcase.index('prac').nil? && pr_failed == true && count_prac>1
                                         marks_check = (prac.to_f/prac_full.to_f)*100
-                                        grade_check = GradingLevel.percentage_to_grade(mark_for_grade, @batch.id)
+                                        grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
                                         if !grade_check.blank? and !grade_check.name.blank?
                                           if grade_check.name.to_s != "U"
                                             pr_failed = false

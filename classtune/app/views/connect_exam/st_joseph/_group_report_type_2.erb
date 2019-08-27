@@ -247,7 +247,7 @@
                                         marks_check = (prac.to_f/prac_full.to_f)*100
                                         grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
                                         if !grade_check.blank? and !grade_check.name.blank?
-                                          if grade_check.name.to_s != "U"
+                                          if grade_check.name.to_s != "U" && marks_check.round < 44
                                             pr_failed = false
                                           end
                                         end

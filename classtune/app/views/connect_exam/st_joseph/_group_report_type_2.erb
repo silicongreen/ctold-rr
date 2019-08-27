@@ -211,7 +211,7 @@
                                       end
 
 
-                                      if grade_name_single == "U" && (((sub_fullmark >= 22 && sub_full_mark == 50) || (sub_fullmark >= 31 && sub_full_mark == 70) || count_sub == 0) && (obj_fullmark >= 12 || count_obj==0) && (prac_fullmark >= 11 || count_prac == 0))
+                                      if grade_name_single == "U" && (((sub_fullmark >= 22 && sub_full_mark == 50) || (sub_fullmark >= 32 && sub_full_mark == 70) || count_sub == 0) && (obj_fullmark >= 12 || count_obj==0) && (prac_fullmark >= 11 || count_prac == 0))
                                         
                                          
                                         if !report['exam_name'].downcase.index('obj').nil? && count_obj < 2
@@ -239,7 +239,7 @@
                                         marks_check = (sub.to_f/sub_full.to_f)*100
                                         grade_check = GradingLevel.percentage_to_grade(marks_check, @batch.id)
                                         if !grade_check.blank? and !grade_check.name.blank?
-                                          if grade_check.name.to_s != "U" || (sub.round >= 62 && sub_full == 140) || (sub.round >= 44 && sub_full == 100)
+                                          if grade_check.name.to_s != "U" || (sub.round >= 64 && sub_full == 140) || (sub.round >= 44 && sub_full == 100)
                                             sub_failed = false
                                           end
                                         end

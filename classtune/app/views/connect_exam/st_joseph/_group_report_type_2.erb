@@ -175,6 +175,7 @@
                                     
                                       if fail_grade == false and !report['exam_name'].downcase.index('obj').nil? and total_marks_single_exam.to_i == 30
                                         if marks_obtain_single_exam.to_i < 15
+                                          
                                           ob_failed = true
                                           grade_name_single = "U"
                                         end
@@ -182,14 +183,18 @@
                                     
                                       if grade_name_single == "U" and !report['exam_name'].downcase.index('sub').nil? and total_marks_single_exam.to_i == 50
                                         if marks_obtain_single_exam.to_i >= 22
-                                          sub_failed = false
+                                          if  count_sub < 2
+                                            sub_failed = false
+                                          end
                                           grade_name_single = "D"
                                         end
                                       end
                                     
                                       if grade_name_single == "U" and !report['exam_name'].downcase.index('prac').nil? and total_marks_single_exam.to_i == 25
                                         if marks_obtain_single_exam.to_i > 11
-                                          pr_failed = false
+                                          if  count_prac < 2
+                                            pr_failed = false
+                                          end
                                           grade_name_single = "D"
                                         end
                                       end

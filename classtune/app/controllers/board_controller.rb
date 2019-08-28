@@ -300,7 +300,7 @@ class BoardController < ApplicationController
   
   def exam_students
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
-    @students = BoardExamStudent.find_all_by_board_exam_id(params[:id],:include=>["batch"])
+    @students = BoardExamStudent.find_all_by_board_exam_id(params[:id],:include=>["batch","student"])
     @page = params[:page]
   end
   

@@ -45,8 +45,8 @@
             <%
             std_info = get_student_all_type(student.student_id)
             if std_info.blank?
-            next
-              end
+              next
+            end
             batch_full = student.batch.full_name
             batch_split = batch_full.split(" ")
             version = batch_split[1]

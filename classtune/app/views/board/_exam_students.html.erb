@@ -43,7 +43,10 @@
       <tbody>
           <% @students.each do |student| %>
             <%
-            std_info = get_student_all_type(student.student_id)
+            std_info = student.student
+            if std_info.blank?
+             std_info = get_student_all_type(student.student_id)
+            end
             if std_info.blank?
               next
             end

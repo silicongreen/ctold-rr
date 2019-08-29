@@ -228,9 +228,9 @@
                                         if !report['exam_name'].downcase.index('prac').nil? && count_prac < 2 &&  prac_fullmark >= 11
                                           pr_failed = false
                                         end
-                                        if sub_fullmark >= 22 && total_marks_single_exam == 50
+                                        if marks_obtain_single_exam >= 22 && total_marks_single_exam == 50
                                           grade_name_single = "D"
-                                        elsif (obj_fullmark >= 12 && total_marks_single_exam == 25) || (obj_fullmark >= 14 && total_marks_single_exam == 30)
+                                        elsif (marks_obtain_single_exam >= 12 && total_marks_single_exam == 25) || (marks_obtain_single_exam >= 14 && total_marks_single_exam == 30)
                                           grade_name_single = "D"
                                         elsif prac_fullmark >= 11
                                           grade_name_single = "D"

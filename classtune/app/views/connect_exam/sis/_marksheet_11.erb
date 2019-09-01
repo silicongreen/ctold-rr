@@ -177,9 +177,6 @@
            <% if assessment_full_mark > 0 %>
               <td><%= assessment_total_mark.round() %></td>
               <td <%= class_name %>><%= total_mark.round() %></td>
-           <% else %>
-              <td>-</td>
-              <td>-</td>
            <% end %>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

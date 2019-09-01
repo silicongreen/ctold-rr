@@ -37,7 +37,8 @@
       <tr class="tr-<%= cycle('odd', 'even') %>">
         <td class="col-1"><%= p.exam_connect.name %></td>
         <td class="col-1"><%= p.exam_connect.published_date %></td>
-        <td class="col-1"><a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/connectexam/0<%= p.exam_connect_id.to_s %>/connect_exam_<%= p.exam_connect_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
+        <td class="col-1">
+            <a target="_blank" href="/result_pdf_archive/0<%= p.school_id.to_s %>/0<%= p.batch_id.to_s %>/connectexam/0<%= p.exam_connect_id.to_s %>/connect_exam_<%= p.exam_connect_id.to_s %>_<%= p.student_id.to_s %>.pdf">Show</a></td>
       </tr>
       <% else %>
     
@@ -46,7 +47,16 @@
         <tr class="tr-<%= cycle('odd', 'even') %>">
           <td class="col-1"><%= p.exam_connect.name %></td>
           <td class="col-1"><%= p.exam_connect.published_date %></td>
-          <td class="col-1"><%= link_to "Show", {:controller => "exam", :action => "continues", :student=>p.student_id,:id=>p.exam_connect_id},:target => '_blank' %></td>
+          <td class="col-1">
+            <%= link_to "Show", {:controller => "exam", :action => "continues", :student=>p.student_id,:id=>p.exam_connect_id},:target => '_blank' %>
+            <% if @current_user.admin? %>
+                 &nbsp; &nbsp;<%= link_to "All Result", {:controller => "exam", :action => "continues",:id=>p.exam_connect_id},:target => '_blank' %>
+              <% if MultiSchool.current_school.id == 348 && p.exam_connect.result_type.to_i > 8 && p.exam_connect.result_type.to_i != 11 %>
+                 &nbsp; &nbsp;<%= link_to "Transcript", {:controller => "exam", :action => "continues", :student=>p.student_id, :transscript=>1,:id=>p.exam_connect_id},:target => '_blank' %>
+                 &nbsp; &nbsp;<%= link_to "All Transcript", {:controller => "exam", :action => "continues", :transscript=>1,:id=>p.exam_connect_id},:target => '_blank' %>
+              <% end %>
+            <% end %>  
+          </td>
         </tr>
         
         <% end %>

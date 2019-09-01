@@ -58,8 +58,10 @@
                         <% final_term_fullmark = 0 %>
                         <% total_mark = 0 %>
                         <% total_mark_all = 0 %>
+                        <% total_subject = 0 %>
                         <% has_mark = false %>
                       <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                          <% total_subject = total_subject+1 %>
                           <td class="col-pdf no-warp  align-left"><%= subjects['code'] %></td>
                           <td class="col-pdf no-warp  align-left"><%= subjects['name'] %></td>
                           
@@ -334,7 +336,7 @@
   </div>
 
 <% end %>
-  
+  <% if total_subject < 17 %>
   <style>
     table.std_info_table
     {
@@ -372,5 +374,90 @@
         margin-left: 81px !important;
     }
     
-  </style>  
+  </style>
+  <% elsif total_subject < 20 %>
+
+<style>
+    table.std_info_table
+    {
+       background-color: rgba(250,240,232,0.5) !important;
+    }
+    .sis-final table.exam-marks tr td
+    {
+      background-color: rgba(250,240,232,0.5) !important;
+    }
+    .sis-final table.std_info_table
+    {
+        border:1px solid black !important;
+        margin-top:10px !important;
+    }
+    
+    .sis-final table.std_info_table tr td
+    {
+        padding: 5px 10px !important;
+        font-size: 25px !important;
+        font-weight:normal;
+    }
+   
+  
+    .sis-final table tr.odd td, .sis-final table tr.even td
+    {
+        font-size: 25px !important;
+        padding: 5px 10px !important;
+        font-weight:normal !important;
+    }
+    
+    .sis-final table.center-table
+    {
+       
+        width: 87% !important;
+        margin-left: 81px !important;
+    }
+    
+  </style>
+
+
+
+  <% else %>
+  <style>
+    table.std_info_table
+    {
+       background-color: rgba(250,240,232,0.5) !important;
+    }
+    .sis-final table.exam-marks tr td
+    {
+      background-color: rgba(250,240,232,0.5) !important;
+    }
+    .sis-final table.std_info_table
+    {
+        border:1px solid black !important;
+        margin-top:10px !important;
+    }
+    
+    .sis-final table.std_info_table tr td
+    {
+        padding: 4px 10px !important;
+        font-size: 22px !important;
+        font-weight:normal;
+    }
+   
+  
+    .sis-final table tr.odd td, .sis-final table tr.even td
+    {
+        font-size: 22px !important;
+        padding: 4px 10px !important;
+        font-weight:normal !important;
+    }
+    
+    .sis-final table.center-table
+    {
+       
+        width: 87% !important;
+        margin-left: 81px !important;
+    }
+    
+  </style>
+  
+  
+  <% end %>
    

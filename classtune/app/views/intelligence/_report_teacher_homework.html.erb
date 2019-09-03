@@ -102,7 +102,7 @@
                               if !employee['class_details'].blank? 
                                 employee['class_details'].each do |hw|
                                   if !hw_given_id.include?(hw['id'].to_i) && class_sub_id.include?(hw['id'].to_i)
-                                    ballon_text_not_given = ballon_text_not_given+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+")"
+                                    ballon_text_not_given = ballon_text_not_given+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+") &#10;"
                                     hw_not_given_id << hw['id'].to_i
                                   end
                                 end

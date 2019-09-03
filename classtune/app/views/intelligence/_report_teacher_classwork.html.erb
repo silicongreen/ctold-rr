@@ -35,9 +35,11 @@
                         <td><b>Total Class</b></td> 
                         <td><b>Classwork Given</b></td>
                         <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 354 %>
-                          <td><b>Classwork Given Before 5pm</b></td>
+                          <td><b>Before 5pm</b></td>
                         <% else %>
-                          <td><b>Classwork Given Before 3pm</b></td>
+                          <td><b>Before 3pm</b></td>
+                          <td><b>After 3pm</b></td>
+                          <td><b>Not Given</b></td>
                         <% end %>
                         <td><b>Frequency</b></td> 
                     </tr>    
@@ -84,6 +86,28 @@
                                 end
                               end
                             
+                            hw_given_id_after_3pm = []
+                              ballon_text_after_3pm = ""; 
+                              if employee['classwork_given'].to_i > 0 && !employee['classwork_given_data'].blank? 
+                                employee['classwork_given_data'].each do |hw|
+                                  if !hw_given_id_3pm.include?(hw['subjects_id'].to_i) && class_sub_id.include?(hw['subjects_id'].to_i)
+                                    ballon_text_after_3pm = ballon_text_after_3pm+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
+                                    hw_given_id_after_3pm << hw['subjects_id'].to_i
+                                  end
+                                end
+                              end
+                            
+                              hw_not_given_id = []
+                              ballon_text_not_given = "";
+                              if !employee['class_details'].blank? 
+                                employee['class_details'].each do |hw|
+                                  if !hw_given_id.include?(hw['id'].to_i) && class_sub_id.include?(hw['id'].to_i)
+                                    ballon_text_not_given = ballon_text_not_given+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+") &#10;"
+                                    hw_not_given_id << hw['id'].to_i
+                                  end
+                                end
+                              end
+                            
                               
                           
                             %>
@@ -107,6 +131,32 @@
                                     <% end %> 
                                       
                              </b></td>
+                             
+                             <% if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 246 and MultiSchool.current_school.id != 354 %>
+                             <td class="col-2"><b>
+                                  <% unless ballon_text_after_3pm.blank?  %>
+                                      <button data-balloon="<%= ballon_text_after_3pm %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id_after_3pm.count %></button>
+                                      
+                                    <% else %>
+                                      <%= employee['classwork_given'].to_i-employee['classwork_given_before_3pm'].to_i %>
+                                    <% end %> 
+                                      
+                             </b></td>
+                             <td class="col-2"><b>
+                                  <% unless ballon_text_not_given.blank?  %>
+                                      <button data-balloon="<%= ballon_text_not_given %>" data-balloon-pos="up" data-balloon-break><%= hw_not_given_id.count %></button>
+                                      
+                                    <% else %>
+                                      <% if employee['classwork_given'].to_i > employee['total_class'].to_i %>
+                                      0
+                                      <% else %>
+                                      <%= employee['total_class'].to_i-employee['classwork_given'].to_i %>
+                                      <% end %>
+                                    <% end %> 
+                                      
+                             </b></td>
+                             
+                             <% end %>
                             <% 
                             if employee['total_class'].to_i < employee['classwork_given'] .to_i
                               employee['frequency'] = 100

@@ -15,12 +15,14 @@
         <tr class="table-header">
           <td class="col-pdf aling-left"><b>Teacher Name</b></td> 
           <td class="col-pdf aling-left"><b>Department</b></td> 
-          <td class="col-pdf"><b>Total Class</b></td> 
-          <td class="col-pdf"><b>Homework Given</b></td> 
+          <td class="col-pdf"><b>Class</b></td> 
+          <td class="col-pdf"><b>Given</b></td> 
           <% if MultiSchool.current_school.id == 325 or MultiSchool.current_school.id == 246 or MultiSchool.current_school.id == 354 %>
             <td><b>Before 5pm</b></td>
           <% else %>
             <td><b>Before 3pm</b></td>
+            <td><b>After 3pm</b></td>
+            <td><b>Not Given</b></td>
           <% end %>
           <td class="col-pdf"><b>Frequency</b></td>     
         </tr>
@@ -60,6 +62,17 @@
                 <td class="col-pdf"><%= employee['total_class'] %></td>
                 <td class="col-pdf"><%= employee['homework_given'] %></td>
                 <td class="col-pdf"><%= employee['homework_given_before_3pm'] %></td>
+                <% if MultiSchool.current_school.id != 325 and MultiSchool.current_school.id != 246 and MultiSchool.current_school.id != 354 %>
+                  <td class="col-pdf"><%= employee['homework_given'].to_i-employee['homework_given_before_3pm'].to_i %></td>
+                  <td class="col-pdf">
+                    <% if employee['homework_given'].to_i > employee['total_class'].to_i %>
+                        0
+                    <% else %>
+                      <%= employee['total_class'].to_i-employee['homework_given'].to_i %>
+                    <% end %>  
+                      
+                  </td>
+                <% end %>
                 <td class="col-pdf"><%= sprintf( "%0.02f", employee['frequency'].to_f)%></td>
               </tr>
             <% end %>  

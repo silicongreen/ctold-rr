@@ -90,7 +90,7 @@
                               ballon_text_after_3pm = ""; 
                               if employee['homework_given'].to_i > 0 && !employee['homework_given_data'].blank? 
                                 employee['homework_given_data'].each do |hw|
-                                  if !hw_given_id_3pm.include?(hw['subjects_id'].to_i)
+                                  if !hw_given_id_3pm.include?(hw['subjects_id'].to_i) && class_sub_id.include?(hw['subjects_id'].to_i)
                                     ballon_text_after_3pm = ballon_text_after_3pm+hw['subjects']+" ("+hw['batch']+" "+hw['course']+" "+hw['section']+")-"+hw['assign_time']+" &#10;"
                                     hw_given_id_after_3pm << hw['subjects_id'].to_i
                                   end
@@ -101,7 +101,7 @@
                               ballon_text_not_given = "";
                               if !employee['class_details'].blank? 
                                 employee['class_details'].each do |hw|
-                                  if !hw_given_id.include?(hw['id'].to_i)
+                                  if !hw_given_id.include?(hw['id'].to_i) && class_sub_id.include?(hw['id'].to_i)
                                     ballon_text_not_given = ballon_text_not_given+hw['subject_name']+" ("+hw['batch_name']+" "+hw['course_name']+")"
                                     hw_not_given_id << hw['id'].to_i
                                   end

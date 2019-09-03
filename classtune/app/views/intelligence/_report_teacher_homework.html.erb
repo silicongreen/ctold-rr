@@ -146,7 +146,7 @@
                                       <button data-balloon="<%= ballon_text_not_given %>" data-balloon-pos="up" data-balloon-break><%= hw_not_given_id.count %></button>
                                       
                                     <% else %>
-                                      <% if employee['homework_given'] > employee['total_class'] %>
+                                      <% if employee['homework_given'].to_i > employee['total_class'].to_i %>
                                       0
                                       <% else %>
                                       <%= employee['total_class'].to_i-employee['homework_given'].to_i %>

@@ -137,7 +137,7 @@
                                       <button data-balloon="<%= ballon_text_after_3pm %>" data-balloon-pos="up" data-balloon-break><%= hw_given_id_after_3pm.count %></button>
                                       
                                     <% else %>
-                                      <%= employee['homework_given']-employee['homework_given_before_3pm'] %>
+                                      <%= employee['homework_given'].to_i-employee['homework_given_before_3pm'].to_i %>
                                     <% end %> 
                                       
                              </b></td>
@@ -149,7 +149,7 @@
                                       <% if employee['homework_given'] > employee['total_class'] %>
                                       0
                                       <% else %>
-                                      <%= employee['total_class']-employee['homework_given'] %>
+                                      <%= employee['total_class'].to_i-employee['homework_given'].to_i %>
                                       <% end %>
                                     <% end %> 
                                       

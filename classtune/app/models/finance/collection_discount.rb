@@ -9,7 +9,7 @@ class CollectionDiscount < ActiveRecord::Base
     
     unless fee_discount.blank?
       if fee_discount.is_onetime
-        student_exclude_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_discount_id = #{fee_discount_id}")
+        student_exclude_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_discount_id = #{fee_discount_id} and fee_collection_id = #{finance_fee_collection_id}")
         
         unless student_exclude_discounts.nil?
           student_exclude_discounts.each do |student_exclude_discount|

@@ -2504,19 +2504,36 @@ class StudentController < ApplicationController
               student_batch_log.save
             end
             if MultiSchool.current_school.id == 352
-              if @previous_batch_id == @student.batch_id
-                @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
-                unless @finance_fees.blank?
-                  @finance_fees.each do |f|
-                    if f.is_paid
-                      found_paid_fees = true
-                    else
+              if @previous_category_id != @student.student_category_id
+                if @previous_batch_id == @student.batch_id
+                  @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
+                  unless @finance_fees.blank?
+                    @finance_fees.each do |f|
                       fee_collection_id = f.fee_collection_id
                       date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
                       unless date.blank?
                         s = Student.find(@student.id)
-                        bal = FinanceFee.get_student_balance(date, s, f)
+                        reset_fees(date, s, f)
+                        #abort(finance_particulars.inspect)
+                        paid_fees = f.finance_transactions
+                        unless paid_fees.blank?
+                          found_paid_fees = true
+                          paid_fees.each do |p|
+                            transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
+                            unless transaction_particulars.blank?
+                              transaction_particulars.each do |tp|
+                                arrange_particular_category_wise(date, s, tp, f)
+                              end
+                            end
+                          end
+                        end
+                        bal = FinanceFee.get_student_actual_balance(date, s, f)
                         f.update_attributes(:balance=>bal)
+                        if bal.to_f == 0.00
+                          f.update_attributes(:is_paid=>true)
+                        elsif bal.to_f > 0.00
+                          f.update_attributes(:is_paid=>false)
+                        end
                       end
                     end
                   end
@@ -2639,15 +2656,30 @@ class StudentController < ApplicationController
                 @finance_fees = FinanceFee.find_all_by_student_id(@student.id)
                 unless @finance_fees.blank?
                   @finance_fees.each do |f|
-                    if f.is_paid
-                      found_paid_fees = true
-                    else
-                      fee_collection_id = f.fee_collection_id
-                      date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
-                      unless date.blank?
-                        s = Student.find(@student.id)
-                        bal = FinanceFee.get_student_balance(date, s, f)
-                        f.update_attributes(:balance=>bal)
+                    fee_collection_id = f.fee_collection_id
+                    date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+                    unless date.blank?
+                      s = Student.find(@student.id)
+                      reset_fees(date, s, f)
+                      #abort(finance_particulars.inspect)
+                      paid_fees = f.finance_transactions
+                      unless paid_fees.blank?
+                        found_paid_fees = true
+                        paid_fees.each do |p|
+                          transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
+                          unless transaction_particulars.blank?
+                            transaction_particulars.each do |tp|
+                              arrange_particular_category_wise(date, s, tp, f)
+                            end
+                          end
+                        end
+                      end
+                      bal = FinanceFee.get_student_actual_balance(date, s, f)
+                      f.update_attributes(:balance=>bal)
+                      if bal.to_f == 0.00
+                        f.update_attributes(:is_paid=>true)
+                      elsif bal.to_f > 0.00
+                        f.update_attributes(:is_paid=>false)
                       end
                     end
                   end
@@ -2657,9 +2689,10 @@ class StudentController < ApplicationController
           end
           
           username = MultiSchool.current_school.code.to_s+"-"+@student.admission_no        
-          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/champs21.yml")['champs21']
+          champs21_api_config = YAML.load_file("#{RAILS_ROOT.to_s}/config/app.yml")['champs21']
           api_endpoint = champs21_api_config['api_url']
           uri = URI(api_endpoint + "api/user/UpdateProfilePaidUser")
+          #abort(api_endpoint + "api/user/UpdateProfilePaidUser")
           http = Net::HTTP.new(uri.host, uri.port)
           auth_req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' => 'application/x-www-form-urlencoded'})
           auth_req.set_form_data({"paid_id" => @student.id, "paid_username" => username, "paid_school_id" => MultiSchool.current_school.id, "paid_school_code" => MultiSchool.current_school.code.to_s, "first_name" => @student.first_name, "middle_name" => @student.middle_name, "last_name" => @student.last_name, "gender" => (if @student.gender == 'm' then '1' else '0' end), "country" => @student.nationality_id, "dob" => @student.date_of_birth, "email" => username})
@@ -2669,11 +2702,11 @@ class StudentController < ApplicationController
           flash[:notice] = "#{t('flash3')}"
           
           if MultiSchool.current_school.id == 352
-            #if found_paid_fees
-            #  redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
-            #else
+            if found_paid_fees
+              redirect_to :controller => "student", :action => "adjust_paid_fees", :id => @student.id, :previous_category_id => @previous_category_id, :previous_batch_id => @previous_batch_id
+            else
               redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
-            #end
+            end
           else
             redirect_to :controller => "student", :action => @action_name_main, :id => @student.id
           end
@@ -2681,7 +2714,7 @@ class StudentController < ApplicationController
           @classes = Course.find(:all, :conditions => ["course_name LIKE ?",params[:student][:class_name]])
           @selected_section = params[:student][:section]
           @section_name = params[:student][:section]
-          @batch_id = params[:student][:batch_id]
+          #@batch_id = params[:student][:batch_id]
           @batch_no = params[:student][:batch_name]
           @course_name = params[:student][:class_name];
           
@@ -2692,9 +2725,9 @@ class StudentController < ApplicationController
         end
       end
     else
-      @batch_id = @student.batch_id
+      #@batch_id = @student.batch_id
       @batch_no = @student.batch_id
-      @batch_data = Batch.active.find(:first, :conditions => ["batches.id = ?", @batch_id])
+      @batch_data = Batch.active.find(:first, :conditions => ["batches.id = ?", @student.batch_id])
       
       @course_data = Course.find_by_id(@batch_data.course_id)
       @course_name = @course_data.course_name
@@ -2703,7 +2736,7 @@ class StudentController < ApplicationController
       @selected_section = @course_data.id
       @section_name = @course_data.id
       
-      batch = Batch.find @batch_id
+      batch = Batch.find @student.batch_id
       batch_name = batch.name
       batches = Batch.find(:all, :conditions => ["name = ?", batch_name]).map{|b| b.course_id}
       @courses = Course.find(:all, :conditions => ["id IN (?)", batches], :group => "course_name", :select => "course_name", :order => "cast(replace(course_name, 'Class ', '') as SIGNED INTEGER) asc")
@@ -2717,6 +2750,48 @@ class StudentController < ApplicationController
     @previous_batch_id = params[:previous_batch_id]
     
     @finance_fees = FinanceFee.find_all_by_student_id_and_is_paid(@student.id, true)
+  end
+  
+  def adjust_student_fees
+    @student = Student.find(params[:id])
+    @previous_category_id = params[:previous_category_id]
+    @previous_batch_id = params[:previous_batch_id]
+    
+    @fees = params[:fee_id].split(",")
+    
+    @finance_fees = FinanceFee.find(:all, :conditions => "id IN (#{@fees.map(&:to_i).join(",")})")
+    
+    unless @finance_fees.blank?
+      @finance_fees.each do |f|
+        fee_collection_id = f.fee_collection_id
+        date = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}")
+        unless date.blank?
+          s = Student.find(@student.id)
+          reset_fees(date, s, f)
+          #abort(finance_particulars.inspect)
+          paid_fees = f.finance_transactions
+          unless paid_fees.blank?
+            found_paid_fees = true
+            paid_fees.each do |p|
+              transaction_particulars = FinanceTransactionParticular.find(:all, :conditions => "finance_transaction_id = #{p.id}")
+              unless transaction_particulars.blank?
+                transaction_particulars.each do |tp|
+                  adjust_particular_category_wise(date, s, tp, f)
+                end
+              end
+            end
+          end
+          bal = FinanceFee.get_student_actual_balance(date, s, f)
+          f.update_attributes(:balance=>bal)
+          if bal.to_f == 0.00
+            f.update_attributes(:is_paid=>true)
+          elsif bal.to_f > 0.00
+            f.update_attributes(:is_paid=>false)
+          end
+        end
+      end
+    end
+    redirect_to :controller => "student", :action => "profile", :id => @student.id
   end
   
   def edit_guardian_own

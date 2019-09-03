@@ -1,0 +1,428 @@
+.clearfix {
+    clear: both;
+}
+#page-yield{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.fees_wrapper {
+    background-color: #ffffff;
+    float: left;
+    width: 100%;
+}
+#student_profile_heading{
+    background: url("/images/backgrounds/top_profile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    float: left;
+    margin: 0;
+    max-height: 120px;
+    padding: 0;
+    width: 100%;
+}
+#profile_picture_display{
+    float: left;
+    height: 120px;
+}
+#profile_picture_display img{
+    height: 100%;
+}
+#student_main_info{
+    float: left;
+    padding: 30px 0 0 20px;
+    width: 75%;
+}
+#student_name{
+    color: #FFF;
+    font-size: 35px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#student_class{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+#personal_info_wrapper {
+    float: left;
+    width: 100%;
+}
+#class_info{
+    border-bottom: 1px solid #DFE1E2;
+    border-top: 1px solid #DFE1E2;
+    float: left;
+    width: 100%;
+}
+#class_info .infos{
+    background-color: #f6f8f8;
+    border-right: 1px solid #DFE1E2;
+    float: left;
+    width: 33.3%;
+}
+#class_info .last {
+    border-right: 0 none;
+    float: right;
+    width: 33.1%;
+}
+#class_info .infos div:first-child{
+    color: #d71921;
+    font-size: 25px;
+    padding: 30px 0 0;
+    text-align: center;
+}
+#class_info .infos div:last-child{
+    color: #868a8b;
+    font-size: 18px;
+    padding: 5px 0 20px;
+    text-align: center;
+}
+#student_profile_heading1 {
+    clear: both;
+    padding: 0 0 0 20px;
+    width: 100%;
+}
+#student_main_info1 span.name {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    margin: 13px 0 0;
+    padding-right: 20px;
+    width: 100%;
+    font: bold;
+}
+#student_main_info1 span.course {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    margin: 10px 0 0;
+    padding-right: 20px;
+    width: 100%;
+}
+#student_main_info1 span.adm {
+    color: #000000;
+    float: left;
+    font-size: 14px;
+    margin: 5px 0 0;
+    padding: 0;
+    width: 100%;
+}
+
+table#listing{
+    float: left;
+}
+
+.profile_info_label_top {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+    background: #eff3fe;
+    border-top:1px solid #bdcfff;
+    margin-right:5px;
+}
+.profile_info_label_top2 {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+    background: #dae6ff;
+    border-top:1px solid #bdcfff;
+    margin-right:5px;
+}
+.profile_info_label_top {
+    padding-top:15px;
+    padding-bottom:5px;
+    height:25px;
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+    float:left;
+    font-weight:bold;
+    color:#548ab2;
+}
+.user_button_new {
+    margin-top:40px;
+    margin-left:270px;
+}
+
+.parent-del-button {
+    margin : 20px 0 40px 600px;
+}
+.profile_top_banner{
+    position:absolute;
+    float:right;
+    padding-left:525px;
+    margin-top:-12px;
+
+}
+.parent-edit-button{
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    background:#27292B none repeat scroll 0 0;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin:0px auto;
+    margin-left:10px;
+    padding:7px 12px;
+    border:none;
+    text-align:center;
+    width:auto;
+    cursor:pointer;
+    float:left;
+}
+.parent-edit-button:hover{
+    background: #373B3F;
+}
+.parent-edit-button a{
+    color:#fff;
+    text-decoration: none;
+}
+#guardians-links span{
+    font-weight:600;
+    color:#444444;
+    margin-bottom: 10px;
+    display:block;
+    text-decoration: underline;
+}
+.button-pair{
+    width:220px;
+    margin:20px auto;
+}
+#new_profile_info_top {
+    margin:30px auto;
+    width:697px;
+
+}
+
+
+#category-list {
+    clear: both;
+    padding: 44px 0 40px 0px;
+    width: 570px;
+    margin: 0px auto;
+}
+
+#category-list .listeven{
+    background: #EEF2FD;
+    border-bottom: 1px solid #BECFFB;
+    color: #444;
+    min-height: 1.5em;
+    width: 33em;
+    overflow: auto;
+    list-style-type: none;
+    padding: 0.5em 0 0 3em;
+}
+
+#category-list .listodd{
+    background: #DFEAFF;
+    border-bottom: 1px solid #BECFFB;
+    color: #444;
+    min-height: 1.5em;
+    width: 33em;
+    overflow: auto;
+    list-style-type: none;
+    padding: 0.5em 0 0 3em;
+}
+
+#category-list li.heading {
+    background : none;
+    font-weight : bold;
+    list-style-type : none;
+    color : #444;
+    height : 1.5em; width : 30em;
+    padding : 0.5em 0 0 5em;
+}
+#category-list li div {
+    float : left;
+}
+#category-list li div.category-name {
+    width: 261px;
+    font-weight: bold;
+    font-size: 13px;
+}
+#category-list li div.category-edit,
+#category-list li div.category-delete {
+    font-size: 13px;
+    width : 129px;
+
+    color: #000;
+}
+#category-list li div a {
+    color : #000;
+    font-size:14px;
+    text-decoration: none;
+}
+#category-list li div a:hover {
+    color : #d00;
+    text-decoration: underline;
+}
+
+#category-list .listheading {
+    background:none repeat scroll 0 0 #BECFFB;
+    border-bottom:2px solid #BECFFB;
+    color:#444444;
+    height:1.5em;
+    list-style-type:none;
+    padding:0.5em 0 0 5em;
+    width: 496px;
+}
+
+.fees{
+    float: right;
+    margin-top: -56px;
+    font-size:14px;
+    color:#000;
+    padding-right: 15px;
+}
+.user_button_new  {
+    background: #49BB4B none repeat scroll 0 0 !important;
+    padding: 10px 15px !important;
+    border-radius: 7px  !important;
+    -moz-border-radius: 7px  !important;
+    -webkit-border-radius: 7px  !important;
+    color: #fff;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    font-weight: bold;
+    font-size: 18px;
+    border:none;
+    cursor:pointer;
+    text-decoration: none;
+    margin:0 auto 0 20px;
+    display: inline;
+    float: none;
+}
+.user_button_new:hover{
+    background: #145214 !important;
+    text-decoration: none !important;
+}
+
+#category-list li div.due-date{
+    float: left;
+    width: 95px;
+    font-size: 13px;
+    color: #000;
+}
+
+#category-list li div.category-name a {
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+#category-list li div.category-name a:hover {
+    color: #BB0000;
+    font-weight: bold;
+}
+.line{
+    padding-top: .5px;
+    padding-bottom: .5px;
+    width: 100%;
+    background-color: #ccc;
+    margin-top: 18px;
+}
+.check_box{
+    float:left;
+    padding-right:10px;
+    margin-top:6px
+}
+.paid_text{
+    float:left;
+    margin-top:8px
+}
+.fee_details_box{
+    float: left; 
+    width: 30%; 
+    border: 1px solid #ccc; 
+    min-height: 300px; 
+    -webkit-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px -11px rgba(0,0,0,0.75);
+/*    margin-bottom: 40px;*/
+}
+
+.fee_details_box .fee_name{
+    height: 50px; 
+    text-align: center; 
+    border-bottom: 1px solid #999; 
+    background: url('/images/gbackground.jpeg'); 
+    padding-top: 20px; 
+    font-size: 25px; 
+    color: #fff; 
+    font-weight: bold;
+}
+.fee_details_box .fee_bottom {
+    height: 25px;
+    text-align: center; 
+    border-bottom: 1px solid #999; 
+    background: url('/images/gbackground.jpeg'); 
+    padding: 15px 0; 
+    font-size: 18px; 
+    color: #fff; 
+    font-weight: bold;
+}
+.fee_details_box .fee_bottom div:first-child{
+    float: left; 
+    width: 49%; 
+    border-right: 2px solid #FFF; 
+    text-align: center;
+}
+.fee_details_box .fee_bottom div:last-child{
+    float: left; 
+    width: 49%;  
+    text-align: center;
+}
+.fee_details_box .fee_bottom div a.fee_link{
+    color: #fff;
+    font-size: 16px;
+}
+.fee_details_box .fee_bottom div a.fee_link:hover{
+    text-decoration: underline;
+    color: #ccc;
+}
+.fee_details table tr:first-child {
+    border-bottom: 1px solid #ccc;
+}
+.fee_details table tr:first-child td.fee_due {
+    border-bottom: 1px solid #ccc; 
+    text-align: left; 
+    padding: 10px; 
+    background: #EAEAEA;
+}
+
+.fee_details table tr:not(:first-child) td.fee_due:first-child {
+    border-bottom: 1px solid #ccc; 
+    border-right: 1px solid #ccc; 
+    padding: 10px 0; 
+    background: #F3F3F3; 
+    font-size: 12px; 
+    font-family: verdana;
+}
+.fee_details table tr:not(:first-child) td.fee_due:last-child {
+    border-bottom: 1px solid #ccc; 
+    padding: 10px 0; 
+    font-size: 14px; 
+    text-align: right; 
+    padding-right: 10px;
+}
+.fee_details table tr:last-child td.fee_due:last-child {
+    border-bottom: 1px solid #ccc; 
+    border-right: 1px solid #ccc; 
+    padding: 10px 0; 
+    font-size: 15px; 
+    font-weight: bold; 
+    text-align: center; 
+    background: #F3F3F3; 
+    padding-right: 10px;
+}

@@ -19,6 +19,8 @@
 class FinanceFeeCollection < ActiveRecord::Base
   belongs_to :batch
   has_many :finance_fees, :foreign_key =>"fee_collection_id",:dependent=>:destroy
+  has_many :student_exclude_particulars, :foreign_key =>"fee_collection_id",:dependent=>:destroy
+  has_many :student_exclude_discounts, :foreign_key =>"fee_collection_id",:dependent=>:destroy
   has_many :finance_transactions, :through => :finance_fees
   has_many :students, :through => :finance_fees
   has_many :fee_collection_particulars ,:dependent=>:destroy

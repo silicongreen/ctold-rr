@@ -4474,7 +4474,7 @@ class FinanceController < ApplicationController
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
-                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection_id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
                         unless excluded_discounts.blank?
                           is_discount_excluded = true
                         end
@@ -4666,7 +4666,7 @@ class FinanceController < ApplicationController
                       fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                       fee_discounts.each do |f_discount|
                         is_discount_excluded = false
-                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                        excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection_id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
                         unless excluded_discounts.blank?
                           is_discount_excluded = true
                         end
@@ -4816,7 +4816,7 @@ class FinanceController < ApplicationController
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
-                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection.id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
                             
                             unless excluded_discounts.blank?
                               is_discount_excluded = true
@@ -5000,7 +5000,7 @@ class FinanceController < ApplicationController
                           fee_discounts = FeeDiscount.find(:all, :conditions => "id IN (#{fee_discount_ids.join(",")}) and finance_fee_particular_category_id = #{discount.finance_fee_particular_category_id}")
                           fee_discounts.each do |f_discount|
                             is_discount_excluded = false
-                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
+                            excluded_discounts = StudentExcludeDiscount.find(:all, :conditions => "fee_collection_id = #{@fee_collection.id} and student_id = #{student.id} and fee_discount_id = #{f_discount.id}")
                             unless excluded_discounts.blank?
                               is_discount_excluded = true
                             end
@@ -7258,12 +7258,14 @@ class FinanceController < ApplicationController
               end
             end
           else 
+            @fee_collection = FinanceFeeCollection.find(fee_collection_id)
+            
             student_exclude_discount = StudentExcludeDiscount.new
             student_exclude_discount.fee_discount_id = discount.id
+            student_exclude_discount.fee_collection_id = @fee_collection.id
             student_exclude_discount.student_id = params[:student]
             student_exclude_discount.save
             
-            @fee_collection = FinanceFeeCollection.find(fee_collection_id)
             @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{fee_collection_id} and is_paid=#{false} and students.id = #{params[:student]}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
             s = @fee.student
             unless s.has_paid_fees
@@ -7424,12 +7426,14 @@ class FinanceController < ApplicationController
         end
       end
     else
+      @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
+      
       student_exclude_discount = StudentExcludeDiscount.new
       student_exclude_discount.fee_discount_id = discount.id
+      student_exclude_discount.fee_collection_id = @fee_collection.id
       student_exclude_discount.student_id = params[:student]
       student_exclude_discount.save
 
-      @fee_collection = FinanceFeeCollection.find(@fee_collection_id)
       @fee = FinanceFee.first(:conditions=>"fee_collection_id = #{@fee_collection_id} and is_paid=#{false} and students.id = #{params[:student]}" ,:joins=>"INNER JOIN students ON finance_fees.student_id = students.id")
       s = @fee.student
       unless s.has_paid_fees
@@ -7631,7 +7635,11 @@ class FinanceController < ApplicationController
           @submission_date = Date.today
           if @financefee.is_paid
             @paid_fees = @financefee.finance_transactions
-            days=(@paid_fees.first.transaction_date-@date.due_date.to_date).to_i
+            unless @paid_fees.blank?
+              days=(@paid_fees.first.transaction_date-@date.due_date.to_date).to_i
+            else
+              days=(Date.today-@date.due_date.to_date).to_i
+            end
           else
             days=(Date.today-@date.due_date.to_date).to_i
           end
@@ -7839,7 +7847,7 @@ class FinanceController < ApplicationController
       end
     end
     
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(@student.id).map(&:fee_discount_id)
+    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id_and_fee_collection_id(@student.id, @financefee.fee_collection_id).map(&:fee_discount_id)
     exclude_discount_ids = exclude_discount_ids.reject { |e| e.to_s.empty? }
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
@@ -9956,18 +9964,19 @@ class FinanceController < ApplicationController
   def pdf_fee_structure
     @student = Student.find(params[:id])
     
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id(@student.id).map(&:fee_discount_id)
+    @institution_name = Configuration.find_by_config_key("InstitutionName")
+    @institution_address = Configuration.find_by_config_key("InstitutionAddress")
+    @institution_phone_no = Configuration.find_by_config_key("InstitutionPhoneNo")
+    @currency_type = currency
+    @fee_collection = FinanceFeeCollection.find params[:id2]
+    
+    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id_and_fee_collection_id(@student.id, @fee_collection.id).map(&:fee_discount_id)
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
     else
       exclude_discount_ids = [0]
     end
     
-    @institution_name = Configuration.find_by_config_key("InstitutionName")
-    @institution_address = Configuration.find_by_config_key("InstitutionAddress")
-    @institution_phone_no = Configuration.find_by_config_key("InstitutionPhoneNo")
-    @currency_type = currency
-    @fee_collection = FinanceFeeCollection.find params[:id2]
     @finance_fee=@student.finance_fee_by_date(@fee_collection)
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
     @fee_particulars = @fee_collection.finance_fee_particulars.all(:conditions=>"batch_id=#{@finance_fee.batch_id}").select{|par| par.receiver==@student or par.receiver==@student.student_category or par.receiver==@finance_fee.batch}

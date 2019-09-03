@@ -49,7 +49,14 @@
               </thead>
               <% i = 0 %>
               <tbody>
+                  <% fee_ids = [] %>
                   <% @fee_particulars.each do |fee| %>
+                    <% unless fee_ids.include?(fee.id) %>  
+                    <% fee_particular_child = FinanceFeeParticular.find(:first, :conditions => "parent_id = #{fee.id} and receiver_type = 'Student' and receiver_id = #{@student.id}") %>  
+                    <% unless fee_particular_child.blank? %>  
+                    <% fee = fee_particular_child %>  
+                    <% fee_ids << fee_particular_child.id %>  
+                    <% end %>  
                     <tr>
                         <td><%= i+=1 %></td>
                         <td><%= fee.name %></td>
@@ -58,6 +65,7 @@
                         </td>
                     </tr>
                     <% total_fees += fee.amount %>
+                    <% end %>
                   <% end %>
                   <tr cellpadding="1" cellspacing="1">
                       <td colspan="2"  style="font-weight: bold;"><%= t('total_amount') %> </td>

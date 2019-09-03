@@ -26,6 +26,7 @@ class FinanceFeeParticular < ActiveRecord::Base
   has_many   :finance_fee_collections,:through=>:collection_particulars
   has_many   :collection_particulars
   has_many   :fee_discounts
+  has_many   :student_exclude_particulars, :foreign_key =>"fee_particular_id",:dependent=>:destroy
   validates_presence_of :name,:amount,:finance_fee_category_id,:batch_id,:receiver_id,:receiver_type
   validates_numericality_of :amount, :greater_than_or_equal_to => 0, :message => :must_be_positive, :allow_blank => true
   named_scope :active,{ :conditions => { :is_deleted => false}}

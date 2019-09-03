@@ -156,7 +156,13 @@
         <td id="fee_remain_<%= f %>" style="font-weight: normal; width: 14%; text-align: right; font-weight: bold;">&nbsp;</td>
       </tr>
       <% unless @fee_particulars[f].nil? %>
+      <% fee_ids = [] %>
       <% @fee_particulars[f].each do |fee| %>
+        <% fee_particular_child = FinanceFeeParticular.find(:first, :conditions => "parent_id = #{fee.id} and receiver_type = 'Student' and receiver_id = #{@student.id}") %>  
+        <% unless fee_particular_child.blank? %>  
+        <% fee = fee_particular_child %>  
+        <% fee_ids << fee_particular_child.id %>  
+        <% end %>  
         <%  if fee.name.downcase != 'vat' %>
           <tr id="particular_<%= fee.id %>" class="particulars_tr tr_fees_<%= f %>" style="display: none;">
             <% paidAmount = 0 %>
@@ -285,7 +291,7 @@
                 <% end %>
             </td>
         </tr>
-        
+        <% unless fee_ids.include?(fee.id) %>  
         <% if !(@fee_has_advance_particular[f] and (advance_fee_particular.include?(0) or advance_fee_particular.include?(fee.finance_fee_particular_category_id) )) %>
         <% total_fees += fee_amount %>
         <% total_payable += fee.amount %>
@@ -296,6 +302,7 @@
         <% total_payable += fee.amount %>
         <% total_fees_individual[f] += fee_amount %>
         <% total_payable_individual[f] += fee.amount %>
+        <% end %>
         <% end %>
         <% end %>
       <% end %>

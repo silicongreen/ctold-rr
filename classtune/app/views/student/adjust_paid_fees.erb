@@ -23,7 +23,6 @@
         <% if MultiSchool.current_school.id != 340 or !params[:show_fees].blank? %>
         <ul class="header-tabs">
             <li class="active"><%= link_to "Adjust Fees", {:controller => 'student', :action => 'fees', :id => @student.id}, {:class => 'f2'} %></li>
-            <li><%= link_to "#{t('student_profile')}", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class => 'f2'} %></li>
         </ul>
         <% end %>
     </div>
@@ -102,116 +101,70 @@
 
           <div class="extender"> </div>
           <div class="line" style=""></div>
-          
-          
-              <div id="fees_list_paid" style="background: #FBFBFB; padding: 20px; float: left; width: 96%; border-bottom: 1px solid #999;">
-                  <div style="text-align: center; width: 100%;">
-                      
-                <% km = 1 %>
-                <%- @finance_fees.each do |finance_fee| -%>
-                  <%  fee_collection_id = finance_fee.fee_collection_id %>
-                  <%  d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}") %>
-                  <%  paid_fees = finance_fee.finance_transactions %>
-                  <%
-                    paid_amount = 0.0
-                    unless paid_fees.nil? or paid_fees.blank?
-                      paid_fees.each do |pf|
-                        paid_amount += pf.amount
-                      end
-                    end
-                  %>
-                  
-                  <% if finance_fee.balance.to_f+d.fine_to_pay(@student).to_f == 0.00 %>
-                  <% bal = FinanceFee.get_student_balance(d,@student, finance_fee) %>  
-                  <% else %>
-                  <% bal = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
-                  <% end %>
-                  <% due = bal - paid_amount %>
-                  <% if due == 0 %>
-                  <div class='fee_details_box' id="finance_fee_<%= finance_fee.id %>">
-                      <div class="fee_name" style="position: relative; font-size:24px;" ><span style="position: absolute; top: 10px; left: 10px; color: #fff;"><i class="fa fa-square-o finance_fees_collection_chk" style="font-size: 30px; color: #FFF; "></i></span><%= d.name  %></div>
-                      <div class='fee_details'>
-                          <table style='width: 100%;'>
-                              <tr><td class="fee_due" colspan="2"><b>Fee Details</b></td></tr>
-                              <tr>
-                                  <td class='fee_due'><b>Due Date</b></td>
-                                  <td class='fee_due'><%= d.due_date %></td>
-                              </tr>
-                              <tr>
-                                  <td class='fee_due'><b>Amount</b></td>
-                                  <td class='fee_due'>BDT <%= precision_label(bal.to_f)  %></td>
-                              </tr>
-                              <tr>
-                                  <td class='fee_due'><b>Paid</b></td>
-                                  <td class='fee_due'>BDT <%=  precision_label(paid_amount) %></td>
-                              </tr>
-                              <% has_due = false %>
-                              <% due = 0.00 %>
-                              <% if paid_amount - bal > 0 %>
-                              <tr>
-                                  <td class='fee_due'><b>Advance</b></td>
-                                  <% advance = paid_amount - bal %>
-                                  <td class='fee_due'>BDT <%=  precision_label(advance) %></td>
-                              </tr>
-                              <% else %>
-                              <tr>
-                                  <td class='fee_due'><b>Due</b></td>
-                                  <% due = bal - paid_amount %>
-                                  <td class='fee_due'>BDT <%=  precision_label(due) %></td>
-                              </tr>
-                              <% if due > 0.00 %>
-                              <% has_due = true %>
-                              <% end %>
-                              <% end %>
-                              <tr>
-                                  <td class='fee_due'><b>Status</b></td>
-                                  <% if has_due %>
-                                  <td class='fee_due'>Unpaid</td>
-                                  <% else %>
-                                  <td class='fee_due'>Paid</td>
-                                  <% end %>
-                              </tr>
-                          </table>
-                          <% if has_due %>
-                            <% if finance_fee.balance.to_f != due.to_f %>
-                                <% ffee = FinanceFee.find(finance_fee.id) %>
-                                <% ffee.update_attributes(:balance => due, :is_paid => false) %>
-                            <% end %>
-                          <% else %>
-                            <% if finance_fee.is_paid == false %>
-                              <% ffee = FinanceFee.find(finance_fee.id) %>
-                              <% ffee.update_attributes(:balance => 0.00, :is_paid => true) %>
-                            <% end %>
-                          <% end %>
-                      </div>
-                      <% if MultiSchool.current_school.id != 352 %> 
-                      <div class="fee_bottom">
-                          <div><%= link_to "Print Receipt", {:controller => "finance", :action => "student_fee_receipt_pdf", :id => @student.id, :id2=>d.id}, :class=>"fee_link" %></div>
-                          <div><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link" %></div>
-                      </div>
-                      <% else %>
-                      <div class="fee_bottom">
-                          <span style="font-weight: bold;"><%= link_to "Details", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link", :id => "fee_link_" + Base64.encode64(@student.id.to_s + "-" + d.id.to_s + "-" + finance_fee.id.to_s).reverse + '===' + "" %></span>
-                      </div>
+              <div style="padding: 10px;">
+                <table class="table table-striped table-bordered" id="example" cellspacing="0" cellpadding="0" border="0" style="width: 98%;">
+                  <thead><!-- class="thead-inverse" -->
+                    <tr>
+                      <th style="font-weight: bold; width: 8%; text-align: center; "><i class="fa fa-square-o finance_fees_collection_chk_all" style="font-size: 20px; color: #000; "></i></th>
+                      <th style="font-weight: bold; width: 50%; text-align: left;"><%= t('name') %></th>
+                      <th style="font-weight: bold; width: 14%; text-align: right;"><%= t('amount') %></th>
+                      <th style="font-weight: bold; width: 14%; text-align: right;"><%= "Paid Amount" %></th>
+                      <th style="font-weight: bold; width: 14%; text-align: right;"><%= "Remaining" %></th>
+                      <th style="font-weight: bold; width: 14%; text-align: right;"><%= "&nbsp;" %></th>
+                    </tr>
+                  </thead>
+                  <tbod>
+                      <%- @finance_fees.each_with_index do |finance_fee, i| -%>
+                        <%  fee_collection_id = finance_fee.fee_collection_id %>
+                        <%  d = FinanceFeeCollection.find(:first, :conditions => "id = #{fee_collection_id}") %>
+                        <%  paid_fees = finance_fee.finance_transactions %>
+                        <%
+                          paid_amount = 0.0
+                          unless paid_fees.nil? or paid_fees.blank?
+                            paid_fees.each do |pf|
+                              paid_amount += pf.amount
+                            end
+                          end
+                        %>
+
+                        <% if finance_fee.balance.to_f+d.fine_to_pay(@student).to_f == 0.00 %>
+                        <% bal = FinanceFee.get_student_balance(d,@student, finance_fee) %>  
+                        <% else %>
+                        <% bal = finance_fee.balance.to_f+d.fine_to_pay(@student).to_f %>
+                        <% end %>
+                        <% due = bal - paid_amount %>
+                        <% advance = false %>
+                        <% if due < 0 %>
+                        <% due = due * (-1) %>
+                        <% end %>
+                        <tr>
+                            <td style="text-align: center;"><i id="<%= finance_fee.id %>" class="fa fa-square-o finance_fees_collection_chk" style="font-size: 20px; color: #000; "></i></td>
+                            <td style="font-family: verdana; font-size: 12px; font-weight: normal; font-family: verdana; font-size: 12px;"><%= d.name  %></td>
+                            <td style="font-family: verdana; font-size: 12px; text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label(bal.to_f)  %></td>
+                            <td style="font-family: verdana; font-size: 12px; text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label(paid_amount.to_f)  %></td>
+                            <td style="font-family: verdana; font-size: 12px; text-align: right; padding-right: 10px;"><%= to_comma_seperated_precision_label(due.to_f)  %></td>
+                            <td style="font-family: verdana; font-size: 12px; text-align: center; padding-right: 10px;"><%= link_to "[Details]", {:action=>:fee_details, :id=>@student.id, :id2=>d.id}, :class=>"fee_link", :target => "blank" %></td>
+                        </tr>
                       <% end %>
-                  </div>
-                  <% end %>
-                  <div style="float: left; width: 3%; height: 300px;"></div>
-                  <% if km % 3 == 0 %>
-                  <div style="clear: both; height: 30px;"></div>  
-                  <% end %>
-                  <% km += 1 %>
-                <% end %>  
-              </div></div>  
-              
+                  </tbod>
+                </table>
+              </div>  
+              <% form_for :student, :url => {:action => 'adjust_student_fees'} do |form| %>
+              <input type="hidden" name="id" id="id" value="<%= @student.id %>" />
+              <input type="hidden" name="previous_batch_id" id="previous_batch_id" value="<%= @previous_batch_id %>" />
+              <input type="hidden" name="previous_category_id" id="previous_category_id" value="<%= @previous_category_id %>" />
+              <input type="hidden" name="fee_id" id="fee_id" value="0" />
               <div id="combined_pay">
                 <div style="clear: both; height: 4px; background: #FBFBFB; "><hr style="border: 1px solid #ccc;" /></div>
                 
                 <div style="padding: 10px; text-align: center; height: 60px;">
-                    <div id="lnk" style="padding-top: 10px;"><%= link_to "Adjust Fees",{:action=>:adjust_fees, :id => @student.id, :previous_batch_id=>@previous_batch_id, :previous_category_id=>@previous_category_id}, {:class=> 'user_button_new', :id => "lnk_btn"} %></div>
+                    <div id="lnk" style="padding-top: 10px;">
+                        <%=  submit_tag "Adjust Fees",:class=>'user_button_new',:id => 'fine_button' %>
+                        <%= link_to "Skip", {:controller => 'student', :action => 'profile', :id => @student.id}, {:class=> 'user_button_new', :id => "lnk_btn"} %>
+                    </div>
                 </div>
               </div>
-              
+              <% end %>
             </div>
       </div>
     <% else %>
@@ -272,129 +225,6 @@
 </script>
 <script>
   j(document).ready(function(){
-      var unpaid = 0;
-      j(".fee_details_box").each(function(){
-        if (j(this).hasClass('paid'))
-        {
-           var parent_id = j(this).parent('div').parent('div').attr('id');
-           if ( parent_id == "fees_list_unpaid" )
-           {
-             var id = this.id;
-             var html = j(this).html();
-             j("#fees_list_paid").children('div').append('<div class="fee_details_box paid" id="' + id + '">' + html + '</div>');
-             j(this).remove();
-           }
-        }
-        else if (j(this).hasClass('unpaid'))
-        {
-           var parent_id = j(this).parent('div').parent('div').attr('id');
-           if ( parent_id == "fees_list_paid" )
-           {
-             var id = this.id;
-             var html = j(this).html();
-             j("#fees_list_unpaid").children('div').append('<div class="fee_details_box unpaid" id="' + id + '">' + html + '</div>');
-             j(this).remove();
-           }
-        }
-      });
-      
-      j(".unpaid").each(function(){
-        if ( j(this).css('display') != "none" )
-        {
-          unpaid++;
-        }
-      });
-      if ( unpaid == 0 )
-      {
-         j("#no_fee_dues").show();
-         j("#combined_configuration").hide();
-         
-         j('.fee_link').each(function(){
-            var href = j(this).attr('href');
-            var key = this.id.replace("fee_link_", "");
-            var k = "=aaz" + key.replaceAll("=","") + "odc==";
-            j(this).attr('href', href + "?opt=" + k);
-        });
-      }
-      else if ( unpaid == 1 )
-      {
-          /*j("#combined_pay").hide();
-          
-          j('.finance_fees_collection_chk').each(function(){
-              j(this).removeClass('finance_fees_collection_chk');
-          });
-          
-          j('.fee_link').each(function(){
-              var href = j(this).attr('href');
-              var key = this.id.replace("fee_link_", "");
-              j(this).attr('href', href + "?opt=" + key);
-          });*/
-      }
-      else
-      {
-          j('.fee_link').each(function(){
-              var href = j(this).attr('href');
-              var key = this.id.replace("fee_link_", "");
-              var k = "==az" + key.replaceAll("=","") + "lcd===";
-              j(this).attr('href', href + "?opt=" + k);
-          });
-      }
-      
-      
-      
-      j(document).on('click', '.history', function(){
-          j("#no_fee_dues").hide();
-          j("#no_fee_history").hide();
-          j("#combined_configuration").hide();
-          j("#fees_list_paid").show();
-          j("#fees_list_unpaid").hide();
-          j("#combined_pay").hide();
-          
-          
-          var paid = 0;
-          j(".paid").each(function(){
-            if ( j(this).css('display') != "none" )
-            {
-              paid++;
-            }
-          });
-          if ( paid == 0 )
-          {
-             j("#no_fee_history").show();
-          }
-          
-          j(this).removeClass("history");
-          j(this).addClass("live");
-          j(this).text("Current");
-      });
-      
-      j(document).on('click', '.live', function(){
-          j("#no_fee_dues").hide();
-          j("#no_fee_history").hide();
-          j("#fees_list_paid").hide();
-          j("#fees_list_unpaid").show();
-          
-          j("#combined_configuration").show();
-          j("#combined_pay").show();
-          
-          var unpaid = 0;
-          j(".unpaid").each(function(){
-            if ( j(this).css('display') != "none" )
-            {
-              unpaid++;
-            }
-          });
-          if ( unpaid == 0 )
-          {
-             j("#no_fee_dues").show();
-             j("#combined_configuration").hide();
-          }
-          
-          j(this).removeClass("live");
-          j(this).addClass("history");
-          j(this).text("History");
-      });
-      
       j(document).on('click', '.finance_fees_collection_chk', function(){
           var count_fees = 0;
           var fees = "";
@@ -409,26 +239,69 @@
               j(this).removeClass('fa-square-o');
               j(this).addClass('fa-check-square-o');
           }
-          j('.finance_fees_collection_chk').each(function(){
+          
+          var fees = "";
+          j(".finance_fees_collection_chk").each(function(){
               if ( j(this).hasClass('fa-check-square-o') )
               {
-                var fee_id = this.id.replace('fee_collection_','');
+                var fee_id = this.id;
                 fees += fee_id + ",";
-                count_fees++;
               }
           });
-          if ( count_fees == 0 )
+          if (fees.length > 0)
           {
-              j("#combined_pay").hide();
+              fees = fees.substr(0,fees.length - 1 );
           }
           else
           {
-              fees = fees.substr(0, fees.length - 1);
-              j("#combined_pay").show();
-              j('#lnk').html('<%= link_to "Pay All",{:action=>:fee_details, :id => @student.id, :multiple=>true}, :class=> 'user_button' %>');
-              var href = j('#lnk').children('a').attr('href');
-              j('#lnk').children('a').attr('href', href + "&fees=" + fees);
+              fees = "0"
           }
+          j("#fee_id").val(fees);
+      });
+      
+      j(document).on('click', '.finance_fees_collection_chk_all', function(){
+          var count_fees = 0;
+          var fees = "";
+          
+          if ( j(this).hasClass('fa-check-square-o') )
+          {
+              j(this).addClass('fa-square-o');
+              j(this).removeClass('fa-check-square-o');
+              
+              j(".finance_fees_collection_chk").each(function(){
+                  j(this).addClass('fa-square-o');
+                  j(this).removeClass('fa-check-square-o');
+              });
+          }
+          else
+          {
+              j(this).removeClass('fa-square-o');
+              j(this).addClass('fa-check-square-o');
+              
+              j(".finance_fees_collection_chk").each(function(){
+                  j(this).removeClass('fa-square-o');
+                  j(this).addClass('fa-check-square-o');
+              });
+          }
+          
+          
+          var fees = "";
+          j(".finance_fees_collection_chk").each(function(){
+              if ( j(this).hasClass('fa-check-square-o') )
+              {
+                var fee_id = this.id;
+                fees += fee_id + ",";
+              }
+          });
+          if (fees.length > 0)
+          {
+              fees = fees.substr(0,fees.length - 1 );
+          }
+          else
+          {
+              fees = "0"
+          }
+          j("#fee_id").val(fees);
       });
   });
 </script>

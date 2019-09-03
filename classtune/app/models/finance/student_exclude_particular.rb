@@ -17,9 +17,9 @@
 #limitations under the License.
 
 
-class StudentExcludeDiscount < ActiveRecord::Base
+class StudentExcludeParticular < ActiveRecord::Base
   belongs_to :student
-  belongs_to :fee_discount
   belongs_to :finance_fee_collection ,:foreign_key => 'fee_collection_id'
+  belongs_to :finance_fee_particular ,:foreign_key => 'fee_particular_id'
   
 end

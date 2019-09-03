@@ -86,8 +86,7 @@
                           <%= link_to "<i class='fa fa-print'></i> Section Testimonial", {:action => "testimonial_section", :id=>@board_exam.id,:id2=>student.batch_id} %>&nbsp;
                           <%= link_to "<i class='fa fa-print'></i> Download Excel", {:action => "testimonial_excel", :id=>@board_exam.id,:id2=>student.batch_id} %>
                     <% else %>
-                          
-                          <%= link_to "<i class='fa fa-print'></i> Download Excel", {:action => "testimonial_excel", :id=>@board_exam.id,:id2=>student.batch_id} %>
+                          <br/><%= link_to "<i class='fa fa-print'></i> Download Excel", {:action => "testimonial_excel", :id=>@board_exam.id,:id2=>student.batch_id} %>
                     <% end %>      
                 </td>
 

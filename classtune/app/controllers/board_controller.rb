@@ -49,19 +49,19 @@ class BoardController < ApplicationController
       if @board_exam_student.session.blank?
         @board_exam_student.session = @board_exam.board_session.name
       end
-      unless @board_exam_student.board_grading_level_id.blank?
-        tmp_row = []
-        tmp_row << std_loop
-        tmp_row << @std_info.admission_no
-        tmp_row << @std_info.class_roll_no
-        tmp_row << @std_info.full_name
-        tmp_row << @board_exam_student.registration
-        tmp_row << @board_exam_student.roll
-        tmp_row << @board_exam_student.session
-        tmp_row << sprintf( "%0.02f", @board_exam_student.avg_credit_points) unless @board_exam_student.avg_credit_points.blank?
-        new_book.worksheet(0).insert_row(std_loop, tmp_row)
-        std_loop = std_loop+1
-      end
+      
+      tmp_row = []
+      tmp_row << std_loop
+      tmp_row << @std_info.admission_no
+      tmp_row << @std_info.class_roll_no
+      tmp_row << @std_info.full_name
+      tmp_row << @board_exam_student.registration
+      tmp_row << @board_exam_student.roll
+      tmp_row << @board_exam_student.session
+      tmp_row << sprintf( "%0.02f", @board_exam_student.avg_credit_points) unless @board_exam_student.avg_credit_points.blank?
+      new_book.worksheet(0).insert_row(std_loop, tmp_row)
+      std_loop = std_loop+1
+     
     end
     
     sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE ("+@board_exam.board_exam_name.name+")

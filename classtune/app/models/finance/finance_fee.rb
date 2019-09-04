@@ -67,7 +67,7 @@ class FinanceFee < ActiveRecord::Base
       exclude_discount_ids = [0]
     end
     
-    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(student.id,date.id).map(&:fee_particular_id)
     unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
       exclude_particular_ids = exclude_particular_ids
     else
@@ -75,7 +75,7 @@ class FinanceFee < ActiveRecord::Base
     end
     
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-    total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
+    total_payable = fee_particulars.map{|sp| sp.amount}.sum.to_f
     
     unless fee_particulars.blank?
       scholarship = FeeDiscount.all(:conditions=>"receiver_id=#{student.id} and finance_fee_category_id=#{0} and finance_fee_particular_category_id IN (#{fee_particulars.map(&:finance_fee_particular_category_id).join(',')}) and receiver_type='Student'")
@@ -174,14 +174,14 @@ class FinanceFee < ActiveRecord::Base
   end
   
   def self.new_student_fee_advance(date,student,no_of_month, particular_id, advance_id)
-    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id_and_fee_collection_id(s.id, date.id).map(&:fee_discount_id)
+    exclude_discount_ids = StudentExcludeDiscount.find_all_by_student_id_and_fee_collection_id(student.id, date.id).map(&:fee_discount_id)
     unless exclude_discount_ids.nil? or exclude_discount_ids.empty? or exclude_discount_ids.blank?
       exclude_discount_ids = exclude_discount_ids
     else
       exclude_discount_ids = [0]
     end
     
-    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(student.id,date.id).map(&:fee_particular_id)
     unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
       exclude_particular_ids = exclude_particular_ids
     else
@@ -190,10 +190,10 @@ class FinanceFee < ActiveRecord::Base
     
     if particular_id.to_i == 0
       fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-      total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
+      total_payable = fee_particulars.map{|sp| sp.amount}.sum.to_f
     else
       fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and finance_fee_particular_category_id = #{particular_id.to_i} and is_tmp=#{false} and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-      total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
+      total_payable = fee_particulars.map{|sp| sp.amount}.sum.to_f
     end
     
     total_payable = no_of_month.to_i * total_payable
@@ -265,7 +265,7 @@ class FinanceFee < ActiveRecord::Base
       exclude_discount_ids = [0]
     end
     
-    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(student.id,date.id).map(&:fee_particular_id)
     unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
       exclude_particular_ids = exclude_particular_ids
     else
@@ -273,7 +273,7 @@ class FinanceFee < ActiveRecord::Base
     end
     
     fee_particulars = date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{student.batch_id}").select{|par| (par.receiver.present?) and (par.receiver==student or par.receiver==student.student_category or par.receiver==student.batch) }
-    total_payable = fee_particulars.map{|s| s.amount}.sum.to_f
+    total_payable = fee_particulars.map{|sp| sp.amount}.sum.to_f
     total_discount = 0
     batch = Batch.find(student.batch_id)
     onetime_discount_particulars_id = []
@@ -378,7 +378,7 @@ class FinanceFee < ActiveRecord::Base
       exclude_discount_ids = [0]
     end
     
-    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(s.id,date.id).map(&:fee_particular_id)
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(student.id,date.id).map(&:fee_particular_id)
     unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
       exclude_particular_ids = exclude_particular_ids
     else

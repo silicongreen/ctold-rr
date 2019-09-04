@@ -36,3 +36,13 @@
   <div id="transport_details"> </div>
 
 </div>
+<script>
+  function resetSN()
+  {
+     var sn = 1;
+     j('.sl_no').each(function(){
+          j(this).html(sn);
+          sn += 1;
+     });
+  }
+</script>

@@ -361,7 +361,21 @@ class TransportController < ApplicationController
     @transport = Transport.find(params[:id])
     @transport.destroy
     flash[:notice] = "#{t('flash2')}"
-    redirect_to :controller => 'transport', :action => 'transport_details'
+    #redirect_to :controller => 'transport', :action => 'transport_details'
+    render(:update) do |page|
+      page << "j('#transport_#{params[:id]}').remove();"
+      page << "resetSN();"
+    end
+  end
+
+  def delete_transport_single
+    @student = Student.find(:first, :conditions => "id = #{params[:student_id]}")
+    @transport = Transport.find(params[:id])
+    @transport.destroy
+    flash[:notice] = "#{t('flash2')}"
+    render(:update) do |page|
+      page.replace_html "transport_#{params[:student_id]}_#{params[:id]}", :partial=>'student_info'
+    end
   end
 
   def edit_transport

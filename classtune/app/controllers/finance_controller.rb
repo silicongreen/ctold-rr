@@ -2904,14 +2904,14 @@ class FinanceController < ApplicationController
 
   def master_category_particulars
     @batch=Batch.find(params[:batch_id])
-    @finance_fee_category = FinanceFeeCategory.find(params[:id])
-    #categories=FinanceFeeCategory.find(:all,:include=>:category_batches,:conditions=>"name=@finance_fee_category.name and description=@finance_fee_category.description and is_deleted=#{false}").map{|d| d if d.category_batches.empty?}.compact
-    #    categories=FinanceFeeCategory.find(:all,:include=>:category_batches,:conditions=>"name='#{@finance_fee_category.name}' and description='#{@finance_fee_category.description}' and is_deleted=#{false}").uniq.map{|d| d if d.batch_id==@batch.id}.compact
-    #    if categories.present?
-    #      @finance_fee_category = FinanceFeeCategory.find_by_name_and_batch_id_and_is_deleted(@finance_fee_category.name,@batch.id,false)
-    #    end
-    #@particulars = FinanceFeeParticular.paginate(:page => params[:page],:joins=>"INNER JOIN finance_fee_categories on finance_fee_categories.id=finance_fee_particulars.finance_fee_category_id",:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_categories.name = '#{@finance_fee_category.name}' and finance_fee_categories.description = '#{@finance_fee_category.description}' and finance_fee_particulars.batch_id='#{@batch.id}' "])
-    @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_particulars.is_tmp = '#{false}' and finance_fee_particulars.finance_fee_category_id = '#{@finance_fee_category.id}' and finance_fee_particulars.batch_id='#{@batch.id}' "], :joins => [:finance_fee_particular_category])
+    unless params[:id].blank?
+      @is_common_particular = false
+      @finance_fee_category = FinanceFeeCategory.find(params[:id])
+      @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_particulars.is_tmp = '#{false}' and finance_fee_particulars.finance_fee_category_id = '#{@finance_fee_category.id}' and finance_fee_particulars.batch_id='#{@batch.id}' "], :joins => [:finance_fee_particular_category])
+    else
+      @is_common_particular = true
+      @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["finance_fee_particulars.is_deleted = '#{false}' and finance_fee_particulars.is_tmp = '#{false}' and finance_fee_particulars.finance_fee_category_id = '#{0}' and finance_fee_particulars.batch_id='#{@batch.id}' "], :joins => [:finance_fee_particular_category])
+    end
   end
   
   def master_category_particulars_edit
@@ -2933,12 +2933,20 @@ class FinanceController < ApplicationController
       #params[:finance_fee_particular][:student_category_id]="" if params[:finance_fee_particular][:student_category_id].nil?
       if @feeparticulars.collection_exist
         if @feeparticulars.update_attributes(params[:finance_fee_particular])
-          @finance_fee_category = FinanceFeeCategory.find(@feeparticulars.finance_fee_category_id)
-          @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["is_deleted = '#{false}' and finance_fee_category_id = '#{@finance_fee_category.id}' and batch_id='#{@feeparticulars.batch_id}'"])
-          page.replace_html 'form-errors', :text => ''
-          page << "Modalbox.hide();"
-          page.replace_html 'categories', :partial => 'master_particulars_list'
-          page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg14')}</p>"
+          unless @feeparticulars.finance_fee_category_id.to_i == 0
+            @finance_fee_category = FinanceFeeCategory.find(@feeparticulars.finance_fee_category_id)
+            @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["is_deleted = '#{false}' and finance_fee_category_id = '#{@finance_fee_category.id}' and batch_id='#{@feeparticulars.batch_id}'"])
+            page.replace_html 'form-errors', :text => ''
+            page << "Modalbox.hide();"
+            page.replace_html 'categories', :partial => 'master_particulars_list'
+            page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg14')}</p>"
+          else
+            @particulars = FinanceFeeParticular.paginate(:page => params[:page],:conditions => ["is_deleted = '#{false}' and finance_fee_category_id = '#{0}' and batch_id='#{@feeparticulars.batch_id}'"])
+            page.replace_html 'form-errors', :text => ''
+            page << "Modalbox.hide();"
+            page.replace_html 'categories', :partial => 'master_particulars_list'
+            page.replace_html 'flash_box', :text => "<p class='flash-msg'>#{t('flash_msg14')}</p>"
+          end
         else
           page.replace_html 'form-errors', :partial => 'class_timings/errors', :object => @feeparticulars
           page.visual_effect(:highlight, 'form-errors')

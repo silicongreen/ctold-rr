@@ -1,3 +1,4 @@
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript"> function setOption(optn) {document.getElementById("option").value = optn;} </script>
 
 <div id="content-header">
@@ -15,28 +16,32 @@
 </div>
 <div id="page-yield">
   <% unless flash[:notice].nil? %> <p class="flash-msg"> <%= flash[:notice] %> </p> <% end %>
-  <div id="search_box_bg">
+  <div style="width: 800px;">
     <form name="search_form" action="" style="display:inline;">
       <%= hidden_field_tag("option", params['option'], :value => "student") %>
-      <label for="user_name"><%= t('search_text') %>
-        <%= image_tag("loader.gif",
-          :align => "absmiddle",
-          :border => 0,
-          :id => "loader",
-          :style =>"display: none;" ) %>
-      </label>
-      <div id="search_textbox">
-        <%= text_field_tag("query", params['query'], :autocomplete => 'off') %>
-
+      <div class="label-field-pair" style="width: 99%;">  
+        <div class="label-container" style="text-align: right; padding-top: 10px; font-weight: bold; font-size: 16px;">
+          <%= t('search_text') %>: 
+          <%= image_tag("loader.gif",
+            :align => "absmiddle",
+            :border => 0,
+            :id => "loader",
+            :style =>"display: none;" ) %>
+        </div>
+        <div class="input-container">
+          <%= text_field_tag("query", params['query'], :autocomplete => 'off') %><br/>
+        </div>
       </div>
-      <div class="radio_button">
-        <input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('student')" /><%= t('student_text') %>
-        <input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('employee')" /><%= t('employee_text') %>
-      </div>
+      
+      <div class="radio_button" style="display: block; margin-left: 31%;">
+          <input type="radio" name="setopt" id="search_present_students_radio" checked="checked" onclick="setOption('student')" /><%= t('student_text') %>
+          <input type="radio" name="setopt" id ="search_former_students_radio"onclick="setOption('employee')" /><%= t('employee_text') %>
+      </div>  
+     
     </form>
   </div>
   <div class="extender"></div>
-  <div id="information"></div>
+  <div id="information" style="width: 100%;"></div>
 </div>
 
 
@@ -44,6 +49,11 @@
 
 </div>
 
+<style>
+    .transport_chkbox {
+        display: none;
+    }
+</style>
 
 
 <%#= observe_fields ['query', 'option'],
@@ -72,3 +82,79 @@
 </script>
 
 
+<script>
+  j(document).ready(function(){
+      j(document).on('click', '.transport_chk', function(){
+          var count_fees = 0;
+          var id = this.id;
+          
+          if ( j(this).hasClass('fa-check-square-o') )
+          {
+              j(this).addClass('fa-square-o');
+              j(this).removeClass('fa-check-square-o');
+          }
+          else
+          {
+              j(this).removeClass('fa-square-o');
+              j(this).addClass('fa-check-square-o');
+          }
+          
+          j(".transport_chkbox").each(function(){
+            var val = this.value;
+            if ( val == id )
+            {
+                if ( j("#" + id).hasClass('fa-check-square-o') )
+                {
+                  j(this).prop("checked", true);
+                }
+                else
+                {
+                  j(this).prop("checked", false);
+                }
+            }
+          });
+      });
+      
+      j(document).on('click', '.transport_chk_all', function(){
+          if ( j(this).hasClass('fa-check-square-o') )
+          {
+              j(this).addClass('fa-square-o');
+              j(this).removeClass('fa-check-square-o');
+              
+              j(".transport_chk").each(function(){
+                  j(this).addClass('fa-square-o');
+                  j(this).removeClass('fa-check-square-o');
+              });
+          }
+          else
+          {
+              j(this).removeClass('fa-square-o');
+              j(this).addClass('fa-check-square-o');
+              
+              j(".transport_chk").each(function(){
+                  j(this).removeClass('fa-square-o');
+                  j(this).addClass('fa-check-square-o');
+              });
+          }
+          
+          j(".transport_chkbox").each(function(){
+            var val = this.value;
+            var obj = this;
+            j(".transport_chk").each(function(){
+              var id = this.id;
+              if ( val == id )
+              {
+                  if ( j("#" + id).hasClass('fa-check-square-o') )
+                  {
+                    j(obj).prop("checked", true);
+                  }
+                  else
+                  {
+                    j(obj).prop("checked", false);
+                  }
+              }
+            });
+          });
+      });
+  });
+</script>

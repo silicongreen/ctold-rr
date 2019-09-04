@@ -13,24 +13,29 @@
       <tbody>
       <% @transport.each_with_index do |t, i| %>
         <% unless t.receiver.nil? %>
-        <tr class="<%= cycle('odd', 'even') %>">
-          <td class="col-1">
-            <%= i+1 %>
+        <tr id="transport_<%= t.id %>" class="<%= cycle('odd', 'even') %>">
+          <td class="col-1" style=" text-align: center; vertical-align: middle;">
+              <span class="sl_no"><%= i+1 %></span>
           </td>
 
-          <td class="col-2">
-            <%=  t.receiver.full_name unless t.receiver.nil?%>
+          <td class="col-2" style="font-size: 12px; font-family: verdana; line-height: 15px;">
+              <b><%=  t.receiver.full_name unless t.receiver.nil?%></b>
+              <hr style="border: 1px solid #ccc; margin-bottom: 10px;"/>
+              <span style="padding-bottom: 10px; display: block;"><b>Student ID:</b> <%= t.receiver.admission_no %></span>
+              <b>Batch: </b><%= "#{t.receiver.batch.full_name}" %>
           </td>
 
-          <td class="col-3">
+          <td class="col-3" style=" text-align: center; vertical-align: middle;">
             <%= t.route.destination unless t.route.nil? %>
           </td>
-          <td class="col-4">
-            <%= precision_label t.bus_fare %>
+          <td class="col-4" style="text-align: right; padding-right: 10px;  vertical-align: middle;">
+            <%= to_comma_seperated_precision_label t.bus_fare %>
           </td>
-          <td class="col-5">
-            <%=  link_to "#{t('edit_text')}", :controller => "transport", :action => "edit_transport", :id => t.id %>
-            <%=  link_to "#{t('delete_text')}", {:controller => "transport", :action => "delete_transport", :id => t.id }, :confirm => "#{t('delete_confirm_msg')}" %>
+          <td class="col-5" style="text-align: center; vertical-align: middle;">
+              
+            <%=  link_to '<i class="fa fa-edit"></i>', {:controller => "transport", :action => "edit_transport", :id => t.id}, :style => "color: #49BB4B; display: inline-block; font-size: 20px; padding-right: 6px;" %>
+            <%= link_to_remote '<i class="fa fa-trash"></i>', :url => {:controller => "transport", :action => "delete_transport", :id => t.id}, :confirm => "Are you wish to remove this student from Transport?", :html => {:style => "color: #f00; display: inline-block; font-size: 23px;"} %><br/>  
+            <%#=  link_to_remote '<i class="fa fa-trash"></i>', {:controller => "transport", :action => "delete_transport", :id => t.id }, :confirm => "#{t('delete_confirm_msg')}" %>
           </td>
         </tr>
         <% end %>

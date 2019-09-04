@@ -17,6 +17,7 @@ authorization do
       :load_fare,
       :seat_description,
       :delete_transport,
+      :delete_transport_single,
       :edit_transport,
       :student_transport_details,
       :employee_transport_details,

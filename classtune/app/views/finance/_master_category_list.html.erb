@@ -31,9 +31,16 @@
     </thead>
     
     <tbody>
+    <tr class="<%= cycle("odd","even") %>">
+        <td class="col-1"><%= 1 %></td>
+        <td class="col-4"><%= link_to  "Common Fee", :action => 'master_category_particulars',:batch_id=>@batches.id %></td>
+        <td class="col-7" colspan="2">
+            &nbsp;
+        </td>
+      </tr>    
     <% @master_categories.each_with_index do |fees,i| %>
       <tr class="<%= cycle("odd","even") %>">
-        <td class="col-1"><%= i+1 %></td>
+        <td class="col-1"><%= i+2 %></td>
         <td class="col-4"><%= link_to  fees.name, :action => 'master_category_particulars',:id => fees.id,:batch_id=>@batches.id %></td>
         <td class="col-7"><%= I18n.l(fees.created_at,:format=>"%m-%d-%Y") %></td>
         <td class="col-7">

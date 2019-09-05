@@ -370,8 +370,10 @@ class TransportController < ApplicationController
 
   def delete_transport_single
     @student = Student.find(:first, :conditions => "id = #{params[:student_id]}")
-    @transport = Transport.find(params[:id])
-    @transport.destroy
+    @transport = Transport.find(:first, :conditions => "id = #{params[:id]}")
+    unless @transport.blank?
+      @transport.destroy
+    end
     flash[:notice] = "#{t('flash2')}"
     render(:update) do |page|
       page.replace_html "transport_#{params[:student_id]}_#{params[:id]}", :partial=>'student_info'

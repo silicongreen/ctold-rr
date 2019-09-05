@@ -7302,7 +7302,7 @@ class FinanceController < ApplicationController
       @student = Student.find(params[:student])
       
       unless @fee_discount.save
-        abort(@fee_discount.errors.inspect)
+        #abort(@fee_discount.errors.inspect)
         render :update do |page|
           page << 'alert("Some error occur while adding the discount, please try again later");'
           page << 'j("#remove-extra-discount-spin").removeClass("fa-spinner");'

@@ -1352,6 +1352,7 @@ function loadJS()
                 j('#remove-extra-discount').addClass("fa-spinner");
                 j('#remove-extra-discount').addClass("fa-spin");
                 j('#remove-extra-discount').attr("id", "remove-extra-discount-spin");
+                alert(discount_name)
                 new Ajax.Request('/finance/create_fees_with_tmp_discount', 
                      {
                        asynchronous:true, 

@@ -1,0 +1,31 @@
+<% r = @student %>
+<td style="vertical-align: middle; text-align: center;">
+  <i id="<%= r.id %>" class="fa fa-check-square-o transport_chk" style="font-size: 20px; color: #000; "></i>  
+  <%= check_box_tag "transportuser[user_ids][]", r.id,"",:class=>"right transport_chkbox" %>
+</td>
+<!--td class="col-1"><%#= i+1 %></td-->
+<td class="col-1" style="font-size: 12px; font-family: verdana; line-height: 15px;">
+    <b><%= r.full_name %></b><hr style="border: 1px solid #ccc; margin-bottom: 10px;"/>
+    <span style="padding-bottom: 10px; display: block;"><b>Student ID:</b> <%= r.admission_no %></span>
+    <b>Batch: </b><%= "#{r.batch.full_name}" %>
+</td>
+<% if r.transport.nil?%>
+  <%# no_transport += 1 %>    
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: center; vertical-align: middle;">-</td>
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: center; vertical-align: middle;">-</td>
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: center; vertical-align: middle;">-</td>
+<% else %>
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: center; vertical-align: middle;"><%= r.transport.route.destination %></td>
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: center; vertical-align: middle;"><%= r.transport.vehicle.vehicle_no %></td>
+  <td class="col-3" style="font-size: 12px; font-family: verdana; text-align: right; vertical-align: middle; padding-right: 10px;"><%= to_comma_seperated_precision_label r.transport.bus_fare %></td>
+<% end %>
+<td class="col-4" style="text-align: center; vertical-align: middle;"> 
+  <% if r.transport.nil?%>
+    <%= link_to "#{t('assign')}", :controller => "transport", :action => "add_transport", :id => r.id ,:user=>'student'%><br/>
+  <%else%>
+    <%= link_to '<i class="fa fa-edit"></i>', {:controller => "transport", :action => "edit_transport", :id => r.transport.id}, :style => "color: #49BB4B; display: inline-block; font-size: 20px; padding-right: 6px;" %>
+    <% unless r.transport.nil?%>
+    <%= link_to_remote '<i class="fa fa-trash"></i>', :url => {:controller => "transport", :action => "delete_transport_single", :id => r.transport.id, :student_id => r.id}, :html => {:style => "color: #f00; display: inline-block; font-size: 23px;"} %><br/>  
+    <% end %>
+  <%end%>
+</td>

@@ -7200,6 +7200,13 @@ class FinanceController < ApplicationController
   
   def create_fees_with_tmp_discount
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
+      unless params[:discount_name].nil? or params[:discount_name].empty? or params[:discount_name].blank?
+        discount_name = params[:discount_name].gsub("___","(")
+        discount_name = discount_name.gsub("____",")")
+        discount_name = discount_name.gsub("_____","%")
+      else
+        discount_name = "Discount"
+      end
       @batch   = Batch.find(params[:batch_id])
       @date    =  @fee_collection = FinanceFeeCollection.find(params[:date])
       @fee_category_id = @fee_collection.fee_category_id
@@ -7287,7 +7294,7 @@ class FinanceController < ApplicationController
       
       @fee_discount = FeeDiscount.new
       @fee_discount.is_onetime = true
-      @fee_discount.name = params[:discount_name]
+      @fee_discount.name = discount_name
       @fee_discount.finance_fee_category_id = @fee_category_id
       @fee_discount.batch_id = @batch.id
       @fee_discount.discount = params[:amount].to_f

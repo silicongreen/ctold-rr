@@ -7201,9 +7201,9 @@ class FinanceController < ApplicationController
   def create_fees_with_tmp_discount
     unless params[:date].nil? or params[:date].empty? or params[:date].blank?
       unless params[:discount_name].nil? or params[:discount_name].empty? or params[:discount_name].blank?
-        discount_name = params[:discount_name].gsub("___","(")
+        discount_name = params[:discount_name].gsub("_____","%")
         discount_name = discount_name.gsub("____",")")
-        discount_name = discount_name.gsub("_____","%")
+        discount_name = discount_name.gsub("___","(")
       else
         discount_name = "Discount"
       end

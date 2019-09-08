@@ -1,6 +1,7 @@
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
+    //return target.replace(new RegExp(search, /g/), replacement);
+    return target.split(search).join(replacement);
 };
 
 function reloadFeeSubmission(batch_id,date_id,student_id,submission_date)

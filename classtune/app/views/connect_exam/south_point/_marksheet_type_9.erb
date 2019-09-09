@@ -207,7 +207,7 @@
            <td class="name"><%= sprintf( "%0.02f", avg_mark2) %></td> 
            <%
             obtained_mark1 = avg_mark.to_f+avg_mark2.to_f
-            full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
+            full_mark_new = full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
 
             if full_mark1 == 100
               obtained_mark1 = obtained_mark1/2
@@ -223,7 +223,7 @@
           %>
            
 
-           <td class="name"><%= obtained_mark1.round().to_s %> <%= full_mark1.to_s %></td>
+           <td class="name"><%= obtained_mark1.round().to_s %> <%= full_mark_new.to_s %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

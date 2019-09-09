@@ -263,6 +263,11 @@ if @subject_highest_mark_first_term.blank? and @subject_highest_mark_final_term.
         main_mark = (obtained_mark.round().to_f/full_mark.to_f)*100
 
        
+        if @subject_highest_quarter[sub['id'].to_i].blank?
+          @subject_highest_quarter[sub['id'].to_i] = obtained_mark1
+        elsif obtained_mark1.to_i > @subject_highest_quarter[sub['id'].to_i].to_i
+          @subject_highest_quarter[sub['id'].to_i] = obtained_mark1.to_i
+        end
 
         if @subject_highest_mark_first_term[sub['id'].to_i].blank?
           @subject_highest_mark_first_term[sub['id'].to_i] = obtained_mark

@@ -1776,7 +1776,7 @@ ORDER BY emp.first_name ASC"
     @subject = Subject.find(params[:subject_id])
     assigned_employee = EmployeesSubject.find_all_by_subject_id(@subject.id, :select => :employee_id).map(&:employee_id)
     if assigned_employee.present?
-      @employees = Employee.find_all_by_employee_department_id(params[:department_id],:include=>:user,:conditions=>["users.admin=? AND employees.id NOT in (#{assigned_employee.join(',')})",false]).sort_by{|s| s.full_name.downcase}
+      @employees = Employee.find_all_by_employee_department_id(params[:department_id],:include=>:user,:conditions=>["employees.id NOT in (#{assigned_employee.join(',')})"]).sort_by{|s| s.full_name.downcase}
     else
       @employees = Employee.find_all_by_employee_department_id(params[:department_id]).sort_by{|s| s.full_name.downcase}
     end

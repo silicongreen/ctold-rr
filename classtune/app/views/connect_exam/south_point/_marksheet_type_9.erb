@@ -175,7 +175,7 @@
            <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
            <% end %>
 
-           <% avg_mark2 = 0; %>
+           <% avg_mark2 = 0 %>
            <% total_mark = 0 %>
            <% @report_data['result']['CT'].each do |ct| %>
               <% if !ct['students'].blank? && !ct['students'][std['id']].blank? && !ct['students'][std['id']]['score'].blank? %>
@@ -223,7 +223,7 @@
           %>
            
 
-           <td class="name"><%= obtained_mark1.round().to_s %></td>
+           <td class="name"><%= obtained_mark1.round().to_s %> <%= full_mark1.to_s %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

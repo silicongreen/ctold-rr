@@ -160,16 +160,14 @@
 
 
             <% 
-              st_full_mark1 = 0
+              st_full_mark1 = max_mark_st
               if max_mark_st.to_i == 10 
                   avg_mark = st_marks[0].to_f+st_marks[1].to_f+st_marks[2].to_f+st_marks[3].to_f
-                  st_full_mark1 = max_mark_st*4
               elsif max_mark_st.to_i == 5  
                   avg_mark = st_marks[0].to_f+st_marks[1].to_f+st_marks[2].to_f
-                  st_full_mark1 = max_mark_st*3
               else  
                   avg_mark = total_mark.to_f/@report_data['result']['ST'].size
-                  st_full_mark1 = max_mark_st
+                  
               end 
             %>
            <td class="name"><%= sprintf( "%0.02f", avg_mark) %></td> 
@@ -192,24 +190,21 @@
 
 
             <% 
-              ct_full_mark1 = 0
+              ct_full_mark1 = max_mark_ct
               if max_mark_ct.to_i == 20 
                   avg_mark2 = ct_marks[0].to_f+ct_marks[1].to_f+ct_marks[2].to_f
-                  ct_full_mark1 = max_mark_ct*3
               elsif max_mark_ct.to_i == 10  
                   avg_mark2 = ct_marks[0].to_f+ct_marks[1].to_f
-                  ct_full_mark1 = max_mark_ct*2
               else  
                   avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size
-                  ct_full_mark1 = max_mark_ct
               end 
             %>
            <td class="name"><%= sprintf( "%0.02f", avg_mark2) %></td> 
            <%
             obtained_mark1 = avg_mark.to_f+avg_mark2.to_f
-            full_mark_new = full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
+            full_mark1 = ct_full_mark1.to_i+st_full_mark1.to_i
 
-            if full_mark1 == 100
+            if full_mark1 == 30
               obtained_mark1 = obtained_mark1/2
               obtained_mark1 = obtained_mark1.round()
               full_mark1 = 50
@@ -223,7 +218,7 @@
           %>
            
 
-           <td class="name"><%= obtained_mark1.round().to_s %> <%= full_mark_new.to_s %></td>
+           <td class="name"><%= obtained_mark1.round().to_s %></td>
 
            <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
            <% if !grade.blank? and !grade.name.blank? %>

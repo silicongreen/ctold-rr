@@ -18,7 +18,7 @@ class OtherController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'bus_student_list'
-    row_first = ['SL','Student Id','Roll No.','Name','Shift','Class','Section','Departure','Bus No','Mobile No']
+    row_first = ['SL','Student Id','Roll No.','Name','Shift','Class','Section','Departure','Bus No','Fare','Mobile No']
     new_book.worksheet(0).insert_row(0, row_first)
     
     if request.post?
@@ -52,14 +52,17 @@ class OtherController < ApplicationController
             if transport.blank?
               tmp_row << ""
               tmp_row << ""
+              tmp_row << ""
             else 
               tmp_row << transport.route.destination
               tmp_row << transport.vehicle.vehicle_no
+              tmp_row << transport.bus_fare
             end
             tmp_row << std_info.sms_number
             new_book.worksheet(0).insert_row(std_loop, tmp_row)
           end
       end
+      
       sheet1.add_header("SHAHEED BIR UTTAM LT. ANWAR GIRLS' COLLEGE (Bus Student List)")
       spreadsheet = StringIO.new 
       new_book.write spreadsheet 

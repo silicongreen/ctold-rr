@@ -192,7 +192,7 @@
                   avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f)/2
               elsif max_mark_ct.to_i == 10  
                   avg_mark2 = ct_marks[0].to_f
-              if max_mark_ct.to_i == 30 
+              elsif max_mark_ct.to_i == 30 
                   avg_mark2 = (ct_marks[0].to_f+ct_marks[1].to_f+ct_marks[2].to_f)/3
               else  
                   avg_mark2 = total_mark.to_f/@report_data['result']['CT'].size

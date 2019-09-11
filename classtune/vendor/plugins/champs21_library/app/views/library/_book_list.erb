@@ -6,7 +6,15 @@
       <td><%= "#{t('book_number')}"%></td>
       <td><%= "#{t('book_title')}"%></td>
       <td><%= "#{t('author')}"%></td>
-
+      <td>
+         <%= "Source"%>
+      </td>
+      <td>
+        <%= "Price"%>
+      </td>
+      <td>
+        <%= "Type"%>
+      </td>
       <td><%= "#{t('status')}"%></td>
     </tr>
     <tr class="tr-blank"></tr>
@@ -15,6 +23,9 @@
         <td class="col-2"><%= b.book_number %></td>
         <td class="col-2"><%= link_to b.title, b%></td>
         <td class="col-2"><%= b.author %></td>
+        <td class="col-3"><%=  b.source %></td>
+        <td class="col-3"><%=  b.price %></td>
+        <td class="col-3"><%=  b.book_type %></td>
 
         <td class="col-2"><%= t("#{b.status.downcase}") %></td>
       </tr>

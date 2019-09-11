@@ -33,6 +33,9 @@
         <%= "Price"%>
       </td>
       <td>
+            <%= "Type"%>
+          </td>
+      <td>
         <%= "#{t('status')}"%>
       </td>
       <td>
@@ -46,6 +49,7 @@
         <td class="col-7"><%=h book.title %></td>
         <td class="col-7"><%=h book.source %></td>
         <td class="col-7"><%=h book.price %></td>
+        <td class="col-3"><%=h book.book_type %></td>
         <td class="col-1"><%=h t("#{book.status.downcase}") %></td>
         <td class="col-3">
           <small>

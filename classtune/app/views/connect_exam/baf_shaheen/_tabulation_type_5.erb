@@ -254,14 +254,35 @@
                             <td>&nbsp;</td>
                           <% else %>
 
-                            <% subject_full_mark = 0 %>
+                            <% subject_full_mark = 22.5 %>
                             <% subject_obtain_mark = 0 %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
                               <% has_exam = true %>
                             <% end %>
-
+                            <% class_test = [] %>
                             <% @report_data['report']['exams'].each do |rs| %>
+                                <% if rs['exam_category'] != '1' %>
+                                  <% next %>
+                                <% end %>
+                                <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
+                                <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
+
+                                  <%
+
+                                  obt_mark = (subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f/rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_f)*7.5
+                                  class_test << obt_mark
+
+
+                                %>
+                                <% end %>
+                            <% end %>
+                            <% class_test.sort! {|x,y| y <=> x } %> 
+                            <% subject_obtain_mark = class_test[0].to_f+class_test[1].to_f+class_test[2].to_f %>
+                            <% @report_data['report']['exams'].each do |rs| %>
+                              <% if rs['exam_category'] == '1' %>
+                                <% next %>
+                              <% end %>
                               <%= render  :partial=>"/connect_exam/has_exam_score", :locals=>{:exam_group_id=>rs['exam_id'].to_s,:subject_id=>sub['id'].to_s} %>
                               <% if !rs['result'].blank? and !rs['result'][rs['exam_id']].blank? and !rs['result'][rs['exam_id']][sub['id']].blank? and !rs['result'][rs['exam_id']][sub['id']][std['id']].blank? and @check_exam_score == true %>
 

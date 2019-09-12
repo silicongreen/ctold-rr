@@ -257,6 +257,11 @@
                             <% subject_full_mark = 0 %>
                             <% subject_obtain_mark = 0 %>
                             
+                            
+                            <% cq_obtain_mark = 0 %>
+                            <% mcq_obtain_mark = 0 %>
+                            <% mtt_obtain_mark = 0 %>
+                            
                             <% subject_ct_full_mark = 0 %>
                             <% subject_ct_obtain_mark = 0 %>
                             <% subject_ct_marks = [] %>
@@ -275,6 +280,9 @@
 
                                   subject_ct_full_mark = rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   subject_ct_marks << rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  
+                                 
+                                  
 
 
                                 %>
@@ -286,7 +294,7 @@
                                 <% subject_full_mark = subject_full_mark+subject_ct_full_mark %>
                                 <% unless subject_ct_marks.blank?  %>
                                   <% subject_ct_marks.sort! {|x,y| y <=> x } %>
-                                  <% subject_ct_obtain_mark = subject_ct_obtain_mark+subject_ct_marks[0] %>
+                                  <% cq_obtain_mark = subject_ct_obtain_mark = subject_ct_obtain_mark+subject_ct_marks[0] %>
                                 <% end %>
                             <% end %>
 
@@ -299,6 +307,12 @@
 
                                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  if rs['exam_category'] == '2'
+                                    mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
+                                  if rs['exam_category'] == '3'
+                                    mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
+                                  end
 
 
                                 %>
@@ -317,7 +331,9 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  <%= sprintf( "%0.02f", subject_obtain_mark) %><hr/>
+                                  CQ : <%= sprintf( "%0.02f", cq_obtain_mark) %>&nbsp;&nbsp;MCQ : <%= sprintf( "%0.02f", mcq_obtain_mark) %>&nbsp;&nbsp;MTT : <%= sprintf( "%0.02f", mtt_obtain_mark) %>
+                                  <hr/>
+                                  TO : <%= sprintf( "%0.02f", subject_obtain_mark) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%

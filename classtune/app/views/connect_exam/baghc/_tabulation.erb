@@ -262,6 +262,9 @@
                             <% mcq_obtain_mark = 0 %>
                             <% mtt_obtain_mark = 0 %>
                             
+                            <% has_mtt = false %>
+                            <% has_mcq = false %>
+                            
                             <% subject_ct_full_mark = 0 %>
                             <% subject_ct_obtain_mark = 0 %>
                             <% subject_ct_marks = [] %>
@@ -308,9 +311,11 @@
                                   subject_full_mark = subject_full_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                                   subject_obtain_mark = subject_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   if rs['exam_category'] == '2'
+                                    has_mcq = true
                                     mcq_obtain_mark = mcq_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   end
                                   if rs['exam_category'] == '3'
+                                    has_mtt = true
                                     mtt_obtain_mark = mtt_obtain_mark+rs['result'][rs['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f
                                   end
 
@@ -331,7 +336,13 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  CQ : <%= sprintf( "%0.02f", cq_obtain_mark) %>&nbsp;&nbsp;MCQ : <%= sprintf( "%0.02f", mcq_obtain_mark) %>&nbsp;&nbsp;MTT : <%= sprintf( "%0.02f", mtt_obtain_mark) %>
+                                  CQ : <%= sprintf( "%0.02f", cq_obtain_mark) %>
+                                  <% if has_mcq %>
+                                  &nbsp;MC : <%= sprintf( "%0.02f", mcq_obtain_mark) %>
+                                  <% end %>
+                                  <% if has_mtt %>
+                                  &nbsp;MT : <%= sprintf( "%0.02f", mtt_obtain_mark) %>
+                                  <% end %>
                                   <hr/>
                                   TO : <%= sprintf( "%0.02f", subject_obtain_mark) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>

@@ -47,6 +47,11 @@
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf"><b>GRADES</b></td>
                   </tr>
+                  <%
+                    if @sub_count_main.blank?
+                      @sub_count_main = 0
+                    end
+                  %>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -134,8 +139,11 @@
                       <% end %>
                     <% end %>
                   <% end %>
-
+                  <% if total_subject > @sub_count_main %>
+                        <% @sub_count_main = total_subject %>
+                  <% end %>      
               </table>
+              
               <% total_comments_grade = 8 %>
               <table id="pdf-table"  width="47.9%" class="left-table odd-table" cellspacing="0" >
                 <tr class="odd">
@@ -235,7 +243,7 @@
 
 <% end %>
 <% 
-  padding = (1000-(total_subject.to_i*25))/(total_subject.to_f*2) 
+  padding = (1000-(@sub_count_main.to_i*25))/(@sub_count_main.to_f*2) 
   padding = padding.round
 
   padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)

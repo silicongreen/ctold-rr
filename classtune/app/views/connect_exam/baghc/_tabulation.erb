@@ -206,7 +206,7 @@
 
                       </tr>
                     <% elsif std_count>5 && extender ==1 %>
-                      <% std_count = 0 %>
+                      <% std_count = 1 %>
                       <% extender = 1 %>
                       <tr class="page-break">
                           <td colspan="100">&nbsp;</td>
@@ -414,3 +414,18 @@
 
 
 </div>
+
+<style>
+  .page-break120 td{
+    height: 150px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+.page-break td{
+    height: 80px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+</style>

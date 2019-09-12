@@ -27,6 +27,7 @@
           total_std_subject = StudentsSubject.find_all_by_student_id(std['id'].to_i)
           std_subject_id = total_std_subject.map(&:subject_id)
           total_mark_result = 0
+          total_mark_result_fraction = 0
           total_gpa = 0
           total_mark = 0
           total_full_mark = 0
@@ -78,9 +79,10 @@
               if total_100 > 0
                 coverted_100 = (total_100.to_f/full_100.to_f)*100
               end
-
+              coverted_100_fraction = coverted_100
               coverted_100 = coverted_100.round()
               total_mark_result = total_mark_result+coverted_100
+              total_mark_result_fraction = total_mark_result_fraction+coverted_100_fraction
               gp_point =0
               if full_100 > 0
                 grade = GradingLevel.percentage_to_grade(coverted_100, @batch.id)
@@ -102,7 +104,7 @@
             end
 
           end
-          mark_less_obtain = 100000-total_mark_result.to_f
+          mark_less_obtain = 100000-total_mark_result_fraction.to_f
           grade_less_obtain = 100000-total_gpa.to_f
           if u_grade == false
             @student_list << [grade_less_obtain.to_f,mark_less_obtain.to_f,std['first_name']+" "+std['last_name'],std['id'].to_i]

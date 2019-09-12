@@ -47,23 +47,6 @@
                       <td class="col-pdf"><b><%= "SUBJECTS" %></b></td>
                       <td class="col-pdf"><b>GRADES</b></td>
                   </tr>
-                  <%
-                    if total_subject_main.blank?
-                      total_subject_main = 0
-                    end
-                    if total_subject.blank?
-                      total_subject = 0
-                    end
-                    unless total_subject.blank?
-                      if total_subject_main.blank?
-                        total_subject_main = total_subject
-                      end
-                      if total_subject > total_subject_main
-                        total_subject_main = total_subject
-                      end
-                    end
-                
-                  %>
                   <% total_parcent = 0 %>
                   <% total_subject = 0 %>
                   <% unless @report_data['report']['subjects'].blank? %> 
@@ -252,7 +235,7 @@
 
 <% end %>
 <% 
-  padding = (1000-(total_subject.to_i*25))/(total_subject_main.to_f*2) 
+  padding = (1000-(total_subject.to_i*25))/(total_subject.to_f*2) 
   padding = padding.round
 
   padding_comments = (1110-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)

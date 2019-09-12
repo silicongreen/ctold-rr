@@ -149,6 +149,7 @@
                       
                       <td class="col-pdf">Roll</td>
                       <td class="col-pdf">Students Name</td>
+                      <td class="col-pdf">Exams</td>
                       <% @report_data['report']['subjects'].each do |sub| %>
                         <% has_exam = false %>
                         <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -176,7 +177,7 @@
                     <% if !std.blank? and !std['first_name'].blank? %>
                     <% j = j+1 %>
                     <%  std_count = std_count+1; %>
-                    <% if std_count>12 && extender ==0 %>
+                    <% if std_count>5 && extender ==0 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -186,6 +187,7 @@
                           
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">Exams</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -203,7 +205,7 @@
                           <td>Grade Count</td>
 
                       </tr>
-                    <% elsif std_count>13 && extender ==1 %>
+                    <% elsif std_count>6 && extender ==1 %>
                       <% std_count = 0 %>
                       <% extender = 1 %>
                       <tr class="page-break">
@@ -213,6 +215,7 @@
                           
                           <td class="col-pdf">Roll</td>
                           <td class="col-pdf">Students Name</td>
+                          <td class="col-pdf">Exams</td>
                           <% @report_data['report']['subjects'].each do |sub| %>
                             <% has_exam = false %>
                             <% if @all_subject_id.include?(sub['id'].to_i) %>
@@ -244,6 +247,7 @@
                         <% else %>
                         <td class="name-std"><%= "-" %></td>
                         <% end %>
+                        <td >CQ<hr/>MCQ<hr/>MTT<hr/>TTL<hr/>GP</td>
                         <% total_mark = 0 %>
                         <% grades = [] %>
                         <% grade_count = {} %>
@@ -336,15 +340,14 @@
                             <% if has_exam == true %>
                               <td>
                                   <% total_mark = total_mark+subject_obtain_mark.to_f %>
-                                  CQ : <%= sprintf( "%0.02f", cq_obtain_mark) %>
-                                  <% if has_mcq %>
-                                  &nbsp;MC : <%= sprintf( "%0.02f", mcq_obtain_mark) %>
-                                  <% end %>
-                                  <% if has_mtt %>
-                                  &nbsp;MT : <%= sprintf( "%0.02f", mtt_obtain_mark) %>
-                                  <% end %>
+                                  <%= sprintf( "%0.02f", cq_obtain_mark) %>
                                   <hr/>
-                                  TO : <%= sprintf( "%0.02f", subject_obtain_mark) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  <%= sprintf( "%0.02f", mcq_obtain_mark) %>
+                                  <hr/>
+                                  <%= sprintf( "%0.02f", mtt_obtain_mark) %>
+                                  <hr/>
+                                  <%= sprintf( "%0.02f", subject_obtain_mark) %>
+                                  <hr/>
                                   <%  grade = GradingLevel.percentage_to_grade(main_mark, @batch.id) %>
                                   <% if !grade.blank? and !grade.name.blank? %>
                                     <%

@@ -1253,7 +1253,9 @@ class PaymentSettingsController < ApplicationController
                 
                 @finance_order = FinanceOrder.find_by_order_id(orderId.strip)
                 
-                request_params = @finance_order.request_params
+                unless @finance_order.nil?
+                  request_params = @finance_order.request_params
+                end
                 
                 #abort(request_params.inspect)
                 unless request_params.nil?

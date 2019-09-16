@@ -1314,9 +1314,11 @@ class PaymentSettingsController < ApplicationController
                 else
                   payment.update_attributes(:gateway_response => gateway_response, :validation_response => validation_response, :transaction_datetime => transaction_datetime)
                 end
-
-                if finance_order.finance_fee_id.to_i != payment.payment_id.to_i
-                  payment.update_attributes(:payment_id => finance_order.finance_fee_id)
+                
+                unless finance_order.nil?
+                  if finance_order.finance_fee_id.to_i != payment.payment_id.to_i
+                    payment.update_attributes(:payment_id => finance_order.finance_fee_id)
+                  end
                 end
             
                 if verify_order

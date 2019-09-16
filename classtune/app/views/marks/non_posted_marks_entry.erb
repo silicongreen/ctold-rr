@@ -8,7 +8,8 @@
   :conditions => [
     "connect_exam_id = ?",
     @connect_exam_obj.id
-  ]
+  ],
+  :order => "priority asc"
   )
 unless @all_group_exams.blank?
   @all_exam_group_id = @all_group_exams.map(&:exam_group_id).uniq

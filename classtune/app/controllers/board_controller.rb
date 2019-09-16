@@ -35,7 +35,7 @@ class BoardController < ApplicationController
     Spreadsheet.client_encoding = 'UTF-8'
     new_book = Spreadsheet::Workbook.new
     sheet1 = new_book.create_worksheet :name => 'student_list_exam'
-    row_first = ['SL','ID','Class Roll','Name','Exam Reg. No.','Exam Roll No','Session','GPA']
+    row_first = ['SL','ID','Class Roll','Name','Father Name','Exam Reg. No.','Exam Roll No','Session','GPA']
     new_book.worksheet(0).insert_row(0, row_first)
     @board_exam = BoardExam.find(params[:id],:include=>["board_exam_name","board_exam_group","board_session"])
     @board_exam_students = BoardExamStudent.find_all_by_batch_id(params[:id2])
@@ -55,6 +55,11 @@ class BoardController < ApplicationController
       tmp_row << @std_info.admission_no
       tmp_row << @std_info.class_roll_no
       tmp_row << @std_info.full_name
+      unless @std_guardians.blank? or @std_guardians[0].blank?
+        tmp_row << @std_guardians[0].full_name 
+      else
+        tmp_row << ""
+      end  
       tmp_row << @board_exam_student.registration
       tmp_row << @board_exam_student.roll
       tmp_row << @board_exam_student.session

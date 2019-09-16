@@ -164,7 +164,7 @@
                   <div style="display: block;" id="std_batch_id" data="<%= @student.batch.id %>"></div>
                   <div style="display: block;" id="std_batch_name" data="<%= @student.batch.name %>"></div>
                   <label for="student_grade"><%= t('shift_label') %><% if MultiSchool.current_school.id == 340  %><span class="necessary-field">*</span><% end %></label>
-                  <%= @batch_no.to_i %>
+              
                   <% batchs = Batch.active.find(:all, :group => "name")  %>
                   <% student_batches = [] %>
                   <% batchs.each do |b| %>

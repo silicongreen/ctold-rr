@@ -38,9 +38,21 @@
           let stdname = j(this).data("name");
           if (!stdudentList.includes(stdid))
           {
-              j("#selected-students").append("<label style='padding:3px; margin:3px 5px; border-bottom: 1px solid #ddd;'><input class='studentCheckBox'  type='checkbox' name='fee_discount[students][]' value='" + stdid + "' checked='checked' />" + stdname + "-<strong>" + admid + "</strong></label>")
-              j(this).css("color", "green");
-              stdudentList.push(stdid);
+              var fnd = false;
+              j(".studentCheckBox").each(function(){
+                var val = j.trim(j(this).val());
+                if ( val == stdid )
+                {
+                  fnd = true;
+                }
+              });
+              
+              if ( ! fnd )
+              {
+                j("#selected-students").append("<label style='padding:3px; margin:3px 5px; border-bottom: 1px solid #ddd;'><input class='studentCheckBox'  type='checkbox' name='fee_discount[students][]' value='" + stdid + "' checked='checked' />" + stdname + "-<strong>" + admid + "</strong></label>")
+                j(this).css("color", "green");
+                stdudentList.push(stdid);
+              }
           }
 
       });

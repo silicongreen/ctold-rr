@@ -1122,12 +1122,12 @@ class FinanceController < ApplicationController
         #        abort(online_id.inspect)
         unless params[:transaction_test].nil?
           finance_notmatch_transactions = FinanceNotmatchTransaction.all
-          abort(finance_notmatch_transactions.inspect)
           finance_notmatch_transactions.each do |finance_notmatch_transaction|
             transaction = FinanceTransaction.find(:first, :conditions => "id = #{finance_notmatch_transaction.transaction_id}")
             if transaction.blank?
               finance_notmatch_transaction.destroy
             else
+              abort(transaction.inspect)
               payments = Payment.find(:all, :conditions => "finance_transaction_id = #{finance_notmatch_transaction.transaction_id}")
               unless payments.blank?
                 if payments.length == 1

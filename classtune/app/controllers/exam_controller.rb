@@ -3117,7 +3117,7 @@ class ExamController < ApplicationController
           position = @student_position_first_term[std_result['id'].to_i]
         else
           unless std_result['subject_failed'].blank?
-            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa']*500)-std_result['grand_total_with_fraction'].to_f
+            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa'].to_f*500)-std_result['grand_total_with_fraction'].to_f
           end
         end  
         @student_result[iloop]['position'] = position

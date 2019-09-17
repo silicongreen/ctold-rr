@@ -3112,12 +3112,12 @@ class ExamController < ApplicationController
     if !@student_result.blank?
       @student_result.each do |std_result|
         
-        position = 50000
+        position = 500000
         if !@student_position_first_term.blank? && !@student_position_first_term[std_result['id'].to_i].blank?
           position = @student_position_first_term[std_result['id'].to_i]
         else
           unless std_result['subject_failed'].blank?
-            position = position+std_result['subject_failed'].count
+            position = position+(std_result['subject_failed'].count*1000000)-(std_result['gpa']*500)-std_result['grand_total_with_fraction'].to_f
           end
         end  
         @student_result[iloop]['position'] = position

@@ -1129,7 +1129,7 @@ class FinanceController < ApplicationController
             else
               payments = Payment.find(:all, :conditions => "finance_transaction_id = #{finance_notmatch_transaction.transaction_id}")
               unless payments.blank?
-                abort(payments.inspect)
+                abort(payments.length.inspect)
                 if payments.length == 1
                   payment = payments[0]
                   order_id = payment.order_id

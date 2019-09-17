@@ -5894,6 +5894,10 @@ class ExamController < ApplicationController
                   term_mark_multiplier = 1.00
                 end
                 
+                if sub['name'].upcase == "ICT" and @connect_exam_obj.result_type == 9
+                  term_mark_multiplier = 1.00
+                end
+                
                 
 
                 total_mark2 = total_ob2+total_sb2+total_pr2

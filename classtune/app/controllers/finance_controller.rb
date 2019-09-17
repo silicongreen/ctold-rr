@@ -1144,7 +1144,9 @@ class FinanceController < ApplicationController
               particular_wise_transactions.each do |pt|
                 particular_amount -= pt.amount.to_f
               end
-              
+              if transaction.id == 44610
+                abort(particular_amount.to_s + " " + transaction.amount.to_s)
+              end
               if particular_amount.to_f == transaction.amount.to_f
                 finance_notmatch_transaction.destroy
               else  

@@ -4572,8 +4572,19 @@ class StudentController < ApplicationController
     end
     
     if appropriate_elective_subject_id > 0
-      @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
-      StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
+      all_subjects = Subject.active.find_by_name_and_batch_id(@tmp_subject_to_test.name, b)
+      if MultiSchool.current_school.code = "sfx"
+        unless all_subjects.blank?
+          all_subjects.each do |appropriate_elective_subject|
+            appropriate_elective_subject_id = appropriate_elective_subject.id
+            @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
+            StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
+          end
+        end
+      else
+        @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
+        StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
+      end
     end
     
     @student = Student.find(params[:id])
@@ -4686,7 +4697,17 @@ class StudentController < ApplicationController
     end
     
     if appropriate_elective_subject_id > 0
-      StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
+      all_subjects = Subject.active.find_by_name_and_batch_id(@tmp_subject_to_test.name, b)
+      if MultiSchool.current_school.code = "sfx"
+        unless all_subjects.blank?
+          all_subjects.each do |appropriate_elective_subject|
+            appropriate_elective_subject_id = appropriate_elective_subject.id
+            StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
+          end
+        end
+      else
+        StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
+      end  
     end
     
     @student = Student.find(params[:id])

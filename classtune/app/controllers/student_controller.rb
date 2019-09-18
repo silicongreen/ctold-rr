@@ -4573,17 +4573,12 @@ class StudentController < ApplicationController
     
     if appropriate_elective_subject_id > 0
       all_subjects = Subject.active.find_all_by_name_and_batch_id(@tmp_subject_to_test.name, b)
-      if MultiSchool.current_school.code = "sfx"
-        unless all_subjects.blank?
-          all_subjects.each do |appropriate_elective_subject|
-            appropriate_elective_subject_id = appropriate_elective_subject.id
-            @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
-            StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
-          end
+      unless all_subjects.blank?
+        all_subjects.each do |appropriate_elective_subject|
+          appropriate_elective_subject_id = appropriate_elective_subject.id
+          @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
+          StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
         end
-      else
-        @assigned = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
-        StudentsSubject.create(:student_id=>params[:id],:subject_id=>appropriate_elective_subject_id,:elective_type=>elective_type,:batch_id=>b) if @assigned.nil?
       end
     end
     
@@ -4698,15 +4693,11 @@ class StudentController < ApplicationController
     
     if appropriate_elective_subject_id > 0
       all_subjects = Subject.active.find_all_by_name_and_batch_id(@tmp_subject_to_test.name, b)
-      if MultiSchool.current_school.code = "sfx"
-        unless all_subjects.blank?
-          all_subjects.each do |appropriate_elective_subject|
-            appropriate_elective_subject_id = appropriate_elective_subject.id
-            StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
-          end
+      unless all_subjects.blank?
+        all_subjects.each do |appropriate_elective_subject|
+          appropriate_elective_subject_id = appropriate_elective_subject.id
+          StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
         end
-      else
-        StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
       end  
     end
     

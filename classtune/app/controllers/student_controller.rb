@@ -4572,7 +4572,7 @@ class StudentController < ApplicationController
     end
     
     if appropriate_elective_subject_id > 0
-      all_subjects = Subject.active.find_by_name_and_batch_id(@tmp_subject_to_test.name, b)
+      all_subjects = Subject.active.find_all_by_name_and_batch_id(@tmp_subject_to_test.name, b)
       if MultiSchool.current_school.code = "sfx"
         unless all_subjects.blank?
           all_subjects.each do |appropriate_elective_subject|
@@ -4697,7 +4697,7 @@ class StudentController < ApplicationController
     end
     
     if appropriate_elective_subject_id > 0
-      all_subjects = Subject.active.find_by_name_and_batch_id(@tmp_subject_to_test.name, b)
+      all_subjects = Subject.active.find_all_by_name_and_batch_id(@tmp_subject_to_test.name, b)
       if MultiSchool.current_school.code = "sfx"
         unless all_subjects.blank?
           all_subjects.each do |appropriate_elective_subject|

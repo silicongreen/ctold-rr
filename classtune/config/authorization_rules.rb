@@ -1620,6 +1620,7 @@ authorization do
       :profile_additional_details,
       :profile_payroll_details,
       :profile_pdf,
+      :retrive_employee,
       :show
     ]
     has_permission_on [:employee],
@@ -1861,6 +1862,7 @@ authorization do
       :profile_additional_details,
       :profile_payroll_details,
       :profile_pdf,
+      :retrive_employee,
       :show
     ]
     has_permission_on [:employee],
@@ -3048,6 +3050,7 @@ authorization do
       :profile_additional_details,
       :profile_payroll_details,
       :profile_pdf,
+      :retrive_employee,
       :show
     ]
     has_permission_on [:employee],

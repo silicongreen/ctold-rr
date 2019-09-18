@@ -82,6 +82,24 @@ class ArchivedEmployee < ActiveRecord::Base
       return exp_months.nil? ? 0 : exp_months
     end
   end
+  
+  def retrive_employee
+    employee_attributes = self.attributes
+    employee_attributes.delete "former_id"
+    employee_attributes.delete "status_description"
+    
+    employee = Employee.new(employee_attributes)
+    employee.id = self.former_id
+    employee.photo = self.photo
+    user = User.find_by_id(self.user_id)
+    user.is_deleted = 0
+    user.save
+    
+    if employee.save(false)
+      self.destroy
+    end
+
+  end
 
   def self.former_employees_details(parameters)
     sort_order=parameters[:sort_order]

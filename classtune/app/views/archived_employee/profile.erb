@@ -46,7 +46,7 @@
       menu_box = j(this).find(".more-menu-div");
       box_width = menu_box.width();
     //  c_b.css({ top: (0 - (child_bottom - main_bottom))});
-      menu_box.css({top: (link_off.top + link_height),left: ((link_off.left + link_width) - box_width)});
+      menu_box.css({top: (link_off.top + link_height-15),left: ((link_off.left + link_width) - box_width+15)});
       menu_box.css("display","block");
     },
     function () {
@@ -69,20 +69,22 @@
   <ul>
     <li class='drop_header themed_bg themed-dark-hover-background'>
       <a href="#" class="drop_header_link"><%= t('profile_text') %> &#9660;</a>
-      <ul id="box_1" class="more-menu-div" style="display:none;">
+      <ul id="box_1" class="more-menu-div" style="display:none; position:fixed;">
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('general')}", :url => {:action => "profile_general", :id => @employee.id}, :update => "profile-infos" %></li>
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('personal')}", :url => {:action => "profile_personal", :id => @employee.id}, :update => "profile-infos" %></li>
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('address')}", :url => {:action => "profile_address", :id => @employee.id}, :update => "profile-infos" %></li>
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('contact')}", :url => {:action => "profile_contact", :id => @employee.id}, :update => "profile-infos" %></li>
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('bank_info')}", :url => {:action => "profile_bank_details", :id => @employee.id}, :update => "profile-infos" %></li>
         <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('additional_info')}", :url => {:action => "profile_additional_details", :id => @employee.id}, :update => "profile-infos" %></li>
+        <li class='themed_bg themed-dark-hover-background'><%= link_to "Retrive Employee", {:controller => 'archived_employee',
+        :action => 'retrive_employee',:id => @employee.id},:confirm => "Confirm Retrive Employee?"  %></li>
       </ul>
     </li>
 
     <% if current_username == profile_employee_no %>
       <li class='drop_header themed_bg themed-dark-hover-background'>
         <a href="#" class="drop_header_link"><%= t('salary') %> &#9660;</a>
-        <ul id="box_2" class="more-menu-div" style="display:none;">
+        <ul id="box_2" class="more-menu-div" style="display:none;position:fixed;">
           <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('payroll_text')}", :url => {:action => "profile_payroll_details", :id => @employee.id}, :update => "profile-infos" %></li>
         </ul>
       </li>
@@ -90,7 +92,7 @@
       <% if permitted_to? :payslip, :employee %>
         <li class='drop_header themed_bg themed-dark-hover-background'>
           <a href="#" class="drop_header_link"><%= t('salary') %> &#9660;</a>
-          <ul id="box_2" class="more-menu-div" style="display:none;">
+          <ul id="box_2" class="more-menu-div" style="display:none;position:fixed;">
             <li class='themed_bg themed-dark-hover-background'><%= link_to_remote "#{t('payroll_text')}", :url => {:action => "profile_payroll_details", :id => @employee.id}, :update => "profile-infos" %></li>
           </ul>
         </li>

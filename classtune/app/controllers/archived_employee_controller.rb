@@ -41,6 +41,14 @@ class ArchivedEmployeeController < ApplicationController
     @total_months = month
 
   end
+  
+  def retrive_employee
+    @current_user = current_user
+    @archived_employee = ArchivedEmployee.find(params[:id])
+    @archived_employee.retrive_employee
+    flash[:notice]= "Employee Successfully Retrived"
+    redirect_to :controller => 'user', :action => 'dashboard'
+  end
 
   def profile_general
     @employee = ArchivedEmployee.find(params[:id])

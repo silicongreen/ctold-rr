@@ -749,9 +749,9 @@ class CalenderController extends Controller
             {
                 $sms_numbers[] = $studentdata->sms_number;
                 if ($late == 1)
-                    $message = $studentdata->first_name . " " . $studentdata->last_name . " is Present but Late On (" . $newattendence->month_date."). Rector-BAGHC";
+                    $message = $studentdata->first_name . " " . $studentdata->last_name . " is Present but Late On (" . $newattendence->month_date."). Principal-BAGHC";
                 else
-                    $message = "Respected Parents, your child (".$studentdata->first_name . " " . $studentdata->last_name . ") is absent from the class On (" . $newattendence->month_date."). Rector-BAGHC";
+                    $message = "Respected Parents, your child (".$studentdata->first_name . " " . $studentdata->last_name . ") is absent from the class On (" . $newattendence->month_date."). Principal-BAGHC";
 
                 $sms_msg_array[] = $message;
             }

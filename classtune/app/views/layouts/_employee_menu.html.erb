@@ -64,9 +64,7 @@ unless all_new_reminders.blank?
 
 
 
-                            <li class="als-item" >
-                                <%=  link_to "<div class='task_box_icon'><span class='f2'>TASK</span></div>", :controller => 'tasks', :action => 'index' %>                
-                            </li>
+                            
 
 
 
@@ -75,6 +73,11 @@ unless all_new_reminders.blank?
                             <li class="als-item">
                                 <%=  link_to "<div class='homework_box_icon'><span class='f2'>HOMEWORK"+homework_string+"</span></div>", :controller => 'assignments', :action => 'index' %>
                             </li>
+                            <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+                              <li class="als-item" >
+                                  <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
+                              </li>
+                            <% end %>
 
 
 
@@ -86,12 +89,10 @@ unless all_new_reminders.blank?
                             <li class="als-item" >
                                 <%=  link_to "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE"+exam_rountine_string+"</span></div>", :controller => 'exam', :action => 'index' %>
                             </li>
-                            <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
-                              <li class="als-item" >
-                                  <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
-                              </li>
-                            <% end %>
-
+                            
+                            <li class="als-item" >
+                                <%=  link_to "<div class='task_box_icon'><span class='f2'>TASK</span></div>", :controller => 'tasks', :action => 'index' %>                
+                            </li>
                             <li class="als-item">
                                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'classes_view' %>
                             </li>

@@ -48,31 +48,14 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                             <%= link_to "<div class='homework_box_icon'>"+hcount+"<span class='f2'>HOMEWORK</span></div>", :controller => 'assignments', :action => 'index' %>
 
                         </li>
-                      
-                      
+                        <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
                         <li class="als-item" >
-                           <%          
-                                sql = "SELECT COUNT( reminders.id ) AS total_count
-FROM reminders
-LEFT JOIN online_exam_groups  ON reminders.rid = online_exam_groups.id
-WHERE reminders.recipient = #{@current_user.id}
-AND reminders.is_read = 0
-AND reminders.rtype = 15
-AND online_exam_groups.is_deleted = 0
-AND online_exam_groups.is_published = 1"
-
-                                quize_count_data = @conn.execute(sql).all_hashes
-
-                            %> 
-                            <% 
-                            hcount = ""
-                            unless quize_count_data[0]['total_count'].nil? || quize_count_data[0]['total_count'].to_i==0
-                              hcount = "<span class='f2 reminder-count'>"+quize_count_data[0]['total_count'].to_s+"</span>"
-                              end
-                          %>
-                            <%= link_to "<div class='quiz_box_icon'>"+hcount+"<span class='f2'>QUIZ</span></div>", :controller => 'online_student_exam', :action => 'index' %>
-
+                          <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
                         </li>
+                        <% end %>
+                      
+                      
+                        
                       
                         
                         <li class="als-item" >
@@ -125,6 +108,29 @@ AND exam_groups.result_published = 1"
                           %>
                             <%= link_to "<div class='report_box_icon'>"+hcount+"<span class='f2'>REPORT CARD</span></div>", :controller => 'student', :action => 'class_test_report' %> 
                         </li>
+                        <li class="als-item" >
+                           <%          
+                                sql = "SELECT COUNT( reminders.id ) AS total_count
+FROM reminders
+LEFT JOIN online_exam_groups  ON reminders.rid = online_exam_groups.id
+WHERE reminders.recipient = #{@current_user.id}
+AND reminders.is_read = 0
+AND reminders.rtype = 15
+AND online_exam_groups.is_deleted = 0
+AND online_exam_groups.is_published = 1"
+
+                                quize_count_data = @conn.execute(sql).all_hashes
+
+                            %> 
+                            <% 
+                            hcount = ""
+                            unless quize_count_data[0]['total_count'].nil? || quize_count_data[0]['total_count'].to_i==0
+                              hcount = "<span class='f2 reminder-count'>"+quize_count_data[0]['total_count'].to_s+"</span>"
+                              end
+                          %>
+                            <%= link_to "<div class='quiz_box_icon'>"+hcount+"<span class='f2'>QUIZ</span></div>", :controller => 'online_student_exam', :action => 'index' %>
+
+                        </li>
                         <% if @current_user.parent? %>
                           <% 
                           student_id = @current_user.guardian_entry.current_ward_id                 
@@ -134,11 +140,7 @@ AND exam_groups.result_published = 1"
                               <%=  link_to "<div class='fees_box_icon'><span class='f2'>FEES</span></div>", :controller => 'student', :action => 'fees', :id => student_id %>                
                           </li>
                         <% end %>
-                        <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
-                        <li class="als-item" >
-                          <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
-                        </li>
-                        <% end %>
+                        
                         <li class="als-item">
                             <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'syllabus_view' %>
                         </li>

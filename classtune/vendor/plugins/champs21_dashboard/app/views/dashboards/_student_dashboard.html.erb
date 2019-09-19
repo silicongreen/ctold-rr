@@ -47,6 +47,12 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .homework_box_icon').addClass('active');",
                                   :url => {:controller=>"dashboards",:action => "homework_data"} %>
                             </li>
+                            
+                            <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+                              <li class="als-item" >
+                                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
+                              </li>
+                            <% end %>
                          
                             <% if @current_user.parent? %>
                               <% 
@@ -58,32 +64,7 @@ AND FIND_IN_SET(#{profile_id},student_list)"
                               </li>
                             <% end %>
                             
-                            <li class="als-item">
-                                <%          
-                                sql = "SELECT COUNT( reminders.id ) AS total_count
-FROM reminders
-LEFT JOIN online_exam_groups  ON reminders.rid = online_exam_groups.id
-WHERE reminders.recipient = #{@current_user.id}
-AND reminders.is_read = 0
-AND reminders.rtype = 15
-AND online_exam_groups.is_deleted = 0
-AND online_exam_groups.is_published = 1"
-
-                                quize_count_data = @conn.execute(sql).all_hashes
-
-                              %> 
-                                <% 
-                                hcount = ""
-                                unless quize_count_data[0]['total_count'].nil? || quize_count_data[0]['total_count'].to_i==0
-                                  hcount = "<span class='f2 reminder-count'>"+quize_count_data[0]['total_count'].to_s+"</span>"
-                                  end
-                              %>
-                                <%= link_to_remote "<div class='quiz_box_icon'>"+hcount+"<span class='f2'>QUIZ</span></div>",
-                                  :update => "dashboard-data",
-                                  :before => "Element.show('loader');j('.partial_homework').empty();",
-                                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
-                                  :url => {:controller=>"dashboards",:action => "quize_data"} %>
-                            </li>
+                            
                            
                             
                             
@@ -151,12 +132,34 @@ AND exam_groups.result_published = 1"
                                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .report_box_icon').addClass('active');",
                                   :url => {:controller=>"dashboards",:action => "exam_result_data_student"} %>
                             </li>
+                            <li class="als-item">
+                                <%          
+                                sql = "SELECT COUNT( reminders.id ) AS total_count
+FROM reminders
+LEFT JOIN online_exam_groups  ON reminders.rid = online_exam_groups.id
+WHERE reminders.recipient = #{@current_user.id}
+AND reminders.is_read = 0
+AND reminders.rtype = 15
+AND online_exam_groups.is_deleted = 0
+AND online_exam_groups.is_published = 1"
+
+                                quize_count_data = @conn.execute(sql).all_hashes
+
+                              %> 
+                                <% 
+                                hcount = ""
+                                unless quize_count_data[0]['total_count'].nil? || quize_count_data[0]['total_count'].to_i==0
+                                  hcount = "<span class='f2 reminder-count'>"+quize_count_data[0]['total_count'].to_s+"</span>"
+                                  end
+                              %>
+                                <%= link_to_remote "<div class='quiz_box_icon'>"+hcount+"<span class='f2'>QUIZ</span></div>",
+                                  :update => "dashboard-data",
+                                  :before => "Element.show('loader');j('.partial_homework').empty();",
+                                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
+                                  :url => {:controller=>"dashboards",:action => "quize_data"} %>
+                            </li>
                            
-                            <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
-                              <li class="als-item" >
-                                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK</span></div>", :controller => 'classworks', :action => 'index' %>
-                              </li>
-                            <% end %>
+                            
                            
                             <li class="als-item">
                                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'syllabus_view' %>

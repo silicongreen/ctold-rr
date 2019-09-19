@@ -64,13 +64,7 @@ employee_id = @current_user.employee_record.id
             
               
              
-              <li class="als-item" >
-                <%= link_to_remote "<div class='task_box_icon'><span class='f2'>TASK</span></div>",
-                  :update => "dashboard-data",
-                  :before => "Element.show('loader');j('.partial_homework').empty();",
-                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .task_box_icon').addClass('active');",
-                  :url => {:controller=>"dashboards",:action => "employee_task_data"} %>
-              </li>
+              
          
               
               
@@ -85,6 +79,11 @@ employee_id = @current_user.employee_record.id
                   :url => {:controller=>"dashboards",:action => "employee_homework_data"} %>
                 <% end %>  
               </li>
+              <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
+              <li class="als-item" >
+                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
+              </li>
+              <% end %>
              
               
              
@@ -102,11 +101,14 @@ employee_id = @current_user.employee_record.id
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
                   :url => {:controller=>"dashboards",:action => "employee_exam_routine_data"} %>
               </li>
-              <%if Champs21Plugin.can_access_plugin?("champs21_classwork")%>
               <li class="als-item" >
-                <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
+                <%= link_to_remote "<div class='task_box_icon'><span class='f2'>TASK</span></div>",
+                  :update => "dashboard-data",
+                  :before => "Element.show('loader');j('.partial_homework').empty();",
+                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .task_box_icon').addClass('active');",
+                  :url => {:controller=>"dashboards",:action => "employee_task_data"} %>
               </li>
-              <% end %>
+              
             
               <li class="als-item" >
                 <%=  link_to "<div class='syllabus_box_icon'><span class='f2'>SYLLABUS</span></div>", :controller => 'syllabus', :action => 'classes_view' %>

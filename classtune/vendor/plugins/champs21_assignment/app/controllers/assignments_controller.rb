@@ -1103,6 +1103,17 @@ class AssignmentsController < ApplicationController
     end
 
   end
+  
+  def remove_attachment
+    @assignment =Assignment.find_by_id(params[:id])
+    unless @assignment.blank?
+      @assignment.attachment.destroy
+      @assignment.save
+    end  
+    flash[:notice] = "Attachment Successfully Removed"
+    redirect_to :action=>"show",:id=>@assignment.id
+  end
+  
   def download_attachment
     #download the  attached file
     @assignment =Assignment.active.find params[:id]

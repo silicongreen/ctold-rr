@@ -32,6 +32,11 @@ class Assignment < ActiveRecord::Base
     false
   end
   
+  def remove_attachment_papreclip
+    self.attachment = nil
+    self.save
+  end
+  
   def update_redactor
     RedactorUpload.update_redactors(self.redactor_to_update,self.redactor_to_delete)
   end

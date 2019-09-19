@@ -140,9 +140,14 @@
     <div style="float:left;height: 27px;width: 35%;padding: 10px;">                            
       <%= link_to 'Worksheet', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id %>
     </div>
-    <div style=" float: right; height: 27px;  padding: 10px;  width: 7%;border-left: 1px dotted #cccccc;">
-      <%= link_to 'Download', :controller => "assignments", :action => "download_attachment" , :id=>@assignment.id %>
-    </div>
+
+      
+    <% if @assignment.employee.present? and (@current_user.employee_record == @assignment.employee || @current_user.admin? || (!@current_user.employee_record.blank? && @current_user.employee_record.all_access.to_i == 1)) %>
+      <div style=" float: right; height: 27px;  padding: 10px;  width: 10%;border-left: 1px dotted #cccccc;">
+        <%= link_to 'Remove Attachment', {:controller => "assignments", :action => "remove_attachment", :id=>@assignment.id },:confirm => "Do you really want to delete this attachment?" %>
+      </div>
+      
+    <% end %>  
   </div>  
 <% end %>
 <div id="page-yield" class="ch_homework_wrapper bg-disable">

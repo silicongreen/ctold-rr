@@ -242,7 +242,7 @@
                                                     
                                                     <% elsif (@exam_connect.result_type > 2 && @exam_connect.result_type < 7) or @exam_connect.result_type.to_i == 11 or @exam_connect.result_type.to_i == 12 %>
                                                       <% @batch = @exam_subject.batch %>
-                                                      <% if @exam_connect.result_type == 3 or @batch.course.course_name == "KGI" or @batch.course.course_name == "KGII" %>
+                                                      <% if @exam_connect.result_type == 3 or @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" %>
                                                           <select name="exam_score[<%=exam.id%>][<%=student.id%>][remarks][]" >
                                                             <option value="NA" >Select</option>
                                                             <option value="A" <% if exam_group_remarks.to_s == 'A' %> selected="selected" <% end %> >Excellent</option>

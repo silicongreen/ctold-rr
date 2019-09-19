@@ -59,7 +59,7 @@
                   <% if @tte.is_a? TimetableEntry  %>
                     <div class="subject themed_text">
                       <% unless @tte.subject.nil? %>
-                        <% unless @tte.subject.elective_group_id.nil?   %>
+                        <% unless @tte.subject.elective_group.nil?   %>
                       <span class="sub-line"> <%= shorten_string(@tte.subject.elective_group.name.to_s,10) %></span>
                         <% else %>
                       <span class="sub-line"><%= shorten_string(@tte.subject.code.to_s,10) %></span>

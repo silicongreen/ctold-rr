@@ -73,7 +73,7 @@ class TimetableEntriesController < ApplicationController
     if ele_gp_id.empty?
       @employees_subject = EmployeesSubject.find_all_by_subject_id(params[:subject_id])
     else
-      @employees_subject = EmployeesSubject.find_all_by_subject_id(Subject.find_all_by_elective_group_id(ele_gp_id).collect(&:id))
+      @employees_subject = EmployeesSubject.find_all_by_subject_id(Subject.find_all_by_elective_group_id_and_is_deleted(ele_gp_id,false).collect(&:id))
     end
     render :partial=>"employee_list"
   end
@@ -149,7 +149,7 @@ class TimetableEntriesController < ApplicationController
       end
       if errors.empty?
         unless emp_s.empty?
-          emp_subs=Subject.find_all_by_elective_group_id(emp_s).collect(&:id)
+          emp_subs=Subject.find_all_by_elective_group_id_and_is_deleted(emp_s,false).collect(&:id)
           overlap_elective=TimetableEntry.find(:all,:conditions=>{:subject_id=>emp_subs,:timetable_id=>@timetable.id,:class_timing_id=>class_timing,:weekday_id=>weekday},:joins=>"INNER JOIN subjects ON timetable_entries.subject_id = subjects.id INNER JOIN batches ON subjects.batch_id = batches.id AND batches.is_active = 1 AND batches.is_deleted = 0")
           unless overlapclasstiming.empty?
             overlapclasstiming.each do |classtimings|

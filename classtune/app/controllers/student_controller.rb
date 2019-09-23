@@ -4519,7 +4519,7 @@ class StudentController < ApplicationController
     batch_ids = @batches.map(&:id)
     @subjects = Subject.find_all_by_batch_id_and_code_and_is_deleted(batch_ids,@elective_subject.code,false)
     subject_ids = @subjects.map(&:id)
-    @subject_students = StudentsSubject.find_all_by_subject_id(subject_ids,:include=>[{:student=>{:batch=>[:course]}}])
+    @subject_students = StudentsSubject.find_all_by_subject_id_and_batch_id(subject_ids,batch_ids,:include=>[{:student=>{:batch=>[:course]}}])
     
     sl = 1
     @subject_students.each do |std|

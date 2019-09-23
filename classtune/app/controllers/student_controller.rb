@@ -4531,7 +4531,7 @@ class StudentController < ApplicationController
       if !batch_ids.include?(std.student.batch_id)
         next
       end
-      if std_done.include?(std.student.batch_id)
+      if std_done.include?(std.student.id)
         next
       end
       

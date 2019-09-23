@@ -3514,7 +3514,10 @@ class StudentController < ApplicationController
     @student_electives =StudentsSubject.all(:conditions=>{:student_id=>@student.id,:batch_id=>@student.batch.id,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
     @elective_subjects = []
     @student_electives.each do |e|
-      @elective_subjects.push Subject.find(e.subject_id)
+      @subject_obj = Subject.find_by_id(e.subject_id)
+      if !@subject_obj.blank? && !@subject_obj.elective_group.blank? && @subject_obj.elective_group.is_deleted == false && @subject_obj.elective_group.batch_id  == @student.batch.id
+        @elective_subjects.push @subject_obj
+      end
     end
     @subjects = @normal_subjects+@elective_subjects
     get_attendence_text

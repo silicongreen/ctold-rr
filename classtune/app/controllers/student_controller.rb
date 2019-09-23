@@ -4522,6 +4522,7 @@ class StudentController < ApplicationController
     @subject_students = StudentsSubject.find_all_by_subject_id_and_batch_id(subject_ids,batch_ids,:include=>[{:student=>{:batch=>[:course]}}])
     
     sl = 1
+    std_done = []
     @subject_students.each do |std|
       if std.student.blank?
         next 
@@ -4530,6 +4531,11 @@ class StudentController < ApplicationController
       if !batch_ids.include?(std.student.batch_id)
         next
       end
+      if std_done.include?(std.student.batch_id)
+        next
+      end
+      
+      std_done << std.student.id
       
       if std.elective_type == 3
         etype = 'Third Subject'  
@@ -4542,7 +4548,7 @@ class StudentController < ApplicationController
         @main_batch = std.student.batch
       end
       
-      row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype, std.student.batch.full_name ]
+      row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype ]
       new_book.worksheet(0).insert_row(sl, row_new)
       sl += 1
     end

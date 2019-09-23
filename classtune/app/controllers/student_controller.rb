@@ -4699,7 +4699,10 @@ class StudentController < ApplicationController
       unless all_subjects.blank?
         all_subjects.each do |appropriate_elective_subject|
           appropriate_elective_subject_id = appropriate_elective_subject.id
-          StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id).delete
+          std_subject = StudentsSubject.find_by_student_id_and_subject_id(@student.id,appropriate_elective_subject_id)
+          unless std_subject.blank?
+            std_subject.delete
+          end
         end
       end  
     end

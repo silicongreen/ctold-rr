@@ -4513,9 +4513,9 @@ class StudentController < ApplicationController
     @batch = Batch.find(params[:id])
     @elective_subject = Subject.find(params[:id2])
     
-    @courses = Course.find_all_by_course_name(@batch.course.course_name) 
+    @courses = Course.find_all_by_course_name_and_is_deleted(@batch.course.course_name,false) 
     course_ids = @courses.map(&:id)
-    @batches = Batch.find_all_by_course_id(course_ids)
+    @batches = Batch.find_all_by_course_id_and_is_deleted(course_ids,false)
     batch_ids = @batches.map(&:id)
     @subjects = Subject.find_all_by_batch_id_and_code_and_is_deleted(batch_ids,@elective_subject.code,false)
     subject_ids = @subjects.map(&:id)

@@ -197,7 +197,7 @@
                     <td class="col-pdf left-td">Regular/Irregular</td>
                     <td class="col-pdf">R/IR</td>
                   </tr>
-                <% if @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "STD-I" or @batch.course.course_name == "STD-II" %>
+                <% elsif @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "STD-I" or @batch.course.course_name == "STD-II" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>
                     <td class="col-pdf">A+</td>

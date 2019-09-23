@@ -4526,6 +4526,11 @@ class StudentController < ApplicationController
       if std.student.blank?
         next 
       end 
+      
+      if !batch_ids.include?(std.student.batch_id)
+        next
+      end
+      
       if std.elective_type == 3
         etype = 'Third Subject'  
       elsif std.elective_type == 4 

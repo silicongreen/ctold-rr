@@ -4542,7 +4542,7 @@ class StudentController < ApplicationController
         @main_batch = std.student.batch
       end
       
-      row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype ]
+      row_new = [sl, std.student.full_name , std.student.class_roll_no, std.student.admission_no, etype, std.student.batch.full_name ]
       new_book.worksheet(0).insert_row(sl, row_new)
       sl += 1
     end

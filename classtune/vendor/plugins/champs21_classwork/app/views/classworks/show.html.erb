@@ -69,9 +69,16 @@
     <div style="float:left;height: 27px;width: 35%;padding: 10px;">                            
       <%= link_to 'Worksheet', :controller => "classworks", :action => "download_attachment" , :id=>@classwork.id %>
     </div>
-    <div style=" float: right; height: 27px;  padding: 10px;  width: 7%;border-left: 1px dotted #cccccc;">
-      <%= link_to 'Download', :controller => "classworks", :action => "download_attachment" , :id=>@classwork.id %>
-    </div>
+      
+    <% if @classwork.employee.present? and (@current_user.employee_record == @classwork.employee || @current_user.admin? || (!@current_user.employee_record.blank? && @current_user.employee_record.all_access.to_i == 1)) %>
+      <div style=" float: right; height: 27px;  padding: 10px;  width: 10%;border-left: 1px dotted #cccccc;">
+        <%= link_to 'Remove Attachment', {:controller => "classwork", :action => "remove_attachment", :id=>@classwork.id },:confirm => "Do you really want to delete this attachment?" %>
+      </div>
+      
+      
+    <% end %>  
+      
+    
   </div>  
 <% end %>
 <div id="page-yield" class="ch_classwork_wrapper bg-disable">

@@ -32,6 +32,16 @@ class ClassworksController < ApplicationController
     end
    
   end
+  def remove_attachment
+    
+    @classwork = Classwork.find_by_id(params[:id])
+    unless @classwork.blank?
+      @classwork.attachment.destroy
+      @classwork.save
+    end  
+    flash[:notice] = "Attachment Successfully Removed"
+    redirect_to :action=>"show",:id=>@classwork.id
+  end
   def index
    
     

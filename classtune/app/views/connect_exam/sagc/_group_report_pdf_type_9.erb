@@ -239,7 +239,11 @@
                                 <% if report['exam_category'] != '1' and report['exam_category'] != '2' %>
                                   <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>                                   
                                     <%  main_exam_mark = main_exam_mark+report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f %>
-                                    <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% if report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_s == "AB" %>
+                                      <td class="col-pdf">AB</td>
+                                    <% else %>
+                                      <td class="col-pdf"><%= report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i %></td>
+                                    <% end %>
                                     <% if report['result'][report['exam_id']][subjects['id']]['grade'] == "F" && fourth_subject.blank? && (report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i != 25 or report['result'][report['exam_id']][subjects['id']]['marks_obtained'].to_f.round.to_i != 8) %>
                                       <% failed = true %>
                                       <% failed_subject = true %>
@@ -254,7 +258,7 @@
                                 <%= main_exam_mark.to_f.round.to_i %>
                             </td>
                             <% avg_mark = main_exam_mark.to_f %>
-                            <% if full_mark.to_f > 100 && subjects['name'].upcase != "ICT" %>
+                            <% if full_mark.to_f > 100 %>
                               <% avg_mark = main_exam_mark.to_f*0.75 %>
                             <% end %>
 

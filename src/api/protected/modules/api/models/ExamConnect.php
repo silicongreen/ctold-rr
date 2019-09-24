@@ -277,9 +277,9 @@ class ExamConnect extends CActiveRecord
                         } 
                         foreach($all_student_this_subject as $svalue)
                         {
-                            if(!in_array($value['student_id'], $students))
+                            if(!in_array($svalue['student_id'], $students))
                             {
-                                $students[] = $value['student_id'];
+                                $students[] = $svalue['student_id'];
                                 $result['students'][$j]['name'] = $svalue['student_name'];
                                 $result['students'][$j]['id'] = $svalue['student_id'];
                                 $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
@@ -336,9 +336,9 @@ class ExamConnect extends CActiveRecord
                         } 
                         foreach($all_student_this_subject as $svalue)
                         {
-                            if(!in_array($value['student_id'], $students))
+                            if(!in_array($svalue['student_id'], $students))
                             {
-                                $students[] = $value['student_id'];
+                                $students[] = $svalue['student_id'];
                                 $result['students'][$j]['name'] = $svalue['student_name'];
                                 $result['students'][$j]['id'] = $svalue['student_id'];
                                 $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
@@ -394,9 +394,9 @@ class ExamConnect extends CActiveRecord
                     } 
                     foreach($all_student_this_subject as $svalue)
                     {
-                        if(!in_array($value['student_id'], $students))
+                        if(!in_array($svalue['student_id'], $students))
                         {
-                            $students[] = $value['student_id'];
+                            $students[] = $svalue['student_id'];
                             $result['students'][$j]['name'] = $svalue['student_name'];
                             $result['students'][$j]['id'] = $svalue['student_id'];
                             $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];

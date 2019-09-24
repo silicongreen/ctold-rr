@@ -176,7 +176,7 @@
                     <td class="col-pdf"><b>COMMENTS</b></td>
                     <td class="col-pdf"><b>GRADES</b></td>
                 </tr>
-                <% if @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" %>
+                <% if @batch.course.course_name == "KG-I" or @batch.course.course_name == "KG-II" or @batch.course.course_name == "KG I" or @batch.course.course_name == "KG II" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>
                     <td class="col-pdf">A</td>
@@ -197,6 +197,7 @@
                     <td class="col-pdf left-td">Regular/Irregular</td>
                     <td class="col-pdf">R/IR</td>
                   </tr>
+                  <% total_comments_grade = total_comments_grade+5 %>
                 <% elsif @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "STD-I" or @batch.course.course_name == "STD-II" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>

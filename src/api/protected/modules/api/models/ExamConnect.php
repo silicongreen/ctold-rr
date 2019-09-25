@@ -275,20 +275,20 @@ class ExamConnect extends CActiveRecord
                             }
                             
                         } 
-                        foreach($all_student_this_subject as $svalue)
-                        {
-                            if(!in_array($svalue['student_id'], $students))
-                            {
-                                $students[] = $svalue['student_id'];
-                                $result['students'][$j]['name'] = $svalue['student_name'];
-                                $result['students'][$j]['id'] = $svalue['student_id'];
-                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
-                                $j++;
-                                $result['CT'][$i]['students'][$svalue['student_id']]['score'] = 0.0;
-                                $result['CT'][$i]['students'][$svalue['student_id']]['remarks'] = "";
-                                
-                            }
-                        }
+//                        foreach($all_student_this_subject as $svalue)
+//                        {
+//                            if(!in_array($svalue['student_id'], $students))
+//                            {
+//                                $students[] = $svalue['student_id'];
+//                                $result['students'][$j]['name'] = $svalue['student_name'];
+//                                $result['students'][$j]['id'] = $svalue['student_id'];
+//                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+//                                $j++;
+//                                $result['CT'][$i]['students'][$svalue['student_id']]['score'] = 0.0;
+//                                $result['CT'][$i]['students'][$svalue['student_id']]['remarks'] = "";
+//                                
+//                            }
+//                        }
                         $i++;
                          
                         
@@ -334,20 +334,20 @@ class ExamConnect extends CActiveRecord
                             }
                           
                         } 
-                        foreach($all_student_this_subject as $svalue)
-                        {
-                            if(!in_array($svalue['student_id'], $students))
-                            {
-                                $students[] = $svalue['student_id'];
-                                $result['students'][$j]['name'] = $svalue['student_name'];
-                                $result['students'][$j]['id'] = $svalue['student_id'];
-                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
-                                $j++;
-                                $result['ST'][$k]['students'][$svalue['student_id']]['score'] = 0.0;
-                                $result['ST'][$k]['students'][$svalue['student_id']]['remarks'] = "";
-                                
-                            }
-                        }
+//                        foreach($all_student_this_subject as $svalue)
+//                        {
+//                            if(!in_array($svalue['student_id'], $students))
+//                            {
+//                                $students[] = $svalue['student_id'];
+//                                $result['students'][$j]['name'] = $svalue['student_name'];
+//                                $result['students'][$j]['id'] = $svalue['student_id'];
+//                                $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+//                                $j++;
+//                                $result['ST'][$k]['students'][$svalue['student_id']]['score'] = 0.0;
+//                                $result['ST'][$k]['students'][$svalue['student_id']]['remarks'] = "";
+//                                
+//                            }
+//                        }
                         $k++;
                     
                     }
@@ -392,20 +392,20 @@ class ExamConnect extends CActiveRecord
                         
 
                     } 
-                    foreach($all_student_this_subject as $svalue)
-                    {
-                        if(!in_array($svalue['student_id'], $students))
-                        {
-                            $students[] = $svalue['student_id'];
-                            $result['students'][$j]['name'] = $svalue['student_name'];
-                            $result['students'][$j]['id'] = $svalue['student_id'];
-                            $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
-                            $j++;
-                            $result['ALL'][$f]['students'][$svalue['student_id']]['score'] = 0.0;
-                            $result['ALL'][$f]['students'][$svalue['student_id']]['remarks'] = "";
-
-                        }
-                    }
+//                    foreach($all_student_this_subject as $svalue)
+//                    {
+//                        if(!in_array($svalue['student_id'], $students))
+//                        {
+//                            $students[] = $svalue['student_id'];
+//                            $result['students'][$j]['name'] = $svalue['student_name'];
+//                            $result['students'][$j]['id'] = $svalue['student_id'];
+//                            $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];
+//                            $j++;
+//                            $result['ALL'][$f]['students'][$svalue['student_id']]['score'] = 0.0;
+//                            $result['ALL'][$f]['students'][$svalue['student_id']]['remarks'] = "";
+//
+//                        }
+//                    }
                     $f++;
                     
                 } 

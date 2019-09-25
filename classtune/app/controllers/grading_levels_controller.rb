@@ -131,7 +131,14 @@ class GradingLevelsController < ApplicationController
                 @tmp_grading_level = GradingLevel.find_by_batch_id_and_name_and_is_deleted(batch.id,@grade_name,0)
                 if !@tmp_grading_level.blank?
                   @tmp_grading_level.update_attributes(params[:grading_level])
-                end
+                else
+                  @tmp_grading_level = GradingLevel.new(params[:grading_level])
+                  @tmp_grading_level.batch_id = batch.id
+                  if params[:grading_level][:type_data] == "percentage"
+                    @tmp_grading_level.max_score = nil
+                  end
+                  @tmp_grading_level.save
+                end  
               end
             end  
           end

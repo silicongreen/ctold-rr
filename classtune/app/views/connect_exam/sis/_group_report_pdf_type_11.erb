@@ -190,6 +190,10 @@
                     <td class="col-pdf">B</td>
                   </tr>
                   <tr class="even">
+                    <td class="col-pdf left-td">Satisfactory</td>
+                    <td class="col-pdf">C</td>
+                  </tr>
+                  <tr class="even">
                     <td class="col-pdf left-td">Needs Improvement</td>
                     <td class="col-pdf">NI</td>
                   </tr>
@@ -197,7 +201,7 @@
                     <td class="col-pdf left-td">Regular/Irregular</td>
                     <td class="col-pdf">R/IR</td>
                   </tr>
-                  <% total_comments_grade = total_comments_grade+5 %>
+                  <% total_comments_grade = total_comments_grade+6 %>
                 <% elsif @batch.course.course_name == "I" or @batch.course.course_name == "II" or @batch.course.course_name == "STD-I" or @batch.course.course_name == "STD-II" %>
                   <tr class="even">
                     <td class="col-pdf left-td">Excellent</td>

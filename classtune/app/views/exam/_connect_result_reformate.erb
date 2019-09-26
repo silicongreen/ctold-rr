@@ -20,7 +20,7 @@
         <% if report['sba']!="1" %>
           <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? %>
             <% full_mark = full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
-            <% @exam_marks[report['exam_id'].to_s] = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i %>
+            <% @exam_marks[report['exam_id'].to_s] = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f %>
           <% end %>  
 
           <% if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? %>
@@ -30,7 +30,7 @@
           <% 
           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['full_mark'].blank? 
             sba_full_mark = sba_full_mark+report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i
-            @exam_marks[report['exam_id'].to_s] = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_i 
+            @exam_marks[report['exam_id'].to_s] = report['result'][report['exam_id']][subjects['id']]['full_mark'].to_f 
             end
 
           if !report['result'].blank? and !report['result'][report['exam_id']].blank? and !report['result'][report['exam_id']][subjects['id']].blank?  and !report['result'][report['exam_id']][subjects['id']]['marks_obtained'].blank? 

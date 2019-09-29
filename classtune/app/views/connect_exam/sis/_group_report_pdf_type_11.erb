@@ -153,7 +153,7 @@
                     <%  if @all_subjects.include?(report['id'].to_i) && !report['subject_comment'].blank? %>
                          <% total_subject = total_subject+1 %>
                         
-                        <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
+                        <tr class="odd">
                         
                           <td class="col-pdf left-td"><b><%= report['subject_name'] %></b></td>
                           <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>

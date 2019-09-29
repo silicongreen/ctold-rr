@@ -59,7 +59,7 @@
             <% colspan = colspan+1 %>
           <% end %>  
           
-          <td>Total(<%= total_full_mark.to_i %>)</td>
+          <td>Total(100)</td>
           <% half_total = (total_full_mark.to_f/2.00) %>
           <td>Grade</td>
         
@@ -134,7 +134,7 @@
               <% class_name = "class='color-red'" %> 
            <% end %>
            <% if total_mark > 0 %>   
-              <td <%= class_name %>><%= total_mark.round() %></td>
+              <td <%= class_name %>><%= main_mark.round() %></td>
            <% else %>
               <td><%= "-" %></td>
            <% end %>

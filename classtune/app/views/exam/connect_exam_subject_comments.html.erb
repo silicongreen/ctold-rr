@@ -4,9 +4,9 @@
   <%= render  :partial=>"/connect_exam/sir_john_wilson_school/connect_exam_subject_comments_assesment" %>
 <% elsif MultiSchool.current_school.id == 348 %> 
   <%= render  :partial=>"/connect_exam/sis/connect_exam_subject_comments" %>
-<% elsif MultiSchool.current_school.id == "baghc" %> 
+<% elsif MultiSchool.current_school.code == "baghc" %> 
   <%= render  :partial=>"/connect_exam/baghc/connect_exam_subject_comments" %>
-<% elsif MultiSchool.current_school.id == "oisd" %> 
+<% elsif MultiSchool.current_school.code == "oisd" %> 
   <%= render  :partial=>"/connect_exam/oisd/connect_exam_subject_comments" %>
 <% else %>
   <%= render  :partial=>"/connect_exam/connect_exam_subject_comments" %>

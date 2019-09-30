@@ -374,7 +374,7 @@
                     <td class="small-height"><b>Teacher in charge's Signature</b></td>
                 </tr> 
                 <tr class="even">
-                   <td><%= total_subject.to_s %></td>
+                   <td></td>
                    <td></td>
                 </tr> 
               </table>
@@ -392,7 +392,7 @@
 <% end %>
 
 <% 
-  padding = (500-(total_subject.to_i*25))/(total_subject.to_f*2) 
+  padding = (900-(total_subject.to_i*25))/(total_subject.to_f*2) 
   padding = padding.round
 
   padding_comments = (1100-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)

@@ -111,7 +111,7 @@
                                   <b><%= exam.exam_group.name %></b>
 
                                   <p style="font-size: 10px;"> 
-                                      <% if exam_marks_entry_allowed(exam.exam_group) or @current_user.admin? %>
+                                      <% if @current_user.admin? %>
                                         <%= text_field_tag "exam_marks[#{exam.id}][alternative_title]", exam.alternative_title, :class=>"marks-box" %>
                                       <% else %>
                                         <%= exam.alternative_title %>

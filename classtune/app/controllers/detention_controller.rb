@@ -1404,7 +1404,7 @@ class DetentionController < ApplicationController
       if @detention_obj.status == 0 and @detention_obj.ackhnowledged == 0
         if @current_user.admin?
           @student = Student.find(@detention_obj.student_id)
-          if @student.number_of_detention>0
+          if !@student.number_of_detention.blank? && @student.number_of_detention.to_i>0
             @student.number_of_detention = @student.number_of_detention-1;
             @student.save
           end
@@ -1413,14 +1413,14 @@ class DetentionController < ApplicationController
           @employee= @current_user.employee_record
           if @employee.is_pod.to_i == 1
             @student = Student.find(@detention_obj.student_id)
-            if @student.number_of_detention>0
+            if !@student.number_of_detention.blank? && @student.number_of_detention.to_i>0
               @student.number_of_detention = @student.number_of_detention-1;
               @student.save
             end
             @detention_obj.delete
           elsif @detention_obj.employee_id == @employee.id
             @student = Student.find(@detention_obj.student_id)
-            if @student.number_of_detention>0
+            if !@student.number_of_detention.blank? && @student.number_of_detention.to_i>0
               @student.number_of_detention = @student.number_of_detention-1;
               @student.save
             end

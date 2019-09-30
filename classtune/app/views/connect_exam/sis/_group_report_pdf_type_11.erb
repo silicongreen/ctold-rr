@@ -150,7 +150,7 @@
                   <% unless @report_data['report']['no_exam_subject_resutl'].blank? %>
                     <% @report_data['report']['no_exam_subject_resutl'].each do |report| %>
 
-                    <%  if @all_subjects.include?(report['id'].to_i) && !report['subject_comment'].blank? %>
+                    <%  if @all_subjects.include?(report['id'].to_i) %>
                          <% total_subject = total_subject+1 %>
                         
                         <tr class="odd">
@@ -159,7 +159,14 @@
                           <% if @batch.course.course_name == "IV" or @batch.course.course_name == "V" or @batch.course.course_name == "VI" or @batch.course.course_name == "VII" %>
                             <td class="col-pdf">-</td>
                           <% end %>
-                          <td class="col-pdf"><b><%= report['subject_comment'] %></td>
+                          <td class="col-pdf"><b>
+
+                           <% unless report['subject_comment'].blank? %>       
+                            <%= report['subject_comment'] %>
+                           <% else %>
+                           -       
+                           <% end %>      
+                          </td>
                         </tr>
                       <% end %>
                     <% end %>
@@ -385,7 +392,7 @@
 <% end %>
 
 <% 
-  padding = (450-(total_subject.to_i*25))/(total_subject.to_f*2) 
+  padding = (500-(total_subject.to_i*25))/(total_subject.to_f*2) 
   padding = padding.round
 
   padding_comments = (1100-(total_comments_grade.to_i*25))/(total_comments_grade.to_f*2)

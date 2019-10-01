@@ -24,7 +24,7 @@
       <div class="hor_line"></div>
       <h4 align="center">For Subject Teacher</h4>
       
-      <div id ="main_info">
+     
           <table>
               <tr>
                  <% if !@employee.nil? %> 
@@ -38,9 +38,7 @@
                   <td align='right'><h4>Section : <%= @batch.course.section_name %></h4></td>
               </tr>    
           </table>    
-       
-      </div>
-      <br/>
+     
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>

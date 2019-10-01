@@ -74,15 +74,38 @@
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
-              </tr>    
+              </tr> 
+              <tr class="odd">
+                <td>Roll</td>
+                <td>Name</td>
+                <% @report_data['result']['ALL'].each do |rs| %>
+                  <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
 
-          <% elsif std_count>27 && extender ==1 %>
+                  <% colspan = colspan+1 %>
+                <% end %>  
+
+
+              </tr>
+              <% c = 'even' %>
+          <% elsif std_count>26 && extender ==1 %>
 
               <% std_count = 0 %>
               <% extender = 1 %>
               <tr class="page-break">
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr> 
+              <tr class="odd">
+                <td>Roll</td>
+                <td>Name</td>
+                <% @report_data['result']['ALL'].each do |rs| %>
+                  <td><%=  rs['name'] %> (<%=  rs['maximum_marks'] %>)</td>
+
+                  <% colspan = colspan+1 %>
+                <% end %>  
+
+
+              </tr>
+              <% c = 'even' %>
           <% end %>    
         
         

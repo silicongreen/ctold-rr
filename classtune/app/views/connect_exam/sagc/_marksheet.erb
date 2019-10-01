@@ -40,6 +40,7 @@
           </table>    
        
       </div>
+      <br/>
       <% unless @report_data.blank?  or  @report_data['result'].blank? %>
       <% c = 'even' %>
       <% full_mark = 0 %>
@@ -139,7 +140,15 @@
     {
         font-size: 21px !important;
     }
+#pdf-table tr.table-header td{
 
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
     #pdf-table tr.even td{
 
     padding: 3px !important;
@@ -147,6 +156,7 @@
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
+    font-size: 15px !important;
 }
 
 
@@ -156,6 +166,7 @@
     border-right: 0px solid #fff;
     border-top: 0px solid #fff;
     border-bottom: 0;
+    font-size: 15px !important;
 }
 #pdf-table tr.even td:last-child{
 
@@ -164,6 +175,7 @@
     border-right: 1px solid #000;
     border-top: 0px solid #fff;
     border-bottom: 0;
+    font-size: 15px !important;
 }
 #pdf-table tr.odd td:last-child{
 
@@ -172,5 +184,6 @@
     border-right: 1px solid #000;
     border-top: 0px solid #fff;
     border-bottom: 0;
+    font-size: 15px !important;
 }
 </style>    

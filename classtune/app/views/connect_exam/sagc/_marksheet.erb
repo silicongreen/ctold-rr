@@ -70,7 +70,7 @@
 
           <%  std_count = std_count+1; %>
           <% colspan = colspan+4 %>
-          <% if std_count>47 && extender ==0 %>
+          <% if std_count>20 && extender ==0 %>
 
               <% std_count = 0 %>
               <% extender = 1 %>
@@ -78,7 +78,7 @@
                   <td colspan="<%= colspan %>">&nbsp;</td>
               </tr>    
 
-          <% elsif std_count>53 && extender ==1 %>
+          <% elsif std_count>30 && extender ==1 %>
 
               <% std_count = 0 %>
               <% extender = 1 %>

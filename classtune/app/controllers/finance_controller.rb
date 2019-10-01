@@ -11696,13 +11696,15 @@ class FinanceController < ApplicationController
     row_loop = 1
     sl = 1
     @scholarships.each do |sc|
-      batch = sc.receiver.batch.nil? ? '' : sc.receiver.batch.course_section
-      type = sc.is_amount == true ? 'BDT'  : '%'
-      discount = sc.discount.to_s+type
-      data_row = [sl,sc.receiver.admission_no, sc.receiver.full_name, batch, sc.name, sc.finance_fee_particular_category.name, discount,'' ]
-      new_book.worksheet(0).insert_row(row_loop, data_row)
-      row_loop+=1
-      sl+=1
+      unless sc.receiver.blank?
+        batch = sc.receiver.batch.nil? ? '' : sc.receiver.batch.course_section
+        type = sc.is_amount == true ? 'BDT'  : '%'
+        discount = sc.discount.to_s+type
+        data_row = [sl,sc.receiver.admission_no, sc.receiver.full_name, batch, sc.name, sc.finance_fee_particular_category.name, discount,'' ]
+        new_book.worksheet(0).insert_row(row_loop, data_row)
+        row_loop+=1
+        sl+=1
+      end
     end
     
     sheet1.add_header(Configuration.get_config_value('InstitutionName'))

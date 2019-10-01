@@ -243,7 +243,16 @@ class TransportController < ApplicationController
   def pdf_report
     @transport = Transport.find_all_by_vehicle_id(params[:id])
     @vehicle = Vehicle.find_by_id(params[:id])
-    render :pdf=>'pdf_report'
+    render :pdf => 'pdf_report',
+        :orientation => 'Portrait', :zoom => 1.00,
+        :page_size => 'A4',
+        :margin => {    :top=> 10,
+        :bottom => 10,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+    
   end
 
   def ajax_transport_details

@@ -22,6 +22,24 @@
 
 
 <div id="page-yield" class="available_sections1">
+  <table id="pdf-table" class="center-header" width="100%" cellspacing="0">
+    <tr><td width="10%">
+            <% if MultiSchool.current_school.id == 352 %>
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/352/logo-sagc.png")),:width=> '85%' %>
+
+            <% else %>
+              <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ current_school_detail.logo.url),:width=> '85%' %>
+            <% end %>
+        </td>
+        <td width="90%" style="vertical-align:top;">
+            <font size="6"><b><%=Configuration.get_config_value('InstitutionName'); %></b></font><br/>
+            <% if MultiSchool.current_school.id == 352 %>
+            <font size="5">Dhaka Cantonment, Dhaka-1206</font><br/>
+            <font size="5">Phone:9833306 web: www.sagc.edu.bd</font>
+            <% end %>
+        </td>
+    </tr>     
+</table>
   <div class="page1"></div>
   <div class="section1 row" style ="height:140px;">
     <center>
@@ -37,8 +55,7 @@
     </center>
 
   </div>
-  <div class="section1 row" id ="table-headers" >
-    <center>
+
       <table id="pdf-table" width="100%">
         <tr class="table-header">
           <td class="col-pdf sl_no"><%= t('sl_no') %></td>
@@ -47,78 +64,122 @@
           <td class="col-pdf rcpt_no"><%= "#{t('fare')}( #{currency})" %></td>
 
         </tr>
-      </table>
-    </center>
-  </div>
-  <% index = 0 %>
-  <% total = 0 %>
+      
+
+
   <% i = 0 %>
-  <% rows_per_page=22 %>
+
   <% c= 'even' %>
+  <% std_count = 0 %>
+  <% extender = 0 %>
 
   <% @transport.each_with_index do |d,i| %>
     <% unless d.receiver.nil? %>
-      <div class="section1 row" >
-        <center>
-          <table id="pdf-table" width="100%">
+   
+            <%  std_count = std_count+1; %>
+            <% if std_count>19 && extender ==0 %>
+
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr> 
+              <tr class="odd">
+                <td class="col-pdf sl_no"><%= t('sl_no') %></td>
+          <td class="col-pdf name"> <%= t('name') %> </td>
+          <td class="col-pdf desc"> <%= t('route') %> </td>
+          <td class="col-pdf rcpt_no"><%= "#{t('fare')}( #{currency})" %></td>  
+
+
+              </tr>
+              <% c = 'even' %>
+          <% elsif std_count>26 && extender ==1 %>
+
+              <% std_count = 0 %>
+              <% extender = 1 %>
+              <tr class="page-break">
+                  <td colspan="<%= colspan %>">&nbsp;</td>
+              </tr> 
+              <tr class="odd">
+                <td class="col-pdf sl_no"><%= t('sl_no') %></td>
+                <td class="col-pdf name"> <%= t('name') %> </td>
+                <td class="col-pdf desc"> <%= t('route') %> </td>
+                <td class="col-pdf rcpt_no"><%= "#{t('fare')}( #{currency})" %></td>
+
+
+              </tr>
+              <% c = 'even' %>
+          <% end %>
             <tr class="<%= cycle(c,(["odd","even"]-[c]).first) %>">
               <td class="col-pdf sl_no"><%= i+1 %></td>
               <td class="col-pdf name"><%= d.receiver.full_name unless d.receiver.nil? %></td>
               <td class="col-pdf desc"><%= d.route.destination unless d.route.nil? %></td>
               <td class="col-pdf rcpt_no"><%= precision_label d.bus_fare %></td>
             </tr>
-          </table>
-        </center>
-      </div>
+       
     <%end%>
   <% end %>
-  <div class="section1 row" >
-    <center>
-      <table id="pdf-table"  width="100%">
-        <tr >
-          <td class="col-pdf sl_no"></td>
-          <td class="col-pdf name"></td>
-          <td class="col-pdf desc"> </td>
-          <td class="col-pdf rcpt_no"></td>
-        </tr>
-      </table>
-    </center>
+            
+  </table>
+
 </div>
-</div>
-<% if params[:page_height] %>
-  <script type="text/javascript">
-    var body = document.body,
-    html = document.documentElement;
-    var pg_height = parseInt(<%= params[:page_height] %>)
-    var header = $("table-headers")
-    var page = new Element('div',{'class' : 'page1'});
-    var pageBreak = new Element('div',{'class' : 'page-break1'});
-    var insertPageBreak = function(){body.appendChild(pageBreak.cloneNode(true))};
-    var insertPage = function(){body.appendChild(page.cloneNode(true));};
-    var currPage = function(){return $$('.page1').last()};
-        var insertHeader = function(){
-      header1 = header.cloneNode(true);
-      header1.style.marginTop="50px";
-      currPage().appendChild(header1.cloneNode(true));};
-    var current_page_height=0;
-    var i=0
-    $$('.available_sections1 .section1').each(function(el){
-      a = parseInt(el.getHeight());
-      c=current_page_height+a;
-      current_page_height=c;
-      if(c>pg_height){
-        current_page_height=a
-        body.appendChild(new Element('div',{'id' : 'page-blank_'+i, 'class' : 'page-blank'}))
-        document.getElementById('page-blank_'+i).style.height= (c-pg_height)+'px';
-        document.getElementById('page-blank_'+i).innerHTML="&nbsp;"/* if a div doesnt have any content it may not display.. set height will not work */
-        i+=1
-        //el.style.marginTop="50px"; /* for this border-top is coming, top section of each page */
-        insertPage();
-        insertPageBreak();
-        insertHeader();
-        current_page_height = (current_page_height + header.getHeight() + 50)
-      }
-      currPage().appendChild(el);
-    });
-  </script>
-<% end %>
+
+<style>
+    .page-break td{
+    height: 50px;
+    border: 1px solid #fff;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+    #page-yield *
+    {
+        font-size: 21px !important;
+    }
+#pdf-table tr.table-header td{
+
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
+    #pdf-table tr.even td{
+
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
+
+
+#pdf-table tr.odd td{
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 0px solid #fff;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
+#pdf-table tr.even td:last-child{
+
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
+#pdf-table tr.odd td:last-child{
+
+    padding: 3px !important;
+    border: 1px solid #000000;
+    border-right: 1px solid #000;
+    border-top: 0px solid #fff;
+    border-bottom: 0;
+    font-size: 15px !important;
+}
+</style> 
+

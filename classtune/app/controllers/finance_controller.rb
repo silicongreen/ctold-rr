@@ -5933,18 +5933,18 @@ class FinanceController < ApplicationController
                 @due_date = @fee_collection.due_date
                 @paid_fees = @fee.finance_transactions
 
+                exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+                unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                  exclude_particular_ids = exclude_particular_ids
+                else
+                  exclude_particular_ids = [0]
+                end
+                  
                 if advance_fee_collection
                   fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
                   fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
                   if fee_collection_advances_particular.blank?
                     fee_collection_advances_particular[0] = 0
-                  end
-                  
-                  exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-                  unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-                    exclude_particular_ids = exclude_particular_ids
-                  else
-                    exclude_particular_ids = [0]
                   end
                   
                   if fee_collection_advances_particular.include?(0)
@@ -6173,18 +6173,18 @@ class FinanceController < ApplicationController
                 @due_date = @fee_collection.due_date
                 @paid_fees = @fee.finance_transactions
 
+                exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+                unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+                  exclude_particular_ids = exclude_particular_ids
+                else
+                  exclude_particular_ids = [0]
+                end
+                
                 if advance_fee_collection
                   fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
                   fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
                   if fee_collection_advances_particular.blank?
                     fee_collection_advances_particular[0] = 0
-                  end
-                  
-                  exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-                  unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-                    exclude_particular_ids = exclude_particular_ids
-                  else
-                    exclude_particular_ids = [0]
                   end
                   
                   if fee_collection_advances_particular.include?(0)
@@ -6411,18 +6411,18 @@ class FinanceController < ApplicationController
             @due_date = @fee_collection.due_date
             @paid_fees = @fee.finance_transactions
 
+            exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+            unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+              exclude_particular_ids = exclude_particular_ids
+            else
+              exclude_particular_ids = [0]
+            end
+            
             if advance_fee_collection
               fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
               fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
               if fee_collection_advances_particular.blank?
                 fee_collection_advances_particular[0] = 0
-              end
-              
-              exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-              unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-                exclude_particular_ids = exclude_particular_ids
-              else
-                exclude_particular_ids = [0]
               end
               
               if fee_collection_advances_particular.include?(0)
@@ -6623,14 +6623,14 @@ class FinanceController < ApplicationController
           @due_date = @fee_collection.due_date
           @paid_fees = @fee.finance_transactions
           
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+            exclude_particular_ids = exclude_particular_ids
+          else
+            exclude_particular_ids = [0]
+          end
+          
           if advance_fee_collection
-            
-            exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-            unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-              exclude_particular_ids = exclude_particular_ids
-            else
-              exclude_particular_ids = [0]
-            end
             
             if @fee_collection_advances.particular_id == 0
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
@@ -6804,14 +6804,14 @@ class FinanceController < ApplicationController
           @due_date = @fee_collection.due_date
           @paid_fees = @fee.finance_transactions
           
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+            exclude_particular_ids = exclude_particular_ids
+          else
+            exclude_particular_ids = [0]
+          end
+          
           if advance_fee_collection
-            
-            exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-            unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-              exclude_particular_ids = exclude_particular_ids
-            else
-              exclude_particular_ids = [0]
-            end
             
             if @fee_collection_advances.particular_id == 0
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.studၥnt_category or par.receiver==@batch) }
@@ -6990,14 +6990,14 @@ class FinanceController < ApplicationController
           @due_date = @fee_collection.due_date
           @paid_fees = @fee.finance_transactions
           
+          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+            exclude_particular_ids = exclude_particular_ids
+          else
+            exclude_particular_ids = [0]
+          end
+          
           if advance_fee_collection
-            exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-            unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-              exclude_particular_ids = exclude_particular_ids
-            else
-              exclude_particular_ids = [0]
-            end
-            
             if @fee_collection_advances.particular_id == 0
               fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
             else
@@ -7668,6 +7668,13 @@ class FinanceController < ApplicationController
         #abort(@paid_fees.map(&:id).inspect)
         @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
+        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+          exclude_particular_ids = exclude_particular_ids
+        else
+          exclude_particular_ids = [0]
+        end
+          
         if advance_fee_collection
           fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
           fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
@@ -7675,13 +7682,6 @@ class FinanceController < ApplicationController
             fee_collection_advances_particular[0] = 0
           end
           
-          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-            exclude_particular_ids = exclude_particular_ids
-          else
-            exclude_particular_ids = [0]
-          end
-          abort(exclude_particular_ids.inspect)
           if fee_collection_advances_particular.include?(0)
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
           else
@@ -7847,18 +7847,18 @@ class FinanceController < ApplicationController
     
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
     
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+    
     if advance_fee_collection
       fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
       fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
       if fee_collection_advances_particular.blank?
         fee_collection_advances_particular[0] = 0
-      end
-      
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
       end
       
       if fee_collection_advances_particular.include?(0)
@@ -8415,14 +8415,14 @@ class FinanceController < ApplicationController
       
         @all_paid_fees[student.id] = @all_financefee[student.id].finance_transactions
         
+        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+          exclude_particular_ids = exclude_particular_ids
+        else
+          exclude_particular_ids = [0]
+        end
+        
         if advance_fee_collection
-          
-          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-            exclude_particular_ids = exclude_particular_ids
-          else
-            exclude_particular_ids = [0]
-          end
           
           if @fee_collection_advances.particular_id == 0
             @all_fee_particulars[student.id] = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch)}
@@ -8545,18 +8545,18 @@ class FinanceController < ApplicationController
       @paid_fees = @financefee.finance_transactions
       @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
       
+      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+        exclude_particular_ids = exclude_particular_ids
+      else
+        exclude_particular_ids = [0]
+      end
+      
       if advance_fee_collection
         fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
         fee_collection_advances_particular = fee_collection_advances_particular.reject { |f| f.to_s.empty? }
         if fee_collection_advances_particular.blank?
           fee_collection_advances_particular[0] = 0
-        end
-        
-        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-          exclude_particular_ids = exclude_particular_ids
-        else
-          exclude_particular_ids = [0]
         end
         
         if fee_collection_advances_particular.include?(0)
@@ -8906,15 +8906,15 @@ class FinanceController < ApplicationController
 
       @due_date = @fee_collection.due_date
 
+      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+        exclude_particular_ids = exclude_particular_ids
+      else
+        exclude_particular_ids = [0]
+      end
+      
       @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
       if advance_fee_collection
-        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-          exclude_particular_ids = exclude_particular_ids
-        else
-          exclude_particular_ids = [0]
-        end
-        
         if @fee_collection_advances.particular_id == 0
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
         else
@@ -9023,15 +9023,15 @@ class FinanceController < ApplicationController
 
       @due_date = @fee_collection.due_date
 
+      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+        exclude_particular_ids = exclude_particular_ids
+      else
+        exclude_particular_ids = [0]
+      end
+      
       @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
       if advance_fee_collection
-        
-        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-          exclude_particular_ids = exclude_particular_ids
-        else
-          exclude_particular_ids = [0]
-        end
         
         if @fee_collection_advances.particular_id == 0
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
@@ -9194,14 +9194,14 @@ class FinanceController < ApplicationController
 
         @paid_fees = @financefee.finance_transactions
 
+        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+          exclude_particular_ids = exclude_particular_ids
+        else
+          exclude_particular_ids = [0]
+        end
+        
         if advance_fee_collection
-          
-          exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-          unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-            exclude_particular_ids = exclude_particular_ids
-          else
-            exclude_particular_ids = [0]
-          end
           
           if @fee_collection_advances.particular_id == 0
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@financefee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@financefee.batch) }
@@ -9405,14 +9405,14 @@ class FinanceController < ApplicationController
     @due_date = @fee_collection.due_date
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
     
-    if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
     
+    if advance_fee_collection
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
       else
@@ -9496,14 +9496,14 @@ class FinanceController < ApplicationController
     @paid_fees = @financefee.finance_transactions
     @due_date = @fee_collection.due_date
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+      
     if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
       else
@@ -9590,14 +9590,14 @@ class FinanceController < ApplicationController
     
     @due_date = @fee_collection.due_date
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+      
     if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
       else
@@ -9843,15 +9843,15 @@ class FinanceController < ApplicationController
       @fee_collection_advances = FinanceFeeAdvance.find(@advance_id)
     end
     
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+    
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted IS NOT NULL"])
     if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@finance_fee.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@finance_fee.batch) }
       else
@@ -10001,14 +10001,14 @@ class FinanceController < ApplicationController
 
     @paid_fees = @financefee.finance_transactions
 
-    if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
     
+    if advance_fee_collection
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       else
@@ -11117,6 +11117,13 @@ class FinanceController < ApplicationController
     @paid_fees = @financefee.finance_transactions
 
 
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+    
     if advance_fee_collection
       fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
       fee_collection_advances_particular = fee_collection_advances_particular.reject { |a| a.to_s.empty? }
@@ -11124,13 +11131,7 @@ class FinanceController < ApplicationController
         fee_collection_advances_particular[0] = 0
       end
       
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
+      
       if fee_collection_advances_particular.include?(0)
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
       else
@@ -11394,15 +11395,15 @@ class FinanceController < ApplicationController
 
       @paid_fees = @financefee.finance_transactions
 
+      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+        exclude_particular_ids = exclude_particular_ids
+      else
+        exclude_particular_ids = [0]
+      end
+      
       @refund_amount=0
       if advance_fee_collection
-        exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-        unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-          exclude_particular_ids = exclude_particular_ids
-        else
-          exclude_particular_ids = [0]
-        end
-    
         if @fee_collection_advances.particular_id == 0
           @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
         else
@@ -11521,15 +11522,15 @@ class FinanceController < ApplicationController
 
     @paid_fees = @financefee.finance_transactions
 
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+    
     @refund_amount=0
     if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
       if @fee_collection_advances.particular_id == 0
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and batch_id=#{@student.batch_id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@student.batch) }
       else
@@ -11990,14 +11991,14 @@ class FinanceController < ApplicationController
     #abort(@paid_fees.map(&:id).inspect)
     @fee_category = FinanceFeeCategory.find(@fee_collection.fee_category_id,:conditions => ["is_deleted = false"])
 
+    exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
+    unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
+      exclude_particular_ids = exclude_particular_ids
+    else
+      exclude_particular_ids = [0]
+    end
+      
     if advance_fee_collection
-      exclude_particular_ids = StudentExcludeParticular.find_all_by_student_id_and_fee_collection_id(@student.id,@date.id).map(&:fee_particular_id)
-      unless exclude_particular_ids.nil? or exclude_particular_ids.empty? or exclude_particular_ids.blank?
-        exclude_particular_ids = exclude_particular_ids
-      else
-        exclude_particular_ids = [0]
-      end
-    
       fee_collection_advances_particular = @fee_collection_advances.map(&:particular_id)
       if fee_collection_advances_particular.include?(0)
         @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }

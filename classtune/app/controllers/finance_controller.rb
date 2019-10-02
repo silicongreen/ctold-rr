@@ -7681,7 +7681,7 @@ class FinanceController < ApplicationController
           else
             exclude_particular_ids = [0]
           end
-          
+          abort(exclude_particular_ids.inspect)
           if fee_collection_advances_particular.include?(0)
             @fee_particulars = @date.finance_fee_particulars.all(:conditions=>"finance_fee_particulars.id not in (#{exclude_particular_ids.join(",")}) and is_deleted=#{false} and batch_id=#{@batch.id}").select{|par|  (par.receiver.present?) and (par.receiver==@student or par.receiver==@student.student_category or par.receiver==@batch) }
           else

@@ -67,7 +67,7 @@
           <%
               hour_out = "16"
               min_out = "00"
-              unless emp_card_att[0].blank?
+              unless emp_card_att.blank?
                 explode_time = emp_card_att[0].max_time.split(":")
                 hour_out = explode_time[0]
                 min_out = explode_time[1]
@@ -77,7 +77,7 @@
         </td>
         <td class="right">
             <% checked = ""
-              unless emp_card_att[0].blank?
+              unless emp_card_att.blank?
                 checked = "checked='checked'"
               end
             %>

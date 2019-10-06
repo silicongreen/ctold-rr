@@ -1447,8 +1447,9 @@ ORDER BY emp.first_name ASC"
       @date_today = @local_tzone_time.to_date
       @report_date = @date_today.strftime("%Y-%m-%d")
     end
-    @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date = '" + @report_date + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
-    
+    unless employess_id.blank?
+      @cardAttendances = CardAttendance.find(:all, :select=>'user_id, date, min( time ) as min_time, max(time) as max_time',:conditions=>"date = '" + @report_date + "' and type = 1 and user_id in (" + employess_id.join(",") + ")", :group => "date, user_id", :order => 'date asc')
+    end
 
     render :update do |page|
       page.replace_html 'employee_list', :partial => 'employee_view_all_list', :object => @employees

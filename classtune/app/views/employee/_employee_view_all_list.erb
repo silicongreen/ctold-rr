@@ -47,12 +47,14 @@
         <td class="col-3"><%= link_to "#{e.full_name}", :controller=>"employee", :action=>"profile", :id=>e.id %></td>
         <td class="col-3"><%=e.employee_number %></td>
         <td class="col-3"><%=e.employee_department.name %></td>
-        <% emp_card_att = @cardAttendances.select{|ce| e.user_id == ce.user_id } %>
+        <% unless @cardAttendances.blank? %>
+          <% emp_card_att = @cardAttendances.select{|ce| e.user_id == ce.user_id } %>
+        <% end %>
         <td class="col-3">
           <%
               hour_in = "08"
               min_in = "00"
-              unless emp_card_att[0].blank?
+              unless emp_card_att.blank?
                 explode_time = emp_card_att[0].min_time.split(":")
                 hour_in = explode_time[0]
                 min_in = explode_time[1]

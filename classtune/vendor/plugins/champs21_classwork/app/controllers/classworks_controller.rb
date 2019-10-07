@@ -129,10 +129,10 @@ class ClassworksController < ApplicationController
     end
     
     if batch_name.length == 0
-        @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
-          batches = Batch.find_by_course_id(course_id)
-          batches
-        }
+      @batch_data = Rails.cache.fetch("batch_data_#{course_id}"){
+        batches = Batch.find_by_course_id(course_id)
+        batches
+      }
     else
       @batch_data = Rails.cache.fetch("batch_data_#{course_id}_#{batch_name.parameterize("_")}"){
         batches = Batch.find_by_course_id_and_name(course_id, batch_name)
@@ -152,10 +152,10 @@ class ClassworksController < ApplicationController
       @normal_subjects = Subject.find_all_by_batch_id(@batch,:conditions=>"elective_group_id IS NULL AND is_deleted = false")
       @student_electives =StudentsSubject.all(:conditions=>{:batch_id=>@batch,:subjects=>{:is_deleted=>false}},:joins=>[:subject])
       @elective_subjects = Subject.find_all_by_batch_id(@batch.id,:conditions=>["elective_group_id IS NOT NULL AND is_deleted = false"])
-#      @elective_subjects = []
-#      @student_electives.each do |e|
-#        @elective_subjects.push Subject.find(e.subject_id)
-#      end
+      #      @elective_subjects = []
+      #      @student_electives.each do |e|
+      #        @elective_subjects.push Subject.find(e.subject_id)
+      #      end
       @subjects = @normal_subjects+@elective_subjects
     end
     
@@ -307,15 +307,34 @@ class ClassworksController < ApplicationController
 
 
   def subjects_students_list
-    @subject = Subject.find_by_id params[:subject_id]
+    
+    @subject = Subject.find_all_by_id(params[:subject_id].split(","))
     unless @subject.nil?
-      if @subject.elective_group_id.nil?
-        @students = @subject.batch.students
-      else
-        assigned_students = StudentsSubject.find_all_by_subject_id(@subject.id)
-        @students = assigned_students.map{|s| s.student}
-        @students=@students.compact
+      @students = []
+      @subject.each do |sub|
+        if sub.elective_group_id.nil?
+          students_all = Student.find_all_by_batch_id(sub.batch_id)
+          students_all.each do |std|
+            @students << std
+          end
+        else
+          assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(sub.id,sub.batch_id)
+          unless assigned_students.blank?
+            assigned_students.each do |std|
+              unless std.student.blank?
+                unless std.student.batch_id.blank?
+                  if batches.include?(std.student.batch_id)
+                    @students << std.student
+                  end
+                end
+              end 
+            end
+          end
+          
+        end
       end
+      @students=@students.compact
+      @students.reject!{|e| e.is_deleted == true}
     end
     render(:update) do |page|
       page.replace_html 'subjects_student_list', :partial=>"subjects_student_list"
@@ -341,7 +360,7 @@ class ClassworksController < ApplicationController
         @students = @students.sort_by{|s| s.full_name}
       elsif @status == "answered"
         @answers = @classwork.classwork_answers
-#        @answers  = @answers.sort_by{|a| a.updated_at}
+        #        @answers  = @answers.sort_by{|a| a.updated_at}
         @answers  = @answers.sort_by{|a| (a && a.updated_at(:length)) || 0}
         @students = @answers.map{|a| a.student }
       elsif @status== "pending"
@@ -375,90 +394,114 @@ class ClassworksController < ApplicationController
     student_ids = params[:classwork][:student_ids]
     params[:classwork].delete(:student_ids)
     @subject = Subject.find_by_id(params[:classwork][:subject_id])
-    @classwork = Classwork.new(params[:classwork])
-    @classwork.student_list = student_ids.join(",") unless student_ids.nil?
-    @classwork.employee = current_user.employee_record
+    subject = params[:classwork][:subject_id]
+    if !subject.kind_of?(Array)
+      @subjects = []
+      @subjects << subject
+    else
+      @subjects = subject
+    end 
+    save = false
+    if !@subjects.blank? && !student_ids.blank?
+      @all_students = Student.find_all_by_id(student_ids)
+      @subjects.each do |sub_id|
+        params[:classwork][:subject_id] = sub_id
+        @subject = Subject.find_by_id(sub_id)
+        @classwork = Classwork.new(params[:classwork])
+        all_std = []
+        @all_students.each do |std|
+          if @subject.batch_id == std.batch_id
+            all_std <<  std.id
+          end
+        end
+        @classwork.student_list = all_std.join(",") unless all_std.nil?
+        @classwork.employee = current_user.employee_record
     
-    students = Student.find_all_by_id(student_ids)
-    available_user_ids = []
-    batch_ids = {}
-    student_ids = {}
+        students = Student.find_all_by_id(all_std)
+        available_user_ids = []
+        batch_ids = {}
+        student_ids = {}
 
-    students.each do |st|
-      available_user_ids << st.user_id
-      batch_ids[st.user_id] = st.batch_id
-      student_ids[st.user_id] = st.id
-      @student = Student.find(st.id)
-      unless @student.student_guardian.empty?
-          guardians = @student.student_guardian
-          guardians.each do |guardian|
-#            guardian = Guardian.find(@student.immediate_contact_id)
+        students.each do |st|
+          available_user_ids << st.user_id
+          batch_ids[st.user_id] = st.batch_id
+          student_ids[st.user_id] = st.id
+          @student = Student.find(st.id)
+          unless @student.student_guardian.empty?
+            guardians = @student.student_guardian
+            guardians.each do |guardian|
+              #            guardian = Guardian.find(@student.immediate_contact_id)
 
-            unless guardian.user_id.nil?
-              available_user_ids << guardian.user_id
-              batch_ids[guardian.user_id] = @student.batch_id
-              student_ids[guardian.user_id] = @student.id
-            end
-          end  
-      end
-    end
-    #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
-    unless @subject.nil?
-      if @classwork.save
-        if @classwork.is_published==1
-          Delayed::Job.enqueue(
-            DelayedReminderJob.new( :sender_id  => current_user.id,
-              :recipient_ids => available_user_ids,
-              :subject=>"#{t('new_classwork_added')} : "+params[:classwork][:title],
-              :rtype=>31,
-              :rid=>@classwork.id,
-              :student_id => student_ids,
-              :batch_id => batch_ids,
-              :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
-          )
-          @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
-          if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
-            all_admin = User.find_all_by_admin_and_is_deleted(true,false)
-            available_user_ids = all_admin.map(&:id)
-            batch = @classwork.subject.batch
-            unless batch.blank?
-              batch_tutor = batch.employees
-              unless batch_tutor.blank?
-                batch_tutor.each do |employee|
-                  if employee.all_access.to_i == 1
-                    available_user_ids << employee.user_id
+              unless guardian.user_id.nil?
+                available_user_ids << guardian.user_id
+                batch_ids[guardian.user_id] = @student.batch_id
+                student_ids[guardian.user_id] = @student.id
+              end
+            end  
+          end
+        end
+        #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+        unless @subject.nil?
+          if @classwork.save
+            if @classwork.is_published==1
+              Delayed::Job.enqueue(
+                DelayedReminderJob.new( :sender_id  => current_user.id,
+                  :recipient_ids => available_user_ids,
+                  :subject=>"#{t('new_classwork_added')} : "+params[:classwork][:title],
+                  :rtype=>31,
+                  :rid=>@classwork.id,
+                  :student_id => student_ids,
+                  :batch_id => batch_ids,
+                  :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
+              )
+              @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+              if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+                all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+                available_user_ids = all_admin.map(&:id)
+                batch = @classwork.subject.batch
+                unless batch.blank?
+                  batch_tutor = batch.employees
+                  unless batch_tutor.blank?
+                    batch_tutor.each do |employee|
+                      if employee.all_access.to_i == 1
+                        available_user_ids << employee.user_id
+                      end
+                    end
                   end
                 end
-              end
+                unless available_user_ids.blank?
+                  Delayed::Job.enqueue(
+                    DelayedReminderJob.new( :sender_id  => current_user.id,
+                      :recipient_ids => available_user_ids,
+                      :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
+                      :rtype=>31,
+                      :rid=>@classwork.id,
+                      :student_id => 0,
+                      :batch_id => 0,
+                      :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
+                  )
+                end
+              end 
             end
-            unless available_user_ids.blank?
-                Delayed::Job.enqueue(
-                  DelayedReminderJob.new( :sender_id  => current_user.id,
-                    :recipient_ids => available_user_ids,
-                    :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
-                    :rtype=>31,
-                    :rid=>@classwork.id,
-                    :student_id => 0,
-                    :batch_id => 0,
-                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
-                )
-              end
-          end 
+            flash[:notice] = "#{t('new_classwork_sucessfuly_created')}"
+            save = true
+          else
+            if current_user.employee?
+              @subjects = current_user.employee_record.subjects
+        
+              @subjects.reject! {|s| !s.batch.is_active?}
+              @students = @subject.batch.students
+            end
+          end
+        else
+          unless @classwork.save
+            @subjects = current_user.employee_record.subjects
+          end
         end
-        flash[:notice] = "#{t('new_classwork_sucessfuly_created')}"
+      end
+      if save
         redirect_to :action=>:index
       else
-        if current_user.employee?
-          @subjects = current_user.employee_record.subjects
-        
-          @subjects.reject! {|s| !s.batch.is_active?}
-          @students = @subject.batch.students
-        end
-        render :action=>:new
-      end
-    else
-      unless @classwork.save
-        @subjects = current_user.employee_record.subjects
         render :action=>:new
       end
     end
@@ -545,29 +588,29 @@ class ClassworksController < ApplicationController
           student_ids[st.user_id] = st.id
           @student = Student.find(st.id)
           unless @student.student_guardian.empty?
-              guardians = @student.student_guardian
-              guardians.each do |guardian|
-    #            guardian = Guardian.find(@student.immediate_contact_id)
+            guardians = @student.student_guardian
+            guardians.each do |guardian|
+              #            guardian = Guardian.find(@student.immediate_contact_id)
 
-                unless guardian.user_id.nil?
-                  available_user_ids << guardian.user_id
-                  batch_ids[guardian.user_id] = @student.batch_id
-                  student_ids[guardian.user_id] = @student.id
-                end
-              end  
+              unless guardian.user_id.nil?
+                available_user_ids << guardian.user_id
+                batch_ids[guardian.user_id] = @student.batch_id
+                student_ids[guardian.user_id] = @student.id
+              end
+            end  
           end
         end
         #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
         Delayed::Job.enqueue(
-            DelayedReminderJob.new( :sender_id  => current_user.id,
-              :recipient_ids => available_user_ids,
-              :subject=>"#{t('new_classwork_added')} : "+@classwork.title,
-              :rtype=>31,
-              :rid=>@classwork.id,
-              :student_id => student_ids,
-              :batch_id => batch_ids,
-              :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
-          )
+          DelayedReminderJob.new( :sender_id  => current_user.id,
+            :recipient_ids => available_user_ids,
+            :subject=>"#{t('new_classwork_added')} : "+@classwork.title,
+            :rtype=>31,
+            :rid=>@classwork.id,
+            :student_id => student_ids,
+            :batch_id => batch_ids,
+            :body=>"#{t('classwork_added_for')} #{@subject.name}  <br/>#{t('view_reports_classwork')}")
+        )
         @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
         if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
           all_admin = User.find_all_by_admin_and_is_deleted(true,false)
@@ -584,16 +627,16 @@ class ClassworksController < ApplicationController
             end
           end
           unless available_user_ids.blank?
-              Delayed::Job.enqueue(
-                DelayedReminderJob.new( :sender_id  => current_user.id,
-                    :recipient_ids => available_user_ids,
-                    :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
-                    :rtype=>31,
-                    :rid=>@classwork.id,
-                    :student_id => 0,
-                    :batch_id => 0,
-                    :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
-                )
+            Delayed::Job.enqueue(
+              DelayedReminderJob.new( :sender_id  => current_user.id,
+                :recipient_ids => available_user_ids,
+                :subject=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}",
+                :rtype=>31,
+                :rid=>@classwork.id,
+                :student_id => 0,
+                :batch_id => 0,
+                :body=>"New classwork '#{@classwork.title}' added for #{@subject.name}(Class : #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@classwork.employee.full_name}. <br/>#{t('view_reports_classwork')}")
+            )
           end
         end
       end

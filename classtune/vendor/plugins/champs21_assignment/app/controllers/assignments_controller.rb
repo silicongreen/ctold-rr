@@ -611,26 +611,33 @@ class AssignmentsController < ApplicationController
 
 
   def subjects_students_list
-    @subject = Subject.find_by_id params[:subject_id]
+    
+    @subject = Subject.find_all_by_id(params[:subject_id].split(","))
     unless @subject.nil?
-      if @subject.elective_group_id.nil?
-        @students = @subject.batch.students
-      else
-        assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(@subject.id,@subject.batch_id)
-        @students = []
-        unless assigned_students.blank?
-          assigned_students.each do |std|
-            unless std.student.blank?
-              unless std.student.batch_id.blank?
-                if std.student.batch_id == @subject.batch_id
-                  @students << std.student
-                end
-              end
-            end 
+      @students = []
+      @subject.each do |sub|
+        if sub.elective_group_id.nil?
+          students_all = Student.find_all_by_batch_id(sub.batch_id)
+          students_all.each do |std|
+            @students << std
           end
+        else
+          assigned_students = StudentsSubject.find_all_by_subject_id_and_batch_id(sub.id,sub.batch_id)
+          unless assigned_students.blank?
+            assigned_students.each do |std|
+              unless std.student.blank?
+                unless std.student.batch_id.blank?
+                  if batches.include?(std.student.batch_id)
+                    @students << std.student
+                  end
+                end
+              end 
+            end
+          end
+          
         end
-        @students=@students.compact
       end
+      @students=@students.compact
       @students.reject!{|e| e.is_deleted == true}
     end
     render(:update) do |page|
@@ -691,132 +698,161 @@ class AssignmentsController < ApplicationController
     
     student_ids = params[:assignment][:student_ids]
     params[:assignment].delete(:student_ids)
-    @subject = Subject.find_by_id(params[:assignment][:subject_id])
-    @assignment = Assignment.new(params[:assignment])
-    @assignment.student_list = student_ids.join(",") unless student_ids.nil?
-    @assignment.employee = current_user.employee_record
-    
-    @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
-    if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0        
-      @assignment.is_published = 2
-    end
-    
-    students = Student.find_all_by_id(student_ids)
-    available_user_ids = []
-    batch_ids = {}
-    student_ids = {}
-
-    students.each do |st|
-      available_user_ids << st.user_id
-      batch_ids[st.user_id] = st.batch_id
-      student_ids[st.user_id] = st.id
-      @student = Student.find(st.id)
-      unless @student.student_guardian.empty?
-        guardians = @student.student_guardian
-        guardians.each do |guardian|
-          #            guardian = Guardian.find(@student.immediate_contact_id)
-
-          unless guardian.user_id.nil?
-            available_user_ids << guardian.user_id
-            batch_ids[guardian.user_id] = @student.batch_id
-            student_ids[guardian.user_id] = @student.id
+    subject = params[:assignment][:subject_id]
+    if !subject.kind_of?(Array)
+      @subjects = []
+      @subjects << subject
+    else
+      @subjects = subject
+    end  
+    save = false
+    if !@subjects.blank? && !student_ids.blank?
+      @all_students = Student.find_all_by_id(student_ids)
+      @subjects.each do |sub_id|
+        params[:assignment][:subject_id] = sub_id
+        @subject = Subject.find_by_id(sub_id)
+        
+        @assignment = Assignment.new(params[:assignment])
+        
+       
+        all_std = []
+        @all_students.each do |std|
+          if @subject.batch_id == std.batch_id
+            all_std <<  std.id
           end
-        end  
-      end
-    end
-    #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
-    unless @subject.nil?
-      if @assignment.save
-        if @assignment.is_published==1
-          Delayed::Job.enqueue(
-            DelayedReminderJob.new( :sender_id  => current_user.id,
-              :recipient_ids => available_user_ids,
-              :subject=>"#{t('new_homework_added')} : "+params[:assignment][:title],
-              :rtype=>4,
-              :rid=>@assignment.id,
-              :student_id => student_ids,
-              :batch_id => batch_ids,
-              :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
-          )
-          @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
-          if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
-            all_admin = User.find_all_by_admin_and_is_deleted(true,false)
-            available_user_ids = all_admin.map(&:id)
-            batch = @assignment.subject.batch
-            unless batch.blank?
-              batch_tutor = batch.employees
-              unless batch_tutor.blank?
-                batch_tutor.each do |employee|
-                  if employee.all_access.to_i == 1
-                    available_user_ids << employee.user_id
+        end
+        
+        @assignment.student_list = all_std.join(",") unless all_std.nil?
+        @assignment.employee = current_user.employee_record
+        
+        @config = Configuration.find_by_config_key('HomeworkWillForwardOnly')
+        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0        
+          @assignment.is_published = 2
+        end
+        
+        students = Student.find_all_by_id(all_std)
+        available_user_ids = []
+        batch_ids = {}
+        student_ids = {}
+        
+        students.each do |st|
+          available_user_ids << st.user_id
+          batch_ids[st.user_id] = st.batch_id
+          student_ids[st.user_id] = st.id
+          @student = Student.find(st.id)
+          unless @student.student_guardian.empty?
+            guardians = @student.student_guardian
+            guardians.each do |guardian|
+              #            guardian = Guardian.find(@student.immediate_contact_id)
+              
+              unless guardian.user_id.nil?
+                available_user_ids << guardian.user_id
+                batch_ids[guardian.user_id] = @student.batch_id
+                student_ids[guardian.user_id] = @student.id
+              end
+            end  
+          end
+        end
+        #available_user_ids = students.collect(&:user_id).compact unless student_ids.nil?
+        unless @subject.nil?
+          if @assignment.save
+            if @assignment.is_published==1
+              Delayed::Job.enqueue(
+                DelayedReminderJob.new( :sender_id  => current_user.id,
+                  :recipient_ids => available_user_ids,
+                  :subject=>"#{t('new_homework_added')} : "+params[:assignment][:title],
+                  :rtype=>4,
+                  :rid=>@assignment.id,
+                  :student_id => student_ids,
+                  :batch_id => batch_ids,
+                  :body=>"#{t('homework_added_for')} #{@subject.name}  <br/>#{t('view_reports_homework')}")
+              )
+              @config_notification = Configuration.find_by_config_key('AllNotificationAdmin')
+              if (!@config_notification.blank? and !@config_notification.config_value.blank? and @config_notification.config_value.to_i == 1)
+                all_admin = User.find_all_by_admin_and_is_deleted(true,false)
+                available_user_ids = all_admin.map(&:id)
+                batch = @assignment.subject.batch
+                unless batch.blank?
+                  batch_tutor = batch.employees
+                  unless batch_tutor.blank?
+                    batch_tutor.each do |employee|
+                      if employee.all_access.to_i == 1
+                        available_user_ids << employee.user_id
+                      end
+                    end
+                  end
+                end
+                unless available_user_ids.blank?
+                  Delayed::Job.enqueue(
+                    DelayedReminderJob.new( :sender_id  => current_user.id,
+                      :recipient_ids => available_user_ids,
+                      :subject=>"New homework '#{@assignment.title}' added for #{@subject.name}( Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@assignment.employee.full_name}",
+                      :rtype=>4,
+                      :rid=>@assignment.id,
+                      :student_id => 0,
+                      :batch_id => 0,
+                      :body=>"New homework '#{@assignment.title}' added for #{@subject.name}( Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@assignment.employee.full_name}. <br/>#{t('view_reports_homework')}")
+                  )
+                end
+                
+              end  
+              
+            elsif @assignment.save and @assignment.is_published == 2
+              batch = @assignment.subject.batch
+              unless batch.blank?
+                batch_tutor = batch.employees
+                available_user_ids = []
+                unless batch_tutor.blank?
+                  batch_tutor.each do |employee|
+                    if employee.homework_publisher == 1
+                      available_user_ids << employee.user_id
+                    end
                   end
                 end
               end
-            end
-            unless available_user_ids.blank?
+              
+              unless available_user_ids.blank?
                 Delayed::Job.enqueue(
                   DelayedReminderJob.new( :sender_id  => current_user.id,
                     :recipient_ids => available_user_ids,
-                    :subject=>"New homework '#{@assignment.title}' added for #{@subject.name}( Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@assignment.employee.full_name}",
+                    :subject=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name}",
                     :rtype=>4,
                     :rid=>@assignment.id,
                     :student_id => 0,
                     :batch_id => 0,
-                    :body=>"New homework '#{@assignment.title}' added for #{@subject.name}( Class: #{@subject.batch.course.course_name} #{@subject.batch.course.section_name}) by #{@assignment.employee.full_name}. <br/>#{t('view_reports_homework')}")
+                    :body=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
                 )
               end
-            
-          end  
-          
-        elsif @assignment.save and @assignment.is_published == 2
-          batch = @assignment.subject.batch
-          unless batch.blank?
-            batch_tutor = batch.employees
-            available_user_ids = []
-            unless batch_tutor.blank?
-              batch_tutor.each do |employee|
-                if employee.homework_publisher == 1
-                  available_user_ids << employee.user_id
-                end
-              end
+              
             end
+            
+            if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0
+              flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
+            else
+              flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
+            end
+            save = true
+            
+          else
+            if current_user.employee?
+              @subjects = current_user.employee_record.subjects
+              
+              @subjects.reject! {|s| !s.batch.is_active?}
+              @students = @subject.batch.students
+            end
+            
           end
-
-          unless available_user_ids.blank?
-            Delayed::Job.enqueue(
-              DelayedReminderJob.new( :sender_id  => current_user.id,
-                :recipient_ids => available_user_ids,
-                :subject=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name}",
-                :rtype=>4,
-                :rid=>@assignment.id,
-                :student_id => 0,
-                :batch_id => 0,
-                :body=>"#{t('your_action_required')} : #{t('new_homework_added')} '#{@assignment.title}' #{t('added_for')} #{@subject.name} <br/>#{t('view_reports_homework')}")
-            )
-          end
-        
-        end
-        
-        if (!@config.blank? and !@config.config_value.blank? and @config.config_value.to_i == 1) and !@current_user.admin? and @current_user.employee_entry.homework_publisher != 1 and @assignment.is_published != 0
-          flash[:notice] = "#{t('new_assignment_sucessfuly_forwarded')}"
         else
-          flash[:notice] = "#{t('new_assignment_sucessfuly_created')}"
+          unless @assignment.save
+            @subjects = current_user.employee_record.subjects
+          end
         end
+      end
+      if save
         redirect_to :action=>:index
       else
-        if current_user.employee?
-          @subjects = current_user.employee_record.subjects
-        
-          @subjects.reject! {|s| !s.batch.is_active?}
-          @students = @subject.batch.students
-        end
         render :action=>:new
-      end
-    else
-      unless @assignment.save
-        @subjects = current_user.employee_record.subjects
-        render :action=>:new
-      end
+      end  
     end
   end
 

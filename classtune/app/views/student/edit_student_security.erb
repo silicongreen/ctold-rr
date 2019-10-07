@@ -90,7 +90,7 @@
       }
   }
 </script> 
-
+<% default_image = "/images/HR/default_employee.png" %>
 <div class="header-wrapper">
     <div class="header-title">
         <div class="header-icon">
@@ -190,7 +190,13 @@
                   <%= form.hidden_field  :photo1 , :id => "photoField1"%>
               </div>
               <div class="col-6">
-                  <img id="photo1preview" >
+                  <% if @student_security.photo1? %>
+                    <img id="photo1preview" src="<%= @student_security.photo1 %>" >&nbsp;&nbsp;
+                    <a href="javascript:void(0)" onClick="image_change(1)" >Remove</a>
+                    
+                  <% else %>
+                    <img id="photo1preview" src="<%= default_image %>" >
+                  <% end %>  
               </div>
           </div>
           <div class="row">
@@ -200,7 +206,12 @@
                   <%= form.hidden_field  :photo2 , :id => "photoField2"%>
               </div>
               <div class="col-6">
-                  <img id="photo2preview" >
+                  <% if @student_security.photo2? %>
+                    <img id="photo2preview" src="<%= @student_security.photo2 %>" >
+                    <a href="javascript:void(0)" onClick="image_change(2)" >Remove</a>
+                  <% else %>
+                    <img id="photo2preview" src="<%= default_image %>" >
+                  <% end %>
               </div>
           </div>
           <div class="row">
@@ -210,7 +221,12 @@
                   <%= form.hidden_field  :photo3 , :id => "photoField3"%>
               </div>
               <div class="col-6">
-                  <img id="photo3preview" >
+                  <% if @student_security.photo3? %>
+                    <img id="photo3preview" src="<%= @student_security.photo3 %>" >
+                    <a href="javascript:void(0)" onClick="image_change(3)" >Remove</a>
+                  <% else %>
+                    <img id="photo3preview" src="<%= default_image %>" >
+                  <% end %>
               </div>
           </div>
           <div class="row">
@@ -220,7 +236,12 @@
                   <%= form.hidden_field  :photo4 , :id => "photoField4"%>
               </div>
               <div class="col-6">
-                  <img id="photo4preview" >
+                  <% if @student_security.photo4? %>
+                    <img id="photo4preview" src="<%= @student_security.photo4 %>" >
+                    <a href="javascript:void(0)" onClick="image_change(4)" >Remove</a>
+                  <% else %>
+                    <img id="photo4preview" src="<%= default_image %>" >
+                  <% end %>
               </div>
           </div>
           <div class="row">
@@ -230,7 +251,12 @@
                   <%= form.hidden_field  :photo5 , :id => "photoField5"%>
               </div>
               <div class="col-6">
-                  <img id="photo5preview" >
+                  <% if @student_security.photo5? %>
+                    <img id="photo5preview" src="<%= @student_security.photo5 %>" >
+                    <a href="javascript:void(0)" onClick="image_change(5)" >Remove</a>
+                  <% else %>
+                    <img id="photo5preview" src="<%= default_image %>" >
+                  <% end %>
               </div>
           </div>
           <div class="row">
@@ -238,7 +264,7 @@
           </div>
       </div>
     <% end %>
-
+    <input type="hidden" id="default_image" value="<%= default_image %>" />
 </div>
 <div class="clearfix"></div>
 
@@ -246,7 +272,15 @@
 <% content_for :head do %>
   <%= javascript_include_tag "custom/tabbed-header" %>
 <% end %>
-
+<script>
+ 
+  function image_change(no)
+  { 
+    j("#photo"+no+"preview").attr("src",j("#default_image").val());
+    j("#photoField"+no).val("");
+  }
+  
+</script>
 
 
 

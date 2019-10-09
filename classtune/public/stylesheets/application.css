@@ -4000,3 +4000,73 @@ a{
 {
     top: 64px !important;
 }
+.marks_entry_box_icon {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("/images/dashpallete/grey_icon/mark_entry.png") no-repeat scroll 42px 40px / 33px 33px #ffffff;
+    border-color: #cccccc;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 2px 3px 1px;
+    color: #969799;
+    cursor: pointer;
+    float: left;
+    font-size: 20px;
+    height: 96px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+    margin-right: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 96px;
+    position: relative;
+    transition: all 0.25s ease-in 0s;
+}
+.marks_entry_box_icon:hover {
+    background: url("/images/dashpallete/mark_entry.png") no-repeat scroll 42px 40px / 33px 33px #2DC99A;
+    color:#fff;
+    
+    transition: all 0.25s linear 0s;
+    
+}
+.marks_entry_box_icon.active {
+    background: url("/images/dashpallete/mark_entry.png") no-repeat scroll 42px 40px / 33px 33px #2DC99A;
+    color:#fff;    
+    transition: all 0.25s linear 0s;
+}
+/* Required for Down Triangle */
+.marks_entry_box_icon.active:before, .marks_entry_box_icon.active:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom: 0;
+}
+
+/* Stroke */
+.marks_entry_box_icon.active:before {
+    bottom: -16px;
+    left: 42px;
+
+    /* If 1px darken stroke slightly */
+    border-top-color: #2DC99A;
+    border-width: 16px;
+}
+
+/* Fill */
+.marks_entry_box_icon.active:after {
+    bottom: -15px;
+    left: 43px;
+    border-top-color: #2DC99A;
+    border-width: 15px;
+}
+
+.marks_entry_box_icon span {
+    font-size: 12px;
+    position: relative;
+    top: 65px;
+}

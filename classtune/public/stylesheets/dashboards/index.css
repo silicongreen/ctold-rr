@@ -2253,6 +2253,7 @@ a.submit_button:hover {
 .marks_entry_box_icon:hover {
     background: url("/images/dashpallete/mark_entry.png") no-repeat scroll 42px 40px / 33px 33px #2DC99A;
     color:#fff;
+    
     transition: all 0.25s linear 0s;
     
 }

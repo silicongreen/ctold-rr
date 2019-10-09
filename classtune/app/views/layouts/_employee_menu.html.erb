@@ -80,14 +80,15 @@ unless all_new_reminders.blank?
                             <% end %>
 
 
-
-
-                            <li class="als-item">
-                                <%=  link_to "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>", :controller => 'online_exam', :action => 'view_online_exam' %>
+                            <li class="als-item" >
+                              <%=  link_to "<div class='marks_entry_box_icon'><span class='f2'>MARKS ENTRY</span></div>", :controller => 'marks', :action => 'connect_exam' %>
                             </li>
-
                             <li class="als-item" >
                                 <%=  link_to "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE"+exam_rountine_string+"</span></div>", :controller => 'exam', :action => 'index' %>
+                            </li>
+                            
+                            <li class="als-item">
+                                <%=  link_to "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>", :controller => 'online_exam', :action => 'view_online_exam' %>
                             </li>
                             
                             <li class="als-item" >

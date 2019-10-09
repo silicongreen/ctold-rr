@@ -84,8 +84,18 @@ employee_id = @current_user.employee_record.id
                 <%=  link_to "<div class='classwork_box_icon'><span class='f2'>CLASSWORK"+classwork_string+"</span></div>", :controller => 'classworks', :action => 'index' %>
               </li>
               <% end %>
-             
               
+              <li class="als-item" >
+                <%=  link_to "<div class='marks_entry_box_icon'><span class='f2'>MARKS ENTRY</span></div>", :controller => 'marks', :action => 'connect_exam' %>
+              </li>
+             
+              <li class="als-item" >
+                <%= link_to_remote "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE"+exam_rountine_string+"</span></div>",
+                  :update => "dashboard-data",
+                  :before => "Element.show('loader');j('.partial_homework').empty();",
+                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
+                  :url => {:controller=>"dashboards",:action => "employee_exam_routine_data"} %>
+              </li>
              
               <li class="als-item" >
                 <%= link_to_remote "<div class='quiz_box_icon'><span class='f2'>QUIZ</span></div>",
@@ -94,13 +104,7 @@ employee_id = @current_user.employee_record.id
                   :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .quiz_box_icon').addClass('active');",
                   :url => {:controller=>"dashboards",:action => "employee_quiz_data"} %>
               </li>
-              <li class="als-item" >
-                <%= link_to_remote "<div class='exam_box_icon'><span class='f2'>EXAM ROUTINE"+exam_rountine_string+"</span></div>",
-                  :update => "dashboard-data",
-                  :before => "Element.show('loader');j('.partial_homework').empty();",
-                  :success => "Element.hide('loader');j('#boxes div').removeClass('active');j('#boxes .exam_box_icon').addClass('active');",
-                  :url => {:controller=>"dashboards",:action => "employee_exam_routine_data"} %>
-              </li>
+              
               <li class="als-item" >
                 <%= link_to_remote "<div class='task_box_icon'><span class='f2'>TASK</span></div>",
                   :update => "dashboard-data",

@@ -705,9 +705,9 @@
                               <td colspan="4">Total Student: <%= @total_std unless @total_std.blank? %></td>
                             </tr>
                             <%
-                            total = @report_data['total']
-                            present = @report_data['present']
-                            absent = @report_data['absent']
+                            total = @report_data['total'].to_i
+                            present = @report_data['present'].to_i
+                            absent = @report_data['absent'].to_i
                           
                             %>
                             <tr class="table-header">

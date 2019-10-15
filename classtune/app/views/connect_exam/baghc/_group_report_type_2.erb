@@ -491,11 +491,11 @@
                                       grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
                                       if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                         if grade.credit_points.to_i == 0
-                                          failed_grade = true
+                                          failed_grade3 = true
                                         end  
                                       end
                                     else
-                                      failed_grade = true
+                                      failed_grade3 = true
                                     end
                                   end
                                   if mtt3_total > 0
@@ -504,11 +504,11 @@
                                       grade = GradingLevel.percentage_to_grade(point_mark, @batch.id)
                                       if !grade.blank? and !grade.name.blank? and !grade.credit_points.blank?
                                         if grade.credit_points.to_i == 0
-                                          failed_grade = true
+                                          failed_grade3 = true
                                         end  
                                       end
                                     else
-                                      failed_grade = true
+                                      failed_grade3 = true
                                     end
                                   end
                               
@@ -570,7 +570,7 @@
                                 <td>
                                    <%= highest_mark.to_i %>
                                 </td>
-                                <% if failed_grade %>
+                                <% if failed_grade3 %>
                                   <% main_failed_grade3 = true %>
                                 <td>
                                    0.00

@@ -108,7 +108,11 @@ class ExamConnect extends CActiveRecord
         {
             $res_type = array(1,3,5);
             $quarter_number = 1;
-        }        
+        } 
+        if(Yii::app()->user->schoolId == 356)
+        {
+            $res_type = array(1);
+        }
         $criteria = new CDbCriteria;
         $criteria->compare('t.batch_id', $batch_id);
         $criteria->compare('t.is_deleted', 0);
@@ -394,9 +398,9 @@ class ExamConnect extends CActiveRecord
                     } 
                     foreach($all_student_this_subject as $svalue)
                     {
-                        if(!in_array($svalue['student_id'], $allstudents))
+                        if(!in_array($svalue['student_id'], $students))
                         {
-                            $allstudents[] = $svalue['student_id'];
+                            $students[] = $svalue['student_id'];
                             $result['students'][$j]['name'] = $svalue['student_name'];
                             $result['students'][$j]['id'] = $svalue['student_id'];
                             $result['students'][$j]['class_roll_no'] = $svalue['roll_no'];

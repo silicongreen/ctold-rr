@@ -704,37 +704,51 @@
                               <td colspan="3">Position: <% if !@student_position3.blank? && !@student_position3[@student.id.to_i].blank?  %><%= @student_position3[@student.id.to_i] %><% else %>N/A<% end %></td>
                               <td colspan="4">Total Student: <%= @total_std unless @total_std.blank? %></td>
                             </tr>
-                            
+                            <%
+                            total = @report_data['total']
+                            present = @report_data['present']
+                            absent = @report_data['absent']
+                          
+                            %>
                             <tr class="table-header">
                                 <% if @report_data['total_first_term'].nil? %>
                                 <td colspan="2">Total Working day<br/><%= @report_data['total'] %></td>
                                 <td colspan="2">Present<br/>
                                 <% unless @report_data['total_new_std'].blank?  %>
+                                    <% present = @report_data['total_new_std'].to_i-@report_data['absent'].to_i  %>
                                     <%= @report_data['total_new_std'].to_i-@report_data['absent'].to_i %>
                                 <% else %>
                                     <%= @report_data['present'] %>
                                 <% end %>    
                                 </td>
                                 <td colspan="3">
+                                    Absent</br>
                                     <% unless @report_data['absent'].nil?  %>
                                       <%= @report_data['absent'] %>
                                     <% else %>
+                                      <% absent = @report_data['total']-@report_data['present']  %>
                                       <%= @report_data['total']-@report_data['present'] %>
                                     <% end %>
                                 </td>
                                 <% else %>
+                                <% total = total+@report_data['total_first_term'] %>
                                 <td colspan="2">Total Working day<br/><%= @report_data['total_first_term'] %></td>
                                 <td colspan="2">Present<br/>
                                 <% unless @report_data['total_new_std_first_term'].blank?  %>
+                                    <% present = present+@report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i  %>
                                     <%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %>
                                 <% else %>
+                                    <% present = present+@report_data['present_first_term'] %>
                                     <%= @report_data['present_first_term'] %>
                                 <% end %>    
                                 </td>
                                 <td colspan="3">
+                                    Absent</br>
                                     <% unless @report_data['absent_first_term'].nil?  %>
+                                      <% absent = absent+@report_data['absent_first_term'] %>
                                       <%= @report_data['absent_first_term'] %>
                                     <% else %>
+                                      <% absent = absent+@report_data['total_first_term']-@report_data['present_first_term']  %>
                                       <%= @report_data['total_first_term']-@report_data['present_first_term'] %>
                                     <% end %>
                                 </td>
@@ -743,7 +757,7 @@
                                 <% if @report_data['total_first_term'].nil? %>
                                 <td colspan="2">Total Working day</td>
                                 <td colspan="2">Present</td>
-                                <td colspan="3"></td>
+                                <td colspan="3">Absent</td>
                                 <% else %>
                                 <td colspan="2">Total Working day<br/><%= @report_data['total'] %></td>
                                 <td colspan="2">Present<br/>
@@ -754,6 +768,7 @@
                                 <% end %>    
                                 </td>
                                 <td colspan="3">
+                                    Absent</br>
                                     <% unless @report_data['absent'].nil?  %>
                                       <%= @report_data['absent'] %>
                                     <% else %>
@@ -761,10 +776,13 @@
                                     <% end %>
                                 </td>
                                 <% end %>
+                               
                                 
-                                <td colspan="2">Total Working day</td>
-                                <td colspan="2">Present</td>
-                                <td colspan="3"></td>
+                                
+                                
+                                <td colspan="2">Total Working day<br/><%= total %></td>
+                                <td colspan="2">Present<br/><%= present %></td>
+                                <td colspan="3">Absent</br><%= absent %></td>
                                 
                             </tr>
 

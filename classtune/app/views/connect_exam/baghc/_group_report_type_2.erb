@@ -7,10 +7,10 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="20%" style="vertical-align: top;" rowspan="2">
+                  <td width="20%" style="vertical-align: top;" rowspan="2" class="no-tr-td-border">
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/baghc_new_logo.png")),:width=> '70%' %>
                   </td>
-                  <td>
+                  <td class="no-tr-td-border">
                     <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
                     <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
@@ -18,7 +18,7 @@
                   </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td class="no-tr-td-border">
                     <table width="100%">
                 <tr class="table-header">
                     <td class="left">
@@ -864,7 +864,7 @@
     margin-left:0px !important;
 
 }
-.cherry_blossoms  .academia_middle_box table.no-border, .cherry_blossoms  .academia_middle_box table.no-border > tr td, .cherry_blossoms  .academia_middle_box table.no-border > tr
+.cherry_blossoms  .academia_middle_box table.no-border, .cherry_blossoms  .academia_middle_box table.no-border  tr td.no-tr-td-border, .cherry_blossoms  .academia_middle_box table.no-border tr.no-tr-td-border
 {
     border:none !important;
 }

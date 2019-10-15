@@ -4981,6 +4981,7 @@ class ExamController < ApplicationController
         :save_to_file => file_name,
         :save_only    => for_save,
         :orientation => 'Landscape',
+        :page_size => 'Legal',
         :margin => {    :top=> 10,
         :bottom => 30,
         :left=> 10,

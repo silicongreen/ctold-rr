@@ -726,7 +726,7 @@
                                     <% unless @report_data['absent'].nil?  %>
                                       <%= @report_data['absent'] %>
                                     <% else %>
-                                      <% absent = @report_data['total']-@report_data['present']  %>
+                                      <% absent = @report_data['total'].to_i-@report_data['present'].to_i  %>
                                       <%= @report_data['total']-@report_data['present'] %>
                                     <% end %>
                                 </td>
@@ -738,18 +738,18 @@
                                     <% present = present+@report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i  %>
                                     <%= @report_data['total_new_std_first_term'].to_i-@report_data['absent_first_term'].to_i %>
                                 <% else %>
-                                    <% present = present+@report_data['present_first_term'] %>
+                                    <% present = present+@report_data['present_first_term'].to_i %>
                                     <%= @report_data['present_first_term'] %>
                                 <% end %>    
                                 </td>
                                 <td colspan="3">
                                     Absent</br>
                                     <% unless @report_data['absent_first_term'].nil?  %>
-                                      <% absent = absent+@report_data['absent_first_term'] %>
+                                      <% absent = absent+@report_data['absent_first_term'].to_i %>
                                       <%= @report_data['absent_first_term'] %>
                                     <% else %>
-                                      <% absent = absent+@report_data['total_first_term']-@report_data['present_first_term']  %>
-                                      <%= @report_data['total_first_term']-@report_data['present_first_term'] %>
+                                      <% absent = absent+@report_data['total_first_term']-@report_data['present_first_term'].to_i  %>
+                                      <%= @report_data['total_first_term'].to_i-@report_data['present_first_term'].to_i %>
                                     <% end %>
                                 </td>
                                 <% end %>

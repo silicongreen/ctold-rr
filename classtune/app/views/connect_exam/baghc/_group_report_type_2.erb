@@ -12,12 +12,59 @@
                   </td>
                   <td>
                     <h3 align="center"><b><%=Configuration.get_config_value('InstitutionName'); %></b></h3>
-                    <h4 align="center"><b>www.baghc.edu.bd</b></h4>
                     <h4 align="center"><b>(EIIN : 108214)</b></h4>
                     <h4 align="center"><b>Subject-Wise Grade/Marks Sheet</b></h4>
-                    <br/><br/>
-                    <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
+                    
                   </td>
+                </tr>
+            </table>
+            <table id="pdf-table" class="margin-top-10"  width="100%">
+                <tr class="table-header">
+                    <td class="left">
+                      Name : <%= @student.full_name %>
+                    </td>
+                    <td class="left">
+                      Class : <%= @student.batch.course_name %>
+                    </td>
+                    <td class="left">
+                      Section : <%= @student.batch.section_name %>
+                    </td>
+                    <td class="left">
+                      Roll : <%= @student.class_roll_no %>
+                    </td>
+                </tr>  
+                <tr class="table-header">
+                    <%
+                      shift = "Morning"
+                      medium = "Bangla"
+                      unless @batch.name.upcase.index("DAY").nil?
+                        shift = "Day"
+                      end
+                      unless @batch.name.upcase.index("ENGLISH").nil?
+                        medium = "English"
+                      end
+                      if !@batch.course.group.upcase.index("SCIENCE").nil?
+                        @batch.course.group = "Science"
+                      elsif !@batch.course.group.upcase.index("BUSINESS").nil?
+                        @batch.course.group = "Business Studies"
+                      elsif !@batch.course.group.upcase.index("HUMAN").nil?
+                        @batch.course.group = "Humanities"
+                      else
+                        @batch.course.group = "N/A"
+                      end  
+                    %>
+                    <td class="left">
+                      Shift : <%= shift %>
+                    </td>
+                    <td class="left">
+                      Medium : <%= medium %>
+                    </td>
+                    <td class="left">
+                      Group : <%= @batch.course.group %>
+                    </td>
+                    <td class="left">
+                      ID : <%= @student.admission_no %>
+                    </td>
                 </tr>
             </table>
           </div>
@@ -53,56 +100,10 @@
             <% end %>
           </div>
         </div>
+        <br/>
+        <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
  
-       <table id="pdf-table" class="margin-top-10"  width="99.8%">
-          <tr class="table-header">
-              <td class="left">
-                Name : <%= @student.full_name %>
-              </td>
-              <td class="left">
-                Class : <%= @student.batch.course_name %>
-              </td>
-              <td class="left">
-                Section : <%= @student.batch.section_name %>
-              </td>
-              <td class="left">
-                Roll : <%= @student.class_roll_no %>
-              </td>
-          </tr>  
-          <tr class="table-header">
-              <%
-                shift = "Morning"
-                medium = "Bangla"
-                unless @batch.name.upcase.index("DAY").nil?
-                  shift = "Day"
-                end
-                unless @batch.name.upcase.index("ENGLISH").nil?
-                  medium = "English"
-                end
-                if !@batch.course.group.upcase.index("SCIENCE").nil?
-                  @batch.course.group = "Science"
-                elsif !@batch.course.group.upcase.index("BUSINESS").nil?
-                  @batch.course.group = "Business Studies"
-                elsif !@batch.course.group.upcase.index("HUMAN").nil?
-                  @batch.course.group = "Humanities"
-                else
-                  @batch.course.group = "N/A"
-                end  
-              %>
-              <td class="left">
-                Shift : <%= shift %>
-              </td>
-              <td class="left">
-                Medium : <%= medium %>
-              </td>
-              <td class="left">
-                Group : <%= @batch.course.group %>
-              </td>
-              <td class="left">
-                ID : <%= @student.admission_no %>
-              </td>
-          </tr>
-        </table>
+       
         <div class ="current_batch">
             <div id="grouped_exam_report">
                 <div class="CSSTableGenerator">
@@ -110,13 +111,13 @@
                         
                         <thead> 
                           <tr class="table-header">
+                              <td rowspan="3">SL</td>
+                              <td rowspan="3">Subjects</td>
                               <td colspan="7">Half Yearly Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td>
                               <td colspan="7">Year Final Exam - <%= @connect_exam_obj.published_date.blank? ? @connect_exam_obj.created_at.strftime("%Y"):@connect_exam_obj.published_date.strftime("%Y") %></td> 
                               <td colspan="7">Average</td>
                           </tr>
                           <tr class="table-header">
-                              <td rowspan="3">SL</td>
-                              <td rowspan="3">Subjects</td>
                               <td rowspan="2">CQ/SQ</td>
                               <td rowspan="2">MCQ</td>
                               <td rowspan="2">MTT/Prac</td>
@@ -533,6 +534,59 @@
                                   end
                               
                                 %>
+                                <td>
+                                  <% if cq3_total > 0 %>
+                                    <%= cq3 %> <font class="soft">[<%= cq3_total.to_i %>]</font>
+                                  <% else %>
+                                    -
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if mcq3_total > 0 %>
+                                    <%= mcq3 %> <font class="soft">[<%= mcq3_total.to_i %>]</font>
+                                  <% else %>
+                                    -
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <% if mtt3_total > 0 %>
+                                    <%= mtt3 %> <font class="soft">[<%= mtt3_total.to_i %>]</font>
+                                  <% else %>
+                                    -
+                                  <% end %>    
+                                </td>
+                                <td>
+                                  <%= coverted_100.to_i %>  
+                                </td>
+                                <%
+                                    highest_mark = 0
+                                    if !@subject_highest3.blank? and !@subject_highest3[subjects['id'].to_i].blank?
+                                      highest_mark = @subject_highest3[subjects['id'].to_i].to_f
+                                    end
+                                %>
+                                <td>
+                                   <%= highest_mark.to_i %>
+                                </td>
+                                <% if failed_grade %>
+                                  <% main_failed_grade3 = true %>
+                                <td>
+                                   0.00
+                                </td>
+                                <td>
+                                   F 
+                                </td>
+                                
+                                <% else %>
+                                <% if gp_point3.to_i == 0 %>
+                                  <% main_failed_grade3 = true %>
+                                <% end %>
+                                <td>
+                                   <%= gp_point3 %> 
+                                </td>
+                                <td>
+                                   <%= lg %> 
+                                </td>
+                                <% end %>
                                     
 
                             </tr> 
@@ -610,25 +664,25 @@
                             <tr class="table-header">
                                 <td colspan="7" style="text-align:right">
                                     <% if main_failed_grade %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
                                     <% else %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction) %></font></b>
                                     <% end %>
                                     
                                 </td>
                                 <td colspan="7" style="text-align:right">
                                     <% if main_failed_grade2 %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
                                     <% else %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction2) %></font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction2) %></font></b>
                                     <% end %>
                                     
                                 </td>
                                 <td colspan="7" style="text-align:right">
                                     <% if main_failed_grade3 %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;0.00</font></b>
                                     <% else %>
-                                      <b><font size="5">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction3) %></font></b>
+                                      <b><font size="3">GPA&nbsp;&nbsp;&nbsp;&nbsp;<%= sprintf( "%0.02f", gpa_fraction3) %></font></b>
                                     <% end %>
                                     
                                 </td>

@@ -18,7 +18,7 @@
                   </td>
                 </tr>
             </table>
-            <table id="pdf-table" class="margin-top-10"  width="100%">
+            <table id="pdf-table"  width="100%">
                 <tr class="table-header">
                     <td class="left">
                       Name : <%= @student.full_name %>
@@ -536,21 +536,21 @@
                                 %>
                                 <td>
                                   <% if cq3_total > 0 %>
-                                    <%= cq3 %> <font class="soft">[<%= cq3_total.to_i %>]</font>
+                                    <%= cq3 %> <font class="soft">[<%= cq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
                                   <% if mcq3_total > 0 %>
-                                    <%= mcq3 %> <font class="soft">[<%= mcq3_total.to_i %>]</font>
+                                    <%= mcq3 %> <font class="soft">[<%= mcq_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    
                                 </td>
                                 <td>
                                   <% if mtt3_total > 0 %>
-                                    <%= mtt3 %> <font class="soft">[<%= mtt3_total.to_i %>]</font>
+                                    <%= mtt3 %> <font class="soft">[<%= mtt_total.to_i %>]</font>
                                   <% else %>
                                     -
                                   <% end %>    

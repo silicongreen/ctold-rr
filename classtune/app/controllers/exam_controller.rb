@@ -4965,7 +4965,8 @@ class ExamController < ApplicationController
           :orientation => 'Portrait'
       end
     elsif  MultiSchool.current_school.id == 356
-      render :pdf => template,
+      if @connect_exam_obj.result_type == 1
+        render :pdf => template,
         :save_to_file => file_name,
         :save_only    => for_save,
         :orientation => 'Portrait',
@@ -4975,6 +4976,18 @@ class ExamController < ApplicationController
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
         :footer => {:html => { :template=> 'layouts/pdf_footer_baghc.html'}}
+      else
+        render :pdf => template,
+        :save_to_file => file_name,
+        :save_only    => for_save,
+        :orientation => 'Landscape',
+        :margin => {    :top=> 10,
+        :bottom => 30,
+        :left=> 10,
+        :right => 10},
+        :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
+        :footer => {:html => { :template=> 'layouts/pdf_footer_baghc.html'}}
+      end  
     elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
       if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7
         render :pdf => template,

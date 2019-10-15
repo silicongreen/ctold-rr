@@ -74,7 +74,6 @@
             
           </div>
           <div class="academia_right_box">
-            <br/>
             <% @grading_levels = GradingLevel.for_batch(@batch.id) %>
             <% if @grading_levels.blank? %>
             <% @grading_levels = GradingLevel.default %>
@@ -105,7 +104,6 @@
             <% end %>
           </div>
         </div>
-        <br/>
         <h3 align="center"><b><%= @connect_exam_obj.name %></b></h3>
  
        
@@ -832,9 +830,15 @@
 {
     text-align: left !important;
 }
+.cherry_blossoms .academia_right_box table tr td
+{
+    font-size:10px;
+    text-align: center;
+    padding: 2px !important;
+}
 .cherry_blossoms  table tr td
 {
-    font-size:12px;
+    font-size:11px;
     text-align: center;
 }
 
@@ -846,7 +850,7 @@
 }
 .cherry_blossoms  .CSSTableGenerator table thead tr th
 {
-    font-size:15px;
+    font-size:14px;
     text-align: left;
 }
 
@@ -894,7 +898,7 @@
 
     #page-yield #pdf-header-south h2 b
     {
-       font-size: 24px !important;
+       font-size: 23px !important;
     }
     .sis-final .table-header td{
         padding: 3px !important;

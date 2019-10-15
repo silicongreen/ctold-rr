@@ -1335,6 +1335,13 @@ class PaymentSettingsController < ApplicationController
                         
                           pay_student(amount_from_gateway, total_fees, request_params, finance_order.order_id, verification_trans_date, ref_id)
                         end
+                      else
+                        paid_fees = fee.finance_transactions
+                        unless paid_fees.nil?
+                          paid_fees.each do |paid_fee|
+                            payment.update_attributes(:finance_transaction_id => paid_fee.id)
+                          end
+                        end
                       end
                     end
                   end

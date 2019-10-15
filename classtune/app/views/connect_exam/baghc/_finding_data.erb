@@ -103,11 +103,11 @@
                     full_1003 = full_1003+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     full_mark = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     if report['exam_category'] == '1'
-                      cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     elsif report['exam_category'] == '2'
-                      mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     elsif report['exam_category'] == '3'
-                      mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     end
                   end 
 
@@ -146,11 +146,11 @@
                     full_1003 = full_1003+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     full_mark2 = report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     if report['exam_category'] == '1'
-                      cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      cq_total = cq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     elsif report['exam_category'] == '2'
-                      mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      mcq_total = mcq_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     elsif report['exam_category'] == '3'
-                      mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['marks_obtained'].to_f.round()
+                      mtt_total = mtt_total+report['result'][report['exam_id']][sub['id']][std['id']]['full_mark'].to_i
                     end
                   end 
 

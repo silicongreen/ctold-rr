@@ -7,7 +7,7 @@
           <div class="academia_middle_box">
             <table width="100%" style="border: none !important;" class="no-border">
                 <tr>
-                  <td width="20%" style="vertical-align: top;">
+                  <td width="20%" style="vertical-align: top;" rowspan="2">
                     <%= wicked_pdf_image_tag "/"+("#{Rails.root}/"+ ("public/images/school_logo/356/baghc_new_logo.png")),:width=> '70%' %>
                   </td>
                   <td>
@@ -17,8 +17,9 @@
                     
                   </td>
                 </tr>
-            </table>
-            <table width="100%">
+                <tr>
+                    <td>
+                    <table width="100%">
                 <tr class="table-header">
                     <td class="left">
                       Name : <%= @student.full_name %>
@@ -66,7 +67,11 @@
                       ID : <%= @student.admission_no %>
                     </td>
                 </tr>
+            </table>  
+                    </td>
+                </tr>
             </table>
+            
           </div>
           <div class="academia_right_box">
             <br/>

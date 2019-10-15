@@ -1063,7 +1063,7 @@ class PaymentSettingsController < ApplicationController
             unless @student.nil?
               finance_orders = FinanceOrder.find_all_by_order_id(o)
               
-              abort(finance_orders.inspect)
+              abort(finance_orders.map(&:id).inspect)
             
               unless finance_order.nil?
                 fees = FinanceFee.find(:first, :conditions => "student_id = #{@student.id} and id = #{finance_order.finance_fee_id}")

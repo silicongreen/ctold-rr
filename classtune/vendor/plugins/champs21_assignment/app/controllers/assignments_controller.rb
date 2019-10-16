@@ -627,9 +627,7 @@ class AssignmentsController < ApplicationController
             assigned_students.each do |std|
               unless std.student.blank?
                 unless std.student.batch_id.blank?
-                  if batches.include?(std.student.batch_id)
                     @students << std.student
-                  end
                 end
               end 
             end

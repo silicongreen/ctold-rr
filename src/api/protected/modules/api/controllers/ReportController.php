@@ -337,12 +337,14 @@ class ReportController extends Controller
                 $response['data']['present_all'] = $adata[1];
                 $response['data']['absent_all'] = $adata[3];
                 $response['data']['total_new'] = $adata[2];
+                $response['data']['first_term_id'] = 0;
                 if($adata_first_term)
                 {
                     $response['data']['first_term_total'] = $adata_first_term[0];
                     $response['data']['first_term_present_all'] = $adata_first_term[1];
                     $response['data']['first_term_absent_all'] = $adata_first_term[3];
                     $response['data']['first_term_total_new'] = $adata_first_term[2]; 
+                    $response['data']['first_term_id'] = $first_term_id;
                 }
                 $response['status']['code'] = 200;
                 $response['status']['msg'] = "EXAM_REPORT_FOUND";

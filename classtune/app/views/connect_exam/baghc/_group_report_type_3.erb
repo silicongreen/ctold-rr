@@ -516,11 +516,14 @@
                                   mcq3 = (mcq3.to_f/2.00).round()
                                   mtt3 = (mtt3.to_f/2.00).round()
                                   
-                                  total_mark3 = cq3+mcq3+mtt3
-                                  total_full_mark3 = cq_total+mcq_total+mtt_total
+                                  total_mark3 = total_mark3+cq3+mcq3+mtt3
+                                  total_full_mark3 = total_full_mark3+cq_total+mcq_total+mtt_total
+                                  
+                                  total_mark3_100 = cq3+mcq3+mtt3
+                                  total_full_mark3_100 = cq_total+mcq_total+mtt_total
                                   coverted_100 = 0
                                   if total_mark3 > 0
-                                    coverted_100 = (total_mark3.to_f/total_full_mark3.to_f)*100
+                                    coverted_100 = (total_mark3_100.to_f/total_full_mark3_100.to_f)*100
                                   end
                                  
                                   coverted_100 = coverted_100.round()
@@ -804,11 +807,6 @@
                                 <td colspan="2">Present<br/><%= present %></td>
                                 <td colspan="3">Absent<br/><%= absent %></td>
                                 
-                            </tr>
-                            <tr class="table-header">
-                                <td colspan="7">Discollegiate</td>
-                                <td colspan="7">Non-Collegiate</td> 
-                                <td colspan="7">Promoted in class <%= @connect_exam_obj.promoted_to %></td>
                             </tr>
 
                     </table>

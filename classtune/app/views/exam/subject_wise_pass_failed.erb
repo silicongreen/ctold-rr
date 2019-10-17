@@ -70,9 +70,11 @@ end
                       <%
                         sub_id_array = []
                         @subject_result.each do |key,sub_res|
-                          sub_id_array << key
+                          unless sub_id_array.include?(key)
+                            sub_id_array << key
+                          end
                         end
-                        @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:conditions=>["batch_id = ?",@batch.id],:order=>"priority asc")
+                        @all_subject_connect_exam = Subject.find_all_by_code(sub_id_array,:conditions=>["batch_id = ? and is_deleted = ?",@batch.id, false],:order=>"priority asc")
                       %>
                     
                       <% @all_subject_connect_exam.each do |val| %>

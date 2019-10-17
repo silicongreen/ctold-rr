@@ -4983,7 +4983,7 @@ class ExamController < ApplicationController
         :orientation => 'Landscape',
         :page_size => 'Legal',
         :margin => {    :top=> 10,
-        :bottom => 20,
+        :bottom => 30,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},

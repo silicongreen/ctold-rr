@@ -4983,11 +4983,11 @@ class ExamController < ApplicationController
         :orientation => 'Landscape',
         :page_size => 'Legal',
         :margin => {    :top=> 10,
-        :bottom => 30,
+        :bottom => 20,
         :left=> 10,
         :right => 10},
         :header => {:html => { :template=> 'layouts/pdf_empty_header.html'}},
-        :footer => {:html => { :template=> 'layouts/pdf_empty_footer.html'}}
+        :footer => {:html => { :template=> 'layouts/pdf_footer_baghc_landscape.html'}}
       end  
     elsif  MultiSchool.current_school.id == 312 or MultiSchool.current_school.id == 2 
       if @connect_exam_obj.result_type != 1 and @connect_exam_obj.result_type != 6 and @connect_exam_obj.result_type != 7

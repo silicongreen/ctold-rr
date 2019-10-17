@@ -704,6 +704,26 @@
                               <td colspan="3">Position: <% if !@student_position3.blank? && !@student_position3[@student.id.to_i].blank?  %><%= @student_position3[@student.id.to_i] %><% else %>N/A<% end %></td>
                               <td colspan="4">Total Student: <%= @total_std unless @total_std.blank? %></td>
                             </tr>
+                            
+                            <tr>
+                                <%
+                                  start_date_first_term = ""
+                                  end_date_first_term = ""
+                                  unless @report_data['first_term_id'].nil?
+                                    @connect_exam_obj2 = ExamConnect.find_by_id(@report_data['first_term_id'].to_i)
+                                    unless @connect_exam_obj2.blank?
+                                      start_date_first_term = @connect_exam_obj2.attandence_start_date.strftime("%B-%Y")
+                                      end_date_first_term = @connect_exam_obj2.attandence_end_date.strftime("%B-%Y")
+                                    end
+                                  end
+                              
+                                %>
+                                
+                                <td colspan="7">Attendance Report duration : <%=  start_date_first_term %> to <%=  end_date_first_term %> </td> 
+                                <td colspan="7">Attendance Report duration : <%=@connect_exam_obj.attandence_start_date.strftime("%B-%Y")%> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td> 
+                                <td colspan="7">Attendance Report duration : <%=  start_date_first_term %> to <%=@connect_exam_obj.attandence_end_date.strftime("%B-%Y")%> </td>
+                            </tr>
+                            
                             <%
                             total = @report_data['total'].to_i
                             present = @report_data['present'].to_i

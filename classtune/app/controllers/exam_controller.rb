@@ -3639,19 +3639,43 @@ class ExamController < ApplicationController
         row9 << "100%"
       end
       
-      row1 << ['','','']
-      row2 << ['','','']
-      row3 << ['','','']
-      row4 << ['','','']
-      row5 << ['','','']
-      row6 << ['','','']
-      row7 << ['','','']
-      row8 << ['','','']
-      row9 << ['','','']
+      row1 << ''
+      row1 << ''
+      row1 << ''
+      row2 << ''
+      row2 << ''
+      row2 << ''
+      row3 << ''
+      row3 << ''
+      row3 << ''
+      row4 << ''
+      row4 << ''
+      row4 << ''
+      row5 << ''
+      row5 << ''
+      row5 << ''
+      row6 << ''
+      row6 << ''
+      row6 << ''
+      row7 << ''
+      row7 << ''
+      row7 << ''
+      row8 << ''
+      row8 << ''
+      row8 << ''
+      row9 << ''
+      row9 << ''
+      row9 << ''
       
-      row_first << ['','','']
-      row_second << ['','','']
-      row_third << ['','','']
+      row_first << ''
+      row_first << ''
+      row_first << ''
+      row_second << ''
+      row_second << ''
+      row_second << ''
+      row_third << ''
+      row_third << ''
+      row_third << ''
       
       new_book.worksheet(0).merge_cells(k,j,k,j+3)
       new_book.worksheet(0).merge_cells(k+1,j,k+1,j+3)
